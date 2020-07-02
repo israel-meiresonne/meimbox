@@ -1,6 +1,6 @@
 <?php
 
-class Secure extends Controller
+abstract class Secure extends Controller
 {
     
 }

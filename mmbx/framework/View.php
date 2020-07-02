@@ -71,6 +71,24 @@ class View
     private $title;
 
     /**
+     * Holds the page's language
+     * @var string
+     */
+    private $lang;
+
+    /**
+     * Holds the page's meta data description
+     * @var string
+     */
+    private $description;
+
+    /**
+     * Holds the page's specific meta data description
+     * @var string
+     */
+    private $head;
+
+    /**
      * Constructeur
      * 
      * rnvs : les 2 arguments sont des chaînes de caractères qui servent à
@@ -144,6 +162,9 @@ class View
         // Génération du gabarit commun utilisant la partie spécifique
         $view = $this->generateFile('view/template.php', 
                 array('title' => $this->title, 
+                    'lang' => $this->lang,
+                    'description' => $this->description,
+                    'head' => $this->head,
                     'content' => $content, 
                     'webRoot' => $webRoot));
         
