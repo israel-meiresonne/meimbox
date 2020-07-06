@@ -1,27 +1,29 @@
 <?php
 
-class MeasureUnit
+require_once 'model/ModelFunctionality.php';
+
+class MeasureUnit extends ModelFunctionality
 {
     /**
-     * Holds the Length's complete name (ex: uk, us, centimeter, meter, foot|feet, etc...)
+     * Holds the MeasureUnit's complete name (ex: uk, us, centimeter, meter, foot|feet, etc...)
      * @var string
      */
     private $unitName;
 
     /**
-     * Holds the Length's value
+     * Holds the MeasureUnit's value
      * @var double
      */
     private $value;
 
     /**
-     * Holds the Length's short reprentation (ex: cm, m, ft, etc...)
+     * Holds the MeasureUnit's short reprentation (ex: cm, m, ft, etc...)
      * @var string
      */
     private $unit;
 
     /**
-     * Holds the Length's conversion coefficient to the system's default measure 
+     * Holds the MeasureUnit's conversion coefficient to the system's default measure 
      * (cm). NOTE: the coefficient have to allow to convert the measure by using a multiplication between 
      * @var double
      */
@@ -41,51 +43,33 @@ class MeasureUnit
     /**
      * Constructor
      * @param float $value the measure's value
-     * @param string $measureName the measure's unit name
+     * @param string $unitName the measure's unit name
      * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
      * oop/model/special/dbMap.txt
      */
-    function __construct()
+    public function __construct($value, $unitName)
     {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-
-            case 3:
-                self::__construct3($argv[0], $argv[1], $argv[2]);
-                break;
+        $this->setConstants();
+        if (!in_array($unitName, self::$SUPPORTED_UNIT)) {
+            throw new Exception("This unit measure is not supported: unitName=$unitName");
         }
-    }
-
-    private function __construct0()
-    {
-    }
-
-    private function __construct3($value, $measureName, $dbMap)
-    {
-        self::setConstants($dbMap);
-        if (array_key_exists(self::$SUPPORTED_UNIT, $dbMap["constantMap"])) {
+        if($this->existUnit($unitName)){
+            $tabLine = $this->getUnitLine($unitName);
+            $this->unitName = $unitName;
+            $this->value = (float) $value;
+            $this->unit = $tabLine["measureUnit"];
+            $this->toSystUnit = $tabLine["toSystUnit"];
         }
-
-        $this->unitName = $measureName;
-        $this->value = (float) $value;
-        $this->unit = $dbMap["measureUnits"][$measureName]["measureUnit"];
-        $coeff = $dbMap["measureUnits"][$measureName]["toSystUnit"];
-        $this->toSystUnit = !empty($coeff) ? (float) $coeff : null;
     }
 
     /**
      * Initialize MeasureUnit's constants
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
      */
-    private function setConstants($dbMap)
+    private function setConstants()
     {
         if (!isset(self::$SUPPORTED_UNIT)) {
             self::$SUPPORTED_UNIT = "SUPPORTED_UNIT";
-            $SUPPORTED_UNIT_json = $dbMap["constantMap"][self::$SUPPORTED_UNIT]["jsonValue"];
+            $SUPPORTED_UNIT_json = $this->getConstantLine(self::$SUPPORTED_UNIT)["jsonValue"];
             self::$SUPPORTED_UNIT = json_decode($SUPPORTED_UNIT_json);
         }
     }
@@ -136,17 +120,17 @@ class MeasureUnit
         return $value . " " . $this->unit;
     }
 
-    /**
-     * To get a protected copy of this MeasureUnit
-     * @return MeasureUnit a protected copy of this MeasureUnit
-     */
-    public function getCopy()
-    {
-        $copy = new MeasureUnit();
-        $copy->unitName = $this->unitName;
-        $copy->value = $this->value;
-        $copy->unit = $this->unit;
-        $copy->toSystUnit = $this->toSystUnit;
-        return $copy;
-    }
+    // /**
+    //  * To get a protected copy of this MeasureUnit
+    //  * @return MeasureUnit a protected copy of this MeasureUnit
+    //  */
+    // public function getCopy()
+    // {
+    //     $copy = new MeasureUnit();
+    //     $copy->unitName = $this->unitName;
+    //     $copy->value = $this->value;
+    //     $copy->unit = $this->unit;
+    //     $copy->toSystUnit = $this->toSystUnit;
+    //     return $copy;
+    // }
 }

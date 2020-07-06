@@ -8,12 +8,6 @@ class Price
     private $price;
 
     /**
-     * The country where the price is for
-     * @var Country
-     */
-    private $country;
-
-    /**
      * The currency of the price
      * @var Currency
      */
@@ -34,45 +28,34 @@ class Price
     /**
      * __construct2($price, $country, $currency)
      * @param double $price 
-     * @param Country $country The country where the price is for
-     * @param Currency The currency of the price
+     * @param Currency The price's currency
      */
-    function __construct()
+    public function __construct($price, $currency)
     {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-            case 2:
-                self::__construct2($argv[0], $argv[1]);
-                break;
-            case 4:
-                self::__construct4($argv[0], $argv[1], $argv[2], $argv[3]);
-                break;
-        }
+        $this->price = $price;
+        $this->currency = $currency;
     }
 
     protected function __construct0()
     {
     }
 
-    /**
-     * @param float $price the price's value
-     * @param Currency $currency The current Currency of the Visitor
-     */
-    protected function __construct2($price, $currency)
-    {
-        $this->price = $price;
-        $this->currency = $currency;
-    }
+    // /**
+    //  * @param double $price the price's value
+    //  * @param Currency $currency The current Currency of the Visitor
+    //  */
+    // protected function __construct2($price, $currency)
+    // {
+    //     $this->price = $price;
+    //     $this->currency = $currency;
+    // }
 
-    protected function __construct4($price, $countryName, $isoCurrency, $dbMap)
-    {
-        $this->price = $price;
-        $this->country = new Country($countryName, $dbMap);
-        $this->currency = new Currency($isoCurrency, $dbMap);
-    }
+    // protected function __construct4($price, $countryName, $isoCurrency, $dbMap)
+    // {
+    //     $this->price = $price;
+    //     $this->country = new Country($countryName, $dbMap);
+    //     $this->currency = new Currency($isoCurrency, $dbMap);
+    // }
 
     /**
      * Getter of the price
@@ -128,11 +111,12 @@ class Price
      * @return string the price in a displayable format with a translated
      * textual indication that it a minimum value
      */
-    public function getMinPrice($language, $translator){
+    public function getMinPrice($language, $translator)
+    {
         $textualMin = $translator->translateString(self::TEXTUAL_MIN, $language);
-        return $textualMin. ": ".self::getFormated();
+        return $textualMin . ": " . self::getFormated();
     }
-    
+
     /**
      * Format the price to make it in a displayable format for Visitor with a 
      * textual indication that it a minimum value. The textual indication is 
@@ -142,9 +126,10 @@ class Price
      * @return string the price in a displayable format with a translated
      * textual indication that it a minimum value
      */
-    public function getMaxPrice($language, $translator){
+    public function getMaxPrice($language, $translator)
+    {
         $textualMin = $translator->translateString(self::TEXTUAL_MAX, $language);
-        return $textualMin. ": ".self::getFormated();
+        return $textualMin . ": " . self::getFormated();
     }
 
     public function __toString()

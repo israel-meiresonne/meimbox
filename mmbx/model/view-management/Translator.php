@@ -65,7 +65,7 @@ class Translator
      */
     public function translateStation($fileName, $station){
         // $isoLang = gettype($language) == "string" ? $language : $language->getIsoCode();
-        $isoLang = $this->language->getIsoCode();
+        $isoLang = $this->language->getIsoLang();
         return !empty($this->stationMap[$fileName][$station][$isoLang]) ? $this->stationMap[$fileName][$station][$isoLang]
                                                              : $this->stationMap[$fileName][$station][$this->language->getDEFAULT_LANGUAGE()];
     }
@@ -80,7 +80,7 @@ class Translator
      */
     public function translateString($string){
         // $isoLang = gettype($language) == "string" ? $language : $language->getIsoCode();
-        $isoLang = $this->language->getIsoCode();
+        $isoLang = $this->language->getIsoLang();
         return !empty($this->translationMap[$string][$isoLang]) ? $this->translationMap[$string][$isoLang]
                                                              : $string;
     }

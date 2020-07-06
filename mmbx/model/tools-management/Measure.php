@@ -1,6 +1,9 @@
 <?php
 
-class Measure
+require_once 'model/ModelFunctionality.php';
+require_once 'model/tools-management/MeasureUnit.php';
+
+class Measure extends ModelFunctionality
 {
     /**
      * Holds the measure's id
@@ -74,7 +77,7 @@ class Measure
      * @var string
      */
     const QR_GET_MEASURE_ADDER = "get_measure_adder";
-   
+
     /**
      * Holds the query(qr) value for Ajax request
      * @var string
@@ -135,31 +138,12 @@ class Measure
      */
     const MEASURRE_STICKER_KEY =  "measure_sticker";
 
-
     /**
      * Constructor
-     */
-    function __construct()
-    {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-
-            case 2:
-                self::__construct2($argv[0], $argv[1]);
-                break;
-        }
-    }
-
-    private function __construct0()
-    {
-    }
-
-    /**
-     * @param string[] $measureDatas measure's value 
-     * $measureDatas => [
+     * 
+     * @param string[] $datas measure's value
+     * + NOTE: measure's unit (unit_name) must be the same for all body part
+     * + $datas => [
      *      "measureID" => string,
      *      "bust" => float,
      *      "arm" => float,
@@ -169,21 +153,20 @@ class Measure
      *      "unit_name" => string,
      *      "setDate" => string
      * ]
-     * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
      *
      */
-    private function __construct2($measureDatas, $dbMap)
+    public function __construct($datas)
     {
-        $this->measureID = (!empty($measureDatas["measureID"])) ? $measureDatas["measureID"] : GeneralCode::generateDateCode(100);
-        $this->measureName = $measureDatas["measure_name"];
-        $unitName = $measureDatas["unit_name"];
-        $this->bust = new MeasureUnit($measureDatas["bust"], $unitName, $dbMap);
-        $this->arm = new MeasureUnit($measureDatas["arm"], $unitName, $dbMap);
-        $this->waist = new MeasureUnit($measureDatas["waist"], $unitName, $dbMap);
-        $this->hip = new MeasureUnit($measureDatas["hip"], $unitName, $dbMap);
-        $this->inseam = new MeasureUnit($measureDatas["inseam"], $unitName, $dbMap);
-        $this->setDate = !empty($measureDatas["setDate"]) ? $measureDatas["setDate"] : GeneralCode::getDateTime();
+        // $this->measureName = $datas["measure_name"];
+        $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(25);;
+        $unitName = $datas["unit_name"];
+        $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(25);
+        $this->bust = (!empty($datas["bust"])) ? new MeasureUnit($datas["bust"], $unitName) : null;
+        $this->arm = (!empty($datas["arm"])) ? new MeasureUnit($datas["arm"], $unitName) : null;
+        $this->waist = (!empty($datas["waist"])) ? new MeasureUnit($datas["waist"], $unitName) : null;
+        $this->hip = (!empty($datas["hip"])) ? new MeasureUnit($datas["hip"], $unitName) : null;
+        $this->inseam = (!empty($datas["inseam"])) ? new MeasureUnit($datas["inseam"], $unitName) : null;
+        $this->setDate = !empty($datas["setDate"]) ? $datas["setDate"] : $this->getDateTime();
     }
 
     /**
@@ -272,16 +255,16 @@ class Measure
      */
     public static function getDatas4Measure($usersMeasures)
     {
-        $measureDatas["measureID"] = $usersMeasures["measureID"];
-        $measureDatas["measure_name"] = $usersMeasures["measure_name"];
-        $measureDatas["bust"] = $usersMeasures["userBust"];
-        $measureDatas["arm"] = $usersMeasures["userArm"];
-        $measureDatas["waist"] = $usersMeasures["userWaist"];
-        $measureDatas["hip"] = $usersMeasures["userHip"];
-        $measureDatas["inseam"] = $usersMeasures["userInseam"];
-        $measureDatas["unit_name"] = $usersMeasures["unit_name"];
-        $measureDatas["setDate"] = $usersMeasures["setDate"];
-        return $measureDatas;
+        $datas["measureID"] = $usersMeasures["measureID"];
+        $datas["measure_name"] = $usersMeasures["measure_name"];
+        $datas["bust"] = $usersMeasures["userBust"];
+        $datas["arm"] = $usersMeasures["userArm"];
+        $datas["waist"] = $usersMeasures["userWaist"];
+        $datas["hip"] = $usersMeasures["userHip"];
+        $datas["inseam"] = $usersMeasures["userInseam"];
+        $datas["unit_name"] = $usersMeasures["unit_name"];
+        $datas["setDate"] = $usersMeasures["setDate"];
+        return $datas;
     }
 
     /**
@@ -291,14 +274,14 @@ class Measure
      */
     public static function getDatas4MeasurePOST($query)
     {
-        $measureDatas[Measure::INPUT_MEASURE_NAME] = $query->POST(Measure::INPUT_MEASURE_NAME);
-        $measureDatas[Measure::INPUT_BUST] = $query->POST(Measure::INPUT_BUST);
-        $measureDatas[Measure::INPUT_ARM] = $query->POST(Measure::INPUT_ARM);
-        $measureDatas[Measure::INPUT_WAIST] = $query->POST(Measure::INPUT_WAIST);
-        $measureDatas[Measure::INPUT_HIP] = $query->POST(Measure::INPUT_HIP);
-        $measureDatas[Measure::INPUT_INSEAM] = $query->POST(Measure::INPUT_INSEAM);
-        $measureDatas[MeasureUnit::INPUT_MEASURE_UNIT] = $query->POST(MeasureUnit::INPUT_MEASURE_UNIT);
-        return $measureDatas;
+        $datas[Measure::INPUT_MEASURE_NAME] = $query->POST(Measure::INPUT_MEASURE_NAME);
+        $datas[Measure::INPUT_BUST] = $query->POST(Measure::INPUT_BUST);
+        $datas[Measure::INPUT_ARM] = $query->POST(Measure::INPUT_ARM);
+        $datas[Measure::INPUT_WAIST] = $query->POST(Measure::INPUT_WAIST);
+        $datas[Measure::INPUT_HIP] = $query->POST(Measure::INPUT_HIP);
+        $datas[Measure::INPUT_INSEAM] = $query->POST(Measure::INPUT_INSEAM);
+        $datas[MeasureUnit::INPUT_MEASURE_UNIT] = $query->POST(MeasureUnit::INPUT_MEASURE_UNIT);
+        return $datas;
     }
 
     /**
@@ -364,8 +347,8 @@ class Measure
      */
     public function update($userID, $measureUpdated)
     {
-        $query = 
-        "UPDATE `UsersMeasures` SET 
+        $query =
+            "UPDATE `UsersMeasures` SET 
         `measureName` = ?,
         `userBust` = ?,
         `userArm` = ?,

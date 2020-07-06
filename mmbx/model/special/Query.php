@@ -5,29 +5,37 @@
  */
 class Query
 {
-    /**
-     * Holds the super global $_GET
-     * @var string
-     */
-    private static $GET;
+    private static $isset = false;
 
     /**
-     * Holds the super global $_POST
+     * Holds values of the super global $_GET & $_POST
      * @var string
      */
-    private static $POST;
+    private static $params;
 
-    /**
-     * Holds the method of the query
-     * @var string
-     */
-    const GET_MOTHOD = "GET";
+    // /**
+    //  * Holds the super global $_GET
+    //  * @var string
+    //  */
+    // private static $GET;
 
-    /**
-     * Holds the method of the query
-     * @var string
-     */
-    const POST_MOTHOD = "POST";
+    // /**
+    //  * Holds the super global $_POST
+    //  * @var string
+    //  */
+    // private static $POST;
+
+    // /**
+    //  * Holds the method of the query
+    //  * @var string
+    //  */
+    // const GET_MOTHOD = "GET";
+
+    // /**
+    //  * Holds the method of the query
+    //  * @var string
+    //  */
+    // const POST_MOTHOD = "POST";
 
     /**
      * Holds the input type
@@ -52,159 +60,68 @@ class Query
     /**
      * Constructor
      */
-    function __construct()
+    private static function setQuery()
     {
-        (!isset(self::$GET)) ? self::$GET = $_GET : null;
-        (!isset(self::$POST)) ? self::$POST = $_POST : null;
+        self::$isset = true;
+        (!isset(self::$params)) ? self::$params = array_merge($_GET, $_POST) : null;
     }
 
     /**
-     * To get cleanned value from $_GET at specified key
-     * @param string $key key value from $_GET
-     * @return string cleanned value from $_GET
+     * To get cleanned value from $_GET or $_POST at specified key
+     * @param string $key key value from $_GET or $_POST
+     * @return string cleanned value from $_GET or $_POST
      */
-    public function GET($key)
+    public static function getParam($key)
     {
-        return GeneralCode::clean(self::$GET[$key]);
+        (!self::$isset) ? self::setQuery() : null;
+        return (self::existParam($key)) ? self::clean(self::$params[$key]) : null;
     }
 
     /**
-     * To get cleanned value from $_POST at specified key
-     * @param string $key key value from $_POST
-     * @return string cleanned value from $_POST
-     */
-    public function POST($key)
-    {
-        return GeneralCode::clean(self::$POST[$key]);
-    }
-
-    /**
-     * Check if the key value exist in $_GET and contain a value different 
+     * Check if the key value exist in $_GET or $_POST and contain a value different 
      * than ""
-     * @param string $key key value from $_GET
+     * @param string $key key value from $_GET or $_POST
      * @return boolean true if key contain a value different than "" else false
      */
-    public function paramExistGET($key)
+    public static function existParam($key)
     {
-        return (isset(self::$GET[$key])) && (!empty(self::$GET[$key]));
-    }
-
-    /**
-     * Check if the key value exist in $_POST and contain a value different 
-     * than ""
-     * @param string $key key value from $_POST
-     * @return boolean true if key contain a value different than "" else false
-     */
-    public function paramExistPOST($key)
-    {
-        return (isset(self::$POST[$key])) && (!empty(self::$POST[$key]));
-    }
-
-    /**
-     * Check the input value passed in param and push error accured in Response
-     * @param string $key the name input to check in $_POST
-     * @param string[] $inputTypes the types of the filter to check input.
-     * NOTE: combinaison available=> 
-     *      [{all type}], 
-     *      [CHECKBOX, {all type}]
-     * @param boolean $isNullable set true if value can be empty alse false
-     * @param Response $response to push in error accured
-     * @return Response 
-     */
-    public function checkInput($key, $inputTypes, $response, $length = null, $isNullable = false)
-    {
-        $keyExist = $this->paramExistPOST($key);
-        if (!$isNullable && !$keyExist) {
-            $errorMsg = ($inputTypes[0] == self::CHECKBOX) ? View::translateStation(MyError::ERROR_FILE, 5)
-                : View::translateStation(MyError::ERROR_FILE, 2);
-            $response->addError($errorMsg, $key);
-            return $response;
-        }
-        if (!$keyExist) {
-            return $response;
-        }
-
-        $value = $this->POST($key);
-        if (!empty($length) && (strlen($value) > $length)) {
-            $errorMsg = View::translateStation(MyError::ERROR_FILE, 6);
-            $errorMsg .= " " . $length;
-            $response->addError($errorMsg, $key);
-            return $response;
-        }
-
-        switch ($inputTypes[0]) {
-            case self::NUMBER_FLOAT:
-                if (preg_match(self::FLOAT_REGEX, $value) != 1) {
-                    $errorMsg = View::translateStation(MyError::ERROR_FILE, 3);
-                    $response->addError($errorMsg, $key);
-                } else {
-                    self::$POST[$key] = (float) str_replace(",", ".", $this->POST($key));
-                }
-                break;
-
-            case self::PSEUDO:
-                if (preg_match(self::PSEUDO_REGEX, $value) != 1) {
-                    $errorMsg = View::translateStation(MyError::ERROR_FILE, 4);
-                    $response->addError($errorMsg, $key);
-                } else {
-                    self::$POST[$key] = strtolower($this->POST($key));
-                }
-                break;
-
-            case self::ALPHA_NUMERIC:
-                if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
-                    $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                    $response->addError($errorMsg, MyError::FATAL_ERROR);
-                } else {
-                    self::$POST[$key] = strtolower($this->POST($key));
-                }
-                break;
-
-            case self::CHECKBOX:
-                $cbxType = $inputTypes[1];
-
-                switch ($cbxType) {
-                    case self::STRING_TYPE:
-                        if (preg_match(self::STRING_REGEX, $value) != 1) {
-                            $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                            $response->addError($errorMsg, MyError::FATAL_ERROR);
-                        }
-                        break;
-                }
-
-                break;
-        }
-        return $response;
+        (!self::$isset) ? self::setQuery() : null;
+        return (key_exists($key, self::$params)) && (!empty(self::$params[$key]));
     }
 
     // /**
-    //  * Check the checkbox value passed in param and push error accured in Response
-    //  * @param string $key the name input to check in $_POST
-    //  * @param string $checkboxType the type of the filter to check input
-    //  * @param boolean $isNullable set true if value can be empty alse false
-    //  * @param Response $response to push in error accured
-    //  * @return Response 
+    //  * To get cleanned value from $_POST at specified key
+    //  * @param string $key key value from $_POST
+    //  * @return string cleanned value from $_POST
     //  */
-    // public function checkCheckbox($key, $checkboxType, $response, $isNullable = false)
+    // public static function POST($key)
     // {
-    //     $keyExist = $this->paramExistPOST($key);
-    //     if (!$isNullable && !$keyExist) {
-    //         $errorMsg = View::translateStation(MyError::ERROR_FILE, 5);
-    //         $response->addError($errorMsg, $key);
-    //         return $response;
-    //     }
-    //     if (!$keyExist) {
-    //         return $response;
-    //     }
-    //     $value = $this->POST($key);
-    //     switch ($checkboxType) {
-    //         case self::STRING_TYPE:
-    //             if (preg_match("##^[a-zA-Z]+$#", $value) != 1) {
-    //                 $errorMsg = View::translateStation(MyError::ERROR_FILE, 3);
-    //                 $response->addError($errorMsg, $key);
-    //             }
-    //             break;
-    //     }
-    //     return $response;
+    //     (!self::$isset) ? self::setQuery() : null;
+    //     return self::clean(self::$POST[$key]);
     // }
+
+    // /**
+    //  * Check if the key value exist in $_POST and contain a value different 
+    //  * than ""
+    //  * @param string $key key value from $_POST
+    //  * @return boolean true if key contain a value different than "" else false
+    //  */
+    // public static function paramExistPOST($key)
+    // {
+    //     (!self::$isset) ? self::setQuery() : null;
+    //     return (isset(self::$POST[$key])) && (!empty(self::$POST[$key]));
+    // }
+
+    /** 
+     * Clean inputs, GET inputs and POST inputs of all indesirable characteres
+     * @param string $data the value to clean
+     * @return string cleaned value of the value passed in param
+     */
+    private static function clean($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 }

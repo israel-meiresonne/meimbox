@@ -1,5 +1,7 @@
 <?php
 
+require_once 'model/users-management/Visitor.php';
+
 abstract class User extends  Visitor{
     
     // protected $password;
@@ -41,14 +43,17 @@ abstract class User extends  Visitor{
      */
     protected $addresses;
 
+    protected $userLine;
 
-    protected function __construct($dbMap){
-        parent::__construct($dbMap);
-        $this->mail = $dbMap["usersMap"]["userDatas"]["mail"];
-        $this->firstname = $dbMap["usersMap"]["userDatas"]["firstname"];
-        $this->lastname = $dbMap["usersMap"]["userDatas"]["lastname"];
-        $this->birthday = $dbMap["usersMap"]["userDatas"]["birthday"];
-        $this->sexe = $dbMap["usersMap"]["userDatas"]["sexe_"];
+
+    protected function __construct($userID){
+        parent::__construct();
+        $this->userLine = $this->select("SELECT * FROM `Users` WHERE `userID` = '$userID'")[0];
+        $this->mail = $this->userLine["mail"];
+        $this->firstname = $this->userLine["firstname"];
+        $this->lastname = $this->userLine["lastname"];
+        $this->birthday = $this->userLine["birthday"];
+        $this->sexe = $this->userLine["sexe_"];
     }
 
     

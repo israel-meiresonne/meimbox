@@ -20,35 +20,11 @@ class Discount
      */
     private $endDate;
 
-    /**
-     * The country where the discount is available
-     * @var Country
-     */
-    private $country;
-
-    function __construct()
-    {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-            case 5:
-                self::__construct5($argv[0], $argv[1], $argv[2], $argv[3], $argv[4]);
-                break;
-        }
-    }
-
-    private function __construct0()
-    {
-    }
-
-    private function __construct5($value, $beginDate, $endDate, $countryName, $dbMap)
+    public function __construct($value, $beginDate, $endDate)
     {
         $this->value = $value;
         $this->beginDate = $beginDate;
         $this->endDate = $endDate;
-        $this->country = new Country($countryName, $dbMap);
     }
 
     /**

@@ -680,7 +680,7 @@ class PageContent
     {
         $country = $model->getCountry();
         $currency = $model->getCurrency();
-        $isoLang = $model->getLanguage()->getIsoCode();
+        $isoLang = $model->getLanguage()->getIsoLang();
         $dbMap = $model->getDbMap();
 
         $product = $search->getProducts()[0];
