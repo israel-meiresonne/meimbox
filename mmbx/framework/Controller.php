@@ -104,9 +104,10 @@ abstract class Controller {
      *        voir ControllerConnection::connect si connexion échoue
      * 
      * @param array $datasView Données nécessaires pour la génération de la vue
+     * @param Language $language the Visitor's current language
      * @param string $action Action associée à la vue (permet à un contrôleur de générer une vue pour une action spécifique)
      */
-    protected function generateView($datasView = array(), $action = null) {
+    protected function generateView($datasView = array(), Language $language = null, $action = null) {
         // Utilisation de l'action actuelle par défaut
         // $actionView = $this->action;  // rnvs : comm
         // if ($action != null) {        // rnvs : comm
@@ -142,7 +143,7 @@ abstract class Controller {
         //        et stocke ce chemin comme une string dans l'attribut $file
         //        de la View
         // rnvs : en particulier : il y a 1! classe vue (View)
-        $view = new View($actionView, $controllerView);
+        $view = new View($actionView, $controllerView, $language);
         
         // rnvs : rappel : $dataview est un tableau associatif produit
         //        dans la méthode de l'action du contrôleur effectivement
