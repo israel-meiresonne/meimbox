@@ -1,6 +1,10 @@
 <?php
 
-class Product
+require_once 'model/ModelFunctionality.php';
+require_once 'model/boxes-management/Size.php';
+require_once 'model/tools-management/Language.php';
+
+abstract class Product extends ModelFunctionality
 {
     /**
      * Holds the database id of the product.
@@ -40,12 +44,6 @@ class Product
     protected $colorRGB;
 
     /**
-     * Holds the purchase price of the product
-     * @var Price
-     */
-    protected $buyPrice;
-
-    /**
      * Holds the weight of the product
      * @var double
      */
@@ -53,8 +51,8 @@ class Product
 
     /**
      * List of prictures of the product.
-     * Use the pictureID as access key like 
-     * @var string[] $pictures like $pictures = [pictureID => picture]
+     * + Use the pictureID as access key like $pictures = [pictureID => picture]
+     * @var string[]
      */
     protected $pictures;
 
@@ -70,24 +68,7 @@ class Product
     protected $sizesStock;
 
     /**
-     * Holds the product's measures for each size and body part
-     *  $prodMeasures => [
-     *      size_name => [
-     *          body_part => Measure()
-     *      ]
-     *  ]
-     * @var string[string[Measure]]
-     */
-    protected $prodMeasures;
-
-    /**
-     * Holds the selected Size for this product.
-     * @var Size
-     */
-    protected $size;
-
-    /**
-     * List of collections
+     * List of product's collections
      * $collections = [
      *      collection_name => [
      *          "beginDate" => string,
@@ -111,108 +92,181 @@ class Product
     protected $categories;
 
     /**
-     * List of Description in each web site supported language.
-     * $descriptions = [isoLanguage => description]
-     * @var string[]
+     * Holds product's description in Visitor's language else default language.
+     * @var string
      */
-    protected $descriptions;
+    protected $description;
 
     /**
      * List of products sharing the same name than the current product. NOTE: There are
      * sorted in ascending order of their prodID and use it as access key.
      * @var Product[]
      */
-    protected $sameNameProducts;
+    protected $sameProducts;
+
+    /**
+     * Holds the selected Size for this product.
+     * @var Size
+     */
+    protected $size;
+
+    /**
+     * Holds the purchase price of the product
+     * @var Price
+     */
+    protected $buyPrice;
 
     /**
      * Holds the access key for content of the grid product
      */
-    const GRID_CONTENT_KEY = "grid_content";
-    
+    public const GRID_CONTENT_KEY = "grid_content";
+
     /**
      * Holds the access key for stickers of the grid product
      */
-    const GRID_STICKERS_KEY = "grid_stickers";
-
-
-    protected function __construct()
-    {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-            case 3:
-                self::__construct4($argv[0], $argv[1], $argv[2]);
-                break;
-        }
-    }
-
-    protected function __construct0()
-    {
-    }
+    public const GRID_STICKERS_KEY = "grid_stickers";
 
     /**
-     * Constructor
-     * @param int $prodID id of the product
-     * @param string $prodSize size of the product if it holded by a Visitor 
-     * else null
-     * @param string $prodType type of the product
-     * @param string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file oop/model/special/dbMap.txt
+     * Constructor 
+     * @param int $prodID product's id
      */
-    // protected function __construct4($prodID, $prodSize, $prodType, $dbMap) // remove prodSize from all reférence to this constructor
-    protected function __construct4($prodID, $prodType, $dbMap) // remove prodSize from all reférence to this constructor
+    protected function __construct(int $prodID)
     {
-        $product = $dbMap["productMap"][$prodType][$prodID];
         $this->prodID = $prodID;
-        $this->prodName = $product["datas"]["prodName"];
-        $this->isAvailable = $product["datas"]["isAvailable"];
-        $this->addedDate = $product["datas"]["addedDate"];
-        $this->colorName = $product["datas"]["colorName"];
-        $this->colorRGB = $product["datas"]["colorRGB"];
+        if ($this->existProduct($prodID)) {
+            $productLine = $this->getProductLine($prodID);
+            $this->prodName = $productLine["prodName"];
+            $this->isAvailable = $productLine["isAvailable"];
+            $this->addedDate = $productLine["addedDate"];
+            $this->colorName = $productLine["colorName"];
+            $this->colorRGB = $productLine["colorRGB"];
+            $this->weight = $productLine["weight"];
+        } else {
+            $sql = "SELECT * FROM `Products` WHERE `prodID` = '$this->prodID'";
+            $tab = $this->select($sql);
+            if (count($tab) != 1) {
+                throw new Exception("No product has this identifier $prodID");
+            }
+            $productLine = $tab[0];
+            $this->prodName = $productLine["prodName"];
+            $this->isAvailable = $productLine["isAvailable"];
+            $this->addedDate = $productLine["addedDate"];
+            $this->colorName = $productLine["colorName"];
+            $this->colorRGB = $productLine["colorRGB"];
+            $this->weight = $productLine["weight"];
+        }
+    }
 
-        $price = $dbMap["productMap"][$prodType][$prodID]["datas"]["buyPriceDatas"]["buyPrice"];
-        $countryName = $dbMap["productMap"][$prodType][$prodID]["datas"]["buyPriceDatas"]["buy_country"];
-        $isoCurrency = $dbMap["productMap"][$prodType][$prodID]["datas"]["buyPriceDatas"]["iso_currency"];
-        $this->buyPrice = new Price($price, $countryName, $isoCurrency, $dbMap);
 
-        $this->weight = $product["datas"]["weight"];
-        // $this->quantity = $product["datas"]["quantity"]; //
+    /**
+     * To set all other properties that nat in Product table
+     * @param Language $lang Visitor's language
+     * @param Country $country the Visitor's country
+     * @param Currency the Visitor's current Currency
+     */
+    public abstract function CompleteProperties($lang, $country, $currency);
 
-        $this->pictures = $product["pictures"];
-        ksort($this->pictures);
-        $this->sizesStock = $product["sizes"];
-        // $this->sizesStock[$prodSize]["selected"] = true; //
-
-        $this->collections = $product["collections"];
-        $this->prodFunctions = $product["functions"];
-        $this->categories = $product["categories"];
-        $this->descriptions = $product["descriptions"];
-        self::setSameNameProd($prodID, $prodType, $dbMap);
+    /**
+     * Setter for product's pictures
+     */
+    protected function setPictures()
+    {
+        $this->pictures = [];
+        $sql = "SELECT * 
+        FROM `ProductsPictures` 
+        WHERE `prodId` = '$this->prodID'
+        ORDER BY `ProductsPictures`.`pictureID` ASC";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                $this->pictures[$tabLine["pictureID"]] = $tabLine["picture"];
+            }
+        }
     }
 
     /**
-     * Fill the same product list with product sharing the same name that the 
-     * current product.
-     * @param int $prodID id of the product
-     * @param string $prodType type of the product
-     * @param string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file oop/model/special/dbMap.txt
+     * Setter for product's size and stock
      */
-    private function setSameNameProd($prodID, $prodType, $dbMap)
+    protected function setSizesStock()
     {
-        $this->sameNameProducts = [];
-        foreach ($dbMap["productMap"][$prodType][$prodID]["datas"]["sameNameProd"] as $id => $datas) {
-            $sameNameProduct = new Product();
-            $sameNameProduct->prodID = $id;
-            $sameNameProduct->prodName = $datas["prodName"];
-            $sameNameProduct->colorName = $datas["colorName"];
-            $sameNameProduct->colorRGB = $datas["colorRGB"];
-            $this->buyPrice = new Price();
-            $this->sameNameProducts[$id] = $sameNameProduct;
+        $this->sizesStock  = [];
+        $sql = "SELECT * 
+        FROM `Products-Sizes`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
+            }
         }
-        ksort($this->sameNameProducts);
+    }
+
+    /**
+     * Setter for product's collections
+     */
+    protected function setCollections()
+    {
+        $this->collections  = [];
+        $sql = "SELECT * 
+        FROM `Products-Collections`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                $this->collections[$tabLine["collection_name"]]["beginDate"] = $tabLine["beginDate"];
+                $this->collections[$tabLine["collection_name"]]["endDate"] = $tabLine["endDate"];
+            }
+        }
+    }
+
+    /**
+     * Setter for product's functions
+     */
+    protected function setProdFunctions()
+    {
+        $this->prodFunctions  = [];
+        $sql = "SELECT * 
+        FROM `Products-ProductFunctions`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                array_push($this->prodFunctions, $tabLine["function_name"]);
+            }
+        }
+    }
+
+    /**
+     * Setter for product's categories
+     */
+    protected function setCategories()
+    {
+        $this->categories  = [];
+        $sql = "SELECT * 
+        FROM `Products-Categories`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                array_push($this->categories, $tabLine["category_name"]);
+            }
+        }
+    }
+
+    /**
+     * Setter for product's description
+     * @param Language $lang Visitor's language
+     */
+    protected function setDescriptions($lang)
+    {
+        $isoLang = $lang->getIsoLang();
+        $sql = "SELECT * 
+        FROM `ProductsDescriptions`
+        WHERE `prodId` = '$this->prodID' AND `lang_` = '$isoLang'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            $this->description = $tab[0]["description"];
+        }
     }
 
     /**
@@ -288,7 +342,8 @@ class Product
      * Getter of product's collection name
      * @return string[] product's collection name (without date data)
      */
-    public function getCollections(){
+    public function getCollections()
+    {
         return array_keys($this->collections);
     }
 
@@ -296,15 +351,17 @@ class Product
      * Getter of product's function name
      * @return string[] product's function name
      */
-    public function getFunctions(){
+    public function getFunctions()
+    {
         return $this->prodFunctions;
     }
-    
+
     /**
      * Getter of product's categories name
      * @return string[] product's categories name
      */
-    public function getCategories(){
+    public function getCategories()
+    {
         return $this->categories;
     }
 
@@ -312,46 +369,47 @@ class Product
      * Getter for product's description into language asked
      * @param $isoLang
      */
-    public function getDescription($isoLang){
-        return (!empty($this->descriptions[$isoLang])) ? $this->descriptions[$isoLang] 
-        : $this->descriptions[Language::__getDEFAULT_LANGUAGE()];
+    public function getDescription($isoLang)
+    {
+        return (!empty($this->descriptions[$isoLang])) ? $this->descriptions[$isoLang]
+            : $this->descriptions[Language::__getDEFAULT_LANGUAGE()];
     }
 
     /**
-     * Getter for sameNameProducts
-     * @return string a prodtected copy of sameNameProducts
+     * Getter for sameProducts
+     * @return string a prodtected copy of sameProducts
      */
     public function getSameNameProd()
     {
-        return GeneralCode::cloneMap($this->sameNameProducts);
+        return GeneralCode::cloneMap($this->sameProducts);
     }
 
-    /**
-     * To get a protected copy of a BasketProduct instance
-     * @return Product a protected copy of the BasketProduct instance
-     */
-    public function getCopy()
-    {
-        $copy = new Product();
-        $copy->prodID = $this->prodID;
-        $copy->prodName = $this->prodName;
-        $copy->isAvailable = $this->isAvailable;
-        $copy->addedDate = $this->addedDate;
-        $copy->colorName = $this->colorName;
-        $copy->colorRGB = $this->colorRGB;
-        $copy->buyPrice = (!empty($this->buyPrice)) ? $this->buyPrice->getCopy() : null;
-        $copy->weight = $this->weight;
-        $copy->pictures = $this->pictures;
-        $copy->sizesStock = $this->sizesStock;
-        $copy->prodMeasures = GeneralCode::cloneMap($this->prodMeasures);
-        $copy->size = (!empty($this->size)) ? $this->size->getCopy() : null;
-        $copy->collections = $this->collections;
-        $copy->prodFunctions = $this->prodFunctions;
-        $copy->categories = $this->categories;
-        $copy->descriptions = $this->descriptions;
-        $copy->sameNameProducts = GeneralCode::cloneMap($this->sameNameProducts);
-        return $copy;
-    }
+    // /**
+    //  * To get a protected copy of a BasketProduct instance
+    //  * @return Product a protected copy of the BasketProduct instance
+    //  */
+    // public function getCopy()
+    // {
+    //     $copy = new Product();
+    //     $copy->prodID = $this->prodID;
+    //     $copy->prodName = $this->prodName;
+    //     $copy->isAvailable = $this->isAvailable;
+    //     $copy->addedDate = $this->addedDate;
+    //     $copy->colorName = $this->colorName;
+    //     $copy->colorRGB = $this->colorRGB;
+    //     $copy->buyPrice = (!empty($this->buyPrice)) ? $this->buyPrice->getCopy() : null;
+    //     $copy->weight = $this->weight;
+    //     $copy->pictures = $this->pictures;
+    //     $copy->sizesStock = $this->sizesStock;
+    //     $copy->prodMeasures = GeneralCode::cloneMap($this->prodMeasures);
+    //     $copy->size = (!empty($this->size)) ? $this->size->getCopy() : null;
+    //     $copy->collections = $this->collections;
+    //     $copy->prodFunctions = $this->prodFunctions;
+    //     $copy->categories = $this->categories;
+    //     $copy->descriptions = $this->descriptions;
+    //     $copy->sameProducts = GeneralCode::cloneMap($this->sameProducts);
+    //     return $copy;
+    // }
 
     /**
      * Convert setDate to seconde from UNIX.
@@ -399,24 +457,24 @@ class Product
         return array_key_exists($value, $this->sizesStock);
     }
 
-    public function __toString()
-    {
-        Helper::printLabelValue('prodID', $this->prodID);
-        Helper::printLabelValue('prodName', $this->prodName);
-        Helper::printLabelValue('isAvailable', $this->isAvailable);
-        Helper::printLabelValue('addedDate', $this->addedDate);
-        Helper::printLabelValue('colorName', $this->colorName);
-        Helper::printLabelValue('colorRGB', $this->colorRGB);
-        Helper::printLabelValue('buyPrice', $this->buyPrice);
-        Helper::printLabelValue('weight', $this->weight);
-        Helper::printLabelValue('pictures', $this->pictures);
-        Helper::printLabelValue('sizesStock', $this->sizesStock);
-        Helper::printLabelValue('prodMeasures', $this->prodMeasures);
-        Helper::printLabelValue('size', $this->size);
-        Helper::printLabelValue('collections', $this->collections);
-        Helper::printLabelValue('prodFunctions', $this->prodFunctions);
-        Helper::printLabelValue('categories', $this->categories);
-        Helper::printLabelValue('descriptions', $this->descriptions);
-        Helper::printLabelValue('sameNameProducts', $this->sameNameProducts);
-    }
+    // public function __toString()
+    // {
+    //     Helper::printLabelValue('prodID', $this->prodID);
+    //     Helper::printLabelValue('prodName', $this->prodName);
+    //     Helper::printLabelValue('isAvailable', $this->isAvailable);
+    //     Helper::printLabelValue('addedDate', $this->addedDate);
+    //     Helper::printLabelValue('colorName', $this->colorName);
+    //     Helper::printLabelValue('colorRGB', $this->colorRGB);
+    //     Helper::printLabelValue('buyPrice', $this->buyPrice);
+    //     Helper::printLabelValue('weight', $this->weight);
+    //     Helper::printLabelValue('pictures', $this->pictures);
+    //     Helper::printLabelValue('sizesStock', $this->sizesStock);
+    //     Helper::printLabelValue('prodMeasures', $this->prodMeasures);
+    //     Helper::printLabelValue('size', $this->size);
+    //     Helper::printLabelValue('collections', $this->collections);
+    //     Helper::printLabelValue('prodFunctions', $this->prodFunctions);
+    //     Helper::printLabelValue('categories', $this->categories);
+    //     Helper::printLabelValue('descriptions', $this->descriptions);
+    //     Helper::printLabelValue('sameProducts', $this->sameProducts);
+    // }
 }

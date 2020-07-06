@@ -1,5 +1,7 @@
 <?php
 
+require_once 'model/users-management/User.php';
+
 class Client extends User {
     /**
      * Show if the Client is subcribed to the newsletter
@@ -20,11 +22,10 @@ class Client extends User {
      * Constructor
      * @param int $userID
      */
-    function __construct($dbMap)
+    function __construct($userID)
     {
-        parent::__construct($dbMap);
-        // $this->orders = self::getOrders();
-        $this->newsletter = (boolean) $dbMap["usersMap"]["userDatas"]["newsletter"];
+        parent::__construct($userID);
+        $this->newsletter = (boolean) $this->userLine["newsletter"];
     }
 
     /**

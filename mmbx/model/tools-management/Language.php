@@ -1,5 +1,9 @@
 <?php
-class Language
+
+require_once 'model/ModelFunctionality.php';
+require_once 'model/special/Query.php';
+
+class Language extends ModelFunctionality
 {
     /**
      * @var string language's iso code
@@ -25,42 +29,50 @@ class Language
 
     function __construct()
     {
-        $argv = func_get_args();
+        $args = func_get_args();
+        $this->setConstants();
         switch (func_num_args()) {
             case 0:
-                self::__construct0();
+                $this->__construct0();
                 break;
             case 1:
-                self::__construct1($argv[0]);
+                $this->__construct1($args[0]);
                 break;
         }
     }
 
+    /**
+     * Contructor
+     * + NOTE: used to create language with url param or driver's language 
+     * else system's default language
+     */
     private function __construct0()
     {
+        $this->initLang();
     }
 
-    private function __construct1($dbMap)
+    /**
+     * Contructor
+     * @param string $isoLang language's iso code 2
+     */
+    private function __construct1($isoLang)
     {
-        self::setConstants($dbMap);
-        self::initLang($dbMap);
+        // $this->initLang($isoLang);
     }
 
     /**
      * Initialize Language's constants
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
      */
-    private function setConstants($dbMap)
+    private function setConstants()
     {
         if (!isset(self::$DEFAULT_LANGUAGE)) {
             self::$DEFAULT_LANGUAGE = "DEFAULT_LANGUAGE";
-            self::$DEFAULT_LANGUAGE = $dbMap["constantMap"][self::$DEFAULT_LANGUAGE]["stringValue"];
+            self::$DEFAULT_LANGUAGE = $this->getConstantLine(self::$DEFAULT_LANGUAGE)["stringValue"];
         }
     }
 
 
-    function getIsoCode()
+    function getIsoLang()
     {
         return $this->isoLang;
     }
@@ -92,58 +104,58 @@ class Language
      * Get the language of the user's driver and check if it match a supported language of the website
      * if it match the attribute $langName is updated with the found value
      * otherwise the attribute $langName still at "en" (english)
-     * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
      */
-    private function initLang($dbMap) //[,-;]*fr[,-;]*
+    private function initLang() //[,-;]*fr[,-;]*
     {
-        $linkLang = GeneralCode::clean($_GET["lang"]);
+        $urlLang = Query::getParam("lang");
         $found = false;
 
-        $found = isset($linkLang) ? self::setLanguage($linkLang, $dbMap) : $found;
+        $found = isset($urlLang) ? $this->setLanguage($urlLang) : $found;
 
         $driverLang = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
-        $found = $found ? $found : self::setLanguage($driverLang, $dbMap);
+        $found = $found ? $found : $this->setLanguage($driverLang);
 
         if (!$found) {
-            $this->isoLang = self::$DEFAULT_LANGUAGE;
-            $this->langName = $dbMap["languageMap"][self::$DEFAULT_LANGUAGE]["langName"];
-            $this->langLocalName = $dbMap["languageMap"][self::$DEFAULT_LANGUAGE]["langLocalName"];
+            $this->buildLanguage(self::$DEFAULT_LANGUAGE);
         }
     }
 
     /**
      * Check if the language given in param is supported by the website and 
      * if it supported set attribute isoLang, langName and langLocalName
-     * @param string $language the iso code 2 of the language
-     * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
-     * @return true if the language iso code is supported else false
+     * @param string $driverLang server's language or any otheer string
+     * @return boolean true if the language iso code is supported else false
      */
-    private function setLanguage($language, $dbMap)
+    private function setLanguage($driverLang)
     {
-        $languages = explode(",", $language);
-        $isoLangSupported = array_keys($dbMap["languageMap"]);
-        $nbSupportedLang = count($isoLangSupported);
-        $nbLanguage = count($languages);
         $found = false;
-        $j = 0;
-        while ($j < $nbLanguage && !$found) {
-            $i = 0;
-            while ($i < $nbSupportedLang && !$found) {
-                $isoLang = $isoLangSupported[$i];
-                $filter = Language::buildRegEx($isoLang);
-                if (preg_match($filter, $languages[$j]) == 1) {
-                    $this->isoLang = $isoLang;
-                    $this->langName = $dbMap["languageMap"][$isoLang]["langName"];
-                    $this->langLocalName = $dbMap["languageMap"][$isoLang]["langLocalName"];
-                    $found = true;
-                }
-                $i++;
+        $isoLangs = $this->cleanLanguage($driverLang);
+        foreach ($isoLangs as $isoLang) {
+            if ($this->existLanguage($isoLang)) {
+                $this->buildLanguage($isoLang);
+                $found = true;
+                break;
             }
-            $j++;
         }
         return $found;
+    }
+
+    /**
+     * Convert $_SERVER["HTTP_ACCEPT_LANGUAGE"] to iso 2 language
+     * + ex: en-us,zh;q=0.5 =>  array[en, us, zh]
+     * @param string $driverLang server's language or any otheer string
+     * @return string[] iso language 2
+     */
+    private function cleanLanguage($driverLang)
+    {
+        $isoLangs = [];
+        $split = preg_split("#[-,;=]#", $driverLang);
+        foreach ($split as $isoLang) {
+            if (preg_match("#[A-z]{2}#", $isoLang) == 1) {
+                array_push($isoLangs, $isoLang);
+            }
+        }
+        return $isoLangs;
     }
 
     /**
@@ -168,6 +180,18 @@ class Language
     }
 
     /**
+     * Anitialize this Language's attributs
+     * @param string $isoLang language's iso code
+     */
+    private function buildLanguage($isoLang)
+    {
+        $languageTab = $this->getLanguageLine($isoLang);
+        $this->isoLang = $isoLang;
+        $this->langName = $languageTab["langName"];
+        $this->langLocalName = $languageTab["langLocalName"];
+    }
+
+    /**
      * To get a protected copy of the Language
      * @return Language a protected copy of the current language
      */
@@ -180,11 +204,11 @@ class Language
         return $copy;
     }
 
-    public function __toString()
-    {
+    // public function __toString()
+    // {
 
-        Helper::printLabelValue("isoLang", $this->isoLang);
-        Helper::printLabelValue("langName", $this->langName);
-        Helper::printLabelValue("langLocalName", $this->langLocalName);
-    }
+    //     Helper::printLabelValue("isoLang", $this->isoLang);
+    //     Helper::printLabelValue("langName", $this->langName);
+    //     Helper::printLabelValue("langLocalName", $this->langLocalName);
+    // }
 }

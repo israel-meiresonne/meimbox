@@ -136,21 +136,21 @@ class GeneralCode
      */
     private function cloneMapRec($Map)
     {
-        $copyMapRéc = [];
+        $copyMapRec = [];
         foreach ($Map as $key => $value) {
             switch (gettype($value)) {
                 case "array":
-                    $copyMapRéc[$key] = self::cloneMapRec($value, $copyMapRéc);
+                    $copyMapRec[$key] = self::cloneMapRec($value, $copyMapRec);
                     break;
                 case "object":
-                    $copyMapRéc[$key] = $value->getCopy();
+                    $copyMapRec[$key] = $value->getCopy();
                     break;
                 default:
-                    $copyMapRéc[$key] = $value;
+                    $copyMapRec[$key] = $value;
                     break;
             }
         }
-        return $copyMapRéc;
+        return $copyMapRec;
     }
 
     /** 

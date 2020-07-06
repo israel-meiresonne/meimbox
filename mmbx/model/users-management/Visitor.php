@@ -1,6 +1,11 @@
 <?php
 
-class Visitor
+require_once 'model/ModelFunctionality.php';
+require_once 'model/tools-management/Language.php';
+require_once 'model/tools-management/Country.php';
+require_once 'model/navigation/Location.php';
+
+class Visitor extends ModelFunctionality
 {
     /**
      * Holds Visitor's id
@@ -8,6 +13,10 @@ class Visitor
      */
     protected $userID;
 
+    /**
+     * Holds the Visitor's set date
+     * @var string
+     */
     private $setDate;
 
     /**
@@ -23,9 +32,10 @@ class Visitor
     protected $currency;
 
     /**
-     * The country of the Visitor. If the real country of the Visitor is 
-     * supported by the database it become his $country else the Visitor's 
-     * country will be set with a default country value
+     * The country of the Visitor. 
+     * + If the real country of the Visitor is supported by the database it 
+     * become his $country else the Visitor's country will be set with a 
+     * default country value
      * @var Country
      */
     protected $country;
@@ -66,41 +76,50 @@ class Visitor
     protected static $MAX_MEASURE;
 
 
-    /**
-     * Constructor
-     * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
-     */
-    function __construct($dbMap)
+    // /**
+    //  * Constructor
+    //  * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
+    //  * oop/model/special/dbMap.txt
+    //  */
+    // function __construct($dbMap)
+    // {
+    //     self::setConstants($dbMap);
+
+    //     $this->userID = $dbMap["usersMap"]["userDatas"]["userID"];
+    //     $this->setDate = GeneralCode::getDateTime();
+
+    //     $this->location = new Location($dbMap);
+    //     $this->lang = new Language($dbMap);
+    //     $this->currency = $this->location->getCurrency();
+    //     $this->device = new Device();
+    //     $this->navigation = new Navigation($this->userID, $dbMap);
+    //     $this->basket = new Basket($dbMap);
+    //     $countryName = $this->location->getcountryName();
+
+    //     $this->country = new Country($countryName, $dbMap);
+    //     self::initMeasure($dbMap);
+    //     // $this->measures = [];
+    // }
+
+    public function __construct()
     {
-        self::setConstants($dbMap);
-
-        $this->userID = $dbMap["usersMap"]["userDatas"]["userID"];
-        $this->setDate = GeneralCode::getDateTime();
-
-        $this->location = new Location($dbMap);
-        $this->lang = new Language($dbMap);
+        $this->setConstants();
+        $this->userID = date("YmdHis"); // replacer par une sequance
+        $this->setDate = $this->getDateTime();
+        $this->location = new Location();
         $this->currency = $this->location->getCurrency();
-        $this->device = new Device();
-        $this->navigation = new Navigation($this->userID, $dbMap);
-        $this->basket = new Basket($dbMap);
-        $countryName = $this->location->getcountryName();
-
-        $this->country = new Country($countryName, $dbMap);
-        self::initMeasure($dbMap);
-        // $this->measures = [];
+        $this->lang = new Language();
+        $this->country = new Country($this->location->getcountryName());
     }
 
     /**
      * Initialize Visitor's constants
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
      */
-    private function setConstants($dbMap)
+    private function setConstants()
     {
         if (!isset(self::$MAX_MEASURE)) {
             self::$MAX_MEASURE = "MAX_MEASURE";
-            self::$MAX_MEASURE = (int) $dbMap["constantMap"][self::$MAX_MEASURE]["stringValue"];
+            self::$MAX_MEASURE = (int) $this->getConstantLine(self::$MAX_MEASURE)["stringValue"];
         }
     }
 
@@ -203,59 +222,59 @@ class Visitor
      * specified in file /oop/model/special/dbMap.txt
      * @return Response contain results or Myerrrors
      */
-    private function checkMeasureInput($response, $query, $dbMap)
-    {
-        $response = $query->checkInput(
-            Measure::MEASURE_ID_KEY,
-            [Query::ALPHA_NUMERIC],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"],
-            true
-        );
-        $response = $query->checkInput(
-            MeasureUnit::INPUT_MEASURE_UNIT,
-            [Query::CHECKBOX, Query::STRING_TYPE],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["unit_name"]
-        );
-        $response = $query->checkInput(
-            Measure::INPUT_MEASURE_NAME,
-            [Query::PSEUDO],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["measureName"]
-        );
-        $response = $query->checkInput(
-            Measure::INPUT_BUST,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["userBust"]
-        );
-        $response = $query->checkInput(
-            Measure::INPUT_ARM,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["userArm"]
-        );
-        $response = $query->checkInput(
-            Measure::INPUT_WAIST,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["userWaist"]
-        );
-        $response = $query->checkInput(
-            Measure::INPUT_HIP,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["userHip"]
-        );
-        $response = $query->checkInput(
-            Measure::INPUT_INSEAM,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $dbMap["DESCRIPTION"]["UsersMeasures"]["userInseam"]
-        );
-        return $response;
-    }
+    // private function checkMeasureInput($response, $query, $dbMap)
+    // {
+    //     $response = $query->checkInput(
+    //         Measure::MEASURE_ID_KEY,
+    //         [Query::ALPHA_NUMERIC],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"],
+    //         true
+    //     );
+    //     $response = $query->checkInput(
+    //         MeasureUnit::INPUT_MEASURE_UNIT,
+    //         [Query::CHECKBOX, Query::STRING_TYPE],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["unit_name"]
+    //     );
+    //     $response = $query->checkInput(
+    //         Measure::INPUT_MEASURE_NAME,
+    //         [Query::PSEUDO],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["measureName"]
+    //     );
+    //     $response = $query->checkInput(
+    //         Measure::INPUT_BUST,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userBust"]
+    //     );
+    //     $response = $query->checkInput(
+    //         Measure::INPUT_ARM,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userArm"]
+    //     );
+    //     $response = $query->checkInput(
+    //         Measure::INPUT_WAIST,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userWaist"]
+    //     );
+    //     $response = $query->checkInput(
+    //         Measure::INPUT_HIP,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userHip"]
+    //     );
+    //     $response = $query->checkInput(
+    //         Measure::INPUT_INSEAM,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userInseam"]
+    //     );
+    //     return $response;
+    // }
 
     //————————————————————————————————————————————— MANAGE CLASS UP ————————————————————————————————————————————————
     //————————————————————————————————————————————— ALTER MODEL DOWN ———————————————————————————————————————————————
@@ -266,36 +285,36 @@ class Visitor
      * specified in file /oop/model/special/dbMap.txt
      * @return Response contain results or Myerrrors
      */
-    public function addMeasure($dbMap)
-    {
-        $response = new Response();
-        $query = new Query();
-        if (count($this->measures) < self::$MAX_MEASURE) {
-            $response = self::checkMeasureInput($response, $query, $dbMap);
+    // public function addMeasure($dbMap)
+    // {
+    //     $response = new Response();
+    //     $query = new Query();
+    //     if (count($this->measures) < self::$MAX_MEASURE) {
+    //         $response = self::checkMeasureInput($response, $query, $dbMap);
 
-            if (!$response->containError()) {
-                $measureDatas = Measure::getDatas4MeasurePOST($query);
-                $measure = new Measure($measureDatas, $dbMap);
-                $saveResponse = $measure->save($this->userID);
-                if ($saveResponse->isSuccess()) {
-                    $key = $measure->getDateInSec();
-                    $this->measures[$key] = $measure;
-                    self::sortMeasure();
-                    $response->addResult(Measure::QR_MEASURE_CONTENT, $this->measures);
-                } else {
-                    $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                    $response->addError($errorMsg, MyError::FATAL_ERROR);
-                    $insertError = $saveResponse->getError(Database::INSERT_STATUS_KEY);
-                    $response->addError($insertError, Database::INSERT_STATUS_KEY);
-                }
-            }
-        } else {
-            $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-            $response->addError($errorMsg, MyError::FATAL_ERROR);
-        }
+    //         if (!$response->containError()) {
+    //             $measureDatas = Measure::getDatas4MeasurePOST($query);
+    //             $measure = new Measure($measureDatas, $dbMap);
+    //             $saveResponse = $measure->save($this->userID);
+    //             if ($saveResponse->isSuccess()) {
+    //                 $key = $measure->getDateInSec();
+    //                 $this->measures[$key] = $measure;
+    //                 self::sortMeasure();
+    //                 $response->addResult(Measure::QR_MEASURE_CONTENT, $this->measures);
+    //             } else {
+    //                 $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //                 $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //                 $insertError = $saveResponse->getError(Database::INSERT_STATUS_KEY);
+    //                 $response->addError($insertError, Database::INSERT_STATUS_KEY);
+    //             }
+    //         }
+    //     } else {
+    //         $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //         $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //     }
 
-        return $response;
-    }
+    //     return $response;
+    // }
 
 
 
@@ -305,46 +324,46 @@ class Visitor
      * specified in file /oop/model/special/dbMap.txt
      * @return Response contain results or Myerrrors
      */
-    public function deleteMeasure($dbMap)
-    {
-        $response = new Response();
-        $query = new Query();
-        if (count($this->measures) > 0) {
-            $response = $query->checkInput(Measure::MEASURE_ID_KEY, [Query::ALPHA_NUMERIC], $response, $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"]);
+    // public function deleteMeasure($dbMap)
+    // {
+    //     $response = new Response();
+    //     $query = new Query();
+    //     if (count($this->measures) > 0) {
+    //         $response = $query->checkInput(Measure::MEASURE_ID_KEY, [Query::ALPHA_NUMERIC], $response, $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"]);
 
-            if (!$response->containError()) {
-                $measureID = $query->POST(Measure::MEASURE_ID_KEY);
-                $measure = self::getMeasure($measureID);
+    //         if (!$response->containError()) {
+    //             $measureID = $query->POST(Measure::MEASURE_ID_KEY);
+    //             $measure = self::getMeasure($measureID);
 
-                if (!empty($measure)) {
-                    $deleteResponse = $measure->delete($this->userID);
-                    if ($deleteResponse->isSuccess()) {
-                        self::deleteVisitorMeasure($measureID);
-                        $successStatus = $deleteResponse->getResult(Database::DELETE_STATUS_KEY);
-                        $results = [
-                            Measure::MEASURE_ID_KEY => $measureID,
-                            View::TITLE_KEY => $this->measures,
-                            View::BUTTON_KEY => null,
-                        ];
-                        $response->addResult(Measure::QR_DELETE_MEASURE, $results);
-                        $response->addResult(Database::DELETE_STATUS_KEY, $successStatus);
-                    } else {
-                        $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                        $response->addError($errorMsg, MyError::FATAL_ERROR);
-                        $updateError = $deleteResponse->getError(Database::DELETE_STATUS_KEY);
-                        $response->addError($updateError, Database::DELETE_STATUS_KEY);
-                    }
-                } else {
-                    $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                    $response->addError($errorMsg, MyError::FATAL_ERROR);
-                }
-            }
-        } else {
-            $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-            $response->addError($errorMsg, MyError::FATAL_ERROR);
-        }
-        return $response;
-    }
+    //             if (!empty($measure)) {
+    //                 $deleteResponse = $measure->delete($this->userID);
+    //                 if ($deleteResponse->isSuccess()) {
+    //                     self::deleteVisitorMeasure($measureID);
+    //                     $successStatus = $deleteResponse->getResult(Database::DELETE_STATUS_KEY);
+    //                     $results = [
+    //                         Measure::MEASURE_ID_KEY => $measureID,
+    //                         View::TITLE_KEY => $this->measures,
+    //                         View::BUTTON_KEY => null,
+    //                     ];
+    //                     $response->addResult(Measure::QR_DELETE_MEASURE, $results);
+    //                     $response->addResult(Database::DELETE_STATUS_KEY, $successStatus);
+    //                 } else {
+    //                     $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //                     $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //                     $updateError = $deleteResponse->getError(Database::DELETE_STATUS_KEY);
+    //                     $response->addError($updateError, Database::DELETE_STATUS_KEY);
+    //                 }
+    //             } else {
+    //                 $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //                 $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //             }
+    //         }
+    //     } else {
+    //         $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //         $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //     }
+    //     return $response;
+    // }
 
     /**
      * Update on database and Visitor the Visitor's measure with the measure id posted($_POST)
@@ -352,45 +371,45 @@ class Visitor
      * specified in file /oop/model/special/dbMap.txt
      * @return Response contain results or Myerrrors
      */
-    public function updateMeasure($dbMap)
-    {
-        $response = new Response();
-        $query = new Query();
-        if (count($this->measures) > 0) {
-            $response = self::checkMeasureInput($response, $query, $dbMap);
+    // public function updateMeasure($dbMap)
+    // {
+    //     $response = new Response();
+    //     $query = new Query();
+    //     if (count($this->measures) > 0) {
+    //         $response = self::checkMeasureInput($response, $query, $dbMap);
 
-            if (!$response->containError()) {
-                $measureID = $query->POST(Measure::MEASURE_ID_KEY);
-                $measure = self::getMeasure($measureID);
+    //         if (!$response->containError()) {
+    //             $measureID = $query->POST(Measure::MEASURE_ID_KEY);
+    //             $measure = self::getMeasure($measureID);
 
-                if (!empty($measure)) {
-                    $measureDatas = Measure::getDatas4MeasurePOST($query);
-                    $measurePosted = new Measure($measureDatas, $dbMap);
-                    $updateResponse = $measure->update($this->userID, $measurePosted);
+    //             if (!empty($measure)) {
+    //                 $measureDatas = Measure::getDatas4MeasurePOST($query);
+    //                 $measurePosted = new Measure($measureDatas, $dbMap);
+    //                 $updateResponse = $measure->update($this->userID, $measurePosted);
 
-                    if ($updateResponse->isSuccess()) {
-                        $response->addResult(Measure::QR_MEASURE_CONTENT, $this->measures);
+    //                 if ($updateResponse->isSuccess()) {
+    //                     $response->addResult(Measure::QR_MEASURE_CONTENT, $this->measures);
 
-                        $successStatus = $updateResponse->getResult(Database::UPDATE_STATUS_KEY);
-                        $response->addResult(Database::UPDATE_STATUS_KEY, $successStatus);
-                    } else {
-                        $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                        $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //                     $successStatus = $updateResponse->getResult(Database::UPDATE_STATUS_KEY);
+    //                     $response->addResult(Database::UPDATE_STATUS_KEY, $successStatus);
+    //                 } else {
+    //                     $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //                     $response->addError($errorMsg, MyError::FATAL_ERROR);
 
-                        $updateError = $updateResponse->getError(Database::UPDATE_STATUS_KEY);
-                        $response->addError($updateError, Database::UPDATE_STATUS_KEY);
-                    }
-                } else {
-                    $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                    $response->addError($errorMsg, MyError::FATAL_ERROR);
-                }
-            }
-        } else {
-            $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-            $response->addError($errorMsg, MyError::FATAL_ERROR);
-        }
-        return $response;
-    }
+    //                     $updateError = $updateResponse->getError(Database::UPDATE_STATUS_KEY);
+    //                     $response->addError($updateError, Database::UPDATE_STATUS_KEY);
+    //                 }
+    //             } else {
+    //                 $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //                 $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //             }
+    //         }
+    //     } else {
+    //         $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
+    //         $response->addError($errorMsg, MyError::FATAL_ERROR);
+    //     }
+    //     return $response;
+    // }
 
     //————————————————————————————————————————————— ALTER MODEL UP —————————————————————————————————————————————————
     //————————————————————————————————————————————— GET MODEL DATAS DOWN ———————————————————————————————————————————

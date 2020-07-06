@@ -1,6 +1,10 @@
 <?php
 
-class Search
+require_once 'model/ModelFunctionality.php';
+require_once 'model/boxes-management/BasketProduct.php';
+require_once 'model/boxes-management/BoxProduct.php';
+
+class Search extends ModelFunctionality
 {
     /**
      * Holds a list product id
@@ -89,14 +93,31 @@ class Search
     const SYSTEM_SEARCH = "SYSTEM_SEARCH";
 
     /**
+     * Holds the search method for GET search
+     * @var string
+     */
+    const GET_SEARCH = "get_search";
+
+    /**
+     * Holds the search method for POST search
+     * @var string
+     */
+    const POST_SEARCH = "post_search";
+
+    /**
      * Holds the value of $_POST["qr"] that will execute a product Search
      * @var string the value of $_POST["qr"] that will execute a product Search
      */
     const QR_FILTER = "filter";
 
-    
 
-    function __construct()
+
+    /**
+     * Constuctor
+     * @param  string $searchMode PARAM_SEARCH or SYSTEM_SEARCH
+     * @param Currency the Visitor's current Currency
+     */
+    function __construct($searchMode, $currency)
     {
         $prodIDList = [];
         $this->collections = [];
@@ -107,13 +128,14 @@ class Search
         $this->sizes = [];
         $this->prices["minPrice"] = [];
         $this->prices["maxPrice"] = [];
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 3:
-                self::__construct3($argv[0], $argv[1], $argv[2]);
+        switch ($searchMode) {
+            case self::GET_SEARCH:
+                $this->getSearch($currency);
                 break;
-            case 4:
-                self::__construct4($argv[0], $argv[1], $argv[2], $argv[3]);
+            case self::POST_SEARCH:
+                $this->postSearch($currency);
+                break;
+            case self::SYSTEM_SEARCH:
                 break;
         }
     }
@@ -138,11 +160,11 @@ class Search
      * @param string[string[...]] $dbMap The database tables in mapped format 
      * specified in file oop/model/special/dbMap.txt
      */
-    private function __construct4($method, $criterions, $currency, $dbMap)
+    private function systemSearch($criterions, $currency)
     {
 
         $prodIDList = isset($criterions["prodID"]) ? $criterions["prodID"] : null;
-        $this->prodIDList = self::filterValidValues("productIDList", $prodIDList, $dbMap);
+        $this->prodIDList = $this->filterValidValues("productIDList", $prodIDList);
 
         $collections = isset($criterions["collections"]) ? $criterions["collections"] : null;
         $product_types = isset($criterions["product_types"]) ? $criterions["product_types"] : null;
@@ -151,15 +173,15 @@ class Search
         $colors = isset($criterions["colors"]) ? $criterions["colors"] : null;
         $sizes = isset($criterions["sizes"]) ? $criterions["sizes"] : null;
 
-        $this->collections = self::filterValidValues("collections", $collections, $dbMap);
-        $this->product_types = self::filterValidValues("product_types", $product_types, $dbMap);
-        $this->functions = self::filterValidValues("functions", $functions, $dbMap);
-        $this->categories = self::filterValidValues("categories", $categories, $dbMap);
-        $this->colors = self::filterValidValues("colors", $colors, $dbMap);
-        $this->sizes = self::filterValidValues("sizes", $sizes, $dbMap);
+        $this->collections = $this->filterValidValues("collections", $collections);
+        $this->product_types = $this->filterValidValues("product_types", $product_types);
+        $this->functions = $this->filterValidValues("functions", $functions);
+        $this->categories = $this->filterValidValues("categories", $categories);
+        $this->colors = $this->filterValidValues("colors", $colors);
+        $this->sizes = $this->filterValidValues("sizes", $sizes);
 
         $order = isset($criterions["order"]) ? $criterions["order"] : null;
-        $order = self::filterOrders($order);
+        $order = $this->filterOrders($order);
         $this->order =  $order;
 
         $prices["minprice"] = isset($criterions["minprice"]) ? $criterions["minprice"] : null;
@@ -171,7 +193,7 @@ class Search
         $prices["maxprice"] = preg_match("#[.]{1}#", $prices["maxprice"]) == 1
             ? $prices["maxprice"]
             : $prices["maxprice"] . "00";
-        $pricesObj = self::filterPrices($prices, $currency);
+        $pricesObj = $this->filterPrices($prices, $currency);
         $this->prices["minPrice"] = $pricesObj["minprice"];
         $this->prices["maxPrice"] = $pricesObj["maxprice"];
 
@@ -188,20 +210,20 @@ class Search
      * @param string[string[...]] $dbMap The database tables in mapped format 
      * specified in file oop/model/special/dbMap.txt
      */
-    private function __construct3($method, $currency, $dbMap)
-    {
-        switch ($method) {
-            case Query::GET_MOTHOD:
-                self::setGETSearch($currency, $dbMap);
-                break;
-            case Query::POST_MOTHOD:
-                self::setPOSTSearch($currency, $dbMap);
-                break;
-                // case self::SYSTEM_SEARCH:
-                //     self::setSystemSearch($currency, $dbMap);
-                //     break;
-        }
-    }
+    // private function __construct3($method, $currency)
+    // {
+    //     switch ($method) {
+    //         case Query::GET_MOTHOD:
+    //             self::setGETSearch($currency);
+    //             break;
+    //         case Query::POST_MOTHOD:
+    //             self::setPOSTSearch($currency);
+    //             break;
+    //             // case self::SYSTEM_SEARCH:
+    //             //     self::setSystemSearch($currency);
+    //             //     break;
+    //     }
+    // }
 
     /**
      * This constructor set the attributs with the URL by using $_GET
@@ -210,33 +232,33 @@ class Search
      * @param string[string[...]] $dbMap The database tables in mapped format 
      * specified in file oop/model/special/dbMap.txt
      */
-    private function setGETSearch($currency, $dbMap)
+    private function getSearch($currency)
     {
-        if (isset($_GET["prodID"])) {
-            $prodIDList = explode(",", GeneralCode::clean($_GET["prodID"]));
-            $this->prodIDList = self::filterValidValues("productIDList", $prodIDList, $dbMap);
+        if (Query::existParam("prodID")) {
+            $prodIDList = explode(",", Query::getParam("prodID"));
+            $this->prodIDList = $this->filterValidValues("productIDList", $prodIDList);
         } else {
-            $collections = isset($_GET["collections"]) ? explode(",", GeneralCode::clean($_GET["collections"])) : null;
-            $product_types = isset($_GET["product_types"]) ? explode(",", GeneralCode::clean($_GET["product_types"])) : null;
-            $functions = isset($_GET["functions"]) ? explode(",", GeneralCode::clean($_GET["functions"])) : null;
-            $categories = isset($_GET["categories"]) ? explode(",", GeneralCode::clean($_GET["categories"])) : null;
-            $colors = isset($_GET["colors"]) ? explode(",", GeneralCode::clean($_GET["colors"])) : null;
-            $sizes = isset($_GET["sizes"]) ? explode(",", GeneralCode::clean($_GET["sizes"])) : null;
+            $collections = Query::existParam("collections") ? explode(",", Query::getParam("collections")) : null;
+            $product_types = Query::existParam("product_types") ? explode(",", Query::getParam("product_types")) : null;
+            $functions = Query::existParam("functions") ? explode(",", Query::getParam("functions")) : null;
+            $categories = Query::existParam("categories") ? explode(",", Query::getParam("categories")) : null;
+            $colors = Query::existParam("colors") ? explode(",", Query::getParam("colors")) : null;
+            $sizes = Query::existParam("sizes") ? explode(",", Query::getParam("sizes")) : null;
 
-            $this->collections = self::filterValidValues("collections", $collections, $dbMap);
-            $this->product_types = self::filterValidValues("product_types", $product_types, $dbMap);
-            $this->functions = self::filterValidValues("functions", $functions, $dbMap);
-            $this->categories = self::filterValidValues("categories", $categories, $dbMap);
-            $this->colors = self::filterValidValues("colors", $colors, $dbMap);
-            $this->sizes = self::filterValidValues("sizes", $sizes, $dbMap);
+            $this->collections = $this->filterValidValues("collections", $collections);
+            $this->product_types = $this->filterValidValues("product_types", $product_types);
+            $this->functions = $this->filterValidValues("functions", $functions);
+            $this->categories = $this->filterValidValues("categories", $categories);
+            $this->colors = $this->filterValidValues("colors", $colors);
+            $this->sizes = $this->filterValidValues("sizes", $sizes);
 
-            $order = isset($_GET["order"]) ? GeneralCode::clean($_GET["order"]) : null;
-            $order = self::filterOrders($order);
+            $order = Query::existParam("order") ? Query::getParam("order") : null;
+            $order = $this->filterOrders($order);
             $this->order =  $order;
-            $prices = isset($_GET["prices"]) ? explode(",", GeneralCode::clean($_GET["prices"])) : null;
-            $pricesObj = self::filterPrices($prices, $currency);
-            $this->prices["minPrice"] = $pricesObj[0];
-            $this->prices["maxPrice"] = $pricesObj[1];
+            $prices = Query::existParam("prices") ? explode(",", Query::getParam("prices")) : null;
+            $pricesObj = $this->filterPrices($prices, $currency);
+            $this->prices["minPrice"] = key_exists(0, $pricesObj) ? $pricesObj[0] : null;
+            $this->prices["maxPrice"] = key_exists(1, $pricesObj) ? $pricesObj[1] : null;
         }
         $this->products = [];
         $this->searchMap = [];
@@ -249,7 +271,7 @@ class Search
      * @param string[string[...]] $dbMap The database tables in mapped format 
      * specified in file oop/model/special/dbMap.txt
      */
-    private function setPOSTSearch($currency, $dbMap)
+    private function postSearch($currency)
     {
         $collections = [];
         $product_types = [];
@@ -281,15 +303,15 @@ class Search
             }
         }
 
-        $this->collections = self::filterValidValues("collections", $collections, $dbMap);
-        $this->product_types = self::filterValidValues("product_types", $product_types, $dbMap);
-        $this->functions = self::filterValidValues("functions", $functions, $dbMap);
-        $this->categories = self::filterValidValues("categories", $categories, $dbMap);
-        $this->colors = self::filterValidValues("colors", $colors, $dbMap);
-        $this->sizes = self::filterValidValues("sizes", $sizes, $dbMap);
+        $this->collections = $this->filterValidValues("collections", $collections);
+        $this->product_types = $this->filterValidValues("product_types", $product_types);
+        $this->functions = $this->filterValidValues("functions", $functions);
+        $this->categories = $this->filterValidValues("categories", $categories);
+        $this->colors = $this->filterValidValues("colors", $colors);
+        $this->sizes = $this->filterValidValues("sizes", $sizes);
 
         $order = isset($_POST["order"]) ? GeneralCode::clean($_POST["order"]) : null;
-        $order = self::filterOrders($order);
+        $order = $this->filterOrders($order);
         $this->order =  $order;
 
         $prices["minprice"] = isset($_POST["minprice"]) ? GeneralCode::clean($_POST["minprice"]) : null;
@@ -301,7 +323,7 @@ class Search
         $prices["maxprice"] = preg_match("#[.]{1}#", $prices["maxprice"]) == 1
             ? $prices["maxprice"]
             : $prices["maxprice"] . "00";
-        $pricesObj = self::filterPrices($prices, $currency);
+        $pricesObj = $this->filterPrices($prices, $currency);
         $this->prices["minPrice"] = $pricesObj["minprice"];
         $this->prices["maxPrice"] = $pricesObj["maxprice"];
         $this->products = [];
@@ -312,40 +334,44 @@ class Search
      * Fill the Products attrribut with all product matching the search. 
      * Products are ordered following the order asked in the search else in a 
      * marketing order.
-     * @param string[] $dbSearchMap database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
+     * @param Language $lang Visitor's language
+     * @param Country $country the Visitor's country
+     * @param Currency the Visitor's current Currency
      */
-    public function setProducts($dbSearchMap)
+    public function setProducts($lang, $country, $currency)
     {
-        $basketProdMap = $dbSearchMap["productMap"][BasketProduct::BASKET_TYPE];
-        foreach ($basketProdMap as $prodID => $product) {
-            $basketProduct = new BasketProduct($prodID, $dbSearchMap);
-            // Helper::printLabelValue("basketProduct", $basketProduct);
-            $this->products[$product["datas"]["queryPosition"]] = $basketProduct;
+        $sql = $this->getSql($country, $currency);
+        $this->setProductMap($sql);
+        $productMap = $this->getProductMap();
+        foreach($productMap as $prodID => $datas){
+            switch($datas["product_type"]){
+                case BoxProduct::BOX_TYPE:
+                    $boxProd = new BoxProduct($prodID);
+                    $boxProd->CompleteProperties($lang);
+                    array_push($this->products, $boxProd);
+                break;
+                case BasketProduct::BASKET_TYPE:
+                    $baskProd = new BasketProduct($prodID, $country, $currency);
+                    $baskProd->CompleteProperties($lang, $country, $currency);
+                    array_push($this->products, $baskProd);
+                break;
+            }
         }
-
-        $boxProdMap = $dbSearchMap["productMap"][BoxProduct::BOX_TYPE];
-        foreach ($boxProdMap as $prodID => $product) {
-            $boxProduct = new BoxProduct($prodID, $dbSearchMap);
-            $this->products[$product["datas"]["queryPosition"]] = $boxProduct;
-        }
-        ksort($this->products);
-        self::setSearchMap($this->products);
+        $this->setSearchMap();
     }
 
     /**
      * Builds the searchMap using each criterion as key and filling them of all
      *  product witch match this criterion
-     * @param boxProduct[]&basketProduct[] $products a list of products witch match the search
      */
-    private function setSearchMap($products)
+    private function setSearchMap()
     {
         foreach ($this->collections as $collection) {
             $this->searchMap["collections"][$collection] = [];
             $i = 0;
-            foreach ($products as $product) {
+            foreach ($this->products as $product) {
                 if ($product->collectionIsInside($collection)) {
-                    array_push($this->searchMap["collections"][$collection], $products[$i]);
+                    array_push($this->searchMap["collections"][$collection], $this->products[$i]);
                 }
                 $i++;
             }
@@ -353,9 +379,9 @@ class Search
         foreach ($this->product_types as $product_type) {
             $this->searchMap["product_types"][$product_type] = [];
             $i = 0;
-            foreach ($products as $product) {
+            foreach ($this->products as $product) {
                 if ($product->getType() == $product_type) {
-                    array_push($this->searchMap["product_types"][$product_type], $products[$i]);
+                    array_push($this->searchMap["product_types"][$product_type], $this->products[$i]);
                 }
                 $i++;
             }
@@ -363,9 +389,9 @@ class Search
         foreach ($this->functions as $function) {
             $this->searchMap["functions"][$function] = [];
             $i = 0;
-            foreach ($products as $product) {
+            foreach ($this->products as $product) {
                 if ($product->functionIsInside($function)) {
-                    array_push($this->searchMap["functions"][$function], $products[$i]);
+                    array_push($this->searchMap["functions"][$function], $this->products[$i]);
                 }
                 $i++;
             }
@@ -373,9 +399,9 @@ class Search
         foreach ($this->categories as $category) {
             $this->searchMap["categories"][$category] = [];
             $i = 0;
-            foreach ($products as $product) {
+            foreach ($this->products as $product) {
                 if ($product->categoryIsInside($category)) {
-                    array_push($this->searchMap["categories"][$category], $products[$i]);
+                    array_push($this->searchMap["categories"][$category], $this->products[$i]);
                 }
                 $i++;
             }
@@ -383,9 +409,9 @@ class Search
         foreach ($this->colors as $color) {
             $this->searchMap["colors"][$color] = [];
             $i = 0;
-            foreach ($products as $product) {
+            foreach ($this->products as $product) {
                 if ($product->getColorName() == $color) {
-                    array_push($this->searchMap["colors"][$color], $products[$i]);
+                    array_push($this->searchMap["colors"][$color], $this->products[$i]);
                 }
                 $i++;
             }
@@ -393,9 +419,9 @@ class Search
         foreach ($this->sizes as $size) {
             $this->searchMap["sizes"][$size] = [];
             $i = 0;
-            foreach ($products as $product) {
+            foreach ($this->products as $product) {
                 if ($product->sizeIsInside($size)) {
-                    array_push($this->searchMap["sizes"][$size], $products[$i]);
+                    array_push($this->searchMap["sizes"][$size], $this->products[$i]);
                 }
                 $i++;
             }
@@ -433,7 +459,7 @@ class Search
      */
     public function getProducts()
     {
-        return GeneralCode::cloneMap($this->products);
+        return $this->cloneMap($this->products);
     }
 
     /**
@@ -442,7 +468,7 @@ class Search
      */
     public function getSearchMap()
     {
-        return GeneralCode::cloneMap($this->searchMap);
+        return $this->cloneMap($this->searchMap);
     }
 
     /**
@@ -508,17 +534,17 @@ class Search
      * Check if all values exist in a database table
      * @param string $tableName a database table's name
      * @param string[] $values value to check if they exist in a database table
-     * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
      * @return string[] all values existing in a database table
      */
-    private function filterValidValues($tableName, $values, $dbMap)
+    private function filterValidValues($tableName, $values)
     {
         $validValues = [];
-        foreach ($values as $value) {
-            in_array($value, $dbMap[$tableName]) ? array_push($validValues, $value)
-                : null;
-        }
+        $tableVal = $this->getTableValues($tableName);
+        if ((!empty($values)) && count($values) > 0)
+            foreach ($values as $value) {
+                in_array($value, $tableVal) ? array_push($validValues, $value)
+                    : null;
+            }
         return $validValues;
     }
 
@@ -526,23 +552,25 @@ class Search
      * Check if all max price and min price are float value and convert them to float
      * @param string[] list of price in string and int format (so there not decimal: 10.99 => 1099)
      * @param Currency the Visitor's current Currency
-     * @return string[float[]] all valid price converted from string to float
+     * @return Price[] all valid price converted from string to float
      */
     private function filterPrices($prices, $currency)
     {
         $validPrices = [];
-        $keys = array_keys($prices);
-        foreach ($keys as $key) {
-            if (preg_match("#^[1-9]+[0-9]*$#", $prices[$key]) == 1) {
-                $price = (float) $prices[$key] / 100;
-                // $price = (float) number_format($price, 2, ".", "");
-                $priceObj = new Price($price, $currency);
-                $validPrices[$key] = $priceObj;
-            } else if (preg_match("#^[1-9]+[0-9]*[.]?[0-9]*$#", $prices[$key]) == 1) {
-                $price = (float) $prices[$key];
-                // $price = (float) number_format($price, 2, ".", "");
-                $priceObj = new Price($price, $currency);
-                $validPrices[$key] = $priceObj;
+        if ((!empty($prices)) && count($prices) > 0) {
+            $keys = array_keys($prices);
+            foreach ($keys as $key) {
+                if (preg_match("#^[1-9]+[0-9]*$#", $prices[$key]) == 1) {
+                    $price = (float) $prices[$key] / 100;
+                    // $price = (float) number_format($price, 2, ".", "");
+                    $priceObj = new Price($price, $currency);
+                    $validPrices[$key] = $priceObj;
+                } else if (preg_match("#^[1-9]+[0-9]*[.]?[0-9]*$#", $prices[$key]) == 1) {
+                    $price = (float) $prices[$key];
+                    // $price = (float) number_format($price, 2, ".", "");
+                    $priceObj = new Price($price, $currency);
+                    $validPrices[$key] = $priceObj;
+                }
             }
         }
         return $validPrices;
@@ -582,33 +610,47 @@ class Search
         return $validOrder;
     }
 
+    /*———————————————————————————— PRODUCT DB ACCESS DOWN ———————————————————*/
     /**
+     * Build a WHERE clause for a sql request
      * @param Country $country the Visitor's country
      * @param Currency $currency the Visitor's current currency
      * @return string a [WHERE] and [ORDER BY] SQL clause builded with all criterion
      */
-    public function getSQLQuery($country, $currency)
+    private function getSql($country, $currency)
     {
-        $query = "WHERE p.isAvailable = 1 AND ";
-        $query .= '(pp.country_ = "' . $country->getCountryName() . '" AND pp.iso_currency = "' . $currency->getIsoCurrency() . '"  OR product_type = "' . BoxProduct::BOX_TYPE . '")';
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "p.prodID", $this->prodIDList);
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "pco.collection_name", $this->collections);
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "p.product_type", $this->product_types);
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "pf.function_name", $this->functions);
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "pca.category_name", $this->categories);
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "p.colorName", $this->colors);
-        $query .= " AND ";
-        $query = self::concatORGroup($query, "ps.size_name", $this->sizes);
-        $query .= " AND ";
-        $query .= !empty($this->prices["minPrice"]) ? "pp.price >= " . $this->prices["minPrice"]->getPrice() : "(true)";
-        $query .= " AND ";
-        $query .= !empty($this->prices["maxPrice"]) ? "pp.price <= " . $this->prices["maxPrice"]->getPrice() : "(true)";
+        $sql =
+        'SELECT DISTINCT p.*, pp.price
+        FROM `Products` p
+        LEFT JOIN `ProductBuyPrice` pbp ON p.prodID = pbp.prodId 
+        LEFT JOIN `BoxColors-Products` bcp ON p.prodID = bcp.prodId
+        LEFT JOIN `Products-Collections` pco ON p.prodID = pco.prodId
+        LEFT JOIN `Products-ProductFunctions` pf ON p.prodID = pf.prodId
+        LEFT JOIN `Products-Categories` pca ON p.prodID = pca.prodId
+        LEFT JOIN `Products-Sizes` ps ON p.prodID = ps.prodId
+        LEFT JOIN `ProductsPrices` pp ON p.prodID = pp.prodId
+        ';
+
+        $sql .= " WHERE p.isAvailable = 1 AND ";
+        $sql .= '(pp.country_ = "' . $country->getCountryName() . '" AND pp.iso_currency = "' . $currency->getIsoCurrency() . '"  OR product_type = "' . BoxProduct::BOX_TYPE . '")';
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "p.prodID", $this->prodIDList);
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "pco.collection_name", $this->collections);
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "p.product_type", $this->product_types);
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "pf.function_name", $this->functions);
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "pca.category_name", $this->categories);
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "p.colorName", $this->colors);
+        $sql .= " AND ";
+        $sql = $this->concatORGroup($sql, "ps.size_name", $this->sizes);
+        $sql .= " AND ";
+        $sql .= !empty($this->prices["minPrice"]) ? "pp.price >= " . $this->prices["minPrice"]->getPrice() : "(true)";
+        $sql .= " AND ";
+        $sql .= !empty($this->prices["maxPrice"]) ? "pp.price <= " . $this->prices["maxPrice"]->getPrice() : "(true)";
         if (
             !empty($this->order["value"])
             && !empty($this->order["displayable"])
@@ -616,20 +658,20 @@ class Search
         ) {
             switch ($this->order["value"]) {
                 case "newest":
-                    $query .= " ORDER BY p.addedDate " . $this->order["orderSQL"];
+                    $sql .= " ORDER BY p.addedDate " . $this->order["orderSQL"];
                     break;
                 case "older":
-                    $query .= " ORDER BY p.addedDate " . $this->order["orderSQL"];
+                    $sql .= " ORDER BY p.addedDate " . $this->order["orderSQL"];
                     break;
                 case "highttolow":
-                    $query .= " ORDER BY pp.price " . $this->order["orderSQL"];
+                    $sql .= " ORDER BY pp.price " . $this->order["orderSQL"];
                     break;
                 case "lowtohight":
-                    $query .= " ORDER BY pp.price " . $this->order["orderSQL"];
+                    $sql .= " ORDER BY pp.price " . $this->order["orderSQL"];
                     break;
             }
         }
-        return $query;
+        return $sql;
     }
 
     /**
@@ -641,7 +683,7 @@ class Search
      */
     private function concatORGroup($query, $attribute, $criterions)
     {
-        if (count($criterions) > 0) {
+        if ((!empty($criterions)) && count($criterions) > 0) {
             $i = 0;
             $query .= " (";
             foreach ($criterions as $criterion) {
@@ -655,28 +697,5 @@ class Search
         }
         return $query;
     }
-
-    public function __toString()
-    {
-        Helper::printLabelValue("collections", $this->collections);
-        Helper::printLabelValue("order", $this->order);
-        Helper::printLabelValue("product_types", $this->product_types);
-        Helper::printLabelValue("functions", $this->functions);
-        Helper::printLabelValue("categories", $this->categories);
-        Helper::printLabelValue("colors", $this->colors);
-        Helper::printLabelValue("sizes", $this->sizes);
-        Helper::printLabelValue("prices", $this->prices);
-        Helper::printLabelValue("searchMap", $this->searchMap);
-
-        foreach ($this->products as $index => $product) {
-            echo "<hr> index " . $index . ":   ";
-            $product->__toString();
-            echo "<hr>";
-        }
-        foreach ($this->searchMap as $criterion => $productList) {
-            echo "<hr> criterion: " . $criterion . "   <br>";
-            Helper::printLabelValue("productList", $productList);
-            echo "<hr>";
-        }
-    }
+    /*———————————————————————————— PRODUCT DB ACCESS UP —————————————————————*/
 }

@@ -2,8 +2,10 @@
 // namespace Oop\model;
 // require "../../vendor/autoload.php";
 
+require_once 'model/ModelFunctionality.php';
+require_once 'model/tools-management/Currency.php';
 
-class Location
+class Location extends ModelFunctionality
 {
     private $ip;
 
@@ -27,17 +29,19 @@ class Location
     private $proxy;
     private $message;
 
-    function __construct($dbMap)
-    {
-        $endpoint = self::getEndpoint();
-        if ($endpoint->status == "success") {
-            $this->currency = new Currency(strtolower($endpoint->currency), $dbMap);
+    private const SUCCESS = "success";
 
+    function __construct()
+    {
+        $endpoint = $this->getEndpoint();
+        // if ($endpoint->status == "success") {
+        if ($endpoint->status == self::SUCCESS) {
+            $this->currency = new Currency(strtolower($endpoint->currency));
             $this->ip = strtolower($endpoint->query);
             $this->city = strtolower($endpoint->city);
             $this->zip = strtolower($endpoint->zip);
             $this->countryName = strtolower($endpoint->country);
-            $this->isoCountry = strtolower($endpoint->isoCountry);
+            $this->isoCountry = strtolower($endpoint->countryCode);
             $this->continent = strtolower($endpoint->continent);
             $this->continentCode = strtolower($endpoint->continentCode);
             $this->regionName = strtolower($endpoint->regionName);
@@ -50,7 +54,6 @@ class Location
         } else {
             $this->message = $endpoint->message;
         }
-        
     }
 
     /**
@@ -72,7 +75,7 @@ class Location
             continent
             continentCode
             country
-            isoCountry
+            countryCode
             regionName
             city
             zip
@@ -95,7 +98,8 @@ class Location
      * Getter of the get country's Name
      * @return string the name of the location country
      */
-    public function getcountryName(){
+    public function getcountryName()
+    {
         return $this->countryName;
     }
 
@@ -103,13 +107,14 @@ class Location
      * Getter of a protected copy of the Currency
      * @return Currency protected copy of the Currency
      */
-    public function getCurrency(){
-        return $this->currency->getCopy($this->currency);
+    public function getCurrency()
+    {
+        return $this->currency->getCopy();
     }
 
-     function __toString()
+    function __toString()
     {
-        
+
         Helper::printLabelValue("ip", $this->ip);
         $this->currency->__toString();
         Helper::printLabelValue("city", $this->city);

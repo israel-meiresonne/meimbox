@@ -1,6 +1,8 @@
 <?php
 
-class Country
+require_once 'model/ModelFunctionality.php';
+
+class Country extends ModelFunctionality
 {
     /**
      * The country's iso code 2
@@ -32,50 +34,36 @@ class Country
      *  supported by the database
      * @var string
      */
-    protected static $DEFAULT_COUNTRY_NAME;
+    private static $DEFAULT_COUNTRY_NAME;
 
 
-    function __construct()
+    public function __construct($countryName)
     {
-
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-            case 2:
-                self::__construct2($argv[0], $argv[1]);
-                break;
+        $this->setConstants();
+        if ($this->existCountry($countryName)) {
+            $this->buildCurrency($countryName);
+        } else {
+            $this->buildCurrency(self::$DEFAULT_COUNTRY_NAME);
         }
     }
 
-    private function __construct0()
-    {
-    }
+    // private function __construct1($countryName)
+    // {
+    //     if ($this->existCountry($countryName)) {
+    //         $this->buildCurrency($countryName);
+    //     } else {
+    //         $this->buildCurrency(self::$DEFAULT_COUNTRY_NAME);
+    //     }
+    // }
 
-    private function __construct2($countryName, $dbMap)
-    {
-        self::setConstants($dbMap);
-        $countryMap = array_merge($dbMap["countryMap"], $dbMap["buyCountryMap"]);  // a supprimer quand la table BuyCountry sera supprimée
-        // $countryMap = ($dbMap["countryMap"][$this->countryName] != null) ? $dbMap["countryMap"] : $dbMap["buyCountryMap"];
-
-        $this->countryName = (array_key_exists($countryName, $countryMap)) ? $countryName : $this->DEFAULT_COUNTRY_NAME;
-
-        $this->isoCountry = $countryMap[$this->countryName]["isoCountry"];
-        $this->isUE = $countryMap[$this->countryName]["isUE"];
-        $this->vat = $countryMap[$this->countryName]["vat"];
-    }
-
-        /**
+    /**
      * Initialize Language's constants
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
      */
-    private function setConstants($dbMap)
+    private function setConstants()
     {
         if (!isset(self::$DEFAULT_COUNTRY_NAME)) {
             self::$DEFAULT_COUNTRY_NAME  = "DEFAULT_COUNTRY_NAME";
-            $this->DEFAULT_COUNTRY_NAME = $dbMap["constantMap"][$this->DEFAULT_COUNTRY_NAME]["stringValue"];
+            self::$DEFAULT_COUNTRY_NAME = $this->getConstantLine(self::$DEFAULT_COUNTRY_NAME)["stringValue"];
         }
     }
 
@@ -103,12 +91,25 @@ class Country
      */
     public function getCopy()
     {
-        $copy = new Country();
+        $copy = clone $this;
         $copy->isoCountry = $this->isoCountry;
         $copy->countryName = $this->countryName;
         $copy->isUE = $this->isUE;
         $copy->vat = $this->vat;
         return $copy;
+    }
+
+    /**
+     * Anitialize this Country's attributs
+     * @param string $isoCurrency currncy's iso code
+     */
+    private function buildCurrency($countryName)
+    {
+        $country = $this->getCountryLine($countryName);
+        $this->countryName = $countryName;
+        $this->isoCountry = $country["isoCountry"];
+        $this->isUE = $country["isUE"];
+        $this->vat = $country["vat"];
     }
 
     public function __toString()

@@ -7,14 +7,9 @@ class Shipping extends Price{
      */
     protected $time;
     
-    function __construct($price, $countryName, $isoCurrency, $time, $dbMap)
+    public function __construct($price, $currency, $time)
     {
-        parent::__construct($price, $countryName, $isoCurrency, $dbMap);
+        parent::__construct($price, $currency);
         $this->time = $time;
     }
-
-    // public function __toString()
-    // {
-    //     parent::__toString();
-    // }
 }
