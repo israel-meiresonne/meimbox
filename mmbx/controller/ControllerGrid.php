@@ -11,10 +11,12 @@ class ControllerGrid extends ControllerSecure
         $this->secureSession();
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();
+        $language = $this->person->getLanguage();
         $lang = $this->person->getLanguage();
         $search = new Search(Search::GET_SEARCH, $currency);
         $search->setProducts($lang, $country, $currency);
         $products = $search->getProducts();
-        $this->generateView(array("products" => $products));
+        // $translator = new Translator($language);
+        $this->generateView(array("products" => $products), $language);
     }
 }

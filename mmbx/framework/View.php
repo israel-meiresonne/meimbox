@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Configuration.php';
+require_once 'model/view-management/Translator.php';
 
 /**
  * Classe modélisant une vue.
@@ -56,6 +57,13 @@ require_once 'Configuration.php';
  */
 class View
 {
+    /**
+     * The translator used to translate every string  
+     * + NOTE: it's the only instance of this class in the whole system.
+     * @var Translation
+     */
+    private $translator;
+
     /** Nom du fichier associé à la vue */
     // rnvs : string qui contient le chemin vers le fichier php qui correspond
     //        à l'action de la vue effective
@@ -107,9 +115,11 @@ class View
      * 
      * @param string $action Action à laquelle la vue est associée
      * @param string $controller Nom du contrôleur auquel la vue est associée
+     * @param Language $language the Visitor's current language
      */
-    public function __construct($action, $controller = "")
+    public function __construct($action, $controller = "", Language $language = null)
     {
+        $this->translator = isset($language) ? new Translator($language) : new Translator();
         // Détermination du nom du fichier vue à partir de l'action et du constructeur
         // La convention de nommage des fichiers vues est : view/<$controller>/<$action>.php
         
