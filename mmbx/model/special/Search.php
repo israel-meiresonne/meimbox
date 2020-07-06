@@ -512,20 +512,20 @@ class Search extends ModelFunctionality
             }
         }
 
-        $product_types = GeneralCode::fillValueWithValue($this->product_types);
-        $stickers = GeneralCode::fillArrayWithArray($stickers, $product_types);
+        $product_types = $this->arrayToMap($this->product_types);
+        $stickers = array_merge($stickers, $product_types);
 
-        $functions = GeneralCode::fillValueWithValue($this->functions);
-        $stickers = GeneralCode::fillArrayWithArray($stickers, $functions);
+        $functions = $this->arrayToMap($this->functions);
+        $stickers = array_merge($stickers, $functions);
 
-        $categories = GeneralCode::fillValueWithValue($this->categories);
-        $stickers = GeneralCode::fillArrayWithArray($stickers, $categories);
+        $categories = $this->arrayToMap($this->categories);
+        $stickers = array_merge($stickers, $categories);
 
-        $colors = GeneralCode::fillValueWithValue($this->colors);
-        $stickers = GeneralCode::fillArrayWithArray($stickers, $colors);
+        $colors = $this->arrayToMap($this->colors);
+        $stickers = array_merge($stickers, $colors);
 
-        $sizes = GeneralCode::fillValueWithValue($this->sizes);
-        $stickers = GeneralCode::fillArrayWithArray($stickers, $sizes);
+        $sizes = $this->arrayToMap($this->sizes);
+        $stickers = array_merge($stickers, $sizes);
 
         return $stickers;
     }
