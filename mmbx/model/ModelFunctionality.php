@@ -563,6 +563,43 @@ abstract class ModelFunctionality extends Model
         }
         return $copyMapRec;
     }
+
+    /**
+     * Build a map that use array's value as key and as value
+     * @var string[] $values list of value
+     * @return string[]
+     */
+    protected function arrayToMap($values)
+    {
+        $map = [];
+        foreach ($values as $value) {
+            $map[$value] = $value;
+        }
+        return $map;
+    }
+
+    /**
+     * Fill a array given in param with values of another array given too in param
+     * @param string[] $array the array to fill with value of the other array
+     * @param string[] $values the array of values to push in the other array
+     * @return string[] the array to fill ($array) filled with the values in the passed param $values
+     */
+    public static function fillArrayWithArray($array, $values) // => array_merge($array, $values)
+    {
+        // $valueKeys = array_keys($values);
+        // $nbValue = count($values);
+        // for ($i = 0; $i < $nbValue; $i++) {
+        //     array_push($array, $values[$i]);
+        // }
+        // foreach ($valueKeys as $key) {
+        //     if (array_key_exists($key, $array)) {
+        //         array_push($array, $values[$key]);
+        //     } else {
+        //         $array[$key] = $values[$key];
+        //     }
+        // }
+        // return $array;
+    }
     /*———————————————————————————— SHORTCUT UP ——————————————————————————————*/
     /*———————————————————————————— COMMON DOWN ——————————————————————————————*/
     /**
@@ -580,7 +617,7 @@ abstract class ModelFunctionality extends Model
      */
     protected function getCopy()
     {
-        $map = get_object_vars($this);
+        // $map = get_object_vars($this);
         $copy = clone $this;
         // foreach ($map as $attr => $value) {
         //     // var_dump(gettype($this->{$attr}));
