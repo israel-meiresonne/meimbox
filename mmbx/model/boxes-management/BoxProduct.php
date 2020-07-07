@@ -13,6 +13,12 @@ class BoxProduct extends Product
     private $measure;
 
     /**
+     * Holds the BoxProduct's displayable price
+     * @var Measure
+     */
+    private static $displayablePrice;
+
+    /**
      * Product type to know where to put it
      * @var string Product witch can be puted only into a box
      */
@@ -92,6 +98,39 @@ class BoxProduct extends Product
     public function getType()
     {
         return self::BOX_TYPE;
+    }
+
+    /**
+     * Build a HTML displayable price
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return string[] product's HTML displayable price
+     */
+    public function getDisplayablePrice($country, $currency)
+    {
+        if(!isset(self::$displayablePrice)){
+            $tab = $this->getBoxMap($country, $currency);
+            $boxesPrices = [];
+            foreach($tab as $boxColor => $datas){
+                $boxPriceVal = $tab[$boxColor]["price"];
+                
+                $priceKey = number_format($boxPriceVal*100, 2, "", "");
+                $prodPrice = $boxPriceVal/$datas["sizeMax"];
+                $prodPriceObj = new Price($prodPrice, $currency);
+                
+                $boxesPrices[$priceKey]["boxColor"] = $boxColor;
+                $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
+                $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
+                $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
+                $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
+                $boxesPrices[$priceKey]["price"] = $prodPriceObj;
+            }
+            krsort($boxesPrices);
+            ob_start();
+            require 'view/elements/boxPrice.php';
+            self::$displayablePrice = ob_get_clean();
+        }
+        return self::$displayablePrice;
     }
 
     /**

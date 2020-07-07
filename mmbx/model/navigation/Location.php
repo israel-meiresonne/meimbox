@@ -63,11 +63,11 @@ class Location extends ModelFunctionality
     private function getEndpoint()
     {
         // $ip = "203.194.21.241"; // Australie Alexandria
-        $ip = "138.197.157.60"; // Canada Toronto
+        // $ip = "138.197.157.60"; // Canada Toronto
         // $ip = "77.73.241.154"; // Suisse Basel
         // $ip = "126.29.117.191"; // Tokyo
         // $ip = "197.157.210.199"; // Kinshasa
-        // $ip = '2a02:a03f:5029:1300:dcb7:6c2c:9965:cd78'; // brussels capital
+        $ip = '2a02:a03f:5029:1300:dcb7:6c2c:9965:cd78'; // brussels capital
         // $ip = $_SERVER['REMOTE_ADDR'];// Recuperation de l'IP du visiteur
         /* 
             status = [success | fail]
@@ -112,24 +112,24 @@ class Location extends ModelFunctionality
         return $this->currency->getCopy();
     }
 
-    function __toString()
-    {
+    // function __toString()
+    // {
 
-        Helper::printLabelValue("ip", $this->ip);
-        $this->currency->__toString();
-        Helper::printLabelValue("city", $this->city);
-        Helper::printLabelValue("zip", $this->zip);
-        Helper::printLabelValue("country", $this->countryName);
-        Helper::printLabelValue("isoCountry", $this->isoCountry);
-        Helper::printLabelValue("continent", $this->continent);
-        Helper::printLabelValue("continentCode", $this->continentCode);
-        Helper::printLabelValue("regionName", $this->regionName);
-        Helper::printLabelValue("timezone", $this->timezone);
-        Helper::printLabelValue("isp", $this->isp);
-        Helper::printLabelValue("org", $this->org);
-        Helper::printLabelValue("asname", $this->asname);
-        Helper::printLabelValue("mobile", $this->mobile);
-        Helper::printLabelValue("proxy", $this->proxy);
-        Helper::printLabelValue("message", $this->message);
-    }
+    //     Helper::printLabelValue("ip", $this->ip);
+    //     $this->currency->__toString();
+    //     Helper::printLabelValue("city", $this->city);
+    //     Helper::printLabelValue("zip", $this->zip);
+    //     Helper::printLabelValue("country", $this->countryName);
+    //     Helper::printLabelValue("isoCountry", $this->isoCountry);
+    //     Helper::printLabelValue("continent", $this->continent);
+    //     Helper::printLabelValue("continentCode", $this->continentCode);
+    //     Helper::printLabelValue("regionName", $this->regionName);
+    //     Helper::printLabelValue("timezone", $this->timezone);
+    //     Helper::printLabelValue("isp", $this->isp);
+    //     Helper::printLabelValue("org", $this->org);
+    //     Helper::printLabelValue("asname", $this->asname);
+    //     Helper::printLabelValue("mobile", $this->mobile);
+    //     Helper::printLabelValue("proxy", $this->proxy);
+    //     Helper::printLabelValue("message", $this->message);
+    // }
 }

@@ -28,7 +28,7 @@ class Price
     /**
      * __construct2($price, $country, $currency)
      * @param double $price 
-     * @param Currency The price's currency
+     * @param Currency $currency price's currency
      */
     public function __construct($price, $currency)
     {

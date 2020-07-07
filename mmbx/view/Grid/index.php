@@ -3,8 +3,22 @@ $this->title = "grid";
 $this->lang = "fr";
 $this->description = "grid page";
 ob_start();
-require 'elements/head.php';
+require 'gridElements/head.php';
 $this->head = ob_get_clean();
+/**
+ * @var Translator
+ */
+$translator = $this->translator;
+
+/**
+ * @var Search
+ */
+$search = $search;
+
+/**
+ * @var Visitor|Client|Administrator
+ */
+$person = $person;
 ?>
 <div class="grid-container">
     <div id="ctr_grid_content">
@@ -16,7 +30,7 @@ $this->head = ob_get_clean();
                             <div class="img-text-img">
                                 <img src="content/brain/permanent/icons8-setting-80.png">
                             </div>
-                            <span class="img-text-span">filtres</span>
+                            <span class="img-text-span"><?= $translator->translateStation("US1") ?></span>
                         </div>
                     </div>
                 </div>
@@ -30,46 +44,61 @@ $this->head = ob_get_clean();
             <div class="search-sticker-block">
                 <div class="sticker-empty-div filter-block"></div>
                 <div class="search-sticker-div">
-                    <div class="sticker-set"> </div>
+                    <div class="sticker-set">
+                        <?php
+                        $stickers = $search->getStickers($person->getLanguage(), $translator);
+                        // var_dump($_GET);
+                        // $stickers = ["monstick" => "fuck you"];
+                        ob_start();
+                        require 'view/elements/sticker.php';
+                        echo ob_get_clean();
+                        ?>
+                    </div>
                 </div>
             </div>
             <div class="grid-item-container">
                 <div id="filter_block" class="filter-block">
-                    <p>filtres</p>
+                    <p><?= $translator->translateStation("US1") ?></p>
                     <from id="grid_filter">
+                        <?php
+                        $orderIsChecked[0] = Query::getParam("order") == Search::NEWEST ? 'checked="true"' : "";
+                        $orderIsChecked[1] = Query::getParam("order") == Search::OLDER ? 'checked="true"' : "";
+                        $orderIsChecked[2] = Query::getParam("order") == Search::HIGHT_TO_LOW ? 'checked="true"' : "";
+                        $orderIsChecked[3] = Query::getParam("order") == Search::LOW_TO_HIGHT ? 'checked="true"' : "";
+                        ?>
                         <div class="filter-dropdown-set">
                             <div class="filter-dropdown-inner">
                                 <div class="dropdown-container">
                                     <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
                                             <div class="dropdown-head dropdown-arrow-close">
-                                                <span class="dropdown-title">trier</span>
+                                                <span class="dropdown-title"><?= $translator->translateStation("US2") ?></span>
                                             </div>
                                             <div class="dropdown-checkbox-list" style="display: none;">
                                                 <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">les plus récents
-                                                        <input type="radio" name="order" value="newest">
+                                                    <label class="checkbox-label"><?= $translator->translateStation("US3") ?>
+                                                        <input type="radio" name="order" value="<?= Search::NEWEST ?>" <?= $orderIsChecked[0] ?>>
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
 
                                                 <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">les moins récents
-                                                        <input type="radio" name="order" value="older">
+                                                    <label class="checkbox-label"><?= $translator->translateStation("US4") ?>
+                                                        <input type="radio" name="order" value="<?= Search::OLDER ?>" <?= $orderIsChecked[1] ?>>
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
 
                                                 <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">prix - croissant
-                                                        <input type="radio" name="order" value="lowtohight">
+                                                    <label class="checkbox-label"><?= $translator->translateStation("US6") ?>
+                                                        <input type="radio" name="order" value="<?= Search::LOW_TO_HIGHT ?>" <?= $orderIsChecked[2] ?>>
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
 
                                                 <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">prix - décroissant
-                                                        <input type="radio" name="order" value="highttolow">
+                                                    <label class="checkbox-label"><?= $translator->translateStation("US5") ?>
+                                                        <input type="radio" name="order" value="<?= Search::HIGHT_TO_LOW ?>" <?= $orderIsChecked[3] ?>>
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
@@ -78,7 +107,17 @@ $this->head = ob_get_clean();
                                     </div>
                                 </div>
                                 <div class="dropdown-container">
-                                    <div class="dropdown-wrap">
+                                    <?php
+                                    $title = $translator->translateStation("US7"); // $dpdName
+                                    $tabNames = ["product_types", "functions"];
+                                    $labels =  $search->getValToTableNameMap($tabNames); // [criterVal => criterion]
+                                    $criterions = $tabNames;
+                                    $checkedLabels = $search->geSearchParams($criterions); // [index => criterVal]
+                                    ob_start();
+                                    require 'view/elements/dropdown.php';
+                                    echo ob_get_clean();
+                                    /*
+                                    <!-- <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
                                             <div class="dropdown-head dropdown-arrow-close">
                                                 <span class="dropdown-title">type</span>
@@ -110,10 +149,23 @@ $this->head = ob_get_clean();
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    */
+                                    ?>
+
                                 </div>
                                 <div class="dropdown-container">
-                                    <div class="dropdown-wrap">
+                                    <?php
+                                    $title = $translator->translateStation("US8"); // $dpdName
+                                    $tabNames = ["categories"];
+                                    $labels =  $search->getValToTableNameMap($tabNames); // [criterVal => criterion]
+                                    $criterions = $tabNames;
+                                    $checkedLabels = $search->geSearchParams($criterions); // [index => criterVal]
+                                    ob_start();
+                                    require 'view/elements/dropdown.php';
+                                    echo ob_get_clean();
+                                    /*
+                                    <!-- <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
                                             <div class="dropdown-head dropdown-arrow-close">
                                                 <span class="dropdown-title">catégorie</span>
@@ -145,10 +197,23 @@ $this->head = ob_get_clean();
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    */
+                                    ?>
+
                                 </div>
                                 <div class="dropdown-container">
-                                    <div class="dropdown-wrap">
+                                <?php
+                                    $title = $translator->translateStation("US9"); // $dpdName
+                                    $tabNames = ["sizes"];
+                                    $labels =  $search->getValToTableNameMap($tabNames); // [criterVal => criterion]
+                                    $criterions = $tabNames;
+                                    $checkedLabels = $search->geSearchParams($criterions); // [index => criterVal]
+                                    ob_start();
+                                    require 'view/elements/dropdown.php';
+                                    echo ob_get_clean();
+                                    /*
+                                    <!-- <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
                                             <div class="dropdown-head dropdown-arrow-close">
                                                 <span class="dropdown-title">taille</span>
@@ -174,10 +239,22 @@ $this->head = ob_get_clean();
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    */
+                                    ?>
                                 </div>
                                 <div class="dropdown-container">
-                                    <div class="dropdown-wrap">
+                                <?php
+                                    $title = $translator->translateStation("US10"); // $dpdName
+                                    $tabNames = ["colors"];
+                                    $labels =  $search->getValToTableNameMap($tabNames); // [criterVal => criterion]
+                                    $criterions = $tabNames;
+                                    $checkedLabels = $search->geSearchParams($criterions); // [index => criterVal]
+                                    ob_start();
+                                    require 'view/elements/dropdown.php';
+                                    echo ob_get_clean();
+                                    /*
+                                    <!-- <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
                                             <div class="dropdown-head dropdown-arrow-close">
                                                 <span class="dropdown-title">couleur</span>
@@ -227,25 +304,28 @@ $this->head = ob_get_clean();
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    */
+                                    ?>
+                                    
                                 </div>
                                 <div class="dropdown-container">
                                     <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
                                             <div class="dropdown-head dropdown-arrow-close">
-                                                <span class="dropdown-title">prix</span>
+                                                <span class="dropdown-title"><?= $translator->translateStation("US11") ?></span>
                                             </div>
                                             <div class="dropdown-checkbox-list">
                                                 <div id="min_price_input" class="input-container">
                                                     <div class="input-wrap">
-                                                        <label class="input-label" for="filter_minPrice">prix minimum</label>
-                                                        <input id="filter_minPrice" class="input-error input-tag" type="number" name="minprice" value="" placeholder="prix minimum">
+                                                        <label class="input-label" for="filter_minPrice"><?= $translator->translateStation("US12") ?></label>
+                                                        <input id="filter_minPrice" class="input-error input-tag" type="number" name="minprice" value="<?= $search->getMinPrice() ?>" placeholder="<?= $translator->translateStation("US12") ?>">
                                                     </div>
                                                 </div>
                                                 <div id="max_price_input" class="input-container">
                                                     <div class="input-wrap">
-                                                        <label class="input-label" for="filter_maxPrice">prix maximum</label>
-                                                        <input id="filter_maxPrice" class="input-error input-tag" type="number" name="maxprice" value="" placeholder="prix maximum">
+                                                        <label class="input-label" for="filter_maxPrice"><?= $translator->translateStation("US13") ?></label>
+                                                        <input id="filter_maxPrice" class="input-error input-tag" type="number" name="maxprice" value="<?= $search->getMaxPrice() ?>" placeholder="<?= $translator->translateStation("US13") ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,17 +334,23 @@ $this->head = ob_get_clean();
                                 </div>
                             </div>
                             <div class="apply-button-container">
-                                <button id="filter_button" class="green-button remove-button-default-att">filtrer</button>
+                                <button id="filter_button" class="green-button remove-button-default-att"><?= $translator->translateStation("US14") ?></button>
                             </div>
                         </div>
                     </from>
                     <div class="filter-hide-container">
-                        <span id="filter_hide_button" class="filter-hide-span">fermer</span>
+                        <span id="filter_hide_button" class="filter-hide-span"><?= $translator->translateStation("US15") ?></span>
                     </div>
                 </div>
                 <div class="item-space">
                     <ul class="remove-ul-default-att">
-                        <li class="remove-li-default-att article-li">
+                        <?php
+                        $products = $search->getProducts();
+                        $country = $person->getCountry();
+                        $currency = $person->getCurrency();
+                        foreach($products as $product):
+                        /*
+                        <!-- <li class="remove-li-default-att article-li">
                             <article class="product-article-wrap">
                                 <div class="product-img-set">
                                     <a href="/inside/item/?prodID=1">
@@ -998,7 +1084,17 @@ $this->head = ob_get_clean();
                                     </div>
                                 </div>
                             </article>
+                        </li> -->
+                        */
+                        ?>
+                        <li class="remove-li-default-att article-li">
+                            <?php
+                            ob_start();
+                            require 'view/elements/product.php';
+                            echo ob_get_clean();
+                            ?>
                         </li>
+                        <?php endforeach; ?>
                     </ul>
                     <div id="prodGrid_loading" class="loading-img-wrap">
                         <img src="content/brain/permanent/loading.gif">
