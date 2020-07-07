@@ -71,7 +71,7 @@ class Search extends ModelFunctionality
 
     /**
      * Holds a list of products witch match the search
-     * @var string[] $products
+     * @var BoxProduct[]|BasketProduct[] $products
      */
     private $products;
 
@@ -343,18 +343,18 @@ class Search extends ModelFunctionality
         $sql = $this->getSql($country, $currency);
         $this->setProductMap($sql);
         $productMap = $this->getProductMap();
-        foreach($productMap as $prodID => $datas){
-            switch($datas["product_type"]){
+        foreach ($productMap as $prodID => $datas) {
+            switch ($datas["product_type"]) {
                 case BoxProduct::BOX_TYPE:
                     $boxProd = new BoxProduct($prodID);
                     $boxProd->CompleteProperties($lang);
                     array_push($this->products, $boxProd);
-                break;
+                    break;
                 case BasketProduct::BASKET_TYPE:
                     $baskProd = new BasketProduct($prodID, $country, $currency);
                     $baskProd->CompleteProperties($lang, $country, $currency);
                     array_push($this->products, $baskProd);
-                break;
+                    break;
             }
         }
         $this->setSearchMap();
@@ -531,6 +531,42 @@ class Search extends ModelFunctionality
     }
 
     /**
+     * To get list of available value form db
+     * + NOTE: use available values as access key and table name as value
+     * + [value => tableName]
+     * @param string[] $tabNames list of criterion to get from serachMap
+     * @return string[] map that use criterions values as key and criterion as value
+     */
+    public function getValToTableNameMap($tabNames)
+    {
+        $map = [];
+        foreach ($tabNames as $tabName) {
+            $values = $this->getTableValues($tabName);
+            foreach ($values as $value) {
+                $map[$value] = $tabName;
+            }
+        }
+        return $map;
+    }
+
+    /**
+     * To get list of criterions's search parameter
+     * @param string[] $criterions liste of criterion name
+     * @return string[] list of criterions's search parameter
+     */
+    public function geSearchParams($criterions)
+    {
+        $map = [];
+        foreach($criterions as $criterion){
+            if(key_exists($criterion, $this->searchMap)){
+                $params = array_keys($this->searchMap[$criterion]);
+                $map = array_merge($map, $params);
+            }
+        }
+        return $map;
+    }
+
+    /**
      * Check if all values exist in a database table
      * @param string $tableName a database table's name
      * @param string[] $values value to check if they exist in a database table
@@ -620,7 +656,7 @@ class Search extends ModelFunctionality
     private function getSql($country, $currency)
     {
         $sql =
-        'SELECT DISTINCT p.*, pp.price
+            'SELECT DISTINCT p.*, pp.price
         FROM `Products` p
         LEFT JOIN `ProductBuyPrice` pbp ON p.prodID = pbp.prodId 
         LEFT JOIN `BoxColors-Products` bcp ON p.prodID = bcp.prodId

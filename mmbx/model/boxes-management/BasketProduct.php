@@ -105,7 +105,7 @@ class BasketProduct extends Product
         FROM `ProductsDiscounts`
         WHERE `prodId` = '$this->prodID' AND `country_` = '$countryName'";
         $tab = $this->select($sql);
-        if(count($tab) == 1){
+        if (count($tab) == 1) {
             $tabLine = $tab[0];
             $value = (float) $tabLine["discount_value"];
             $beginDate = $tabLine["beginDate"];
@@ -147,8 +147,8 @@ class BasketProduct extends Product
         WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
         ORDER BY `Products`.`prodID` ASC";
         $tab = $this->select($sql);
-        if(count($tab) > 0){
-            foreach($tab as $tabLine){
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
                 $product = new BasketProduct($tabLine["prodID"], $country, $currency);
                 $this->sameProducts[$product->getProdID()] = $product;
             }
@@ -192,6 +192,18 @@ class BasketProduct extends Product
     //     }
     //     return $copy;
     // }
+
+    /**
+     * Build a HTML displayable price
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return string[] product's HTML displayable price
+     */
+    public function getDisplayablePrice($country = null, $currency = null)
+    {
+        $priceStr = '<p>' . $this->price->getFormated() . '</p>';
+        return $priceStr;
+    }
 
     /**
      * @return Price[[]] a protected copy of the NewPrices attribute

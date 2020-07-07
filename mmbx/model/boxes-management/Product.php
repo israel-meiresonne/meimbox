@@ -118,13 +118,33 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Holds the access key for content of the grid product
+     * @var string
      */
     public const GRID_CONTENT_KEY = "grid_content";
 
     /**
      * Holds the access key for stickers of the grid product
+     * @var string
      */
     public const GRID_STICKERS_KEY = "grid_stickers";
+
+    /**
+     * White color's RGB code
+     * @var string
+     */
+    public const WHITE_RGB = "#ffffff";
+
+    /**
+     * Holds max number of cube displayable in artcicle product
+     * @var string
+     */
+    private static $MAX_PRODUCT_CUBE_DISPLAYABLE;
+
+    /**
+     * Holds CSS text color
+     */
+    private static $COLOR_TEXT_08;
+    private static $COLOR_TEXT_05;
 
     /**
      * Constructor 
@@ -132,6 +152,7 @@ abstract class Product extends ModelFunctionality
      */
     protected function __construct(int $prodID)
     {
+        $this->setConstants();
         $this->prodID = $prodID;
         if ($this->existProduct($prodID)) {
             $productLine = $this->getProductLine($prodID);
@@ -157,6 +178,24 @@ abstract class Product extends ModelFunctionality
         }
     }
 
+    /**
+     * Initialize Product's constants
+     */
+    private function setConstants()
+    {
+        if (!isset(self::$MAX_PRODUCT_CUBE_DISPLAYABLE)) {
+            self::$MAX_PRODUCT_CUBE_DISPLAYABLE = "MAX_PRODUCT_CUBE_DISPLAYABLE";
+            self::$MAX_PRODUCT_CUBE_DISPLAYABLE = (int) $this->getConstantLine(self::$MAX_PRODUCT_CUBE_DISPLAYABLE)["stringValue"];
+        }
+        if (!isset(self::$COLOR_TEXT_08)) {
+            self::$COLOR_TEXT_08 = "COLOR_TEXT_08";
+            self::$COLOR_TEXT_08 = $this->getConstantLine(self::$COLOR_TEXT_08)["stringValue"];
+        }
+        if (!isset(self::$COLOR_TEXT_05)) {
+            self::$COLOR_TEXT_05 = "COLOR_TEXT_05";
+            self::$COLOR_TEXT_05 = $this->getConstantLine(self::$COLOR_TEXT_05)["stringValue"];
+        }
+    }
 
     /**
      * To set all other properties that nat in Product table
@@ -318,6 +357,7 @@ abstract class Product extends ModelFunctionality
     public function getColorRGB()
     {
         return $this->colorRGB;
+        return ($this->colorRGB != self::WHITE_RGB) ? $this->colorRGB : $this->COLOR_TEXT_05;
     }
 
     /**
@@ -376,12 +416,29 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
-     * Getter for sameProducts
-     * @return string a prodtected copy of sameProducts
+     * Build a HTML displayable price
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return string[] product's HTML displayable price
      */
-    public function getSameNameProd()
+    public abstract function getDisplayablePrice($country, $currency);
+
+    /**
+     * Getter for sameProducts
+     * @return BasketProduct|BoxProduct a prodtected copy of sameProducts
+     */
+    public function getSameProd()
     {
-        return GeneralCode::cloneMap($this->sameProducts);
+        return $this->cloneMap($this->sameProducts);
+    }
+
+    /**
+     * Getter for max color cube to display
+     * @param int max color cube 
+     */
+    public static function getMAX_PRODUCT_CUBE_DISPLAYABLE()
+    {
+        self::$MAX_PRODUCT_CUBE_DISPLAYABLE;
     }
 
     // /**
@@ -429,6 +486,7 @@ abstract class Product extends ModelFunctionality
     {
         return array_key_exists($value, $this->collections);
     }
+
     /**
      * Check if a value given in param is inside the prodFunctions list
      * @param string $value the value to chcek if it inside the list
@@ -438,6 +496,7 @@ abstract class Product extends ModelFunctionality
     {
         return in_array($value, $this->prodFunctions);
     }
+
     /**
      * Check if a value given in param is inside the categories list
      * @param string $value the value to chcek if it inside the list
@@ -447,6 +506,7 @@ abstract class Product extends ModelFunctionality
     {
         return in_array($value, $this->categories);
     }
+
     /**
      * Check if a value given in param is inside the size list
      * @param string $value the value to chcek if it inside the list

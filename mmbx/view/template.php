@@ -14,6 +14,7 @@ require_once 'model/special/MyError.php';
 <head>
     <meta charset="UTF-8">
     <title><?= $title ?></title>
+    <base href="<?= $webRoot ?>">
     <meta name="description" content="$description"> <!-- <meta name="description" content=""> -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -30,7 +31,6 @@ require_once 'model/special/MyError.php';
     <script src="content/js/elements.js"></script>
     <!-- <script src="content/qr/qr.js"></script> -->
 
-    <base href="<?= $webRoot ?>">
     <?= $head ?>
 </head>
 

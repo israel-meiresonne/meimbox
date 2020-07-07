@@ -62,19 +62,8 @@ class Query
      */
     private static function setQuery()
     {
-        self::$isset = true;
         (!isset(self::$params)) ? self::$params = array_merge($_GET, $_POST) : null;
-    }
-
-    /**
-     * To get cleanned value from $_GET or $_POST at specified key
-     * @param string $key key value from $_GET or $_POST
-     * @return string cleanned value from $_GET or $_POST
-     */
-    public static function getParam($key)
-    {
-        (!self::$isset) ? self::setQuery() : null;
-        return (self::existParam($key)) ? self::clean(self::$params[$key]) : null;
+        self::$isset = true;
     }
 
     /**
@@ -87,6 +76,17 @@ class Query
     {
         (!self::$isset) ? self::setQuery() : null;
         return (key_exists($key, self::$params)) && (!empty(self::$params[$key]));
+    }
+
+    /**
+     * To get cleanned value from $_GET or $_POST at specified key
+     * @param string $key key value from $_GET or $_POST
+     * @return string cleanned value from $_GET or $_POST
+     */
+    public static function getParam($key)
+    {
+        (!self::$isset) ? self::setQuery() : null;
+        return (self::existParam($key)) ? self::clean(self::$params[$key]) : null;
     }
 
     // /**

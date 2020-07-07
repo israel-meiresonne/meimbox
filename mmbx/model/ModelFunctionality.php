@@ -56,6 +56,33 @@ abstract class ModelFunctionality extends Model
     private static $unitMap;
 
     /**
+     * Holds db's BoxColors, BoxPrices, BoxShippings and BoxDisciunts tables in map format
+     * +$boxMap[
+     *      boxcolor{string} =>[
+     *              "sizeMax" => int,
+     *              "weight" => double,
+     *              "boxColorRGB" => string,
+     *              "priceRGB" => string,
+     *              "textualRGB" => string,
+     *              "boxPicture" => string,
+     *              "stock" => int,
+     *              "price" => float,
+     *              "shipping" => [
+     *                      "price" => float,
+     *                      "time" => int,
+     *                  ],
+     *              "discount" => [
+     *                      "value" => float,
+     *                      "beginDate" => DATETIME,
+     *                      "endDate" => DATETIME
+     *                  ]
+     *          ]
+     * ]
+     * @var string[]
+     */
+    private static $boxMap;
+
+    /**
      * PDOStatement success code
      * @var string
      */
@@ -322,6 +349,75 @@ abstract class ModelFunctionality extends Model
     }
 
     /**
+     * To get box datas from db
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return string[] box's datas in a box map
+     */
+    protected function getBoxMap($country, $currency)
+    {
+        (!isset(self::$boxMap)) ? $this->setBoxMap($country, $currency) : null;
+        if (count(self::$boxMap) == 0) {
+            throw new Exception("The box map can't be empty:");
+        }
+        return self::$boxMap;
+    }
+
+    /**
+     * Check if a boxMap's attribut is set for each box
+     * @param string $attr access key of one boxMap's attribute
+     * @return boolean truee if it set else false
+     */
+    private function boxAttrIsset($attr)
+    {
+        if (isset(self::$boxMap)) {
+            return false;
+        }
+        foreach (self::$boxMap as $datas) {
+            if (!key_exists($attr, $datas)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Setter for boxMap
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     */
+    private function setBoxMap($country, $currency)
+    {
+        self::$boxMap = [];
+        $countryName = $country->getCountryName();
+        $isocurrency = $currency->getIsoCurrency();
+        $query = "SELECT * 
+        FROM `BoxColors` bc
+        JOIN `BoxPrices` bp ON bc.boxColor  = bp.box_color
+        JOIN `BoxShipping` bs ON bc.boxColor  = bs.box_color
+        JOIN `BoxDiscounts` bd ON bc.boxColor  = bd.box_color
+        WHERE bp.country_ = '$countryName' AND bp.iso_currency = '$isocurrency' 
+        AND bs.country_ = '$countryName' AND bs.iso_currency = '$isocurrency'
+        AND bd.country_ = '$countryName'";
+        $tab = $this->select($query);
+        foreach ($tab as $tabLine) {
+            self::$boxMap[$tabLine["boxColor"]]["sizeMax"] = (int) $tabLine["sizeMax"];
+            self::$boxMap[$tabLine["boxColor"]]["weight"] = (float) $tabLine["weight"];
+            self::$boxMap[$tabLine["boxColor"]]["boxColorRGB"] = $tabLine["boxColorRGB"];
+            self::$boxMap[$tabLine["boxColor"]]["priceRGB"] = $tabLine["priceRGB"];
+            self::$boxMap[$tabLine["boxColor"]]["textualRGB"] = $tabLine["textualRGB"];
+            self::$boxMap[$tabLine["boxColor"]]["boxPicture"] = $tabLine["boxPicture"];
+            self::$boxMap[$tabLine["boxColor"]]["stock"] = (int) $tabLine["stock"];
+            self::$boxMap[$tabLine["boxColor"]]["price"] = (float) $tabLine["price"];
+            self::$boxMap[$tabLine["boxColor"]]["shipping"]["price"] = (float) $tabLine["price"];
+            self::$boxMap[$tabLine["boxColor"]]["shipping"]["time"] = (int) $tabLine["time"];
+            self::$boxMap[$tabLine["boxColor"]]["discount"]["value"] = (float) $tabLine["discount_value"];
+            self::$boxMap[$tabLine["boxColor"]]["discount"]["beginDate"] = $tabLine["beginDate"];
+            self::$boxMap[$tabLine["boxColor"]]["discount"]["endDate"] = $tabLine["endDate"];
+        }
+    }
+
+    /**
      * To get values from some tables
      * @return string[] one column table containing value used in this table
      */
@@ -375,7 +471,7 @@ abstract class ModelFunctionality extends Model
      * @param string $query a SQL query
      * @return string[] an array containing value of all column of a database table
      */
-    public function getTable($query)
+    private function getTable($query)
     {
         $table = [];
         $queryTable = $this->select($query);
