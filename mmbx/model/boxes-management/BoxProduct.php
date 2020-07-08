@@ -100,6 +100,39 @@ class BoxProduct extends Product
         return self::BOX_TYPE;
     }
 
+    // /**
+    //  * Build a HTML displayable price
+    //  * @param Country $country Visitor's current Country
+    //  * @param Currency $currency Visitor's current Currency
+    //  * @return string[] product's HTML displayable price
+    //  */
+    // public function getDisplayablePrice($country, $currency)
+    // {
+    //     if(!isset(self::$displayablePrice)){
+    //         $tab = $this->getBoxMap($country, $currency);
+    //         $boxesPrices = [];
+    //         foreach($tab as $boxColor => $datas){
+    //             $boxPriceVal = $tab[$boxColor]["price"];
+    //             $priceKey = number_format($boxPriceVal*100, 2, "", "");
+    //             $prodPrice = $boxPriceVal/$datas["sizeMax"];
+    //             $prodPriceObj = new Price($prodPrice, $currency);
+
+    //             $boxesPrices[$priceKey]["boxColor"] = $boxColor;
+    //             $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
+    //             $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
+    //             $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
+    //             $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
+    //             $boxesPrices[$priceKey]["price"] = $prodPriceObj;
+    //         }
+    //         ksort($boxesPrices);
+    //         ob_start();
+    //         require 'view/elements/boxPrice.php';
+    //         self::$displayablePrice = ob_get_clean();
+    //     }
+    //     return self::$displayablePrice;
+    //     // return ob_get_clean();
+    // }
+
     /**
      * Build a HTML displayable price
      * @param Country $country Visitor's current Country
@@ -108,29 +141,26 @@ class BoxProduct extends Product
      */
     public function getDisplayablePrice($country, $currency)
     {
-        if(!isset(self::$displayablePrice)){
-            $tab = $this->getBoxMap($country, $currency);
-            $boxesPrices = [];
-            foreach($tab as $boxColor => $datas){
-                $boxPriceVal = $tab[$boxColor]["price"];
-                
-                $priceKey = number_format($boxPriceVal*100, 2, "", "");
-                $prodPrice = $boxPriceVal/$datas["sizeMax"];
-                $prodPriceObj = new Price($prodPrice, $currency);
-                
-                $boxesPrices[$priceKey]["boxColor"] = $boxColor;
-                $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
-                $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
-                $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
-                $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
-                $boxesPrices[$priceKey]["price"] = $prodPriceObj;
-            }
-            krsort($boxesPrices);
-            ob_start();
-            require 'view/elements/boxPrice.php';
-            self::$displayablePrice = ob_get_clean();
+        $tab = $this->getBoxMap($country, $currency);
+        $boxesPrices = [];
+        foreach ($tab as $boxColor => $datas) {
+            $boxPriceVal = $tab[$boxColor]["price"];
+
+            $priceKey = number_format($boxPriceVal * 100, 2, "", "");
+            $prodPrice = $boxPriceVal / $datas["sizeMax"];
+            $prodPriceObj = new Price($prodPrice, $currency);
+
+            $boxesPrices[$priceKey]["boxColor"] = $boxColor;
+            $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
+            $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
+            $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
+            $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
+            $boxesPrices[$priceKey]["price"] = $prodPriceObj;
         }
-        return self::$displayablePrice;
+        ksort($boxesPrices);
+        ob_start();
+        require 'view/elements/boxPrice.php';
+        return ob_get_clean();
     }
 
     /**

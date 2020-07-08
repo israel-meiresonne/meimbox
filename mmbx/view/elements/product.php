@@ -67,12 +67,12 @@ $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
                 </li>
                 <?php
                 $sameProducts = $product->getSameProd();
-                $i = 0;
-                $maxCube = Product::getMAX_PRODUCT_CUBE_DISPLAYABLE();
+                $i = 1;
+                $maxCube = Product::getMAX_PRODUCT_CUBE_DISPLAYABLE()-1;
                 foreach ($sameProducts as $sameNameProduct) : // $i = 1 + 5 + 1
                     $sameColorRGB = $sameNameProduct->getColorRGB();
                     $sameCubeBorder = ($sameNameProduct->getColorRGB() == Product::WHITE_RGB) ? "cube-border" : "";
-                    if ($i <= $maxCube) {
+                    if ($i < $maxCube):
                 ?>
                         <li class="remove-li-default-att">
                             <div class="cube-container">
@@ -84,7 +84,7 @@ $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
                             </div>
                         </li>
                     <?php
-                    } else {
+                    else:
                     ?>
                         <li class="remove-li-default-att">
                             <div class="cube-container">
@@ -98,7 +98,7 @@ $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
                             </div>
                         </li>
                 <?php break;
-                    }
+                    endif;
                     $i++;
                 endforeach; ?>
             </ul>
