@@ -15,8 +15,6 @@ class ControllerGrid extends ControllerSecure
         $lang = $this->person->getLanguage();
         $search = new Search(Search::GET_SEARCH, $currency);
         $search->setProducts($lang, $country, $currency);
-        // $products = $search->getProducts();
-        // $translator = new Translator($language);
         $viewDatas =  [
             "search" => $search,
             "person" => $this->person

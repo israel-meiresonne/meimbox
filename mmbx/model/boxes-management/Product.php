@@ -438,7 +438,7 @@ abstract class Product extends ModelFunctionality
      */
     public static function getMAX_PRODUCT_CUBE_DISPLAYABLE()
     {
-        self::$MAX_PRODUCT_CUBE_DISPLAYABLE;
+        return self::$MAX_PRODUCT_CUBE_DISPLAYABLE;
     }
 
     // /**
