@@ -164,6 +164,19 @@ abstract class Controller {
         
     }
 
+    /** generateJsonView($viewDatas, $language, $response)
+     * Generate a json view with an object Response
+     * @param array $datasView datas used to generate the view
+     * @param Language $language the Visitor's current language
+     * @param Response $response contain results ready and/or prepared or errors
+     */
+    protected function generateJsonView($datasView = array(), Response $response, Language $language = null) {
+        $classController = get_class($this);
+        $controllerView = str_replace("Controller", "", $classController);
+        $view = new View(null, $controllerView, $language);
+        $view->generateJson($datasView, $response);
+    }
+
     /**
      * Effectue une redirection vers un contrôleur et une action spécifiques
      * 

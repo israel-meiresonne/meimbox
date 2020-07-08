@@ -9,6 +9,16 @@ class Response
     private $isSuccess;
 
     /**
+     * Holds keys results and file where to get  this result 
+     * (ex: "view/elements/sticker.php")
+     * + files = [
+     *      resultKey{string} => file{string }
+     * ]
+     * @var string[]
+     */
+    private $files;
+
+    /**
      * Holds a list of result
      * @var mixed[]
      */
@@ -26,24 +36,22 @@ class Response
     function __construct()
     {
         $this->isSuccess = false;
+        $this->files = [];
         $this->results = [];
         $this->errors = [];
     }
 
     /**
-     * To get a result stored at the key given in param
-     * @return string result stored at the key given in param
+     * To push keys result => file ("view/elements/sticker.php")
+     * + files = [
+     *      resultKey{string} => file{string }
+     * ]
+     * @param string[] $map of keys pointing to file
      */
-    public function getResult($key){
-        return $this->results[$key];
-    }
-    
-    /**
-     * To get a error stored at the key given in param
-     * @return string error stored at the key given in param
-     */
-    public function getError($key){
-        return $this->errors[$key];
+    public function addFiles($key, $file)
+    {
+        // array_merge($this->files, $map);
+        $this->files[$key] = $file;
     }
 
     /**
@@ -81,15 +89,6 @@ class Response
     }
 
     /**
-     * To get Response's attributs
-     * @return string[] Response's attributs
-     */
-    public function getAttributs()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
      * Check if the Response is successful
      * @return boolean true if Response is successful else false
      */
@@ -108,17 +107,58 @@ class Response
     }
 
     /**
+     * Getter for the files map
+     * + files = [
+     *      resultKey{string} => file{string }
+     * ]
+     * @return string[] the files map
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * To get a result stored at the key given in param
+     * @return string result stored at the key given in param
+     */
+    public function getResult($key)
+    {
+        return $this->results[$key];
+    }
+
+    /**
+     * To get a error stored at the key given in param
+     * @return string error stored at the key given in param
+     */
+    public function getError($key)
+    {
+        return $this->errors[$key];
+    }
+
+    /**
+     * To get Response's attributs
+     * @return string[] Response's attributs
+     */
+    public function getAttributs()
+    {
+        $map = get_object_vars($this);
+        unset($map["files"]);
+        return $map;
+    }
+
+    /**
      * Unset the result at the position given in param
      * @param string $key
      * @return boolean true if value is found and unset else false and unset value
      */
-    public function unsetResult($key) {
-        if(isset($this->results[$key])){
+    public function unsetResult($key)
+    {
+        if (isset($this->results[$key])) {
             unset($this->results[$key]);
             return true;
         }
         unset($this->results[$key]);
         return false;
-
     }
 }

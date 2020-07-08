@@ -2,6 +2,8 @@
 
 require_once 'Configuration.php';
 require_once 'model/view-management/Translator.php';
+require_once 'model/tools-management/Language.php';
+require_once 'model/special/Response.php';
 
 /**
  * Classe modélisant une vue.
@@ -122,14 +124,14 @@ class View
         $this->translator = isset($language) ? new Translator($language) : new Translator();
         // Détermination du nom du fichier vue à partir de l'action et du constructeur
         // La convention de nommage des fichiers vues est : view/<$controller>/<$action>.php
-        
+
         $file = "view/";
         if ($controller != "") {
             // rnvs : par exemple si la string $controller est "Home", 
             //        $file devient "view/Home/"
             $file = $file . $controller . "/";
         }
-        
+
         // rnvs : on indique ici l'action attachée à la vue, cette action
         //        peut-être l'action du contrôleur, soit une autre action
         //        fournie explicitement par le contrôleur par l'appel
@@ -158,31 +160,35 @@ class View
     {
         // Génération de la partie spécifique de la vue
         $content = $this->generateFile($this->file, $datas);
-        
+
         // rnvs : ici $content est une string dont le contenu est le corps
         //        de la page web à retourner au client où le contenu du
         //        tableau $datas a été inséré
-        
+
         // On définit une variable locale accessible par la vue pour la racine Web
         // Il s'agit du chemin vers le site sur le serveur Web
         // Nécessaire pour les URI de type controller/action/id
         // rnvs : le chemin contenu par $webRoot termine par le caractère '/'
         $webRoot = Configuration::get("webRoot", "/");
-        
+
         // Génération du gabarit commun utilisant la partie spécifique
-        $view = $this->generateFile('view/template.php', 
-                array('title' => $this->title, 
-                    'lang' => $this->lang,
-                    'description' => $this->description,
-                    'head' => $this->head,
-                    'content' => $content, 
-                    'webRoot' => $webRoot));
-        
+        $view = $this->generateFile(
+            'view/template.php',
+            array(
+                'title' => $this->title,
+                'lang' => $this->lang,
+                'description' => $this->description,
+                'head' => $this->head,
+                'content' => $content,
+                'webRoot' => $webRoot
+            )
+        );
+
         // Renvoi de la vue générée au navigateur
         // rnvs : https://www.php.net/manual/en/function.echo.php
         // rnvs : envoi de la réponse au client ici
         echo $view;
-        
+
         // rnvs : ici la réponse a été envoyée au client
         //        on peut donc retourner à Controller::generateView
         //        et retourner (dans la majorité des cas) à index.php  
@@ -190,6 +196,24 @@ class View
         //        la méthode de l'action du contrôleur effectif
         //        appelée par Controller::executeAction 
         //        appelée par Router::routerRequest
+    }
+
+    /**
+     * @param array $datas datas used to generate the view
+     * @param Response $response contain results ready and/or prepared or errors
+     */
+    public function generateJson($datas, Response $response)
+    {
+        if (!$response->containError()) {
+            $files = $response->getFiles();
+            if (is_array($files) || is_object($files)) {
+                foreach ($files as $key => $file) {
+                    $result = $this->generateFile($file, $datas);
+                    $response->addResult($key, $result);
+                }
+            }
+        }
+        echo json_encode($response->getAttributs());
     }
 
     /**
@@ -217,9 +241,9 @@ class View
             //        p.ex.) de $datas, crée une variable de nom $key 
             //        ($abc p. ex.) et de valeur value (22, p. ex.)
             extract($datas);
-            
+
             // rnvs : ici on a 1 variable par élément de $datas
-            
+
             // Démarrage de la temporisation de sortie
             // rnvs : https://www.php.net/manual/en/function.ob-start.php
             // rnvs : This function will turn output buffering on. While 
@@ -229,7 +253,7 @@ class View
             // rnvs : donc à partir d'ici les sorties ne sont pas écrites dans
             //        le script mais mises en tampon
             ob_start();
-            
+
             // Inclut le fichier vue
             // Son résultat est placé dans le tampon de sortie
             // rnvs : le contenu du fichier de chemin $file n'est pas inclus
@@ -258,8 +282,7 @@ class View
             // rnvs : le buffer créé / géré par ob_start() est retourné sous 
             //        la forme d'une string
             return ob_get_clean();
-        }
-        else {
+        } else {
             // rnvs : ici le fichier de l'action de la vue effective n'existe pas
             throw new Exception("Fichier '$file' introuvable");
             // rnvs : l'exception remonte jusque Router::routerRequest()
@@ -284,5 +307,4 @@ class View
         //        Convert special characters to HTML entities
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
-
 }
