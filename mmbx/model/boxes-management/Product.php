@@ -117,18 +117,6 @@ abstract class Product extends ModelFunctionality
     protected $buyPrice;
 
     /**
-     * Holds the access key for content of the grid product
-     * @var string
-     */
-    public const GRID_CONTENT_KEY = "grid_content";
-
-    /**
-     * Holds the access key for stickers of the grid product
-     * @var string
-     */
-    public const GRID_STICKERS_KEY = "grid_stickers";
-
-    /**
      * White color's RGB code
      * @var string
      */

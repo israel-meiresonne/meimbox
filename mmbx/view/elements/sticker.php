@@ -1,4 +1,5 @@
 <?php
+require_once 'model/special/Search.php';
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
@@ -10,6 +11,14 @@
  * @param Translator $translator the View's translator. NOTE: it's the only
  *  instance of this class in the whole system.
  */
+
+ if(isset($executeObj)){
+     foreach($executeObj as $funcs){
+         ${$funcs["var"]} = ${$funcs["obj"]}->{$funcs["function"]}(${$funcs["param"]});
+     }
+ }
+
+
 foreach ($stickers as $sticker => $value) :
     // $valueAtt = 'value="' . $value . '"';
     // $stickerFunc = 'onclick="removeSticker(' . "'" . $value . "'" . ')"';

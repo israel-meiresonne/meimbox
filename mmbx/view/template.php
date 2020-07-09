@@ -1,5 +1,6 @@
 <?php
 
+require_once 'controller/ControllerGrid.php';
 require_once 'model/special/Search.php';
 require_once 'model/boxes-management/Product.php';
 require_once 'model/boxes-management/Size.php';
@@ -29,7 +30,7 @@ require_once 'model/special/MyError.php';
     <link rel="stylesheet" href="content/css/header.css">
     <link rel="stylesheet" href="content/css/elements.css">
     <script src="content/js/elements.js"></script>
-    <!-- <script src="content/qr/qr.js"></script> -->
+    <script src="content/qr/qr.js"></script>
 
     <?= $head ?>
 </head>
@@ -200,9 +201,10 @@ require_once 'model/special/MyError.php';
             <div class="collapse-container"></div>
         </nav>
         <script>
-            const QR_FILTER = "<?= Search::QR_FILTER ?>";
-            const GRID_CONTENT_KEY = "<?= Product::GRID_CONTENT_KEY ?>";
-            const GRID_STICKERS_KEY = "<?= Product::GRID_STICKERS_KEY ?>";
+            const WR = "<?= $webRoot ?>";
+            const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
+            const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
+            const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
 
             const QR_SELECT_BRAND = "<?= Size::QR_SELECT_BRAND ?>";
             const BRAND_STICKER_KEY = "<?= Size::BRAND_STICKER_KEY ?>";

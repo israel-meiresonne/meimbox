@@ -39,11 +39,10 @@
         font-size: var(--middle-font-size);
     }
     .item-space {
+        position: relative;
         flex-direction: row;
         width: 100%;
-        /* height: 1000px; */
         margin-left: 15px;
-        /* border: olive 1px solid; */
     }
     .item-space .remove-ul-default-att{
         overflow: auto;
@@ -194,9 +193,7 @@
     .item-space {
         flex-direction: row;
         width: 100%;
-        /* height: 1000px; */
-        /* margin-left: 15px; */
-        /* border: olive 1px solid; */
+        position: relative;
     }
     .item-space .remove-ul-default-att{
         overflow: auto;

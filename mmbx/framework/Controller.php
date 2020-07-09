@@ -3,6 +3,8 @@
 require_once 'Configuration.php';
 require_once 'Request.php';
 require_once 'View.php';
+require_once 'model/tools-management/Language.php';
+require_once 'model/special/Response.php';
 
 /**
  * Classe abstraite contrôleur. 
