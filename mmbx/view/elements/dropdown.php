@@ -6,7 +6,7 @@
  * @param string[] $checkedLabels list of checked input label
  * @param string[] $labels list of input label that return a input value
  * $labels => [
- *          label => paramName
+ *          label => value
  *      ]
  * + label : used as displayed name and as input's value attribut
  * + paramName : used as input's name attribut

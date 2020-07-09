@@ -9,33 +9,9 @@ class Query
 
     /**
      * Holds values of the super global $_GET & $_POST
-     * @var string
+     * @var string[]
      */
     private static $params;
-
-    // /**
-    //  * Holds the super global $_GET
-    //  * @var string
-    //  */
-    // private static $GET;
-
-    // /**
-    //  * Holds the super global $_POST
-    //  * @var string
-    //  */
-    // private static $POST;
-
-    // /**
-    //  * Holds the method of the query
-    //  * @var string
-    //  */
-    // const GET_MOTHOD = "GET";
-
-    // /**
-    //  * Holds the method of the query
-    //  * @var string
-    //  */
-    // const POST_MOTHOD = "POST";
 
     /**
      * Holds the input type
@@ -87,6 +63,24 @@ class Query
     {
         (!self::$isset) ? self::setQuery() : null;
         return (self::existParam($key)) ? self::clean(self::$params[$key]) : null;
+    }
+
+    /**
+     * To get map of cleanned params from $_GET or $_POST where key match a regular expression
+     * @param string $key key value from $_GET or $_POST
+     * @param string $regex a regular expression
+     * @return string[] cleanned value from $_GET or $_POST that match the regular expression
+     */
+    public static function getRegexParams($regex)
+    {
+        (!self::$isset) ? self::setQuery() : null;
+        $map = [];
+        foreach(self::$params as $key => $param){
+            if(preg_match($regex, $key) == 1){
+                $map[$key] = self::clean($param);
+            }
+        }
+        return $map;
     }
 
     // /**

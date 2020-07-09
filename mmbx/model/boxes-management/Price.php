@@ -79,14 +79,14 @@ class Price
      * To get a protected copy of a Price instance
      * @return Price a protected copy of the Price instance
      */
-    public function getCopy()
-    {
-        $copy = new Price();
-        $copy->price = $this->price;
-        $copy->country = (!empty($this->country)) ? $this->country->getCopy() : null;
-        $copy->currency = (!empty($this->currency)) ? $this->currency->getCopy() : null;
-        return $copy;
-    }
+    // public function getCopy()
+    // {
+    //     $copy = new Price();
+    //     $copy->price = $this->price;
+    //     $copy->country = (!empty($this->country)) ? $this->country->getCopy() : null;
+    //     $copy->currency = (!empty($this->currency)) ? $this->currency->getCopy() : null;
+    //     return $copy;
+    // }
 
     /**
      * Format the price to make it into a displayable format for Visitor
@@ -111,10 +111,10 @@ class Price
      * @return string the price in a displayable format with a translated
      * textual indication that it a minimum value
      */
-    public function getMinPrice($language, $translator)
+    public function getMinPrice($translator)
     {
-        $textualMin = $translator->translateString(self::TEXTUAL_MIN, $language);
-        return $textualMin . ": " . self::getFormated();
+        $textualMin = $translator->translateString(self::TEXTUAL_MIN);
+        return $textualMin . ": " . $this->getFormated();
     }
 
     /**
@@ -126,10 +126,10 @@ class Price
      * @return string the price in a displayable format with a translated
      * textual indication that it a minimum value
      */
-    public function getMaxPrice($language, $translator)
+    public function getMaxPrice($translator)
     {
-        $textualMin = $translator->translateString(self::TEXTUAL_MAX, $language);
-        return $textualMin . ": " . self::getFormated();
+        $textualMin = $translator->translateString(self::TEXTUAL_MAX);
+        return $textualMin . ": " . $this->getFormated();
     }
 
     public function __toString()

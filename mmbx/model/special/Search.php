@@ -105,20 +105,14 @@ class Search extends ModelFunctionality
     const POST_SEARCH = "post_search";
 
     /**
-     * Holds the value of $_POST["qr"] that will execute a product Search
-     * @var string the value of $_POST["qr"] that will execute a product Search
-     */
-    const QR_FILTER = "filter";
-
-
-
-    /**
      * Constuctor
      * @param  string $searchMode PARAM_SEARCH or SYSTEM_SEARCH
      * @param Currency the Visitor's current Currency
      */
     function __construct($searchMode, $currency)
     {
+        $this->products = [];
+        $this->searchMap = [];
         $prodIDList = [];
         $this->collections = [];
         $this->product_types = [];
@@ -196,9 +190,6 @@ class Search extends ModelFunctionality
         $pricesObj = $this->filterPrices($prices, $currency);
         $this->prices["minPrice"] = $pricesObj["minprice"];
         $this->prices["maxPrice"] = $pricesObj["maxprice"];
-
-        $this->products = [];
-        $this->searchMap = [];
     }
 
     /**
@@ -260,16 +251,13 @@ class Search extends ModelFunctionality
             $this->prices["minPrice"] = key_exists(0, $pricesObj) ? $pricesObj[0] : null;
             $this->prices["maxPrice"] = key_exists(1, $pricesObj) ? $pricesObj[1] : null;
         }
-        $this->products = [];
-        $this->searchMap = [];
     }
 
     /**
      * This constructor set the attributs with the server request by using $_POST
-     *  variable. NOTE: this method dont set products lsit and search map
+     *  variable. 
+     * + NOTE: this method dont set products list and search map
      * @param Currency the Visitor's current Currency
-     * @param string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file oop/model/special/dbMap.txt
      */
     private function postSearch($currency)
     {
@@ -279,9 +267,10 @@ class Search extends ModelFunctionality
         $categories = [];
         $colors = [];
         $sizes = [];
-        foreach ($_POST as $criterion => $value) {
-            $shortCriterion = preg_replace("#_[0-9]+#", "", $criterion);
-            switch ($shortCriterion) {
+        $params = Query::getRegexParams("#_[0-9]+#");
+        foreach ($params as $param => $value) {
+            $shortParam = preg_replace("#_[0-9]+#", "", $param);
+            switch ($shortParam) {
                 case "collections":
                     array_push($collections, $value);
                     break;
@@ -310,24 +299,23 @@ class Search extends ModelFunctionality
         $this->colors = $this->filterValidValues("colors", $colors);
         $this->sizes = $this->filterValidValues("sizes", $sizes);
 
-        $order = isset($_POST["order"]) ? GeneralCode::clean($_POST["order"]) : null;
+        $order = Query::existParam("order") ? Query::getParam("order") : null;
         $order = $this->filterOrders($order);
         $this->order =  $order;
 
-        $prices["minprice"] = isset($_POST["minprice"]) ? GeneralCode::clean($_POST["minprice"]) : null;
-        $prices["minprice"] = preg_match("#[.]{1}#", $prices["minprice"]) == 1
+        $prices["minprice"] = Query::existParam("minprice") ? Query::getParam("minprice") : null;
+        $prices["minprice"] = (preg_match("#[.]{1}#", $prices["minprice"]) == 1)
             ? $prices["minprice"]
             : $prices["minprice"] . "00";
 
-        $prices["maxprice"] = isset($_POST["maxprice"]) ? GeneralCode::clean($_POST["maxprice"]) : null;
-        $prices["maxprice"] = preg_match("#[.]{1}#", $prices["maxprice"]) == 1
+        $prices["maxprice"] = Query::existParam("maxprice") ? Query::getParam("maxprice") : null;
+        $prices["maxprice"] = (preg_match("#[.]{1}#", $prices["maxprice"]) == 1)
             ? $prices["maxprice"]
             : $prices["maxprice"] . "00";
+
         $pricesObj = $this->filterPrices($prices, $currency);
-        $this->prices["minPrice"] = $pricesObj["minprice"];
-        $this->prices["maxPrice"] = $pricesObj["maxprice"];
-        $this->products = [];
-        $this->searchMap = [];
+        $this->prices["minPrice"] = key_exists("minprice", $pricesObj) ? $pricesObj["minprice"] : null;
+        $this->prices["maxPrice"] = key_exists("maxprice", $pricesObj) ? $pricesObj["maxprice"] : null;
     }
 
     /**
@@ -473,12 +461,11 @@ class Search extends ModelFunctionality
 
     /**
      * Build a array with all criterion into string format.
-     * @param Language $language the Visitor's current language
      * @param Translator $translator the View's translator. NOTE: it's the only
      *  instance of this class in the whole system.
      * @return string[] list of criterion needed to build search stickers
      */
-    public function getStickers($language, $translator)
+    public function getStickers($translator)
     {
         $stickers = [];
         if (
@@ -497,7 +484,7 @@ class Search extends ModelFunctionality
                 // $stickers[$minPriceDisplayable] = $minPrice->getPrice();
 
                 $minPrice = $this->prices["minPrice"]->getPrice();
-                $minPriceDisplayable = $this->prices["minPrice"]->getMinPrice($language, $translator);
+                $minPriceDisplayable = $this->prices["minPrice"]->getMinPrice($translator);
                 $stickers[$minPriceDisplayable] = $minPrice;
             }
             if (!empty($this->prices["maxPrice"])) {
@@ -507,7 +494,7 @@ class Search extends ModelFunctionality
                 // $stickers[$maxPriceDisplayable] = $maxPrice->getPrice();
 
                 $maxPrice = $this->prices["maxPrice"]->getPrice();
-                $maxPriceDisplayable = $this->prices["maxPrice"]->getMaxPrice($language, $translator);
+                $maxPriceDisplayable = $this->prices["maxPrice"]->getMaxPrice($translator);
                 $stickers[$maxPriceDisplayable] = $maxPrice;
             }
         }
@@ -557,8 +544,8 @@ class Search extends ModelFunctionality
     public function geSearchParams($criterions)
     {
         $map = [];
-        foreach($criterions as $criterion){
-            if(key_exists($criterion, $this->searchMap)){
+        foreach ($criterions as $criterion) {
+            if (key_exists($criterion, $this->searchMap)) {
                 $params = array_keys($this->searchMap[$criterion]);
                 $map = array_merge($map, $params);
             }

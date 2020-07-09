@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * ——————————————————————————————— NEED —————————————————————————————————————
  * $boxesPrices : list containing only price and datas to color price
  * + NOTE: price are ordered from lower price to higher
  * $boxesPrices[

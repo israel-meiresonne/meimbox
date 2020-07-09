@@ -11,6 +11,7 @@
  * @var BasketProduct|BoxProduct
  */
 $product = $product;
+
 $prodID = $product->getProdID();
 $pictures = $product->getPictures();
 $colorRGB = $product->getColorRGB();

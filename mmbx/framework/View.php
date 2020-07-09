@@ -233,6 +233,8 @@ class View
     private function generateFile($file, $datas)
     {
         if (file_exists($file)) {
+            $translator = $this->translator;
+
             // Rend les éléments du tableau $datas accessibles dans la vue
             // rnvs : https://www.php.net/manual/en/function.extract.php
             // rnvs : Import variables from an array into the current symbol 
