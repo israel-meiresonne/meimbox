@@ -1,7 +1,13 @@
 <?php
 
-class Administrator extends User {
-    
+class Administrator extends User
+{
+    /**
+     * Holds the class's name
+     */
+    public const CLASS_NAME = "Administrator";
+
+
     /**
      * Constructor
      * @param int $userID

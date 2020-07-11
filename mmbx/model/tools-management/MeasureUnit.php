@@ -29,7 +29,7 @@ class MeasureUnit extends ModelFunctionality
      */
     private $toSystUnit;
 
-    const INPUT_MEASURE_UNIT = "unit_name";
+    public const INPUT_MEASURE_UNIT = "unit_name";
 
     /**
      * Holds a list of measure unit available for Visitor's input
@@ -105,7 +105,7 @@ class MeasureUnit extends ModelFunctionality
      * Gettert of measure unit's supported unit list
      * @return string[] measure unit's supported unit list
      */
-    public function getSUPPORTED_UNIT()
+    public static function getSUPPORTED_UNIT()
     {
         return self::$SUPPORTED_UNIT;
     }

@@ -14,12 +14,12 @@ require_once 'model/special/MyError.php';
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $title ?></title>
     <base href="<?= $webRoot ?>">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="$description"> <!-- <meta name="description" content=""> -->
+    <title><?= $title ?></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -201,13 +201,13 @@ require_once 'model/special/MyError.php';
             <div class="collapse-container"></div>
         </nav>
         <script>
-            const WR = "<?= $webRoot ?>";
+            const WR = "<?= $webRoot ?>";mmbx/model/ModelFunctionality.php
             const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
             const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
             const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
 
-            const QR_SELECT_BRAND = "<?= Size::QR_SELECT_BRAND ?>";
-            const BRAND_STICKER_KEY = "<?= Size::BRAND_STICKER_KEY ?>";
+            const A_SELECT_BRAND = "<?= ControllerItem::A_SELECT_BRAND ?>";
+            const BRAND_STICKER_KEY = "<?= ControllerItem::BRAND_STICKER_KEY ?>";
 
             const QR_GET_MEASURE_ADDER = "<?= Measure::QR_GET_MEASURE_ADDER ?>";
             const QR_GET_EMPTY_MEASURE_ADDER = "<?= Measure::QR_GET_EMPTY_MEASURE_ADDER ?>";

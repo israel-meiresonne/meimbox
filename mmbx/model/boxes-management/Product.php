@@ -313,7 +313,7 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Getter for the product's id
-     * @return string the id of the product
+     * @return int the id of the product
      */
     public function getProdID()
     {
@@ -338,6 +338,7 @@ abstract class Product extends ModelFunctionality
         return $this->colorName;
     }
     #03030
+
     /**
      * Getter for the product's color RGB code [^#[0-9]{3,6}]
      * @return string the product's color
@@ -345,7 +346,16 @@ abstract class Product extends ModelFunctionality
     public function getColorRGB()
     {
         return $this->colorRGB;
-        return ($this->colorRGB != self::WHITE_RGB) ? $this->colorRGB : $this->COLOR_TEXT_05;
+    }
+
+    /**
+     * Getter for the product's color RGB code for text
+     * + NOTE: if the colorr is white a other color is returned
+     * @return string the product's color for text
+     */
+    public function getColorRGBText()
+    {
+        return ($this->colorRGB != self::WHITE_RGB) ? $this->colorRGB : self::$COLOR_TEXT_05;
     }
 
     /**
@@ -364,6 +374,17 @@ abstract class Product extends ModelFunctionality
     public function getSizes()
     {
         return array_keys($this->sizesStock);
+    }
+
+    /**
+     * Builds a map that use size name as key and value
+     * + [size => size]
+     * @return string[] map that use size name as key and value
+     */
+    public function getSizeValueToValue()
+    {
+        $sizes = $this->getSizes();
+        return $this->arrayToMap($sizes);
     }
 
     /**
@@ -394,13 +415,22 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
-     * Getter for product's description into language asked
-     * @param $isoLang
+     * Getter for product's description
      */
-    public function getDescription($isoLang)
+    public function getDescription()
     {
-        return (!empty($this->descriptions[$isoLang])) ? $this->descriptions[$isoLang]
-            : $this->descriptions[Language::__getDEFAULT_LANGUAGE()];
+        return $this->description;
+    }
+
+    /**
+     * To get cuts available
+     * @return string[] cuts available
+     */
+    public function getCutsValueToValue()
+    {
+        $tab = $this->getTableValues("cuts");
+        $cuts = array_keys($tab);
+        return $this->arrayToMap($cuts);
     }
 
     /**
@@ -413,9 +443,9 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Getter for sameProducts
-     * @return BasketProduct|BoxProduct a prodtected copy of sameProducts
+     * @return BasketProduct[]|BoxProduct[] a prodtected copy of sameProducts
      */
-    public function getSameProd()
+    public function getSameProducts()
     {
         return $this->cloneMap($this->sameProducts);
     }

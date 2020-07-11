@@ -2,7 +2,13 @@
 
 require_once 'model/users-management/User.php';
 
-class Client extends User {
+class Client extends User
+{
+    /**
+     * Holds the class's name
+     */
+    public const CLASS_NAME = "Client";
+
     /**
      * Show if the Client is subcribed to the newsletter
      * @var boolean true if user is subcribed to the newsletter else false
@@ -16,7 +22,7 @@ class Client extends User {
      * @var Order[]
      */
     private $orders;
-    
+
 
     /**
      * Constructor
@@ -25,7 +31,7 @@ class Client extends User {
     function __construct($userID)
     {
         parent::__construct($userID);
-        $this->newsletter = (boolean) $this->userLine["newsletter"];
+        $this->newsletter = (bool) $this->userLine["newsletter"];
     }
 
     /**
@@ -33,7 +39,8 @@ class Client extends User {
      * @var array $dbMap of Database's tables
      * @var Basket $basket of the Client
      */
-    public function order($basket, $dbMap){
+    public function order($basket, $dbMap)
+    {
         $order = new Order($dbMap, $basket);
         $key =  $order->getDateInSec();
         $this->orders[$key] = $order;
@@ -45,5 +52,4 @@ class Client extends User {
         parent::__toString();
         Helper::printLabelValue("newsletter", $this->newsletter);
     }
-
 }
