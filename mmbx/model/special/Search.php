@@ -10,7 +10,7 @@ class Search extends ModelFunctionality
      * Holds a list product id
      * @var string[]
      */
-    private $prodIDList;
+    private $prodIdList;
 
     /**
      * Holds a list of collection witch match the search
@@ -81,39 +81,45 @@ class Search extends ModelFunctionality
      */
     private $searchMap;
 
-    const NEWEST = "newest";
-    const OLDER = "older";
-    const HIGHT_TO_LOW = "highttolow";
-    const LOW_TO_HIGHT = "lowtohight";
+    public const NEWEST = "newest";
+    public const OLDER = "older";
+    public const HIGHT_TO_LOW = "highttolow";
+    public const LOW_TO_HIGHT = "lowtohight";
 
     /**
      * Holds the search method for system's search
      * @var string
      */
-    const SYSTEM_SEARCH = "SYSTEM_SEARCH";
+    public const PROD_ID_GET_SEARCH = "prod_id_GET_search";
+    /**
+     * Holds the search method for system's search
+     * @var string
+     */
+    public const SYSTEM_SEARCH = "SYSTEM_SEARCH";
 
     /**
      * Holds the search method for GET search
      * @var string
      */
-    const GET_SEARCH = "get_search";
+    public const FILTER_GET_SEARCH = "filter_get_search";
 
     /**
      * Holds the search method for POST search
      * @var string
      */
-    const POST_SEARCH = "post_search";
+    public const FILTER_POST_SEARCH = "filter_post_search";
 
     /**
      * Constuctor
-     * @param  string $searchMode PARAM_SEARCH or SYSTEM_SEARCH
-     * @param Currency the Visitor's current Currency
+     * @param  string $searchMode  PROD_ID_GET_SEARCH, SYSTEM_SEARCH, FILTER_GET_SEARCH, FILTER_POST_SEARCH...
+     * @param Currency $currency the Visitor's current Currency
+     * @param string[] $params search params like collections, product_types, functions, categories, order etc...
      */
-    function __construct($searchMode, $currency)
+    public function __construct($searchMode, Currency $currency = null, array $params = null)
     {
         $this->products = [];
         $this->searchMap = [];
-        $prodIDList = [];
+        $this->prodIdList = [];
         $this->collections = [];
         $this->product_types = [];
         $this->functions = [];
@@ -123,13 +129,18 @@ class Search extends ModelFunctionality
         $this->prices["minPrice"] = [];
         $this->prices["maxPrice"] = [];
         switch ($searchMode) {
-            case self::GET_SEARCH:
-                $this->getSearch($currency);
+            case self::FILTER_GET_SEARCH:
+                $this->filterGETSearch($currency);
                 break;
-            case self::POST_SEARCH:
-                $this->postSearch($currency);
+            case self::FILTER_POST_SEARCH:
+                $this->filterPOSTSearch($currency);
+                break;
+            case self::PROD_ID_GET_SEARCH:
+                $prodId = Query::existParam("prodid") ? [(int)Query::getParam("prodid")] : [];
+                $this->prodIdSearch($prodId);
                 break;
             case self::SYSTEM_SEARCH:
+                $this->systemSearch($params);
                 break;
         }
     }
@@ -150,15 +161,13 @@ class Search extends ModelFunctionality
      *      "maxprice" => double,
      *      "order" => string
      *  ]
-     * @param Currency the Visitor's current Currency
-     * @param string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file oop/model/special/dbMap.txt
+     * @param Currency $currency the Visitor's current Currency
      */
-    private function systemSearch($criterions, $currency)
+    private function systemSearch($criterions, Currency $currency = null)
     {
 
-        $prodIDList = isset($criterions["prodID"]) ? $criterions["prodID"] : null;
-        $this->prodIDList = $this->filterValidValues("productIDList", $prodIDList);
+        $prodIdList = isset($criterions["prodID"]) ? $criterions["prodID"] : null;
+        $this->prodIdList = $this->filterValidValues("productIDList", $prodIdList);
 
         $collections = isset($criterions["collections"]) ? $criterions["collections"] : null;
         $product_types = isset($criterions["product_types"]) ? $criterions["product_types"] : null;
@@ -188,47 +197,21 @@ class Search extends ModelFunctionality
             ? $prices["maxprice"]
             : $prices["maxprice"] . "00";
         $pricesObj = $this->filterPrices($prices, $currency);
-        $this->prices["minPrice"] = $pricesObj["minprice"];
-        $this->prices["maxPrice"] = $pricesObj["maxprice"];
+        $this->prices["minPrice"] = key_exists("minprice", $pricesObj) ? $pricesObj["minprice"] : null;
+        $this->prices["maxPrice"] = key_exists("maxprice", $pricesObj) ? $pricesObj["maxprice"] : null;
     }
-
-    /**
-     * This constructor set the following attributs (first 6 attributs) with the
-     *  URL by using GET variable: collections, product_types, categories, 
-     * colors, sizes and prices
-     * @param string $method request method of the search ["GET","POST"]
-     * @param Currency the Visitor's current Currency
-     * @param string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file oop/model/special/dbMap.txt
-     */
-    // private function __construct3($method, $currency)
-    // {
-    //     switch ($method) {
-    //         case Query::GET_MOTHOD:
-    //             self::setGETSearch($currency);
-    //             break;
-    //         case Query::POST_MOTHOD:
-    //             self::setPOSTSearch($currency);
-    //             break;
-    //             // case self::SYSTEM_SEARCH:
-    //             //     self::setSystemSearch($currency);
-    //             //     break;
-    //     }
-    // }
 
     /**
      * This constructor set the attributs with the URL by using $_GET
      *  variable. NOTE: this method dont set products lsit and search map
-     * @param Currency the Visitor's current Currency
-     * @param string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file oop/model/special/dbMap.txt
+     * @param Currency $currency the Visitor's current Currency
      */
-    private function getSearch($currency)
+    private function filterGETSearch(Currency $currency)
     {
-        if (Query::existParam("prodID")) {
-            $prodIDList = explode(",", Query::getParam("prodID"));
-            $this->prodIDList = $this->filterValidValues("productIDList", $prodIDList);
-        } else {
+        // if (Query::existParam("prodID")) {
+        //     $prodIdList = explode(",", Query::getParam("prodID"));
+        //     $this->prodIdList = $this->filterValidValues("productIDList", $prodIdList);
+        // } else {
             $collections = Query::existParam("collections") ? explode(",", Query::getParam("collections")) : null;
             $product_types = Query::existParam("product_types") ? explode(",", Query::getParam("product_types")) : null;
             $functions = Query::existParam("functions") ? explode(",", Query::getParam("functions")) : null;
@@ -250,16 +233,16 @@ class Search extends ModelFunctionality
             $pricesObj = $this->filterPrices($prices, $currency);
             $this->prices["minPrice"] = key_exists(0, $pricesObj) ? $pricesObj[0] : null;
             $this->prices["maxPrice"] = key_exists(1, $pricesObj) ? $pricesObj[1] : null;
-        }
+        // }
     }
 
     /**
      * This constructor set the attributs with the server request by using $_POST
      *  variable. 
      * + NOTE: this method dont set products list and search map
-     * @param Currency the Visitor's current Currency
+     * @param Currency $currency the Visitor's current Currency
      */
-    private function postSearch($currency)
+    private function filterPOSTSearch(Currency $currency)
     {
         $collections = [];
         $product_types = [];
@@ -316,6 +299,17 @@ class Search extends ModelFunctionality
         $pricesObj = $this->filterPrices($prices, $currency);
         $this->prices["minPrice"] = key_exists("minprice", $pricesObj) ? $pricesObj["minprice"] : null;
         $this->prices["maxPrice"] = key_exists("maxprice", $pricesObj) ? $pricesObj["maxprice"] : null;
+    }
+
+    /**
+     * This constructor set the attributs with the server request by using $_POST
+     *  variable. 
+     * + NOTE: this method dont set products list and search map
+     * @param Currency $currency the Visitor's current Currency
+     * @param int[]  $prodIdList list of product id
+     */
+    private function prodIdSearch($prodIdList){
+        $this->prodIdList = $this->filterValidValues("productIDList", $prodIdList);
     }
 
     /**
@@ -443,7 +437,7 @@ class Search extends ModelFunctionality
 
     /**
      * Getter of the products
-     * @return BoxProduct|BasketProduct a protected copy of products
+     * @return BoxProduct[]|BasketProduct[] a protected copy of products
      */
     public function getProducts()
     {
@@ -478,21 +472,11 @@ class Search extends ModelFunctionality
 
         if (count($this->prices) > 0) {
             if (!empty($this->prices["minPrice"])) {
-                // $minPrice = new Price($this->prices["minPrice"], $currency);
-                // $formatedPrice = $minPrice->getFormated();
-                // $minPriceDisplayable = "min: " . $formatedPrice;
-                // $stickers[$minPriceDisplayable] = $minPrice->getPrice();
-
                 $minPrice = $this->prices["minPrice"]->getPrice();
                 $minPriceDisplayable = $this->prices["minPrice"]->getMinPrice($translator);
                 $stickers[$minPriceDisplayable] = $minPrice;
             }
             if (!empty($this->prices["maxPrice"])) {
-                // $maxPrice = new Price($this->prices["maxPrice"], $currency);
-                // $formatedPrice = $maxPrice->getFormated();
-                // $maxPriceDisplayable = "max: " . $formatedPrice;
-                // $stickers[$maxPriceDisplayable] = $maxPrice->getPrice();
-
                 $maxPrice = $this->prices["maxPrice"]->getPrice();
                 $maxPriceDisplayable = $this->prices["maxPrice"]->getMaxPrice($translator);
                 $stickers[$maxPriceDisplayable] = $maxPrice;
@@ -657,7 +641,7 @@ class Search extends ModelFunctionality
         $sql .= " WHERE p.isAvailable = 1 AND ";
         $sql .= '(pp.country_ = "' . $country->getCountryName() . '" AND pp.iso_currency = "' . $currency->getIsoCurrency() . '"  OR product_type = "' . BoxProduct::BOX_TYPE . '")';
         $sql .= " AND ";
-        $sql = $this->concatORGroup($sql, "p.prodID", $this->prodIDList);
+        $sql = $this->concatORGroup($sql, "p.prodID", $this->prodIdList);
         $sql .= " AND ";
         $sql = $this->concatORGroup($sql, "pco.collection_name", $this->collections);
         $sql .= " AND ";

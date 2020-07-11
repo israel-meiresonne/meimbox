@@ -202,7 +202,7 @@
      *  "btnDataAttrName_targerClass" : "data-brand_class",
      *  "dataAttrName4selectedElement" : "data-selected_brand",
      *  "dataAttrName_4_dataToPost" : "data-brand",
-     *  "qr" : QR_SELECT_BRAND,
+     *  "qr" : A_SELECT_BRAND,
      *  "f" : selectBrandRSP,
      *  "lds" : "#brandPopUp_loading",
      *  "cbkSND" : function () { $(lds).css("display", "flex"); 
@@ -404,7 +404,7 @@
                 "btnDataAttrName_targerClass": "data-brand_class",
                 "dataAttrName4selectedElement": "data-selected_brand",
                 "dataAttrName_4_dataToPost": "data-brand",
-                "qr": QR_SELECT_BRAND,
+                "qr": A_SELECT_BRAND,
                 "f": selectBrandRSP,
                 "lds": "#brandPopUp_loading",
                 "cbkSND": function () {

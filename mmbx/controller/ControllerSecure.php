@@ -5,6 +5,7 @@ require_once 'model/users-management/Client.php';
 require_once 'model/users-management/Administrator.php';
 require_once 'model/special/Search.php';
 require_once 'model/special/Response.php';
+require_once 'model/special/MyError.php';
 
 /**
  * This class manage security and holds elements common to several controllers

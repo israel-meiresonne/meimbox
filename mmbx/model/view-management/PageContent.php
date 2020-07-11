@@ -1254,8 +1254,8 @@ class PageContent
         foreach ($dbMap["brandsMeasures"] as $brandName => $brandDatas) {
             // $dataBrand = GeneralCode::encodeInputString($brandName);
             $dataBrand = [
-                // Size::BRAND_NAME_KEY => GeneralCode::encodeInputString($brandName)
-                Size::BRAND_NAME_KEY => $brandName
+                // ControllerItem::BRAND_NAME_KEY => GeneralCode::encodeInputString($brandName)
+                ControllerItem::BRAND_NAME_KEY => $brandName
             ];
             $dataBrand_json = json_encode($dataBrand);
 
@@ -1747,7 +1747,7 @@ class PageContent
         $stickerTitle = $translator->translateStation(self::GRID_USED_INSIDE, 46);
         $stickerName = $translator->translateStation(self::GRID_USED_INSIDE, 47);
 
-        $stickerDatas["inputName"] = Size::BRAND_NAME_KEY;
+        $stickerDatas["inputName"] = ControllerItem::BRAND_NAME_KEY;
         $stickerDatas["inputValue"] = $brandName;
         $stickerDatas["stickerTitle"] = $stickerTitle;
         $stickerDatas["removeBtnId"] = null;
@@ -1766,7 +1766,7 @@ class PageContent
         // $sticker =
         //     '
         //     <div class="custom_selected-inner">
-        //         <input name="' . Size::BRAND_NAME_KEY . '" type="hidden" value="' . $brandName . '">
+        //         <input name="' . ControllerItem::BRAND_NAME_KEY . '" type="hidden" value="' . $brandName . '">
         //         <div class="custom_selected-title-div">
         //             <p class="custom_selected-title">' . $stickerTitle . ':</p>
         //         </div>

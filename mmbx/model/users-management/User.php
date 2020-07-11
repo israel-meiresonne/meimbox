@@ -48,7 +48,8 @@ abstract class User extends  Visitor{
 
     protected function __construct($userID){
         parent::__construct();
-        $this->userLine = $this->select("SELECT * FROM `Users` WHERE `userID` = '$userID'")[0];
+        $this->userID = $userID;
+        $this->userLine = $this->select("SELECT * FROM `Users` WHERE `userID` = '$this->userID'")[0];
         $this->mail = $this->userLine["mail"];
         $this->firstname = $this->userLine["firstname"];
         $this->lastname = $this->userLine["lastname"];
@@ -57,17 +58,17 @@ abstract class User extends  Visitor{
     }
 
     
-    public function __toString()
-    {
-        parent::__toString();
-        Helper::printLabelValue("mail", $this->mail);
-        Helper::printLabelValue("password", null);
-        Helper::printLabelValue("firstname", $this->firstname);
-        Helper::printLabelValue("lastname", $this->lastname);
-        Helper::printLabelValue("birthday", $this->birthday);
-        Helper::printLabelValue("sexe", $this->sexe);
-        foreach ($this->addresses as $address) {
-            $address->__toString();
-        }
-    }
+    // public function __toString()
+    // {
+    //     parent::__toString();
+    //     Helper::printLabelValue("mail", $this->mail);
+    //     Helper::printLabelValue("password", null);
+    //     Helper::printLabelValue("firstname", $this->firstname);
+    //     Helper::printLabelValue("lastname", $this->lastname);
+    //     Helper::printLabelValue("birthday", $this->birthday);
+    //     Helper::printLabelValue("sexe", $this->sexe);
+    //     foreach ($this->addresses as $address) {
+    //         $address->__toString();
+    //     }
+    // }
 }

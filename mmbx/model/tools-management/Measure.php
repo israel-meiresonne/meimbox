@@ -157,10 +157,9 @@ class Measure extends ModelFunctionality
      */
     public function __construct($datas)
     {
-        // $this->measureName = $datas["measure_name"];
+        $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(25);
         $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(25);;
         $unitName = $datas["unit_name"];
-        $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(25);
         $this->bust = (!empty($datas["bust"])) ? new MeasureUnit($datas["bust"], $unitName) : null;
         $this->arm = (!empty($datas["arm"])) ? new MeasureUnit($datas["arm"], $unitName) : null;
         $this->waist = (!empty($datas["waist"])) ? new MeasureUnit($datas["waist"], $unitName) : null;
@@ -193,7 +192,7 @@ class Measure extends ModelFunctionality
      */
     public function getbust()
     {
-        return $this->bust->getCopy();
+        return (isset($this->bust)) ? $this->bust->getCopy() : null;
     }
     /**
      * Getter of measure's arm
@@ -201,7 +200,7 @@ class Measure extends ModelFunctionality
      */
     public function getarm()
     {
-        return $this->arm->getCopy();
+        return (isset($this->arm)) ? $this->arm->getCopy() : null;
     }
     /**
      * Getter of measure's waist
@@ -209,7 +208,7 @@ class Measure extends ModelFunctionality
      */
     public function getwaist()
     {
-        return $this->waist->getCopy();
+        return (isset($this->waist)) ? $this->waist->getCopy() : null;
     }
     /**
      * Getter of measure's hip
@@ -217,7 +216,7 @@ class Measure extends ModelFunctionality
      */
     public function gethip()
     {
-        return $this->hip->getCopy();
+        return (isset($this->hip)) ? $this->hip->getCopy() : null;
     }
     /**
      * Getter of measure's inseam
@@ -225,7 +224,7 @@ class Measure extends ModelFunctionality
      */
     public function getInseam()
     {
-        return $this->inseam->getCopy();
+        return (isset($this->inseam)) ? $this->inseam->getCopy() : null;
     }
 
     /**
@@ -288,19 +287,19 @@ class Measure extends ModelFunctionality
      * To get a protected copy of this Measure
      * @return Measure a protected copy of this Measure
      */
-    public function getCopy()
-    {
-        $copy = new Measure();
-        $copy->measureID = $this->measureID;
-        $copy->measureName = $this->measureName;
-        $copy->bust = (!empty($this->bust)) ? $this->bust->getCopy() : null;
-        $copy->arm = (!empty($this->arm)) ? $this->arm->getCopy() : null;
-        $copy->waist = (!empty($this->waist)) ? $this->waist->getCopy() : null;
-        $copy->hip = (!empty($this->hip)) ? $this->hip->getCopy() : null;
-        $copy->inseam = (!empty($this->inseam)) ? $this->inseam->getCopy() : null;
-        $copy->setDate = $this->setDate;
-        return $copy;
-    }
+    // public function getCopy()
+    // {
+    //     $copy = new Measure();
+    //     $copy->measureID = $this->measureID;
+    //     $copy->measureName = $this->measureName;
+    //     $copy->bust = (!empty($this->bust)) ? $this->bust->getCopy() : null;
+    //     $copy->arm = (!empty($this->arm)) ? $this->arm->getCopy() : null;
+    //     $copy->waist = (!empty($this->waist)) ? $this->waist->getCopy() : null;
+    //     $copy->hip = (!empty($this->hip)) ? $this->hip->getCopy() : null;
+    //     $copy->inseam = (!empty($this->inseam)) ? $this->inseam->getCopy() : null;
+    //     $copy->setDate = $this->setDate;
+    //     return $copy;
+    // }
 
     /**
      * Save the measure by INSERT it in database

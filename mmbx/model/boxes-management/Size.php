@@ -58,24 +58,6 @@ class Size
     const CUT =  "cut";
 
     /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_SELECT_BRAND = "select_brand";
-
-    /**
-     * Holds the access key for brand name in Query
-     * @var string
-     */
-    const BRAND_NAME_KEY =  "brand_name";
-    
-    /**
-     * Holds the access key for brand name
-     * @var string
-     */
-    const BRAND_STICKER_KEY =  "brand_sticker";
-
-    /**
      * Constructor
      */
     function __construct()

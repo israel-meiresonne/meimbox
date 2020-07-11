@@ -15,7 +15,8 @@ $product = $product;
 $prodID = $product->getProdID();
 $pictures = $product->getPictures();
 $colorRGB = $product->getColorRGB();
-$cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
+$colorRGBText = $product->getColorRGBText();
+// $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
 ?>
 
 <article class="product-article-wrap">
@@ -49,7 +50,7 @@ $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
     <div class="product-detail-block">
         <div class="detail-text-div">
             <h4>
-                <span><?= $translator->translateString($product->getProdName()) ?> | <span style="color:<?= $colorRGB ?>;"><?= $product->getColorName() ?></span></span>
+                <span><?= $translator->translateString($product->getProdName()) ?> | <span style="color:<?= $colorRGBText ?>;"><?= $product->getColorName() ?></span></span>
             </h4>
         </div>
         <div class="detail-price-div">
@@ -67,41 +68,15 @@ $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
                     </div>
                 </li>
                 <?php
-                $sameProducts = $product->getSameProd();
-                $i = 1;
-                $maxCube = Product::getMAX_PRODUCT_CUBE_DISPLAYABLE()-1;
-                foreach ($sameProducts as $sameNameProduct) : // $i = 1 + 5 + 1
-                    $sameColorRGB = $sameNameProduct->getColorRGB();
-                    $sameCubeBorder = ($sameNameProduct->getColorRGB() == Product::WHITE_RGB) ? "cube-border" : "";
-                    if ($i < $maxCube):
+                $maxCube = Product::getMAX_PRODUCT_CUBE_DISPLAYABLE() - 1;
+                $sameProducts = $product->getSameProducts();
+                $datas = [
+                    "products" => $sameProducts,
+                    "maxCube" => $maxCube,
+                    "prodID" => null
+                ];
+                echo $this->generateFile("view/elements/productCube.php", $datas);
                 ?>
-                        <li class="remove-li-default-att">
-                            <div class="cube-container">
-                                <div class="cube-wrap">
-                                    <a href="/inside/item/?prodID=<?= $sameNameProduct->getProdID() ?>">
-                                        <div class="cube-item-color <?= $sameCubeBorder ?>" style="background: <?= $sameColorRGB ?>;"></div>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    <?php
-                    else:
-                    ?>
-                        <li class="remove-li-default-att">
-                            <div class="cube-container">
-                                <div class="cube-wrap">
-                                    <a href="/inside/item/?prodID=<?= $sameNameProduct->getProdID() ?>">
-                                        <div class="cube-item-color cube-more_color">
-                                            <img src="content/brain/permanent/icons8-plus-math-96.png">
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                <?php break;
-                    endif;
-                    $i++;
-                endforeach; ?>
             </ul>
         </div>
     </div>

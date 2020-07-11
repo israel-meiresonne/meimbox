@@ -28,7 +28,7 @@ class ControllerGrid extends ControllerSecure
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();
         $language = $this->person->getLanguage();
-        $search = new Search(Search::GET_SEARCH, $currency);
+        $search = new Search(Search::FILTER_GET_SEARCH, $currency);
         $search->setProducts($language, $country, $currency);
         $viewDatas =  [
             "search" => $search,
@@ -48,10 +48,10 @@ class ControllerGrid extends ControllerSecure
         $country = $this->person->getCountry();
         $language = $this->person->getLanguage();
 
-        $search = new Search(Search::POST_SEARCH, $currency);
+        $search = new Search(Search::FILTER_POST_SEARCH, $currency);
         $search->setProducts($language, $country, $currency);
 
-        $response->addFiles(self::GRID_CONTENT_KEY, "view/Grid/gridElements/gridProduct.php");
+        $response->addFiles(self::GRID_CONTENT_KEY, "view/Grid/gridFiles/gridProduct.php");
         $response->addFiles(self::GRID_STICKERS_KEY, "view/elements/sticker.php");
         $products = $search->getProducts();
 

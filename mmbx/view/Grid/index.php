@@ -3,7 +3,7 @@
 /**
  * @var Translator
  */
-// $translator = $this->translator;
+$translator = $translator;
 
 /**
  * @var Search
@@ -19,7 +19,7 @@ $this->title = "grid";
 $this->lang = $person->getLanguage()->getIsoLang();
 $this->description = "grid page";
 ob_start();
-require 'gridElements/head.php';
+require 'view/Grid/gridFiles/head.php';
 $this->head = ob_get_clean();
 
 ?>
@@ -352,7 +352,7 @@ $this->head = ob_get_clean();
                         $country = $person->getCountry();
                         $currency = $person->getCurrency();
                         ob_start();
-                        require 'view/Grid/gridElements/gridProduct.php';
+                        require 'view/Grid/gridFiles/gridProduct.php';
                         echo ob_get_clean();
                         ?>
                     </ul>

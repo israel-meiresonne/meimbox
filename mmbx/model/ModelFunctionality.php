@@ -40,8 +40,10 @@ abstract class ModelFunctionality extends Model
     private static $functions;
     private static $categories;
     private static $sizes;
+    private static $cuts;
     private static $colors;
-    private static $productIDList;
+    private static $productIDList; //X
+    private static $brandsMeasures; //X
 
     /**
      * Holds db's Products table in map format
@@ -88,7 +90,7 @@ abstract class ModelFunctionality extends Model
      */
     private const PDO_SUCCEESS = "00000";
 
-    const CRUD_STATUS = "insert_status";
+    const CRUD_STATUS = "crud_status";
 
     /*———————————————————————————— CRUD DOWN ————————————————————————————————*/
 
@@ -334,6 +336,17 @@ abstract class ModelFunctionality extends Model
         return self::$unitMap[$unitName];
     }
 
+
+    /**
+     * Getter for db's MeasureUnits table
+     * @return string[] db's MeasureUnits table
+     */
+    protected function getUnitsTable()
+    {
+        (!isset(self::$unitMap)) ? $this->setUnitMap() : null;
+        return self::$unitMap;
+    }
+
     /**
      * Set country map with db
      */
@@ -418,6 +431,23 @@ abstract class ModelFunctionality extends Model
     }
 
     /**
+     * Setter for the Cuts table from db
+     */
+    private function setCutsTable()
+    {
+        self::$cuts = [];
+        $sql = "SELECT * FROM `Cuts`";
+        $tab = $this->select($sql);
+        foreach ($tab as $tabLine) {
+            $cutName = $tabLine["cutName"];
+            $cutMeasure = $tabLine["cutMeasure"];
+            $unit_name = $tabLine["unit_name"];
+            self::$cuts[$cutName]["cutMeasure"] = (float) $cutMeasure;
+            self::$cuts[$cutName]["unit_name"] = $unit_name;
+        }
+    }
+
+    /**
      * To get values from some tables
      * @return string[] one column table containing value used in this table
      */
@@ -449,6 +479,10 @@ abstract class ModelFunctionality extends Model
                 (!isset(self::$sizes)) ? self::$sizes = $this->getTable("SELECT DISTINCT `size_name` FROM `Products-Sizes`")
                     : null;
                 $table = self::$sizes;
+                break;
+            case "cuts":
+                (!isset(self::$cuts)) ? $this->setCutsTable() : null;
+                $table = self::$cuts;
                 break;
             case "colors":
                 (!isset(self::$colors)) ? self::$colors = $this->getTable("SELECT DISTINCT `colorName` FROM `Products`")
@@ -503,6 +537,57 @@ abstract class ModelFunctionality extends Model
 
         return $stringKey;
     }
+
+    /**
+     * Getter for db's BrandsMeasures table
+     * @return string[] db's BrandsMeasures table
+     */
+    protected function getBrandMeasuresTable()
+    {
+        (!isset(self::$brandsMeasures)) ? $this->setBrandsMeasures() : null;
+        return self::$brandsMeasures;
+    }
+
+    /**
+     * Setter for BrandsMeasures table
+     */
+    private function setBrandsMeasures()
+    {
+        self::$brandsMeasures = [];
+        // $sql = "SELECT * 
+        // FROM `BrandsMeasures` bm
+        // JOIN `BrandsPictures` bp ON bm.brandName = bp.brand_name";
+        $sql = "SELECT *
+        FROM `BrandsMeasures` bm
+        JOIN `BrandsPictures` bp ON bm.brandName = bp.brand_name";
+        $tab = $this->select($sql);
+        foreach ($tab as $tabLine) {
+            $brandName = $tabLine["brandName"];
+            $size_name = $tabLine["size_name"];
+            $body_part = $tabLine["body_part"];
+            $unit_name = $tabLine["unit_name"];
+            $minMax = $tabLine["minMax"];
+            $value = !empty($tabLine["value"]) ? (float) $tabLine["value"] : null;
+            $pictureID = $tabLine["pictureID"];
+            $picture = $tabLine["picture"];
+            self::$brandsMeasures[$brandName][$size_name][$body_part][$unit_name][$minMax] = $value;
+            self::$brandsMeasures[$brandName]["brandPictures"][$pictureID] = $picture;
+        }
+    }
+
+    // /**
+    //  * Setter for MeasureUnits table
+    //  */
+    // private function setMeasureUnits()
+    // {
+    //     self::$measureUnits = [];
+    //     $sql = "SELECT * FROM `MeasureUnits`";
+    //     $tab = $this->select($sql);
+    //     foreach ($tab as $tabLine) {
+    //         self::$measureUnits[$tabLine["unitName"]]["measureUnit"] = $tabLine["measureUnit"];
+    //         self::$measureUnits[$tabLine["unitName"]]["toSystUnit"] = (!empty($tabLine["toSystUnit"])) ? (float) $tabLine["toSystUnit"] : null;
+    //     }
+    // }
 
     /*———————————————————————————— STATIC TABLES ACCESS UP ——————————————————*/
     /*———————————————————————————— PRODUCT ACCESS DOWN ——————————————————————*/
@@ -632,9 +717,10 @@ abstract class ModelFunctionality extends Model
     protected function cloneMap($Map)
     {
         // public static function cloneMap($Map){
-        $copyMap = [];
-        $copyMap = $this->cloneMapRec($Map);
-        return $copyMap;
+        // $copyMap = [];
+        // $copyMap = $this->cloneMapRec($Map);
+        // return $copyMap;
+        return $Map;
     }
 
     /**
@@ -662,8 +748,8 @@ abstract class ModelFunctionality extends Model
 
     /**
      * Build a map that use array's value as key and as value
-     * @var string[] $values list of value
-     * @return string[]
+     * @param string[] $values list of value
+     * @return string[] map that use array's value as key and as value
      */
     protected function arrayToMap($values)
     {

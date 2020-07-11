@@ -8,6 +8,11 @@ require_once 'model/navigation/Location.php';
 class Visitor extends ModelFunctionality
 {
     /**
+     * Holds the class's name
+     */
+    public const CLASS_NAME = "Visitor";
+
+    /**
      * Holds Visitor's id
      * @var string
      */
@@ -124,28 +129,30 @@ class Visitor extends ModelFunctionality
     }
 
     /**
-     * Initialize Visitor's measures
-     * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-     * oop/model/special/dbMap.txt
+     * Setter for Visitor's measures
      */
-    private function initMeasure($dbMap)
+    private function setMeasure()
     {
-        foreach ($dbMap["usersMap"]["usersMeasures"] as $datas) {
-            $values["measureID"] = $datas["measureID"];
-            $values["measure_name"] = $datas["measure_name"];
-            $values["bust"] = $datas["userBust"];
-            $values["arm"] = $datas["userArm"];
-            $values["waist"] = $datas["userWaist"];
-            $values["hip"] = $datas["userHip"];
-            $values["inseam"] = $datas["userInseam"];
-            $values["unit_name"] = $datas["unit_name"];
-            $values["setDate"] = $datas["setDate"];
-            $measure = new Measure($values, $dbMap);
+        $this->measures = [];
+        $sql = "SELECT * FROM `UsersMeasures` WHERE `userId` = '$this->userID'";
+        $tab = $this->select($sql);
+        foreach ($tab as $tabLine) {
+            $values = [];
+            $values["measureID"] = $tabLine["measureID"];
+            $values["measure_name"] = $tabLine["measureName"];
+            $values["bust"] = !empty($tabLine["userBust"]) ? (float) $tabLine["userBust"] : null;
+            $values["arm"] = !empty($tabLine["userArm"]) ? (float) $tabLine["userArm"] : null;
+            $values["waist"] = !empty($tabLine["userWaist"]) ? (float) $tabLine["userWaist"] : null;
+            $values["hip"] = !empty($tabLine["userHip"]) ? (float) $tabLine["userHip"] : null;
+            $values["inseam"] = !empty($tabLine["userInseam"]) ? (float) $tabLine["userInseam"] : null;
+            $values["unit_name"] = $tabLine["unit_name"];
+            $values["setDate"] = $tabLine["setDate"];
+            $measure = new Measure($values);
             $key = $measure->getDateInSec();
             $this->measures[$key] = $measure;
         }
-        // krsort($this->measures);
-        self::sortMeasure();
+        krsort($this->measures);
+        $this->sortMeasure();
     }
 
     /**
@@ -197,6 +204,24 @@ class Visitor extends ModelFunctionality
             }
         }
         return null;
+    }
+
+    /**
+     * Getter for db's BrandsMeasures table
+     * @return string[] db's BrandsMeasures table
+     */
+    public function getBrandMeasures()
+    {
+        return $this->getBrandMeasuresTable();
+    }
+
+    /**
+     * Getter for db's MeasureUnits table
+     * @return string[] db's MeasureUnits table
+     */
+    public function getUnits()
+    {
+        return $this->getUnitsTable();
     }
 
     /**
@@ -437,7 +462,9 @@ class Visitor extends ModelFunctionality
      */
     public function getMeasures()
     {
-        return GeneralCode::cloneMap($this->measures);
+        (!isset($this->measures) ? $this->setMeasure() : null);
+        // return $this->cloneMap($this->measures);
+        return $this->measures;
     }
 
     /**
@@ -493,16 +520,16 @@ class Visitor extends ModelFunctionality
     //————————————————————————————————————————————— BUILD MODEL DATAS UP ———————————————————————————————————————————
 
 
-    public function __toString()
-    {
-        Helper::printLabelValue("userID", $this->userID);
-        Helper::printLabelValue("setDate", $this->setDate);
-        $this->location->__toString();
-        $this->lang->__toString();
-        $this->currency->__toString();
-        $this->country->__toString();
-        $this->device->__toString();
-        $this->navigation->__toString();
-        $this->basket->__toString();
-    }
+    // public function __toString()
+    // {
+    //     Helper::printLabelValue("userID", $this->userID);
+    //     Helper::printLabelValue("setDate", $this->setDate);
+    //     $this->location->__toString();
+    //     $this->lang->__toString();
+    //     $this->currency->__toString();
+    //     $this->country->__toString();
+    //     $this->device->__toString();
+    //     $this->navigation->__toString();
+    //     $this->basket->__toString();
+    // }
 }
