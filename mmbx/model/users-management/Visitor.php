@@ -1,9 +1,11 @@
 <?php
 
+require_once 'controller/ControllerItem.php';
 require_once 'model/ModelFunctionality.php';
 require_once 'model/tools-management/Language.php';
 require_once 'model/tools-management/Country.php';
 require_once 'model/navigation/Location.php';
+require_once 'model/tools-management/Measure.php';
 
 class Visitor extends ModelFunctionality
 {
@@ -80,32 +82,6 @@ class Visitor extends ModelFunctionality
      */
     protected static $MAX_MEASURE;
 
-
-    // /**
-    //  * Constructor
-    //  * @param string[string[...]] $dbMap The database tables in mapped format specified in file 
-    //  * oop/model/special/dbMap.txt
-    //  */
-    // function __construct($dbMap)
-    // {
-    //     self::setConstants($dbMap);
-
-    //     $this->userID = $dbMap["usersMap"]["userDatas"]["userID"];
-    //     $this->setDate = GeneralCode::getDateTime();
-
-    //     $this->location = new Location($dbMap);
-    //     $this->lang = new Language($dbMap);
-    //     $this->currency = $this->location->getCurrency();
-    //     $this->device = new Device();
-    //     $this->navigation = new Navigation($this->userID, $dbMap);
-    //     $this->basket = new Basket($dbMap);
-    //     $countryName = $this->location->getcountryName();
-
-    //     $this->country = new Country($countryName, $dbMap);
-    //     self::initMeasure($dbMap);
-    //     // $this->measures = [];
-    // }
-
     public function __construct()
     {
         $this->setConstants();
@@ -115,6 +91,7 @@ class Visitor extends ModelFunctionality
         $this->currency = $this->location->getCurrency();
         $this->lang = new Language();
         $this->country = new Country($this->location->getcountryName());
+        $this->measures = [];
     }
 
     /**
@@ -131,7 +108,7 @@ class Visitor extends ModelFunctionality
     /**
      * Setter for Visitor's measures
      */
-    private function setMeasure()
+    protected function setMeasure()
     {
         $this->measures = [];
         $sql = "SELECT * FROM `UsersMeasures` WHERE `userId` = '$this->userID'";
@@ -165,11 +142,38 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * Getter of the Language
+     * @return Language a protected copy of the Visitor's current language
+     */
+    public function getLanguage()
+    {
+        return $this->lang->getCopy();
+    }
+
+    /**
+     * Getter of the Currency
+     * @return Currency a protected copy of the Visitor's current Currency
+     */
+    public function getCurrency()
+    {
+        return $this->currency->getCopy();
+    }
+
+    /**
+     * Getter of the Country
+     * @return Country a protected copy of the Visitor's current Country
+     */
+    public function getCountry()
+    {
+        return $this->country->getCopy();
+    }
+
+    /**
      * To get the measure with the id given in param
      * @param string $measureID id of the measure to look for
      * @return Measure|null Measure if it's found else return null
      */
-    private function getMeasure($measureID)
+    public function getMeasure($measureID)
     {
         $found = false;
         foreach ($this->measures as $key => $measure) {
@@ -182,11 +186,23 @@ class Visitor extends ModelFunctionality
     }
 
     /**
-     * Sort measures in descending order, according to the key (BiGGER to LOWER)
+     * Getter of the Measures
+     * @return Measure[] a protected copy of the Visitor's Measures
      */
-    private function sortMeasure()
+    public function getMeasures()
     {
-        krsort($this->measures);
+        (!isset($this->measures) ? $this->setMeasure() : null);
+        return $this->measures;
+        // return [];
+    }
+
+    /**
+     * Getter of the maximum measure a Visitor can holds
+     * @return int the maximum measure a Visitor can holds
+     */
+    public static function getMAX_MEASURE()
+    {
+        return self::$MAX_MEASURE;
     }
 
     /**
@@ -207,6 +223,73 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * To check if there is a measure with the id given in param
+     * @param string $measureID measure id to look for
+     * @return boolean true if measure exist else false
+     */
+    public function existMeasure($measureID)
+    {
+        return !($this->getMeasure($measureID) === null);
+    }
+
+    /**
+     * Sort measures in descending order, according to the key (BiGGER to LOWER)
+     */
+    private function sortMeasure()
+    {
+        krsort($this->measures);
+    }
+
+    /**
+     * Delete from Visitor the measure with the id given in param
+     * @param string $measureID id of the measure to delete
+     * @param Response $response contain results or Myerrors
+     */
+    private function destroyMeasure($response, $measureID)
+    {
+        $measure = $this->getMeasure($measureID);
+        if (empty($measure)) {
+            throw new Exception("Impossible to unset measure cause it don't exist:");
+        }
+        $sql = "SELECT * 
+        FROM `UsersMeasures` um
+        JOIN `Box-Products` bp ON um.measureID = bp.measureId
+        WHERE um.userId = '$this->userID' AND bp.measureId = '$measureID'";
+        $tab = $this->select($sql);
+
+        if (count($tab) > 0) {
+            $errStation = "US52";
+            $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+        } else {
+            $measure->deleteMeasure($response, $this->userID);
+            if ($response->isSuccess()) {
+                $this->unsetMeasure($measureID);
+            }
+        }
+    }
+
+    /**
+     * To remove a measure in Visitor's measure list following the measure's id
+     * @param string $measureID measure's id
+     */
+    private function unsetMeasure($measureID)
+    {
+        $found = false;
+        foreach ($this->measures as $key => $measure) {
+            $found = $this->measures[$key]->getMeasureID() == $measureID;
+            if ($found) {
+                $this->measures[$key] = null;
+                unset($this->measures[$key]);
+            }
+        }
+        return null;
+    }
+
+
+    /*———————————————————————————— MANAGE CLASS UP ——————————————————————————*/
+    /*———————————————————————————— GET DB TABLEDOWN —————————————————————————*/
+
+    /**
      * Getter for db's BrandsMeasures table
      * @return string[] db's BrandsMeasures table
      */
@@ -224,171 +307,89 @@ class Visitor extends ModelFunctionality
         return $this->getUnitsTable();
     }
 
+    /*———————————————————————————— GET DB TABLE UP ——————————————————————————*/
+    /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
+
     /**
-     * Delete from Visitor the measure with the id given in param
-     * @param string $measureID id of the measure to delete
-     * @return boolean true if its found and deleted else false
+     * Add a new measure to Visitor
+     * @param Response $response contain results or Myerrors
      */
-    private function deleteVisitorMeasure($measureID)
+    public function addMeasure($response)
     {
-        $key = self::getMeasureKey($measureID);
-        if (!empty($key)) {
-            unset($this->measures[$key]);
-            return true;
+        if (count($this->measures) < self::$MAX_MEASURE) {
+            $this->checkMeasureInput($response);
+            if (!$response->containError()) {
+                $measureDatas = Measure::getDatas4MeasurePOST();
+                $measure = new Measure($measureDatas);
+                // $saveResponse = $measure->save($this->userID);
+                $measure->save($response, $this->userID);
+                if ($response->isSuccess()) {
+                    $key = $measure->getDateInSec();
+                    $this->measures[$key] = $measure;
+                    $this->sortMeasure();
+                    $response->addResult(ControllerItem::QR_MEASURE_CONTENT, $this->measures);
+                } else {
+                    if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
+                        $errorMsg = "ER1";
+                        $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+                    }
+                }
+            }
+        } else {
+            $errorMsg = "ER1";
+            $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
         }
-        return false;
     }
 
     /**
-     * Check measure datas posted($_POST)
-     * @param Response $response where to strore resulte
-     * @param Query $query contain a cleaned access to $_POST
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
-     * @return Response contain results or Myerrrors
+     * Update a Visitor's measure
+     * @param Response $response contain results or Myerrors
+     * @param string $measureID measure's id
      */
-    // private function checkMeasureInput($response, $query, $dbMap)
-    // {
-    //     $response = $query->checkInput(
-    //         Measure::MEASURE_ID_KEY,
-    //         [Query::ALPHA_NUMERIC],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"],
-    //         true
-    //     );
-    //     $response = $query->checkInput(
-    //         MeasureUnit::INPUT_MEASURE_UNIT,
-    //         [Query::CHECKBOX, Query::STRING_TYPE],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["unit_name"]
-    //     );
-    //     $response = $query->checkInput(
-    //         Measure::INPUT_MEASURE_NAME,
-    //         [Query::PSEUDO],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["measureName"]
-    //     );
-    //     $response = $query->checkInput(
-    //         Measure::INPUT_BUST,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userBust"]
-    //     );
-    //     $response = $query->checkInput(
-    //         Measure::INPUT_ARM,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userArm"]
-    //     );
-    //     $response = $query->checkInput(
-    //         Measure::INPUT_WAIST,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userWaist"]
-    //     );
-    //     $response = $query->checkInput(
-    //         Measure::INPUT_HIP,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userHip"]
-    //     );
-    //     $response = $query->checkInput(
-    //         Measure::INPUT_INSEAM,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $dbMap["DESCRIPTION"]["UsersMeasures"]["userInseam"]
-    //     );
-    //     return $response;
-    // }
+    public function updateMeasure($response, $measureID)
+    {
+        $this->checkMeasureInput($response);
+        if (!$response->containError()) {
+            $measureDatas = Measure::getDatas4MeasurePOST();
+            $newMeasure = new Measure($measureDatas);
 
-    //————————————————————————————————————————————— MANAGE CLASS UP ————————————————————————————————————————————————
-    //————————————————————————————————————————————— ALTER MODEL DOWN ———————————————————————————————————————————————
+            $oldMeasure = $this->getMeasure($measureID);
+            $oldMeasure->updateMeasure($response, $this->userID, $newMeasure);
+            if ($response->isSuccess()) {
+                $key = $this->getMeasureKey($measureID);
+                $this->unsetMeasure($measureID);
+                $this->measures[$key] = $newMeasure;
+                $this->sortMeasure();
+            } else {
+                if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
+                    $errorMsg = "ER1";
+                    $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+                }
+            }
+        }
+    }
 
     /**
-     * Add a new measure to Visitor if input are correct
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
-     * @return Response contain results or Myerrrors
+     * Delete from database and Visitor the measure with the id given in param
+     * @param Response $response contain results or Myerrors
+     * @param string $measureID measure id to delete
      */
-    // public function addMeasure($dbMap)
-    // {
-    //     $response = new Response();
-    //     $query = new Query();
-    //     if (count($this->measures) < self::$MAX_MEASURE) {
-    //         $response = self::checkMeasureInput($response, $query, $dbMap);
-
-    //         if (!$response->containError()) {
-    //             $measureDatas = Measure::getDatas4MeasurePOST($query);
-    //             $measure = new Measure($measureDatas, $dbMap);
-    //             $saveResponse = $measure->save($this->userID);
-    //             if ($saveResponse->isSuccess()) {
-    //                 $key = $measure->getDateInSec();
-    //                 $this->measures[$key] = $measure;
-    //                 self::sortMeasure();
-    //                 $response->addResult(Measure::QR_MEASURE_CONTENT, $this->measures);
-    //             } else {
-    //                 $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-    //                 $response->addError($errorMsg, MyError::FATAL_ERROR);
-    //                 $insertError = $saveResponse->getError(Database::INSERT_STATUS_KEY);
-    //                 $response->addError($insertError, Database::INSERT_STATUS_KEY);
-    //             }
-    //         }
-    //     } else {
-    //         $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-    //         $response->addError($errorMsg, MyError::FATAL_ERROR);
-    //     }
-
-    //     return $response;
-    // }
-
-
-
-    /**
-     * Delete from database and Visitor the Visitor's measure with the measure id posted($_POST)
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
-     * @return Response contain results or Myerrrors
-     */
-    // public function deleteMeasure($dbMap)
-    // {
-    //     $response = new Response();
-    //     $query = new Query();
-    //     if (count($this->measures) > 0) {
-    //         $response = $query->checkInput(Measure::MEASURE_ID_KEY, [Query::ALPHA_NUMERIC], $response, $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"]);
-
-    //         if (!$response->containError()) {
-    //             $measureID = $query->POST(Measure::MEASURE_ID_KEY);
-    //             $measure = self::getMeasure($measureID);
-
-    //             if (!empty($measure)) {
-    //                 $deleteResponse = $measure->delete($this->userID);
-    //                 if ($deleteResponse->isSuccess()) {
-    //                     self::deleteVisitorMeasure($measureID);
-    //                     $successStatus = $deleteResponse->getResult(Database::DELETE_STATUS_KEY);
-    //                     $results = [
-    //                         Measure::MEASURE_ID_KEY => $measureID,
-    //                         View::TITLE_KEY => $this->measures,
-    //                         View::BUTTON_KEY => null,
-    //                     ];
-    //                     $response->addResult(Measure::QR_DELETE_MEASURE, $results);
-    //                     $response->addResult(Database::DELETE_STATUS_KEY, $successStatus);
-    //                 } else {
-    //                     $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-    //                     $response->addError($errorMsg, MyError::FATAL_ERROR);
-    //                     $updateError = $deleteResponse->getError(Database::DELETE_STATUS_KEY);
-    //                     $response->addError($updateError, Database::DELETE_STATUS_KEY);
-    //                 }
-    //             } else {
-    //                 $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-    //                 $response->addError($errorMsg, MyError::FATAL_ERROR);
-    //             }
-    //         }
-    //     } else {
-    //         $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-    //         $response->addError($errorMsg, MyError::FATAL_ERROR);
-    //     }
-    //     return $response;
-    // }
+    public function deleteMeasure($response, $measureID)
+    {
+        if (count($this->measures) > 0) {
+            $measure = $this->getMeasure($measureID);
+            if (!empty($measure)) {
+                $this->destroyMeasure($response, $measureID);
+                if ((!$response->isSuccess()) && (!$response->existErrorKey(MyError::FATAL_ERROR))) {
+                    $errorMsg = "ER1";
+                    $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+                }
+            }
+        } else {
+            $errStation = "ER1";
+            $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+        }
+    }
 
     /**
      * Update on database and Visitor the Visitor's measure with the measure id posted($_POST)
@@ -436,57 +437,66 @@ class Visitor extends ModelFunctionality
     //     return $response;
     // }
 
-    //————————————————————————————————————————————— ALTER MODEL UP —————————————————————————————————————————————————
-    //————————————————————————————————————————————— GET MODEL DATAS DOWN ———————————————————————————————————————————
     /**
-     * Getter of the Language
-     * @return Language a protected copy of the Visitor's current language
+     * Check measure datas posted($_POST)
+     * @param Response $response where to strore resulte
      */
-    public function getLanguage()
+    private function checkMeasureInput($response)
     {
-        return $this->lang->getCopy();
+        $table = "UsersMeasures";
+        $this->checkData(
+            Measure::MEASURE_ID_KEY,
+            [Query::ALPHA_NUMERIC],
+            $response,
+            $this->getDataLength($table, "measureID"),
+            false
+        );
+        $this->checkData(
+            MeasureUnit::INPUT_MEASURE_UNIT,
+            [Query::CHECKBOX, Query::STRING_TYPE],
+            $response,
+            $this->getDataLength($table, "unit_name")
+        );
+        $this->checkData(
+            Measure::INPUT_MEASURE_NAME,
+            [Query::PSEUDO],
+            $response,
+            $this->getDataLength($table, "measureName")
+        );
+        $this->checkData(
+            Measure::INPUT_BUST,
+            [Query::NUMBER_FLOAT],
+            $response,
+            $this->getDataLength($table, "userBust")
+        );
+        $this->checkData(
+            Measure::INPUT_ARM,
+            [Query::NUMBER_FLOAT],
+            $response,
+            $this->getDataLength($table, "userArm")
+        );
+        $this->checkData(
+            Measure::INPUT_WAIST,
+            [Query::NUMBER_FLOAT],
+            $response,
+            $this->getDataLength($table, "userWaist")
+        );
+        $this->checkData(
+            Measure::INPUT_HIP,
+            [Query::NUMBER_FLOAT],
+            $response,
+            $this->getDataLength($table, "userHip")
+        );
+        $this->checkData(
+            Measure::INPUT_INSEAM,
+            [Query::NUMBER_FLOAT],
+            $response,
+            $this->getDataLength($table, "userInseam")
+        );
     }
 
-    /**
-     * Getter of the Currency
-     * @return Currency a protected copy of the Visitor's current Currency
-     */
-    public function getCurrency()
-    {
-        return $this->currency->getCopy();
-    }
-
-    /**
-     * Getter of the Measures
-     * @return Measure[] a protected copy of the Visitor's Measures
-     */
-    public function getMeasures()
-    {
-        (!isset($this->measures) ? $this->setMeasure() : null);
-        // return $this->cloneMap($this->measures);
-        return $this->measures;
-    }
-
-    /**
-     * Getter of the Country
-     * @return Country a protected copy of the Visitor's current Country
-     */
-    public function getCountry()
-    {
-        return $this->country->getCopy();
-    }
-
-    /**
-     * Getter of the maximum measure a Visitor can holds
-     * @return int the maximum measure a Visitor can holds
-     */
-    public static function getMAX_MEASURE()
-    {
-        return self::$MAX_MEASURE;
-    }
-
-    //————————————————————————————————————————————— GET MODEL DATAS UP —————————————————————————————————————————————
-    //————————————————————————————————————————————— BUILD MODEL DATAS DOWN —————————————————————————————————————————
+    /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
+    //———————————————————————————— BUILD MODEL DATAS DOWN ———————————————————*/
 
     /**
      * To get the measure with its id posted($_POST)
@@ -517,19 +527,5 @@ class Visitor extends ModelFunctionality
         }
         return $response;
     }
-    //————————————————————————————————————————————— BUILD MODEL DATAS UP ———————————————————————————————————————————
-
-
-    // public function __toString()
-    // {
-    //     Helper::printLabelValue("userID", $this->userID);
-    //     Helper::printLabelValue("setDate", $this->setDate);
-    //     $this->location->__toString();
-    //     $this->lang->__toString();
-    //     $this->currency->__toString();
-    //     $this->country->__toString();
-    //     $this->device->__toString();
-    //     $this->navigation->__toString();
-    //     $this->basket->__toString();
-    // }
+    //———————————————————————————— BUILD MODEL DATAS UP —————————————————————*/
 }

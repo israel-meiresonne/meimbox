@@ -53,49 +53,6 @@ class Measure extends ModelFunctionality
      */
     private $setDate;
 
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_ADD_MEASURE = "add_measure";
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_DELETE_MEASURE = "delete_measure";
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_UPDATE_MEASURE = "edit_measure";
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_GET_MEASURE_ADDER = "get_measure_adder";
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_GET_EMPTY_MEASURE_ADDER = "get_empty_measure_adder";
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_SELECT_MEASURE = "select_measure";
-
-    /**
-     * Holds the query(qr) value for Ajax request
-     * @var string
-     */
-    const QR_MEASURE_CONTENT = "measure_content";
-
     /**
      * Input name for measure's name
      */
@@ -130,7 +87,8 @@ class Measure extends ModelFunctionality
      * Holds the access key for measure name in Query
      * @var string
      */
-    const MEASURE_ID_KEY =  "measure_id";
+    // const MEASURE_ID_KEY =  "measure_id";
+    const MEASURE_ID_KEY =  "measureID";
 
     /**
      * Holds the access key for measure name
@@ -194,6 +152,7 @@ class Measure extends ModelFunctionality
     {
         return (isset($this->bust)) ? $this->bust->getCopy() : null;
     }
+
     /**
      * Getter of measure's arm
      * @return MeasureUnit a protected copy of measure's arm
@@ -202,6 +161,7 @@ class Measure extends ModelFunctionality
     {
         return (isset($this->arm)) ? $this->arm->getCopy() : null;
     }
+
     /**
      * Getter of measure's waist
      * @return MeasureUnit a protected copy of measure's waist
@@ -210,6 +170,7 @@ class Measure extends ModelFunctionality
     {
         return (isset($this->waist)) ? $this->waist->getCopy() : null;
     }
+
     /**
      * Getter of measure's hip
      * @return MeasureUnit a protected copy of measure's hip
@@ -218,6 +179,7 @@ class Measure extends ModelFunctionality
     {
         return (isset($this->hip)) ? $this->hip->getCopy() : null;
     }
+
     /**
      * Getter of measure's inseam
      * @return MeasureUnit a protected copy of measure's inseam
@@ -268,18 +230,18 @@ class Measure extends ModelFunctionality
 
     /**
      * Build a map that contain all value needed to create a Measure with datas posted($_POST)
-     * @param Query $query contain a cleaned access to $_POST
      * @return string[] a map that contain all value needed to create a Measure
      */
-    public static function getDatas4MeasurePOST($query)
+    public static function getDatas4MeasurePOST()
     {
-        $datas[Measure::INPUT_MEASURE_NAME] = $query->POST(Measure::INPUT_MEASURE_NAME);
-        $datas[Measure::INPUT_BUST] = $query->POST(Measure::INPUT_BUST);
-        $datas[Measure::INPUT_ARM] = $query->POST(Measure::INPUT_ARM);
-        $datas[Measure::INPUT_WAIST] = $query->POST(Measure::INPUT_WAIST);
-        $datas[Measure::INPUT_HIP] = $query->POST(Measure::INPUT_HIP);
-        $datas[Measure::INPUT_INSEAM] = $query->POST(Measure::INPUT_INSEAM);
-        $datas[MeasureUnit::INPUT_MEASURE_UNIT] = $query->POST(MeasureUnit::INPUT_MEASURE_UNIT);
+        $datas[Measure::MEASURE_ID_KEY] = Query::existParam(Measure::MEASURE_ID_KEY)? Query::getParam(Measure::MEASURE_ID_KEY) : null;
+        $datas[Measure::INPUT_MEASURE_NAME] = Query::getParam(Measure::INPUT_MEASURE_NAME);
+        $datas[Measure::INPUT_BUST] = Query::getParam(Measure::INPUT_BUST);
+        $datas[Measure::INPUT_ARM] = Query::getParam(Measure::INPUT_ARM);
+        $datas[Measure::INPUT_WAIST] = Query::getParam(Measure::INPUT_WAIST);
+        $datas[Measure::INPUT_HIP] = Query::getParam(Measure::INPUT_HIP);
+        $datas[Measure::INPUT_INSEAM] = Query::getParam(Measure::INPUT_INSEAM);
+        $datas[MeasureUnit::INPUT_MEASURE_UNIT] = Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT);
         return $datas;
     }
 
@@ -304,14 +266,14 @@ class Measure extends ModelFunctionality
     /**
      * Save the measure by INSERT it in database
      * @param string $userID Visitor's id
-     * @return Response if its success Response.isSuccess = true else Response
+     * @param Response $response if its success Response.isSuccess = true else Response
      *  contain the error thrown
      */
-    public function save($userID)
+    public function save($response, $userID)
     {
         $bracket = "(?,?,?,?,?,?,?,?,?,?)";
-        $query = "INSERT INTO `UsersMeasures`(`userId`, `measureID`, `measureName`, `userBust`, `userArm`, `userWaist`, `userHip`, `userInseam`, `unit_name`, `setDate`) 
-        VALUES " . Database::buildBracketInsert(1, $bracket);
+        $sql = "INSERT INTO `UsersMeasures`(`userId`, `measureID`, `measureName`, `userBust`, `userArm`, `userWaist`, `userHip`, `userInseam`, `unit_name`, `setDate`) 
+        VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
         array_push($values, $userID);
         array_push($values, $this->measureID);
@@ -323,30 +285,31 @@ class Measure extends ModelFunctionality
         array_push($values, $this->inseam->getValue());
         array_push($values, $this->inseam->getUnitName());
         array_push($values, $this->setDate);
-        $response = Facade::insert($query, $values);
-        return $response;
+        $response = $this->insert($response, $sql, $values);
     }
 
     /**
      * Delete the measure from database
      * @param string $userID Visitor's id
-     * @return Response if its success Response.isSuccess = true else Response
+     * @param Response $response if its success Response.isSuccess = true else Response
      *  contain the error thrown
      */
-    public function delete($userID)
+    public function deleteMeasure(Response $response, $userID)
     {
         $query = "DELETE FROM `UsersMeasures` WHERE `userId` = '$userID' AND `measureID` = '$this->measureID'";
-        $response = Facade::delete($query);
-        return $response;
+        $response = $this->delete($response, $query);
     }
 
     /**
      * Update the measure on database
-     * @param Measure $measureUpdated contain the new values for this measure
+     * @param Measure $newMeasure contain the new values for this measure
+     * @param string $userID Visitor's id
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
      */
-    public function update($userID, $measureUpdated)
+    public function updateMeasure(Response $response, $userID, Measure $newMeasure)
     {
-        $query =
+        $sql =
             "UPDATE `UsersMeasures` SET 
         `measureName` = ?,
         `userBust` = ?,
@@ -357,21 +320,20 @@ class Measure extends ModelFunctionality
         `unit_name` = ?
         WHERE `userId`= '$userID' AND `measureID`= '$this->measureID'";
 
-        $this->measureName = $measureUpdated->getMeasureName();
-        $this->bust = $measureUpdated->getbust()->getCopy();
-        $this->arm = $measureUpdated->getarm()->getCopy();
-        $this->waist = $measureUpdated->getwaist()->getCopy();
-        $this->hip = $measureUpdated->gethip()->getCopy();
-        $this->inseam = $measureUpdated->getinseam()->getCopy();
+        // $this->measureName = $newMeasure->getMeasureName();
+        // $this->bust = $newMeasure->getbust()->getCopy();
+        // $this->arm = $newMeasure->getarm()->getCopy();
+        // $this->waist = $newMeasure->getwaist()->getCopy();
+        // $this->hip = $newMeasure->gethip()->getCopy();
+        // $this->inseam = $newMeasure->getinseam()->getCopy();
         $values = [];
-        array_push($values, $this->measureName);
-        array_push($values, $this->bust->getValue());
-        array_push($values, $this->arm->getValue());
-        array_push($values, $this->waist->getValue());
-        array_push($values, $this->hip->getValue());
-        array_push($values, $this->inseam->getValue());
-        array_push($values, $this->inseam->getUnitName());
-        $response = Facade::update($query, $values);
-        return $response;
+        array_push($values, $newMeasure->measureName);
+        array_push($values, $newMeasure->bust->getValue());
+        array_push($values, $newMeasure->arm->getValue());
+        array_push($values, $newMeasure->waist->getValue());
+        array_push($values, $newMeasure->hip->getValue());
+        array_push($values, $newMeasure->inseam->getValue());
+        array_push($values, $newMeasure->inseam->getUnitName());
+        $this->update($response, $sql, $values);
     }
 }

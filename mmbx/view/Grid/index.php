@@ -50,10 +50,8 @@ $this->head = ob_get_clean();
                     <div class="sticker-set">
                         <?php
                         $stickers = $search->getStickers($translator);
-                        // var_dump($_GET);
-                        // $stickers = ["monstick" => "fuck you"];
                         ob_start();
-                        require 'view/elements/sticker.php';
+                        require 'view/Grid/gridFiles/gridSticker.php';
                         echo ob_get_clean();
                         ?>
                     </div>
@@ -119,41 +117,6 @@ $this->head = ob_get_clean();
                                     ob_start();
                                     require 'view/elements/dropdown.php';
                                     echo ob_get_clean();
-                                    /*
-                                    <!-- <div class="dropdown-wrap">
-                                        <div class="dropdown-inner">
-                                            <div class="dropdown-head dropdown-arrow-close">
-                                                <span class="dropdown-title">type</span>
-                                            </div>
-                                            <div class="dropdown-checkbox-list" style="display: none;">
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">accessories
-                                                        <input type="checkbox" name="functions_0" value="accessories">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">basketproduct
-                                                        <input type="checkbox" name="product_types_1" value="basketproduct">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">boxproduct
-                                                        <input type="checkbox" name="product_types_2" value="boxproduct">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">clothes
-                                                        <input type="checkbox" name="functions_3" value="clothes">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    */
                                     ?>
 
                                 </div>
@@ -167,41 +130,6 @@ $this->head = ob_get_clean();
                                     ob_start();
                                     require 'view/elements/dropdown.php';
                                     echo ob_get_clean();
-                                    /*
-                                    <!-- <div class="dropdown-wrap">
-                                        <div class="dropdown-inner">
-                                            <div class="dropdown-head dropdown-arrow-close">
-                                                <span class="dropdown-title">catégorie</span>
-                                            </div>
-                                            <div class="dropdown-checkbox-list" style="display: none;">
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">jackets
-                                                        <input type="checkbox" name="categories_0" value="jackets">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">scarfs
-                                                        <input type="checkbox" name="categories_1" value="scarfs">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">trousers
-                                                        <input type="checkbox" name="categories_2" value="trousers">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">vests
-                                                        <input type="checkbox" name="categories_3" value="vests">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    */
                                     ?>
 
                                 </div>
@@ -215,35 +143,6 @@ $this->head = ob_get_clean();
                                     ob_start();
                                     require 'view/elements/dropdown.php';
                                     echo ob_get_clean();
-                                    /*
-                                    <!-- <div class="dropdown-wrap">
-                                        <div class="dropdown-inner">
-                                            <div class="dropdown-head dropdown-arrow-close">
-                                                <span class="dropdown-title">taille</span>
-                                            </div>
-                                            <div class="dropdown-checkbox-list">
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">l
-                                                        <input type="checkbox" name="sizes_0" value="l">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">m
-                                                        <input type="checkbox" name="sizes_1" value="m">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">s
-                                                        <input type="checkbox" name="sizes_2" value="s">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    */
                                     ?>
                                 </div>
                                 <div class="dropdown-container">
@@ -256,61 +155,7 @@ $this->head = ob_get_clean();
                                     ob_start();
                                     require 'view/elements/dropdown.php';
                                     echo ob_get_clean();
-                                    /*
-                                    <!-- <div class="dropdown-wrap">
-                                        <div class="dropdown-inner">
-                                            <div class="dropdown-head dropdown-arrow-close">
-                                                <span class="dropdown-title">couleur</span>
-                                            </div>
-                                            <div class="dropdown-checkbox-list">
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">black
-                                                        <input type="checkbox" name="colors_0" value="black">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">blue
-                                                        <input type="checkbox" name="colors_1" value="blue">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">green
-                                                        <input type="checkbox" name="colors_2" value="green">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">orange
-                                                        <input type="checkbox" name="colors_3" value="orange">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">red
-                                                        <input type="checkbox" name="colors_4" value="red">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">white
-                                                        <input type="checkbox" name="colors_5" value="white">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="dropdown-checkbox-block">
-                                                    <label class="checkbox-label">yellow
-                                                        <input type="checkbox" name="colors_6" value="yellow">
-                                                        <span class="checkbox-checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    */
                                     ?>
-
                                 </div>
                                 <div class="dropdown-container">
                                     <div class="dropdown-wrap">

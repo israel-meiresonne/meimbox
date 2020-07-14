@@ -2096,14 +2096,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .pop_up-window {
-    /* display: none; */
     position: relative;
     width: 50%;
-    /* height: 50%; */
-    /* max-height: 100vh; */
+    max-height: 90vh;
+    /* overflow: auto; */
     overflow: auto;
-    /* margin: auto;
-    padding: 10px; */
     margin: auto;
     padding: 10px;
     background-color: var(--color-white);

@@ -1,6 +1,8 @@
 <?php
 
+require_once 'controller/ControllerSecure.php';
 require_once 'controller/ControllerGrid.php';
+require_once 'controller/ControllerItem.php';
 require_once 'model/special/Search.php';
 require_once 'model/boxes-management/Product.php';
 require_once 'model/boxes-management/Size.php';
@@ -201,7 +203,7 @@ require_once 'model/special/MyError.php';
             <div class="collapse-container"></div>
         </nav>
         <script>
-            const WR = "<?= $webRoot ?>";mmbx/model/ModelFunctionality.php
+            const WR = "<?= $webRoot ?>";
             const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
             const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
             const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
@@ -209,28 +211,26 @@ require_once 'model/special/MyError.php';
             const A_SELECT_BRAND = "<?= ControllerItem::A_SELECT_BRAND ?>";
             const BRAND_STICKER_KEY = "<?= ControllerItem::BRAND_STICKER_KEY ?>";
 
-            const QR_GET_MEASURE_ADDER = "<?= Measure::QR_GET_MEASURE_ADDER ?>";
-            const QR_GET_EMPTY_MEASURE_ADDER = "<?= Measure::QR_GET_EMPTY_MEASURE_ADDER ?>";
-            const QR_ADD_MEASURE = "<?= Measure::QR_ADD_MEASURE ?>";
-            const QR_UPDATE_MEASURE = "<?= Measure::QR_UPDATE_MEASURE ?>";
-            const QR_DELETE_MEASURE = "<?= Measure::QR_DELETE_MEASURE ?>";
-            const QR_SELECT_MEASURE = "<?= Measure::QR_SELECT_MEASURE ?>";
-            const QR_MEASURE_CONTENT = "<?= Measure::QR_MEASURE_CONTENT ?>";
+            const QR_GET_MEASURE_ADDER = "<?= ControllerItem::QR_GET_MEASURE_ADDER ?>";
+            const QR_GET_EMPTY_MEASURE_ADDER = "<?= ControllerItem::QR_GET_EMPTY_MEASURE_ADDER ?>";
+            const A_ADD_MEASURE = "<?= ControllerItem::A_ADD_MEASURE ?>";
+            const A_SELECT_MEASURE = "<?= ControllerItem::A_SELECT_MEASURE ?>";
+            const A_UPDATE_MEASURE = "<?= ControllerItem::A_UPDATE_MEASURE ?>";
+            const A_DELETE_MEASURE = "<?= ControllerItem::A_DELETE_MEASURE ?>";
+            const QR_MEASURE_CONTENT = "<?= ControllerItem::QR_MEASURE_CONTENT ?>";
             const MEASURRE_STICKER_KEY = "<?= Measure::MEASURRE_STICKER_KEY ?>";
             const MEASURE_ID_KEY = "<?= Measure::MEASURE_ID_KEY ?>";
             const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
 
-            // const TITLE_KEY = <?php //View::TITLE_KEY 
-                                    ?>;
-            // const BUTTON_KEY = <?php //View::BUTTON_KEY 
-                                    ?>;
-            // const DELETE_MEASURE_ALERT = <?php //self::$translator->translateStation(PageContent::GRID_USED_INSIDE, 50) 
-                                            ?>;
+            const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
+            const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
+            const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
             const FAT_ERR = "<?= MyError::FATAL_ERROR ?>";
 
             const TS = 450;
             const BNR = 1000000;
             const JXF = "content/qr/qr.php";
+            const LANG = "lang=" + $("html").attr("lang");
 
             /**
              * @param {number} number 

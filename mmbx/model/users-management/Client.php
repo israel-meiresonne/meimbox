@@ -32,6 +32,7 @@ class Client extends User
     {
         parent::__construct($userID);
         $this->newsletter = (bool) $this->userLine["newsletter"];
+        $this->setMeasure();
     }
 
     /**
@@ -47,9 +48,9 @@ class Client extends User
         ksort($this->orders);
     }
 
-    public function __toString()
-    {
-        parent::__toString();
-        Helper::printLabelValue("newsletter", $this->newsletter);
-    }
+    // public function __toString()
+    // {
+    //     parent::__toString();
+    //     Helper::printLabelValue("newsletter", $this->newsletter);
+    // }
 }
