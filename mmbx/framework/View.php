@@ -212,6 +212,8 @@ class View
                     $response->addResult($key, $result);
                 }
             }
+        } else {
+            $response->translateError($this->translator);
         }
         echo json_encode($response->getAttributs());
     }

@@ -1,6 +1,8 @@
 <?php
 
 require_once 'framework/Model.php';
+require_once 'model/special/Query.php';
+require_once 'model/special/MyError.php';
 
 /**
  * This class provide to model's classes common function
@@ -12,6 +14,12 @@ abstract class ModelFunctionality extends Model
      * @var string[] specified in file model/special/dbMap.txt
      */
     private static $constants;
+
+    /**
+     * Holds the access key from Constant table to get length of db types
+     * @var string
+     */
+    private const DB_TYPES_LENGTH = "DB_TYPES_LENGTH";
 
     /**
      * Holds db's Currencies table in map format
@@ -58,6 +66,16 @@ abstract class ModelFunctionality extends Model
     private static $unitMap;
 
     /**
+     * Holds columns length for each db's table
+     * + $desciptions = [
+     *      tableName{string} => [
+     *          column{string} => int
+     *      ]
+     * ]
+     */
+    private static $desciptions;
+
+    /**
      * Holds db's BoxColors, BoxPrices, BoxShippings and BoxDisciunts tables in map format
      * +$boxMap[
      *      boxcolor{string} =>[
@@ -92,6 +110,28 @@ abstract class ModelFunctionality extends Model
 
     const CRUD_STATUS = "crud_status";
 
+    /*———————————————————————————— INPUT ATTRIBUTS DOWN ———————————————————————*/
+    /**
+     * Holds the input type
+     */
+    const CHECKBOX = "checckbox";
+    const PSEUDO = "pseudo";
+    const NAME = "name";  // handle space and `-`
+    const EMAIL = "email";
+    const PHONE_NUMBER = "phone";
+    const PASSWORD = "psw";
+    const BOOLEAN_TYPE = "boolean";
+    const STRING_TYPE = "string";
+    const NUMBER_FLOAT = "float";
+    const NUMBER_INT = "int";
+    const ALPHA_NUMERIC = "alpha_numeric";
+
+    const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
+    const STRING_REGEX = "#^[a-zA-Z]+$#";
+    const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
+    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+
+    /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
     /*———————————————————————————— CRUD DOWN ————————————————————————————————*/
 
     /**
@@ -101,15 +141,18 @@ abstract class ModelFunctionality extends Model
      * @return Response if its success Response.results[INSERT_STATUS_KEY] contain the success code else it
      *  contain the error thrown
      */
-    protected function insert($sql, $params)
+    protected function insert(Response $response, $sql, $params)
     {
-        $response = new Response();
-        $pdo = parent::executeRequest($sql, $params);
-        $pdoStatus = $pdo->errorInfo()[0];
+        // $response = new Response();
+        try {
+            $pdo = parent::executeRequest($sql, $params);
+            $pdoStatus = $pdo->errorInfo()[0];
 
-        ($pdoStatus == self::PDO_SUCCEESS) ? $response->addResult(self::CRUD_STATUS, $pdoStatus)
-            : $response->addError($pdoStatus->errorInfo()[2], self::CRUD_STATUS);
-        return $response;
+            ($pdoStatus == self::PDO_SUCCEESS) ? $response->addResult(self::CRUD_STATUS, $pdoStatus)
+                : $response->addError($pdoStatus->errorInfo()[2], self::CRUD_STATUS);
+        } catch (\Throwable $e) {
+            $response->addError($e->errorInfo, MyError::ADMIN_ERROR);
+        }
     }
 
     /**
@@ -135,9 +178,9 @@ abstract class ModelFunctionality extends Model
      * @return Response if its success Response.results[UPDATE_STATUS_KEY] contain the success code else it
      *  contain the error thrown
      */
-    protected function update($sql, $params)
+    protected function update(Response $response, $sql, $params)
     {
-        return $this->insert($sql, $params);
+        return $this->insert($response, $sql, $params);
     }
 
     /**
@@ -146,9 +189,27 @@ abstract class ModelFunctionality extends Model
      * @return Response if its success Response.results[DELETE_STATUS_KEY] contain the success code else it
      *  contain the error thrown
      */
-    public function delete($sql)
+    public function delete(Response $response, $sql)
     {
-        return $this->insert($sql, null);
+        return $this->insert($response, $sql, null);
+    }
+
+    /**
+     * Build bracket for SQL INSERT
+     * @param int $nb how musch $bracket is needed
+     * @param string $bracket = "(?,?,?,?,...)";
+     */
+    protected static function buildBracketInsert($nb, $bracket)
+    {
+        $query = " ";
+        for ($i = 0; $i < $nb; $i++) {
+            if ($i == 0) {
+                $query .= $bracket;
+            } else {
+                $query .= ", " . $bracket;
+            }
+        }
+        return $query;
     }
     /*———————————————————————————— CRUD UP ——————————————————————————————————*/
     /*———————————————————————————— STATIC TABLES ACCESS DOWN ————————————————*/
@@ -646,6 +707,194 @@ abstract class ModelFunctionality extends Model
         }
     }
     /*———————————————————————————— PRODUCT ACCESS UP ————————————————————————*/
+    /*———————————————————————————— CHECK DATAS DOWN —————————————————————————*/
+
+    /**
+     * Check the input value passed in param and push error accured in Response
+     * @param string $key the name input to check (in $_POST, $_GET or $_SESSION)
+     * @param string[] $dataTypes the types of the filter to check input.
+     * + NOTE: combinaison available => 
+     *      [TYPE], 
+     *      [CHECKBOX, TYPE]
+     * @param boolean $required set true if value can be empty alse false
+     * @param Response $response to push in error accured
+     * @return boolean true if is success else false
+     */
+    public function checkData($key, $dataTypes, $response, $length = null, $required = true)
+    {
+        $keyExist = Query::existParam($key);
+        if (($required) && (!$keyExist)) {
+            $errorStation = ($dataTypes[0] == self::CHECKBOX) ? "ER5"
+                : "ER2";
+            $response->addErrorStation($errorStation, $key);
+            return $response->isSuccess();
+        }
+        if (!$keyExist) {
+            return false;
+        }
+
+        $value = Query::getParam($key);
+        if (!empty($length) && (strlen($value) > $length)) {
+            $errorStationTxt = "ER6";
+            $errorStationTxt .= " " . $length; // translateError will split errorStation from the lenght
+            $response->addErrorStation($errorStationTxt, $key);
+            return $response->isSuccess();
+        }
+
+        switch ($dataTypes[0]) {
+            case self::NUMBER_FLOAT:
+                if (preg_match(self::FLOAT_REGEX, $value) != 1) {
+                    $errorMsg = "ER3";
+                    $response->addErrorStation($errorMsg, $key);
+                } else {
+                    Query::convertParam(self::NUMBER_FLOAT, $key);
+                }
+                break;
+
+            case self::PSEUDO:
+                if (preg_match(self::PSEUDO_REGEX, $value) != 1) {
+                    $errorMsg = "ER4";
+                    $response->addErrorStation($errorMsg, $key);
+                } else {
+                    Query::convertParam(self::PSEUDO, $key);
+                }
+                break;
+
+            case self::ALPHA_NUMERIC:
+                if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
+                    $errorMsg = "ER1";
+                    $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+                } else {
+                    Query::convertParam(self::ALPHA_NUMERIC, $key);
+                }
+                break;
+
+            case self::CHECKBOX:
+                $cbxType = $dataTypes[1];
+
+                switch ($cbxType) {
+                    case self::STRING_TYPE:
+                        if (preg_match(self::STRING_REGEX, $value) != 1) {
+                            $errorMsg = "ER1";
+                            $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+                        } else {
+                            Query::convertParam(self::STRING_TYPE, $key);
+                        }
+                        break;
+                }
+
+                break;
+        }
+        return $response->isSuccess();
+    }
+
+    /**
+     * To get the column's length from db
+     * @param string $table db's table name
+     * @param string $column column name from table
+     * @return int|null column's length from db
+     */
+    public function getDataLength($table, $column)
+    {
+        (isset(self::$desciptions) && isset(self::$desciptions[$table])) ? null : $this->setDesciption($table);
+        $length = self::$desciptions[$table][$column];
+        return ($length > 0) ? $length : null;
+    }
+
+    /**
+     * Setter for description and its tables
+     * @param string $table 
+     */
+    private function setDesciption($table)
+    {
+        (!isset(self::$desciptions)) ? self::$desciptions = [] : null;
+        self::$desciptions[$table] = [];
+        $tab = $this->select("DESCRIBE " . $table);
+
+        foreach ($tab as $tabLine) {
+            $column = $tabLine["Field"];
+            $typeCol = $tabLine["Type"];
+            self::$desciptions[$table][$column] = $this->getTypeToLength($typeCol);
+        }
+    }
+
+    /**
+     * Indentifie the type and exctract its length
+     * @return int $typeCol the type's length
+     */
+    private function getTypeToLength($typeCol)
+    {
+        $types = [];
+        // preg_match("#[a-zA-Z]+#", $typeCol, $type);
+        if (preg_match("#[a-zA-Z]+#", $typeCol, $types) != 1) {
+            throw new Exception("The table type [$typeCol] is not handled!");
+        }
+
+        $type = strtolower($types[0]);
+        $filtre = [$type, "(", ")"];
+        switch ($type) {
+            case "varchar":
+                $length = str_replace($filtre, "", $typeCol);
+                break;
+
+            case "int":
+                $length = str_replace($filtre, "", $typeCol);
+                break;
+
+            case "double":
+                // $length = 11;
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->double;
+                break;
+
+            case "datetime":
+                // $length = 25; // {2017-01-08 00:00:00} length = 19
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->datetime;
+                break;
+
+            case "date":
+                // $length = 15; // {1993-02-27} length = 10
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->date;
+                break;
+
+            case "tinyint": // boolean
+                // $length = 5;  // {0}, {1} length = 1
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->tinyint;
+                break;
+
+            case "json":
+                // $length = 16776192;
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->json;
+                break;
+
+            case "enum":
+                // $length = -1;
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->enum;
+                break;
+
+            case "text":
+                // $length = 2147483647;
+                $jsonLine = $this->getConstantLine(self::DB_TYPES_LENGTH);
+                $typeMap = json_decode($jsonLine["jsonValue"]);
+                $length = $typeMap->text;
+                break;
+        }
+        return (int) $length;
+    }
+
+
+    /*———————————————————————————— CHECK DATAS UP ———————————————————————————*/
     /*———————————————————————————— SHORTCUT DOWN ————————————————————————————*/
     /**
      * To get today's date into format ["YYYY-MM-DD HH-MM-SS"]. 
@@ -704,7 +953,7 @@ abstract class ModelFunctionality extends Model
         }
         $sequence = $this->generateCode($nbCharLeft) . $sequence . $this->generateCode($nbCharRight);
         $sequence = strtolower($sequence);
-        return $sequence;
+        return str_shuffle($sequence);
     }
 
     /**

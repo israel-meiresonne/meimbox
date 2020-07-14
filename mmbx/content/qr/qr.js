@@ -60,27 +60,28 @@
         $(l).fadeIn(TS, sc());
         $.ajax({
             type: 'POST',
-            url: WR + a,
+            url: WR + a + "?" + LANG,
             data: d,
             dataType: 'json',
             success: function (j) {
                 $(l).fadeOut(TS, rc());
+                console.log("response: ", j);
                 r(j, x);
             }
         });
     }
 
     /**
- * var datas = {
- *      "qr" : QR_FILTER,
- *      "inputSelector" : "#grid_filter input",
- *      "frmCbk" : getCol,
- *      "f" : filterRSP,
- *      "lds" : "#prodGrid_loading",
- *      "cbkSND" : function () { },
- *      "cbkRSP" : function () { }
- * }
- */
+     * var datas = {
+     *      "qr" : QR_FILTER,
+     *      "inputSelector" : "#grid_filter input",
+     *      "frmCbk" : getCol,
+     *      "f" : filterRSP,
+     *      "lds" : "#prodGrid_loading",
+     *      "cbkSND" : function () { },
+     *      "cbkRSP" : function () { }
+     * }
+     */
     frmSND = function (datas) {
         var param = $(datas.frm).serialize();
         param += datas.frmCbk();
@@ -100,7 +101,7 @@
 
     /**
      * var datas = {
-     *     "qr": QR_DELETE_MEASURE,
+     *     "qr": A_DELETE_MEASURE,
      *     "param": param,
      *     "f": removeMsrRSP,
      *     "lds": "#measurePopUp_loading",
@@ -117,7 +118,7 @@
         var sc = datas.sc;
         var rc = datas.rc;
         console.log("send: ", d);
-        console.log("to: ", WR + a);
+        console.log("to: ", WR + a + "?" + LANG);
         jx(a, d, r, l, x, sc, rc);
     }
 
@@ -220,17 +221,18 @@
         var brandWrapSelector = brandwrapClassList[0];
         var brandwrapId = $(selector).attr(datas.dataAttrName4selectedElement);
         var brandwrap = $("." + brandWrapSelector + "[" + datas.dataAttrName4selectedElement + "='" + brandwrapId + "']");
+        console.log($(brandwrap).attr(datas.dataAttrName_4_dataToPost));
         var brandDatas = json_decode($(brandwrap).attr(datas.dataAttrName_4_dataToPost));
         // var param = jQuery.param(brandDatas);
         var param = mapToParam(brandDatas);
         //build
         var datasSND = {
-            "qr": datas.qr,
-            "param": param,
-            "f": datas.f,
-            "lds": datas.lds,
-            "cbkSND": datas.cbkSND,
-            "cbkRSP": datas.cbkRSP
+            "a": datas.a,
+            "d": param,
+            "r": datas.r,
+            "l": datas.l,
+            "sc": datas.cbkSND,
+            "rc": datas.cbkRSP
         };
         SND(datasSND);
     }
@@ -274,9 +276,7 @@
     }
 
     var addMeasureRSP = function (r) {
-        console.log("response", r);
         if (r.isSuccess) {
-            console.log("success");
             $("#add_measurement_button").fadeOut(TS, function () {
                 $("#manage_measurement_button").fadeIn(TS);
             });
@@ -292,19 +292,18 @@
                 (n == FAT_ERR) ? popAlert(r.errors[n].message) : "";
             });
         }
-
     }
 
     var removeCartElement = function (selector, datas) {
         if (popAsk(datas.alert)) {
             //build
             var datasSND = {
-                "qr": datas.qr,
-                "param": datas.param,
-                "f": datas.f,
-                "lds": datas.lds,
-                "cbkSND": datas.cbkSND,
-                "cbkRSP": datas.cbkRSP
+                "a": datas.a,
+                "d": datas.d,
+                "r": datas.r,
+                "l": datas.l,
+                "sc": datas.sc,
+                "rc": datas.rc
             };
             SND(datasSND);
         }
@@ -322,17 +321,16 @@
     }
 
     var removeMsrRSP = function (r) {
-        console.log("response", r);
         if (r.isSuccess) {
-            var selector = $("#mange_measure_window .close_button-wrap[data-measure_id='" + r.results[QR_DELETE_MEASURE][MEASURE_ID_KEY] + "']");
+            var selector = $("#mange_measure_window .close_button-wrap[data-measure_id='" + r.results[MEASURE_ID_KEY] + "']");
             var wrapper = goToParentNode(selector, removeMsrDatas.nbToWrapper);
             removeAnimation(wrapper);
             $("#mange_measure_window .customize_measure-info-div").fadeOut(TS, function () {
-                $(this).html(r.results[QR_DELETE_MEASURE][TITLE_KEY]);
+                $(this).html(r.results[TITLE_KEY]);
                 $(this).fadeIn(TS);
             });
             $("#manager_add_measurement").fadeOut(TS, function () {
-                $(this).html(r.results[QR_DELETE_MEASURE][BUTTON_KEY]);
+                $(this).html(r.results[BUTTON_KEY]);
                 $(this).fadeIn(TS);
             });
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
@@ -341,7 +339,6 @@
     }
 
     var getMsrAdderRSP = function (r) {
-        console.log("response", r);
         if (r.isSuccess) {
             $("#add_measure_window .pop_up-content-block .customize_measure-content").html(r.results[QR_GET_MEASURE_ADDER]);
             simpleSwitchToMsr();
@@ -404,14 +401,14 @@
                 "btnDataAttrName_targerClass": "data-brand_class",
                 "dataAttrName4selectedElement": "data-selected_brand",
                 "dataAttrName_4_dataToPost": "data-brand",
-                "qr": A_SELECT_BRAND,
-                "f": selectBrandRSP,
-                "lds": "#brandPopUp_loading",
-                "cbkSND": function () {
+                "a": A_SELECT_BRAND,
+                "r": selectBrandRSP,
+                "l": "#brandPopUp_loading",
+                "sc": function () {
                     $(datas.lds).css("display", "flex");
                     $("#add_measure_window .brand_reference-content").css("opacity", 0);
                 },
-                "cbkRSP": cbkRSP = function () {
+                "rc": cbkRSP = function () {
                     $(datas.lds).css("display", "flex");
                     $("#add_measure_window .brand_reference-content").css("opacity", 1);
                 }
@@ -434,15 +431,15 @@
             frmSND(saveMsrDts);
         }
         saveMsrDts = {
-            "qr": QR_ADD_MEASURE,
-            "inputSelector": "#add_measure_form input",
+            "a": A_ADD_MEASURE,
+            "frm": "#add_measure_form input",
             "frmCbk": function () { return ""; },
-            "f": addMeasureRSP,
-            "lds": "#add_measurePopUp_loading",
-            "cbkSND": function () {
+            "r": addMeasureRSP,
+            "l": "#add_measurePopUp_loading",
+            "sc": function () {
                 $(saveMsrDts.lds).css("display", "flex");
             },
-            "cbkRSP": function () { }
+            "rc": function () { }
         };
         //—— ADD MEASUREMENT UP ————//
         //—— MANAGE MEASUREMENT DOWN ——//
@@ -469,11 +466,11 @@
                 "btnDataAttrName_targerClass": "data-measure_class",
                 "dataAttrName4selectedElement": "data-selected_measure",
                 "dataAttrName_4_dataToPost": "data-measure",
-                "qr": QR_SELECT_MEASURE,
-                "f": selectMeasureRSP,
-                "lds": "#measurePopUp_loading",
-                "cbkSND": msrMangerLoading_on,
-                "cbkRSP": msrMangerLoading_off
+                "a": A_SELECT_MEASURE,
+                "r": selectMeasureRSP,
+                "l": "#measurePopUp_loading",
+                "sc": msrMangerLoading_on,
+                "rc": msrMangerLoading_off
             };
             submitPopUp(this, datas);
         });
@@ -495,13 +492,13 @@
             removeMsrDatas = {
                 "alert": DELETE_MEASURE_ALERT,
                 "nbToWrapper": 4,
-                "param": param,
-                "qr": QR_DELETE_MEASURE,
-                "f": removeMsrRSP,
+                "d": param,
+                "a": A_DELETE_MEASURE,
+                "r": removeMsrRSP,
                 // "lds": "#measurePopUp_loading",
-                "lds": null,
-                "cbkSND": function () { },
-                "cbkRSP": function () { }
+                "l": null,
+                "sc": function () { },
+                "rc": function () { }
             };
             removeCartElement(selector, removeMsrDatas);
         }
@@ -515,12 +512,12 @@
             getMsrAdderDts = {
                 // "alert": DELETE_MEASURE_ALERT,
                 "nbToWrapper": 5,
-                "param": param,
-                "qr": QR_GET_MEASURE_ADDER,
-                "f": getMsrAdderRSP,
-                "lds": "#measurePopUp_loading",
-                "cbkSND": msrMangerLoading_on,
-                "cbkRSP": msrMangerLoading_off
+                "d": param,
+                "a": QR_GET_MEASURE_ADDER,
+                "r": getMsrAdderRSP,
+                "l": "#measurePopUp_loading",
+                "sc": msrMangerLoading_on,
+                "rc": msrMangerLoading_off
             };
             SND(getMsrAdderDts);
         }
@@ -530,15 +527,15 @@
             frmSND(updateMsrDts);
         }
         updateMsrDts = {
-            "qr": QR_UPDATE_MEASURE,
-            "inputSelector": "#add_measure_form input",
+            "a": A_UPDATE_MEASURE,
+            "frm": "#add_measure_form input",
             "frmCbk": function () { return ""; },
-            "f": updateMsrRSP,
-            "lds": "#add_measurePopUp_loading",
-            "cbkSND": function () {
+            "r": updateMsrRSP,
+            "l": "#add_measurePopUp_loading",
+            "sc": function () {
                 $(updateMsrDts.lds).css("display", "flex");
             },
-            "cbkRSP": function () { }
+            "rc": function () { }
         };
         /*-- submit editor up--*/
         //—— MANAGE MEASUREMENT UP ——//

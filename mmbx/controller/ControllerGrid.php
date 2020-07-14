@@ -52,7 +52,7 @@ class ControllerGrid extends ControllerSecure
         $search->setProducts($language, $country, $currency);
 
         $response->addFiles(self::GRID_CONTENT_KEY, "view/Grid/gridFiles/gridProduct.php");
-        $response->addFiles(self::GRID_STICKERS_KEY, "view/elements/sticker.php");
+        $response->addFiles(self::GRID_STICKERS_KEY, "view/Grid/gridFiles/gridSticker.php");
         $products = $search->getProducts();
 
         $viewDatas = [

@@ -1,35 +1,24 @@
 <?php
-require_once 'model/special/Search.php';
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string[] $stickers map that return the input value for each sticker inside.
- * $stickToValues => [
- *          sticker{string} => value
- *      ]
- * sticker => sticker's displayed name
- * @param Translator $translator the View's translator. NOTE: it's the only
- *  instance of this class in the whole system.
+ * @param string[] $stickerDatas list of param needed to build a sticker
+ * $stickerDatas = [
+ *      "content" => string,
+ *      "removeBtnId" => string,
+ *      "btnFunc" => string,{ex: "myFunction(param)"}
+ * ]
  */
 
- if(isset($executeObj)){
-     foreach($executeObj as $funcs){
-         ${$funcs["var"]} = ${$funcs["obj"]}->{$funcs["function"]}(${$funcs["param"]});
-     }
- }
-
-
-foreach ($stickers as $sticker => $value) :
-    // $valueAtt = 'value="' . $value . '"';
-    // $stickerFunc = 'onclick="removeSticker(' . "'" . $value . "'" . ')"';
+$removeBtnId = (!empty($stickerDatas["removeBtnId"])) ? 'id="' . $stickerDatas["removeBtnId"] . '"' : null;
+$btnFunc = (!empty($stickerDatas["btnFunc"])) ? 'onclick="' . $stickerDatas["btnFunc"] . '"' : null;
 ?>
-    <div class="sticker-container">
-        <div class="sticker-wrap">
-            <div value="<?= $value ?>" class="sticker-content-div"><?= $translator->translateString($sticker) ?></div>
-            <button onclick="removeSticker('<?= $value ?>')" class="sticker-button remove-button-default-att">
-                <span class="sticker-x-left"></span>
-                <span class="sticker-x-right"></span>
-            </button>
-        </div>
+<div class="sticker-wrap">
+    <div class="sticker-content-div">
+        <?= $stickerDatas["content"] ?>
     </div>
-<?php endforeach; ?>
+    <button <?= $removeBtnId ?> <?= $btnFunc ?> class="sticker-button remove-button-default-att">
+        <span class="sticker-x-left"></span>
+        <span class="sticker-x-right"></span>
+    </button>
+</div>

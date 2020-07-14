@@ -10,7 +10,7 @@ class Response
 
     /**
      * Holds keys results and file where to get  this result 
-     * (ex: "view/elements/sticker.php")
+     * (ex: "view/Grid/gridFiles/gridSticker.php")
      * + files = [
      *      resultKey{string} => file{string }
      * ]
@@ -31,6 +31,13 @@ class Response
     private $errors;
 
     /**
+     * Holds list translator's station to translate the error
+     * + $errorStations = [key => station]
+     * @var string[]
+     */
+    private $errorStations;
+
+    /**
      * Constuctor
      */
     function __construct()
@@ -39,10 +46,11 @@ class Response
         $this->files = [];
         $this->results = [];
         $this->errors = [];
+        $this->errorStations = [];
     }
 
     /**
-     * To push keys result => file ("view/elements/sticker.php")
+     * To push keys result => file
      * + files = [
      *      resultKey{string} => file{string }
      * ]
@@ -50,7 +58,6 @@ class Response
      */
     public function addFiles($key, $file)
     {
-        // array_merge($this->files, $map);
         $this->files[$key] = $file;
     }
 
@@ -61,8 +68,8 @@ class Response
      */
     public function addResult($key, $result)
     {
-        if (count($this->errors) > 0) {
-            throw new Exception('Cannot add result when $error is not empty');
+        if ((count($this->errors) > 0) || (count($this->errorStations) > 0)) {
+            throw new Exception('Cannot add result when errors or errorStations is not empty');
         } else {
             $this->isSuccess = true;
         }
@@ -89,12 +96,54 @@ class Response
     }
 
     /**
+     * To add error station that will be translated by "translateError()"
+     * @param string $station a Translator's station
+     * @param string $key access key that will be used to store the translation in errors list
+     * @param string $multiLang a additional message understandable in all language like number, brand name etc...
+     */
+    public function addErrorStation($station, $key = null)
+    {
+        if (count($this->results) > 0) {
+            throw new Exception('Cannot add error station when $result is not empty');
+        } else {
+            $this->isSuccess = false;
+        }
+        if (!empty($key)) {
+            $this->errorStations[$key] = $station;
+        } else {
+            array_push($this->errorStations, $station);
+        }
+    }
+
+    /**
+     * To tranlsate error stored in errorStations
+     * @param Translator $translator The translator used to translate every string
+     * + NOTE: it's the only instance of this class in the whole system.
+     */
+    public function translateError($translator)
+    {
+        if (count($this->errorStations) > 0) {
+            foreach ($this->errorStations as $key => $stationTxt) {
+                preg_match("#([A-z]{2}[0-9]+)#", $stationTxt, $matches);
+                $station = $matches[1]; // to get the text that matched the first parenthesis
+                $multiLangMsg = str_replace($station, "", $stationTxt); // a additional message understandable in all language like number, brand name etc...
+                $errorMsg = $translator->translateStation($station) . $multiLangMsg;
+                if ((preg_match("#[0-9]+#", $key) == 1) && array_key_exists($key, $this->errorStations)) {
+                    $this->addError($errorMsg);
+                } else {
+                    $this->addError($errorMsg, $key);
+                }
+            }
+        }
+    }
+
+    /**
      * Check if the Response is successful
      * @return boolean true if Response is successful else false
      */
     public function isSuccess()
     {
-        return ((count($this->results) > 0) || $this->isSuccess);
+        return ((count($this->results) > 0) && $this->isSuccess);
     }
 
     /**
@@ -103,7 +152,7 @@ class Response
      */
     public function containError()
     {
-        return (count($this->errors) > 0);
+        return (count($this->errors) > 0 || count($this->errorStations) > 0);
     }
 
     /**
@@ -129,11 +178,22 @@ class Response
 
     /**
      * To get a error stored at the key given in param
+     * @param string $key access key to error stored
      * @return string error stored at the key given in param
      */
     public function getError($key)
     {
         return $this->errors[$key];
+    }
+
+    /**
+     * Check if there is a error with a given key
+     * @param string $key key to look for
+     * @return boolean true if key exist else false
+     */
+    public function existErrorKey($key)
+    {
+        return (key_exists($key, $this->errors) || key_exists($key, $this->errorStations));
     }
 
     /**
@@ -144,6 +204,7 @@ class Response
     {
         $map = get_object_vars($this);
         unset($map["files"]);
+        unset($map["errorStations"]);
         return $map;
     }
 
