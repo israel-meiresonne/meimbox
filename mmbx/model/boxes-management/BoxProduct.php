@@ -63,12 +63,74 @@ class BoxProduct extends Product
     public function CompleteProperties($lang, $country = null, $currency = null)
     {
         $this->setPictures();
-        $this->setSizesStock();
+        // $this->setSizesStock();
+        $this->setDecupleSizeStock();
         $this->setCollections();
         $this->setProdFunctions();
         $this->setCategories();
         $this->setDescriptions($lang);
         $this->setSameProducts();
+    }
+
+    /**
+     * Set sizeStock by decupling stock for each size
+     */
+    private function setDecupleSizeStock()
+    {
+        $this->setSizesStock();
+        $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
+        $dbSizes = json_decode($json);
+        $firstK = array_keys($this->sizesStock)[0];
+        $nbList = count($dbSizes);
+        for ($i = 0; $i < $nbList; $i++) {
+            if (in_array($firstK, $dbSizes[$i])) {
+                break;
+            }
+        }
+        foreach ($this->sizesStock as $size => $stock) {
+            if (!in_array($size, $dbSizes[$i])) {
+                throw new Exception("The size '$size' is not supported by the system");
+            }
+        }
+        $sizes = $dbSizes[$i];
+        $newSizesStock = array_fill_keys($sizes, 0);
+        $sizesPos = array_flip($sizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
+        foreach ($this->sizesStock as $size => $stock) {
+            $pos = $sizesPos[$size];
+            $keys = array_keys(array_slice($newSizesStock, $pos));
+            $newSizesStock = $this->increaseStock($newSizesStock, $keys, $stock);
+        }
+        foreach ($newSizesStock as $size => $stock) {
+            if (($stock == 0) && (!key_exists($size, $this->sizesStock))) {
+                $newSizesStock[$size] = null;
+                unset($newSizesStock[$size]);
+            }
+        }
+        $ordSizeStock =  [];
+        foreach ($sizes as $size) {
+            if (key_exists($size, $newSizesStock)) {
+                $ordSizeStock[$size] = $newSizesStock[$size];
+            }
+        }
+        $ordSizeStock = array_reverse($ordSizeStock);
+        $this->sizesStock = $ordSizeStock;
+    }
+
+    /**
+     * Increase stock value at keys given in param
+     * @param string[] $newSizesStock list of size stock to increase
+     * + $newSizesStock = [
+     *      size{string|int} => stock{int}
+     * ]
+     * @param string[] $keys list of size to increase
+     * @param int $stock amount of stock to add
+     */
+    private function increaseStock($newSizesStock, $keys, int $stock)
+    {
+        foreach ($keys as $size) {
+            $newSizesStock[$size] += $stock;
+        }
+        return $newSizesStock;
     }
 
     /**
@@ -100,38 +162,14 @@ class BoxProduct extends Product
         return self::BOX_TYPE;
     }
 
-    // /**
-    //  * Build a HTML displayable price
-    //  * @param Country $country Visitor's current Country
-    //  * @param Currency $currency Visitor's current Currency
-    //  * @return string[] product's HTML displayable price
-    //  */
-    // public function getDisplayablePrice($country, $currency)
-    // {
-    //     if(!isset(self::$displayablePrice)){
-    //         $tab = $this->getBoxMap($country, $currency);
-    //         $boxesPrices = [];
-    //         foreach($tab as $boxColor => $datas){
-    //             $boxPriceVal = $tab[$boxColor]["price"];
-    //             $priceKey = number_format($boxPriceVal*100, 2, "", "");
-    //             $prodPrice = $boxPriceVal/$datas["sizeMax"];
-    //             $prodPriceObj = new Price($prodPrice, $currency);
-
-    //             $boxesPrices[$priceKey]["boxColor"] = $boxColor;
-    //             $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
-    //             $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
-    //             $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
-    //             $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
-    //             $boxesPrices[$priceKey]["price"] = $prodPriceObj;
-    //         }
-    //         ksort($boxesPrices);
-    //         ob_start();
-    //         require 'view/elements/boxPrice.php';
-    //         self::$displayablePrice = ob_get_clean();
-    //     }
-    //     return self::$displayablePrice;
-    //     // return ob_get_clean();
-    // }
+    /**
+     * Check if the product is a basket product
+     * @return boolean true if the product is a basket product else false
+     */
+    public function isBasketProduct()
+    {
+        return false;
+    }
 
     /**
      * Build a HTML displayable price
@@ -139,7 +177,7 @@ class BoxProduct extends Product
      * @param Currency $currency Visitor's current Currency
      * @return string[] product's HTML displayable price
      */
-    public function getDisplayablePrice($country, $currency)
+    public function getDisplayablePrice(Country $country, Currency $currency)
     {
         $tab = $this->getBoxMap($country, $currency);
         $boxesPrices = [];
@@ -164,11 +202,26 @@ class BoxProduct extends Product
     }
 
     /**
-     * Check if the product is a basket product
-     * @return boolean true if the product is a basket product else false
+     * Check if it's still stock for the product submited by Visitor
+     * + it's still stock mean that there size that fit the Visitor's submited size
+     * @param string $size to check if stock is available
+     * @param string $brand never set for basket product
+     * @param Measure $measure never set for basket product
+     * @return boolean true if the stock is available
      */
-    public function isBasketProduct()
+    public function stillStock($size = null, $brand = null, Measure $measure = null)
     {
-        return false;
+        if (empty($size) && empty($measure)) {
+            throw new Exception("Size and measurement can't both be NULL");
+        }
+        if (!empty($size)) {
+            (!isset($this->sizesStock)) ? $this->setDecupleSizeStock() : null;
+            if (!key_exists($size, $this->sizesStock)) {
+                throw new Exception("This size '$size' don't exist in sizesStock");
+            }
+            return ($this->sizesStock[$size] > 0);
+        }
+        if (!empty($measure)) {
+        }
     }
 }

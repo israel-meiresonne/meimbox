@@ -98,6 +98,12 @@ abstract class Product extends ModelFunctionality
     protected $description;
 
     /**
+     * Holds the quantity of this product in a container like basket or box
+     * + in container, a product is defined by its id, Size and color
+     */
+    protected $quantity = 0;
+
+    /**
      * List of products sharing the same name than the current product. NOTE: There are
      * sorted in ascending order of their prodID and use it as access key.
      * @var Product[]
@@ -117,12 +123,6 @@ abstract class Product extends ModelFunctionality
     protected $buyPrice;
 
     /**
-     * White color's RGB code
-     * @var string
-     */
-    public const WHITE_RGB = "#ffffff";
-
-    /**
      * Holds max number of cube displayable in artcicle product
      * @var string
      */
@@ -135,6 +135,22 @@ abstract class Product extends ModelFunctionality
     private static $COLOR_TEXT_05;
 
     /**
+     * White color's RGB code
+     * @var string
+     */
+    public const WHITE_RGB = "#ffffff";
+
+    /**
+     * @var string db's Products table name
+     */
+    public const TABLE_PRODUCTS = "Products";
+
+    /**
+     * @var string attribut's name
+     */
+    public const INPUT_PROD_ID = "prodID";
+
+    /**
      * Constructor 
      * @param int $prodID product's id
      */
@@ -142,7 +158,7 @@ abstract class Product extends ModelFunctionality
     {
         $this->setConstants();
         $this->prodID = $prodID;
-        if ($this->existProduct($prodID)) {
+        if ($this->existProductInMap($prodID)) {
             $productLine = $this->getProductLine($prodID);
             $this->prodName = $productLine["prodName"];
             $this->isAvailable = $productLine["isAvailable"];
@@ -194,6 +210,12 @@ abstract class Product extends ModelFunctionality
     public abstract function CompleteProperties($lang, $country, $currency);
 
     /**
+     * Getter of product's type
+     * @return string the type of the product
+     */
+    public abstract function getType();
+
+    /**
      * Setter for product's pictures
      */
     protected function setPictures()
@@ -220,11 +242,12 @@ abstract class Product extends ModelFunctionality
         $sql = "SELECT * 
         FROM `Products-Sizes`
         WHERE `prodId` = '$this->prodID'";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            foreach ($tab as $tabLine) {
-                $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
-            }
+        $tab = $this->select($sql); // add error if there is no size
+        if (count($tab) < 1) {
+            throw new Exception("There no size for this product");
+        }
+        foreach ($tab as $tabLine) {
+            $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
         }
     }
 
@@ -284,7 +307,7 @@ abstract class Product extends ModelFunctionality
      * Setter for product's description
      * @param Language $lang Visitor's language
      */
-    protected function setDescriptions($lang)
+    protected function setDescriptions(Language $lang)
     {
         $isoLang = $lang->getIsoLang();
         $sql = "SELECT * 
@@ -297,18 +320,21 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
-     * Set product's selected size by creating a Size object and set its 
-     * quantity.
-     * @param string $size the size value
-     * @param string $brand the brand name
-     * @param string $cut the cut value
-     * @param int $brand total number of product
-     * @param string $setDate date of add of this product to basket or box
-     * @param Measure $measure Visitor's measure
+     * Setter for product's quantity
+     * @param int $quantity product's quantity
      */
-    public function setSize($size, $brand, $cut, $quantity, $setDate, $measure)
+    public function setQuantity(int $quantity)
     {
-        $this->size = new Size($size, $brand, $cut, $quantity, $setDate, $measure);
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * Set product's selected size
+     * @param Size $size 
+     */
+    public function setSize(Size $size)
+    {
+        $this->size = $size;
     }
 
     /**
@@ -439,7 +465,7 @@ abstract class Product extends ModelFunctionality
      * @param Currency $currency Visitor's current Currency
      * @return string[] product's HTML displayable price
      */
-    public abstract function getDisplayablePrice($country, $currency);
+    public abstract function getDisplayablePrice(Country $country, Currency $currency);
 
     /**
      * Getter for sameProducts
@@ -459,32 +485,15 @@ abstract class Product extends ModelFunctionality
         return self::$MAX_PRODUCT_CUBE_DISPLAYABLE;
     }
 
-    // /**
-    //  * To get a protected copy of a BasketProduct instance
-    //  * @return Product a protected copy of the BasketProduct instance
-    //  */
-    // public function getCopy()
-    // {
-    //     $copy = new Product();
-    //     $copy->prodID = $this->prodID;
-    //     $copy->prodName = $this->prodName;
-    //     $copy->isAvailable = $this->isAvailable;
-    //     $copy->addedDate = $this->addedDate;
-    //     $copy->colorName = $this->colorName;
-    //     $copy->colorRGB = $this->colorRGB;
-    //     $copy->buyPrice = (!empty($this->buyPrice)) ? $this->buyPrice->getCopy() : null;
-    //     $copy->weight = $this->weight;
-    //     $copy->pictures = $this->pictures;
-    //     $copy->sizesStock = $this->sizesStock;
-    //     $copy->prodMeasures = GeneralCode::cloneMap($this->prodMeasures);
-    //     $copy->size = (!empty($this->size)) ? $this->size->getCopy() : null;
-    //     $copy->collections = $this->collections;
-    //     $copy->prodFunctions = $this->prodFunctions;
-    //     $copy->categories = $this->categories;
-    //     $copy->descriptions = $this->descriptions;
-    //     $copy->sameProducts = GeneralCode::cloneMap($this->sameProducts);
-    //     return $copy;
-    // }
+    /**
+     * Check if it's still stock for the product submited by Visitor
+     * + it's still stock mean that there size that fit the Visitor's submited size
+     * @param string $size to check if stock is available
+     * @param string $brand
+     * @param Measure $measure user's measurement
+     * @return boolean true if the stock is available
+     */
+    public abstract function stillStock($size, $brand, Measure $measure);
 
     /**
      * Convert setDate to seconde from UNIX.

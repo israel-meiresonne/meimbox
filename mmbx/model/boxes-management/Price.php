@@ -26,11 +26,10 @@ class Price
     const TEXTUAL_MAX = "max";
 
     /**
-     * __construct2($price, $country, $currency)
-     * @param double $price 
+     * @param float $price 
      * @param Currency $currency price's currency
      */
-    public function __construct($price, $currency)
+    public function __construct(float $price, Currency $currency)
     {
         $this->price = $price;
         $this->currency = $currency;

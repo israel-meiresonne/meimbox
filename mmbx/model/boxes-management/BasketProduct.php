@@ -13,26 +13,26 @@ class BasketProduct extends Product
      * BasketProduct's sell price
      * @var Price
      */
-    protected $price;
+    private $price;
 
     /**
      * BasketProduct's shipping cost
      * @var Shipping
      */
-    protected $shipping;
+    private $shipping;
 
     /**
      * BasketProduct's discount value
      * + NOTE: Discount is set at null if there any discount 
      * @var Discount
      */
-    protected $discount;
+    private $discount;
 
     /**
      * Product type to know where to put it
      * @var string Product witch can be puted only into a basket
      */
-    const BASKET_TYPE = "basketproduct";
+    public const BASKET_TYPE = "basketproduct";
 
     /**
      * Constructor
@@ -194,57 +194,83 @@ class BasketProduct extends Product
     // }
 
     /**
+     * Check if the product is a basket product
+     * @return boolean true if the product is a basket product else false
+     */
+    public function isBasketProduct()
+    {
+        return true;
+    }
+
+    /**
      * Build a HTML displayable price
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      * @return string[] product's HTML displayable price
      */
-    public function getDisplayablePrice($country = null, $currency = null)
+    public function getDisplayablePrice(Country $country = null, Currency $currency = null)
     {
         $priceStr = '<p>' . $this->price->getFormated() . '</p>';
         return $priceStr;
     }
 
     /**
+     * Check if it's still stock for the product submited by Visitor
+     * + it's still stock mean that there size that fit the Visitor's submited size
+     * @param string $size to check if stock is available
+     * @param string $brand never set for basket product
+     * @param Measure $measure never set for basket product
+     * @return boolean true if the stock is available
+     */
+    public function stillStock($size, $brand = null, Measure $measure = null)
+    {
+        (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
+        if (!key_exists($size, $this->sizesStock)) {
+            throw new Exception("This size '$size' don't exist in sizesStock");
+        }
+        return ($this->sizesStock[$size] > 0);
+    }
+
+    /**
      * @return Price[[]] a protected copy of the NewPrices attribute
      */
-    public function getCopyNewPrices()
-    {
-        $copy = [];
-        foreach ($this->newPrices as $iso_country => $currencyList) {
-            foreach ($currencyList as $iso_currency => $newPrice) {
-                $copy[$iso_country][$iso_currency] = $newPrice->getCopy();
-            }
-        }
-        return $copy;
-    }
+    // public function getCopyNewPrices()
+    // {
+    //     $copy = [];
+    //     foreach ($this->newPrices as $iso_country => $currencyList) {
+    //         foreach ($currencyList as $iso_currency => $newPrice) {
+    //             $copy[$iso_country][$iso_currency] = $newPrice->getCopy();
+    //         }
+    //     }
+    //     return $copy;
+    // }
 
     /**
      * @return Shipping[[]] a protected copy of the Shippings attribute
      */
-    public function getCopyShippings()
-    {
-        $copy = [];
-        foreach ($this->shipping as $iso_country => $currencyList) {
-            foreach ($currencyList as $iso_currency => $shipping) {
-                $copy[$iso_country][$iso_currency] = $shipping->getCopy();
-            }
-        }
-        return $copy;
-    }
+    // public function getCopyShippings()
+    // {
+    //     $copy = [];
+    //     foreach ($this->shipping as $iso_country => $currencyList) {
+    //         foreach ($currencyList as $iso_currency => $shipping) {
+    //             $copy[$iso_country][$iso_currency] = $shipping->getCopy();
+    //         }
+    //     }
+    //     return $copy;
+    // }
 
     /**
      * @return Discount[] a protected copy of the Discounts attribute
      */
-    public function getCopyDiscounts()
-    {
-        $copy = [];
-        foreach ($this->discount as $setdateUnix => $discount) {
-            $copy[$setdateUnix] = $discount->getCopy();
-        }
-        ksort($copy);
-        return $copy;
-    }
+    // public function getCopyDiscounts()
+    // {
+    //     $copy = [];
+    //     foreach ($this->discount as $setdateUnix => $discount) {
+    //         $copy[$setdateUnix] = $discount->getCopy();
+    //     }
+    //     ksort($copy);
+    //     return $copy;
+    // }
 
 
     /**
@@ -284,15 +310,6 @@ class BasketProduct extends Product
 
     //     return $copy;
     // }
-
-    /**
-     * Check if the product is a basket product
-     * @return boolean true if the product is a basket product else false
-     */
-    public function isBasketProduct()
-    {
-        return true;
-    }
 
     // public function __toString()
     // {

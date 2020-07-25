@@ -39,15 +39,15 @@ class Discount
      * To get a protected copy of a Discount instance
      * @return Discount a protected copy of the Discount instance
      */
-    public function getCopy()
-    {
-        $copy = new Discount();
-        $copy->value = $this->value;
-        $copy->beginDate = $this->beginDate;
-        $copy->endDate = $this->endDate;
-        $copy->country = (!empty($this->country)) ? $this->country->getCopy() : null;
-        return $copy;
-    }
+    // public function getCopy()
+    // {
+    //     $copy = new Discount();
+    //     $copy->value = $this->value;
+    //     $copy->beginDate = $this->beginDate;
+    //     $copy->endDate = $this->endDate;
+    //     $copy->country = (!empty($this->country)) ? $this->country->getCopy() : null;
+    //     return $copy;
+    // }
 
     public function __toString()
     {

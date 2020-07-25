@@ -2,28 +2,29 @@
 
 require_once 'model/users-management/Visitor.php';
 
-abstract class User extends  Visitor{
-    
+abstract class User extends  Visitor
+{
+
     // protected $password;
-    
+
     /**
      * Holds the mail of the user
      * @var string
      */
     protected $mail;
-    
+
     /**
      * Holds the firstname of the user
      * @var string
      */
     protected $firstname;
-    
+
     /**
      * Holds the lastname of the user
      * @var string
      */
     protected $lastname;
-    
+
     /**
      * Holds the birthday of the user
      * @var string
@@ -35,7 +36,7 @@ abstract class User extends  Visitor{
      * @var string
      */
     protected $sexe;
-    
+
     /**
      * .
      * The selected address have to move to index = 0
@@ -43,13 +44,24 @@ abstract class User extends  Visitor{
      */
     protected $addresses;
 
+    /**
+     * Holds user's db line
+     * + this attribut is used to avoid multiple request for each children
+     * @var string[]
+     */
     protected $userLine;
 
 
-    protected function __construct($userID){
+    protected function __construct($userID)
+    {
         parent::__construct();
-        $this->userID = $userID;
-        $this->userLine = $this->select("SELECT * FROM `Users` WHERE `userID` = '$this->userID'")[0];
+        $tab = $this->select("SELECT * FROM `Users` WHERE `userID` = '$this->userID'");
+        if (count($tab) != 1) {
+            throw new Exception("User with id '$userID' don't exist");
+        }
+        $this->userLine = $tab[0];
+        $this->userID = $this->userLine["userID"];
+        $this->lang = new Language($this->userLine["lang_"]);
         $this->mail = $this->userLine["mail"];
         $this->firstname = $this->userLine["firstname"];
         $this->lastname = $this->userLine["lastname"];
@@ -57,7 +69,7 @@ abstract class User extends  Visitor{
         $this->sexe = $this->userLine["sexe_"];
     }
 
-    
+
     // public function __toString()
     // {
     //     parent::__toString();
