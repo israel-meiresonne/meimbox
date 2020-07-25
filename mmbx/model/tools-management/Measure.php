@@ -56,6 +56,11 @@ class Measure extends ModelFunctionality
     /**
      * Input name for measure's name
      */
+    private const ID_LENGTH = 25;
+
+    /**
+     * Input name for measure's name
+     */
     const INPUT_MEASURE_NAME = "measure_name";
 
     /**
@@ -115,8 +120,8 @@ class Measure extends ModelFunctionality
      */
     public function __construct($datas)
     {
-        $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(25);
-        $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(25);;
+        $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(self::ID_LENGTH);
+        $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(self::ID_LENGTH);;
         $unitName = $datas["unit_name"];
         $this->bust = (!empty($datas["bust"])) ? new MeasureUnit($datas["bust"], $unitName) : null;
         $this->arm = (!empty($datas["arm"])) ? new MeasureUnit($datas["arm"], $unitName) : null;
@@ -200,8 +205,9 @@ class Measure extends ModelFunctionality
 
     /**
      * Build a map that contain all value needed to create a Measure
-     * @param string[] $usersMeasures
-     * $usersMeasures = [
+     * + the map used to build is a line from db
+     * @param string[] $tabLine
+     * $tabLine = [
      *      "measureID" => string,
      *      "measure_name" => string,
      *      "userBust" => float,
@@ -214,17 +220,17 @@ class Measure extends ModelFunctionality
      * ]
      * @return string[] a map that contain all value needed to create a Measure
      */
-    public static function getDatas4Measure($usersMeasures)
+    public static function getDatas4Measure($tabLine)
     {
-        $datas["measureID"] = $usersMeasures["measureID"];
-        $datas["measure_name"] = $usersMeasures["measure_name"];
-        $datas["bust"] = $usersMeasures["userBust"];
-        $datas["arm"] = $usersMeasures["userArm"];
-        $datas["waist"] = $usersMeasures["userWaist"];
-        $datas["hip"] = $usersMeasures["userHip"];
-        $datas["inseam"] = $usersMeasures["userInseam"];
-        $datas["unit_name"] = $usersMeasures["unit_name"];
-        $datas["setDate"] = $usersMeasures["setDate"];
+        $datas["measureID"] = $tabLine["measureID"];
+        $datas["measure_name"] = $tabLine["measureName"];
+        $datas["bust"] = $tabLine["userBust"];
+        $datas["arm"] = $tabLine["userArm"];
+        $datas["waist"] = $tabLine["userWaist"];
+        $datas["hip"] = $tabLine["userHip"];
+        $datas["inseam"] = $tabLine["userInseam"];
+        $datas["unit_name"] = $tabLine["unit_name"];
+        $datas["setDate"] = $tabLine["setDate"];
         return $datas;
     }
 
