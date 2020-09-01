@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>OrdersStatus</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic|Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="../assets/css/bootstrap.css">
+<link rel="stylesheet" href="../assets/css/jquery.bonsai.css">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/icon-font/icons.css">
+<script type="text/javascript" src="../assets/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="../assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.bonsai.js"></script>
+
+  </head>
+  <body>
+    <div>
+
+      <!-- Name Title -->
+
+      <h1>OrdersStatus</h1>
+
+      <!-- Type and Stereotype -->
+
+      <section style="margin-top: .5em;">
+        <span class="alert alert-info">
+          <span class="node-icon staruml-icon icon-ERDEntity"></span>
+          ERDEntity
+        </span>
+        
+      </section>
+
+      <!-- Path -->
+
+      <section style="margin-top: 10px">
+        
+        
+        
+          
+          <span class="label label-info"><a href='cf9c8b720f3815adeccaf3ef6e48c6c4.html'><span class='node-icon staruml-icon icon-Project'></span>MeimBoxDB</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='594af663de577680f35b13183109d675.html'><span class='node-icon staruml-icon icon-UMLModel'></span>Model</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='aed60d17d94b3a0a89f96a93227dc32d.html'><span class='node-icon staruml-icon icon-ERDDataModel'></span>Data Model1</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='d355e11211dda4a420d4e66b41e74dcc.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>OrdersStatus</a></span>
+        
+      </section>
+
+      <!-- Diagram -->
+
+      
+
+      <!-- Description -->
+
+      
+      <section>
+        <h3>Description</h3>
+        <div>
+          
+            <h1>description</h1>
+
+<p>Table des historiques des états d&#39;un colis d&#39;une commande</p>
+
+<h1>Contraintes</h1>
+
+<ul><li>À chaque nouveau status, une nouvelle ligne est crée </li><li>quand le status est mis-à-jour par le système, l&#39;attribut admin prend la valeur &quot;system-[sequence]&quot;</li></ul>
+          
+        </div>
+      </section>
+      
+
+      <!-- Specification -->
+
+      
+
+      <!-- Directed Relationship -->
+
+      
+
+      <!-- Undirected Relationship -->
+
+      
+
+      <!-- Classifier -->
+
+      
+
+      <!-- Interface -->
+
+      
+
+      <!-- Component -->
+
+      
+
+      <!-- Node -->
+
+      
+
+      <!-- Actor -->
+
+      
+
+      <!-- Use Case -->
+
+      
+
+      <!-- Template Parameters -->
+
+      
+
+      <!-- Literals -->
+
+      
+
+      <!-- Attributes -->
+
+      
+
+      <!-- Operations -->
+
+      
+
+      <!-- Receptions -->
+
+      
+
+      <!-- Extension Points -->
+
+      
+
+      <!-- Parameters -->
+
+      
+
+      <!-- Diagrams -->
+
+      
+      
+
+      <!-- Behavior -->
+
+      
+
+      <!-- Action -->
+
+      
+
+      <!-- Interaction -->
+
+      
+
+      <!-- CombinedFragment -->
+
+      
+
+      <!-- Activity -->
+
+      
+
+      <!-- State Machine -->
+
+      
+
+      <!-- State Machine -->
+
+      
+
+      <!-- State -->
+
+      
+
+      <!-- Vertex -->
+
+      
+
+      <!-- Transition -->
+
+      
+
+      <!-- Data Model (ERD) -->
+
+      
+
+      <!-- Columns (ERD) -->
+
+      
+      <section>
+        <h3>Columns</h3>
+        
+        <table class="table table-striped table-bordered">
+          <tr>
+            <th width="20%">Name</th>
+            <th width="20%">Type</th>
+            <th width="10%">Primary Key</th>
+            <th width="10%">Foreign Key</th>
+            <th width="20%">Reference To</th>
+            <th width="10%">Nullable</th>
+            <th width="10%">Unique</th>
+          </tr>
+          
+          <tr>
+            <td><a href="428e3b4940dbaca2f82959955881c6cf.html">orderId</a></td>
+            <td>VARCHAR(100)</td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>true</span></td>
+            <td>
+              
+                <a href='3ef1552d429190b6e76acaec90a24ef8.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Orders</a> ::
+              
+              <a href='8148f891346ed6909b7d24fcda3102e7.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>orderID</a>
+            </td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="b734817496a61fe891aff4601f872e78.html">trackingNumber</a></td>
+            <td>VARCHAR (255 )</td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="879fafaae32eb966089f52dc830d4e30.html">status</a></td>
+            <td>VARCHAR(50)</td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="7d9e74043685193bd23e01b231e24358.html">setDate</a></td>
+            <td>DATETIME</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="593291b013f1d67f0c0e4fe4945f0926.html">adminId</a></td>
+            <td>INTEGER(11)</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>true</span></td>
+            <td>
+              
+                <a href='77f903327c2efc40f67fc5a8d0f2441c.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Administrators</a> ::
+              
+              <a href='97d667567ed6100e695cdb2c7fe91c46.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>adminID</a>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="8b384dcab59785636d8ab0fc70462e53.html">deliveryMin</a></td>
+            <td>DATE</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="eddd3a6b2bf337c58eb4c674c8bd543e.html">deliveryMax</a></td>
+            <td>DATE</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+        </table>                
+      </section>
+      
+
+      <!-- Related Entities (ERD) -->
+
+      
+      <section>
+        <h3>Related Entities</h3>
+        
+        <table class="table table-striped table-bordered">
+          <tr>
+            <th width="25%">Entity</th>
+            <th width="25%">Cardinality</th>
+            <th width="25%">Reference Name</th>
+            <th width="25%">Relationship</th>
+          </tr>
+          
+          
+          <tr>
+            <td><a href='77f903327c2efc40f67fc5a8d0f2441c.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Administrators</a></td>
+            <td>1</td>
+            <td></td>
+            <td><a href='975333b2131752a7caa54745876f0257.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Administrators—OrdersStatus)</a></td>
+          </tr>
+          
+        </table>                
+      </section>
+      
+
+      <!-- Data Flows (DFD) -->
+
+      
+
+      <!-- Flows (Flowchart) -->
+
+      
+
+      <!-- Properties -->
+
+      <section>
+        <h3>Properties</h3>
+        
+        <table class="table table-striped table-bordered">
+    <tr>
+        <th width="50%">Name</th>
+        <th width="50%">Value</th>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>name</td>
+        <td>OrdersStatus</td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</table>                
+
+      </section>
+
+      <!-- Tags -->
+
+      
+
+      <!-- Constraints, Dependencies, Dependants -->
+
+      
+
+      <!-- Relationships -->
+
+      
+      
+<section class="element-list">
+    <h3>Relationships</h3>
+    <ul class="nav nav-list">
+        
+        <li><a href='975333b2131752a7caa54745876f0257.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Administrators—OrdersStatus)</a></li>
+        
+    </ul>
+</section>
+
+
+
+      <!-- Owned Elements -->
+
+      
+      
+<section class="element-list">
+    <h3>Owned Elements</h3>
+    <ul class="nav nav-list">
+        
+        <li><a href='107638cfd037e138536dc430c07d5129.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Orders-Addresses—Orders)</a></li>
+        
+    </ul>
+</section>
+
+
+
+    </div>
+  </body>
+</html>

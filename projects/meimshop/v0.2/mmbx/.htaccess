@@ -1,0 +1,8 @@
+RewriteEngine on
+# grid
+RewriteRule ^grid/?$ index.php?controller=grid&action=index [QSA,NC,L]
+# item
+RewriteRule ^item/+[A-z\-]+/+([0-9]+)/*$    index.php?controller=item&action=index&prodid=$1 [QSA,NC,L]
+RewriteRule ^item/+([0-9]+)/*$  index.php?controller=item&action=index&prodid=$1 [QSA,NC,L]
+# default
+RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2 [QSA,NC]

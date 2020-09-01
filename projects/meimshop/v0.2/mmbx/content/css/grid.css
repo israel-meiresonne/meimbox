@@ -1,0 +1,253 @@
+.detail-price-div .piano-wrap{
+    margin-bottom: 20px;
+}
+
+.detail-price-div p{
+    margin: 0;
+}
+
+
+/*—————————————— COMPUTER ——————————————*/
+
+@media (min-width: 992px) {
+    .filter-block-mobile {
+        display: none;
+    }
+    .filter-hide-container {
+        display: none;
+    }
+    .grid-item-container {
+        display: flex;
+        width: 100%;
+        color: var(--color-text);
+        font-family: var(--main-font-family);
+    }
+    .grid-inner {
+        padding: 20px 10px 0;
+    }
+    .filter-block {
+        display: block !important;
+        flex-direction: row;
+        width: 20%;
+        /* margin-right: 15px; */
+        margin: 0 15px 30px 0;
+    }
+    .filter-block p {
+        margin-bottom: 25px;
+        color: var(--color-label);
+        text-transform: capitalize;
+        font-size: var(--middle-font-size);
+    }
+    .item-space {
+        position: relative;
+        flex-direction: row;
+        width: 100%;
+        margin-left: 15px;
+    }
+    .item-space .remove-ul-default-att{
+        overflow: auto;
+    }
+    .dropdown-container {
+        width: 100%;
+        margin: 0 0 35px;
+    }
+    #price_dropdown #min_price_input {
+        margin-bottom: 25px;
+    }
+    #price_dropdown #max_price_input {
+        margin-bottom: 20px;
+    }
+    .search-sticker-block {
+        display: flex;
+        margin-bottom: 25px;
+        font-family: var(--main-font-family);
+        color: var(--color-text);
+    }
+    .search-sticker-div {
+        width: 100%;
+        padding: 0 10px;
+        margin-left: 15px;
+    }
+    .search-sticker-block .sticker-container {
+        /* height: 35px; */
+        /* max-width: 160px; */
+        margin: 0 3px 3px 0;
+        text-transform: capitalize;
+        float: left;
+    }
+    .article-li {
+        margin-bottom: 25px;
+        padding: 0 0 0 10px;
+        font-family: var(--main-font-family);
+        float: left;
+    }
+    @media (max-width: 1199px) {
+        .article-li {
+            width: 33.3333%;
+        }
+    }
+    @media (min-width: 1200px) and (max-width: 1566px) {
+        .article-li {
+            width: 25%;
+        }
+    }
+    @media (min-width: 1567px) {
+        .article-li {
+            width: 20%;
+        }
+    }
+}
+
+/*——————————————- MOBILE ——————————————-*/
+
+@media (max-width: 991px) {
+    body {
+        top: 140px;
+        /* Header's Height + Filter's Height */
+    }
+    .grid-item-container {
+        display: flex;
+        width: 100%;
+        color: var(--color-text);
+        font-family: var(--main-font-family);
+    }
+    .grid-inner {
+        padding: 20px 5px 0;
+    }
+    .filter-block-mobile {
+        display: flex;
+        position: fixed;
+        width: 100%;
+        height: 35px;
+        padding: 5px 10px;
+        top: 100px;
+        left: 0;
+        background-color: var(--color-white);
+        font-size: var(--middle-font-size);
+        font-family: var(--main-font-family);
+        text-transform: capitalize;
+        box-shadow: var(--box-shadow);
+        border-radius: 0 0 5px 5px;
+        z-index: var(--z-index-header-fixed);
+    }
+    .filter-button-block {
+        margin: auto;
+        color: var(--color-text);
+        font-family: var(--main-font-family);
+    }
+    .filter-button-block:hover {
+        cursor: pointer;
+    }
+    .filter-button-block .img-text-wrap {
+        height: 100%;
+    }
+    .filter-button-block .img-text-span {
+        margin-left: 10px;
+    }
+    .filter-button-block .img-text-img img {
+        transform: rotate(90deg);
+    }
+    .filter-block-display {
+        display: block;
+        height: auto;
+        transition: var(--transition-time);
+    }
+    .filter-block {
+        display: none;
+        position: fixed;
+        width: 100%;
+        top: 135px;
+        background-color: var(--color-white);
+        z-index: 100;
+    }
+    .filter-block p {
+        display: none;
+    }
+    .filter-dropdown-set {
+        padding: 20px;
+        max-height: 393px;
+        overflow: scroll;
+    }
+    .filter-block .dropdown-container {
+        margin: 0 auto 35px;
+        max-width: 250px;
+    }
+    .filter-block .apply-button-container {
+        margin: 0 auto 35px;
+        max-width: 250px;
+    }
+    .filter-hide-container {
+        position: relative;
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        text-transform: capitalize;
+        text-align: center;
+        border-top: var(--border-float);
+        border-bottom: var(--border-float);
+    }
+    .filter-hide-container .filter-hide-span:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .item-space {
+        flex-direction: row;
+        width: 100%;
+        position: relative;
+    }
+    .item-space .remove-ul-default-att{
+        overflow: auto;
+    }
+    .dropdown-container {
+        width: 100%;
+        margin: 0 0 35px;
+    }
+    #price_dropdown #min_price_input {
+        margin-bottom: 25px;
+    }
+    #price_dropdown #max_price_input {
+        margin-bottom: 20px;
+    }
+    .search-sticker-block {
+        display: flex;
+        margin-bottom: 25px;
+        font-family: var(--main-font-family);
+        color: var(--color-text);
+    }
+    .search-sticker-div {
+        width: 100%;
+        padding-left: 10px;
+        /* margin-left: 15px; */
+    }
+    .sticker-set{
+        overflow: auto;
+    }
+    .search-sticker-block .sticker-container {
+        /* height: 30px; */
+        /* max-width: 160px; */
+        margin: 0 3px 3px 0;
+        text-transform: capitalize;
+        float: left;
+    }
+    .article-li {
+        margin-bottom: 25px;
+        padding: 0 0 0 5px;
+        font-family: var(--main-font-family);
+        float: left;
+    }
+    @media (max-width: 519px) {
+        .article-li {
+            width: 50%;
+        }
+    }
+    @media (min-width: 520px) and (max-width: 719px) {
+        .article-li {
+            width: 33.3333%;
+        }
+    }
+    @media (min-width: 720px) {
+        .article-li {
+            width: 25%;
+        }
+    }
+}
