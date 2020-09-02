@@ -13,22 +13,23 @@ class BoxProduct extends Product
     private $measure;
 
     /**
-     * Holds the BoxProduct's displayable price
-     * @var Measure
-     */
-    private static $displayablePrice;
-
-    /**
      * Product type to know where to put it
      * @var string Product witch can be puted only into a box
      */
     const BOX_TYPE = "boxproduct";
 
 
-    public function __construct($prodID)
+    /**
+     * Constructor
+     * @param int $prodID product's id
+     * @param Language $language Visitor's language
+     * @param Country $country the Visitor's country
+     * @param Currency $currency the Visitor's current Currency
+     */
+    public function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
-        parent::__construct($prodID);
-        $this->setMeasure();
+        parent::__construct($prodID, $language, $country, $currency);
+        // $this->setMeasure();
     }
 
     /**
@@ -54,40 +55,58 @@ class BoxProduct extends Product
         $this->measure = new Measure($measureDatas);
     }
 
-    /**
-     * To set all other properties that nat in Product table
-     * @param Language $lang Visitor's language
-     * @param Country $country the Visitor's country
-     * @param Currency the Visitor's current Currency
-     */
-    public function CompleteProperties($lang, $country = null, $currency = null)
-    {
-        $this->setPictures();
+    // /**
+    //  * To set all other properties that nat in Product table
+    //  * @param Language $lang Visitor's language
+    //  * @param Country $country the Visitor's country
+    //  * @param Currency the Visitor's current Currency
+    //  */
+    // public function CompleteProperties(Language $lang, $country = null, $currency = null)
+    // {
+        // $this->setPictures();
         // $this->setSizesStock();
-        $this->setDecupleSizeStock();
-        $this->setCollections();
-        $this->setProdFunctions();
-        $this->setCategories();
-        $this->setDescriptions($lang);
-        $this->setSameProducts();
+
+        // $this->decupleSizeStock();
+
+        // $this->setCollections();
+        // $this->setProdFunctions();
+        // $this->setCategories();
+        // $this->setDescriptions($lang);
+        // $this->setSameProducts();
+    // }
+
+    /**
+     * Setter for product's size and stock
+     */
+    protected function setSizesStock()
+    {
+       parent::setSizesStock();
+       $this->sizesStock = $this->decupleSizeStock($this->sizesStock);
     }
 
     /**
      * Set sizeStock by decupling stock for each size
+     * + decline each size in all size below and increase the stock
+     * @param int[] $sizesStock list of size to decuple and their stock
+     * + size => stock
+     * @return int[] list of size => stock decupled
      */
-    private function setDecupleSizeStock()
+    private function decupleSizeStock($sizesStock)
     {
-        $this->setSizesStock();
+        // $this->setSizesStock();
+        // $sizesStock = $this->getSizeStock();
         $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
         $dbSizes = json_decode($json);
-        $firstK = array_keys($this->sizesStock)[0];
+        // $firstK = array_keys($this->sizesStock)[0];
+        $firstK = array_keys($sizesStock)[0];
         $nbList = count($dbSizes);
         for ($i = 0; $i < $nbList; $i++) {
             if (in_array($firstK, $dbSizes[$i])) {
                 break;
             }
         }
-        foreach ($this->sizesStock as $size => $stock) {
+        // foreach ($this->sizesStock as $size => $stock) {
+        foreach ($sizesStock as $size => $stock) {
             if (!in_array($size, $dbSizes[$i])) {
                 throw new Exception("The size '$size' is not supported by the system");
             }
@@ -95,13 +114,15 @@ class BoxProduct extends Product
         $sizes = $dbSizes[$i];
         $newSizesStock = array_fill_keys($sizes, 0);
         $sizesPos = array_flip($sizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
-        foreach ($this->sizesStock as $size => $stock) {
+        // foreach ($this->sizesStock as $size => $stock) {
+        foreach ($sizesStock as $size => $stock) {
             $pos = $sizesPos[$size];
             $keys = array_keys(array_slice($newSizesStock, $pos));
             $newSizesStock = $this->increaseStock($newSizesStock, $keys, $stock);
         }
         foreach ($newSizesStock as $size => $stock) {
-            if (($stock == 0) && (!key_exists($size, $this->sizesStock))) {
+            // if (($stock == 0) && (!key_exists($size, $this->sizesStock))) {
+            if (($stock == 0) && (!key_exists($size, $sizesStock))) {
                 $newSizesStock[$size] = null;
                 unset($newSizesStock[$size]);
             }
@@ -113,7 +134,8 @@ class BoxProduct extends Product
             }
         }
         $ordSizeStock = array_reverse($ordSizeStock);
-        $this->sizesStock = $ordSizeStock;
+        // $this->sizesStock = $ordSizeStock;
+        return $ordSizeStock;
     }
 
     /**
@@ -140,6 +162,9 @@ class BoxProduct extends Product
     private function setSameProducts()
     {
         $this->sameProducts = [];
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency =$this->getCurrency();
         $sql = "SELECT `prodID` 
         FROM `Products` 
         WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
@@ -147,7 +172,7 @@ class BoxProduct extends Product
         $tab = $this->select($sql);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
-                $product = new BoxProduct($tabLine["prodID"]);
+                $product = new BoxProduct($tabLine["prodID"], $language, $country, $currency);
                 $this->sameProducts[$product->getProdID()] = $product;
             }
         }
@@ -163,12 +188,23 @@ class BoxProduct extends Product
     }
 
     /**
-     * Check if the product is a basket product
-     * @return boolean true if the product is a basket product else false
+     * Getter for product's stock for each size
+     * @return int[] product's stock for each size
      */
-    public function isBasketProduct()
+    protected function getSizeStock()
     {
-        return false;
+        (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
+        return $this->sizesStock;
+    }
+
+    /**
+     * Getter for sameProducts
+     * @return BoxProduct[] a prodtected copy of sameProducts
+     */
+    public function getSameProducts()
+    {
+        (!isset($this->sameProducts)) ? $this->setSameProducts() : null;
+        return $this->sameProducts;
     }
 
     /**
@@ -177,8 +213,10 @@ class BoxProduct extends Product
      * @param Currency $currency Visitor's current Currency
      * @return string[] product's HTML displayable price
      */
-    public function getDisplayablePrice(Country $country, Currency $currency)
+    public function getDisplayablePrice()
     {
+        $country = $this->getCountry();
+        $currency =$this->getCurrency();
         $tab = $this->getBoxMap($country, $currency);
         $boxesPrices = [];
         foreach ($tab as $boxColor => $datas) {
@@ -215,13 +253,26 @@ class BoxProduct extends Product
             throw new Exception("Size and measurement can't both be NULL");
         }
         if (!empty($size)) {
-            (!isset($this->sizesStock)) ? $this->setDecupleSizeStock() : null;
-            if (!key_exists($size, $this->sizesStock)) {
+            // (!isset($this->sizesStock)) ? $this->decupleSizeStock() : null;
+            $sizesStock = $this->getSizeStock();
+            // if (!key_exists($size, $this->sizesStock)) {
+            if (!key_exists($size, $sizesStock)) {
                 throw new Exception("This size '$size' don't exist in sizesStock");
             }
-            return ($this->sizesStock[$size] > 0);
+            // return ($this->sizesStock[$size] > 0);
+            return ($sizesStock[$size] > 0);
         }
         if (!empty($measure)) {
+            // treat measure
         }
+    }
+
+    /**
+     * Check if the product is a basket product
+     * @return boolean true if the product is a basket product else false
+     */
+    public function isBasketProduct()
+    {
+        return false;
     }
 }

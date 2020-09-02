@@ -62,7 +62,7 @@ require_once 'model/special/MyError.php';
         const BNR = 1000000;
         const JXF = "content/qr/qr.php";
         const LANG = "lang=" + $("html").attr("lang");
-        const FCID = "full_screen_div";
+        const FCID = "#full_screen_div";
 
         /**
          * @param {number} number 

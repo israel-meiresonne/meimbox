@@ -109,7 +109,7 @@ class Box extends ModelFunctionality
     /**
      * Constructor
      * + __construct3($boxColor, Country $country, Currency $currency)
-     * + __construct4($boxID, $userID, Country $country, Currency $currency)
+     * + __construct5($boxID, $userID, Country $country, Currency $currency)
      */
     public function __construct()
     {
@@ -120,8 +120,8 @@ class Box extends ModelFunctionality
                 $this->__construct3($args[0], $args[1], $args[2]);
                 break;
 
-            case 4:
-                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
+            case 5:
+                $this->__construct5($args[0], $args[1], $args[2], $args[3], $args[4]);
                 break;
         }
     }
@@ -174,10 +174,11 @@ class Box extends ModelFunctionality
      * Construct box using db's datas
      * @param string $boxID box's id
      * @param string $userID user's id
-     * @param Country $country Visitor's current Country
-     * @param Currency $currency Visitor's current Currency
+     * @param Language $language Visitor's language
+     * @param Country $country the Visitor's country
+     * @param Currency $currency the Visitor's current Currency
      */
-    private function __construct4($boxID, $userID, Country $country, Currency $currency)
+    private function __construct5($boxID, $userID, Language $language, Country $country, Currency $currency)
     {
         if (empty($boxID)) {
             throw new Exception("Param '\$boxID' can't be empty");
@@ -221,7 +222,7 @@ class Box extends ModelFunctionality
             $value = $tabLine["discount_value"];
             $this->discount = new Discount($value, $tabLine["beginDate"], $tabLine["endDate"]);
         }
-        $this->setBoxProducts($this->boxID);
+        $this->setBoxProducts($this->boxID, $language, $country, $currency);
     }
     /*
     SELECT * 
@@ -241,16 +242,19 @@ class Box extends ModelFunctionality
      * Set box's boxproduct
      * + get products from db
      * @param string $boxID box's id
+     * @param Language $language Visitor's language
+     * @param Country $country the Visitor's country
+     * @param Currency $currency the Visitor's current Currency
      */
-    private function setBoxProducts($boxID)
+    private function setBoxProducts($boxID, Language $language, Country $country, Currency $currency)
     {
         $sql = "SELECT * FROM `Box-Products` WHERE boxID = '$boxID'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
-                $product = new BoxProduct($tabLine["prodId"]);
+                $product = new BoxProduct($tabLine["prodId"], $language, $country, $currency);
                 $size = new Size($tabLine["sequenceID"], $tabLine["setDate"], $tabLine["cut_name"]);
-                $product->setSize($size);
+                $product->setSelectedSize($size);
                 $quantity = (int) $tabLine["quantity"];
                 $product->setQuantity($quantity);
                 $key = $product->getDateInSec();

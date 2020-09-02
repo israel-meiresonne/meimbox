@@ -141,7 +141,7 @@ class Visitor extends ModelFunctionality
      */
     private function setBasket()
     {
-        $this->basket = new Basket($this->userID, $this->getCountry(), $this->getCurrency());
+        $this->basket = new Basket($this->userID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
     }
 
     /**
@@ -488,7 +488,7 @@ class Visitor extends ModelFunctionality
                     $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
                     if (!$response->containError()) {
                         $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-                        $product = new BasketProduct($prodID, $this->country, $this->currency);
+                        $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
                         return $product->stillStock($size);
                     }
                     break;
@@ -499,7 +499,7 @@ class Visitor extends ModelFunctionality
                         switch ($sizeType) {
                             case Size::SIZE_TYPE_CHAR:
                                 $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-                                $product = new BoxProduct($prodID);
+                                $product = new BoxProduct($prodID, $this->lang, $this->country, $this->currency);
                                 $brand = null;
                                 if(Query::existParam(Size::INPUT_BRAND)) {
                                     $brand = Query::getParam(Size::INPUT_BRAND);

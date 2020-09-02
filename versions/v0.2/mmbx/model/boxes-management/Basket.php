@@ -40,7 +40,7 @@ class Basket extends ModelFunctionality
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    function __construct($userID = null, Country $country = null, Currency $currency = null)
+    function __construct($userID = null, Language $language = null, Country $country = null, Currency $currency = null)
     {
         $this->boxes = [];
         $this->basketProducts = [];
@@ -52,8 +52,8 @@ class Basket extends ModelFunctionality
             $sql = "SELECT * FROM `Users` WHERE `userID` = '$userID'";
             $tab = $this->select($sql);
             if (count($tab) > 0) {
-                $this->setBoxes($userID, $country, $currency);
-                $this->setBasketProducts($userID, $country, $currency);
+                $this->setBoxes($userID, $language, $country, $currency);
+                $this->setBasketProducts($userID, $language, $country, $currency);
             }
         } else {
         }
@@ -62,17 +62,18 @@ class Basket extends ModelFunctionality
     /**
      * Setter for boxes
      * @var int $userID identifiant of the user
+     * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    private function setBoxes($userID, Country $country, Currency $currency)
+    private function setBoxes($userID, Language $language, Country $country, Currency $currency)
     {
         $sql = "SELECT * FROM `Baskets-Box` WHERE  `userId` = '$userID'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
                 $boxID = $tabLine["boxId"];
-                $box = new Box($boxID, $userID, $country, $currency);
+                $box = new Box($boxID, $userID, $language, $country, $currency);
                 $key = $box->getDateInSec();
                 $this->boxes[$key] = $box;
             }
@@ -83,19 +84,20 @@ class Basket extends ModelFunctionality
     /**
      * Setter for basketproducts
      * @var int $userID identifiant of the user
+     * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    private function setBasketProducts($userID, Country $country, Currency $currency)
+    private function setBasketProducts($userID, Language $language, Country $country, Currency $currency)
     {
         $sql = "SELECT * FROM `Baskets-Products` WHERE `userId` = '$userID'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
-                $product = new BasketProduct($tabLine["prodId"], $country, $currency);
+                $product = new BasketProduct($tabLine["prodId"], $language, $country, $currency);
                 $sequence = Size::buildSequence($tabLine["size_name"], null, null);
                 $size = new Size($sequence, $tabLine["setDate"]);
-                $product->setSize($size);
+                $product->setSelectedSize($size);
                 $quantity = (int) $tabLine["quantity"];
                 $product->setQuantity($quantity);
                 $key = $product->getDateInSec();

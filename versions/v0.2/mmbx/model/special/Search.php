@@ -315,11 +315,11 @@ class Search extends ModelFunctionality
      * Fill the Products attrribut with all product matching the search. 
      * Products are ordered following the order asked in the search else in a 
      * marketing order.
-     * @param Language $lang Visitor's language
+     * @param Language $language Visitor's language
      * @param Country $country the Visitor's country
      * @param Currency the Visitor's current Currency
      */
-    public function setProducts($lang, $country, $currency)
+    public function setProducts(Language $language, Country $country, Currency $currency)
     {
         $sql = $this->getSql($country, $currency);
         // $this->setProductMap($sql);
@@ -327,13 +327,13 @@ class Search extends ModelFunctionality
         foreach ($productMap as $prodID => $datas) {
             switch ($datas["product_type"]) {
                 case BoxProduct::BOX_TYPE:
-                    $boxProd = new BoxProduct($prodID);
-                    $boxProd->CompleteProperties($lang);
+                    $boxProd = new BoxProduct($prodID, $language, $country, $currency);
+                    // $boxProd->CompleteProperties($lang);
                     array_push($this->products, $boxProd);
                     break;
                 case BasketProduct::BASKET_TYPE:
-                    $baskProd = new BasketProduct($prodID, $country, $currency);
-                    $baskProd->CompleteProperties($lang, $country, $currency);
+                    $baskProd = new BasketProduct($prodID, $language, $country, $currency);
+                    // $baskProd->CompleteProperties($lang, $country, $currency);
                     array_push($this->products, $baskProd);
                     break;
             }
