@@ -29,6 +29,91 @@ require_once 'model/special/MyError.php';
     <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
 
+    <script>
+        const WR = "<?= $webRoot ?>";
+        const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
+        const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
+        const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
+
+        const A_SELECT_BRAND = "<?= ControllerItem::A_SELECT_BRAND ?>";
+        const BRAND_STICKER_KEY = "<?= ControllerItem::BRAND_STICKER_KEY ?>";
+
+        const QR_GET_MEASURE_ADDER = "<?= ControllerItem::QR_GET_MEASURE_ADDER ?>";
+        const QR_GET_EMPTY_MEASURE_ADDER = "<?= ControllerItem::QR_GET_EMPTY_MEASURE_ADDER ?>";
+        const A_ADD_MEASURE = "<?= ControllerItem::A_ADD_MEASURE ?>";
+        const A_SELECT_MEASURE = "<?= ControllerItem::A_SELECT_MEASURE ?>";
+        const A_UPDATE_MEASURE = "<?= ControllerItem::A_UPDATE_MEASURE ?>";
+        const A_DELETE_MEASURE = "<?= ControllerItem::A_DELETE_MEASURE ?>";
+        const A_ADD_PROD = "<?= ControllerItem::A_ADD_PROD ?>";
+        const SBMT_BTN_MSG = "<?= ControllerItem::SBMT_BTN_MSG ?>";
+
+        const QR_MEASURE_CONTENT = "<?= ControllerItem::QR_MEASURE_CONTENT ?>";
+        const MEASURRE_STICKER_KEY = "<?= Measure::MEASURRE_STICKER_KEY ?>";
+        const MEASURE_ID_KEY = "<?= Measure::MEASURE_ID_KEY ?>";
+        const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
+
+        const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
+        const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
+        const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
+        const FAT_ERR = "<?= MyError::FATAL_ERROR ?>";
+
+        const TS = 450;
+        const BNR = 1000000;
+        const JXF = "content/qr/qr.php";
+        const LANG = "lang=" + $("html").attr("lang");
+        const FCID = "full_screen_div";
+
+        /**
+         * @param {number} number 
+         * @return {int} between 0 and number given in param
+         */
+        const randomInt = function(number) {
+            return parseInt(Math.random() * number);
+        }
+
+        const strToFloat = function(x) {
+            return Number.parseFloat(x).toFixed(2);
+        }
+
+        var $_GETfunc = function $_GET(param) {
+            var vars = {};
+            window.location.href.replace(location.hash, '').replace(
+                /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+                function(m, key, value) { // callback
+                    vars[key] = value !== undefined ? value : '';
+                }
+            );
+
+            if (param) {
+                return vars[param] ? vars[param] : null;
+            }
+            return vars;
+        }
+        const $_GET = $_GETfunc();
+
+        const json_encode = function(value) {
+            return JSON.stringify(value)
+        }
+
+        const json_decode = function(json) {
+            return JSON.parse(json);
+        }
+
+        const goToParentNode = function(selector, generation) {
+            var parent = selector;
+            for (let i = 0; i < generation; i++) {
+                // parent = parent.parentNode;
+                parent = $(parent).parent();
+            }
+            return parent;
+        }
+
+        const matchRegex = function(string, regex) {
+            var filter = new RegExp(regex);
+            return filter.test(string);
+        }
+    </script>
+
     <link rel="stylesheet" href="content/css/header.css">
     <link rel="stylesheet" href="content/css/elements.css">
     <script src="content/js/elements.js"></script>
@@ -202,90 +287,6 @@ require_once 'model/special/MyError.php';
             </div>
             <div class="collapse-container"></div>
         </nav>
-        <script>
-            const WR = "<?= $webRoot ?>";
-            const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
-            const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
-            const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
-
-            const A_SELECT_BRAND = "<?= ControllerItem::A_SELECT_BRAND ?>";
-            const BRAND_STICKER_KEY = "<?= ControllerItem::BRAND_STICKER_KEY ?>";
-
-            const QR_GET_MEASURE_ADDER = "<?= ControllerItem::QR_GET_MEASURE_ADDER ?>";
-            const QR_GET_EMPTY_MEASURE_ADDER = "<?= ControllerItem::QR_GET_EMPTY_MEASURE_ADDER ?>";
-            const A_ADD_MEASURE = "<?= ControllerItem::A_ADD_MEASURE ?>";
-            const A_SELECT_MEASURE = "<?= ControllerItem::A_SELECT_MEASURE ?>";
-            const A_UPDATE_MEASURE = "<?= ControllerItem::A_UPDATE_MEASURE ?>";
-            const A_DELETE_MEASURE = "<?= ControllerItem::A_DELETE_MEASURE ?>";
-            const A_ADD_PROD = "<?= ControllerItem::A_ADD_PROD ?>";
-            const SBMT_BTN_MSG = "<?= ControllerItem::SBMT_BTN_MSG ?>";
-
-            const QR_MEASURE_CONTENT = "<?= ControllerItem::QR_MEASURE_CONTENT ?>";
-            const MEASURRE_STICKER_KEY = "<?= Measure::MEASURRE_STICKER_KEY ?>";
-            const MEASURE_ID_KEY = "<?= Measure::MEASURE_ID_KEY ?>";
-            const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
-
-            const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
-            const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
-            const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
-            const FAT_ERR = "<?= MyError::FATAL_ERROR ?>";
-
-            const TS = 450;
-            const BNR = 1000000;
-            const JXF = "content/qr/qr.php";
-            const LANG = "lang=" + $("html").attr("lang");
-            const FCID = "full_screen_div";
-
-            /**
-             * @param {number} number 
-             * @return {int} between 0 and number given in param
-             */
-            const randomInt = function(number) {
-                return parseInt(Math.random() * number);
-            }
-
-            const strToFloat = function(x) {
-                return Number.parseFloat(x).toFixed(2);
-            }
-
-            var $_GETfunc = function $_GET(param) {
-                var vars = {};
-                window.location.href.replace(location.hash, '').replace(
-                    /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-                    function(m, key, value) { // callback
-                        vars[key] = value !== undefined ? value : '';
-                    }
-                );
-
-                if (param) {
-                    return vars[param] ? vars[param] : null;
-                }
-                return vars;
-            }
-            const $_GET = $_GETfunc();
-
-            const json_encode = function(value) {
-                return JSON.stringify(value)
-            }
-
-            const json_decode = function(json) {
-                return JSON.parse(json);
-            }
-
-            const goToParentNode = function(selector, generation) {
-                var parent = selector;
-                for (let i = 0; i < generation; i++) {
-                    // parent = parent.parentNode;
-                    parent = $(parent).parent();
-                }
-                return parent;
-            }
-
-            const matchRegex = function(string, regex) {
-                var filter = new RegExp(regex);
-                return filter.test(string);
-            }
-        </script>
     </header>
     <?= $content ?>
 </body>
