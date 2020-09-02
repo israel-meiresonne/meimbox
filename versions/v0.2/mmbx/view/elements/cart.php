@@ -3,14 +3,15 @@ require_once 'model/boxes-management/BasketProduct.php';
 require_once 'model/boxes-management/BoxProduct.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Box[]|BasketProduct[] $cart user's basket
+ * @param Translator $translator to translate
+ * @param Box[]|BasketProduct[] $elements user's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  */
 ?>
 <div class="cart-wrap">
     <ul class="remove-ul-default-att">
-        <?php foreach ($cart as $element) : ?>
+        <?php foreach ($elements as $element) : ?>
             <li class="li-cart-element-container remove-li-default-att">
                 <?php
                 switch (get_class($element)) {
@@ -24,7 +25,10 @@ require_once 'model/boxes-management/BoxProduct.php';
                         break;
                     case Box::class:
                         $datas = [
-                            "box" => $element
+                            "translator" => $translator,
+                            "box" => $element,
+                            "country" => $country,
+                            "currency" => $currency
                         ];
                         echo $this->generateFile('view/elements/cartElementBox.php', $datas);
                         break;

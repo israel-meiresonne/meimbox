@@ -202,14 +202,14 @@ class Language extends ModelFunctionality
      * To get a protected copy of the Language
      * @return Language a protected copy of the current language
      */
-    public function getCopy()
-    {
-        $copy = new Language();
-        $copy->isoLang = $this->isoLang;
-        $copy->langName = $this->langName;
-        $copy->langLocalName = $this->langLocalName;
-        return $copy;
-    }
+    // public function getCopy()
+    // {
+    //     $copy = new Language();
+    //     $copy->isoLang = $this->isoLang;
+    //     $copy->langName = $this->langName;
+    //     $copy->langLocalName = $this->langLocalName;
+    //     return $copy;
+    // }
 
     // public function __toString()
     // {

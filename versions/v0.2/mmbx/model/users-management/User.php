@@ -56,7 +56,7 @@ abstract class User extends  Visitor
      */
     protected function __construct($userID)
     {
-        parent::__construct();
+        parent::__construct(User::class);
         $tab = $this->select("SELECT * FROM `Users` WHERE `userID` = '$userID'");
         if (count($tab) != 1) {
             throw new Exception("User with id '$this->userID' don't exist");

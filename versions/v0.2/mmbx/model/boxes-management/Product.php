@@ -126,6 +126,12 @@ abstract class Product extends ModelFunctionality
      * Holds max number of cube displayable in artcicle product
      * @var string
      */
+    private const PICTURE_DIR = "content/brain/prod/";
+
+    /**
+     * Holds max number of cube displayable in artcicle product
+     * @var string
+     */
     private static $MAX_PRODUCT_CUBE_DISPLAYABLE;
 
     /**
@@ -390,7 +396,24 @@ abstract class Product extends ModelFunctionality
      */
     public function getPictures()
     {
+        (!isset($this->pictures)) ? $this->setPictures() : null;
         return $this->pictures;
+    }
+
+    /**
+     * Getter for the product's pictures list
+     * @return string[] product's pictures list
+     */
+    public function getPictureSources()
+    {
+        $picSrc = [];
+        $pictures = $this->getPictures();
+        if(count($pictures) > 0){
+            foreach ($pictures as $key => $picture) {
+                $picSrc[$key] = self::PICTURE_DIR . $picture;
+            }
+        }
+        return $picSrc;
     }
 
     /**

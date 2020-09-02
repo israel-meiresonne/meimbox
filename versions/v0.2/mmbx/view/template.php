@@ -28,7 +28,8 @@ require_once 'model/special/MyError.php';
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
-
+    
+    <?= $head ?>
     <script>
         const WR = "<?= $webRoot ?>";
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
@@ -119,7 +120,6 @@ require_once 'model/special/MyError.php';
     <script src="content/js/elements.js"></script>
     <script src="content/qr/qr.js"></script>
 
-    <?= $head ?>
 </head>
 
 <body>

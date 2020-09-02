@@ -2,26 +2,35 @@
 require_once 'model/boxes-management/Box.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Box $box
+ * @param Translator $translator to translate
+ * @param Box $box the box to display
+ * @param Country $country Visitor's current Country
+ * @param Currency $currency Visitor's current Currency
  */
+/**
+ * @var Price
+ */
+$price = $box->getFormatedPrice();
 ?>
 <div class="box-wrap">
     <div class="box-display-block">
         <?php
             $datas = [
-                // "title" => $box->getBoxName(),
-                "title" => "golden box",
+                "translator" => $translator,
+                "title" => $translator->translateString($box->getColor()),
                 "color" => null,
                 "colorRGB" => null,
                 // "size" => $size,
                 // "size" => "size",
-                "item" => 10,
-                "max" => 10,
-                "price" => "5€"
+                "nbItem" => $box->getNbProduct(),
+                "max" => $box->getSizeMax(),
+                "price" => $price
             ];
             $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);
             $datas = [
-                "properties" => $properties
+                "properties" => $properties,
+                "price" => $price,
+                "pictureSrc" => $box->getPictureSource()
             ];
             echo $this->generateFile('view/elements/cartElement.php', $datas);
         ?>
@@ -89,7 +98,21 @@ require_once 'model/boxes-management/Box.php';
         <ul class="box-product-set-ul remove-ul-default-att">
             <li class="box-product-set-li remove-li-default-att">
                 <div class="box_product-wrap">
-                    <div class="cart-element-wrap">
+                    <?php
+                    $products = $box->getBoxProducts();
+
+                    foreach($products as $product){
+                        $datas = [
+                            "translator" => $translator,
+                            "product" => $product,
+                            "country" => $country,
+                            "currency" => $currency,
+                            "showRow" => false
+                        ];
+                        echo $this->generateFile('view/elements/cartElementProduct.php', $datas);
+                    }
+                    ?>
+                    <!-- <div class="cart-element-wrap">
                         <div class="cart-element-inner">
                             <div class="cart-element-remove-button-block">
                                 <button class="close_button-wrap remove-button-default-att">
@@ -127,10 +150,10 @@ require_once 'model/boxes-management/Box.php';
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </li>
-            <li class="box-product-set-li remove-li-default-att">
+            <!-- <li class="box-product-set-li remove-li-default-att">
                 <div class="box_product-wrap">
                     <div class="cart-element-wrap">
                         <div class="cart-element-inner">
@@ -215,7 +238,7 @@ require_once 'model/boxes-management/Box.php';
                         </div>
                     </div>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
 </div>

@@ -175,9 +175,9 @@ class Size  extends ModelFunctionality
         if (count($datas) != 3) {
             throw new Exception("Sequence is incorrect '$sequence' ");
         }
-        $datas[0] = ($datas[0] == "null") ? null : $datas[0];
-        $datas[1] = ($datas[1] == "null") ? null : $datas[1];
-        if($datas[2] != "null") {
+        $datas[0] = ($datas[0] == "null") ? null : $datas[0];   // size
+        $datas[1] = ($datas[1] == "null") ? null : $datas[1];   // brand
+        if($datas[2] != "null") {                               // measure
             $sql = "SELECT * FROM `UsersMeasures` WHERE `measureID` = '$datas[2]'";
             $tab = $this->select($sql);
             if(count($tab) != 1){
@@ -192,23 +192,38 @@ class Size  extends ModelFunctionality
         return $datas;
     }
 
-    // /**
-    //  * Constructor
-    //  * @param string $size the size value
-    //  * @param string $brand the brand name
-    //  * @param string $cut the cut value
-    //  * @param int $brand total number of product
-    //  * @param string $setDate date of add of this product to basket or box
-    //  * @param Measure $measure Visitor's measure
-    //  */
-    // private function __construct6($size, $brand, $measure, $cut, $setDate)
-    // {
-    //     $this->size = $size;
-    //     $this->brandName = $brand;
-    //     $this->measure = $measure;
-    //     $this->setDate = $setDate;
-    //     $this->cut = $cut;
-    // }
+    /**
+     * Getter for Size's size value
+     * @return string size's size size value
+     */
+    public function getsize()
+    {
+        return $this->size;
+    }
+    /**
+     * Getter for size's brandName
+     * @return string size's brandName
+     */
+    public function getbrandName()
+    {
+        return $this->brandName;
+    }
+    /**
+     * Getter for size's measure
+     * @return Measure size's measure
+     */
+    public function getmeasure()
+    {
+        return $this->measure;
+    }
+    /**
+     * Getter for size's cut
+     * @return string size's cut
+     */
+    public function getcut()
+    {
+        return $this->cut;
+    }
 
     /**
      * Getter of the set date
@@ -219,10 +234,10 @@ class Size  extends ModelFunctionality
         return $this->setDate;
     }
 
-    /**
-     * To get a protected copy of this Size
-     * @return Size a protected copy of this Size
-     */
+    // /**
+    //  * To get a protected copy of this Size
+    //  * @return Size a protected copy of this Size
+    //  */
     // public function getCopy()
     // {
     //     $copy = new Size();

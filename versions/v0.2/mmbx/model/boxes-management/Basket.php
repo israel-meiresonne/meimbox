@@ -11,6 +11,9 @@ class Basket extends ModelFunctionality
 {
     /**
      * Holds basket's boxes
+     * + NOTE: Use set date in Unix format as access key like
+     * + $boxes = [unixTime => boxe]
+     * + ordered from newest to holder
      * @var Box[]
      */
     private $boxes;
@@ -19,6 +22,7 @@ class Basket extends ModelFunctionality
      * Holds basketproduct
      * + NOTE: Use set date in format Unix as access key like
      * + $basketProducts = [setdateUnix => basketProduct]
+     * + ordered from newest to holder
      * @var BasketProduct[]
      */
     private $basketProducts;
@@ -124,7 +128,7 @@ class Basket extends ModelFunctionality
      * + content is ordered from newest to older
      * @return Box[]|BasketProduct[] basket's content
      */
-    public function extractCart()
+    public function getMerge()
     {
         $cart = array_merge($this->getBoxes(), $this->getBasketProducts());
         krsort($cart);
