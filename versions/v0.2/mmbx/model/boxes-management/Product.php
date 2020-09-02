@@ -6,6 +6,25 @@ require_once 'model/tools-management/Language.php';
 
 abstract class Product extends ModelFunctionality
 {
+     
+    /**
+     * the Visitor's language
+     * @var Language
+     */
+    protected $language;
+
+    /**
+     * the Visitor's country
+     * @var Country
+     */
+    protected $country;
+
+    /**
+     * the Visitor's current Currency
+     * @var Currency
+     */
+    protected $currency;
+
     /**
      * Holds the database id of the product.
      * This id is unique for each product
@@ -114,7 +133,7 @@ abstract class Product extends ModelFunctionality
      * Holds the selected Size for this product.
      * @var Size
      */
-    protected $size;
+    protected $selectedSize;
 
     /**
      * Holds the purchase price of the product
@@ -159,11 +178,17 @@ abstract class Product extends ModelFunctionality
     /**
      * Constructor 
      * @param int $prodID product's id
+     * @param Language $language Visitor's language
+     * @param Country $country the Visitor's country
+     * @param Currency $currency the Visitor's current Currency
      */
-    protected function __construct(int $prodID)
+    protected function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
         $this->setConstants();
         $this->prodID = $prodID;
+        $this->language = $language;
+        $this->country = $country;
+        $this->currency = $currency;
         if ($this->existProductInMap($prodID)) {
             $productLine = $this->getProductLine($prodID);
             $this->prodName = $productLine["prodName"];
@@ -207,19 +232,46 @@ abstract class Product extends ModelFunctionality
         }
     }
 
-    /**
-     * To set all other properties that nat in Product table
-     * @param Language $lang Visitor's language
-     * @param Country $country the Visitor's country
-     * @param Currency the Visitor's current Currency
-     */
-    public abstract function CompleteProperties($lang, $country, $currency);
+    // /**
+    //  * To set all other properties that nat in Product table
+    //  * @param Language $lang Visitor's language
+    //  * @param Country $country the Visitor's country
+    //  * @param Currency the Visitor's current Currency
+    //  */
+    // public abstract function CompleteProperties($lang, $country, $currency);
 
     /**
      * Getter of product's type
      * @return string the type of the product
      */
     public abstract function getType();
+
+    /**
+     * Getter for language
+     * @return Language Visistor's language
+     */
+    protected function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Getter for country
+     * @return Country Visistor's country
+     */
+    protected function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Getter for currency
+     * @return Currency Visistor's currency
+     */
+    protected function getCurrency()
+    {
+        return $this->currency;
+    }
 
     /**
      * Setter for product's pictures
@@ -256,6 +308,10 @@ abstract class Product extends ModelFunctionality
             $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
         }
     }
+    // /**
+    //  * Setter for product's size and stock
+    //  */
+    // protected abstract function setSizesStock();
 
     /**
      * Setter for product's collections
@@ -338,9 +394,9 @@ abstract class Product extends ModelFunctionality
      * Set product's selected size
      * @param Size $size 
      */
-    public function setSize(Size $size)
+    public function setSelectedSize(Size $size)
     {
-        $this->size = $size;
+        $this->selectedSize = $size;
     }
 
     /**
@@ -387,7 +443,8 @@ abstract class Product extends ModelFunctionality
      */
     public function getColorRGBText()
     {
-        return ($this->colorRGB != self::WHITE_RGB) ? $this->colorRGB : self::$COLOR_TEXT_05;
+        $colorRGB = $this->getColorRGB();
+        return ($colorRGB != self::WHITE_RGB) ? $colorRGB : self::$COLOR_TEXT_05;
     }
 
     /**
@@ -417,11 +474,27 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
+     * Getter for product's stock for each size
+     * @return int[] product's stock for each size
+     */
+    protected function getSizeStock()
+    {
+        (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
+        return $this->sizesStock;
+    }
+    // /**
+    //  * Getter for product's stock for each size
+    //  * @return int[] product's stock for each size
+    //  */
+    // protected abstract function getSizeStock();
+
+    /**
      * Getter for the product's sizes
      * @return string[] product's sizes [index => size]
      */
-    public function getSizesStockKeys()
+    private function getSizesStockKeys()
     {
+        $sizesStock = $this->getSizeStock();
         return array_keys($this->sizesStock);
     }
 
@@ -431,7 +504,7 @@ abstract class Product extends ModelFunctionality
      */
     public function getSelectedSize()
     {
-        return $this->size;
+        return $this->selectedSize;
     }
 
     /**
@@ -451,6 +524,7 @@ abstract class Product extends ModelFunctionality
      */
     public function getCollections()
     {
+        (!isset($this->collections)) ? $this->setCollections() : null;
         return array_keys($this->collections);
     }
 
@@ -458,8 +532,9 @@ abstract class Product extends ModelFunctionality
      * Getter of product's function name
      * @return string[] product's function name
      */
-    public function getFunctions()
+    public function getProdFunctions()
     {
+        (!isset($this->prodFunctions)) ? $this->setProdFunctions() : null;
         return $this->prodFunctions;
     }
 
@@ -469,6 +544,7 @@ abstract class Product extends ModelFunctionality
      */
     public function getCategories()
     {
+        (!isset($this->categories)) ?  $this->setCategories() : null;
         return $this->categories;
     }
 
@@ -477,6 +553,8 @@ abstract class Product extends ModelFunctionality
      */
     public function getDescription()
     {
+        $language = $this->getLanguage();
+        (!isset($this->description)) ? $this->setDescriptions($language) : null;
         return $this->description;
     }
 
@@ -502,20 +580,23 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Build a HTML displayable price
-     * @param Country $country Visitor's current Country
-     * @param Currency $currency Visitor's current Currency
      * @return string[] product's HTML displayable price
      */
-    public abstract function getDisplayablePrice(Country $country, Currency $currency);
+    public abstract function getDisplayablePrice();
 
+    // /**
+    //  * Getter for sameProducts
+    //  * @return BasketProduct[]|BoxProduct[] a prodtected copy of sameProducts
+    //  */
+    // public function getSameProducts()
+    // {
+    //     return $this->cloneMap($this->sameProducts);
+    // }
     /**
      * Getter for sameProducts
      * @return BasketProduct[]|BoxProduct[] a prodtected copy of sameProducts
      */
-    public function getSameProducts()
-    {
-        return $this->cloneMap($this->sameProducts);
-    }
+    public abstract function getSameProducts();
 
     /**
      * Getter for max color cube to display
@@ -542,7 +623,8 @@ abstract class Product extends ModelFunctionality
      */
     public function getDateInSec()
     {
-        return strtotime($this->size->getSetDate());
+        $selectedSize = $this->getSelectedSize();
+        return strtotime($selectedSize->getSetDate());
     }
 
     /**
@@ -552,7 +634,8 @@ abstract class Product extends ModelFunctionality
      */
     public function collectionIsInside($value)
     {
-        return array_key_exists($value, $this->collections);
+        $collections = $this->getCollections();
+        return array_key_exists($value, $collections);
     }
 
     /**
@@ -562,7 +645,8 @@ abstract class Product extends ModelFunctionality
      */
     public function functionIsInside($value)
     {
-        return in_array($value, $this->prodFunctions);
+        $prodFunctions = $this->getProdFunctions();
+        return in_array($value, $prodFunctions);
     }
 
     /**
@@ -572,7 +656,8 @@ abstract class Product extends ModelFunctionality
      */
     public function categoryIsInside($value)
     {
-        return in_array($value, $this->categories);
+        $categories = $this->getCategories();
+        return in_array($value, $categories);
     }
 
     /**
@@ -582,27 +667,7 @@ abstract class Product extends ModelFunctionality
      */
     public function sizeIsInside($value)
     {
-        return array_key_exists($value, $this->sizesStock);
+        $sizesStock = $this->getSizeStock();
+        return array_key_exists($value, $sizesStock);
     }
-
-    // public function __toString()
-    // {
-    //     Helper::printLabelValue('prodID', $this->prodID);
-    //     Helper::printLabelValue('prodName', $this->prodName);
-    //     Helper::printLabelValue('isAvailable', $this->isAvailable);
-    //     Helper::printLabelValue('addedDate', $this->addedDate);
-    //     Helper::printLabelValue('colorName', $this->colorName);
-    //     Helper::printLabelValue('colorRGB', $this->colorRGB);
-    //     Helper::printLabelValue('buyPrice', $this->buyPrice);
-    //     Helper::printLabelValue('weight', $this->weight);
-    //     Helper::printLabelValue('pictures', $this->pictures);
-    //     Helper::printLabelValue('sizesStock', $this->sizesStock);
-    //     Helper::printLabelValue('prodMeasures', $this->prodMeasures);
-    //     Helper::printLabelValue('size', $this->size);
-    //     Helper::printLabelValue('collections', $this->collections);
-    //     Helper::printLabelValue('prodFunctions', $this->prodFunctions);
-    //     Helper::printLabelValue('categories', $this->categories);
-    //     Helper::printLabelValue('descriptions', $this->descriptions);
-    //     Helper::printLabelValue('sameProducts', $this->sameProducts);
-    // }
 }

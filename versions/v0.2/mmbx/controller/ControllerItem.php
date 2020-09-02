@@ -96,7 +96,7 @@ class ControllerItem extends ControllerSecure
         $params = [
             "collections" => $product->getCollections(),
             "product_types" => [Boxproduct::BOX_TYPE, BasketProduct::BASKET_TYPE],
-            "functions" => $product->getFunctions(),
+            "functions" => $product->getProdFunctions(),
             "categories" => $product->getCategories(),
             "order" => Search::NEWEST
         ];

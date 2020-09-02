@@ -37,17 +37,35 @@ class BasketProduct extends Product
     /**
      * Constructor
      * @param int $prodID product's id
+     * @param Language $language Visitor's language
      * @param Country $country the Visitor's country
-     * @param Currency the Visitor's current Currency
+     * @param Currency $currency the Visitor's current Currency
      */
-    public function __construct($prodID, $country, $currency)
+    public function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
-        parent::__construct($prodID);
-
-        $this->setPrice($country, $currency);
-        $this->setShipping($country, $currency);
-        $this->setDiscount($country);
+        parent::__construct($prodID, $language, $country, $currency);
+        // $this->setPrice($country, $currency);
+        // $this->setShipping($country, $currency);
+        // $this->setDiscount($country);
     }
+
+        // /**
+    //  * Setter for product's size and stock
+    //  */
+    // protected function setSizesStock()
+    // {
+    //     $this->sizesStock  = [];
+    //     $sql = "SELECT * 
+    //     FROM `Products-Sizes`
+    //     WHERE `prodId` = '$this->prodID'";
+    //     $tab = $this->select($sql); // add error if there is no size
+    //     if (count($tab) < 1) {
+    //         throw new Exception("There no size for this product");
+    //     }
+    //     foreach ($tab as $tabLine) {
+    //         $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
+    //     }
+    // }
 
     /**
      * Setter for Basketproduct's price
@@ -116,32 +134,33 @@ class BasketProduct extends Product
         }
     }
 
-    /**
-     * To set all other properties that nat in Product table
-     * @param Language $lang Visitor's language
-     * @param Country $country the Visitor's country
-     * @param Currency the Visitor's current Currency
-     */
-    public function CompleteProperties($lang, $country, $currency)
-    {
-        $this->setPictures();
-        $this->setSizesStock();
-        $this->setCollections();
-        $this->setProdFunctions();
-        $this->setCategories();
-        $this->setDescriptions($lang);
-        $this->setSameProducts($country, $currency);
-    }
+    // /**
+    //  * To set all other properties that nat in Product table
+    //  * @param Language $lang Visitor's language
+    //  * @param Country $country the Visitor's country
+    //  * @param Currency the Visitor's current Currency
+    //  */
+    // public function CompleteProperties($lang, $country, $currency)
+    // {
+    // $this->setPictures();
+    // $this->setSizesStock();
+    // $this->setCollections();
+    // $this->setProdFunctions();
+    // $this->setCategories();
+    // $this->setDescriptions($lang);
+    // $this->setSameProducts($country, $currency);
+    // }
 
     /**
      * Fill the same product list with product sharing the same name that the 
-     * current product.
-     * @param Country $country the Visitor's country
-     * @param Currency the Visitor's current Currencyƒ
+     * current product
      */
-    private function setSameProducts($country, $currency)
+    private function setSameProducts()
     {
         $this->sameProducts = [];
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency =$this->getCurrency();
         $sql = "SELECT `prodID` 
         FROM `Products` 
         WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
@@ -149,7 +168,7 @@ class BasketProduct extends Product
         $tab = $this->select($sql);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
-                $product = new BasketProduct($tabLine["prodID"], $country, $currency);
+                $product = new BasketProduct($tabLine["prodID"], $language, $country, $currency);
                 $this->sameProducts[$product->getProdID()] = $product;
             }
         }
@@ -164,42 +183,37 @@ class BasketProduct extends Product
         return self::BASKET_TYPE;
     }
 
-    /**
-     * Getter for the price for a country in a currency given in param
-     * @param Country $country The current Country of the Visitor
-     * @param Currency $currency The current Currency of the Visitor
-     * @return Price the Price matching the country in the currency given in 
-     * param
-     */
-    // public function getPrice($country, $currency)
+    // /**
+    //  * Getter for product's stock for each size
+    //  * @return int[] product's stock for each size
+    //  */
+    // protected function getSizeStock()
     // {
-    //     $iso_country = $country->getIsoCountry();
-    //     $iso_currency = $currency->getIsoCurrency();
-    //     return $this->price[$iso_country][$iso_currency]->getCopy();
+    //     (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
+    //     return $this->sizesStock;
     // }
 
     /**
-     * Getter for product's price
-     * @return Price protected copy of the Prices attribute
+     * Getter for sameProducts
+     * @return BasketProduct[] same Products than the current product
      */
-    // public function getPrices()
-    // {
-    //     $copy = [];
-    //     foreach ($this->price as $iso_country => $currencyList) {
-    //         foreach ($currencyList as $iso_currency => $price) {
-    //             $copy[$iso_country][$iso_currency] = $price->getCopy();
-    //         }
-    //     }
-    //     return $copy;
-    // }
-
-    /**
-     * Check if the product is a basket product
-     * @return boolean true if the product is a basket product else false
-     */
-    public function isBasketProduct()
+    public function getSameProducts()
     {
-        return true;
+
+        (!isset($this->sameProducts)) ? $this->setSameProducts() : null;
+        return $this->sameProducts;
+    }
+
+    /**
+     * Getter for product's prrice
+     * @return Price product's prrice
+     */
+    private function getPrice()
+    {
+        $country = $this->getCountry();
+        $currency =$this->getCurrency();
+        (!isset($this->price)) ? $this->setPrice($country, $currency) : null;
+        return $this->price;
     }
 
     /**
@@ -208,7 +222,8 @@ class BasketProduct extends Product
      */
     public function getFormatedPrice()
     {
-        return $this->price->getFormated();
+        $price = $this->getPrice();
+        return $price->getFormated();
     }
 
     /**
@@ -217,9 +232,10 @@ class BasketProduct extends Product
      * @param Currency $currency Visitor's current Currency
      * @return string[] product's HTML displayable price
      */
-    public function getDisplayablePrice(Country $country = null, Currency $currency = null)
+    public function getDisplayablePrice()
     {
-        $priceStr = '<p>' . $this->price->getFormated() . '</p>';
+        $price = $this->getPrice();
+        $priceStr = '<p>' . $price->getFormated() . '</p>';
         return $priceStr;
     }
 
@@ -241,92 +257,11 @@ class BasketProduct extends Product
     }
 
     /**
-     * @return Price[[]] a protected copy of the NewPrices attribute
+     * Check if the product is a basket product
+     * @return boolean true if the product is a basket product else false
      */
-    // public function getCopyNewPrices()
-    // {
-    //     $copy = [];
-    //     foreach ($this->newPrices as $iso_country => $currencyList) {
-    //         foreach ($currencyList as $iso_currency => $newPrice) {
-    //             $copy[$iso_country][$iso_currency] = $newPrice->getCopy();
-    //         }
-    //     }
-    //     return $copy;
-    // }
-
-    /**
-     * @return Shipping[[]] a protected copy of the Shippings attribute
-     */
-    // public function getCopyShippings()
-    // {
-    //     $copy = [];
-    //     foreach ($this->shipping as $iso_country => $currencyList) {
-    //         foreach ($currencyList as $iso_currency => $shipping) {
-    //             $copy[$iso_country][$iso_currency] = $shipping->getCopy();
-    //         }
-    //     }
-    //     return $copy;
-    // }
-
-    /**
-     * @return Discount[] a protected copy of the Discounts attribute
-     */
-    // public function getCopyDiscounts()
-    // {
-    //     $copy = [];
-    //     foreach ($this->discount as $setdateUnix => $discount) {
-    //         $copy[$setdateUnix] = $discount->getCopy();
-    //     }
-    //     ksort($copy);
-    //     return $copy;
-    // }
-
-
-    /**
-     * To get a protected copy of a BasketProduct instance
-     * @return BasketProduct a protected copy of the BasketProduct instance
-     */
-    // public function getCopy()
-    // {
-    //     $copy = new BasketProduct();
-
-    //     // Product attributs
-    //     $copy->prodID = $this->prodID;
-    //     $copy->prodName = $this->prodName;
-    //     $copy->isAvailable = $this->isAvailable;
-    //     $copy->addedDate = $this->addedDate;
-    //     $copy->colorName = $this->colorName;
-    //     $copy->colorRGB = $this->colorRGB;
-    //     $copy->buyPrice = (!empty($this->buyPrice)) ? $this->buyPrice->getCopy() : null;
-    //     $copy->weight = $this->weight;
-    //     $copy->pictures = $this->pictures;
-    //     $copy->sizesStock = $this->sizesStock;
-    //     $copy->prodMeasures = GeneralCode::cloneMap($this->prodMeasures);
-    //     $copy->size = (!empty($this->size)) ? $this->size->getCopy() : null;
-    //     $copy->collections = $this->collections;
-    //     $copy->prodFunctions = $this->prodFunctions;
-    //     $copy->categories = $this->categories;
-    //     $copy->descriptions = $this->descriptions;
-    //     $copy->sameNameProducts = GeneralCode::cloneMap($this->sameNameProducts);
-
-    //     // BasketProduct attributs
-    //     $copy->prices = $this->getCopyPrices();
-    //     $copy->newPrices = $this->getCopyNewPrices();
-    //     $copy->shippings = $this->getCopyShippings();
-    //     $copy->discounts = $this->getCopyDiscounts();
-    //     $copy->setDate = $this->setDate;
-    //     // $copy->BASKET_TYPE = self::BASKET_TYPE;
-
-    //     return $copy;
-    // }
-
-    // public function __toString()
-    // {
-    //     parent::__toString();
-    //     Helper::printLabelValue("prices", $this->price);
-    //     Helper::printLabelValue("newPrices", $this->newPrices);
-    //     Helper::printLabelValue("shippings", $this->shipping);
-    //     Helper::printLabelValue("discounts", $this->discount);
-    //     Helper::printLabelValue("BASKET_TYPE", self::BASKET_TYPE);
-    // }
+    public function isBasketProduct()
+    {
+        return true;
+    }
 }

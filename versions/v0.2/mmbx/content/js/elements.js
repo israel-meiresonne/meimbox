@@ -381,7 +381,7 @@
     }
 
     var displayPopUp = function (x) {
-        $("#" + FCID).fadeIn(TS / 2, function () {
+        $(FCID).fadeIn(TS / 2, function () {
             $(x).fadeIn(TS, function(){
                 $(this).css("display", "flex");
             });
@@ -390,7 +390,7 @@
 
     closePopUp = function (target) {
         $(target).fadeOut(TS, function () {
-            $("#" + FCID).fadeOut(TS / 2);
+            $(FCID).fadeOut(TS / 2);
         });
     }
 
