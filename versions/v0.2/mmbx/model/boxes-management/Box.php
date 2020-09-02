@@ -35,7 +35,7 @@ class Box extends ModelFunctionality
      * Holds the picture of the box
      * @var string
      */
-    private $boxPicture;
+    private $picture;
 
     /**
      * Holds the number of this box stilling in stock
@@ -56,6 +56,12 @@ class Box extends ModelFunctionality
     private $price;
 
     /**
+     * Liste of BoxProduct inside the box ordered from newest to oldest
+     * @var BoxProduct[] Use Unix time of the as key
+     */
+    private $boxProducts;
+
+    /**
      * Shipping cost for a given country and currency
      * @var Shipping
      */
@@ -66,12 +72,6 @@ class Box extends ModelFunctionality
      * @var Discount
      */
     private $discount;
-
-    /**
-     * Liste of BoxProduct inside the box ordered from newest to oldest
-     * @var BoxProduct[] Use Unix time of the as key
-     */
-    private $boxProducts;
 
     // /**
     //  * Holds the buying price of the box
@@ -86,10 +86,16 @@ class Box extends ModelFunctionality
     // private $quantity;
 
     /**
-     * White color's RGB code
+     * Length of the box's id
      * @var string
      */
-    protected const ID_LENGTH = 25;
+    private const ID_LENGTH = 25;
+
+    /**
+     * Length of the box's id
+     * @var string
+     */
+    private const PICTURE_DIR = "content/brain/permanent/";
 
     /**
      * Holds box's colors
@@ -155,7 +161,7 @@ class Box extends ModelFunctionality
 
         $this->sizeMax = $map["sizeMax"];
         $this->weight = $map["weight"];
-        $this->boxPicture = $map["boxPicture"];
+        $this->picture = $map["boxPicture"];
         $this->stock = $map["stock"];
         $this->price = new Price($map["price"], $currency);
         $this->shipping = new Shipping($map["shipping"]["shipPrice"], $currency, $map["shipping"]["time"]);
@@ -202,7 +208,7 @@ class Box extends ModelFunctionality
         $this->setDate = $tabLine["setDate"];
         $this->sizeMax = (int) $tabLine["sizeMax"];
         $this->weight = (float) $tabLine["weight"];
-        $this->boxPicture = $tabLine["boxPicture"];
+        $this->picture = $tabLine["boxPicture"];
         $this->stock = (int) $tabLine["stock"];
         $price = (float) $tabLine["price"];
         $this->price = new Price($price, $currency);
@@ -240,11 +246,13 @@ class Box extends ModelFunctionality
     {
         $sql = "SELECT * FROM `Box-Products` WHERE boxID = '$boxID'";
         $tab = $this->select($sql);
-        if(count($tab) > 0) {
-            foreach($tab as $tabLine){
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
                 $product = new BoxProduct($tabLine["prodId"]);
                 $size = new Size($tabLine["sequenceID"], $tabLine["setDate"], $tabLine["cut_name"]);
                 $product->setSize($size);
+                $quantity = (int) $tabLine["quantity"];
+                $product->setQuantity($quantity);
                 $key = $product->getDateInSec();
                 $this->boxProducts[$key] = $product;
             }
@@ -252,33 +260,32 @@ class Box extends ModelFunctionality
         }
     }
 
-    // private function __construct0()
-    // {
-    // }
+    /**
+     * Getter for box's color
+     * @return string box's color
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
 
-    // private function __construct3($boxID, $boxProductMap, $dbMap)
-    // {
-    //     $this->boxID = $boxID;
-    //     $this->color = $dbMap["boxMap"]["boxes"][$boxID]["box_color"];
-    //     $this->setDate = $dbMap["boxMap"]["boxes"][$boxID]["setDate"];
-    //     $this->sizeMax = $dbMap["boxMap"]["boxesProperties"][$this->color]["boxDatas"]["sizeMax"];
-    //     $this->weight = $dbMap["boxMap"]["boxesProperties"][$this->color]["boxDatas"]["weight"];
-    //     $this->boxPicture = $dbMap["boxMap"]["boxesProperties"][$this->color]["boxDatas"]["boxPicture"];
-    //     $this->stock = $dbMap["boxMap"]["boxesProperties"][$this->color]["boxDatas"]["stock"];
-    //     $this->newPrices = [];
-    //     $this->quantity = $dbMap["boxMap"]["boxesProperties"][$this->color]["boxDatas"]["buyPriceDatas"]["quantity"];
+    /**
+     * Getter for box's max amount of product he can contain
+     * @return int box's max amount of product he can contain
+     */
+    public function getSizeMax()
+    {
+        return $this->sizeMax;
+    }
 
-    //     $buyPriceDatas = $dbMap["boxMap"]["boxesProperties"][$this->color]["boxDatas"]["buyPriceDatas"];
-    //     $shippingDatas = $dbMap["boxMap"]["boxesProperties"][$this->color]["shippings"];
-    //     $priceDatas = $dbMap["boxMap"]["boxesProperties"][$this->color]["prices"];
-    //     $discountDatas = $dbMap["boxMap"]["boxesProperties"][$this->color]["discounts"];
-
-    //     $this->buiyPrice = GeneralCode::initBuiyPrice($buyPriceDatas, $dbMap);
-    //     $this->shippings = GeneralCode::initShippings($shippingDatas, $dbMap);
-    //     $this->prices = GeneralCode::initPrices($priceDatas, $dbMap);
-    //     $this->discounts = GeneralCode::initDiscounts($discountDatas, $dbMap);
-    //     Box::initBoxProducts($boxProductMap, $dbMap);
-    // }
+    /**
+     * Getter for box's max amount of product he can contain
+     * @return int box's max amount of product he can contain
+     */
+    public function getPictureSource()
+    {
+        return self::PICTURE_DIR . $this->picture;
+    }
 
     /**
      * Convert setDate to seconde from UNIX.
@@ -290,48 +297,84 @@ class Box extends ModelFunctionality
     }
 
     /**
-     * @param array $boxProductMap list of product with their datas
-     * @param array $currencyMap database currencies
-     * @param array $countryMap $countryMap database countries
+     * Getter for box's price
+     * @return Price box's price
      */
-    private function initBoxProducts($boxProductMap, $dbMap)
+    public function getPrice()
     {
-        foreach ($dbMap["boxMap"]["boxes"][$this->boxID]["boxProducts"] as $prodID => $true) {
-            $product = $boxProductMap[$prodID];
-            foreach ($product["datas"]["basket"] as $boxId => $sequenceIDs) {
-                foreach ($sequenceIDs as $sequenceID => $datas) {
-                    $boxProduct = new BoxProduct($prodID, $dbMap);
-                    $size = $datas["size_name"];
-                    $brand = $datas["brand_name"];
-                    $cut = $datas["cut_name"];
-                    $quantity = $datas["quantity"];
-                    $setDate = $datas["setDate"];
-
-                    $measureId = $datas["measureId"];
-                    $measureDatas = $dbMap["usersMap"]["usersMeasures"][$measureId];
-                    if (!empty($measureDatas)) {
-                        $values["measureID"] = $measureDatas["measureID"];
-                        $values["measure_name"] = $measureDatas["measure_name"];
-                        $values["bust"] = $measureDatas["userBust"];
-                        $values["arm"] = $measureDatas["userArm"];
-                        $values["waist"] = $measureDatas["userWaist"];
-                        $values["hip"] = $measureDatas["userHip"];
-                        $values["inseam"] = $measureDatas["userInseam"];
-                        $values["unit_name"] = $measureDatas["unit_name"];
-                        $values["size"] = $measureDatas["size_name"];
-                        $values["setDate"] = $datas["setDate"];
-                        $measure = new Measure($values, $dbMap);
-                    } else {
-                        $measure = null;
-                    }
-                    $boxProduct->setSize($size, $brand, $cut, $quantity, $setDate, $measure);
-                    $key = $boxProduct->getDateInSec();
-                    $this->boxProducts[$key] = $boxProduct;
-                }
-            }
-        }
-        ksort($this->boxProducts);
+        return $this->price;
     }
+
+    /**
+     * Getter for box's price in displayable format
+     * @return string box's price in displayable format
+     */
+    public function getFormatedPrice()
+    {
+        return $this->price->getFormated();
+    }
+
+    /**
+     * Getter for box's products
+     * @return BoxProduct[] box's products
+     */
+    public function getBoxProducts()
+    {
+        return $this->boxProducts;
+    }
+
+    /**
+     * To get the amount of product in the box
+     * @return int amount of product in the box
+     */
+    public function getNbProduct()
+    {
+        return count($this->boxProducts);
+    }
+
+    // /**
+    //  * @param array $boxProductMap list of product with their datas
+    //  * @param array $currencyMap database currencies
+    //  * @param array $countryMap $countryMap database countries
+    //  */
+    // private function initBoxProducts($boxProductMap, $dbMap)
+    // {
+    //     foreach ($dbMap["boxMap"]["boxes"][$this->boxID]["boxProducts"] as $prodID => $true) {
+    //         $product = $boxProductMap[$prodID];
+    //         foreach ($product["datas"]["basket"] as $boxId => $sequenceIDs) {
+    //             foreach ($sequenceIDs as $sequenceID => $datas) {
+    //                 $boxProduct = new BoxProduct($prodID, $dbMap);
+    //                 $size = $datas["size_name"];
+    //                 $brand = $datas["brand_name"];
+    //                 $cut = $datas["cut_name"];
+    //                 $quantity = $datas["quantity"];
+    //                 $setDate = $datas["setDate"];
+
+    //                 $measureId = $datas["measureId"];
+    //                 $measureDatas = $dbMap["usersMap"]["usersMeasures"][$measureId];
+    //                 if (!empty($measureDatas)) {
+    //                     $values["measureID"] = $measureDatas["measureID"];
+    //                     $values["measure_name"] = $measureDatas["measure_name"];
+    //                     $values["bust"] = $measureDatas["userBust"];
+    //                     $values["arm"] = $measureDatas["userArm"];
+    //                     $values["waist"] = $measureDatas["userWaist"];
+    //                     $values["hip"] = $measureDatas["userHip"];
+    //                     $values["inseam"] = $measureDatas["userInseam"];
+    //                     $values["unit_name"] = $measureDatas["unit_name"];
+    //                     $values["size"] = $measureDatas["size_name"];
+    //                     $values["setDate"] = $datas["setDate"];
+    //                     $measure = new Measure($values, $dbMap);
+    //                 } else {
+    //                     $measure = null;
+    //                 }
+    //                 $boxProduct->setSize($size, $brand, $cut, $quantity, $setDate, $measure);
+    //                 $key = $boxProduct->getDateInSec();
+    //                 $this->boxProducts[$key] = $boxProduct;
+    //             }
+    //         }
+    //     }
+    //     ksort($this->boxProducts);
+    // }
 
     // /**
     //  * @return Shipping[[]] a protected copy of the Shippings attribute
@@ -433,7 +476,7 @@ class Box extends ModelFunctionality
     //     helper::printLabelValue("quantity", $this->quantity);
     //     helper::printLabelValue("sizeMax", $this->sizeMax);
     //     helper::printLabelValue("weight", $this->weight);
-    //     helper::printLabelValue("boxPicture", $this->boxPicture);
+    //     helper::printLabelValue("boxPicture", $this->picture);
     //     helper::printLabelValue("stock", $this->stock);
     //     helper::printLabelValue("setDate", $this->setDate);
 

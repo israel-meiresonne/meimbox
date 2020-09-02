@@ -2,7 +2,8 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Box[] $cart user's basket
+ * @param Translator $translator to translate
+ * @param Box[] $boxes user's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  */
@@ -17,7 +18,8 @@ $datas["submitIsDesabled"] = true;
 $datas["submitClass"] = "green-arrow-desabled";
 // $datas["submitButtonFunc"] = "";
 $boxDatas = [
-    "cart" => $cart,
+    "translator" => $translator,
+    "elements" => $boxes,
     "country" => $country,
     "currency" => $currency
 ];

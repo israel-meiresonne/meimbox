@@ -2,6 +2,7 @@
 require_once 'model/tools-management/Measure.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param Translator $translator to translate
  * @param string|null $title title property
  * @param string|null $color name of the color
  * @param string|null $colorRGB color's RGB code
@@ -9,72 +10,81 @@ require_once 'model/tools-management/Measure.php';
  * @param string|null $size size proprty
  * @param string|null $brand size's brand reference
  * @param Measure|null $measure size's measure
- * @param int|null $item number of different item property (used for boxes)
+ * @param string|null $cut measure's cut
+ * @param int|null $nbItem number of different item property (used for boxes)
  * @param int|null $max max number of item in element (used for boxes)
  * @param int|null $quantity quantity of same item property (used for products)
- * @param string|null $price price property in a displayable format (with curreency)
+ * @param string|null $price price property in a displayable format (with currency)
  */
-if(isset($title)):
+if (isset($title)) :
 ?>
-<div class="cart-element-property-div">
-    <span>golden box</span>
-</div>
+    <div class="cart-element-property-div">
+        <span><?= $title ?></span>
+    </div>
 <?php
 endif;
-if(isset($color)):
+if (isset($color) && isset($colorRGB)) :
 ?>
-<div class="cart-element-property-div">
-    <span class="cart-element-property">color: </span>
-    <span class="cart-element-value" style="color: #AF3134;">red</span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US10") ?>: </span>
+        <span class="cart-element-value" style="color: <?= $colorRGB ?>;"><?= $color ?></span>
+    </div>
 <?php
 endif;
-if(isset($size)):
+if (isset($size)) :
 ?>
-<div class="cart-element-property-div">
-    <span class="cart-element-property">size: </span>
-    <span class="cart-element-value">s</span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US9") ?>: </span>
+        <span class="cart-element-value"><?= $size ?></span>
+    </div>
 <?php
 endif;
-if(isset($brand)):
+if (isset($brand)) :
 ?>
-<div class="cart-element-property-div">
-    <span class="cart-element-property">brand: </span>
-    <span class="cart-element-value"><?= $brand ?></span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US47") ?>: </span>
+        <span class="cart-element-value"><?= $brand ?></span>
+    </div>
 <?php
 endif;
-if(isset($measure)):
+if (isset($measure)) :
 ?>
-<div class="cart-element-property-div">
-    <span class="cart-element-property">measure: </span>
-    <span class="cart-element-value"><?= $measure->getMeasureName() ?></span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US48") ?>: </span>
+        <span class="cart-element-value"><?= $measure->getMeasureName() ?></span>
+    </div>
 <?php
 endif;
-if(isset($item)):
+if (isset($cut)) :
 ?>
-<div class="cart-element-property-div">
-    <span class="cart-element-property">item: </span>
-    <span class="cart-element-value">3/<?= $max ?></span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US52") ?>: </span>
+        <span class="cart-element-value"><?= $cut ?></span>
+    </div>
 <?php
 endif;
-if(isset($quantity)):
+if (isset($nbItem) && isset($max)) :
 ?>
-<div class="cart-element-property-div">
-    <span class="cart-element-property">quantity: </span>
-    <span class="cart-element-value">2</span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US53") ?>: </span>
+        <span class="cart-element-value"><?= $nbItem ?>/<?= $max ?></span>
+    </div>
 <?php
 endif;
-if(isset($price)):
+if (isset($quantity)) :
 ?>
-<div class="cart-element-property-div cart-element-property-price-div">
-    <span class="cart-element-property">price: </span>
-    <span class="cart-element-value">$52.50 usd</span>
-</div>
+    <div class="cart-element-property-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US54") ?>: </span>
+        <span class="cart-element-value"><?= $quantity ?></span>
+    </div>
+<?php
+endif;
+if (isset($price)) :
+?>
+    <div class="cart-element-property-div cart-element-property-price-div">
+        <span class="cart-element-property"><?= $translator->translateStation("US11") ?>: </span>
+        <span class="cart-element-value"><?= $price ?></span>
+    </div>
 <?php
 endif;
 ?>

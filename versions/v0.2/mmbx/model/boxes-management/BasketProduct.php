@@ -203,6 +203,15 @@ class BasketProduct extends Product
     }
 
     /**
+     * Getter for product's formated price
+     * @return string product's formated price
+     */
+    public function getFormatedPrice()
+    {
+        return $this->price->getFormated();
+    }
+
+    /**
      * Build a HTML displayable price
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency

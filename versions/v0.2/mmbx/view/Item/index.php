@@ -393,6 +393,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         echo $this->generateFile("view/elements/sliderSuggest.php", $datas);
         ?>
     </div>
+    <!-- <div id="full_screen_div" class="full_screen-block"> -->
     <div id="full_screen_div" class="full_screen-block" style="display: block;">
         <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
             <?php
@@ -418,11 +419,12 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             ?>
         </div>
         <!-- <div class="box_manager-full-screen-block"> -->
-            <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;">
-            <!-- <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: none;"> -->
+        <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;">
+            <!-- <div id="box_manager_window" class="box_manager-container pop_up-container"> -->
             <?php
             $datas = [
-                "cart" => $basket->extractCart(),
+                "translator" => $translator,
+                "boxes" => $basket->getBoxes(),
                 "country" => $country,
                 "currency" => $currency
             ];

@@ -83,14 +83,17 @@ class Visitor extends ModelFunctionality
      */
     protected static $MAX_MEASURE;
 
-    public function __construct()
+    /**
+     * @parram string $callerClass class of the caller (usualy User.php)
+     */
+    public function __construct($callerClass = null)
     {
         $this->setConstants();
-        $this->userID = date("YmdHis"); // replacer par une sequance
-        $this->setDate = $this->getDateTime();
+        $this->userID = ($callerClass == User::class) ? null : date("YmdHis"); // replacer par une sequance
+        $this->setDate = ($callerClass == User::class) ? null : $this->getDateTime();
         $this->location = new Location();
         $this->currency = $this->location->getCurrency();
-        $this->lang = new Language();
+        $this->lang = ($callerClass == User::class) ? null : new Language();
         $this->country = new Country($this->location->getcountryName());
         $this->measures = [];
     }
