@@ -240,7 +240,7 @@ class Measure extends ModelFunctionality
      */
     public static function getDatas4MeasurePOST()
     {
-        $datas[Measure::MEASURE_ID_KEY] = Query::existParam(Measure::MEASURE_ID_KEY)? Query::getParam(Measure::MEASURE_ID_KEY) : null;
+        $datas[Measure::MEASURE_ID_KEY] = Query::existParam(Measure::MEASURE_ID_KEY) ? Query::getParam(Measure::MEASURE_ID_KEY) : null;
         $datas[Measure::INPUT_MEASURE_NAME] = Query::getParam(Measure::INPUT_MEASURE_NAME);
         $datas[Measure::INPUT_BUST] = Query::getParam(Measure::INPUT_BUST);
         $datas[Measure::INPUT_ARM] = Query::getParam(Measure::INPUT_ARM);
@@ -250,24 +250,6 @@ class Measure extends ModelFunctionality
         $datas[MeasureUnit::INPUT_MEASURE_UNIT] = Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT);
         return $datas;
     }
-
-    /**
-     * To get a protected copy of this Measure
-     * @return Measure a protected copy of this Measure
-     */
-    // public function getCopy()
-    // {
-    //     $copy = new Measure();
-    //     $copy->measureID = $this->measureID;
-    //     $copy->measureName = $this->measureName;
-    //     $copy->bust = (!empty($this->bust)) ? $this->bust->getCopy() : null;
-    //     $copy->arm = (!empty($this->arm)) ? $this->arm->getCopy() : null;
-    //     $copy->waist = (!empty($this->waist)) ? $this->waist->getCopy() : null;
-    //     $copy->hip = (!empty($this->hip)) ? $this->hip->getCopy() : null;
-    //     $copy->inseam = (!empty($this->inseam)) ? $this->inseam->getCopy() : null;
-    //     $copy->setDate = $this->setDate;
-    //     return $copy;
-    // }
 
     /**
      * Save the measure by INSERT it in database
@@ -341,5 +323,41 @@ class Measure extends ModelFunctionality
         array_push($values, $newMeasure->inseam->getValue());
         array_push($values, $newMeasure->inseam->getUnitName());
         $this->update($response, $sql, $values);
+    }
+
+    /**
+     * Check if first measure is bellow seconde measure
+     * + all measure not null from second is compared to first
+     * + formula: (first + cut) <= second
+     * @param Measure $firstM
+     * @param Measure $secondM 
+     * @param string $cut used to get error margin
+     * @return boolean true if first measure is bellow all measure of second else false
+     */
+    public static function compare(Measure $first, Measure $second, $cut)
+    {
+        $isBellow = false;
+        $cutMap = parent::getTableValues("cuts");
+        $value = $cutMap[$cut]["cutMeasure"];
+        $unitName = $cutMap[$cut]["unit_name"];
+        $cutObj = new MeasureUnit($value, $unitName);
+        $isBellow = (!empty($second->bust)) ? MeasureUnit::compare($first->bust, $second->bust, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->arm)) ? MeasureUnit::compare($first->arm, $second->arm, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->waist)) ? MeasureUnit::compare($first->waist, $second->waist, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->hip)) ? MeasureUnit::compare($first->hip, $second->hip, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->inseam)) ? MeasureUnit::compare($first->inseam, $second->inseam, $cutObj) : $isBellow;
+        return $isBellow;
     }
 }

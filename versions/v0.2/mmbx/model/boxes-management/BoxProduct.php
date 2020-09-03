@@ -37,10 +37,15 @@ class BoxProduct extends Product
      */
     private function setMeasure()
     {
-        $sql = "SELECT * FROM `ProductsMeasures` WHERE `prodId` = '$this->prodID'";
+        $prodID = $this->getProdID();
+        // $sql = "SELECT * FROM `ProductsMeasures` WHERE `prodId` = '$this->prodID'";
+        $sql = "SELECT * FROM `ProductsMeasures` 
+                WHERE `prodId` = '$prodID'
+                AND `value` IN	(SELECT MAX(`value`) FROM `ProductsMeasures` WHERE `prodId` = '$prodID'
+                                GROUP BY `body_part` ASC)";
         $tab = $this->select($sql);
         if (count($tab) == 0) {
-            throw new Exception("This product has any measure: id=$this->prodID");
+            throw new Exception("This product has any measure: id=$prodID");
         }
         $measureDatas  = [];
         foreach ($tab as $tabLine) {
@@ -48,32 +53,12 @@ class BoxProduct extends Product
                 $measureDatas["unit_name"] = $tabLine["unit_name"];
             }
             if ($measureDatas["unit_name"] != $tabLine["unit_name"]) {
-                throw new Exception("Product unit measure must be the same for all its measures: id=$this->prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
+                throw new Exception("Product unit measure must be the same for all its measures: id=$prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
             }
             $measureDatas[$tabLine["body_part"]] = (float) $tabLine["value"];
         }
         $this->measure = new Measure($measureDatas);
     }
-
-    // /**
-    //  * To set all other properties that nat in Product table
-    //  * @param Language $lang Visitor's language
-    //  * @param Country $country the Visitor's country
-    //  * @param Currency the Visitor's current Currency
-    //  */
-    // public function CompleteProperties(Language $lang, $country = null, $currency = null)
-    // {
-        // $this->setPictures();
-        // $this->setSizesStock();
-
-        // $this->decupleSizeStock();
-
-        // $this->setCollections();
-        // $this->setProdFunctions();
-        // $this->setCategories();
-        // $this->setDescriptions($lang);
-        // $this->setSameProducts();
-    // }
 
     /**
      * Setter for product's size and stock
@@ -97,23 +82,13 @@ class BoxProduct extends Product
         // $sizesStock = $this->getSizeStock();
         $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
         $dbSizes = json_decode($json);
-        // $firstK = array_keys($this->sizesStock)[0];
-        $firstK = array_keys($sizesStock)[0];
-        $nbList = count($dbSizes);
-        for ($i = 0; $i < $nbList; $i++) {
-            if (in_array($firstK, $dbSizes[$i])) {
-                break;
-            }
-        }
-        // foreach ($this->sizesStock as $size => $stock) {
-        foreach ($sizesStock as $size => $stock) {
-            if (!in_array($size, $dbSizes[$i])) {
-                throw new Exception("The size '$size' is not supported by the system");
-            }
-        }
-        $sizes = $dbSizes[$i];
-        $newSizesStock = array_fill_keys($sizes, 0);
-        $sizesPos = array_flip($sizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
+        $sizeSample = array_keys($sizesStock)[0];
+        $sizeType = $this->extractSizeType($dbSizes, $sizeSample);
+        $this->checkSizeIsSupported($dbSizes, $sizesStock, $sizeType);
+
+        $supportedSizes = $dbSizes->$sizeType;
+        $newSizesStock = array_fill_keys($supportedSizes, 0);
+        $sizesPos = array_flip($supportedSizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
         // foreach ($this->sizesStock as $size => $stock) {
         foreach ($sizesStock as $size => $stock) {
             $pos = $sizesPos[$size];
@@ -128,7 +103,7 @@ class BoxProduct extends Product
             }
         }
         $ordSizeStock =  [];
-        foreach ($sizes as $size) {
+        foreach ($supportedSizes as $size) {
             if (key_exists($size, $newSizesStock)) {
                 $ordSizeStock[$size] = $newSizesStock[$size];
             }
@@ -136,6 +111,43 @@ class BoxProduct extends Product
         $ordSizeStock = array_reverse($ordSizeStock);
         // $this->sizesStock = $ordSizeStock;
         return $ordSizeStock;
+    }
+
+    /**
+     * To determinate the type of size holds by the current product
+     * + Use a exemple of product's size to determinate the size type of the product
+     * @param StdClass $dbSizes liste of size supported ordered by size type (access key)
+     * @param string $sizeSample sample of size holds by the current prroduct
+     * @return string the type of size holds by the current product
+     */
+    private  function extractSizeType($dbSizes, $sizeSample)
+    {
+        $sizeType = null;
+        foreach ($dbSizes as $type => $supportedSizes) {
+            $sizeType = $type;
+            if (in_array($sizeSample, $dbSizes->$type)) {
+                break;
+            }
+        }
+        return $sizeType;
+    }
+
+    /**
+     * To check if all sizes holds by the product is supported
+     * @param StdClass $dbSizes liste of size supported ordered by size type (access key)
+     * @param int[] $sizesStock list of size holds by the product
+     * + size => stock
+     * @param string $sizeType the type of size holds by the current product
+     * @throw Exception if at less one are'nt supported
+     */
+    private function checkSizeIsSupported($dbSizes, $sizesStock, $sizeType)
+    {
+        foreach ($sizesStock as $size => $stock) {
+            // if (!in_array($size, $dbSizes[$i])) {
+            if (!in_array($size, $dbSizes->$sizeType)) {
+                throw new Exception("The size '$size' is not supported by the system");
+            }
+        }
     }
 
     /**
@@ -162,12 +174,13 @@ class BoxProduct extends Product
     private function setSameProducts()
     {
         $this->sameProducts = [];
+        $prodID = $this->getProdID();
         $language = $this->getLanguage();
         $country = $this->getCountry();
         $currency =$this->getCurrency();
         $sql = "SELECT `prodID` 
         FROM `Products` 
-        WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
+        WHERE isAvailable = 1 AND `prodID`!= '$prodID' AND `prodName` = '$this->prodName'  
         ORDER BY `Products`.`prodID` ASC";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
@@ -207,6 +220,12 @@ class BoxProduct extends Product
         return $this->sameProducts;
     }
 
+    private function getMeasure()
+    {
+        (!isset($this->measure)) ? $this->setMeasure() : null;
+        return $this->measure;
+    }
+
     /**
      * Build a HTML displayable price
      * @param Country $country Visitor's current Country
@@ -242,13 +261,17 @@ class BoxProduct extends Product
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
-     * @param string $size to check if stock is available
-     * @param string $brand never set for basket product
-     * @param Measure $measure never set for basket product
+     * @param Size $sizeObj
+     * @param string|null $size to check if stock is available
+     * @param string|null $brand never set for basket product
+     * @param Measure|null $measure never set for basket product
      * @return boolean true if the stock is available
      */
-    public function stillStock($size = null, $brand = null, Measure $measure = null)
+    // public function stillStock($size = null, $brand = null, Measure $measure = null)
+    public function stillStock(Size $sizeObj)
     {
+        $size = $sizeObj->getsize();
+        $measure = $sizeObj->getMeasure();
         if (empty($size) && empty($measure)) {
             throw new Exception("Size and measurement can't both be NULL");
         }
@@ -263,7 +286,9 @@ class BoxProduct extends Product
             return ($sizesStock[$size] > 0);
         }
         if (!empty($measure)) {
-            // treat measure
+            $prodMeasure = $this->getMeasure();
+            $cut = $sizeObj->getCut();
+            return Measure::compare($measure, $prodMeasure, $cut);
         }
     }
 

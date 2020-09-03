@@ -610,12 +610,14 @@ abstract class Product extends ModelFunctionality
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
+     * @param Size $sizeObj
      * @param string $size to check if stock is available
      * @param string $brand
      * @param Measure $measure user's measurement
      * @return boolean true if the stock is available
      */
-    public abstract function stillStock($size, $brand, Measure $measure);
+    // public abstract function stillStock($size, $brand, Measure $measure);
+    public abstract function stillStock(Size $sizeObj);
 
     /**
      * Convert setDate to seconde from UNIX.
