@@ -52,6 +52,12 @@ class Size  extends ModelFunctionality
      * Holds access key for supported sizes from db's Constante tale
      * @var string
      */
+    public const DEFAULT_CUT =  "fit";
+
+    /**
+     * Holds access key for supported sizes from db's Constante tale
+     * @var string
+     */
     public const SUPPORTED_SIZES =  "SUPPORTED_SIZES";
 
     /**
@@ -111,7 +117,7 @@ class Size  extends ModelFunctionality
      * @param string $setDate date of add of this product to basket or box
      * @param string $cut the cut value
      */
-    public function __construct($sequence, $setDate = null, $cut = null)
+    public function __construct($sequence, $setDate, $cut)
     {
         $sizeDatas = $this->explodeSequence($sequence);
         $size = $sizeDatas[0];
@@ -126,7 +132,7 @@ class Size  extends ModelFunctionality
         $this->setDate = (!empty($setDate))? $setDate : $this->getDateTime();
         if (!empty($measure)) {
             if (empty($cut)) {
-                throw new Exception("Param 'cut' can't be empty for a measurement");
+                throw new Exception("Param 'cut' can't be empty for a measure");
             }
             $this->measure = $measure;
             $this->cut = $cut;
@@ -139,12 +145,12 @@ class Size  extends ModelFunctionality
 
     /**
      * To build a size sequence like size-brand-measureID
-     * @param string $size the size value
-     * @param string $brand the brand name
-     * @param string $measureID measure's id
+     * @param string|null $size the size value
+     * @param string|null $brand the brand name
+     * @param string|null $measureID measure's id
      * @return string like size-brand-measureID
      */
-    public static function buildSequence($size = null, $brand = null, $measureID = null)
+    public static function buildSequence($size, $brand, $measureID)
     {
         if(empty($measureID) && empty($size)){
             throw new Exception("Param '\$measureID' and '\$size' can't both be empty"." in: ".__FILE__);
@@ -166,8 +172,8 @@ class Size  extends ModelFunctionality
      * @param string $sequence size sequence in format size-brand-measureID
      * @return array contain datas about the size
      * + [0] => size{string}|null
-     * + [0] => brand{string}|null
-     * + [0] => Measure{obj}|null
+     * + [1] => brand{string}|null
+     * + [2] => Measure{obj}|null
      */
     private function explodeSequence($sequence)
     {
@@ -220,7 +226,7 @@ class Size  extends ModelFunctionality
      * Getter for size's cut
      * @return string size's cut
      */
-    public function getcut()
+    public function getCut()
     {
         return $this->cut;
     }
@@ -233,20 +239,4 @@ class Size  extends ModelFunctionality
     {
         return $this->setDate;
     }
-
-    // /**
-    //  * To get a protected copy of this Size
-    //  * @return Size a protected copy of this Size
-    //  */
-    // public function getCopy()
-    // {
-    //     $copy = new Size();
-    //     $copy->size = $this->size;
-    //     $copy->brandName = $this->brandName;
-    //     $copy->cut = $this->cut;
-    //     $copy->measure = (!empty($this->measure)) ? $this->measure->getCopy() : null;
-    //     $copy->quantity = $this->quantity;
-    //     $copy->setDate = $this->setDate;
-    //     return $copy;
-    // }
 }

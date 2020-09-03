@@ -164,7 +164,7 @@ abstract class ModelFunctionality extends Model
      * @param string $sql the sql query like "SELECT * FROM ... WHERE ... etc..."
      * @return string[] the résulte of the query
      */
-    protected function select($sql)
+    protected static function select($sql)
     {
         $select = parent::executeRequest($sql);
 
@@ -498,11 +498,11 @@ abstract class ModelFunctionality extends Model
     /**
      * Setter for the Cuts table from db
      */
-    private function setCutsTable()
+    private static function setCutsTable()
     {
         self::$cuts = [];
         $sql = "SELECT * FROM `Cuts`";
-        $tab = $this->select($sql);
+        $tab = self::select($sql);
         foreach ($tab as $tabLine) {
             $cutName = $tabLine["cutName"];
             $cutMeasure = $tabLine["cutMeasure"];
@@ -516,51 +516,51 @@ abstract class ModelFunctionality extends Model
      * To get values from some tables
      * @return string[] one column table containing value used in this table
      */
-    protected function getTableValues($tableName)
+    protected static function getTableValues($tableName)
     {
         $table = [];
         switch ($tableName) {
             case "collections":
-                (!isset(self::$collections)) ? self::$collections = $this->getTable("SELECT DISTINCT `collection_name` FROM `Products-Collections`")
+                (!isset(self::$collections)) ? self::$collections = self::getTable("SELECT DISTINCT `collection_name` FROM `Products-Collections`")
                     : null;
                 $table = self::$collections;
                 break;
             case "product_types":
-                (!isset(self::$product_types)) ? self::$product_types = $this->getTable("SELECT DISTINCT `product_type` FROM `Products`")
+                (!isset(self::$product_types)) ? self::$product_types = self::getTable("SELECT DISTINCT `product_type` FROM `Products`")
                     : null;
                 $table = self::$product_types;
                 break;
             case "functions":
-                (!isset(self::$functions)) ? self::$functions = $this->getTable("SELECT DISTINCT `function_name` FROM `Products-ProductFunctions`")
+                (!isset(self::$functions)) ? self::$functions = self::getTable("SELECT DISTINCT `function_name` FROM `Products-ProductFunctions`")
                     : null;
                 $table = self::$functions;
                 break;
             case "categories":
-                (!isset(self::$categories)) ? self::$categories = $this->getTable("SELECT DISTINCT `category_name` FROM `Products-Categories`")
+                (!isset(self::$categories)) ? self::$categories = self::getTable("SELECT DISTINCT `category_name` FROM `Products-Categories`")
                     : null;
                 $table = self::$categories;
                 break;
             case "sizes":
-                (!isset(self::$sizes)) ? self::$sizes = $this->getTable("SELECT DISTINCT `size_name` FROM `Products-Sizes`")
+                (!isset(self::$sizes)) ? self::$sizes = self::getTable("SELECT DISTINCT `size_name` FROM `Products-Sizes`")
                     : null;
                 $table = self::$sizes;
                 break;
             case "supoortedSizes":
-                (!isset(self::$supoortedSizes)) ? self::$supoortedSizes = $this->getTable("SELECT * FROM `Sizes`")
+                (!isset(self::$supoortedSizes)) ? self::$supoortedSizes = self::getTable("SELECT * FROM `Sizes`")
                     : null;
                 $table = self::$supoortedSizes;
                 break;
             case "cuts":
-                (!isset(self::$cuts)) ? $this->setCutsTable() : null;
+                (!isset(self::$cuts)) ? self::setCutsTable() : null;
                 $table = self::$cuts;
                 break;
             case "colors":
-                (!isset(self::$colors)) ? self::$colors = $this->getTable("SELECT DISTINCT `colorName` FROM `Products`")
+                (!isset(self::$colors)) ? self::$colors = self::getTable("SELECT DISTINCT `colorName` FROM `Products`")
                     : null;
                 $table = self::$colors;
                 break;
             case "productIDList":
-                (!isset(self::$productIDList)) ? self::$productIDList = $this->getTable("SELECT `prodID` FROM `Products` ORDER BY `Products`.`prodID` ASC")
+                (!isset(self::$productIDList)) ? self::$productIDList = self::getTable("SELECT `prodID` FROM `Products` ORDER BY `Products`.`prodID` ASC")
                     : null;
                 $table = self::$productIDList;
                 break;
@@ -575,12 +575,12 @@ abstract class ModelFunctionality extends Model
      * @param string $query a SQL query
      * @return string[] an array containing value of all column of a database table
      */
-    private function getTable($query)
+    private static function getTable($query)
     {
         $table = [];
-        $queryTable = $this->select($query);
+        $queryTable = self::select($query);
 
-        $stringKey = $this->getStringKey($queryTable);
+        $stringKey = self::getStringKey($queryTable);
         $nbKey = count($stringKey);
         foreach ($queryTable as $line) {
             for ($i = 0; $i < $nbKey; $i++) {
@@ -594,7 +594,7 @@ abstract class ModelFunctionality extends Model
      * Extract from array given in param all the string key
      * @return string[] array of string key of the array given in param
      */
-    private function getStringKey($table)
+    private static function getStringKey($table)
     {
         $keys = array_keys($table[0]);
         $stringKey = [];

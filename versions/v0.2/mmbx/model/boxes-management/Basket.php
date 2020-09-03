@@ -96,7 +96,7 @@ class Basket extends ModelFunctionality
             foreach ($tab as $tabLine) {
                 $product = new BasketProduct($tabLine["prodId"], $language, $country, $currency);
                 $sequence = Size::buildSequence($tabLine["size_name"], null, null);
-                $size = new Size($sequence, $tabLine["setDate"]);
+                $size = new Size($sequence, $tabLine["setDate"], null);
                 $product->setSelectedSize($size);
                 $quantity = (int) $tabLine["quantity"];
                 $product->setQuantity($quantity);

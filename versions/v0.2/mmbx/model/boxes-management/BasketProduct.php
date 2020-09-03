@@ -242,18 +242,24 @@ class BasketProduct extends Product
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
+     * @param Size $sizeObj
      * @param string $size to check if stock is available
      * @param string $brand never set for basket product
      * @param Measure $measure never set for basket product
      * @return boolean true if the stock is available
      */
-    public function stillStock($size, $brand = null, Measure $measure = null)
+    // public function stillStock($size, $brand = null, Measure $measure = null)
+    public function stillStock(Size $sizeObj)
     {
-        (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
-        if (!key_exists($size, $this->sizesStock)) {
+        // (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
+        $sizesStock = $this->getSizeStock();
+        $size = $sizeObj->getSize();
+        // if (!key_exists($size, $this->sizesStock)) {
+        if (!key_exists($size, $sizesStock)) {
             throw new Exception("This size '$size' don't exist in sizesStock");
         }
-        return ($this->sizesStock[$size] > 0);
+        // return ($this->sizesStock[$size] > 0);
+        return ($sizesStock[$size] > 0);
     }
 
     /**

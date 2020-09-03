@@ -198,8 +198,10 @@ class Visitor extends ModelFunctionality
     public function getMeasure($measureID)
     {
         $found = false;
+        $measures = $this->getMeasures();
         foreach ($this->measures as $key => $measure) {
-            $found = $this->measures[$key]->getMeasureID() == $measureID;
+            // $found = $this->measures[$key]->getMeasureID() == $measureID;
+            $found = $measures[$key]->getMeasureID() == $measureID;
             if ($found) {
                 return $this->measures[$key];
             }
@@ -480,17 +482,13 @@ class Visitor extends ModelFunctionality
      */
     public function stillStock(Response $response, $prodID)
     {
+        $stillStock = false;
         $isCorrect = $this->checkData($prodID, ModelFunctionality::ALPHA_NUMERIC, $this->getDataLength(Product::TABLE_PRODUCTS, Product::INPUT_PROD_ID));
         if ($isCorrect && $this->existProductInDb($prodID)) {
             $tabLine = $this->getProductLine($prodID);
             switch ($tabLine["product_type"]) {
                 case BasketProduct::BASKET_TYPE:
-                    $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
-                    if (!$response->containError()) {
-                        $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-                        $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
-                        return $product->stillStock($size);
-                    }
+                    $stillStock = $this->stillBasketStock($response, $prodID);
                     break;
                 case BoxProduct::BOX_TYPE:
                     $this->checkSizeInput($response, BoxProduct::BOX_TYPE);
@@ -499,18 +497,27 @@ class Visitor extends ModelFunctionality
                         switch ($sizeType) {
                             case Size::SIZE_TYPE_CHAR:
                                 $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-                                $product = new BoxProduct($prodID, $this->lang, $this->country, $this->currency);
+                                // $product = new BoxProduct($prodID, $this->lang, $this->country, $this->currency);
+                                $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
                                 $brand = null;
-                                if(Query::existParam(Size::INPUT_BRAND)) {
+                                if (Query::existParam(Size::INPUT_BRAND)) {
                                     $brand = Query::getParam(Size::INPUT_BRAND);
                                 }
-                                return $product->stillStock($size, $brand);
+                                $sequence = Size::buildSequence($size, $brand, null);
+                                $sizeObj = new Size($sequence, null, null);
+                                // return $product->stillStock($size, $brand);
+                                return $product->stillStock($sizeObj);
                                 break;
                             case Size::SIZE_TYPE_MEASURE:
-                                // $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+                                $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+                                $cut = Query::getParam(Size::INPUT_CUT);
                                 // $measure = $this->getMeasure($measureID);
-                                // $product = new BoxProduct($prodID);
-                                // $product->stillStock($measure);
+                                $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
+                                $sequence = Size::buildSequence(null, null, $measureID);
+                                $sizeObj = new Size($sequence, null, $cut);
+                                return $product->stillStock($sizeObj);
+                                // return true;
+                                break;
                             default:
                                 throw new Exception("Any size type match system's size types");
                                 break;
@@ -524,6 +531,28 @@ class Visitor extends ModelFunctionality
             $errorMsg = "ER1";
             $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
         }
+        return $stillStock;
+    }
+
+    /**
+     * To check if still stock for basket poduct
+     * @param Response $response where to strore resulte
+     * @param string $prodID Product's id
+     * @return boolean true if it's are still stock else false
+     */
+    private function stillBasketStock(Response $response, $prodID)
+    {
+        $stillStock = false;
+        $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
+        if (!$response->containError()) {
+            $size = Query::getParam(Size::SIZE_TYPE_CHAR);
+            $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
+            $sequence = Size::buildSequence($size, null, null);
+            $sizeObj = new Size($sequence);
+            // $stillStock = $product->stillStock($size);
+            $stillStock = $product->stillStock($sizeObj);
+        }
+        return $stillStock;
     }
 
     /**
@@ -558,18 +587,18 @@ class Visitor extends ModelFunctionality
                         case Size::SIZE_TYPE_MEASURE:
                             if (Query::existParam(Measure::MEASURE_ID_KEY)) {
                                 $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
-                                if ($this->existMeasure($measureID)) {
-                                    return true;
-                                } else {
+                                if (!$this->existMeasure($measureID)) {
                                     $errorMsg = "ER1";
                                     $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+                                } else {
+                                    $this->checkCut($response);
+                                    return true;
                                 }
                             } else {
                                 $station = "ER12";
                                 $response->addErrorStation($station, Measure::MEASURE_ID_KEY);
                             }
                             break;
-
                         default:
                             throw new Exception("Any size type match system's size types");
                             break;
@@ -598,7 +627,7 @@ class Visitor extends ModelFunctionality
             } else {
                 $station = "ER1";
                 $response->addErrorStation($station, MyError::FATAL_ERROR);
-        }
+            }
         } else {
             $station = "ER9";
             $response->addErrorStation($station, Size::INPUT_SIZE_TYPE);
@@ -621,7 +650,7 @@ class Visitor extends ModelFunctionality
             } else {
                 $station = "ER1";
                 $response->addErrorStation($station, MyError::FATAL_ERROR);
-        }
+            }
         } else {
             $station = "ER11";
             $response->addErrorStation($station, Size::INPUT_CHAR_SIZE);
@@ -649,6 +678,23 @@ class Visitor extends ModelFunctionality
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check if cut is correct
+     * @param Response $response where to strore resulte
+     * @return boolean true if cut is correct else false
+     */
+    private function checkCut(Response $response)
+    {
+        $cut = Query::getParam(Size::INPUT_CUT);
+        $cutMap = $this->getTableValues("cuts");
+        $isCorret = (!empty($cut)) ? key_exists($cut, $cutMap) : false;
+        if (!$isCorret) {
+            $errorMsg = "ER1";
+            $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+        }
+        return $isCorret;
     }
 
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/

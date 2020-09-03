@@ -292,12 +292,12 @@ class ControllerItem extends ControllerSecure
                 // ];
                 // $search = new Search(Search::SYSTEM_SEARCH, $currency, $params);
                 // $search->setProducts($language, $country, $currency);
-                $response->addResult(self::A_ADD_PROD, $stillStock);
                 if($stillStock){
+                    $response->addResult(self::A_ADD_PROD, $stillStock);
                     // $response->addFiles(self::BX_MNGR_KEY, );
                 } else {
                     $station = "ER13";
-                    $response->addResult(self::SBMT_BTN_MSG, $station);
+                    $response->addErrorStation($station, self::SBMT_BTN_MSG);
                 }
             }
         }

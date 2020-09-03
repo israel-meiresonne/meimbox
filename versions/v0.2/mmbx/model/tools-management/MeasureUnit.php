@@ -53,7 +53,7 @@ class MeasureUnit extends ModelFunctionality
         if (!in_array($unitName, self::$SUPPORTED_UNIT)) {
             throw new Exception("This unit measure is not supported: unitName=$unitName");
         }
-        if($this->existUnit($unitName)){
+        if ($this->existUnit($unitName)) {
             $tabLine = $this->getUnitLine($unitName);
             $this->unitName = $unitName;
             $this->value = (float) $value;
@@ -120,17 +120,22 @@ class MeasureUnit extends ModelFunctionality
         return $value . " " . $this->unit;
     }
 
-    // /**
-    //  * To get a protected copy of this MeasureUnit
-    //  * @return MeasureUnit a protected copy of this MeasureUnit
-    //  */
-    // public function getCopy()
-    // {
-    //     $copy = new MeasureUnit();
-    //     $copy->unitName = $this->unitName;
-    //     $copy->value = $this->value;
-    //     $copy->unit = $this->unit;
-    //     $copy->toSystUnit = $this->toSystUnit;
-    //     return $copy;
-    // }
+    /**
+     * Check if first measure is bellow seconde measure
+     * + all measure not null from second is compared to first
+     * + formula: (first + cut) <= second
+     * @param Measure $firstM
+     * @param Measure $secondM 
+     * @param string $cut used to get error margin
+     * @return boolean true if first measure is bellow all measure of second else false
+     */
+    public static function compare(MeasureUnit $first, MeasureUnit $second, MeasureUnit $cut)
+    {
+        $leftVal = (($first->value * $first->toSystUnit) + ($cut->value * $cut->toSystUnit));
+        $rightVal = $second->value * $second->toSystUnit;
+        // var_dump("user", $leftVal);
+        // var_dump("product", $rightVal);
+        // echo "\n—————————";
+        return ($leftVal <= $rightVal);
+    }
 }
