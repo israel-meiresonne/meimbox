@@ -363,7 +363,7 @@
     }
     var addProdRSP = function (r) {
         if (r.isSuccess) {
-
+            displayPopUp("#box_manager_window");
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
@@ -551,7 +551,7 @@
         /*—————————————————— SIZE CUSTOMISER UP —————————————————————————————*/
         /*—————————————————— ADD PRODUCT DOWN ———————————————————————————————*/
         /*———— sumbit sizes down ————*/
-        $("#add_to_box").click(function (e) {
+        $("#select_size_for_box").click(function (e) {
             e.preventDefault();
             var frm = $("#add_prod_form input");
             var datas = {
