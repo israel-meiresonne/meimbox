@@ -245,7 +245,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 $buttonTxt = $translator->translateStation("US24");
                         ?>
                                 <div class="add-button-container product-data-line">
-                                    <button id="add_to_box" class="green-button remove-button-default-att"><?= $buttonTxt ?></button>
+                                    <button id="select_size_for_box" class="green-button remove-button-default-att"><?= $buttonTxt ?></button>
                                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
                                         <img src="content/brain/permanent/mini-loading.gif">
                                     </div>
@@ -256,7 +256,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 $buttonTxt = $translator->translateStation("US25");
                             ?>
                                 <div class="add-button-container product-data-line">
-                                    <button id="add_to_cart" class="green-button remove-button-default-att"><?= $buttonTxt ?></button>
+                                    <button id="select_size_for_cart" class="green-button remove-button-default-att"><?= $buttonTxt ?></button>
                                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
                                         <img src="content/brain/permanent/mini-loading.gif">
                                     </div>
@@ -393,8 +393,9 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         echo $this->generateFile("view/elements/sliderSuggest.php", $datas);
         ?>
     </div>
-    <div id="full_screen_div" class="full_screen-block">
-    <!-- <div id="full_screen_div" class="full_screen-block" style="display: block;"> -->
+    
+    <!-- <div id="full_screen_div" class="full_screen-block"> -->
+    <div id="full_screen_div" class="full_screen-block" style="display: block;">
         <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
             <?php
             $datas = ["brandsMeasures" => $brandsMeasures];
@@ -419,8 +420,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             ?>
         </div>
         <!-- <div class="box_manager-full-screen-block"> -->
-        <!-- <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;"> -->
-            <div id="box_manager_window" class="box_manager-container pop_up-container">
+        <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;">
+            <!-- <div id="box_manager_window" class="box_manager-container pop_up-container"> -->
             <?php
             $datas = [
                 "translator" => $translator,

@@ -2218,6 +2218,22 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: relative;
 }
 
+/* .pop_up-content-block-inner{} */
+
+.popup-content-instruct-div{
+    margin-bottom: 15px;
+}
+
+.popup-content-instruct::first-letter{
+    text-transform: capitalize;
+}
+
+.pop_up-content-block-inner .popup-add-btn-div{
+    max-width: 300px;
+    margin: 35px auto 0;
+    width: 60%;
+}
+
 .pop_up-validate_button-div {
     display: flex;
     margin-top: 20px;

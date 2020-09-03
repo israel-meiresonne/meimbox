@@ -25,26 +25,6 @@ ob_start();
 </div>
 <?php
 $popUpDatas["content"] = ob_get_clean();
-
-// $popUpDatas[1]["windowId"] = "add_measure_window";
-// $popUpDatas[1]["title"] = $translator->translateStation("US36");
-// $popUpDatas[1]["closeButtonId"] = "measure_adder_close_button";
-// $popUpDatas[1]["submitButtonId"] = "save_measure_button";
-// $popUpDatas[1]["submitButtonTxt"] = $translator->translateStation("US37");
-// $popUpDatas[1]["submitIsDesabled"] = true;
-// $popUpDatas[1]["submitClass"] = "green-arrow-desabled";
-// $popUpDatas[1]["laodingId"] = "add_measurePopUp_loading";
-// $popUpDatas[1]["forFormId"] = "add_measure_form";
-// $popUpDatas[1]["submitButtonFunc"] = "saveMsr()";
-
-// // ob_start();
-
-// // $popUpDatas[1]["content"] = ob_get_clean();
-// $datas = [
-//     "measure" => null,
-//     "measureUnits" => $measureUnits
-// ];
-// $popUpDatas[1]["content"] = $this->generateFile('view/elements/popupMeasureAdder.php', $datas);
 $datas = [
     "datas" => $popUpDatas
 ];

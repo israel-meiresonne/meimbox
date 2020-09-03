@@ -380,7 +380,7 @@
         }
     }
 
-    var displayPopUp = function (x) {
+    displayPopUp = function (x) {
         $(FCID).fadeIn(TS / 2, function () {
             $(x).fadeIn(TS, function(){
                 $(this).css("display", "flex");
