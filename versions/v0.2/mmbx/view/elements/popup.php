@@ -28,7 +28,7 @@
         // $datas = $popUpDatas;
         $windowId = (!empty($datas["windowId"])) ? 'id="' . $datas["windowId"] . '"' : null;
         $desabled = ($datas["submitIsDesabled"] == true) ? "disabled=true" : null;
-        $submitBtnClass = (!empty($datas["submitClass"])) ? "green-arrow-desabled" : null;
+        $submitBtnClass = (!empty($datas["submitClass"])) ? "standard-button-desabled" : null;
         $laodingId = (!empty($datas["laodingId"])) ? 'id="' . $datas["laodingId"] . '"' : null;
         $forFormId = (!empty($datas["forFormId"])) ? 'for="' . $datas["forFormId"] . '"' : null;
         $submitButtonFunc = (!empty($datas["submitButtonFunc"])) ? 'onclick="' . $datas["submitButtonFunc"] . '"' : null;

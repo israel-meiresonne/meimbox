@@ -1183,7 +1183,7 @@ class PageContent
         foreach ($popUpDatas as $datas) {
             $windowId = (!empty($datas["windowId"])) ? 'id="' . $datas["windowId"] . '"' : null;
             $desabled = ($datas["submitIsDesabled"] == true) ? "disabled=true" : null;
-            $submitBtnClass = (!empty($datas["submitClass"])) ? "green-arrow-desabled" : null;
+            $submitBtnClass = (!empty($datas["submitClass"])) ? "standard-button-desabled" : null;
             $laodingId = (!empty($datas["laodingId"])) ? 'id="' . $datas["laodingId"] . '"' : null;
             $forFormId = (!empty($datas["forFormId"])) ? 'for="' . $datas["forFormId"] . '"' : null;
             $submitButtonFunc = (!empty($datas["submitButtonFunc"])) ? 'onclick="' . $datas["submitButtonFunc"] . '"' : null;
@@ -1241,7 +1241,7 @@ class PageContent
         $popUpDatas[0]["submitButtonId"] = "brand_validate_button";
         $popUpDatas[0]["submitButtonTxt"] = $translator->translateStation(self::GRID_USED_INSIDE, 34);
         $popUpDatas[0]["submitIsDesabled"] = true;
-        $popUpDatas[0]["submitClass"] = "green-arrow-desabled";
+        $popUpDatas[0]["submitClass"] = "standard-button-desabled";
         $contentTitle = $translator->translateStation(self::GRID_USED_INSIDE, 35);
         $content =
             '
@@ -1297,7 +1297,7 @@ class PageContent
         $popUpDatas[0]["submitButtonId"] = "measure_select_button";
         $popUpDatas[0]["submitButtonTxt"] = $translator->translateStation(self::GRID_USED_INSIDE, 34);
         $popUpDatas[0]["submitIsDesabled"] = true;
-        $popUpDatas[0]["submitClass"] = "green-arrow-desabled";
+        $popUpDatas[0]["submitClass"] = "standard-button-desabled";
         $popUpDatas[0]["laodingId"] = "measurePopUp_loading";
 
         $managerContent = '<div class="customize_measure-content">';
@@ -1312,7 +1312,7 @@ class PageContent
         $popUpDatas[1]["submitButtonId"] = "save_measure_button";
         $popUpDatas[1]["submitButtonTxt"] = $translator->translateStation(self::GRID_USED_INSIDE, 37);
         $popUpDatas[1]["submitIsDesabled"] = true;
-        $popUpDatas[1]["submitClass"] = "green-arrow-desabled";
+        $popUpDatas[1]["submitClass"] = "standard-button-desabled";
         $popUpDatas[1]["laodingId"] = "add_measurePopUp_loading";
         $popUpDatas[1]["forFormId"] = "add_measure_form";
         $popUpDatas[1]["submitButtonFunc"] = "saveMsr()";

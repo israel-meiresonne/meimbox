@@ -12,23 +12,32 @@ $popUpDatas["laodingId"] = "brandPopUp_loading";
 $popUpDatas["submitButtonId"] = "brand_validate_button";
 $popUpDatas["submitButtonTxt"] = $translator->translateStation("US34");
 $popUpDatas["submitIsDesabled"] = true;
-$popUpDatas["submitClass"] = "green-arrow-desabled";
+$popUpDatas["submitClass"] = "standard-button-desabled";
 $contentTitle = $translator->translateStation("US35");
+
+$dadId = ModelFunctionality::generateDateCode(25);
+$dadx = "#" . $dadId;
+$brotherx = "#" . ModelFunctionality::generateDateCode(25);
+$sbtnx = "#". $popUpDatas["submitButtonId"];
+
+$popUpDatas["submitButtonFunc"] = "selectBrand('". $sbtnx ."')";
 ob_start();
 ?>
 <div class="brand_reference-content">
     <div class="brand_reference-info-div">
         <p><?= $contentTitle ?></p>
     </div>
-    <div class="brand_reference-grid-container">
+    <div id="<?= $dadId ?>" class="brand_reference-grid-container" data-sbtnx="<?= $sbtnx ?>">
         <?php
         foreach ($brandsMeasures as $brandName => $brandDatas) :
             $dataBrand = [
                 ControllerItem::BRAND_NAME_KEY => $brandName
             ];
             $dataBrand_json = json_encode($dataBrand);
+            $launch = ModelFunctionality::generateDateCode(25);
+            $launchx = "#" . $launch;
         ?>
-            <div class="brand_reference-grid-img-block" data-brand='<?= $dataBrand_json ?>'>
+            <div id="<?= $launch ?>" class="brand_reference-grid-img-block" onclick="select('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $dataBrand_json ?>'>
                 <div class="first-img-div">
                     <img src="content/brain/brand/<?= $brandDatas["brandPictures"][1] ?>">
                 </div>
