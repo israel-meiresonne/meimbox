@@ -1235,7 +1235,7 @@ Dependency::requireControllerDependencies($dir);
                                                     <img src="/outside/brain/permanent/loading.gif">
                                                 </div>
                                                 <div class="pop_up-validate_button-div">
-                                                    <button id="brand_validate_button" class="green-arrow remove-button-default-att green-arrow-desabled" data-selected_brand="brand_500565" data-brand_class="brand_reference-grid-img-block" disabled="disabled">sélectionner</button>
+                                                    <button id="brand_validate_button" class="green-arrow remove-button-default-att standard-button-desabled" data-selected_brand="brand_500565" data-brand_class="brand_reference-grid-img-block" disabled="disabled">sélectionner</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1460,7 +1460,7 @@ Dependency::requireControllerDependencies($dir);
                                                     <img src="/outside/brain/permanent/loading.gif">
                                                 </div>
                                                 <div class="pop_up-validate_button-div">
-                                                    <button id="measure_select_button" class="green-arrow remove-button-default-att green-arrow-desabled" data-selected_measure="measure_493700" data-measure_class="manager-measure-property-set" disabled="disabled">sélectionner</button>
+                                                    <button id="measure_select_button" class="green-arrow remove-button-default-att standard-button-desabled" data-selected_measure="measure_493700" data-measure_class="manager-measure-property-set" disabled="disabled">sélectionner</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1588,7 +1588,7 @@ Dependency::requireControllerDependencies($dir);
                                                     <img src="/outside/brain/permanent/loading.gif">
                                                 </div>
                                                 <div class="pop_up-validate_button-div">
-                                                    <button id="save_measure_button" onclick="saveMsr()" for="add_measure_form" disabled="true" class="green-arrow green-arrow-desabled remove-button-default-att">enregistrer</button>
+                                                    <button id="save_measure_button" onclick="saveMsr()" for="add_measure_form" disabled="true" class="green-arrow standard-button-desabled remove-button-default-att">enregistrer</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -2044,7 +2044,7 @@ Dependency::requireControllerDependencies($dir);
                                                 <img src="/outside/brain/permanent/loading.gif">
                                             </div>
                                             <div class="pop_up-validate_button-div">
-                                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att green-arrow-desabled" disabled="disabled">sélectionner</button>
+                                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att standard-button-desabled" disabled="disabled">sélectionner</button>
                                             </div>
                                         </div>
                                     </div>
@@ -2426,7 +2426,7 @@ Dependency::requireControllerDependencies($dir);
                                                 <img src="/outside/brain/permanent/loading.gif">
                                             </div>
                                             <div class="pop_up-validate_button-div">
-                                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att green-arrow-desabled" disabled="disabled">sélectionner</button>
+                                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att standard-button-desabled" disabled="disabled">sélectionner</button>
                                             </div>
                                         </div>
                                     </div>

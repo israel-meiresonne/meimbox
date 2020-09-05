@@ -182,7 +182,7 @@ $this->head = ob_get_clean();
                                 </div>
                             </div>
                             <div class="apply-button-container">
-                                <button id="filter_button" class="green-button remove-button-default-att"><?= $translator->translateStation("US14") ?></button>
+                                <button id="filter_button" class="green-button standard-button remove-button-default-att"><?= $translator->translateStation("US14") ?></button>
                             </div>
                         </div>
                     </from>

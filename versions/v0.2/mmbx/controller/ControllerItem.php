@@ -152,10 +152,13 @@ class ControllerItem extends ControllerSecure
         $this->person->addMeasure($response);
         if (!$response->containError()) {
             $measures = $response->getResult(self::QR_MEASURE_CONTENT);
+            $measureUnits = $this->person->getUnits();
             $datasView = [
-                "measures" => $measures
+                "measures" => $measures,
+                "measureUnits" => $measureUnits,
             ];
-            $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManagerContent.php");
+            // $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManagerContent.php");
+            $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManager.php");
         }
         $this->generateJsonView($datasView, $response, $language);
     }
@@ -204,10 +207,13 @@ class ControllerItem extends ControllerSecure
             $this->person->updateMeasure($response, $measureID);
             if (!$response->containError()) {
                 $measures = $this->person->getMeasures();
+                $measureUnits = $this->person->getUnits();
                 $datasView = [
-                    "measures" => $measures
+                    "measures" => $measures,
+                    "measureUnits" => $measureUnits
                 ];
-                $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManagerContent.php");
+                // $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManagerContent.php");
+                $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManager.php");
             }
         }
         $this->generateJsonView($datasView, $response, $language);
@@ -292,7 +298,7 @@ class ControllerItem extends ControllerSecure
                 // ];
                 // $search = new Search(Search::SYSTEM_SEARCH, $currency, $params);
                 // $search->setProducts($language, $country, $currency);
-                if($stillStock){
+                if ($stillStock) {
                     $response->addResult(self::A_ADD_PROD, $stillStock);
                     // $response->addFiles(self::BX_MNGR_KEY, );
                 } else {

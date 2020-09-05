@@ -28,8 +28,78 @@ require_once 'model/special/MyError.php';
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
-    
+
     <?= $head ?>
+    <script>
+        const jx = function(a, d, r, l, x = null, sc = () => {}, rc = () => {}) {
+            $(l).fadeIn(TS, sc());
+            $.ajax({
+                type: 'POST',
+                url: WR + a + "?" + LANG,
+                data: d,
+                dataType: 'json',
+                success: function(j) {
+                    $(l).fadeOut(TS, rc());
+                    console.log("response: ", j);
+                    r(j, x);
+                }
+            });
+        }
+
+        /**
+         * var datas = {
+         *      "qr" : QR_FILTER,
+         *      "inputSelector" : "#grid_filter input",
+         *      "frmCbk" : getCol,
+         *      "f" : filterRSP,
+         *      "lds" : "#prodGrid_loading",
+         *      "cbkSND" : function () { },
+         *      "cbkRSP" : function () { }
+         * }
+         */
+        frmSND = function(datas) {
+            var param = $(datas.frm).serialize();
+            if (datas.frmCbk() != null) {
+                param += datas.frmCbk();
+            }
+
+            var datasSND = {
+                "a": datas.a,
+                // "qr": datas.qr,
+                "d": param,
+                "r": datas.r,
+                "l": datas.l,
+                "x": datas.x,
+                "sc": datas.sc,
+                "rc": datas.rc
+            };
+            SND(datasSND);
+        }
+
+        /**
+         * var datas = {
+         *     "qr": A_DELETE_MEASURE,
+         *     "param": param,
+         *     "f": removeMsrRSP,
+         *     "lds": "#measurePopUp_loading",
+         *     "cbkSND": msrMangerLoading_on,
+         *     "cbkRSP": msrMangerLoading_off
+         * };
+         */
+        const SND = function(datas) {
+            var a = datas.a;
+            var d = datas.d;
+            var r = datas.r;
+            var l = datas.l;
+            var x = datas.x;
+            var sc = datas.sc;
+            var rc = datas.rc;
+            console.log("send: ", d);
+            console.log("to: ", WR + a + "?" + LANG);
+            jx(a, d, r, l, x, sc, rc);
+        }
+    </script>
+
     <script>
         const WR = "<?= $webRoot ?>";
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
@@ -113,11 +183,16 @@ require_once 'model/special/MyError.php';
             var filter = new RegExp(regex);
             return filter.test(string);
         }
+
+        const mapToParam = function(map) {
+            return jQuery.param(map);
+        }
     </script>
 
     <link rel="stylesheet" href="content/css/header.css">
     <link rel="stylesheet" href="content/css/elements.css">
     <script src="content/js/elements.js"></script>
+    <script src="content/js/pop.js"></script>
     <script src="content/qr/qr.js"></script>
 
 </head>

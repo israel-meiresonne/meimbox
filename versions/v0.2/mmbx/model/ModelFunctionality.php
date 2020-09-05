@@ -10,6 +10,12 @@ require_once 'model/special/MyError.php';
 abstract class ModelFunctionality extends Model
 {
     /**
+     * Counter for code generator
+     * @var int
+     */
+    private static $counter = 0;
+
+    /**
      * Holds db's Constants table in map format
      * @var string[] specified in file model/special/dbMap.txt
      */
@@ -982,7 +988,7 @@ abstract class ModelFunctionality extends Model
      * @param int $length
      * @return string alpha numerique sequence in specified length
      */
-    protected function generateCode($length)
+    protected static function generateCode($length)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $sequence = '';
@@ -1005,24 +1011,26 @@ abstract class ModelFunctionality extends Model
      * @return string a alpha numerique sequence with more than 14 
      * characteres 
      */
-    protected function generateDateCode($length)
+    public static function generateDateCode($length)
     {
         $sequence = date("YmdHis");
+        $sequence = ++self::$counter . $sequence;
         $nbChar = strlen($sequence);
         if ($length <= $nbChar) {
             throw new Exception('$length must be strictly over 14');
         }
         $nbCharToAdd = $length - $nbChar;
-        switch ($nbCharToAdd % 2) {
-            case 0:
-                $nbCharLeft = $nbCharRight = ($nbCharToAdd / 2);
-                break;
-            case 1:
-                $nbCharLeft = ($nbCharToAdd - 1) / 2;
-                $nbCharRight = $nbCharLeft + 1;
-                break;
-        }
-        $sequence = $this->generateCode($nbCharLeft) . $sequence . $this->generateCode($nbCharRight);
+        // switch ($nbCharToAdd % 2) {
+        //     case 0:
+        //         $nbCharLeft = $nbCharRight = ($nbCharToAdd / 2);
+        //         break;
+        //     case 1:
+        //         $nbCharLeft = ($nbCharToAdd - 1) / 2;
+        //         $nbCharRight = $nbCharLeft + 1;
+        //         break;
+        // }
+        // $sequence = self::generateCode($nbCharLeft) . $sequence . self::generateCode($nbCharRight);
+        $sequence = ($nbCharToAdd > 0) ? $sequence . self::generateCode($nbCharToAdd) : substr($sequence, 0, $length);
         $sequence = strtolower($sequence);
         return str_shuffle($sequence);
     }

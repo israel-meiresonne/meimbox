@@ -15,6 +15,6 @@
     </div>
     <?= $content ?>
     <div class="popup-add-btn-div">
-        <button id="<?= $btnId ?>" class="green-button remove-button-default-att"><?= $btnTxt ?></button>
+        <button id="<?= $btnId ?>" class="green-button standard-button remove-button-default-att"><?= $btnTxt ?></button>
     </div>
 </div>

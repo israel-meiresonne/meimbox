@@ -146,7 +146,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                         <div id="choose_brand" class="customize_choice-button-container">
                                             <p><?= $translator->translateStation("US18") ?></p>
                                             <div class="custom_selected-container"></div>
-                                            <button id="choose_brand_button" class="green-button remove-button-default-att"><?= $translator->translateStation("US20") ?></button>
+                                            <button id="choose_brand_button" class="green-button standard-button remove-button-default-att"><?= $translator->translateStation("US20") ?></button>
                                         </div>
                                     </div>
                                     <?php
@@ -187,8 +187,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                                 ?>
                                                     <div id="measurement_button_div" class="customize_choice-button-container">
                                                         <div class="custom_selected-container"></div>
-                                                        <button id="add_measurement_button" style="display:none;" class="green-button remove-button-default-att"><?= $addMsrBtnTxt ?></button>
-                                                        <button id="manage_measurement_button" class="green-button remove-button-default-att"><?= $managerBtnTxt ?></button>
+                                                        <button id="add_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att"><?= $addMsrBtnTxt ?></button>
+                                                        <button id="manage_measurement_button" class="green-button standard-button remove-button-default-att"><?= $managerBtnTxt ?></button>
                                                     </div>
                                                 <?php
                                                 else :
@@ -197,8 +197,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                                 ?>
                                                     <div id="measurement_button_div" class="customize_choice-button-container">
                                                         <div class="custom_selected-container"></div>
-                                                        <button id="add_measurement_button" class="green-button remove-button-default-att"><?= $addMsrBtnTxt ?></button>
-                                                        <button id="manage_measurement_button" style="display:none;" class="green-button remove-button-default-att"><?= $managerBtnTxt ?></button>
+                                                        <button id="add_measurement_button" class="green-button standard-button remove-button-default-att"><?= $addMsrBtnTxt ?></button>
+                                                        <button id="manage_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att"><?= $managerBtnTxt ?></button>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
@@ -245,7 +245,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 $buttonTxt = $translator->translateStation("US24");
                         ?>
                                 <div class="add-button-container product-data-line">
-                                    <button id="select_size_for_box" class="green-button remove-button-default-att"><?= $buttonTxt ?></button>
+                                    <button id="select_size_for_box" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
                                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
                                         <img src="content/brain/permanent/mini-loading.gif">
                                     </div>
@@ -256,7 +256,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 $buttonTxt = $translator->translateStation("US25");
                             ?>
                                 <div class="add-button-container product-data-line">
-                                    <button id="select_size_for_cart" class="green-button remove-button-default-att"><?= $buttonTxt ?></button>
+                                    <button id="select_size_for_cart" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
                                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
                                         <img src="content/brain/permanent/mini-loading.gif">
                                     </div>
@@ -394,8 +394,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         ?>
     </div>
     
-    <!-- <div id="full_screen_div" class="full_screen-block"> -->
-    <div id="full_screen_div" class="full_screen-block" style="display: block;">
+    <div id="full_screen_div" class="full_screen-block">
+    <!-- <div id="full_screen_div" class="full_screen-block" style="display: block;"> -->
         <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
             <?php
             $datas = ["brandsMeasures" => $brandsMeasures];
@@ -420,8 +420,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             ?>
         </div>
         <!-- <div class="box_manager-full-screen-block"> -->
-        <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;">
-            <!-- <div id="box_manager_window" class="box_manager-container pop_up-container"> -->
+        <!-- <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;"> -->
+            <div id="box_manager_window" class="box_manager-container pop_up-container">
             <?php
             $datas = [
                 "translator" => $translator,
@@ -862,7 +862,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 <img src="content/brain/permanent/loading.gif">
                             </div>
                             <div class="pop_up-validate_button-div">
-                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att green-arrow-desabled" disabled="disabled">sélectionner</button>
+                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att standard-button-desabled" disabled="disabled">sélectionner</button>
                             </div>
                         </div>
                     </div>
@@ -916,7 +916,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                                                         </div>
                                                                     </div>
                                                                     <div class="product_add-button-block">
-                                                                        <button id="" class="green-button remove-button-default-att">add regular box</button>
+                                                                        <button id="" class="green-button standard-button remove-button-default-att">add regular box</button>
                                                                     </div>
                                                                     <div class="product_detail-block">
                                                                         <div class="product_detail-info">
@@ -1028,7 +1028,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                                                         </div>
                                                                     </div>
                                                                     <div class="product_add-button-block">
-                                                                        <button id="" class="green-button remove-button-default-att">add silver box</button>
+                                                                        <button id="" class="green-button standard-button remove-button-default-att">add silver box</button>
                                                                     </div>
                                                                     <div class="product_detail-block">
                                                                         <div class="product_detail-info">
@@ -1140,7 +1140,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                                                         </div>
                                                                     </div>
                                                                     <div class="product_add-button-block">
-                                                                        <button id="" class="green-button remove-button-default-att">add gold box</button>
+                                                                        <button id="" class="green-button standard-button remove-button-default-att">add gold box</button>
                                                                     </div>
                                                                     <div class="product_detail-block">
                                                                         <div class="product_detail-info">
@@ -1243,7 +1243,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 <img src="content/brain/permanent/loading.gif">
                             </div>
                             <div class="pop_up-validate_button-div">
-                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att green-arrow-desabled" disabled="disabled">sélectionner</button>
+                                <button id="box_manager_validate_button" class="green-arrow remove-button-default-att standard-button-desabled" disabled="disabled">sélectionner</button>
                             </div>
                         </div>
                     </div>

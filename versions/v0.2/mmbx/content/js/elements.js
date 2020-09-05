@@ -88,11 +88,11 @@
 
         var inputTag = container.getElementsByTagName("input")[0];
         if (inputTag.value == '') {
-            $("#" + containerId + ' label').slideUp(TS);
+            $("#" + containerId + ' .input-label').slideUp(TS);
             $("#" + containerId + ' input').animate({ padding: '5px' }, TS);
             $("#" + containerId + ' span').animate({ top: '11px' }, TS);
         } else {
-            $("#" + containerId + ' label').slideDown(TS);
+            $("#" + containerId + ' .input-label').slideDown(TS);
             $("#" + containerId + ' input').animate({ padding: '1.3em 5px 0' }, TS);
             $("#" + containerId + ' span').animate({ top: '22px' }, TS);
         }
@@ -101,7 +101,7 @@
 
     updateInputAnimation = function (selector) {
         var a = $(selector);
-        console.log(a);
+        // console.log(a);
         var nbA = a.length;
         for (var i = 0; i < nbA; i++) {
             animateInput(a[i]);
@@ -381,8 +381,9 @@
     }
 
     displayPopUp = function (x) {
-        $(FCID).fadeIn(TS / 2, function () {
-            $(x).fadeIn(TS, function(){
+        $(FCID).fadeIn(TS, function () {
+            $(x).css("display", "flex");
+            $(x).fadeIn(TS/2, function(){
                 $(this).css("display", "flex");
             });
         });
@@ -396,6 +397,7 @@
 
     switchPopUp = function (from, to) {
         $(from).fadeOut(TS, function () {
+            $(to).css("display", "flex");
             $(to).fadeIn(TS, function () {
                 $(this).css("display", "flex");
             });

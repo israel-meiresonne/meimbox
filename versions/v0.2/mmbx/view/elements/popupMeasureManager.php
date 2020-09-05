@@ -12,19 +12,29 @@ $popUpDatas["closeButtonId"] = "close_measure_manager";
 $popUpDatas["submitButtonId"] = "measure_select_button";
 $popUpDatas["submitButtonTxt"] = $translator->translateStation("US34");
 $popUpDatas["submitIsDesabled"] = true;
-$popUpDatas["submitClass"] = "green-arrow-desabled";
+$popUpDatas["submitClass"] = "standard-button-desabled";
 $popUpDatas["laodingId"] = "measurePopUp_loading";
 
-// $maxMeasure = Visitor::getMAX_MEASURE();
-// $nbMeasure = count($measures);
-
-ob_start();
+$dad = ModelFunctionality::generateDateCode(25);
+$dadx = "#" . $dad;
+$brotherx = ModelFunctionality::generateDateCode(25);
+$sbtnx = "#". $popUpDatas["submitButtonId"];
+$popUpDatas["submitButtonFunc"] = "selectMeasure('". $sbtnx ."')";
+// ob_start();
 ?>
-<div class="customize_measure-content">
-    <?php require 'view/elements/popupMeasureManagerContent.php'; ?>
-</div>
+    <?php //require 'view/elements/popupMeasureManagerContent.php'; ?>
 <?php
-$popUpDatas["content"] = ob_get_clean();
+    // $popUpDatas["content"] = ob_get_clean();
+$datas = [
+    "measures" => $measures,
+    "measureUnits" => $measureUnits,
+    "dad" => $dad,
+    "dadx" => $dadx,
+    "brotherx" => $brotherx,
+    "sbtnx" => $sbtnx
+];
+$popUpDatas["content"] = $this->generateFile('view/elements/popupMeasureManagerContent.php', $datas);
+
 $datas = [
     "datas" => $popUpDatas
 ];
