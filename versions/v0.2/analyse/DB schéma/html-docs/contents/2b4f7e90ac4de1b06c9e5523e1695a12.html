@@ -63,9 +63,12 @@
           
             <h1>documentation</h1>
 
-<p>Cette table regroupe les dimensions des boxproduct uniquement</p>
+<p>Cette table regroupe les dimensions d&#39;un boxproduct pour une taille donnée</p>
 
 <h1>contraintes</h1>
+
+<p>Le couple prodId-sizename forme la clef étrangère
+[prodId-sizename]=&gt;ON DELETE CASCADE, ON UPDATE CASCADE</p>
 
 <p>⚠️Chaque boxproduit doit avoir ses dimension encodé dans le système
 ⚠️Il faut vérifier que chaque dimension du client soit inférieur ou égale au dimension du produit qu&#39;il désire (en effet on ne peut pas augmeneter la taille des produits)</p>
@@ -211,9 +214,24 @@
             <td><span class='label label-info'>true</span></td>
             <td>
               
-                <a href='596f54853cc43278635f334f74a09e4a.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Products</a> ::
+                <a href='0c7c3b193f9e1f0576b8a08ac320927b.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Products-Sizes</a> ::
               
-              <a href='5e7f16baf68750bcefe75dca0580ce31.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>prodID</a>
+              <a href='1e9340c9e903e8b4b8e7b5c77817ab13.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>size_name</a>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="132597f1fab1272d8d19008ab3cfe5ba.html">size_name</a></td>
+            <td>VARCHAR(100)</td>
+            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>true</span></td>
+            <td>
+              
+                <a href='0c7c3b193f9e1f0576b8a08ac320927b.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Products-Sizes</a> ::
+              
+              <a href='1e9340c9e903e8b4b8e7b5c77817ab13.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>size_name</a>
             </td>
             <td><span class='label label-info'>false</span></td>
             <td><span class='label label-info'>false</span></td>
@@ -237,7 +255,7 @@
           <tr>
             <td><a href="8a438cfa81bd60a44cd2084d0761f896.html">unit_name</a></td>
             <td>VARCHAR(50)</td>
-            <td><span class='label label-info'>true</span></td>
+            <td><span class='label label-info'>false</span></td>
             <td><span class='label label-info'>true</span></td>
             <td>
               
@@ -288,6 +306,14 @@
           
           
           <tr>
+            <td><a href='0c7c3b193f9e1f0576b8a08ac320927b.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Products-Sizes</a></td>
+            <td>0..*</td>
+            <td></td>
+            <td><a href='04c42e82f08a6b1986e4c933e35beb57.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Products-Sizes—ProductsMeasures)</a></td>
+          </tr>
+          
+          
+          <tr>
             <td><a href='4d65b12e411164f5d20c1452a168d658.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>BodyParts</a></td>
             <td>1</td>
             <td></td>
@@ -300,14 +326,6 @@
             <td>1</td>
             <td></td>
             <td><a href='6174102a00a92d54bc93d60d91b7dde7.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(ProductsMeasures—MeasureUnits)</a></td>
-          </tr>
-          
-          
-          <tr>
-            <td><a href='596f54853cc43278635f334f74a09e4a.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Products</a></td>
-            <td>1</td>
-            <td></td>
-            <td><a href='9e6fb8147f7137a1ee1f90b368652ab2.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(ProductsMeasures—Products)</a></td>
           </tr>
           
         </table>                
@@ -376,11 +394,11 @@
         
         <li><a href='b9c7361ad61c35cea62c70c13b386ceb.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Products-Sizes—ProductsMeasures)</a></li>
         
+        <li><a href='04c42e82f08a6b1986e4c933e35beb57.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Products-Sizes—ProductsMeasures)</a></li>
+        
         <li><a href='d972e40d97cf0387b2b276d67f6205ad.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(BodyParts—ProductsMeasures)</a></li>
         
         <li><a href='6174102a00a92d54bc93d60d91b7dde7.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(ProductsMeasures—MeasureUnits)</a></li>
-        
-        <li><a href='9e6fb8147f7137a1ee1f90b368652ab2.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(ProductsMeasures—Products)</a></li>
         
     </ul>
 </section>
@@ -396,8 +414,6 @@
     <ul class="nav nav-list">
         
         <li><a href='6174102a00a92d54bc93d60d91b7dde7.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(ProductsMeasures—MeasureUnits)</a></li>
-        
-        <li><a href='9e6fb8147f7137a1ee1f90b368652ab2.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(ProductsMeasures—Products)</a></li>
         
     </ul>
 </section>

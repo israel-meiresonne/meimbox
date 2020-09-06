@@ -63,13 +63,8 @@
           
             <h1>Contrainte</h1>
 
-<p>Les colonnes size<em>name, brand</em>name et measureId ne peuvent pas être remplies en même temps.
-les combinaison possibles:</p>
-
-<p>•. size<em>name - brand</em>name - measureId
-1. &quot;s&quot; - NULL - NULL
-2. &quot;s&quot; - &quot;h &amp; m&quot; - NULL
-3. NULL - NULL - &quot;02939202938302&quot;</p>
+<p>Les basket produit ne peuvent pas recevoir de mesure ou de marque car il ne sont pas retouchable.
+Ce sont des produit de grande production.</p>
           
         </div>
       </section>
@@ -236,19 +231,6 @@ les combinaison possibles:</p>
           </tr>
           
           <tr>
-            <td><a href="441d44d8c71631cda2816c6bdabe3c27.html">sequenceID</a></td>
-            <td>VARCHAR(100)</td>
-            <td><span class='label label-info'>true</span></td>
-            <td><span class='label label-info'>false</span></td>
-            <td>
-              
-              <span class='label label-info'>null</span>
-            </td>
-            <td><span class='label label-info'>false</span></td>
-            <td><span class='label label-info'>false</span></td>
-          </tr>
-          
-          <tr>
             <td><a href="f0d793d8575743a513bb37234af29179.html">size_name</a></td>
             <td>VARCHAR(100)</td>
             <td><span class='label label-info'>false</span></td>
@@ -258,47 +240,6 @@ les combinaison possibles:</p>
                 <a href='76b16ec1adcbd25e6efc63d9a181c078.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Sizes</a> ::
               
               <a href='31e6992b46676598f57203bf696c06bd.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>sizeName</a>
-            </td>
-            <td><span class='label label-info'>true</span></td>
-            <td><span class='label label-info'>false</span></td>
-          </tr>
-          
-          <tr>
-            <td><a href="c7eb3fd361e0d68018fe99e5d109d4df.html">brand_name</a></td>
-            <td>VARCHAR(100)</td>
-            <td><span class='label label-info'>false</span></td>
-            <td><span class='label label-info'>true</span></td>
-            <td>
-              
-              <span class='label label-info'>null</span>
-            </td>
-            <td><span class='label label-info'>true</span></td>
-            <td><span class='label label-info'>false</span></td>
-          </tr>
-          
-          <tr>
-            <td><a href="741a1b9db19333fd8558b26f069145bf.html">measureId</a></td>
-            <td>VARCHAR(100)</td>
-            <td><span class='label label-info'>false</span></td>
-            <td><span class='label label-info'>true</span></td>
-            <td>
-              
-              <span class='label label-info'>null</span>
-            </td>
-            <td><span class='label label-info'>true</span></td>
-            <td><span class='label label-info'>false</span></td>
-          </tr>
-          
-          <tr>
-            <td><a href="8a754202fa716267613ccdfabe495dd8.html">cut_name</a></td>
-            <td>VARCHAR(30)</td>
-            <td><span class='label label-info'>false</span></td>
-            <td><span class='label label-info'>true</span></td>
-            <td>
-              
-                <a href='26746cd913f2c62030cf78e12937e844.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Cuts</a> ::
-              
-              <a href='e308e46daafd36a9f7a535da123ed73c.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>cutName</a>
             </td>
             <td><span class='label label-info'>true</span></td>
             <td><span class='label label-info'>false</span></td>
@@ -354,22 +295,6 @@ les combinaison possibles:</p>
             <td>1</td>
             <td></td>
             <td><a href='58be08aefb505ffe42d8c5ad5b9c4203.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Baskets-Products—Products)</a></td>
-          </tr>
-          
-          
-          <tr>
-            <td><a href='ec96a4d25257cc1528aee5e6a042889f.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>UsersMeasures</a></td>
-            <td>1</td>
-            <td></td>
-            <td><a href='f4c3297595310ec59576f034082ab1a4.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Baskets-Products—UsersMeasures)</a></td>
-          </tr>
-          
-          
-          <tr>
-            <td><a href='26746cd913f2c62030cf78e12937e844.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Cuts</a></td>
-            <td>1</td>
-            <td></td>
-            <td><a href='9293675195361d9505d8002d46ec6d6e.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Cuts—Baskets-Products)</a></td>
           </tr>
           
         </table>                
@@ -438,10 +363,6 @@ les combinaison possibles:</p>
         
         <li><a href='58be08aefb505ffe42d8c5ad5b9c4203.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Baskets-Products—Products)</a></li>
         
-        <li><a href='f4c3297595310ec59576f034082ab1a4.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Baskets-Products—UsersMeasures)</a></li>
-        
-        <li><a href='9293675195361d9505d8002d46ec6d6e.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Cuts—Baskets-Products)</a></li>
-        
     </ul>
 </section>
 
@@ -460,8 +381,6 @@ les combinaison possibles:</p>
         <li><a href='58be08aefb505ffe42d8c5ad5b9c4203.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Baskets-Products—Products)</a></li>
         
         <li><a href='10706c732d4dbcacca305d6e830a7cc4.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Box-Products—Sizes)</a></li>
-        
-        <li><a href='f4c3297595310ec59576f034082ab1a4.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Baskets-Products—UsersMeasures)</a></li>
         
     </ul>
 </section>
