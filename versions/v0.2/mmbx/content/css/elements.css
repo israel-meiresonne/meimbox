@@ -773,7 +773,7 @@
 
 .standard-button-desabled {
     opacity: .2;
-    cursor: initial;
+    cursor: initial !important;
 }
 
 /* .green-button {
@@ -1322,6 +1322,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     box-shadow: var(--box-shadow);
     border: var(--border-float);
     font-family: var(--main-font-family);
+    cursor: pointer;
     transition: var(--transition-time);
     -moz-transition: var(--transition-time);
 }

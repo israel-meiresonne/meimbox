@@ -40,7 +40,7 @@
                         <span class="form-title"><?= $datas["title"] ?></span>
                     </div>
                     <div class="pop_up-close-button-div">
-                        <button id="<?= $datas["closeButtonId"] ?>" class="close_button-wrap remove-button-default-att">
+                        <button id="<?= $datas["closeButtonId"] ?>" class="close_button-wrap popup_close_btn remove-button-default-att">
                             <div class="plus_symbol-wrap">
                                 <span class="plus_symbol-vertical"></span>
                                 <span class="plus_symbol-horizontal"></span>

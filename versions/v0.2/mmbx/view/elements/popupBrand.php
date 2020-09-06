@@ -37,7 +37,7 @@ ob_start();
             $launch = ModelFunctionality::generateDateCode(25);
             $launchx = "#" . $launch;
         ?>
-            <div id="<?= $launch ?>" class="brand_reference-grid-img-block" onclick="select('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $dataBrand_json ?>'>
+            <div id="<?= $launch ?>" class="brand_reference-grid-img-block" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $dataBrand_json ?>'>
                 <div class="first-img-div">
                     <img src="content/brain/brand/<?= $brandDatas["brandPictures"][1] ?>">
                 </div>
