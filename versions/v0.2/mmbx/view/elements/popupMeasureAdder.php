@@ -14,7 +14,7 @@
     $popUpDatas["submitClass"] = "standard-button-desabled";
     $popUpDatas["laodingId"] = "add_measurePopUp_loading";
     $popUpDatas["forFormId"] = "add_measure_form";
-    $popUpDatas["submitButtonFunc"] = "saveMsr()";
+    $popUpDatas["submitButtonFunc"] = "addMsr()";
 
     $supportedUnits = MeasureUnit::getSUPPORTED_UNIT();
 

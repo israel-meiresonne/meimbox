@@ -134,6 +134,7 @@ class Visitor extends ModelFunctionality
         }
         krsort($this->measures);
         $this->sortMeasure();
+        // $this->measures = [];
     }
 
     /**

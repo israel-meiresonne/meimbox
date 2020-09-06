@@ -146,7 +146,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                         <div id="choose_brand" class="customize_choice-button-container">
                                             <p><?= $translator->translateStation("US18") ?></p>
                                             <div class="custom_selected-container"></div>
-                                            <button id="choose_brand_button" class="green-button standard-button remove-button-default-att"><?= $translator->translateStation("US20") ?></button>
+                                            <button id="choose_brand_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#customize_brand_reference')"><?= $translator->translateStation("US20") ?></button>
                                         </div>
                                     </div>
                                     <?php
@@ -181,26 +181,25 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                             <hr class="hr-summary">
                                             <div class="customize_choice-button-block">
                                                 <?php
-                                                if (count($measures) > 0) :
+
+
+                                                ?>
+                                                <div id="measurement_button_div" class="customize_choice-button-container">
+                                                    <div class="custom_selected-container"></div>
+                                                    <?php
                                                     $addMsrBtnTxt = $translator->translateStation("US21");
                                                     $managerBtnTxt = $translator->translateStation("US22");
-                                                ?>
-                                                    <div id="measurement_button_div" class="customize_choice-button-container">
-                                                        <div class="custom_selected-container"></div>
-                                                        <button id="add_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att"><?= $addMsrBtnTxt ?></button>
-                                                        <button id="manage_measurement_button" class="green-button standard-button remove-button-default-att"><?= $managerBtnTxt ?></button>
-                                                    </div>
-                                                <?php
-                                                else :
-                                                    $addMsrBtnTxt = $translator->translateStation("US21");
-                                                    $managerBtnTxt = $translator->translateStation("US22");
-                                                ?>
-                                                    <div id="measurement_button_div" class="customize_choice-button-container">
-                                                        <div class="custom_selected-container"></div>
-                                                        <button id="add_measurement_button" class="green-button standard-button remove-button-default-att"><?= $addMsrBtnTxt ?></button>
-                                                        <button id="manage_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att"><?= $managerBtnTxt ?></button>
-                                                    </div>
-                                                <?php endif; ?>
+                                                    if (count($measures) > 0) :
+                                                    ?>
+                                                        <button id="add_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_adder')"><?= $addMsrBtnTxt ?></button>
+                                                        <button id="manage_measurement_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_manager')"><?= $managerBtnTxt ?></button>
+                                                    <?php
+                                                    else : ?>
+                                                        <button id="add_measurement_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_adder')"><?= $addMsrBtnTxt ?></button>
+                                                        <button id="manage_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_manager')"><?= $managerBtnTxt ?></button>
+                                                    <?php
+                                                    endif; ?>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="customize_choice-block">
@@ -393,9 +392,9 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         echo $this->generateFile("view/elements/sliderSuggest.php", $datas);
         ?>
     </div>
-    
+
     <div id="full_screen_div" class="full_screen-block">
-    <!-- <div id="full_screen_div" class="full_screen-block" style="display: block;"> -->
+        <!-- <div id="full_screen_div" class="full_screen-block" style="display: block;"> -->
         <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
             <?php
             $datas = ["brandsMeasures" => $brandsMeasures];
@@ -421,7 +420,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         </div>
         <!-- <div class="box_manager-full-screen-block"> -->
         <!-- <div id="box_manager_window" class="box_manager-container pop_up-container" style="display: flex;"> -->
-            <div id="box_manager_window" class="box_manager-container pop_up-container">
+        <div id="box_manager_window" class="box_manager-container pop_up-container">
             <?php
             $datas = [
                 "translator" => $translator,

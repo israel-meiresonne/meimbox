@@ -75,7 +75,7 @@ $editBtnTranslate = $translator->translateStation("US49");
                                     </button>
                                 </div>
 
-                                <div id="<?= $launch ?>" class="cart-element-detail-block" onclick="select('<?= $launchx ?>')" data-flagx="<?= $flagx ?>" data-dadx="<?= $dadx ?>">
+                                <div id="<?= $launch ?>" class="cart-element-detail-block" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $flagx ?>" data-dadx="<?= $dadx ?>">
                                     <div class="cart-element-property-set">
                                         <div class="manager-measure-property-set">
                                             <div class="measure-property-title cart-element-property-div">

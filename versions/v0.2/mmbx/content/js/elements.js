@@ -380,29 +380,6 @@
         }
     }
 
-    displayPopUp = function (x) {
-        $(FCID).fadeIn(TS, function () {
-            $(x).css("display", "flex");
-            $(x).fadeIn(TS/2, function(){
-                $(this).css("display", "flex");
-            });
-        });
-    }
-
-    closePopUp = function (target) {
-        $(target).fadeOut(TS, function () {
-            $(FCID).fadeOut(TS / 2);
-        });
-    }
-
-    switchPopUp = function (from, to) {
-        $(from).fadeOut(TS, function () {
-            $(to).css("display", "flex");
-            $(to).fadeIn(TS, function () {
-                $(this).css("display", "flex");
-            });
-        });
-    }
 
     changeInputUnit = function (selector, target) {
         var unit = $(selector).attr("data-unit");
@@ -491,73 +468,25 @@
             animateNewletter(this);
         });
         //—————————————————— NEWLETTER UP ————————————————————————
-
-        /*—————————————————— PIANO DOWN —————————————————————————————————————*/
-        // $(".piano-wrap .piano-li-button").click(function () {
-        //     animatePiano(this);
-        // });
-        /*—————————————————— PIANO UP ———————————————————————————————————————*/
         /*—————————————————— SIZE CUSTOMISER DOWN ———————————————————————————*/
         //—— BRAND DOWN ——//
-        $("#choose_brand_button").click(function () {
-            var x = $("#customize_brand_reference");
-            displayPopUp(x);
-        });
-        $("#brand_reference_close_button").click(function () {
-            var targer = $("#customize_brand_reference");
-            closePopUp(targer);
-        });
+        // $("#choose_brand_button").click(function () {
+        //     var x = $("#customize_brand_reference");
+        //     openPopUp(x);
+        // });
         //—— NOT MEASUREMENT DOWN ——//
-        $("#add_measurement_button").click(function () {
-            var x = $("#measure_adder");
-            displayPopUp(x);
-            // $("#add_measure_window").fadeIn(TS);
-            $("#measure_adder_close_button").attr("onclick", "closePopUp('#measure_adder')");
-        });
-        // measurePopUpClose = function () {
-        //     var targer = $("#measure_manager");
-        //     closePopUp(targer);
-        //     var button = $("#measure_adder_close_button");
-        //     $(button).removeAttr("onclick");
-        // }
-        //—— NOT MEASUREMENT UP ——//
-        //—— AT LESS ONE MEASUREMENT DOWN ——//
+        // $("#add_measurement_button").click(function () {
+        //     var x = $("#measure_adder");
+        //     openPopUp(x);
+        //     // $("#add_measure_window").fadeIn(TS);
+        //     $("#measure_adder_close_button").attr("onclick", "closePopUp('#measure_adder')");
+        // });
         //-OPEN
-        $("#manage_measurement_button").click(function () {
-            var x = $("#measure_manager");
-            displayPopUp(x);
-            // $("#measure_manager").fadeIn(TS);
-        });
-        //-SWITCH
-        simpleSwitchToMsr = function () {
-            var from = $("#measure_manager");
-            var to = $("#measure_adder");
-            switchPopUp(from, to);
-            $("#measure_adder_close_button").attr("onclick", 'measurePopUpBack()');
-            $("#save_measure_button").attr("onclick", 'saveMsr()');
-        }
-        managerSwitchMeasure = function () {
-            simpleSwitchToMsr();
-            var measureInput = $("#add_measure_form input[type='text'], #add_measure_form input[type='hidden']");
-            $(measureInput).val("");
-            $(measureInput).attr("value", null);
-            updateInputAnimation(measureInput);
-        }
-        //-SWITCH BACK
-        measurePopUpBack = function () {
-            var from = $("#measure_adder");
-            var to = $("#measure_manager");
-            switchPopUp(from, to);
-            $("#measure_adder_close_button").removeAttr("onclick");
-            $("#save_measure_button").removeAttr("onclick");
-        }
-        //-CLOSE
-        $("#close_measure_manager").click(function () {
-            var targer = $("#measure_manager");
-            closePopUp(targer);
-            // $("#mange_measure_window").fadeOut(TS);
-        });
-        //—— AT LESS ONE MEASUREMENT UP ——//
+        // $("#manage_measurement_button").click(function () {
+        //     var x = $("#measure_manager");
+        //     openPopUp(x);
+        //     // $("#measure_manager").fadeIn(TS);
+        // });
         //—— MEASUREMENT INPUT DOWN ——// 0_REACTIVER_0
         $("#measure_adder .checkbox-container .checkbox-label input").click(function () {
             var x = $("#measure_adder .measure_input-container-inner .input-unit");
