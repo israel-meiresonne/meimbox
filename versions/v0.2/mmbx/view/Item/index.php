@@ -394,7 +394,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
     </div>
 
     <!-- <div id="full_screen_div" class="full_screen-block"> -->
-        <div id="full_screen_div" class="full_screen-block" style="display: block;">
+        <div id="full_screen_div" class="full_screen-block">
         <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
             <?php
             $datas = ["brandsMeasures" => $brandsMeasures];
@@ -431,7 +431,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             echo $this->generateFile('view/elements/popupBoxManager.php', $datas);
             ?>
         </div>
-        <div id="box_pricing_window" class="pricing-container pop_up-container" style="display: flex;">
+        <div id="box_pricing_window" class="pricing-container pop_up-container">
             <?php
             $datas = [
                 "language" => $language,

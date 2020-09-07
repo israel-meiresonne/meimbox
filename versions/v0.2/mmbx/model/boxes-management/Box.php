@@ -143,7 +143,7 @@ class Box extends ModelFunctionality
      */
     public function __construct()
     {
-        $this->boxProducts = [];
+        // $this->boxProducts;
         $args = func_get_args();
         switch (func_num_args()) {
             case 4:
@@ -283,6 +283,7 @@ class Box extends ModelFunctionality
      */
     private function setBoxProducts()
     {
+        $this->boxProducts = [];
         $boxID = $this->getBoxID();
         $language = $this->getLanguage();
         $country = $this->getCountry();
@@ -467,7 +468,8 @@ class Box extends ModelFunctionality
      */
     public function getNbProduct()
     {
-        return count($this->boxProducts);
+        $products = $this->getBoxProducts();
+        return count($products);
     }
 
     /**
