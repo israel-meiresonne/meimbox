@@ -35,6 +35,12 @@ class ControllerItem extends ControllerSecure
     public const A_ADD_PROD = "item/addProduct";
 
     /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
+    public const A_ADD_BOX = "item/addBox";
+
+    /**
      * Holds the query(qr) value for Ajax request
      * @var string
      */
@@ -305,6 +311,36 @@ class ControllerItem extends ControllerSecure
                     $station = "ER13";
                     $response->addErrorStation($station, self::SBMT_BTN_MSG);
                 }
+            }
+        }
+        $this->generateJsonView($datasView, $response, $language);
+    }
+
+    /**
+     * 
+     */
+    public function addBox()
+    {
+        $this->secureSession();
+        $language = $this->person->getLanguage();
+        $response = new Response();
+        $datasView = [];
+        if(!Query::existParam(Box::KEY_BOX_COLOR)){
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $colorCode = Query::getParam(Box::KEY_BOX_COLOR);
+            $this->person->addBox($response, $colorCode);
+            if(!$response->containError()){
+                $boxes = $this->person->getBasket()->getBoxes();
+                $country = $this->person->getCountry();
+                $currency = $this->person->getCurrency();
+                $datasView = [
+                    "boxes" => $boxes,
+                    "country" => $country,
+                    "currency" => $currency
+                ];
+                // $boxManager = $this->generateFile('view/elements/popupBoxManager.php', $datas);
+                $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManager.php');
             }
         }
         $this->generateJsonView($datasView, $response, $language);

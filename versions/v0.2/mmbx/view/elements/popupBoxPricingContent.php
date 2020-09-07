@@ -23,6 +23,7 @@ $boxes = Box::getSamples($language, $country, $currency);
         <ul class="box_price-box-set-ul remove-ul-default-att">
             <?php
             foreach ($boxes as $box) :
+                $popx = "#box_pricing_window";
             ?>
                 <li class="box_price-box-set-li remove-li-default-att">
                     <div class="pricing-wrap">
@@ -43,7 +44,7 @@ $boxes = Box::getSamples($language, $country, $currency);
                                     </div>
                                 </div>
                                 <div class="product_add-button-block">
-                                    <button class="green-button standard-button remove-button-default-att" onclick="addbox(<?= $box->getColorCode() ?>)">
+                                    <button class="green-button standard-button remove-button-default-att" onclick="addBox('<?= $box->getColorCode() ?>','<?= $popx ?>')">
                                         <?= $translator->translateStation("US25") ?>
                                     </button>
                                 </div>

@@ -10,6 +10,24 @@ require_once 'model/boxes-management/Size.php';
 class Basket extends ModelFunctionality
 {
     /**
+     * the Visitor's language
+     * @var Language
+     */
+    protected $language;
+
+    /**
+     * the Visitor's country
+     * @var Country
+     */
+    protected $country;
+
+    /**
+     * the Visitor's current Currency
+     * @var Currency
+     */
+    protected $currency;
+
+    /**
      * Holds basket's boxes
      * + NOTE: Use set date in Unix format as access key like
      * + $boxes = [unixTime => boxe]
@@ -40,22 +58,27 @@ class Basket extends ModelFunctionality
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    function __construct($userID = null, Language $language = null, Country $country = null, Currency $currency = null)
+    function __construct($userID, Language $language, Country $country, Currency $currency)
     {
+        if (empty($userID)) {
+            throw new Exception("Param '\$userID' can't be empty");
+        }
+        if (empty($country) || empty($currency)) {
+            throw new Exception("Param '\$country' and '\$currency' can't be empty");
+        }
         $this->boxes = [];
         $this->basketProducts = [];
         $this->discountCodes = [];
-        if (!empty($userID)) {
-            if (empty($country) || empty($currency)) {
-                throw new Exception("Param '\$country' and '\$currency' can't be empty");
-            }
-            $sql = "SELECT * FROM `Users` WHERE `userID` = '$userID'";
-            $tab = $this->select($sql);
-            if (count($tab) > 0) {
-                $this->setBoxes($userID, $language, $country, $currency);
-                $this->setBasketProducts($userID, $language, $country, $currency);
-            }
-        } else {
+
+        $this->language = $language;
+        $this->country = $country;
+        $this->currency = $currency;
+
+        $sql = "SELECT * FROM `Users` WHERE `userID` = '$userID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            $this->setBoxes($userID, $language, $country, $currency);
+            $this->setBasketProducts($userID, $language, $country, $currency);
         }
     }
 
@@ -108,6 +131,36 @@ class Basket extends ModelFunctionality
     }
 
     /**
+     * Getter for box's Language 
+     * + the same instance that Visitor
+     * @return Language box's Language
+     */
+    private function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Getter for box's Country 
+     * + the same instance that Visitor
+     * @return Country box's Country
+     */
+    private function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Getter for box's Currency 
+     * + the same instance that Visitor
+     * @return Currency box's Currency
+     */
+    private function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
      * Getter for basket's boxes
      * @return Box[] basket's boxes
      */
@@ -137,129 +190,24 @@ class Basket extends ModelFunctionality
         return $cart;
     }
 
-    // /**
-    //  * Fill the $boxes attribute of boxes
-    //  * @var array $currencyMap
-    //  * @var array $countryMap
-    //  * @var array $boxMap
-    //  * @var array $boxProdMap
-    //  */
-    // private function initBoxes($boxProdMap, $dbMap)
-    // {
-    //     foreach ($dbMap["boxMap"]["boxes"] as $boxID => $boxDatas) {
-    //         $box = new Box($boxID, $boxProdMap, $dbMap);
-    //         $key = $box->getDateInSec();
-    //         $this->boxes[$key] = $box;
-    //     }
-    //     ksort($this->boxes);
-    // }
-
-    // /**
-    //  * Fill the $basket with basketProduct 
-    //  * @var array $currencyMap
-    //  * @var array $countryMap
-    //  * @var array $basketProdMap
-    //  */
-    // private function initBasketProducts($basketProdMap, $dbMap)
-    // {
-    //     foreach ($basketProdMap as $prodID => $product) {
-    //         foreach ($product["datas"]["basket"] as $userId => $sequenceIDs) {
-    //             foreach ($sequenceIDs as $sequenceID => $datas) {
-    //                 $basketProduct = new BasketProduct($prodID, $dbMap);
-    //                 $size = $datas["size_name"];
-    //                 $brand = $datas["brand_name"];
-    //                 $cut = $datas["cut_name"];
-    //                 $quantity = $datas["quantity"];
-    //                 $setDate = $datas["setDate"];
-
-    //                 $measureId = $datas["measureId"];
-    //                 $measureDatas = $dbMap["usersMap"]["usersMeasures"][$measureId];
-    //                 if (!empty($measureDatas)) {
-    //                     $values["measureID"] = $measureDatas["measureID"];
-    //                     $values["measure_name"] = $measureDatas["measure_name"];
-    //                     $values["bust"] = $measureDatas["userBust"];
-    //                     $values["arm"] = $measureDatas["userArm"];
-    //                     $values["waist"] = $measureDatas["userWaist"];
-    //                     $values["hip"] = $measureDatas["userHip"];
-    //                     $values["inseam"] = $measureDatas["userInseam"];
-    //                     $values["unit_name"] = $measureDatas["unit_name"];
-    //                     $values["size"] = $measureDatas["size_name"];
-    //                     $values["setDate"] = $datas["setDate"];
-    //                     $measure = new Measure($values, $dbMap);
-    //                 } else {
-    //                     $measure = null;
-    //                 }
-    //                 $basketProduct->setSize($size, $brand, $cut, $quantity, $setDate, $measure);
-    //                 $key = $basketProduct->getDateInSec();
-    //                 $this->basketProducts[$key] = $basketProduct;
-    //             }
-    //         }
-    //     }
-    //     ksort($this->basketProducts);
-    // }
-
-    // /**
-    //  * Fill the $discountCode with DiscountCode 
-    //  * @var array $countryMap
-    //  * @var array $discountCodeMap
-    //  */
-    // private function initDiscountCodes($dbMap)
-    // {
-    //     foreach ($dbMap["discountCodeMap"] as $code => $discount) {
-    //         $discountCode = new DiscountCode($code, $dbMap);
-    //         $this->discountCodes[$code] = $discountCode;
-    //     }
-    // }
-
-    // /**
-    //  * @return Box[] a protected copy of the $boxes attribute
-    //  */
-    // public function getCopyBoxes(){
-    //     $copy = [];
-    //     foreach($this->boxes as $setDateUnix => $box){
-    //         $copy[$setDateUnix] = $box->getCopy();
-    //     }
-    //     ksort($copy);
-    //     return $copy;
-    // }
-
-    // /**
-    //  * @return BasketProduct[] a protected copy of the $basketProduct attribute
-    //  */
-    // public function getCopyBasketProducts(){
-    //     $copy = [];
-    //     foreach($this->basketProducts as $setDateUnix => $basketProduct){
-    //         $copy[$setDateUnix] = $basketProduct->getCopy();
-    //     }
-    //     ksort($copy);
-    //     return $copy;
-    // }
-
-    // /**
-    //  * To get a protected copy of the DiscountCode list
-    //  * Use the code as access key like $discountCodes[code => DiscountCode]
-    //  * @return DiscountCode[] a protected copy of the $discountCodes attribute
-    //  */
-    // public function getCopyDiscountCodes(){
-    //     $copy = [];
-    //     foreach($this->discountCodes as $code => $discountCode){
-    //         $copy[$code] = $discountCode->getCopy();
-    //     }
-    //     return $copy;
-    // }
-
-    // public function __toString()
-    // {
-    //     foreach ($this->boxes as $box) {
-    //         $box->__toString();
-    //     }
-
-    //     foreach ($this->basketProducts as $basketProduct) {
-    //         $basketProduct->__toString();
-    //     }
-
-    //     foreach ($this->discountCodes as $discountCode) {
-    //         $discountCode->__toString();
-    //     }
-    // }
+    /**
+     * To add new box in basket
+     * + 
+     * @param Response $response where to strore results
+     * @param string $userID Visitor's id
+     * @param string $boxColor box's color
+     */
+    public function addBox(Response $response, $userID, $boxColor)
+    {
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
+        $box = new Box($boxColor, $language,  $country,  $currency);
+        $box->insertBox($response, $userID);
+        if(!$response->containError()){
+            $key = $box->getDateInSec();
+            $this->boxes[$key] = $box;
+            krsort($this->boxes);
+        }
+    }
 }

@@ -42,6 +42,16 @@
             });
         });
     }
+    displayFlex = (x, t = TS) => {
+        $(x).css("opacity", "0");
+        $(x).css("display", "flex");
+        $(x).animate({ "opacity": "1" }, t);
+    }
+    displayNone = (x, t = TS) => {
+        $(x).animate({"opacity":"0"}, t, () => {
+            $(x).css("display", "none");
+        })
+    }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— BEHAVIOR DOWN ——————————————————————————————————————*/
     openPopUp = function (x, before = () => { }, after = () => { }) {
@@ -53,10 +63,7 @@
         $(xbtn).attr(popstack, stack);
 
         $(FCID).fadeIn(TS, function () {
-            $(x).css("display", "flex");
-            $(x).fadeIn(TS / 2, function () {
-                $(this).css("display", "flex");
-            });
+            displayFlex(x);
         });
         after(x);
     }
@@ -100,16 +107,12 @@
     }
     switcher = (fromx, tox) => {
         $(fromx).fadeOut(TS, function () {
-            $(tox).css("display", "flex");
-            $(tox).fadeIn(TS, function () {
-                $(this).css("display", "flex");
-            });
+            displayFlex(tox);
         });
     }
     switchBackPopUp = (fromx, tox, before = () => { }, after = () => { }) => {
         before(fromx, tox)
         var fbtn = $(fromx).find("." + closebtnCls);
-        // var fevent = $(fbtn).attr(onclickattr);
         var stack = json_decode($(fbtn).attr(popstack));
 
         var tbtn = $(tox).find("." + closebtnCls);
@@ -134,24 +137,22 @@
         var brandDatas = json_decode($(x).attr(submitdata));
         var param = mapToParam(brandDatas);
         //build
-        var datasSND = {
+        var d = {
             "a": A_SELECT_BRAND,
             "d": param,
             "r": selectBrandRSP,
             "l": "#brandPopUp_loading",
             // "x": btnx,
             "sc": () => {
-                $("#brandPopUp_loading").css("display", "flex");
-                $("#add_measure_window .brand_reference-content").css("opacity", 0);
+                displayFlex(d.l);
                 disable(sbtnx);
             },
-            "rc": cbkRSP = () => {
-                $("#brandPopUp_loading").css("display", "flex");
-                $("#add_measure_window .brand_reference-content").css("opacity", 1);
+            "rc": () => {
+                displayNone(d.l);
                 enable(sbtnx);
             }
         };
-        SND(datasSND);
+        SND(d);
     }
     var selectBrandRSP = function (r) {
         if (r.isSuccess) {
@@ -366,11 +367,31 @@
     }
     /*—————————————————— MEASURE ADDER UP ———————————————————————————————————*/
     /*—————————————————— BOX MANAGER DOWN ———————————————————————————————————*/
-    
+
     /*—————————————————— BOX MANAGER UP —————————————————————————————————————*/
     /*—————————————————— PRICING MANAGER DOWN ———————————————————————————————*/
-    addbox = (color) => {
+    addBox = (color, popx) => {
         console.log("color", color);
+        var param = mapToParam({ [KEY_BOX_COLOR]: color });
+        var cbtnx = $(popx).find("." + closebtnCls);
+        var d = {
+            "a": A_ADD_BOX,
+            "d": param,
+            "r": addBoxRSP,
+            "l": "#box_pricing_loading",
+            "x": cbtnx,
+            "sc": () => {displayFlex(d.l)},
+            "rc": () => {displayNone(d.l)}
+        };
+        SND(d);
+    }
+    var addBoxRSP = (r, cbtnx) => {
+        if (r.isSuccess) {
+            $("#box_manager_window").html(r.results[A_ADD_BOX]);
+            $(cbtnx).click();
+        } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
+            popAlert(r.errors[FAT_ERR].message);
+        }
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/
 

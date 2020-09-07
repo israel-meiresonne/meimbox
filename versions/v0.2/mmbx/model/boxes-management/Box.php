@@ -135,6 +135,12 @@ class Box extends ModelFunctionality
     public const SILVER = "silver";
     public const REGULAR = "regular";
 
+    /**
+     * Access key for attribut boxColor in ajax
+     * @var string
+     */
+    public const KEY_BOX_COLOR = "boxcolor";
+
 
     /**
      * Constructor
@@ -158,7 +164,7 @@ class Box extends ModelFunctionality
 
     /**
      * Construct a brand new box with the box color given
-     * @param string $boxColor box's color (GOLD, SILVER & REGULAR)
+     * @param string $boxColor box's color
      * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
@@ -394,6 +400,15 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * Getter for box's set date
+     * @return int box's set date
+     */
+    public function getSetDate()
+    {
+        return $this->setDate;
+    }
+
+    /**
      * Convert setDate to seconde from UNIX.
      * @return int seconde from UNIX
      */
@@ -491,5 +506,34 @@ class Box extends ModelFunctionality
         }
         ksort($boxes);
         return $boxes;
+    }
+
+    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
+    /**
+     * Insert box in the db like a new box
+     * @param string $userID Visitor's id
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     */
+    public function insertBox(Response $response, $userID)
+    {
+        $bracket = "(?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Boxes`(`boxID`, `box_color`, `setDate`)
+            VALUES " . $this->buildBracketInsert(1, $bracket);
+        $values = [];
+        // array_push($values, $userID);
+        array_push($values, $this->getBoxID());
+        array_push($values, $this->getColor());
+        array_push($values, $this->getSetDate());
+        $this->insert($response, $sql, $values);
+        if (!$response->containError()) {
+            $bracket = "(?,?)"; // regex \[value-[0-9]*\]
+            $sql = "INSERT INTO `Baskets-Box`(`userId`, `boxId`)
+                VALUES " . $this->buildBracketInsert(1, $bracket);
+            $values = [];
+            array_push($values, $userID);
+            array_push($values, $this->getBoxID());
+            $this->insert($response, $sql, $values);
+        }
     }
 }

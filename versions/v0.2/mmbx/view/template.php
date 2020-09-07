@@ -123,6 +123,9 @@ require_once 'model/special/MyError.php';
         const MEASURE_ID_KEY = "<?= Measure::MEASURE_ID_KEY ?>";
         const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
 
+        const A_ADD_BOX = "<?= ControllerItem::A_ADD_BOX ?>";
+        const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
+
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
         const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
