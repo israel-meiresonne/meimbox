@@ -1229,11 +1229,11 @@ abstract class ModelFunctionality extends Model
     /**
      * Encrypt a string
      * @param string $str string to encrypt
-     * @return int string encrypted
+     * @return string string encrypted
      */
     protected function encryptString(string $str)
     {
-        $str = str_split(strtolower($str));
+        $strs = str_split(strtolower($str));
         $code = "";
         $abc = [
             "a" => 0,
@@ -1263,10 +1263,58 @@ abstract class ModelFunctionality extends Model
             "y" => 24,
             "z" => 25
         ];
-        foreach($str as $char){
-            $code .= $abc[$char];
+        // var_dump("strs", $strs);
+        $last = count($strs)-1;
+        $i = 0;
+        foreach($strs as $c){
+            $code .= $abc[$c];
+            $code .=  ($i < $last) ? "." : "";
+            $i++;
         }
-        return (int) $code;
+        return $code;
+    }
+    /**
+     * Decrypt a string encrypted with encryptString()
+     * @param string $code string to encrypt
+     * @return string string encrypted
+     */
+    protected function decryptString($code)
+    {
+        $codes = explode(".", $code);
+        $word = "";
+        $abc = [
+            "a" => 0,
+            "b" => 1,
+            "c" => 2,
+            "d" => 3,
+            "e" => 4,
+            "f" => 5,
+            "g" => 6,
+            "h" => 7,
+            "i" => 8,
+            "j" => 9,
+            "k" => 10,
+            "l" => 11,
+            "m" => 12,
+            "n" => 13,
+            "o" => 14,
+            "p" => 15,
+            "q" => 16,
+            "r" => 17,
+            "s" => 18,
+            "t" => 19,
+            "u" => 20,
+            "v" => 21,
+            "w" => 22,
+            "x" => 23,
+            "y" => 24,
+            "z" => 25
+        ];
+        $cba = array_flip($abc);
+        foreach($codes as $n){
+            $word .= $cba[$n];
+        }
+        return $word;
     }
     /*———————————————————————————— COMMON UP ————————————————————————————————*/
 }

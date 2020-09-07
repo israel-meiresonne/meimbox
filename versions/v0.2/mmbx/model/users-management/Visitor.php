@@ -418,7 +418,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check measure datas posted
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      */
     private function checkMeasureInput(Response $response)
     {
@@ -477,7 +477,7 @@ class Visitor extends ModelFunctionality
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @param string $prodID Product's id
      * @return boolean true if it's are still stock else false
      */
@@ -537,7 +537,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * To check if still stock for basket poduct
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @param string $prodID Product's id
      * @return boolean true if it's are still stock else false
      */
@@ -558,7 +558,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check size datas posted
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @param string $prodType product's type
      * @return boolean true if the data is correct else false
      */
@@ -615,7 +615,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check if the size type is correct
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @return boolean true if the size type is correct else false
      */
     private function checkSizeType(Response $response)
@@ -638,7 +638,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check if the char size is correct
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @return boolean true if the char size is correct else false
      */
     private function checkSizeChar(Response $response)
@@ -661,7 +661,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check if the brand is correct
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @return boolean true if the brand is correct else false
      */
     private function checkBrand(Response $response)
@@ -683,7 +683,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check if cut is correct
-     * @param Response $response where to strore resulte
+     * @param Response $response where to strore results
      * @return boolean true if cut is correct else false
      */
     private function checkCut(Response $response)
@@ -696,6 +696,27 @@ class Visitor extends ModelFunctionality
             $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
         }
         return $isCorret;
+    }
+
+    /**
+     * To add new box in Visitor's basket
+     * @param Response $response where to strore results
+     * @param int $colorCode the encrypted value of box color
+     */
+    public function addBox(Response $response, $colorCode)
+    {
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
+        $boxMap = $this->getBoxMap($country, $currency);
+        $boxColor = $this->decryptString($colorCode);
+        if(key_exists($boxColor, $boxMap)){
+            $userID = $this->getUserID();
+            $basket = $this->getBasket();
+            $basket->addBox($response, $userID, $boxColor);
+        } else {
+            $errorMsg = "ER1";
+            $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
+        }
     }
 
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
