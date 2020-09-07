@@ -58,11 +58,20 @@ class Price
 
     /**
      * Getter of the price
-     * @return double the price
+     * @return float the price
      */
     public function getPrice()
     {
-        return number_format($this->price, 2, ".", "");
+        return (float) number_format($this->price, 2, ".", "");
+    }
+
+    /**
+     * Getter for price's currency
+     * @return Currency price's currency
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 
     /**
@@ -96,9 +105,9 @@ class Price
         $isoCurrency = strtoupper($this->currency->getIsoCurrency());
         $symbol = strtoupper($this->currency->getSymbol());
         $price = ($this->price != 0) ? number_format($this->price, 2, ",", " ") : 0;
-        // $price = number_format($this->price, 2, ",", " ");
-        return  $symbol != $isoCurrency ? $symbol . "" . $price . " " . $isoCurrency
-            : $price . " " . $isoCurrency;
+        // return  ($symbol != $isoCurrency) ? $symbol . "" . $price . " " . $isoCurrency
+        //     : $price . " " . $isoCurrency;
+        return  $symbol . $price;
     }
 
     /**
@@ -131,10 +140,13 @@ class Price
         return $textualMin . ": " . $this->getFormated();
     }
 
-    public function __toString()
+    /**
+     * Getter of the price as key 
+     * + i.e: 2.35 return 235
+     * @return float the price as key
+     */
+    public function getPriceKey()
     {
-        Helper::printLabelValue("price", $this->price);
-        $this->country->__toString();
-        $this->currency->__toString();
+        return number_format($this->getPrice() * 100, 2, "", "");
     }
 }

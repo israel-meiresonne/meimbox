@@ -26,10 +26,12 @@ $boxDatas = [
 $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
 
 $contentDatas = [
-    "meassge" => "select a box where to put your item",
+    "instruction" => "select a box where to put your item:",
     "content" => $cart,
     "btnTxt" => "ajouter une box",
-    "btnId" => "manager_add_box"
+    "btnId" => "manager_add_box",
+    "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window')"
+    // "btnDataAttr" => 
 ];
 $datas["content"] = $this->generateFile('view/elements/popupContent.php', $contentDatas);
 echo $this->generateFile('view/elements/popup.php', $datas);
