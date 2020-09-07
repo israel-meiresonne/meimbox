@@ -102,6 +102,14 @@ abstract class ModelFunctionality extends Model
      *                      "value" => float,
      *                      "beginDate" => DATETIME,
      *                      "endDate" => DATETIME
+     *                  ],
+     *              "arguments" => [
+     *                      "advantage" => [    // ordered from lower index to highest
+     *                              index{int} => string
+     *                          ]
+     *                      "drawback" => [    // ordered from lower index to highest
+     *                              index{int} => string
+     *                          ]
      *                  ]
      *          ]
      * ]
@@ -438,14 +446,39 @@ abstract class ModelFunctionality extends Model
      * @param Currency $currency Visitor's current Currency
      * @return string[] box's datas in a box map
      */
-    protected function getBoxMap(Country $country, Currency $currency)
+    protected static function getBoxMap(Country $country, Currency $currency)
     {
-        (!isset(self::$boxMap)) ? $this->setBoxMap($country, $currency) : null;
+        (!isset(self::$boxMap)) ? self::setBoxMap($country, $currency) : null;
         if (count(self::$boxMap) == 0) {
             throw new Exception("The box map can't be empty:");
         }
         return self::$boxMap;
     }
+
+    /**
+     * To get Box's advantage and drowback
+     * @param string $boxColor box's color (GOLD, SILVER, REGULAR, ...)
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return string[] map with box's advantage and drowback
+     * + $arguments = [
+     *      "advantage" => [    // ordered from lower index to highest
+     *              index{int} => string
+     *          ]
+     *      "drawback" => [    // ordered from lower index to highest
+     *              index{int} => string
+     *          ]
+     * ]
+     */
+    protected static function getBoxArguments($boxColor, Country $country, Currency $currency)
+    {
+        $boxMap = self::getBoxMap($country, $currency);
+        (!isset($boxMap[$boxColor]["arguments"])) ? self::setBoxArguments($country, $currency) : null;
+        if (count(self::$boxMap[$boxColor]["arguments"]) == 0) {
+            throw new Exception("The box map can't be empty:");
+        }
+        return self::$boxMap[$boxColor]["arguments"];
+    }   
 
     /**
      * Check if a boxMap's attribut is set for each box
@@ -470,7 +503,7 @@ abstract class ModelFunctionality extends Model
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    private function setBoxMap(Country $country, Currency $currency)
+    private static function setBoxMap(Country $country, Currency $currency)
     {
         self::$boxMap = [];
         $countryName = $country->getCountryName();
@@ -483,7 +516,7 @@ abstract class ModelFunctionality extends Model
         WHERE bp.country_ = '$countryName' AND bp.iso_currency = '$isocurrency' 
         AND bs.country_ = '$countryName' AND bs.iso_currency = '$isocurrency'
         AND bd.country_ = '$countryName'";
-        $tab = $this->select($query);
+        $tab = self::select($query);
         foreach ($tab as $tabLine) {
             self::$boxMap[$tabLine["boxColor"]]["sizeMax"] = (int) $tabLine["sizeMax"];
             self::$boxMap[$tabLine["boxColor"]]["weight"] = (float) $tabLine["weight"];
@@ -499,6 +532,31 @@ abstract class ModelFunctionality extends Model
             self::$boxMap[$tabLine["boxColor"]]["discount"]["beginDate"] = $tabLine["beginDate"];
             self::$boxMap[$tabLine["boxColor"]]["discount"]["endDate"] = $tabLine["endDate"];
         }
+    }
+
+    /**
+     * Setter for box's arguments
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     */
+    private static function setBoxArguments(Country $country, Currency $currency)
+    {
+        $boxMap = self::getBoxMap($country, $currency);
+        $sql = "SELECT * FROM `BoxArguments`";
+        $tab = self::select($sql);
+        foreach($tab as $tabLine){
+            $boxColor = $tabLine["box_color"];
+            $argID = (int) $tabLine["argID"];
+            $argType = $tabLine["argType"];
+            $boxMap[$boxColor]["arguments"][$argType][$argID] = $tabLine["argValue"];
+        }
+        foreach($boxMap as $boxColor => $datas){
+            (!empty($boxMap[$boxColor]["arguments"]["advantage"])) ? ksort($boxMap[$boxColor]["arguments"]["advantage"]) 
+            : $boxMap[$boxColor]["arguments"]["advantage"] = [];
+            (!empty($boxMap[$boxColor]["arguments"]["drawback"])) ? ksort($boxMap[$boxColor]["arguments"]["drawback"]) 
+            : $boxMap[$boxColor]["arguments"]["drawback"] = [];
+        }
+        self::$boxMap = $boxMap;
     }
 
     /**
@@ -1168,12 +1226,47 @@ abstract class ModelFunctionality extends Model
         echo "<hr>";
     }
 
-    // function __toString()
-    // {
-    //     $map = get_object_vars($this);
-    //     foreach($map as $attr => $value){
-
-    //     }
-    // }
+    /**
+     * Encrypt a string
+     * @param string $str string to encrypt
+     * @return int string encrypted
+     */
+    protected function encryptString(string $str)
+    {
+        $str = str_split(strtolower($str));
+        $code = "";
+        $abc = [
+            "a" => 0,
+            "b" => 1,
+            "c" => 2,
+            "d" => 3,
+            "e" => 4,
+            "f" => 5,
+            "g" => 6,
+            "h" => 7,
+            "i" => 8,
+            "j" => 9,
+            "k" => 10,
+            "l" => 11,
+            "m" => 12,
+            "n" => 13,
+            "o" => 14,
+            "p" => 15,
+            "q" => 16,
+            "r" => 17,
+            "s" => 18,
+            "t" => 19,
+            "u" => 20,
+            "v" => 21,
+            "w" => 22,
+            "x" => 23,
+            "y" => 24,
+            "z" => 25
+        ];
+        foreach($str as $char){
+            $code .= $abc[$char];
+        }
+        return (int) $code;
+    }
     /*———————————————————————————— COMMON UP ————————————————————————————————*/
 }

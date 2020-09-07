@@ -15932,7 +15932,7 @@
 											"font": "Arial;13;1",
 											"left": 2488,
 											"top": 2157,
-											"width": 218.27783203125,
+											"width": 305.9453125,
 											"height": 13,
 											"text": "BoxArguments"
 										},
@@ -15958,7 +15958,7 @@
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2180,
-													"width": 208.27783203125,
+													"width": 295.9453125,
 													"height": 13
 												},
 												{
@@ -15973,7 +15973,22 @@
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2195,
-													"width": 208.27783203125,
+													"width": 295.9453125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF0Z5Kqc6ril58=",
+													"_parent": {
+														"$ref": "AAAAAAF0Y7LIC6Jk+M0="
+													},
+													"model": {
+														"$ref": "AAAAAAF0Z5KqN6rfMNc="
+													},
+													"font": "Arial;13;0",
+													"left": 2493,
+													"top": 2210,
+													"width": 295.9453125,
 													"height": 13
 												},
 												{
@@ -15987,23 +16002,23 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2493,
-													"top": 2210,
-													"width": 208.27783203125,
+													"top": 2225,
+													"width": 295.9453125,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 2488,
 											"top": 2175,
-											"width": 218.27783203125,
-											"height": 53
+											"width": 305.9453125,
+											"height": 68
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2488,
 									"top": 2152,
-									"width": 218.27783203125,
-									"height": 76,
+									"width": 305.9453125,
+									"height": 91,
 									"nameLabel": {
 										"$ref": "AAAAAAF0Y7LIC6Jji9c="
 									},
@@ -22725,6 +22740,15 @@
 									"name": "argID",
 									"type": "INTEGER",
 									"primaryKey": true
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF0Z5KqN6rfMNc=",
+									"_parent": {
+										"$ref": "AAAAAAF0Y7LICqJgmZo="
+									},
+									"name": "argType",
+									"type": "ENUM[advantage,drawback]"
 								},
 								{
 									"_type": "ERDColumn",

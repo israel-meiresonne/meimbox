@@ -2419,9 +2419,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*—————————————————————————————— POP_UP PRINCING DOWN ———————————————————————*/
 
-#box_pricing_window {
+/* #box_pricing_window {
     width: 85%;
-}
+} */
 
 #box_pricing_window .box_price-box-set-ul {
     display: flex;
@@ -2430,6 +2430,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 #box_pricing_window .box_price-box-set-li {
     width: 30%;
     margin: 0 auto;
+}
+
+#box_pricing_window .pop_up-window{
+    width: 90%;
 }
 
 /*—————————————————————————————— POP_UP PRINCING UP —————————————————————————*/

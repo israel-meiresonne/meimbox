@@ -9,6 +9,24 @@ require_once 'model/boxes-management/Discount.php';
 class Box extends ModelFunctionality
 {
     /**
+     * the Visitor's language
+     * @var Language
+     */
+    protected $language;
+
+    /**
+     * the Visitor's country
+     * @var Country
+     */
+    protected $country;
+
+    /**
+     * the Visitor's current Currency
+     * @var Currency
+     */
+    protected $currency;
+
+    /**
      * Sequence of letter and number created with the date in forma DATETIME+ms
      * @var string
      */
@@ -48,6 +66,18 @@ class Box extends ModelFunctionality
      * @var string
      */
     private $setDate;
+
+    /**
+     * Holds box's advantageous sell argument
+     * @var string[]
+     */
+    private $advantages;
+
+    /**
+     * Holds box's disadvantageous sell argument
+     * @var string[]
+     */
+    private $drawbacks;
 
     /** 
      * Sell price for a given country and currency
@@ -116,8 +146,8 @@ class Box extends ModelFunctionality
         $this->boxProducts = [];
         $args = func_get_args();
         switch (func_num_args()) {
-            case 3:
-                $this->__construct3($args[0], $args[1], $args[2]);
+            case 4:
+                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
                 break;
 
             case 5:
@@ -129,44 +159,50 @@ class Box extends ModelFunctionality
     /**
      * Construct a brand new box with the box color given
      * @param string $boxColor box's color (GOLD, SILVER & REGULAR)
+     * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    private function __construct3($boxColor, Country $country, Currency $currency)
+    private function __construct4($boxColor, Language $language, Country $country, Currency $currency)
     {
         if (empty($boxColor)) {
             throw new Exception("Box's color can't be empty");
         }
-        switch ($boxColor) {
-            case self::GOLD:
-                $this->color = self::GOLD;
-                break;
-            case self::SILVER:
-                $this->color = self::SILVER;
-                break;
-            case self::REGULAR:
-                $this->color = self::REGULAR;
-                break;
+        // switch ($boxColor) {
+        //     case self::GOLD:
+        //         $this->color = self::GOLD;
+        //         break;
+        //     case self::SILVER:
+        //         $this->color = self::SILVER;
+        //         break;
+        //     case self::REGULAR:
+        //         $this->color = self::REGULAR;
+        //         break;
 
-            default:
-                throw new Exception("This box color ('$boxColor') is not supported");
-                break;
-        }
-        $this->boxID = $this->generateDateCode(self::ID_LENGTH);
-        $this->setDate = $this->getDateTime();
-        $map = $this->getBoxMap($country, $currency);
-        if (!key_exists($this->color, $map)) {
+        //     default:
+        //         throw new Exception("This box color ('$boxColor') is not supported");
+        //         break;
+        // }
+        $boxMap = $this->getBoxMap($country, $currency);
+        if (!key_exists($boxColor, $boxMap)) {
             throw new Exception("The box color '$boxColor' is not supported");
         }
+        $this->language = $language;
+        $this->country = $country;
+        $this->currency = $currency;
 
-        $this->sizeMax = $map["sizeMax"];
-        $this->weight = $map["weight"];
-        $this->picture = $map["boxPicture"];
-        $this->stock = $map["stock"];
-        $this->price = new Price($map["price"], $currency);
-        $this->shipping = new Shipping($map["shipping"]["shipPrice"], $currency, $map["shipping"]["time"]);
-        if (!empty($map["discount"]["value"])) {
-            $this->discount = new Discount($map["discount"]["value"], $map["discount"]["beginDate"], $map["discount"]["endDate"]);
+        $this->boxID = $this->generateDateCode(self::ID_LENGTH);
+        $this->color = $boxColor;
+        $this->setDate = $this->getDateTime();
+
+        $this->sizeMax = $boxMap[$boxColor]["sizeMax"];
+        $this->weight = $boxMap[$boxColor]["weight"];
+        $this->picture = $boxMap[$boxColor]["boxPicture"];
+        $this->stock = $boxMap[$boxColor]["stock"];
+        $this->price = new Price($boxMap[$boxColor]["price"], $currency);
+        $this->shipping = new Shipping($boxMap[$boxColor]["shipping"]["shipPrice"], $currency, $boxMap[$boxColor]["shipping"]["time"]);
+        if (!empty($boxMap[$boxColor]["discount"]["value"])) {
+            $this->discount = new Discount($boxMap[$boxColor]["discount"]["value"], $boxMap[$boxColor]["discount"]["beginDate"], $boxMap[$boxColor]["discount"]["endDate"]);
         }
     }
 
@@ -186,8 +222,11 @@ class Box extends ModelFunctionality
         if (empty($userID)) {
             throw new Exception("Param '\$userID' can't be empty");
         }
-        $countryName = $country->getCountryName();
-        $isocurrency = $currency->getIsoCurrency();
+        $this->language = $language;
+        $this->country = $country;
+        $this->currency = $currency;
+        $countryName = $this->country->getCountryName();
+        $isocurrency = $this->currency->getIsoCurrency();
         $sql = "SELECT * 
             FROM `Boxes` b
             JOIN `Baskets-Box` bb ON b.boxID = bb.boxId
@@ -222,7 +261,7 @@ class Box extends ModelFunctionality
             $value = $tabLine["discount_value"];
             $this->discount = new Discount($value, $tabLine["beginDate"], $tabLine["endDate"]);
         }
-        $this->setBoxProducts($this->boxID, $language, $country, $currency);
+        // $this->setBoxProducts($this->boxID);
     }
     /*
     SELECT * 
@@ -241,13 +280,13 @@ class Box extends ModelFunctionality
     /**
      * Set box's boxproduct
      * + get products from db
-     * @param string $boxID box's id
-     * @param Language $language Visitor's language
-     * @param Country $country the Visitor's country
-     * @param Currency $currency the Visitor's current Currency
      */
-    private function setBoxProducts($boxID, Language $language, Country $country, Currency $currency)
+    private function setBoxProducts()
     {
+        $boxID = $this->getBoxID();
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
         $sql = "SELECT * FROM `Box-Products` WHERE boxID = '$boxID'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
@@ -265,12 +304,74 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * Initialize box's sell arguments ($advantages & $drawbacks)
+     */
+    private function setArguments()
+    {
+        $boxColor = $this->getColor();
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
+        $arguments = $this->getBoxArguments($boxColor, $country, $currency);
+        $this->advantages = $arguments["advantage"];
+        $this->drawbacks = $arguments["drawback"];
+    }
+
+
+    /**
+     * Getter for box's Language 
+     * + the same instance that Visitor
+     * @return Language box's Language
+     */
+    private function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Getter for box's Country 
+     * + the same instance that Visitor
+     * @return Country box's Country
+     */
+    private function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Getter for box's Currency 
+     * + the same instance that Visitor
+     * @return Currency box's Currency
+     */
+    private function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Getter for box's id
+     * @return string box's id
+     */
+    public function getBoxID()
+    {
+        return $this->boxID;
+    }
+
+    /**
      * Getter for box's color
      * @return string box's color
      */
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * To encript box's color
+     * @return int box's encripted color value
+     */
+    public function getColorCode()
+    {
+        return $this->encryptString($this->getColor());
     }
 
     /**
@@ -301,6 +402,26 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * To get box's advantageous sell arguments
+     * @return string[] box's advantageous sell arguments
+     */
+    public function getAdvantages()
+    {
+        (!isset($this->advantages)) ? $this->setArguments() : null;
+        return $this->advantages;
+    }
+
+    /**
+     * To get box's disadvantageous sell arguments
+     * @return string[] box's disadvantageous sell arguments
+     */
+    public function getDrawbacks()
+    {
+        (!isset($this->drawbacks)) ? $this->setArguments() : null;
+        return $this->drawbacks;
+    }
+
+    /**
      * Getter for box's price
      * @return Price box's price
      */
@@ -313,9 +434,21 @@ class Box extends ModelFunctionality
      * Getter for box's price in displayable format
      * @return string box's price in displayable format
      */
-    public function getFormatedPrice()
+    public function getPriceFormated()
     {
         return $this->price->getFormated();
+    }
+
+    /**
+     * To calculate the price per ittem
+     * @return string the price per ittem
+     */
+    public function getPricePerItem()
+    {
+        $price = $this->getPrice();
+        $perItemVal = ($price->getPrice() / $this->getSizeMax());
+        $perItem = new Price($perItemVal, $price->getCurrency());
+        return $perItem->getFormated();
     }
 
     /**
@@ -324,6 +457,7 @@ class Box extends ModelFunctionality
      */
     public function getBoxProducts()
     {
+        (!isset($this->boxProducts)) ? $this->setBoxProducts() : null;
         return $this->boxProducts;
     }
 
@@ -336,169 +470,24 @@ class Box extends ModelFunctionality
         return count($this->boxProducts);
     }
 
-    // /**
-    //  * @param array $boxProductMap list of product with their datas
-    //  * @param array $currencyMap database currencies
-    //  * @param array $countryMap $countryMap database countries
-    //  */
-    // private function initBoxProducts($boxProductMap, $dbMap)
-    // {
-    //     foreach ($dbMap["boxMap"]["boxes"][$this->boxID]["boxProducts"] as $prodID => $true) {
-    //         $product = $boxProductMap[$prodID];
-    //         foreach ($product["datas"]["basket"] as $boxId => $sequenceIDs) {
-    //             foreach ($sequenceIDs as $sequenceID => $datas) {
-    //                 $boxProduct = new BoxProduct($prodID, $dbMap);
-    //                 $size = $datas["size_name"];
-    //                 $brand = $datas["brand_name"];
-    //                 $cut = $datas["cut_name"];
-    //                 $quantity = $datas["quantity"];
-    //                 $setDate = $datas["setDate"];
-
-    //                 $measureId = $datas["measureId"];
-    //                 $measureDatas = $dbMap["usersMap"]["usersMeasures"][$measureId];
-    //                 if (!empty($measureDatas)) {
-    //                     $values["measureID"] = $measureDatas["measureID"];
-    //                     $values["measure_name"] = $measureDatas["measure_name"];
-    //                     $values["bust"] = $measureDatas["userBust"];
-    //                     $values["arm"] = $measureDatas["userArm"];
-    //                     $values["waist"] = $measureDatas["userWaist"];
-    //                     $values["hip"] = $measureDatas["userHip"];
-    //                     $values["inseam"] = $measureDatas["userInseam"];
-    //                     $values["unit_name"] = $measureDatas["unit_name"];
-    //                     $values["size"] = $measureDatas["size_name"];
-    //                     $values["setDate"] = $datas["setDate"];
-    //                     $measure = new Measure($values, $dbMap);
-    //                 } else {
-    //                     $measure = null;
-    //                 }
-    //                 $boxProduct->setSize($size, $brand, $cut, $quantity, $setDate, $measure);
-    //                 $key = $boxProduct->getDateInSec();
-    //                 $this->boxProducts[$key] = $boxProduct;
-    //             }
-    //         }
-    //     }
-    //     ksort($this->boxProducts);
-    // }
-
-    // /**
-    //  * @return Shipping[[]] a protected copy of the Shippings attribute
-    //  */
-    // public function getCopyShippings()
-    // {
-    //     $copy = [];
-    //     foreach ($this->shippings as $iso_country => $currencyList) {
-    //         foreach ($currencyList as $iso_currency => $shipping) {
-    //             $copy[$iso_country][$iso_currency] = $shipping->getCopy();
-    //         }
-    //     }
-    //     return $copy;
-    // }
-
-    // /**
-    //  * @return Price[[]] a protected copy of the Prices attribute
-    //  */
-    // public function getCopyPrices()
-    // {
-    //     $copy = [];
-    //     foreach ($this->prices as $iso_country => $currencyList) {
-    //         foreach ($currencyList as $iso_currency => $price) {
-    //             $copy[$iso_country][$iso_currency] = $price->getCopy();
-    //         }
-    //     }
-    //     return $copy;
-    // }
-
-    // /**
-    //  * @return Price[[]] a protected copy of the NewPrices attribute
-    //  */
-    // public function getCopyNewPrices()
-    // {
-    //     $copy = [];
-    //     foreach ($this->newPrices as $iso_country => $currencyList) {
-    //         foreach ($currencyList as $iso_currency => $newPrice) {
-    //             $copy[$iso_country][$iso_currency] = $newPrice->getCopy();
-    //         }
-    //     }
-    //     return $copy;
-    // }
-
-    // /**
-    //  * @return Discount[] a protected copy of the Discounts attribute
-    //  */
-    // public function getCopyDiscounts()
-    // {
-    //     $copy = [];
-    //     foreach ($this->discounts as $setdateUnix => $discount) {
-    //         $copy[$setdateUnix] = $discount->getCopy();
-    //     }
-    //     ksort($copy);
-    //     return $copy;
-    // }
-
-    // /**
-    //  * @return BoxProduct[] a protected copy of the BoxProduct attribute
-    //  */
-    // public function getCopyBoxProducts()
-    // {
-    //     $copy = [];
-    //     foreach ($this->boxProducts as $setDateUnix => $boxProduct) {
-    //         $copy[$setDateUnix] = $boxProduct->getCopy();
-    //     }
-    //     ksort($copy);
-    //     return $copy;
-    // }
-
     /**
-     * To get a protected copy of a Price instance
-     * @return Box a protected copy of the Price instance
+     * To get one box in each color supported ordered by price 
+     * from lower to highest
+     * @param Language $language Visitor's language
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return Boxe[] boxes supported ordered by price from lower to bigger
      */
-    // public function getCopy()
-    // {
-    //     $copy = new Box();
-    //     $copy->boxID = $this->boxID;
-    //     $copy->color = $this->color;
-    //     $copy->buiyPrice = (!empty($this->buiyPrice)) ? $this->buiyPrice->getCopy() : null;
-    //     $copy->quantity = $this->quantity;
-    //     $copy->sizeMax = $this->sizeMax;
-    //     $copy->weight = $this->weight;
-    //     $copy->stock = $this->stock;
-    //     $copy->setDate = $this->setDate;
-    //     $copy->shippings = $this->getCopyShippings();
-    //     $copy->prices = $this->getCopyPrices();
-    //     $copy->newPrices = $this->getCopyNewPrices();
-    //     $copy->discounts = $this->getCopyDiscounts();
-    //     $copy->boxProducts = $this->getCopyBoxProducts();
-    //     return $copy;
-    // }
-
-
-    // public function __toString()
-    // {
-    //     helper::printLabelValue("boxID", $this->boxID);
-    //     helper::printLabelValue("color", $this->color);
-    //     // $this->buiyPrice->__toString;
-    //     helper::printLabelValue("quantity", $this->quantity);
-    //     helper::printLabelValue("sizeMax", $this->sizeMax);
-    //     helper::printLabelValue("weight", $this->weight);
-    //     helper::printLabelValue("boxPicture", $this->picture);
-    //     helper::printLabelValue("stock", $this->stock);
-    //     helper::printLabelValue("setDate", $this->setDate);
-
-    //     // foreach ($this->shippings as $isoCountry => $currencyList) {
-    //     //     echo $isoCountry . "<br>";
-    //     //     foreach ($currencyList as $isoCurrency => $shipping) {
-    //     //         echo "  " . $isoCurrency . "➡️  ";
-    //     //         $shipping->__toString();
-    //     //     }
-    //     // }
-
-    //     // foreach ($this->prices as $isoCountry => $currencyList) {
-    //     //     echo $isoCountry . "<br>";
-    //     //     foreach ($currencyList as $isoCurrency => $price) {
-    //     //         echo "  " . $isoCurrency . "➡️  ";
-    //     //         $price->__toString();
-    //     //     }
-    //     // }
-
-    // }
+    public static function getSamples(Language $language, Country $country, Currency $currency)
+    {
+        $boxMap = parent::getBoxMap($country, $currency);
+        $boxes = [];
+        foreach ($boxMap as $boxColor => $datas) {
+            $box = new Box($boxColor, $language, $country, $currency);
+            $key = $box->getPrice()->getPriceKey();
+            $boxes[$key] = $box;
+        }
+        ksort($boxes);
+        return $boxes;
+    }
 }

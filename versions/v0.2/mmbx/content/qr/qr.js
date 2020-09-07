@@ -139,9 +139,6 @@
         var addProdFlex_on = function () {
             $("#add_prod_loading").css("display", "flex");
         }
-        // var btnFlex_off = function (l) {
-        //     $(l).css("display", "");
-        // }
         /*———— sumbit sizes up ———*/
         /*—————————————————— ADD PRODUCT UP —————————————————————————————————*/
 

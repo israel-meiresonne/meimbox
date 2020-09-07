@@ -10,7 +10,7 @@ require_once 'model/boxes-management/Box.php';
 /**
  * @var Price
  */
-$price = $box->getFormatedPrice();
+$price = $box->getPriceFormated();
 ?>
 <div class="box-wrap">
     <div class="box-display-block">
