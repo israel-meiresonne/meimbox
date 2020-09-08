@@ -12,16 +12,26 @@ $datas = [];
 $datas["title"] = "box manager";
 $datas["closeButtonId"] = "box_manager_close_button";
 $datas["laodingId"] = "box_manager_loading";
-$datas["submitButtonId"] = "manager_add_box";
+$datas["submitButtonId"] = "box_manager_select_box";
 $datas["submitButtonTxt"] = $translator->translateStation("US34");
 $datas["submitIsDesabled"] = true;
 $datas["submitClass"] = "standard-button-desabled";
+
+$dad = ModelFunctionality::generateDateCode(25);
+$dadx = "#" . $dad;
+$brotherx = ModelFunctionality::generateDateCode(25);
+$sbtnx = "#". $datas["submitButtonId"];
+$datas["submitButtonFunc"] = "selectBox('". $sbtnx ."')";
 // $datas["submitButtonFunc"] = "";
 $boxDatas = [
     "translator" => $translator,
     "elements" => $boxes,
     "country" => $country,
-    "currency" => $currency
+    "currency" => $currency,
+    "dad" => $dad,
+    "dadx" => $dadx,
+    "brotherx" => $brotherx,
+    "sbtnx" => $sbtnx
 ];
 $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
 
@@ -29,7 +39,7 @@ $contentDatas = [
     "instruction" => "select a box where to put your item:",
     "content" => $cart,
     "btnTxt" => "ajouter une box",
-    "btnId" => "manager_add_box",
+    "btnId" => "box_manager_open_princing",
     "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window')"
     // "btnDataAttr" => 
 ];

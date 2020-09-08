@@ -67,7 +67,8 @@
         });
         after(x);
     }
-    selectPopUp = (launchx, cb = () => { }) => {
+    selectPopUp = (launchx, before = () => { }, after = () => { }) => {
+        before(launchx);
         var d = $(launchx).attr(dadx);
         var f = $(launchx).attr(flagx);
         var a = $(f).attr(brotherx);
@@ -82,7 +83,7 @@
         $(sbtnx).attr(datatarget, f);
         enable(sbtnx);
         console.log(sbtnx);
-        cb();
+        after(launchx);
     }
     switchCloseNext = (fromx, tox) => {
         var fbtn = $(fromx).find("." + closebtnCls);

@@ -11,12 +11,41 @@
  * @param string $pictureSrc the source of the picture of the cart element's 
  * + the picture conatin all the directory like my/file/is/here/$picture
  * @param string|null $price price property in a displayable format (with currency)
- * @param boolean $showRow set true to display the row else set false
+ * @param boolean $showArow set true to display the arow else set false
+ * @param string $dadx selector of the dad (if set it activate the selectPopUp functionality)
+ * + i.e: "#mydadid"
+ * @param string $brotherx selector of the brother (used only if $dadx is set)
+ * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
-$showRow = (isset($showRow)) ? $showRow : true; // show alway except if false
+$showArow = (isset($showArow)) ? $showArow : true; // show alway except if false
+
+if (!empty($dadx)) {
+    $launch = ModelFunctionality::generateDateCode(25);
+    $Taglaunch = "id='$launch'";
+    $launchx = "#" . $launch;
+    $TaglaunchxFunc = "onclick=\"selectPopUp('$launchx')\"";
+
+    $Tagdadx = "data-dadx='$dadx'";
+    $Tagbrotherx = "data-brotherx='$brotherx'";
+    $Tagsubmitdata = "data-submitdata='$submitdata'";
+
+    $flag = ModelFunctionality::generateDateCode(25);
+    $Tagflag = "id='$flag'";
+    $flagx = "#" . $flag;
+    $Tagflagx = "data-flagx='$flagx'";
+} else {
+    $Taglaunch = "";
+    $TaglaunchxFunc = "";
+    $Tagdadx = "";
+    $Tagbrotherx = "";
+    $Tagflag = "";
+    $Tagflagx = "";
+    $Tagsubmitdata = "";
+}
+
 ?>
 <!-- <div class="cart-element-wrap" style="box-shadow: var(--box-shadow);"> -->
-<div class="cart-element-wrap">
+<div <?= $Tagflag ?> class="cart-element-wrap" <?= $Tagbrotherx ?> <?= $Tagsubmitdata ?> >
     <div class="cart-element-inner">
         <div class="cart-element-remove-button-block">
             <button class="close_button-wrap remove-button-default-att">
@@ -26,33 +55,12 @@ $showRow = (isset($showRow)) ? $showRow : true; // show alway except if false
                 </div>
             </button>
         </div>
-        <div class="cart-element-detail-block">
+        <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?> >
             <div class="cart-element-img-div">
-                <!-- <img src="content/brain/permanent/box-gold-128.png"> -->
                 <img src="<?= $pictureSrc ?>">
             </div>
             <div class="cart-element-property-set box-property-set">
                 <?php echo $properties ?>
-                <!-- <div class="box-property-set-inner">
-                    <div class="cart-element-property-div">
-                        <span>golden box</span>
-                    </div>
-                    <div class="cart-element-property-div">
-                        <span class="cart-element-property">item: </span>
-                        <span class="cart-element-value">3</span>
-                    </div>
-                    <div class="cart-element-property-div cart-element-property-price-div">
-                        <span class="cart-element-property">price: </span>
-                        <span class="cart-element-value">$52.50 usd</span>
-                    </div>
-                    <div class="cart-element-property-div cart-element-property-edit-div">
-                        <div class="cart-element-edit-block">
-                            <div class="cart-element-edit-inner">
-                                <button class="cart-element-edit-button remove-button-default-att">edit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
         <div class="cart-element-edit-block edit-block-external">
@@ -68,7 +76,7 @@ $showRow = (isset($showRow)) ? $showRow : true; // show alway except if false
             </div>
         <?php
         endif;
-        if ($showRow) :
+        if ($showArow) :
         ?>
             <div class="cart-element-arrow-block">
                 <div class="cart-element-arrow-inner">
