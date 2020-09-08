@@ -7,20 +7,32 @@ require_once 'model/boxes-management/BoxProduct.php';
  * @param BoxProduct|BasketProduct $product a boxproduct to display
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
- * @param boolean $showRow set true to display the row else set false
+ * @param boolean $showArow set true to display the row else set false
+ * @param string $dadx selector of the dad (if set it activate the select fonctionality)
+ * + i.e: "#mydadid"
+ * @param string $brotherx selector of the brother (used only if $dadx is set)
+ * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
 /**
  * @var Price
  */
 $price = null;
-switch($product->getType()){
+switch ($product->getType()) {
     case BasketProduct::BASKET_TYPE:
         $prodClass = "basket_product-wrap";
         $price = $product->getFormated();
-    break;
+        if (empty($dadx)) {
+            $dadx = null;
+            $brotherx = null;
+            $submitdata = null;
+        }
+        break;
     case BoxProduct::BOX_TYPE:
         $prodClass = "box_product-wrap";
-    break;
+        $dadx = null;
+        $brotherx = null;
+        $submitdata = null;
+        break;
 }
 $size = $product->getSelectedSize();
 ?>
@@ -45,7 +57,10 @@ $size = $product->getSelectedSize();
     $datas = [
         "properties" => $properties,
         "pictureSrc" => (count($pictureSrcs) > 0) ? array_pop(($pictureSrcs)) : null,
-        "showRow" => $showRow
+        "showArow" => $showArow,
+        "dadx" => $dadx,
+        "brotherx" => $brotherx,
+        "submitdata" => $submitdata
     ];
     echo $this->generateFile('view/elements/cartElement.php', $datas);
     ?>

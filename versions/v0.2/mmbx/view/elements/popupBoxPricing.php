@@ -29,10 +29,6 @@ $pricingContent = $this->generateFile('view/elements/popupBoxPricingContent.php'
 $contentDatas = [
     "instruction" => "choose the box that suits you:",
     "content" => $pricingContent,
-    // "btnId" => "manager_add_box",
-    // "btnTxt" => "ajouter une box",
-    // "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window')"
-    // "btnDataAttr" => 
 ];
 $datas["content"] = $this->generateFile('view/elements/popupContent.php', $contentDatas);
 echo $this->generateFile('view/elements/popup.php', $datas);

@@ -37,9 +37,6 @@ $editBtnTranslate = $translator->translateStation("US49");
                     $launch = ModelFunctionality::generateDateCode(25);
                     $launchx = "#" . $launch;
 
-                    // $brother = ModelFunctionality::generateDateCode(25);
-                    // $brotherx = "#" . $brother;
-
                     $flag = ModelFunctionality::generateDateCode(25);
                     $flagx = "#" . $flag;
 
