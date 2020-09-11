@@ -585,7 +585,6 @@ class Box extends ModelFunctionality
         $product = $this->getProduct($prodID, $selectedSize);
         if (!empty($product)) {
             $product->addQuantity();
-            // var_dump($product->getQuantity());
             $product->updateProductQuantity($response, $boxID);
         } else {
             $language = $this->getLanguage();

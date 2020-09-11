@@ -248,9 +248,7 @@ require_once 'model/special/MyError.php';
 
                 <div class="navbar-block navbar-right-block">
                     <ul class="navbar-ul remove-ul-default-att">
-
-                        <li class="navbar-lang_cur_sign-block navbar-li remove-li-default-att">
-
+                        <!-- <li class="navbar-li remove-li-default-att">
                             <div id="currency_select" class="mini-select-container">
                                 <div class="mini-select-wrap">
                                     <div id="" class="mini-select-inner">
@@ -264,7 +262,8 @@ require_once 'model/special/MyError.php';
                                     </div>
                                 </div>
                             </div>
-
+                        </li>
+                        <li class="navbar-li remove-li-default-att">
                             <div id="language_select" class="mini-select-container">
                                 <div class="mini-select-wrap">
                                     <div id="" class="mini-select-inner">
@@ -277,7 +276,8 @@ require_once 'model/special/MyError.php';
                                     </div>
                                 </div>
                             </div>
-
+                        </li> -->
+                        <li class="navbar-li remove-li-default-att">
                             <div class="img-text-block ">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
@@ -286,9 +286,7 @@ require_once 'model/special/MyError.php';
                                     <span class="img-text-span">sign up</span>
                                 </div>
                             </div>
-
                         </li>
-
                         <li class="navbar-li remove-li-default-att">
                             <div class="img-text-block navbar-basket-block">
                                 <div class="img-text-block  navbar-basket-wrap">
@@ -301,7 +299,6 @@ require_once 'model/special/MyError.php';
                                 </div>
                             </div>
                         </li>
-
                     </ul>
                 </div>
             </div>
