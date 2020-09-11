@@ -84,7 +84,7 @@ class View
      * Holds the page's language
      * @var string
      */
-    private $lang;
+    private $language;
 
     /**
      * Holds the page's meta data description
@@ -176,7 +176,7 @@ class View
             'view/template.php',
             array(
                 'title' => $this->title,
-                'lang' => $this->lang,
+                'language' => $this->language,
                 'description' => $this->description,
                 'head' => $this->head,
                 'content' => $content,

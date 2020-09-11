@@ -1,5 +1,4 @@
 <?php
-
 require_once 'controller/ControllerSecure.php';
 require_once 'controller/ControllerGrid.php';
 require_once 'controller/ControllerItem.php';
@@ -10,9 +9,19 @@ require_once 'model/tools-management/Measure.php';
 require_once 'model/tools-management/MeasureUnit.php';
 require_once 'model/view-management/PageContent.php';
 require_once 'model/special/MyError.php';
+/**
+ *  ——————————————————————————————— NEED —————————————————————————————————————
+ * @param Language $language the Visitor's language
+ * @param string $webRoot domaine's root
+ * @param string $title page's title
+ * @param string $head complementary datas for the head
+ * @param string $content the page's content
+ * @param string $fullscreen full screen elements like popup
+ */
+
 ?>
 <!DOCTYPE html>
-<html lang="<?= $lang ?>">
+<html lang="<?= $language ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -209,7 +218,7 @@ require_once 'model/special/MyError.php';
                 <div class="navbar-block navbar-left-block">
                     <ul class="navbar-ul remove-ul-default-att">
                         <li class="navbar-li remove-li-default-att left-block-li site-title">
-                            <a href="http://">meimbox</a>
+                            <a href="">meimbox</a>
                             <!-- <a href="">xxxxxxx</a> -->
                         </li>
                         <!-- <li class="navbar-li remove-li-default-att left-block-li">
@@ -288,7 +297,7 @@ require_once 'model/special/MyError.php';
                             </div>
                         </li>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="img-text-block navbar-basket-block">
+                            <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop')">
                                 <div class="img-text-block  navbar-basket-wrap">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
@@ -348,8 +357,7 @@ require_once 'model/special/MyError.php';
                 </div>
 
                 <div class="navbar-basket-block navbar-right-block flex-row">
-
-                    <div class="img-text-block navbar-basket-block">
+                    <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop')">
                         <div class="img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
@@ -359,13 +367,13 @@ require_once 'model/special/MyError.php';
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="collapse-container"></div>
         </nav>
     </header>
     <?= $content ?>
+    <?= $fullscreen ?>
 </body>
 
 </html>
