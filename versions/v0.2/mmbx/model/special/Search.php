@@ -323,7 +323,7 @@ class Search extends ModelFunctionality
     {
         $sql = $this->getSql($country, $currency);
         // $this->setProductMap($sql);
-        $productMap = $this->getProductMap($sql);
+        $productMap = $this->searchProduct($sql);
         foreach ($productMap as $prodID => $datas) {
             switch ($datas["product_type"]) {
                 case BoxProduct::BOX_TYPE:

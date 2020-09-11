@@ -155,7 +155,7 @@ class Measure extends ModelFunctionality
      */
     public function getbust()
     {
-        return (isset($this->bust)) ? $this->bust->getCopy() : null;
+        return (isset($this->bust)) ? $this->bust : null;
     }
 
     /**
@@ -164,7 +164,7 @@ class Measure extends ModelFunctionality
      */
     public function getarm()
     {
-        return (isset($this->arm)) ? $this->arm->getCopy() : null;
+        return (isset($this->arm)) ? $this->arm : null;
     }
 
     /**
@@ -173,7 +173,7 @@ class Measure extends ModelFunctionality
      */
     public function getwaist()
     {
-        return (isset($this->waist)) ? $this->waist->getCopy() : null;
+        return (isset($this->waist)) ? $this->waist : null;
     }
 
     /**
@@ -182,7 +182,7 @@ class Measure extends ModelFunctionality
      */
     public function gethip()
     {
-        return (isset($this->hip)) ? $this->hip->getCopy() : null;
+        return (isset($this->hip)) ? $this->hip : null;
     }
 
     /**
@@ -191,7 +191,7 @@ class Measure extends ModelFunctionality
      */
     public function getInseam()
     {
-        return (isset($this->inseam)) ? $this->inseam->getCopy() : null;
+        return (isset($this->inseam)) ? $this->inseam : null;
     }
 
     /**

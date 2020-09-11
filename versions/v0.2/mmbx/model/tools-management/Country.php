@@ -85,19 +85,19 @@ class Country extends ModelFunctionality
         return $this->countryName;
     }
 
-    /**
-     * To get a protected copy of a Country instance
-     * @return Country a protected copy of the Country instance
-     */
-    public function getCopy()
-    {
-        $copy = clone $this;
-        $copy->isoCountry = $this->isoCountry;
-        $copy->countryName = $this->countryName;
-        $copy->isUE = $this->isUE;
-        $copy->vat = $this->vat;
-        return $copy;
-    }
+    // /**
+    //  * To get a protected copy of a Country instance
+    //  * @return Country a protected copy of the Country instance
+    //  */
+    // public function getCopy()
+    // {
+    //     $copy = clone $this;
+    //     $copy->isoCountry = $this->isoCountry;
+    //     $copy->countryName = $this->countryName;
+    //     $copy->isUE = $this->isUE;
+    //     $copy->vat = $this->vat;
+    //     return $copy;
+    // }
 
     /**
      * Anitialize this Country's attributs

@@ -478,7 +478,7 @@ abstract class ModelFunctionality extends Model
             throw new Exception("The box map can't be empty:");
         }
         return self::$boxMap[$boxColor]["arguments"];
-    }   
+    }
 
     /**
      * Check if a boxMap's attribut is set for each box
@@ -544,17 +544,17 @@ abstract class ModelFunctionality extends Model
         $boxMap = self::getBoxMap($country, $currency);
         $sql = "SELECT * FROM `BoxArguments`";
         $tab = self::select($sql);
-        foreach($tab as $tabLine){
+        foreach ($tab as $tabLine) {
             $boxColor = $tabLine["box_color"];
             $argID = (int) $tabLine["argID"];
             $argType = $tabLine["argType"];
             $boxMap[$boxColor]["arguments"][$argType][$argID] = $tabLine["argValue"];
         }
-        foreach($boxMap as $boxColor => $datas){
-            (!empty($boxMap[$boxColor]["arguments"]["advantage"])) ? ksort($boxMap[$boxColor]["arguments"]["advantage"]) 
-            : $boxMap[$boxColor]["arguments"]["advantage"] = [];
-            (!empty($boxMap[$boxColor]["arguments"]["drawback"])) ? ksort($boxMap[$boxColor]["arguments"]["drawback"]) 
-            : $boxMap[$boxColor]["arguments"]["drawback"] = [];
+        foreach ($boxMap as $boxColor => $datas) {
+            (!empty($boxMap[$boxColor]["arguments"]["advantage"])) ? ksort($boxMap[$boxColor]["arguments"]["advantage"])
+                : $boxMap[$boxColor]["arguments"]["advantage"] = [];
+            (!empty($boxMap[$boxColor]["arguments"]["drawback"])) ? ksort($boxMap[$boxColor]["arguments"]["drawback"])
+                : $boxMap[$boxColor]["arguments"]["drawback"] = [];
         }
         self::$boxMap = $boxMap;
     }
@@ -725,6 +725,31 @@ abstract class ModelFunctionality extends Model
 
     /*———————————————————————————— STATIC TABLES ACCESS UP ——————————————————*/
     /*———————————————————————————— PRODUCT ACCESS DOWN ——————————————————————*/
+
+    // /**
+    //  * To get products with the ids given
+    //  * @param string[] $prodIDs list of id of product to look for
+    //  * @return array map with all product line from db else a empty array
+    //  */
+    // protected function getProductMap($prodIDs)
+    // {
+    //     if(count($prodIDs) <= 0){
+    //         throw new Exception("List of product id (\$prodIDs) can't be empty");
+    //     }
+    //     if(!isset(self::$productMap)){
+    //         $sql = "SELECT * FROM `Products` WHERE "; //`prodID` = '$prodID'"
+    //         $nbID = count($prodIDs);
+    //         for($i = 0; $i < $nbID; $i++){
+    //             $prodID = $prodIDs[$i];
+    //             $sql .= ($i < ($nbID-1)) ? " `prodID` = '$prodID' OR " : " `prodID` = '$prodID'";
+    //         }
+    //         $this->setProductMap($sql);
+    //         if(count(self::$productMap) != $nbID){
+    //             throw new Exception("");
+    //         }
+    //     }
+    // }
+
     /**
      * Check if a product exist in db's Products table
      * @param string $prodID Product's id
@@ -732,12 +757,13 @@ abstract class ModelFunctionality extends Model
      */
     protected function existProductInDb($prodID)
     {
-        // if(!$this->existProductInMap($prodID)){
-        $sql = "SELECT * FROM `Products` WHERE `prodID` = '$prodID'";
-        $this->setProductMap($sql);
-        return (count(self::$productMap) == 1);
-        // }
-        // return true;
+        if (!isset(self::$productMap) || (!key_exists($prodID, self::$productMap))) {
+            $sql = "SELECT * FROM `Products` WHERE `prodID` = '$prodID'";
+            $this->setProductMap($sql);
+
+        }
+        // return (count(self::$productMap) == 1);
+        return (key_exists($prodID, self::$productMap));
     }
 
     /**
@@ -756,11 +782,8 @@ abstract class ModelFunctionality extends Model
      * @param string $sql sql query for db's Products table
      * @return string[] line with product's values
      */
-    protected function getProductMap($sql)
+    protected function searchProduct($sql)
     {
-        // if (!isset(self::$productMap)) {
-        //     throw new Exception("The product Map must first be initialized!");
-        // }
         $this->setProductMap($sql);
         return self::$productMap;
     }
@@ -784,7 +807,7 @@ abstract class ModelFunctionality extends Model
     /**
      * Set product map with db
      */
-    protected function setProductMap($sql)
+    private function setProductMap($sql)
     {
         self::$productMap = [];
         $tab = $this->select($sql);
@@ -1264,9 +1287,9 @@ abstract class ModelFunctionality extends Model
             "z" => 25
         ];
         // var_dump("strs", $strs);
-        $last = count($strs)-1;
+        $last = count($strs) - 1;
         $i = 0;
-        foreach($strs as $c){
+        foreach ($strs as $c) {
             $code .= $abc[$c];
             $code .=  ($i < $last) ? "." : "";
             $i++;
@@ -1311,7 +1334,7 @@ abstract class ModelFunctionality extends Model
             "z" => 25
         ];
         $cba = array_flip($abc);
-        foreach($codes as $n){
+        foreach ($codes as $n) {
             $word .= $cba[$n];
         }
         return $word;

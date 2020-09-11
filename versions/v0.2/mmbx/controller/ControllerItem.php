@@ -32,13 +32,19 @@ class ControllerItem extends ControllerSecure
      * Holds the query value for Ajax request
      * @var string
      */
-    public const A_ADD_PROD = "item/addProduct";
+    public const A_SBMT_BXPROD = "item/submitBoxProduct";
 
     /**
      * Holds the query value for Ajax request
      * @var string
      */
     public const A_ADD_BOX = "item/addBox";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
+    public const A_ADD_BXPROD = "item/addBoxProduct";
 
     /**
      * Holds the query(qr) value for Ajax request
@@ -285,12 +291,10 @@ class ControllerItem extends ControllerSecure
     /**
      * To add product to cart
      */
-    public function addProduct()
+    public function submitBoxProduct()
     {
         $this->secureSession();
         $language = $this->person->getLanguage();
-        $country = $this->person->getCountry();
-        $currency = $this->person->getCurrency();
         $response = new Response();
         $datasView = [];
         if (!Query::existParam(Product::INPUT_PROD_ID)) {
@@ -299,14 +303,8 @@ class ControllerItem extends ControllerSecure
             $prodID = Query::getParam(Product::INPUT_PROD_ID);
             $stillStock = $this->person->stillStock($response, $prodID);
             if (!$response->containError()) {
-                // $params = [
-                //     Product::INPUT_PROD_ID => Query::getParam(Product::INPUT_PROD_ID)
-                // ];
-                // $search = new Search(Search::SYSTEM_SEARCH, $currency, $params);
-                // $search->setProducts($language, $country, $currency);
                 if ($stillStock) {
-                    $response->addResult(self::A_ADD_PROD, $stillStock);
-                    // $response->addFiles(self::BX_MNGR_KEY, );
+                    $response->addResult(self::A_SBMT_BXPROD, $stillStock);
                 } else {
                     $station = "ER13";
                     $response->addErrorStation($station, self::SBMT_BTN_MSG);
@@ -317,7 +315,7 @@ class ControllerItem extends ControllerSecure
     }
 
     /**
-     * 
+     * To add a new box in Visitor's basket
      */
     public function addBox()
     {
@@ -339,8 +337,37 @@ class ControllerItem extends ControllerSecure
                     "country" => $country,
                     "currency" => $currency
                 ];
-                // $boxManager = $this->generateFile('view/elements/popupBoxManager.php', $datas);
                 $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManager.php');
+            }
+        }
+        $this->generateJsonView($datasView, $response, $language);
+    }
+
+    /**
+     * To select a box where to add the product
+     */
+    public function addBoxProduct()
+    {
+        $this->secureSession();
+        $language = $this->person->getLanguage();
+        $response = new Response();
+        $datasView = [];
+        if((!Query::existParam(Box::KEY_BOX_ID)) || (!Query::existParam(Product::INPUT_PROD_ID))){
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $boxID = Query::getParam(Box::KEY_BOX_ID);
+            $prodID = Query::getParam(Product::INPUT_PROD_ID);
+            $this->person->addBoxProduct($response, $boxID, $prodID);
+            if(!$response->containError()){
+                $boxes = $this->person->getBasket()->getBoxes();
+                $country = $this->person->getCountry();
+                $currency = $this->person->getCurrency();
+                $datasView = [
+                    "boxes" => $boxes,
+                    "country" => $country,
+                    "currency" => $currency
+                ];
+                $response->addFiles(self::A_ADD_BXPROD, 'view/elements/popupBoxManager.php');
             }
         }
         $this->generateJsonView($datasView, $response, $language);

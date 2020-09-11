@@ -160,7 +160,7 @@ class Visitor extends ModelFunctionality
      */
     public function getLanguage()
     {
-        return $this->lang->getCopy();
+        return $this->lang;
     }
 
     /**
@@ -169,7 +169,7 @@ class Visitor extends ModelFunctionality
      */
     public function getCurrency()
     {
-        return $this->currency->getCopy();
+        return $this->currency;
     }
 
     /**
@@ -178,7 +178,7 @@ class Visitor extends ModelFunctionality
      */
     public function getCountry()
     {
-        return $this->country->getCopy();
+        return $this->country;
     }
 
     /**
@@ -484,46 +484,16 @@ class Visitor extends ModelFunctionality
     public function stillStock(Response $response, $prodID)
     {
         $stillStock = false;
+        // $sizeObj = null;
         $isCorrect = $this->checkData($prodID, ModelFunctionality::ALPHA_NUMERIC, $this->getDataLength(Product::TABLE_PRODUCTS, Product::INPUT_PROD_ID));
         if ($isCorrect && $this->existProductInDb($prodID)) {
             $tabLine = $this->getProductLine($prodID);
             switch ($tabLine["product_type"]) {
                 case BasketProduct::BASKET_TYPE:
-                    $stillStock = $this->stillBasketStock($response, $prodID);
+                    $stillStock = $this->stillBasketProductStock($response, $prodID);
                     break;
                 case BoxProduct::BOX_TYPE:
-                    $this->checkSizeInput($response, BoxProduct::BOX_TYPE);
-                    if (!$response->containError()) {
-                        $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
-                        switch ($sizeType) {
-                            case Size::SIZE_TYPE_CHAR:
-                                $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-                                // $product = new BoxProduct($prodID, $this->lang, $this->country, $this->currency);
-                                $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
-                                $brand = null;
-                                if (Query::existParam(Size::INPUT_BRAND)) {
-                                    $brand = Query::getParam(Size::INPUT_BRAND);
-                                }
-                                $sequence = Size::buildSequence($size, $brand, null);
-                                $sizeObj = new Size($sequence, null, null);
-                                // return $product->stillStock($size, $brand);
-                                return $product->stillStock($sizeObj);
-                                break;
-                            case Size::SIZE_TYPE_MEASURE:
-                                $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
-                                $cut = Query::getParam(Size::INPUT_CUT);
-                                // $measure = $this->getMeasure($measureID);
-                                $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
-                                $sequence = Size::buildSequence(null, null, $measureID);
-                                $sizeObj = new Size($sequence, null, $cut);
-                                return $product->stillStock($sizeObj);
-                                // return true;
-                                break;
-                            default:
-                                throw new Exception("Any size type match system's size types");
-                                break;
-                        }
-                    }
+                    $stillStock = $this->stillBoxProductStock($response, $prodID);
                     break;
                 default:
                     throw new Exception("Unknow product type");
@@ -535,26 +505,155 @@ class Visitor extends ModelFunctionality
         return $stillStock;
     }
 
+    //     /**
+    //  * To check if still stock for basket poduct
+    //  * @param Response $response where to strore results
+    //  * @param string $prodID Product's id
+    //  * @return boolean true if it's are still stock else false
+    //  */
+    // private function stillBasketProductStock(Response $response, $prodID)
+    // {
+    //     $stillStock = false;
+    //     $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
+    //     if (!$response->containError()) {
+    //         $size = Query::getParam(Size::SIZE_TYPE_CHAR);
+    //         $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
+    //         $sequence = Size::buildSequence($size, null, null);
+    //         $sizeObj = new Size($sequence);
+    //         // $stillStock = $product->stillStock($size);
+    //         $stillStock = $product->stillStock($sizeObj);
+    //     }
+    //     return $stillStock;
+    // }
+
     /**
      * To check if still stock for basket poduct
      * @param Response $response where to strore results
      * @param string $prodID Product's id
      * @return boolean true if it's are still stock else false
      */
-    private function stillBasketStock(Response $response, $prodID)
+    private function stillBasketProductStock(Response $response, $prodID)
     {
         $stillStock = false;
-        $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
+        $sizeObj = $this->extractSizeBasketProduct($response, $prodID);
         if (!$response->containError()) {
-            $size = Query::getParam(Size::SIZE_TYPE_CHAR);
             $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
-            $sequence = Size::buildSequence($size, null, null);
-            $sizeObj = new Size($sequence);
-            // $stillStock = $product->stillStock($size);
             $stillStock = $product->stillStock($sizeObj);
         }
         return $stillStock;
     }
+
+    /**
+     * Exctract the Size of the basket product from the input submited
+     * @param Response $response where to strore results
+     * @return Size|null Exctracted Size of the basket product
+     */
+    private function extractSizeBasketProduct(Response $response)
+    {
+        $sizeObj = null;
+        $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
+        if (!$response->containError()) {
+            $size = Query::getParam(Size::SIZE_TYPE_CHAR);
+            $sequence = Size::buildSequence($size, null, null, null);
+            $sizeObj = new Size($sequence);
+        }
+        return $sizeObj;
+    }
+
+    // /**
+    //  * To check if still stock for basket poduct
+    //  * @param Response $response where to strore results
+    //  * @param string $prodID Product's id
+    //  * @return boolean true if it's are still stock else false
+    //  */
+    // private function stillBoxProductStock(Response $response, $prodID)
+    // {
+    //     $this->checkSizeInput($response, BoxProduct::BOX_TYPE);
+    //     if (!$response->containError()) {
+    //         $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+    //         switch ($sizeType) {
+    //             case Size::SIZE_TYPE_CHAR:
+    //                 $size = Query::getParam(Size::SIZE_TYPE_CHAR);
+    //                 // $product = new BoxProduct($prodID, $this->lang, $this->country, $this->currency);
+    //                 $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
+    //                 $brand = null;
+    //                 if (Query::existParam(Size::INPUT_BRAND)) {
+    //                     $brand = Query::getParam(Size::INPUT_BRAND);
+    //                 }
+    //                 $sequence = Size::buildSequence($size, $brand, null);
+    //                 $sizeObj = new Size($sequence, null, null);
+    //                 // return $product->stillStock($size, $brand);
+    //                 return $product->stillStock($sizeObj);
+    //                 break;
+    //             case Size::SIZE_TYPE_MEASURE:
+    //                 $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+    //                 $cut = Query::getParam(Size::INPUT_CUT);
+    //                 // $measure = $this->getMeasure($measureID);
+    //                 $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
+    //                 $sequence = Size::buildSequence(null, null, $measureID);
+    //                 $sizeObj = new Size($sequence, null, $cut);
+    //                 return $product->stillStock($sizeObj);
+    //                 // return true;
+    //                 break;
+    //             default:
+    //                 throw new Exception("Any size type match system's size types");
+    //                 break;
+    //         }
+    //     }
+    // }
+
+    /**
+     * To check if still stock for basket poduct
+     * @param Response $response where to strore results
+     * @param string $prodID Product's id
+     * @return boolean true if it's are still stock else false
+     */
+    private function stillBoxProductStock(Response $response, $prodID)
+    {
+        $stillStock = false;
+        $sizeObj = $this->extractSizeBoxProduct($response, $prodID);
+        if (!$response->containError()) {
+            $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
+            $stillStock = $product->stillStock($sizeObj);
+        }
+        return $stillStock;
+    }
+
+    /**
+     * Exctract the Size of the box product from the input submited
+     * @param Response $response where to strore results
+     * @return Size|null Exctracted Size of the box product
+     */
+    private function extractSizeBoxProduct(Response $response)
+    {
+        $sizeObj = null;
+        $this->checkSizeInput($response, BoxProduct::BOX_TYPE);
+        if (!$response->containError()) {
+            $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+            switch ($sizeType) {
+                case Size::SIZE_TYPE_CHAR:
+                    $size = Query::getParam(Size::SIZE_TYPE_CHAR);
+                    $brand = null;
+                    if (Query::existParam(Size::INPUT_BRAND)) {
+                        $brand = Query::getParam(Size::INPUT_BRAND);
+                    }
+                    $sequence = Size::buildSequence($size, $brand, null, null);
+                    $sizeObj = new Size($sequence);
+                    break;
+                case Size::SIZE_TYPE_MEASURE:
+                    $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+                    $cut = Query::getParam(Size::INPUT_CUT);
+                    $sequence = Size::buildSequence(null, null, $measureID, $cut);
+                    $sizeObj = new Size($sequence);
+                    break;
+                default:
+                    throw new Exception("Any size type match system's size types");
+                    break;
+            }
+        }
+        return $sizeObj;
+    }
+
 
     /**
      * Check size datas posted
@@ -709,7 +808,7 @@ class Visitor extends ModelFunctionality
         $currency = $this->getCurrency();
         $boxMap = $this->getBoxMap($country, $currency);
         $boxColor = $this->decryptString($colorCode);
-        if(key_exists($boxColor, $boxMap)){
+        if (key_exists($boxColor, $boxMap)) {
             $userID = $this->getUserID();
             $basket = $this->getBasket();
             $basket->addBox($response, $userID, $boxColor);
@@ -719,37 +818,37 @@ class Visitor extends ModelFunctionality
         }
     }
 
-    /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
-    //———————————————————————————— BUILD MODEL DATAS DOWN ———————————————————*/
-
     /**
-     * To get the measure with its id posted($_POST)
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
-     * @return Response contain the Measure matching the id or Myerrrors
+     * To add new product in box of Visitor's basket
+     * @param Response $response where to strore results
+     * @param string $boxID id of box in Visitor's basket
+     * @param string $prodID id of the product to add in box
      */
-    public function getMeasurePOST($dbMap)
+    public function addBoxProduct(Response $response, $boxID, $prodID)
     {
-        $response = new Response();
-        $query = new Query();
-
-        $response = $query->checkInput(Measure::MEASURE_ID_KEY, [Query::ALPHA_NUMERIC], $response, $dbMap["DESCRIPTION"]["UsersMeasures"]["measureID"]);
-
-        if (!$response->containError()) {
-            $measureID = $query->POST(Measure::MEASURE_ID_KEY);
-            $measure = self::getMeasure($measureID);
-
-            if (!empty($measure)) {
-                $response->addResult(Query::POST_MOTHOD, $measure);
-            } else {
-                $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-                $response->addError($errorMsg, MyError::FATAL_ERROR);
-            }
+        $basket = $this->getBasket();
+        $existBox = $basket->existBox($boxID);
+        $existProd = $this->existProductInDb($prodID);
+        $isBoxProd = $this->getProductLine($prodID)["product_type"] == BoxProduct::BOX_TYPE;
+        if ((!$existBox) || (!$existProd) || (!$isBoxProd)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $errorMsg = View::translateStation(MyError::ERROR_FILE, 1);
-            $response->addError($errorMsg, MyError::FATAL_ERROR);
+            if (!$basket->stillSpace($boxID)) {
+                $box = $basket->getBoxe($boxID);
+                $fullRate = "(".$box->getNbProduct() . "/" . $box->getSizeMax().")";
+                $errStation = "ER14" . $fullRate;
+                $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
+            } else {
+                $stillStock = $this->stillStock($response, $prodID);
+                if ((!$response->containError()) && $stillStock) {
+                    $sizeObj = $this->extractSizeBoxProduct($response);
+                    if (!$response->containError()) {
+                        $basket->addBoxProduct($response, $boxID, $prodID, $sizeObj);
+                    }
+                }
+            }
         }
-        return $response;
     }
-    //———————————————————————————— BUILD MODEL DATAS UP —————————————————————*/
+
+    /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
 }

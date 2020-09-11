@@ -115,7 +115,7 @@ require_once 'model/special/MyError.php';
         const A_SELECT_MEASURE = "<?= ControllerItem::A_SELECT_MEASURE ?>";
         const A_UPDATE_MEASURE = "<?= ControllerItem::A_UPDATE_MEASURE ?>";
         const A_DELETE_MEASURE = "<?= ControllerItem::A_DELETE_MEASURE ?>";
-        const A_ADD_PROD = "<?= ControllerItem::A_ADD_PROD ?>";
+        const A_SBMT_BXPROD = "<?= ControllerItem::A_SBMT_BXPROD ?>";
         const SBMT_BTN_MSG = "<?= ControllerItem::SBMT_BTN_MSG ?>";
 
         const QR_MEASURE_CONTENT = "<?= ControllerItem::QR_MEASURE_CONTENT ?>";
@@ -124,7 +124,9 @@ require_once 'model/special/MyError.php';
         const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
 
         const A_ADD_BOX = "<?= ControllerItem::A_ADD_BOX ?>";
+        const A_ADD_BXPROD = "<?= ControllerItem::A_ADD_BXPROD ?>";
         const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
+        const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";

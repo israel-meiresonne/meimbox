@@ -118,11 +118,11 @@ class Basket extends ModelFunctionality
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
                 $product = new BasketProduct($tabLine["prodId"], $language, $country, $currency);
-                $sequence = Size::buildSequence($tabLine["size_name"], null, null);
-                $size = new Size($sequence, $tabLine["setDate"], null);
-                $product->setSelectedSize($size);
+                $sequence = Size::buildSequence($tabLine["size_name"], null, null, null);
+                $size = new Size($sequence, $tabLine["setDate"]);
                 $quantity = (int) $tabLine["quantity"];
-                $product->setQuantity($quantity);
+                $size->setQuantity($quantity);
+                $product->selecteSize($size);
                 $key = $product->getDateInSec();
                 $this->basketProducts[$key] = $product;
             }
@@ -170,6 +170,24 @@ class Basket extends ModelFunctionality
     }
 
     /**
+     * To get the box with the id given in param
+     * @param string $boxID id of the box to get
+     * @return Box|null the box with the id given in param else return null
+     */
+    public function getBoxe($boxID)
+    {
+        $found = false;
+        $boxes = $this->getBoxes();
+        foreach ($boxes as $key => $boxe) {
+            $found = $boxes[$key]->getBoxID() == $boxID;
+            if ($found) {
+                return $boxe;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Getter for basket's basketproduct
      * @return BasketProduct[] basket's basketproduct
      */
@@ -192,7 +210,7 @@ class Basket extends ModelFunctionality
 
     /**
      * To add new box in basket
-     * + 
+     * + also add box in db
      * @param Response $response where to strore results
      * @param string $userID Visitor's id
      * @param string $boxColor box's color
@@ -204,10 +222,50 @@ class Basket extends ModelFunctionality
         $currency = $this->getCurrency();
         $box = new Box($boxColor, $language,  $country,  $currency);
         $box->insertBox($response, $userID);
-        if(!$response->containError()){
+        if (!$response->containError()) {
             $key = $box->getDateInSec();
             $this->boxes[$key] = $box;
             krsort($this->boxes);
         }
+    }
+
+    /**
+     * To check if basket holds a box following a id given in param
+     * @param string $boxID id of the box to look for
+     * @return boolean true if the box with the id given exist else false
+     */
+    public function existBox($boxID)
+    {
+        return !($this->getBoxe($boxID) === null);
+    }
+
+    /**
+     * Check if still enough place in box to add one product
+     * @param string $boxID id of the box to look for
+     * @return boolean true if still space in the box else false
+     */
+    public function stillSpace($boxID)
+    {
+        $box = $this->getBoxe($boxID);
+        if($box == null){
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        return $box->getSpace();
+    }
+
+    /**
+     * To add new product in box of Visitor's basket
+     * @param Response $response where to strore results
+     * @param string $boxID id of box in Visitor's basket
+     * @param string $prodID id of the product to add in box
+     * @param Size $sizeObj submited size for product
+     */
+    public function addBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
+    {
+        $box = $this->getBoxe($boxID);
+        if($box == null){
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        $box->addProduct($response, $prodID, $sizeObj);
     }
 }

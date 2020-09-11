@@ -201,6 +201,15 @@ class BoxProduct extends Product
     }
 
     /**
+     * Check if the product is a basket product
+     * @return boolean true if the product is a basket product else false
+     */
+    public function isBasketProduct()
+    {
+        return false;
+    }
+
+    /**
      * Getter for product's stock for each size
      * @return int[] product's stock for each size
      */
@@ -292,12 +301,54 @@ class BoxProduct extends Product
         }
     }
 
+    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
     /**
-     * Check if the product is a basket product
-     * @return boolean true if the product is a basket product else false
+     * Insert product in db
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     * @param string $boxID id of box that holds the product
      */
-    public function isBasketProduct()
+    public function insertProduct(Response $response, $boxID)
     {
-        return false;
+        $bracket = "(?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Box-Products`(`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`)
+            VALUES " . $this->buildBracketInsert(1, $bracket);
+        $values = [];
+        $sizeObj = $this->getSelectedSize();
+        array_push($values, $boxID);
+        array_push($values, $this->getProdID());
+        array_push($values, $sizeObj->getSequence());
+        array_push($values, $sizeObj->getsize());
+        array_push($values, $sizeObj->getbrandName());
+        array_push($values, $sizeObj->getmeasureID());
+        array_push($values, $sizeObj->getCut());
+        array_push($values, $this->getQuantity());
+        array_push($values, $sizeObj->getSetDate());
+        $this->insert($response, $sql, $values);
+    }
+
+    /**
+     * Update product's quantity in db
+     * + this function also update product's set date
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     * @param string $boxID id of box that holds the product
+     */
+    public function updateProductQuantity(Response $response, $boxID)
+    {
+        $prodID = $this->getProdID();
+        $sizeObj = $this->getSelectedSize();
+        $sequence = $sizeObj->getSequence();
+        $sql =
+            "UPDATE `Box-Products` SET 
+            `quantity`=?,
+            `setDate`=? 
+            WHERE `boxId`= '$boxID' 
+            AND `prodId`= '$prodID' 
+            AND `sequenceID`= '$sequence'";
+        $values = [];
+        array_push($values, $this->getQuantity());
+        array_push($values, $sizeObj->getSetDate());
+        $this->update($response, $sql, $values);
     }
 }
