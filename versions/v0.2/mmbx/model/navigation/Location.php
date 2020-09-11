@@ -109,7 +109,7 @@ class Location extends ModelFunctionality
      */
     public function getCurrency()
     {
-        return $this->currency->getCopy();
+        return $this->currency;
     }
 
     // function __toString()

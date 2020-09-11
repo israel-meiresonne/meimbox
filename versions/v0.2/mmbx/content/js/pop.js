@@ -42,15 +42,27 @@
             });
         });
     }
-    displayFlex = (x, t = TS) => {
+    displayFlexOn = (x, t = TS) => {
         $(x).css("opacity", "0");
         $(x).css("display", "flex");
         $(x).animate({ "opacity": "1" }, t);
     }
-    displayNone = (x, t = TS) => {
-        $(x).animate({"opacity":"0"}, t, () => {
+    displayFlexOff = (x, t = TS) => {
+        $(x).animate({ "opacity": "0" }, t, () => {
             $(x).css("display", "none");
         })
+    }
+    replaceFade = function (x, y, t = TS) {
+        $(y).css("display", "none");
+        $(x).fadeOut(t / 2, function () {
+            $(this).replaceWith(y);
+            $(y).fadeIn(t);
+        });
+    }
+    createNone = function (x) {
+        var y = $.parseHTML(x);
+        $(y).css("display", "none");
+        return y;
     }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— BEHAVIOR DOWN ——————————————————————————————————————*/
@@ -63,7 +75,7 @@
         $(xbtn).attr(popstack, stack);
 
         $(FCID).fadeIn(TS, function () {
-            displayFlex(x);
+            displayFlexOn(x);
         });
         after(x);
     }
@@ -108,7 +120,7 @@
     }
     switcher = (fromx, tox) => {
         $(fromx).fadeOut(TS, function () {
-            displayFlex(tox);
+            displayFlexOn(tox);
         });
     }
     switchBackPopUp = (fromx, tox, before = () => { }, after = () => { }) => {
@@ -145,11 +157,11 @@
             "l": "#brandPopUp_loading",
             // "x": btnx,
             "sc": () => {
-                displayFlex(d.l);
+                displayFlexOn(d.l);
                 disable(sbtnx);
             },
             "rc": () => {
-                displayNone(d.l);
+                displayFlexOff(d.l);
                 enable(sbtnx);
             }
         };
@@ -372,7 +384,6 @@
     /*—————————————————— BOX MANAGER UP —————————————————————————————————————*/
     /*—————————————————— PRICING MANAGER DOWN ———————————————————————————————*/
     addBox = (color, popx) => {
-        console.log("color", color);
         var param = mapToParam({ [KEY_BOX_COLOR]: color });
         var cbtnx = $(popx).find("." + closebtnCls);
         var d = {
@@ -381,8 +392,8 @@
             "r": addBoxRSP,
             "l": "#box_pricing_loading",
             "x": cbtnx,
-            "sc": () => {displayFlex(d.l)},
-            "rc": () => {displayNone(d.l)}
+            "sc": () => { displayFlexOn(d.l) },
+            "rc": () => { displayFlexOff(d.l) }
         };
         SND(d);
     }
@@ -392,6 +403,45 @@
             $(cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
+        }
+    }
+    addBoxProduct = (sbtnx, popx) => {
+        var frm = $("#add_prod_form input");
+        var x = $(sbtnx).attr(datatarget);
+        var bxid = $(x).attr(submitdata);
+        var param = mapToParam({ [KEY_BOX_ID]: bxid, [INPUT_PROD_ID]: prodID });
+        var cbtnx = $(popx).find("." + closebtnCls);
+        var d = {
+            "frm": frm,
+            "frmCbk": function () {
+                return "&" + param;
+            },
+            "a": A_ADD_BXPROD,
+            // "d": param,
+            "r": addBoxProductRSP,
+            "l": "#box_manager_loading",
+            "x": cbtnx,
+            "sc": () => {
+                displayFlexOn(d.l, TS / 10);
+                // $(d.l).css("display", "flex");
+                disable(sbtnx);
+            },
+            "rc": () => {
+                // $(d.l).fadeOut(TS);
+                displayFlexOff(d.l, TS);
+                enable(sbtnx);
+            }
+        };
+        frmSND(d);
+    }
+    var addBoxProductRSP = (r, cbtnx) => {
+        if (r.isSuccess) {
+            $("#box_manager_window").html(r.results[A_ADD_BXPROD]);
+            $(cbtnx).click();
+        } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
+            popAlert(r.errors[FAT_ERR].message);
+        } else if (r.errors[A_ADD_BXPROD] != null && r.errors[A_ADD_BXPROD] != "") {
+            popAlert(r.errors[A_ADD_BXPROD].message);
         }
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/

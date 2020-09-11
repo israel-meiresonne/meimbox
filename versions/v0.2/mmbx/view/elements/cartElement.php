@@ -77,10 +77,12 @@ if (!empty($dadx)) {
         <?php
         endif;
         if ($showArow) :
+            $arrowId = ModelFunctionality::generateDateCode(25);
+            $arrowIdx = "#".$arrowId;
         ?>
             <div class="cart-element-arrow-block">
                 <div class="cart-element-arrow-inner">
-                    <button class="cart-element-arrow-button remove-button-default-att">
+                    <button id="<?= $arrowId ?>" class="cart-element-arrow-button remove-button-default-att" onclick="animateBox('<?= $arrowIdx ?>')">
                         <div class="arrow-element-wrap">
                             <span class="arrow-span"></span>
                         </div>

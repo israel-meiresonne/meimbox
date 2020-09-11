@@ -159,7 +159,9 @@
         wrapper.removeAttribute("id");
     }
 
-    var animateBox = function (selector) {
+    animateBox = function (btnx) {
+        selector = $(btnx)[0];
+        var holdId = $(selector).attr("id");
         var selectorId = "arrrow_" + randomInt(BNR);
         var wrapperId = "box_" + randomInt(BNR);
         var wrapper = selector.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
@@ -176,7 +178,8 @@
             wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow-right)";
             $("#" + wrapperId + " #" + selectorId).addClass("box-arrow-open");
         }
-        selector.removeAttribute("id");
+        // selector.removeAttribute("id");
+        selector.setAttribute("id", holdId);
         wrapper.removeAttribute("id");
     }
 
@@ -452,9 +455,9 @@
         //——————————————————— SLIDER UP ————————————————————————
 
         //—————————————————— BOX DOWN ————————————————
-        $(".cart-element-arrow-button").click(function () {
-            animateBox(this);
-        });
+        // $(".cart-element-arrow-button").click(function () {
+        //     animateBox(this);
+        // });
         //—————————————————— BOX UP ————————————————————————
 
         //—————————————————— CART_SUMMARY DOWN ————————————————

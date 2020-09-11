@@ -128,7 +128,7 @@
                 "frmCbk": function () {
                     return "&" + INPUT_PROD_ID + "=" + prodID;
                 },
-                "a": A_ADD_PROD,
+                "a": A_SBMT_BXPROD,
                 "r": addProdRSP,
                 "l": "#add_prod_loading",
                 "sc": addProdFlex_on,

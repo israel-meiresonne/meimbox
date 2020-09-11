@@ -116,11 +116,11 @@ abstract class Product extends ModelFunctionality
      */
     protected $description;
 
-    /**
-     * Holds the quantity of this product in a container like basket or box
-     * + in container, a product is defined by its id, Size and color
-     */
-    protected $quantity = 0;
+    // /**
+    //  * Holds the quantity of this product in a container like basket or box
+    //  * + in container, a product is defined by its id, Size and color
+    //  */
+    // protected const $quantity = 0;
 
     /**
      * List of products sharing the same name than the current product. NOTE: There are
@@ -201,7 +201,7 @@ abstract class Product extends ModelFunctionality
             $sql = "SELECT * FROM `Products` WHERE `prodID` = '$this->prodID'";
             $tab = $this->select($sql);
             if (count($tab) != 1) {
-                throw new Exception("No product has this identifier $prodID");
+                throw new Exception("No product has this id $prodID");
             }
             $productLine = $tab[0];
             $this->prodName = $productLine["prodName"];
@@ -381,20 +381,33 @@ abstract class Product extends ModelFunctionality
         }
     }
 
+    // /**
+    //  * Setter for product's quantity
+    //  * @param int $quantity product's quantity
+    //  */
+    // protected function setQuantity(int $quantity)
+    // {
+    //     $this->quantity = $quantity;
+    // }
+
     /**
-     * Setter for product's quantity
+     * To increase or decrease the quantity of product holds by container
      * @param int $quantity product's quantity
      */
-    public function setQuantity(int $quantity)
+    public function addQuantity(int $quantity = null)
     {
-        $this->quantity = $quantity;
+        $selectedSize = $this->getSelectedSize();
+        if(!isset($selectedSize)){
+            throw new Exception("Can't get product's selected size cause it not initialized!");
+        }
+        return $selectedSize->addQuantity($quantity);
     }
 
     /**
      * Set product's selected size
      * @param Size $size 
      */
-    public function setSelectedSize(Size $size)
+    public function selecteSize(Size $size)
     {
         $this->selectedSize = $size;
     }
@@ -564,7 +577,11 @@ abstract class Product extends ModelFunctionality
      */
     public function getQuantity()
     {
-        return $this->quantity;
+        $selectedSize = $this->getSelectedSize();
+        if(!isset($selectedSize)){
+            throw new Exception("Can't get product's selected size cause it not initialized!");
+        }
+        return $selectedSize->getQuantity();
     }
 
     /**
@@ -626,6 +643,9 @@ abstract class Product extends ModelFunctionality
     public function getDateInSec()
     {
         $selectedSize = $this->getSelectedSize();
+        if(!isset($selectedSize)){
+            throw new Exception("Can't get product's selected size cause it not initialized!");
+        }
         return strtotime($selectedSize->getSetDate());
     }
 

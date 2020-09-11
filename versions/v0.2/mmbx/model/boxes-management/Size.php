@@ -37,6 +37,13 @@ class Size  extends ModelFunctionality
     private $cut;
 
     /**
+     * Holds the quantity of this product in a container like basket or box
+     * + in container, a product is defined by its id and Size
+     * @var int
+     */
+    private $quantity;
+
+    /**
      * Holds the added date of this product to basket or box
      * @var string
      */
@@ -47,6 +54,12 @@ class Size  extends ModelFunctionality
     //  * @var int
     //  */
     // private $quantity;
+
+    /**
+     * Holds string value for a null atrribut
+     * @var string
+     */
+    private const STR_NULL =  "null";
 
     /**
      * Holds access key for supported sizes from db's Constante tale
@@ -117,19 +130,21 @@ class Size  extends ModelFunctionality
      * @param string $setDate date of add of this product to basket or box
      * @param string $cut the cut value
      */
-    public function __construct($sequence, $setDate, $cut)
+    // public function __construct($sequence, $setDate, $cut)
+    public function __construct($sequence, $setDate = null)
     {
         $sizeDatas = $this->explodeSequence($sequence);
         $size = $sizeDatas[0];
         $brand = $sizeDatas[1];
         $measure = $sizeDatas[2];
-        if(empty($measure) && empty($size)){
-            throw new Exception("Param '\$measure' and '\$size' can't both be empty"." in: ".__FILE__." line: ".__LINE__);
+        $cut = $sizeDatas[3];
+        if (empty($measure) && empty($size)) {
+            throw new Exception("Param '\$measure' and '\$size' can't both be empty" . " in: " . __FILE__ . " line: " . __LINE__);
         }
-        if(isset($measure) && isset($size)){
-            throw new Exception("Param '\$measure' and '\$size' can't both be setted"." in: ".__FILE__." line: ".__LINE__);
+        if (isset($measure) && isset($size)) {
+            throw new Exception("Param '\$measure' and '\$size' can't both be setted" . " in: " . __FILE__ . " line: " . __LINE__);
         }
-        $this->setDate = (!empty($setDate))? $setDate : $this->getDateTime();
+        $this->setDate = (!empty($setDate)) ? $setDate : $this->getDateTime();
         if (!empty($measure)) {
             if (empty($cut)) {
                 throw new Exception("Param 'cut' can't be empty for a measure");
@@ -137,10 +152,11 @@ class Size  extends ModelFunctionality
             $this->measure = $measure;
             $this->cut = $cut;
         }
-        if(!empty($size)){
+        if (!empty($size)) {
             $this->size = $size;
             $this->brandName = $brand;
         }
+        $this->quantity = 1;
     }
 
     /**
@@ -150,20 +166,28 @@ class Size  extends ModelFunctionality
      * @param string|null $measureID measure's id
      * @return string like size-brand-measureID
      */
-    public static function buildSequence($size, $brand, $measureID)
+    public static function buildSequence($size, $brand, $measureID, $cut)
     {
-        if(empty($measureID) && empty($size)){
-            throw new Exception("Param '\$measureID' and '\$size' can't both be empty"." in: ".__FILE__);
+        if (empty($measureID) && empty($size)) {
+            throw new Exception("Param '\$measureID' and '\$size' can't both be empty" . " in: " . __FILE__);
         }
-        if(isset($measureID) && isset($size)){
-            throw new Exception("Param '\$measureID' and '\$size' can't both be setted"." in: ".__FILE__);
+        if (isset($measureID) && isset($size)) {
+            throw new Exception("Param '\$measureID' and '\$size' can't both be setted" . " in: " . __FILE__);
+        }
+        if (isset($measureID) && (!isset($cut))) {
+            throw new Exception("Param '\$cut' have to be setted when '\$measureID' is setted" . " in: " . __FILE__);
+        }
+        if ((isset($size) || isset($brand)) && (isset($cut))) {
+            throw new Exception("Param '\$cut' can't be setted when '\$size' or '\$brand' is setted" . " in: " . __FILE__);
         }
         $sequence = "";
-        $sequence .= (!empty($size)) ? $size : "null";
+        $sequence .= (!empty($size)) ? $size : self::STR_NULL;
         $sequence .= self::SEQUENCE_SEPARATOR;
-        $sequence .= (!empty($brand)) ? $brand : "null";
+        $sequence .= (!empty($brand)) ? $brand : self::STR_NULL;
         $sequence .= self::SEQUENCE_SEPARATOR;
-        $sequence .= (!empty($measureID)) ? $measureID : "null";
+        $sequence .= (!empty($measureID)) ? $measureID : self::STR_NULL;
+        $sequence .= self::SEQUENCE_SEPARATOR;
+        $sequence .= (!empty($cut)) ? $cut : self::STR_NULL;
         return $sequence;
     }
 
@@ -174,46 +198,88 @@ class Size  extends ModelFunctionality
      * + [0] => size{string}|null
      * + [1] => brand{string}|null
      * + [2] => Measure{obj}|null
+     * + [3] => cut{string}|null
      */
     private function explodeSequence($sequence)
     {
         $datas = explode(self::SEQUENCE_SEPARATOR, $sequence);
-        if (count($datas) != 3) {
+        if (count($datas) != 4) {
             throw new Exception("Sequence is incorrect '$sequence' ");
         }
-        $datas[0] = ($datas[0] == "null") ? null : $datas[0];   // size
-        $datas[1] = ($datas[1] == "null") ? null : $datas[1];   // brand
-        if($datas[2] != "null") {                               // measure
+        $datas[0] = ($datas[0] == self::STR_NULL) ? null : $datas[0];   // size
+        $datas[1] = ($datas[1] == self::STR_NULL) ? null : $datas[1];   // brand
+        if ($datas[2] != self::STR_NULL) {                               // measure
             $sql = "SELECT * FROM `UsersMeasures` WHERE `measureID` = '$datas[2]'";
             $tab = $this->select($sql);
-            if(count($tab) != 1){
+            if (count($tab) != 1) {
                 throw new Exception("The measureID '$datas[2]' don't exist");
             }
             $tabLine = $tab[0];
             $measureDatas = Measure::getDatas4Measure($tabLine);
             $datas[2] = new Measure($measureDatas);
+            if ($datas[3] == self::STR_NULL) {
+                throw new Exception("Param '\$cut' have to be setted when '\$measureID' is setted" . " in: " . __FILE__);
+            }
         } else {
             $datas[2] = null;
+            $datas[3] = null;
         }
         return $datas;
     }
 
     /**
+     * Setter for product's quantity
+     * @param int $quantity product's quantity
+     */
+    public function setQuantity(int $quantity)
+    {
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * To increase or decrease the quantity of product holds by container
+     * + if $delta is empty, its increment quantity of 1
+     * + if $delta > 0, its increment quantity of $delta
+     * + if $delta < 0, its subtract quantity of $delta
+     * + if $delta = 0, its do nothing
+     * @param int $delta amount to add/subtract on quantity
+     */
+    public function addQuantity(int $delta = null)
+    {
+        $quantity = $this->getQuantity();
+        if (($quantity + $delta) <= 0) {
+            throw new Exception("Quantity can't be bellow or equals at zero: holdQuantity: $quantity, delta: $delta");
+        }
+        (!empty($delta)) ? $this->quantity + $delta : ++$this->quantity;
+    }
+
+    /**
      * Getter for Size's size value
+     * @param boolean true if you want null to be a string if empty else false
+     *  of nothing
      * @return string size's size size value
      */
-    public function getsize()
+    public function getsize($wantStr = false)
     {
+        if ($wantStr) {
+            return (!empty($this->size)) ? $this->size : self::STR_NULL;
+        }
         return $this->size;
     }
     /**
      * Getter for size's brandName
+     * @param boolean true if you want null to be a string if empty else false
+     *  of nothing
      * @return string size's brandName
      */
-    public function getbrandName()
+    public function getbrandName($wantStr = false)
     {
+        if ($wantStr) {
+            return (!empty($this->brandName)) ? $this->brandName : self::STR_NULL;
+        }
         return $this->brandName;
     }
+
     /**
      * Getter for size's measure
      * @return Measure size's measure
@@ -222,6 +288,21 @@ class Size  extends ModelFunctionality
     {
         return $this->measure;
     }
+
+    /**
+     * Getter for size's measure
+     * @param boolean true if you want null to be a string if empty else false
+     *  of nothing
+     * @return string size's measure
+     */
+    public function getmeasureID($wantStr = false)
+    {
+        if ($wantStr) {
+            return (!empty($this->measure)) ? $this->measure->getMeasureID() : self::STR_NULL;
+        }
+        return (!empty($this->measure)) ? $this->measure->getMeasureID() :  null;
+    }
+
     /**
      * Getter for size's cut
      * @return string size's cut
@@ -232,11 +313,47 @@ class Size  extends ModelFunctionality
     }
 
     /**
+     * Getter for product's quantity holds in container
+     * @return int product's quantity holds in container
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
      * Getter of the set date
      * @return string the set date
      */
     public function getSetDate()
     {
         return $this->setDate;
+    }
+
+    /**
+     * To generate size's sequence
+     * @return string size's sequence
+     */
+    public function getSequence()
+    {
+        $size = $this->getsize();
+        $brand = $this->getbrandName();
+        $measureID = $this->getmeasureID();
+        $cut = $this->getCut();
+        return self::buildSequence($size, $brand, $measureID, $cut);
+    }
+
+    /**
+     * To check if two Size is equal
+     * + two size is equal is they have the sam size sequance
+     * @param Size $size1 size to compare with the second one
+     * @param Size $size1 size to compare with the first one
+     * @return boolean true if the two Size arre equals else false
+     */
+    public static function equals(Size $size1, Size $size2)
+    {
+        $sequence1 = $size1->getSequence();
+        $sequence2 = $size2->getSequence();
+        return ($sequence1 == $sequence2);
     }
 }

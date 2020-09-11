@@ -139,6 +139,12 @@ class Box extends ModelFunctionality
      * Access key for attribut boxColor in ajax
      * @var string
      */
+    public const KEY_BOX_ID = "boxid";
+
+    /**
+     * Access key for attribut boxColor in ajax
+     * @var string
+     */
     public const KEY_BOX_COLOR = "boxcolor";
 
 
@@ -299,10 +305,10 @@ class Box extends ModelFunctionality
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
                 $product = new BoxProduct($tabLine["prodId"], $language, $country, $currency);
-                $size = new Size($tabLine["sequenceID"], $tabLine["setDate"], $tabLine["cut_name"]);
-                $product->setSelectedSize($size);
+                $size = new Size($tabLine["sequenceID"], $tabLine["setDate"]);
                 $quantity = (int) $tabLine["quantity"];
-                $product->setQuantity($quantity);
+                $size->setQuantity($quantity);
+                $product->selecteSize($size);
                 $key = $product->getDateInSec();
                 $this->boxProducts[$key] = $product;
             }
@@ -388,6 +394,19 @@ class Box extends ModelFunctionality
     public function getSizeMax()
     {
         return $this->sizeMax;
+    }
+
+    /**
+     * To get space available in the box
+     * @return int space available in the box
+     */
+    public function getSpace()
+    {
+        $space = ($this->getSizeMax() - $this->getNbProduct());
+        if ($space < 0) {
+            throw new Exception("Stilling place in box can't be negative");
+        }
+        return $space;
     }
 
     /**
@@ -478,13 +497,58 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * To get a box's product following it's size
+     * @return BoxProduct box's product
+     */
+    public function getProduct($prodID, Size $selectedSize)
+    {
+        $products = $this->getBoxProducts();
+        foreach ($products as $key => $product) {
+            $selectedSize2 = $product->getSelectedSize();
+            $exist = (($product->getProdID() == $prodID)
+                && (Size::equals($selectedSize, $selectedSize2)));
+            if ($exist) {
+                return $products[$key];
+            }
+        }
+        return null;
+    }
+
+    // /**
+    //  * To check if exist a product in the box with the id and size given in param
+    //  * @param string $prodID id of the product to add in box
+    //  * @param Size $sizeObj1 submited size for product
+    //  * @return boolean true if the product exist in the box else false
+    //  */
+    // private function existProduct($prodID, Size $selectedSize1)
+    // {
+    //     $exist = false;
+    //     $products = $this->getBoxProducts();
+    //     foreach ($products as $product) {
+    //         $selectedSize2 = $product->getSelectedSize();
+    //         $exist = (($product->getProdID() == $prodID)
+    //             && (Size::equals($selectedSize1, $selectedSize2)));
+    //         if ($exist) {
+    //             break;
+    //         }
+    //     }
+    //     return $exist;
+    // }
+
+    /**
      * To get the amount of product in the box
      * @return int amount of product in the box
      */
     public function getNbProduct()
     {
         $products = $this->getBoxProducts();
-        return count($products);
+        $nb = 0;
+        if (count($products) > 0) {
+            foreach ($products as $product) {
+                $nb += $product->getQuantity();
+            }
+        }
+        return $nb;
     }
 
     /**
@@ -508,12 +572,42 @@ class Box extends ModelFunctionality
         return $boxes;
     }
 
+    /**
+     * To add new product in box
+     * + also add product in db
+     * @param Response $response where to strore results
+     * @param string $prodID id of the product to add in box
+     * @param Size $selectedSize submited size for product
+     */
+    public function addProduct($response, $prodID, Size $selectedSize)
+    {
+        $boxID = $this->getBoxID();
+        $product = $this->getProduct($prodID, $selectedSize);
+        if (!empty($product)) {
+            $product->addQuantity();
+            // var_dump($product->getQuantity());
+            $product->updateProductQuantity($response, $boxID);
+        } else {
+            $language = $this->getLanguage();
+            $country = $this->getCountry();
+            $currency = $this->getCurrency();
+            $product = new BoxProduct($prodID, $language, $country, $currency);
+            $product->selecteSize($selectedSize);
+            $product->insertProduct($response, $boxID);
+        }
+        if (!$response->containError()) {
+            $key = $product->getDateInSec();
+            $this->boxProducts[$key] = $product;
+            krsort($this->boxProducts);
+        }
+    }
+
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
     /**
      * Insert box in the db like a new box
-     * @param string $userID Visitor's id
      * @param Response $response if its success Response.isSuccess = true else Response
      *  contain the error thrown
+     * @param string $userID Visitor's id
      */
     public function insertBox(Response $response, $userID)
     {
@@ -521,7 +615,6 @@ class Box extends ModelFunctionality
         $sql = "INSERT INTO `Boxes`(`boxID`, `box_color`, `setDate`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
-        // array_push($values, $userID);
         array_push($values, $this->getBoxID());
         array_push($values, $this->getColor());
         array_push($values, $this->getSetDate());
