@@ -16,16 +16,16 @@ $btnFunc = (!empty($btnFunc)) ? 'onclick="' . $btnFunc . '"' : "";
 $btnDataAttr = (!empty($btnDataAttr)) ? $btnDataAttr : "";
 ?>
 
-<div class="pop_up-content-block-inner">
-    <div class="popup-content-instruct-div">
-        <p class="popup-content-instruct"><?= $instruction ?></p>
-    </div>
-    <?= $content ?>
-    <?php
-    if (!empty($btnId)) : ?>
-        <div class="popup-add-btn-div">
-            <button id="<?= $btnId ?>" class="green-button standard-button remove-button-default-att" <?= $btnFunc ?> <?= $btnDataAttr ?>><?= $btnTxt ?></button>
-        </div>
-    <?php
-    endif; ?>
+<div class="popup-content-instruct-div">
+    <p class="popup-content-instruct"><?= $instruction ?></p>
 </div>
+<!-- <div class="pop_up-content-block-inner-adder-list"> -->
+<?= $content ?>
+<?php
+if (!empty($btnId)) : ?>
+    <div class="popup-add-btn-div">
+        <button id="<?= $btnId ?>" class="green-button standard-button remove-button-default-att" <?= $btnFunc ?> <?= $btnDataAttr ?>><?= $btnTxt ?></button>
+    </div>
+<?php
+endif; ?>
+<!-- </div> -->

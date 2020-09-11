@@ -2315,7 +2315,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     padding: 0 10px 25px;
     height: 95%;
     max-height: 75vh;
-    overflow: auto;
+    /* overflow: auto; */
     background-color: var(--color-white);
 }
 
@@ -2329,8 +2329,17 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .pop_up-content-block-inner .popup-add-btn-div {
     max-width: 300px;
-    margin: 35px auto 0;
+    margin: 5px auto;
     width: 60%;
+}
+
+.pop_up-content-block-inner .cart-wrap {
+    overflow: auto;
+    max-height: 55vh;
+    padding: 8px;
+}
+.pop_up-content-block-inner .cart-wrap .cart-element-wrap{
+    box-shadow: none;
 }
 
 .pop_up-validate_button-div {
@@ -2388,11 +2397,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: relative;
 } */
 
-#mange_measure_window .customize_measure-content {
+/* #mange_measure_window .customize_measure-content {
     opacity: 1;
-    /* transition: var(--transition-time);
-    -moz-transition: var(--transition-time); */
-}
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
+} */
 
 #mange_measure_window .pop_up-content-block .customize_measure-info-div {
     margin-bottom: 15px;
@@ -2420,11 +2429,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     margin-bottom: 20px;
 } */
 
-#mange_measure_window .manager_add_measurement {
+/* #mange_measure_window .manager_add_measurement {
     max-width: 300px;
     margin: 35px auto 0;
     width: 60%;
-}
+} */
 
 #measurePopUp_loading img {
     /* width: auto; */

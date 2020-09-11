@@ -26,8 +26,8 @@
     $windowId = (!empty($datas["windowId"])) ? 'id="' . $datas["windowId"] . '"' : null;
     $laodingId = (!empty($datas["laodingId"])) ? 'id="' . $datas["laodingId"] . '"' : null;
     $forFormId = (!empty($datas["forFormId"])) ? 'for="' . $datas["forFormId"] . '"' : null;
-    
-    if(!empty($datas["submitButtonId"])){
+
+    if (!empty($datas["submitButtonId"])) {
         $desabled = ($datas["submitIsDesabled"] == true) ? "disabled=true" : null;
         $submitBtnClass = (!empty($datas["submitClass"])) ? "standard-button-desabled" : null;
         $submitButtonFunc = (!empty($datas["submitButtonFunc"])) ? 'onclick="' . $datas["submitButtonFunc"] . '"' : null;
@@ -50,7 +50,9 @@
             </div>
             <hr class="hr-summary">
             <div class="pop_up-content-block">
-                <?= $datas["content"] ?>
+                <div class="pop_up-content-block-inner">
+                    <?= $datas["content"] ?>
+                </div>
                 <div <?= $laodingId ?> class="loading-img-wrap">
                     <img src="content/brain/permanent/loading.gif">
                 </div>
