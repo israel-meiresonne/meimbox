@@ -23,7 +23,7 @@ $sbtnx = "#". $popUpDatas["submitButtonId"];
 $popUpDatas["submitButtonFunc"] = "selectBrand('". $sbtnx ."')";
 ob_start();
 ?>
-<div class="brand_reference-content">
+<div class="pop_up-content-block-inner">
     <div class="brand_reference-info-div">
         <p><?= $contentTitle ?></p>
     </div>

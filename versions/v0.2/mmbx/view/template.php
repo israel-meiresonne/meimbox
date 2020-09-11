@@ -373,7 +373,7 @@ require_once 'model/special/MyError.php';
         </nav>
     </header>
     <?= $content ?>
-    <?= $fullscreen ?>
+    <?= ""//$fullscreen ?>
 </body>
 
 </html>

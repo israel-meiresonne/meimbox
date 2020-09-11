@@ -21,7 +21,7 @@ $editBtnTranslate = $translator->translateStation("US49");
 
 ?>
 <div class="customize_measure-content">
-    <div class="customize_measure-content-inner">
+    <div class="pop_up-content-block-inner">
         <div class="customize_measure-info-div">
             <?php
             echo $this->generateFile('view/elements/popupMeasureManagerTitle.php', ["measures" => $measures]);
