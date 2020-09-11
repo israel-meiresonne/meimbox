@@ -52,7 +52,7 @@
     ob_start();
     ?>
     <div class="customize_measure-content">
-        <div class="customize_measure-content-inner">
+        <div class="pop_up-content-block-inner">
             <div class="customize_measure-info-div">
                 <p><?= $contentTitle ?></p>
             </div>
