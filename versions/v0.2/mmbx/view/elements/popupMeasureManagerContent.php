@@ -21,15 +21,12 @@ $editBtnTranslate = $translator->translateStation("US49");
 
 ?>
 <div class="customize_measure-content">
-    <div class="pop_up-content-block-inner">
+    <div class="customize_measure-content-inner">
         <div class="customize_measure-info-div">
             <?php
             echo $this->generateFile('view/elements/popupMeasureManagerTitle.php', ["measures" => $measures]);
             ?>
         </div>
-
-
-
         <div class="cart-wrap">
             <ul id="<?= $dad ?>" class="remove-ul-default-att" data-sbtnx="<?= $sbtnx ?>">
                 <?php
@@ -120,7 +117,7 @@ $editBtnTranslate = $translator->translateStation("US49");
             </ul>
         </div>
 
-        <div id="manager_add_measurement" class="manager_add_measurement">
+        <div id="manager_add_measurement" class="popup-add-btn-div">
             <?php
             $datas = [
                 "measures" => $measures
