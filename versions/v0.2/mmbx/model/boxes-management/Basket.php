@@ -198,6 +198,7 @@ class Basket extends ModelFunctionality
 
     /**
      * Getter for basket's content
+     * + merge list of basket product and boxes
      * + content is ordered from newest to older
      * @return Box[]|BasketProduct[] basket's content
      */

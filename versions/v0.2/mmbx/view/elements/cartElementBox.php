@@ -60,7 +60,7 @@ $price = $box->getPriceFormated();
                             "product" => $product,
                             "country" => $country,
                             "currency" => $currency,
-                            "showArow" => false
+                            "showArrow" => false
                         ];
                         echo $this->generateFile('view/elements/cartElementProduct.php', $datas);
                     }

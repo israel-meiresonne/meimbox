@@ -2,7 +2,6 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Translator $translator to translate
  * @param Box[] $boxes user's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
@@ -23,7 +22,6 @@ $brotherx = ModelFunctionality::generateDateCode(25);
 $sbtnx = "#" . $datas["submitButtonId"];
 $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
 $boxDatas = [
-    "translator" => $translator,
     "elements" => $boxes,
     "country" => $country,
     "currency" => $currency,

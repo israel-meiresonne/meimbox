@@ -11,13 +11,13 @@
  * @param string $pictureSrc the source of the picture of the cart element's 
  * + the picture conatin all the directory like my/file/is/here/$picture
  * @param string|null $price price property in a displayable format (with currency)
- * @param boolean $showArow set true to display the arow else set false
+ * @param boolean $showArrow set true to display the arow else set false
  * @param string $dadx selector of the dad (if set it activate the selectPopUp functionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
-$showArow = (isset($showArow)) ? $showArow : true; // show alway except if false
+$showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
 
 if (!empty($dadx)) {
     $launch = ModelFunctionality::generateDateCode(25);
@@ -76,7 +76,7 @@ if (!empty($dadx)) {
             </div>
         <?php
         endif;
-        if ($showArow) :
+        if ($showArrow) :
             $arrowId = ModelFunctionality::generateDateCode(25);
             $arrowIdx = "#".$arrowId;
         ?>
