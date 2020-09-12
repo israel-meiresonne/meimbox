@@ -7,7 +7,7 @@ require_once 'model/boxes-management/BoxProduct.php';
  * @param BoxProduct|BasketProduct $product a boxproduct to display
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
- * @param boolean $showArow set true to display the row else set false
+ * @param boolean $showArrow set true to display the row else set false
  * @param string $dadx selector of the dad (if set it activate the select fonctionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
@@ -17,10 +17,12 @@ require_once 'model/boxes-management/BoxProduct.php';
  * @var Price
  */
 $price = null;
+$showArrow = false;
+
 switch ($product->getType()) {
     case BasketProduct::BASKET_TYPE:
         $prodClass = "basket_product-wrap";
-        $price = $product->getFormated();
+        $price = $product->getFormatedPrice();
         if (empty($dadx)) {
             $dadx = null;
             $brotherx = null;
@@ -57,7 +59,7 @@ $size = $product->getSelectedSize();
     $datas = [
         "properties" => $properties,
         "pictureSrc" => (count($pictureSrcs) > 0) ? array_pop(($pictureSrcs)) : null,
-        "showArow" => $showArow,
+        "showArrow" => $showArrow,
         "dadx" => $dadx,
         "brotherx" => $brotherx,
         "submitdata" => $submitdata

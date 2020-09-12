@@ -729,6 +729,18 @@
     border: var(--color-orange) 1px;
 } */
 
+.grey-button {
+    color: var(--color-blue);
+    background-color: var(--color-white);
+    border: var(--color-blue) 1px solid;
+}
+
+.grey-button:hover {
+    color: var(--color-white);
+    background-color: var(--color-blue);
+    border: var(--color-blue) 1px;
+}
+
 .green-button {
     color: var(--color-green);
     background-color: var(--color-white);
@@ -1794,15 +1806,16 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .data-key_value-opposite-wrap .data-key_value-key {
     display: block;
-    width: 50%;
+    /* width: 50%; */
+    margin-right: auto;
     color: var(--color-label);
 }
 
 .data-key_value-opposite-wrap .data-key_value-value {
     display: block;
-    width: 50%;
+    /* width: 50%; */
     color: var(--color-text);
-    text-align: right;
+    /* text-align: right; */
 }
 
 /*————————————————————— DATA_KEY_VALUE_OPOSITE UP —————*/
@@ -2287,7 +2300,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     /* text-transform: capitalize; */
 }
 
-.pop_up-wrap .pop_up-title-div::first-letter {
+/* .pop_up-wrap .pop_up-title-div::first-letter { */
+
+.pop_up-wrap .pop_up-title-div {
     text-transform: capitalize;
 }
 
@@ -2480,6 +2495,31 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*—————————————————————————————— POP_UP PRINCING UP —————————————————————————*/
+
+/*—————————————————————————————— POP_UP BASKET DOWN —————————————————————————*/
+
+#basket_pop .basketpop-resume {
+    display: flex;
+}
+
+#basket_pop .basketpop-resume-inner {
+    margin: 20px auto;
+    width: 50%;
+}
+
+#basket_pop .basketpop-resume-labels {
+    margin-bottom: 15px;
+}
+
+#basket_pop .basketpop-resume-buttons li {
+    margin-bottom: 10px;
+}
+
+#basket_pop .basketpop-resume-buttons button {
+    box-shadow: none;
+}
+
+/*—————————————————————————————— POP_UP BASKET UP ———————————————————————————*/
 
 /*—————————————————————————————— PRICING DOWN ———————————————————————————————*/
 
