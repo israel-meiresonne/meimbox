@@ -210,6 +210,31 @@ class Basket extends ModelFunctionality
     }
 
     /**
+     * To get basket's total price
+     * @return Price basket's total price
+     */
+    public function getSum()
+    {
+        $basketProducts = $this->getBasketProducts();
+        $boxes = $this->getBoxes();
+        $sum = 0;
+        if (!empty($basketProducts)) {
+            foreach ($basketProducts as $basketProduct) {
+                $price = $basketProduct->getPrice()->getPrice();
+                $quantity = $basketProduct->getQuantity();
+                $sum += ($price * $quantity);
+            }
+        }
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                $sum += $box->getPrice()->getPrice();
+            }
+        }
+        $currency = $this->getCurrency();
+        return (new Price($sum,$currency));
+    }
+
+    /**
      * To add new box in basket
      * + also add box in db
      * @param Response $response where to strore results
@@ -248,7 +273,7 @@ class Basket extends ModelFunctionality
     public function stillSpace($boxID)
     {
         $box = $this->getBoxe($boxID);
-        if($box == null){
+        if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
         return $box->getSpace();
@@ -264,7 +289,7 @@ class Basket extends ModelFunctionality
     public function addBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
     {
         $box = $this->getBoxe($boxID);
-        if($box == null){
+        if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
         $box->addProduct($response, $prodID, $sizeObj);

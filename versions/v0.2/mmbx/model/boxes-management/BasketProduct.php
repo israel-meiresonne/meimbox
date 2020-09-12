@@ -208,7 +208,7 @@ class BasketProduct extends Product
      * Getter for product's prrice
      * @return Price product's prrice
      */
-    private function getPrice()
+    public function getPrice()
     {
         $country = $this->getCountry();
         $currency =$this->getCurrency();

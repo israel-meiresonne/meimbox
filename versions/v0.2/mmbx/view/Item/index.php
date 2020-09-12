@@ -441,7 +441,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         <div id="basket_pop" class="pricing-container pop_up-container">
             <?php
             $datas = [
-                "basket" => $basket->getMerge(),
+                "basket" => $basket,
                 "country" => $country,
                 "currency" => $currency
             ];

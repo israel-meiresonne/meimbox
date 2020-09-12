@@ -572,8 +572,8 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
-     * Getter for product's quantity
-     * @return int $quantity product's quantity
+     * Getter for product's quantity holds by a container
+     * @return int $quantity product's quantity holds by a container
      */
     public function getQuantity()
     {
