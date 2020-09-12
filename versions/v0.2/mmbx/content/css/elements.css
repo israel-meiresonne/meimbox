@@ -2329,7 +2329,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .pop_up-content-block-inner .popup-add-btn-div {
     max-width: 300px;
-    margin: 5px auto;
+    margin: 10px auto;
     width: 60%;
 }
 
@@ -2337,8 +2337,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     overflow: auto;
     max-height: 55vh;
     padding: 8px;
+    border: var(--border-float);
+    border-radius: var(--border-float-radius);
 }
-.pop_up-content-block-inner .cart-wrap .cart-element-wrap{
+
+.pop_up-content-block-inner .cart-wrap .cart-element-wrap {
     box-shadow: none;
 }
 
