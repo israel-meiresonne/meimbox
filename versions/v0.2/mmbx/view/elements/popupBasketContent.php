@@ -7,8 +7,13 @@
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  */
+
+/**
+ * @var Basket
+ */
+$basket = $basket;
 $boxDatas = [
-    "elements" => $basket,
+    "elements" => $basket->getMerge(),
     "country" => $country,
     "currency" => $currency,
 ];
@@ -18,8 +23,8 @@ echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
     <div class="basketpop-resume-inner">
         <div class="basketpop-resume-labels">
             <div class="data-key_value-opposite-wrap">
-                <span class="data-key_value-key">total: </span>
-                <span class="data-key_value-value">$82.09 usd</span>
+                <span class="data-key_value-key"><?= $translator->translateStation("US57") ?>:</span>
+                <span class="data-key_value-value"><?= $basket->getSum()->getFormated() ?></span>
             </div>
         </div>
         <ul class="basketpop-resume-buttons remove-ul-default-att">

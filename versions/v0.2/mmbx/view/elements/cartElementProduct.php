@@ -59,6 +59,7 @@ $size = $product->getSelectedSize();
     $datas = [
         "properties" => $properties,
         "pictureSrc" => (count($pictureSrcs) > 0) ? array_pop(($pictureSrcs)) : null,
+        "price" => $price,
         "showArrow" => $showArrow,
         "dadx" => $dadx,
         "brotherx" => $brotherx,

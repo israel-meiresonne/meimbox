@@ -62,7 +62,8 @@ class Price
      */
     public function getPrice()
     {
-        return (float) number_format($this->price, 2, ".", "");
+        // return (float) number_format($this->price, 2, ".", "");
+        return $this->price;
     }
 
     /**
@@ -107,7 +108,7 @@ class Price
         $price = ($this->price != 0) ? number_format($this->price, 2, ",", " ") : 0;
         // return  ($symbol != $isoCurrency) ? $symbol . "" . $price . " " . $isoCurrency
         //     : $price . " " . $isoCurrency;
-        return  $symbol . $price;
+        return  $symbol . " ". $price;
     }
 
     /**
