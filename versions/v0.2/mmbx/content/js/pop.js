@@ -24,6 +24,10 @@
     getX = (x) => {
         return (typeof (x) == "string") ? x : "#" + $(x).attr(idattr);
     }
+    getStack = (x) => {
+        var json = $(x).attr(popstack);
+        return (json != null) ? json_decode(json) : [];
+    }
     enable = function (x) {
         $(x).removeClass(disableCls);
         $(x).attr("disabled", false);
@@ -97,18 +101,29 @@
         console.log(sbtnx);
         after(launchx);
     }
-    switchCloseNext = (fromx, tox) => {
-        var fbtn = $(fromx).find("." + closebtnCls);
-        var stack = json_decode($(fbtn).attr(popstack));
-        var e = "closePopUp('" + getX(tox) + "')";
-        stack.push(e);
-        $(fbtn).attr(popstack, json_encode(stack));
+    // switchCloseNext = (fromx, tox) => {
+    //     var fbtn = $(fromx).find("." + closebtnCls);
+    //     var stack = getStack(fbtn);
+    //     var e = "closePopUp('" + getX(tox) + "')";
+    //     stack.push(e);
+    //     $(fbtn).attr(popstack, json_encode(stack));
+    // }
+    switchCloseNext = (fromx, tox, before = () => { }, after = () => { }) => {
+        before(fromx, tox);
+        var tbtn = $(tox).find("." + closebtnCls);
+        var idx = getX(tox);
+        $(tbtn).attr(onclickattr, "closePopUp('" + idx + "')");
+        var stack = json_encode([]);
+        $(tbtn).attr(popstack, stack);
+
+        switcher(fromx, tox);
+        after(fromx, tox);
     }
     switchPopUp = function (fromx, tox, before = () => { }, after = () => { }) {
         before(fromx, tox)
         var fbtn = $(fromx).find("." + closebtnCls);
         var fevent = $(fbtn).attr(onclickattr);
-        var stack = json_decode($(fbtn).attr(popstack));
+        var stack = getStack(fbtn);
 
         var tbtn = $(tox).find("." + closebtnCls);
         $(tbtn).attr(onclickattr, "switchBackPopUp('" + getX(tox) + "', '" + getX(fromx) + "')");
@@ -126,7 +141,7 @@
     switchBackPopUp = (fromx, tox, before = () => { }, after = () => { }) => {
         before(fromx, tox)
         var fbtn = $(fromx).find("." + closebtnCls);
-        var stack = json_decode($(fbtn).attr(popstack));
+        var stack = getStack(fbtn);
 
         var tbtn = $(tox).find("." + closebtnCls);
         var tevent = stack.pop();
@@ -309,13 +324,12 @@
             $("#add_measurement_button").fadeOut(TS, function () {
                 $("#manage_measurement_button").fadeIn(TS);
             });
-            // $("#mange_measure_window .customize_measure-content").html(r.results[QR_MEASURE_CONTENT]);
             $("#measure_manager").html(r.results[QR_MEASURE_CONTENT]);
 
             var after = () => {
                 $("#save_measure_button").removeAttr("onclick");
             }
-            switchBackPopUp($("#measure_adder"), $("#measure_manager"), switchCloseNext, after);
+            switchCloseNext($("#measure_adder"), $("#measure_manager"), after);
         } else {
             var k = Object.keys(r.errors);
             var cbxE = $("#add_measure_form .measure_input-checkbox-conatiner .checkbox_error-div .comment");
@@ -437,7 +451,9 @@
     var addBoxProductRSP = (r, cbtnx) => {
         if (r.isSuccess) {
             $("#box_manager_window").html(r.results[A_ADD_BXPROD]);
-            $(cbtnx).click();
+            // switchBackPopUp($("#box_manager_window"), $("#basket_pop"), switchCloseNext);
+            switchCloseNext($("#box_manager_window"), $("#basket_pop"));
+            // $(cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[A_ADD_BXPROD] != null && r.errors[A_ADD_BXPROD] != "") {

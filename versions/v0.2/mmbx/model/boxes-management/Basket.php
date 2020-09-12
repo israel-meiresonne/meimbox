@@ -205,7 +205,6 @@ class Basket extends ModelFunctionality
     public function getMerge()
     {
         $cart = array_merge($this->getBoxes(), $this->getBasketProducts());
-        krsort($cart);
         return $cart;
     }
 
