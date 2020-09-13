@@ -24,7 +24,7 @@ echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
         <div class="basketpop-resume-labels">
             <div class="data-key_value-opposite-wrap">
                 <span class="data-key_value-key"><?= $translator->translateStation("US57") ?>:</span>
-                <span class="data-key_value-value"><?= $basket->getSum()->getFormated() ?></span>
+                <span class="data-key_value-value" data-basket="total"><?= $basket->getTotal()->getFormated() ?></span>
             </div>
         </div>
         <ul class="basketpop-resume-buttons remove-ul-default-att">

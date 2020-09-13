@@ -819,6 +819,22 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * To delete box from Visitor's basket
+     * @param Response $response where to strore results
+     * @param string $boxID id of box in Visitor's basket
+     */
+    public function deleteBox(Response $response, $boxID)
+    {
+        $basket = $this->getBasket();
+        $box = $basket->getBoxe($boxID);
+        if (empty($box)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $basket->deleteBox($response, $boxID);
+        }
+    }
+
+    /**
      * To add new product in box of Visitor's basket
      * @param Response $response where to strore results
      * @param string $boxID id of box in Visitor's basket
@@ -827,14 +843,14 @@ class Visitor extends ModelFunctionality
     public function addBoxProduct(Response $response, $boxID, $prodID)
     {
         $basket = $this->getBasket();
-        $existBox = $basket->existBox($boxID);
+        $box = $basket->getBoxe($boxID);
         $existProd = $this->existProductInDb($prodID);
         $isBoxProd = $this->getProductLine($prodID)["product_type"] == BoxProduct::BOX_TYPE;
-        if ((!$existBox) || (!$existProd) || (!$isBoxProd)) {
+        if ((empty($box)) || (!$existProd) || (!$isBoxProd)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             if (!$basket->stillSpace($boxID)) {
-                $box = $basket->getBoxe($boxID);
+                // $box = $basket->getBoxe($boxID);
                 $fullRate = "(".$box->getNbProduct() . "/" . $box->getSizeMax().")";
                 $errStation = "ER14" . $fullRate;
                 $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);

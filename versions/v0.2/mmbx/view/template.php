@@ -132,10 +132,16 @@ require_once 'model/special/MyError.php';
         const MEASURE_ID_KEY = "<?= Measure::MEASURE_ID_KEY ?>";
         const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
 
+        const A_GET_BX_MNGR = "<?= ControllerItem::A_GET_BX_MNGR ?>";
         const A_ADD_BOX = "<?= ControllerItem::A_ADD_BOX ?>";
         const A_ADD_BXPROD = "<?= ControllerItem::A_ADD_BXPROD ?>";
+        const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
         const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
         const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
+        const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
+        const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
+        const KEY_VAT = "<?= Basket::KEY_VAT ?>";
+        const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";

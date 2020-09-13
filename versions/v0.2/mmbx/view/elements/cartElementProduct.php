@@ -8,6 +8,8 @@ require_once 'model/boxes-management/BoxProduct.php';
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  * @param boolean $showArrow set true to display the row else set false
+ * @param string $elementId id of the element (allway given)
+ * + this id is generated in file cart.php
  * @param string $dadx selector of the dad (if set it activate the select fonctionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
@@ -61,6 +63,7 @@ $size = $product->getSelectedSize();
         "pictureSrc" => (count($pictureSrcs) > 0) ? array_pop(($pictureSrcs)) : null,
         "price" => $price,
         "showArrow" => $showArrow,
+        "elementId" => $elementId,
         "dadx" => $dadx,
         "brotherx" => $brotherx,
         "submitdata" => $submitdata

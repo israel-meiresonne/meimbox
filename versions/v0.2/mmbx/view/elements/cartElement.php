@@ -11,13 +11,28 @@
  * @param string $pictureSrc the source of the picture of the cart element's 
  * + the picture conatin all the directory like my/file/is/here/$picture
  * @param string|null $price price property in a displayable format (with currency)
- * @param boolean $showArrow set true to display the arow else set false
+ * @param boolean $showArrow set true to display the arrow else set false
+ * ——————————————————————————————— ID & DATA DOWN —————————————————————————————————————
+ * @param string $elementId id of the element (allway given)
+ * + this id is generated in file cart.php
+ * @param string $deleteFunc onclick function to delete element
+ * + i.e: $deleteFunc = "slideSomething('param1','param2');jumpFrom('param1','param2')"
  * @param string $dadx selector of the dad (if set it activate the selectPopUp functionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
 $showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
+// if(isset($$elementId)){
+//     $flag = str_replace("#", "", $flagx);
+//     $Tagflag = "id='". $flag ."'";
+//     $TagdeleteFunc = 'onclick="' . $deleteFunc . '"';
+// } else {
+//     $Tagflag = "";
+//     $TagdeleteFunc = "";
+// }
+$TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
+
 
 if (!empty($dadx)) {
     $launch = ModelFunctionality::generateDateCode(25);
@@ -27,7 +42,7 @@ if (!empty($dadx)) {
 
     $Tagdadx = "data-dadx='$dadx'";
     $Tagbrotherx = "data-brotherx='$brotherx'";
-    $Tagsubmitdata = "data-submitdata='$submitdata'";
+    $Tagsubmitdata = 'data-submitdata="' . $submitdata . '"';
 
     $flag = ModelFunctionality::generateDateCode(25);
     $Tagflag = "id='$flag'";
@@ -44,18 +59,17 @@ if (!empty($dadx)) {
 }
 
 ?>
-<!-- <div class="cart-element-wrap" style="box-shadow: var(--box-shadow);"> -->
-<div <?= $Tagflag ?> class="cart-element-wrap" <?= $Tagbrotherx ?> <?= $Tagsubmitdata ?> >
+<div <?= $Tagflag ?> class="cart-element-wrap" <?= $Tagbrotherx ?> <?= $Tagsubmitdata ?>>
     <div class="cart-element-inner">
         <div class="cart-element-remove-button-block">
-            <button class="close_button-wrap remove-button-default-att">
+            <button class="close_button-wrap remove-button-default-att" <?= $TagdeleteFunc ?>>
                 <div class="plus_symbol-wrap">
                     <span class="plus_symbol-vertical"></span>
                     <span class="plus_symbol-horizontal"></span>
                 </div>
             </button>
         </div>
-        <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?> >
+        <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?>>
             <div class="cart-element-img-div">
                 <img src="<?= $pictureSrc ?>">
             </div>
@@ -78,7 +92,7 @@ if (!empty($dadx)) {
         endif;
         if ($showArrow) :
             $arrowId = ModelFunctionality::generateDateCode(25);
-            $arrowIdx = "#".$arrowId;
+            $arrowIdx = "#" . $arrowId;
         ?>
             <div class="cart-element-arrow-block">
                 <div class="cart-element-arrow-inner">

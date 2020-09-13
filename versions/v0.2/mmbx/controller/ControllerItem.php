@@ -38,6 +38,12 @@ class ControllerItem extends ControllerSecure
      * Holds the query value for Ajax request
      * @var string
      */
+    public const A_GET_BX_MNGR = "item/getBoxManager";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
     public const A_ADD_BOX = "item/addBox";
 
     /**
@@ -45,6 +51,12 @@ class ControllerItem extends ControllerSecure
      * @var string
      */
     public const A_ADD_BXPROD = "item/addBoxProduct";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
+    public const A_DELETE_BOX = "item/deleteBox";
 
     /**
      * Holds the query(qr) value for Ajax request
@@ -315,6 +327,20 @@ class ControllerItem extends ControllerSecure
     }
 
     /**
+     * To get box manager
+     */
+    public function getBoxManager()
+    {
+        $this->secureSession();
+        $language = $this->person->getLanguage();
+        $response = new Response();
+        $datasView = [];
+        if(!$response->containError()){
+            
+        }
+    }
+
+    /**
      * To add a new box in Visitor's basket
      */
     public function addBox()
@@ -338,6 +364,32 @@ class ControllerItem extends ControllerSecure
                     "currency" => $currency
                 ];
                 $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManager.php');
+            }
+        }
+        $this->generateJsonView($datasView, $response, $language);
+    }
+
+    /**
+     * Delete a box from Visitor's basket
+     */
+    public function deleteBox()
+    {
+        $this->secureSession();
+        $language = $this->person->getLanguage();
+        $response = new Response();
+        $datasView = [];
+        if(!Query::existParam(Box::KEY_BOX_ID)){
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $boxID = Query::getParam(Box::KEY_BOX_ID);
+            $this->person->deleteBox($response, $boxID);
+            if(!$response->containError()){
+                $total = $this->person->getBasket()->getTotal()->getFormated();
+                $subtotal = $this->person->getBasket()->getSubTotal()->getFormated();
+                $vat = $this->person->getBasket()->getVatAmount()->getFormated();
+                $response->addResult(Basket::KEY_TOTAL, $total);
+                $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
+                $response->addResult(Basket::KEY_VAT, $vat);
             }
         }
         $this->generateJsonView($datasView, $response, $language);
