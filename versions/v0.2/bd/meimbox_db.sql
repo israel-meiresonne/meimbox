@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  jeu. 02 juil. 2020 à 21:11
+-- Généré le :  Dim 13 sep. 2020 à 20:52
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -13,8 +13,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `meimbox`
 --
-CREATE DATABASE IF NOT EXISTS `meimbox2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `meimbox2`;
+CREATE DATABASE IF NOT EXISTS `meimbox` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `meimbox`;
 
 -- --------------------------------------------------------
 
@@ -33,7 +33,7 @@ CREATE TABLE `Actions` (
 --
 
 CREATE TABLE `Addresses` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `address` varchar(100) NOT NULL,
   `zipcode` varchar(50) NOT NULL,
   `country_` varchar(100) NOT NULL,
@@ -85,7 +85,7 @@ INSERT INTO `Administrators` (`adminID`, `lang_`, `mail`, `password`, `firstname
 --
 
 CREATE TABLE `Basket-DiscountCodes` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `discount_code` varchar(50) NOT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -106,17 +106,18 @@ INSERT INTO `Basket-DiscountCodes` (`userId`, `discount_code`, `setDate`) VALUES
 --
 
 CREATE TABLE `Baskets-Box` (
-  `userId` varchar(25) NOT NULL,
-  `boxId` varchar(100) NOT NULL
+  `boxId` varchar(100) NOT NULL,
+  `userId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `Baskets-Box`
 --
 
-INSERT INTO `Baskets-Box` (`userId`, `boxId`) VALUES
-(651853948, 'bx0987654321'),
-(651853948, 'bx1234567890');
+INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
+('1qd923a09g0201k626202bkp4', 651853948),
+('99590021466q23w2yg71230x0', 651853948),
+('c68nq053120w4051l9a122032', 651853948);
 
 -- --------------------------------------------------------
 
@@ -125,13 +126,9 @@ INSERT INTO `Baskets-Box` (`userId`, `boxId`) VALUES
 --
 
 CREATE TABLE `Baskets-Products` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `prodId` int(11) NOT NULL,
-  `sequenceID` varchar(100) NOT NULL,
   `size_name` varchar(100) DEFAULT NULL,
-  `brand_name` varchar(100) DEFAULT NULL,
-  `measureId` varchar(100) DEFAULT NULL,
-  `cut_name` varchar(30) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -140,11 +137,8 @@ CREATE TABLE `Baskets-Products` (
 -- Déchargement des données de la table `Baskets-Products`
 --
 
-INSERT INTO `Baskets-Products` (`userId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-(651853948, 6, 's-null-null', 's', NULL, NULL, NULL, 1, '2018-06-01 00:00:00'),
-(651853948, 7, 'm-asos-null', 'm', 'asos', NULL, 'fit', 2, '2016-10-07 00:00:00'),
-(651853948, 7, 'null-null-651853948137', NULL, NULL, '651853948172', 'wide', 4, '2020-02-21 00:00:00'),
-(997763060, 8, 'null-null-997763060659', NULL, NULL, '651853948740', NULL, 3, '2017-08-18 00:00:00');
+INSERT INTO `Baskets-Products` (`userId`, `prodId`, `size_name`, `quantity`, `setDate`) VALUES
+(651853948, 6, 's', 1, '2018-06-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -164,8 +158,8 @@ INSERT INTO `BodyParts` (`bodyPart`) VALUES
 ('arm'),
 ('bust'),
 ('hip'),
-('waist'),
-('waist to floor');
+('inseam'),
+('waist');
 
 -- --------------------------------------------------------
 
@@ -190,13 +184,42 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('bx0987654321', 1, 'm-asos-null', 'm', 'asos', NULL, 'wide', 1, '2020-07-24 00:00:00'),
-('bx0987654321', 1, 'null-null-651853948740', NULL, NULL, '651853948740', 'fit', 1, '2017-04-11 00:00:00'),
-('bx0987654321', 1, 's-null-null', 's', NULL, NULL, NULL, 2, '2018-09-10 00:00:00'),
-('bx1234567890', 2, 'null-null-651853948740', NULL, NULL, '651853948172', 'wide', 3, '2017-02-24 00:00:00'),
-('bx1234567890', 3, 'null-null-651853948740', NULL, NULL, '651853948740', 'fit', 1, '2019-07-06 00:00:00'),
-('bx1234567890', 4, 'm-asos-null', 'm', 'the north face', NULL, 'wide', 1, '2020-07-03 00:00:00'),
-('bx1234567890', 5, 's-null-null', 's', NULL, NULL, NULL, 1, '2018-09-22 00:00:00');
+('99590021466q23w2yg71230x0', 1, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-09-13 20:46:47'),
+('c68nq053120w4051l9a122032', 1, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 2, '2020-09-13 20:46:38');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `BoxArguments`
+--
+
+CREATE TABLE `BoxArguments` (
+  `box_color` varchar(10) NOT NULL,
+  `argID` int(11) NOT NULL,
+  `argType` enum('advantage','drawback') NOT NULL,
+  `argValue` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `BoxArguments`
+--
+
+INSERT INTO `BoxArguments` (`box_color`, `argID`, `argType`, `argValue`) VALUES
+('gold', 1, 'advantage', 'size customization for free by our tailor'),
+('gold', 2, 'advantage', 'delivery in less than 5 business days'),
+('gold', 3, 'advantage', 'return 100% free'),
+('gold', 4, 'advantage', 'access to the entire item catalog'),
+('gold', 5, 'advantage', 'free shipping'),
+('regular', 1, 'advantage', 'size customization for free by our tailor'),
+('regular', 2, 'advantage', 'delivery in less than 5 business days'),
+('regular', 3, 'advantage', 'return 100% free'),
+('regular', 4, 'advantage', 'access to the entire item catalog'),
+('regular', 5, 'drawback', 'free shipping'),
+('silver', 1, 'advantage', 'size customization for free by our tailor'),
+('silver', 2, 'advantage', 'delivery in less than 5 business days'),
+('silver', 3, 'advantage', 'return 100% free'),
+('silver', 4, 'advantage', 'access to the entire item catalog'),
+('silver', 5, 'advantage', 'free shipping');
 
 -- --------------------------------------------------------
 
@@ -250,9 +273,9 @@ CREATE TABLE `BoxColors` (
 --
 
 INSERT INTO `BoxColors` (`boxColor`, `sizeMax`, `weight`, `boxColorRGB`, `priceRGB`, `textualRGB`, `boxPicture`, `stock`) VALUES
-('gold', 10, 0.125, 'rgba(255, 211, 0, 0.7)', 'rgba(255, 211, 0)', '#ffffff', 'gold-box-img.jpg', 374),
-('regular', 4, 0.05, '#ffffff', 'rgba(14, 36, 57, 0.8)', 'rgba(14, 36, 57, 0.5)', 'regular-box-img.jpg', 32),
-('silver', 6, 0.075, 'rgba(229, 229, 231, 0.5)', '#C6C6C7', 'rgba(14, 36, 57, 0.5)', 'silver-box-img.jpg', 54);
+('gold', 10, 0.125, 'rgba(255, 211, 0, 0.7)', 'rgba(255, 211, 0)', '#ffffff', 'box-gold-128.png', 374),
+('regular', 4, 0.05, '#ffffff', 'rgba(14, 36, 57, 0.8)', 'rgba(14, 36, 57, 0.5)', 'box-regular-128.png', 32),
+('silver', 6, 0.075, 'rgba(229, 229, 231, 0.5)', '#C6C6C7', 'rgba(14, 36, 57, 0.5)', 'box-silver-128.png', 54);
 
 -- --------------------------------------------------------
 
@@ -334,8 +357,29 @@ CREATE TABLE `Boxes` (
 --
 
 INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
-('bx0987654321', 'regular', '2020-02-02 00:00:00'),
-('bx1234567890', 'silver', '2020-02-28 00:00:00');
+('0q511122812h0z24093t61yy9', 'gold', '2020-09-13 19:48:25'),
+('0v31e9b3la122152n6cz00027', 'silver', '2020-09-13 13:25:20'),
+('1iq120000m126cyu63d91z083', 'gold', '2020-09-13 18:13:06'),
+('1q00171922c021uf2sa2dn222', 'gold', '2020-09-12 21:17:22'),
+('1qd923a09g0201k626202bkp4', 'regular', '2020-09-13 20:46:29'),
+('20w2d0a3p202o19313nbu512o', 'gold', '2020-09-13 13:25:23'),
+('21i510x5812l3o1918029t8q0', 'regular', '2020-09-13 18:12:59'),
+('21mq24b3509d130z302121101', 'regular', '2020-09-13 13:01:51'),
+('2o9157103h1030xd21yqmz087', 'gold', '2020-09-13 13:01:57'),
+('415i1w13002744032n2lv3192', 'silver', '2020-09-13 13:34:24'),
+('422qn10619331ybhv1003028f', 'gold', '2020-09-13 13:34:26'),
+('4304q104330x2300491240j2a', 'regular', '2020-09-13 20:40:43'),
+('72t30890c950p116isi21209d', 'gold', '2020-09-13 18:27:09'),
+('99590021466q23w2yg71230x0', 'silver', '2020-09-13 20:46:32'),
+('9v164210q2200h69cf021idx1', 'regular', '2020-09-12 21:16:04'),
+('a36201z2119v2yrkpx00v1809', 'regular', '2020-09-13 16:19:28'),
+('c68nq053120w4051l9a122032', 'gold', '2020-09-13 20:46:35'),
+('f059329l31019108dwhz270l2', 'silver', '2020-09-13 18:27:05'),
+('j03qi3iy0921n80021181343w', 'silver', '2020-09-13 18:13:03'),
+('p3mp21193471s2hu30l00k150', 'silver', '2020-09-13 13:01:54'),
+('ttq68851h28111903a02324a0', 'gold', '2020-09-13 18:35:48'),
+('x2k38219095h1204147147091', 'regular', '2020-09-13 19:49:47'),
+('y7312jdrg09u61334200p7112', 'regular', '2020-09-13 13:34:21');
 
 -- --------------------------------------------------------
 
@@ -483,7 +527,7 @@ CREATE TABLE `BoxShipping` (
   `box_color` varchar(10) NOT NULL,
   `country_` varchar(100) NOT NULL,
   `iso_currency` varchar(10) NOT NULL,
-  `price` double NOT NULL,
+  `shipPrice` double NOT NULL,
   `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -491,7 +535,7 @@ CREATE TABLE `BoxShipping` (
 -- Déchargement des données de la table `BoxShipping`
 --
 
-INSERT INTO `BoxShipping` (`box_color`, `country_`, `iso_currency`, `price`, `time`) VALUES
+INSERT INTO `BoxShipping` (`box_color`, `country_`, `iso_currency`, `shipPrice`, `time`) VALUES
 ('gold', 'australia', 'aud', 8.13, 7),
 ('gold', 'belgium', 'aud', 8.38, 2),
 ('gold', 'canada', 'aud', 6.17, 6),
@@ -669,6 +713,30 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('asos', 'hip', 's', 'eu', 'max', 37),
 ('asos', 'hip', 's', 'uk', 'max', 7),
 ('asos', 'hip', 's', 'us', 'max', 2),
+('asos', 'inseam', 'l', 'centimeter', 'min', 49.38),
+('asos', 'inseam', 'l', 'eu', 'min', 41),
+('asos', 'inseam', 'l', 'uk', 'min', 9),
+('asos', 'inseam', 'l', 'us', 'min', 6),
+('asos', 'inseam', 'l', 'centimeter', 'max', 51.49),
+('asos', 'inseam', 'l', 'eu', 'max', 42),
+('asos', 'inseam', 'l', 'uk', 'max', 10),
+('asos', 'inseam', 'l', 'us', 'max', 7),
+('asos', 'inseam', 'm', 'centimeter', 'min', 47.38),
+('asos', 'inseam', 'm', 'eu', 'min', 39),
+('asos', 'inseam', 'm', 'uk', 'min', 7),
+('asos', 'inseam', 'm', 'us', 'min', 4),
+('asos', 'inseam', 'm', 'centimeter', 'max', 49.49),
+('asos', 'inseam', 'm', 'eu', 'max', 40),
+('asos', 'inseam', 'm', 'uk', 'max', 8),
+('asos', 'inseam', 'm', 'us', 'max', 5),
+('asos', 'inseam', 's', 'centimeter', 'min', 45.38),
+('asos', 'inseam', 's', 'eu', 'min', 37),
+('asos', 'inseam', 's', 'uk', 'min', 5),
+('asos', 'inseam', 's', 'us', 'min', 2),
+('asos', 'inseam', 's', 'centimeter', 'max', 47.49),
+('asos', 'inseam', 's', 'eu', 'max', 38),
+('asos', 'inseam', 's', 'uk', 'max', 6),
+('asos', 'inseam', 's', 'us', 'max', 3),
 ('asos', 'waist', 'l', 'centimeter', 'min', 62),
 ('asos', 'waist', 'l', 'eu', 'min', 40),
 ('asos', 'waist', 'l', 'uk', 'min', 10),
@@ -693,30 +761,6 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('asos', 'waist', 's', 'eu', 'max', 37),
 ('asos', 'waist', 's', 'uk', 'max', 7),
 ('asos', 'waist', 's', 'us', 'max', 5),
-('asos', 'waist to floor', 'l', 'centimeter', 'min', 49.38),
-('asos', 'waist to floor', 'l', 'eu', 'min', 41),
-('asos', 'waist to floor', 'l', 'uk', 'min', 9),
-('asos', 'waist to floor', 'l', 'us', 'min', 6),
-('asos', 'waist to floor', 'l', 'centimeter', 'max', 51.49),
-('asos', 'waist to floor', 'l', 'eu', 'max', 42),
-('asos', 'waist to floor', 'l', 'uk', 'max', 10),
-('asos', 'waist to floor', 'l', 'us', 'max', 7),
-('asos', 'waist to floor', 'm', 'centimeter', 'min', 47.38),
-('asos', 'waist to floor', 'm', 'eu', 'min', 39),
-('asos', 'waist to floor', 'm', 'uk', 'min', 7),
-('asos', 'waist to floor', 'm', 'us', 'min', 4),
-('asos', 'waist to floor', 'm', 'centimeter', 'max', 49.49),
-('asos', 'waist to floor', 'm', 'eu', 'max', 40),
-('asos', 'waist to floor', 'm', 'uk', 'max', 8),
-('asos', 'waist to floor', 'm', 'us', 'max', 5),
-('asos', 'waist to floor', 's', 'centimeter', 'min', 45.38),
-('asos', 'waist to floor', 's', 'eu', 'min', 37),
-('asos', 'waist to floor', 's', 'uk', 'min', 5),
-('asos', 'waist to floor', 's', 'us', 'min', 2),
-('asos', 'waist to floor', 's', 'centimeter', 'max', 47.49),
-('asos', 'waist to floor', 's', 'eu', 'max', 38),
-('asos', 'waist to floor', 's', 'uk', 'max', 6),
-('asos', 'waist to floor', 's', 'us', 'max', 3),
 ('lacoste', 'arm', 'l', 'centimeter', 'min', 86.3),
 ('lacoste', 'arm', 'l', 'eu', 'min', 43),
 ('lacoste', 'arm', 'l', 'uk', 'min', 9),
@@ -789,6 +833,30 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('lacoste', 'hip', 's', 'eu', 'max', 35),
 ('lacoste', 'hip', 's', 'uk', 'max', 5),
 ('lacoste', 'hip', 's', 'us', 'max', 2),
+('lacoste', 'inseam', 'l', 'centimeter', 'min', 66.05),
+('lacoste', 'inseam', 'l', 'eu', 'min', 38),
+('lacoste', 'inseam', 'l', 'uk', 'min', 8),
+('lacoste', 'inseam', 'l', 'us', 'min', 9),
+('lacoste', 'inseam', 'l', 'centimeter', 'max', 68.71),
+('lacoste', 'inseam', 'l', 'eu', 'max', 39),
+('lacoste', 'inseam', 'l', 'uk', 'max', 9),
+('lacoste', 'inseam', 'l', 'us', 'max', 10),
+('lacoste', 'inseam', 'm', 'centimeter', 'min', 64.05),
+('lacoste', 'inseam', 'm', 'eu', 'min', 36),
+('lacoste', 'inseam', 'm', 'uk', 'min', 6),
+('lacoste', 'inseam', 'm', 'us', 'min', 7),
+('lacoste', 'inseam', 'm', 'centimeter', 'max', 66.71),
+('lacoste', 'inseam', 'm', 'eu', 'max', 37),
+('lacoste', 'inseam', 'm', 'uk', 'max', 7),
+('lacoste', 'inseam', 'm', 'us', 'max', 8),
+('lacoste', 'inseam', 's', 'centimeter', 'min', 62.05),
+('lacoste', 'inseam', 's', 'eu', 'min', 34),
+('lacoste', 'inseam', 's', 'uk', 'min', 4),
+('lacoste', 'inseam', 's', 'us', 'min', 5),
+('lacoste', 'inseam', 's', 'centimeter', 'max', 64.71),
+('lacoste', 'inseam', 's', 'eu', 'max', 35),
+('lacoste', 'inseam', 's', 'uk', 'max', 5),
+('lacoste', 'inseam', 's', 'us', 'max', 6),
 ('lacoste', 'waist', 'l', 'centimeter', 'min', 95.13),
 ('lacoste', 'waist', 'l', 'eu', 'min', 39),
 ('lacoste', 'waist', 'l', 'uk', 'min', 9),
@@ -813,30 +881,6 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('lacoste', 'waist', 's', 'eu', 'max', 36),
 ('lacoste', 'waist', 's', 'uk', 'max', 6),
 ('lacoste', 'waist', 's', 'us', 'max', 4),
-('lacoste', 'waist to floor', 'l', 'centimeter', 'min', 66.05),
-('lacoste', 'waist to floor', 'l', 'eu', 'min', 38),
-('lacoste', 'waist to floor', 'l', 'uk', 'min', 8),
-('lacoste', 'waist to floor', 'l', 'us', 'min', 9),
-('lacoste', 'waist to floor', 'l', 'centimeter', 'max', 68.71),
-('lacoste', 'waist to floor', 'l', 'eu', 'max', 39),
-('lacoste', 'waist to floor', 'l', 'uk', 'max', 9),
-('lacoste', 'waist to floor', 'l', 'us', 'max', 10),
-('lacoste', 'waist to floor', 'm', 'centimeter', 'min', 64.05),
-('lacoste', 'waist to floor', 'm', 'eu', 'min', 36),
-('lacoste', 'waist to floor', 'm', 'uk', 'min', 6),
-('lacoste', 'waist to floor', 'm', 'us', 'min', 7),
-('lacoste', 'waist to floor', 'm', 'centimeter', 'max', 66.71),
-('lacoste', 'waist to floor', 'm', 'eu', 'max', 37),
-('lacoste', 'waist to floor', 'm', 'uk', 'max', 7),
-('lacoste', 'waist to floor', 'm', 'us', 'max', 8),
-('lacoste', 'waist to floor', 's', 'centimeter', 'min', 62.05),
-('lacoste', 'waist to floor', 's', 'eu', 'min', 34),
-('lacoste', 'waist to floor', 's', 'uk', 'min', 4),
-('lacoste', 'waist to floor', 's', 'us', 'min', 5),
-('lacoste', 'waist to floor', 's', 'centimeter', 'max', 64.71),
-('lacoste', 'waist to floor', 's', 'eu', 'max', 35),
-('lacoste', 'waist to floor', 's', 'uk', 'max', 5),
-('lacoste', 'waist to floor', 's', 'us', 'max', 6),
 ('the north face', 'arm', 'l', 'centimeter', 'min', 69.14),
 ('the north face', 'arm', 'l', 'eu', 'min', 45),
 ('the north face', 'arm', 'l', 'uk', 'min', 10),
@@ -909,6 +953,30 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('the north face', 'hip', 's', 'eu', 'max', 41),
 ('the north face', 'hip', 's', 'uk', 'max', 7),
 ('the north face', 'hip', 's', 'us', 'max', 3),
+('the north face', 'inseam', 'l', 'centimeter', 'min', 50.41),
+('the north face', 'inseam', 'l', 'eu', 'min', 45),
+('the north face', 'inseam', 'l', 'uk', 'min', 8),
+('the north face', 'inseam', 'l', 'us', 'min', 9),
+('the north face', 'inseam', 'l', 'centimeter', 'max', 52.1),
+('the north face', 'inseam', 'l', 'eu', 'max', 46),
+('the north face', 'inseam', 'l', 'uk', 'max', 9),
+('the north face', 'inseam', 'l', 'us', 'max', 10),
+('the north face', 'inseam', 'm', 'centimeter', 'min', 48.41),
+('the north face', 'inseam', 'm', 'eu', 'min', 43),
+('the north face', 'inseam', 'm', 'uk', 'min', 6),
+('the north face', 'inseam', 'm', 'us', 'min', 7),
+('the north face', 'inseam', 'm', 'centimeter', 'max', 50.1),
+('the north face', 'inseam', 'm', 'eu', 'max', 44),
+('the north face', 'inseam', 'm', 'uk', 'max', 7),
+('the north face', 'inseam', 'm', 'us', 'max', 8),
+('the north face', 'inseam', 's', 'centimeter', 'min', 46.41),
+('the north face', 'inseam', 's', 'eu', 'min', 41),
+('the north face', 'inseam', 's', 'uk', 'min', 4),
+('the north face', 'inseam', 's', 'us', 'min', 5),
+('the north face', 'inseam', 's', 'centimeter', 'max', 48.1),
+('the north face', 'inseam', 's', 'eu', 'max', 42),
+('the north face', 'inseam', 's', 'uk', 'max', 5),
+('the north face', 'inseam', 's', 'us', 'max', 6),
 ('the north face', 'waist', 'l', 'centimeter', 'min', 71.13),
 ('the north face', 'waist', 'l', 'eu', 'min', 41),
 ('the north face', 'waist', 'l', 'uk', 'min', 9),
@@ -933,30 +1001,6 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('the north face', 'waist', 's', 'eu', 'max', 38),
 ('the north face', 'waist', 's', 'uk', 'max', 6),
 ('the north face', 'waist', 's', 'us', 'max', 8),
-('the north face', 'waist to floor', 'l', 'centimeter', 'min', 50.41),
-('the north face', 'waist to floor', 'l', 'eu', 'min', 45),
-('the north face', 'waist to floor', 'l', 'uk', 'min', 8),
-('the north face', 'waist to floor', 'l', 'us', 'min', 9),
-('the north face', 'waist to floor', 'l', 'centimeter', 'max', 52.1),
-('the north face', 'waist to floor', 'l', 'eu', 'max', 46),
-('the north face', 'waist to floor', 'l', 'uk', 'max', 9),
-('the north face', 'waist to floor', 'l', 'us', 'max', 10),
-('the north face', 'waist to floor', 'm', 'centimeter', 'min', 48.41),
-('the north face', 'waist to floor', 'm', 'eu', 'min', 43),
-('the north face', 'waist to floor', 'm', 'uk', 'min', 6),
-('the north face', 'waist to floor', 'm', 'us', 'min', 7),
-('the north face', 'waist to floor', 'm', 'centimeter', 'max', 50.1),
-('the north face', 'waist to floor', 'm', 'eu', 'max', 44),
-('the north face', 'waist to floor', 'm', 'uk', 'max', 7),
-('the north face', 'waist to floor', 'm', 'us', 'max', 8),
-('the north face', 'waist to floor', 's', 'centimeter', 'min', 46.41),
-('the north face', 'waist to floor', 's', 'eu', 'min', 41),
-('the north face', 'waist to floor', 's', 'uk', 'min', 4),
-('the north face', 'waist to floor', 's', 'us', 'min', 5),
-('the north face', 'waist to floor', 's', 'centimeter', 'max', 48.1),
-('the north face', 'waist to floor', 's', 'eu', 'max', 42),
-('the north face', 'waist to floor', 's', 'uk', 'max', 5),
-('the north face', 'waist to floor', 's', 'us', 'max', 6),
 ('tommy hilfiger', 'arm', 'l', 'centimeter', 'min', 101.06),
 ('tommy hilfiger', 'arm', 'l', 'eu', 'min', 44),
 ('tommy hilfiger', 'arm', 'l', 'uk', 'min', 10),
@@ -1029,6 +1073,30 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('tommy hilfiger', 'hip', 's', 'eu', 'max', 35),
 ('tommy hilfiger', 'hip', 's', 'uk', 'max', 6),
 ('tommy hilfiger', 'hip', 's', 'us', 'max', 4),
+('tommy hilfiger', 'inseam', 'l', 'centimeter', 'min', 97.79),
+('tommy hilfiger', 'inseam', 'l', 'eu', 'min', 43),
+('tommy hilfiger', 'inseam', 'l', 'uk', 'min', 8),
+('tommy hilfiger', 'inseam', 'l', 'us', 'min', 9),
+('tommy hilfiger', 'inseam', 'l', 'centimeter', 'max', 98.54),
+('tommy hilfiger', 'inseam', 'l', 'eu', 'max', 44),
+('tommy hilfiger', 'inseam', 'l', 'uk', 'max', 9),
+('tommy hilfiger', 'inseam', 'l', 'us', 'max', 10),
+('tommy hilfiger', 'inseam', 'm', 'centimeter', 'min', 95.79),
+('tommy hilfiger', 'inseam', 'm', 'eu', 'min', 41),
+('tommy hilfiger', 'inseam', 'm', 'uk', 'min', 6),
+('tommy hilfiger', 'inseam', 'm', 'us', 'min', 7),
+('tommy hilfiger', 'inseam', 'm', 'centimeter', 'max', 96.54),
+('tommy hilfiger', 'inseam', 'm', 'eu', 'max', 42),
+('tommy hilfiger', 'inseam', 'm', 'uk', 'max', 7),
+('tommy hilfiger', 'inseam', 'm', 'us', 'max', 8),
+('tommy hilfiger', 'inseam', 's', 'centimeter', 'min', 93.79),
+('tommy hilfiger', 'inseam', 's', 'eu', 'min', 39),
+('tommy hilfiger', 'inseam', 's', 'uk', 'min', 4),
+('tommy hilfiger', 'inseam', 's', 'us', 'min', 5),
+('tommy hilfiger', 'inseam', 's', 'centimeter', 'max', 94.54),
+('tommy hilfiger', 'inseam', 's', 'eu', 'max', 40),
+('tommy hilfiger', 'inseam', 's', 'uk', 'max', 5),
+('tommy hilfiger', 'inseam', 's', 'us', 'max', 6),
 ('tommy hilfiger', 'waist', 'l', 'centimeter', 'min', 78.67),
 ('tommy hilfiger', 'waist', 'l', 'eu', 'min', 40),
 ('tommy hilfiger', 'waist', 'l', 'uk', 'min', 9),
@@ -1052,31 +1120,7 @@ INSERT INTO `BrandsMeasures` (`brandName`, `body_part`, `size_name`, `unit_name`
 ('tommy hilfiger', 'waist', 's', 'centimeter', 'max', 75.27),
 ('tommy hilfiger', 'waist', 's', 'eu', 'max', 37),
 ('tommy hilfiger', 'waist', 's', 'uk', 'max', 6),
-('tommy hilfiger', 'waist', 's', 'us', 'max', 7),
-('tommy hilfiger', 'waist to floor', 'l', 'centimeter', 'min', 97.79),
-('tommy hilfiger', 'waist to floor', 'l', 'eu', 'min', 43),
-('tommy hilfiger', 'waist to floor', 'l', 'uk', 'min', 8),
-('tommy hilfiger', 'waist to floor', 'l', 'us', 'min', 9),
-('tommy hilfiger', 'waist to floor', 'l', 'centimeter', 'max', 98.54),
-('tommy hilfiger', 'waist to floor', 'l', 'eu', 'max', 44),
-('tommy hilfiger', 'waist to floor', 'l', 'uk', 'max', 9),
-('tommy hilfiger', 'waist to floor', 'l', 'us', 'max', 10),
-('tommy hilfiger', 'waist to floor', 'm', 'centimeter', 'min', 95.79),
-('tommy hilfiger', 'waist to floor', 'm', 'eu', 'min', 41),
-('tommy hilfiger', 'waist to floor', 'm', 'uk', 'min', 6),
-('tommy hilfiger', 'waist to floor', 'm', 'us', 'min', 7),
-('tommy hilfiger', 'waist to floor', 'm', 'centimeter', 'max', 96.54),
-('tommy hilfiger', 'waist to floor', 'm', 'eu', 'max', 42),
-('tommy hilfiger', 'waist to floor', 'm', 'uk', 'max', 7),
-('tommy hilfiger', 'waist to floor', 'm', 'us', 'max', 8),
-('tommy hilfiger', 'waist to floor', 's', 'centimeter', 'min', 93.79),
-('tommy hilfiger', 'waist to floor', 's', 'eu', 'min', 39),
-('tommy hilfiger', 'waist to floor', 's', 'uk', 'min', 4),
-('tommy hilfiger', 'waist to floor', 's', 'us', 'min', 5),
-('tommy hilfiger', 'waist to floor', 's', 'centimeter', 'max', 94.54),
-('tommy hilfiger', 'waist to floor', 's', 'eu', 'max', 40),
-('tommy hilfiger', 'waist to floor', 's', 'uk', 'max', 5),
-('tommy hilfiger', 'waist to floor', 's', 'us', 'max', 6);
+('tommy hilfiger', 'waist', 's', 'us', 'max', 7);
 
 -- --------------------------------------------------------
 
@@ -1187,15 +1231,17 @@ INSERT INTO `Constants` (`constName`, `stringValue`, `jsonValue`, `setDate`, `de
 ('BOX_TYPE', 'boxproduct', NULL, '2020-02-27 00:00:00', 'Type of prroduct witch go to boxes only.'),
 ('COLOR_TEXT_05', 'rgba(14, 36, 57, 0.5)', NULL, '2020-04-17 00:00:00', 'A css variable color. This color is used as remplacement color for white colors.'),
 ('COLOR_TEXT_08', 'rgba(14, 36, 57, 0.8)', NULL, '2020-04-09 00:00:00', 'A css variable color. This color is used as remplacement color for white colors.'),
+('DB_TYPES_LENGTH', NULL, '{\"date\": 15, \"enum\": -1, \"json\": 16776192, \"text\": 2147483647, \"double\": 11, \"tinyint\": 5, \"datetime\": 25}', '2020-07-12 00:00:00', 'Holds the length of the database type. that the length can\'t be extracted with the table description. '),
 ('DEFAULT_COUNTRY_NAME', 'other', NULL, '2020-03-29 00:00:00', 'The default country of a user if his localisation is not supported by the System.'),
 ('DEFAULT_ISO_CURRENCY', 'usd', NULL, '2020-05-02 00:00:00', 'The default currency iso code 2 of a user if his localcurrency is not supported by the System.'),
 ('DEFAULT_LANGUAGE', 'en', NULL, '2020-02-28 00:00:00', 'Default language given to the visitor if his driver language is not supported by the web site.'),
 ('GRID_USED_INSIDE', 'grid.php', NULL, '2020-03-30 00:00:00', 'Indicate the value of the attribut \"inside\" in TranslationStation table. Used to get the translation to the \"inside\" indicated.\r\nIts the file name of the method name where the translation is used.'),
 ('MAX_MEASURE', '4', NULL, '2020-04-23 00:00:00', 'Indicate how much measure can be holded by a user.'),
-('MAX_PRODUCT_CUBE_DISPLAYABLE', '4', NULL, '2020-04-02 00:00:00', 'The maximum of product\'s cubes displayable before to display the plus symbol.\r\nThis number of cube must avoid to display cubes in multiple ligne and disturbe the grid arrangement.\r\nNOTE: the counter of number of cube begin at zero, not at 1.'),
+('MAX_PRODUCT_CUBE_DISPLAYABLE', '3', NULL, '2020-04-02 00:00:00', 'The maximum of product\'s cubes displayable before to display the plus symbol including the plus symbole in the count of cube to display.\r\nex: MAX_PRODUCT_CUBE_DISPLAYABLE = 4\r\nwill display: 3 color cube + 1 symbole cube = 4 cubes\r\n\r\nThis number of cube must avoid to display cubes in multiple ligne and disturbe the grid arrangement.\r\nNOTE: the number of cube displayed exactly MAX_PRODUCT_CUBE_DISPLAYABLE cause this constante include already the plus symbole'),
 ('NB_DAYS_BEFORE', '15', NULL, '2020-02-21 21:28:28', 'The number of days to go back in navigation history.'),
 ('ORDER_DEFAULT_STATUS', 'processing', NULL, '2020-02-26 21:37:00', 'The default value given to a new order\'s status.'),
 ('PRICE_MESSAGE', 'free with meimbox', NULL, '2020-04-01 00:00:00', 'message to display instead of boxproduct\'s price because a boxProduct hasn\'t any price'),
+('SUPPORTED_SIZES', NULL, '{\"alpha\": [\"4xl\", \"3xl\", \"xxl\", \"xl\", \"l\", \"m\", \"s\", \"xs\", \"xxs\"], \"numeric\": [56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32]}', '2020-07-18 21:17:12', 'List of system\'s supported sizes.'),
 ('SUPPORTED_UNIT', NULL, '[\"centimeter\", \"inch\"]', '2020-04-24 00:00:00', 'List of measure unit available for user\'s input'),
 ('SYSTEM_ID', '1', NULL, '2020-02-26 21:27:40', 'The ID of the system used as author to update order status.'),
 ('WHITE_RGB', '#ffffff', NULL, '2020-04-09 00:00:00', 'The white color\'s rbg code.');
@@ -1222,6 +1268,7 @@ INSERT INTO `Countries` (`country`, `isoCountry`, `iso_currency`, `isUE`, `vat`)
 ('australia', 'au', 'aud', 0, 0.1),
 ('belgium', 'be', 'eur', 1, 0.21),
 ('canada', 'ca', 'cad', 0, 0.05),
+('france', 'fr', 'eur', 1, 0.2),
 ('other', 'o', 'usd', 0, 0),
 ('switzerland', 'ch', 'chf', 0, 0.077);
 
@@ -1269,8 +1316,8 @@ CREATE TABLE `Cuts` (
 --
 
 INSERT INTO `Cuts` (`cutName`, `cutMeasure`, `unit_name`) VALUES
-('fit', 0, 'centimeter'),
-('wide', 20.5, 'centimeter');
+('fit', 10, 'centimeter'),
+('wide', 20, 'centimeter');
 
 -- --------------------------------------------------------
 
@@ -1298,7 +1345,7 @@ CREATE TABLE `Details` (
 --
 
 CREATE TABLE `Devices` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `setDate` datetime NOT NULL,
   `ddData` json NOT NULL,
   `userAgent` varchar(100) NOT NULL,
@@ -1495,7 +1542,7 @@ INSERT INTO `MeasureUnits` (`unitName`, `measureUnit`, `toSystUnit`) VALUES
 
 CREATE TABLE `Orders` (
   `orderID` varchar(100) NOT NULL,
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `setDate` datetime NOT NULL,
   `vat` double NOT NULL,
   `subtotal` double NOT NULL,
@@ -1595,7 +1642,7 @@ CREATE TABLE `OrdersStatus` (
 --
 
 CREATE TABLE `Pages` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `setDate` datetime NOT NULL,
   `page` varchar(100) NOT NULL,
   `timeOn` int(11) NOT NULL
@@ -1608,7 +1655,7 @@ CREATE TABLE `Pages` (
 --
 
 CREATE TABLE `Pages-Actions` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `setDate` datetime NOT NULL,
   `page_` varchar(100) NOT NULL,
   `action_` varchar(50) NOT NULL,
@@ -1624,7 +1671,7 @@ CREATE TABLE `Pages-Actions` (
 --
 
 CREATE TABLE `PagesParameters` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `setDate_` datetime NOT NULL,
   `page_` varchar(100) NOT NULL,
   `param_key` varchar(100) NOT NULL,
@@ -1711,14 +1758,14 @@ INSERT INTO `Products` (`prodID`, `prodName`, `isAvailable`, `product_type`, `ad
 (8, 'basketproduct4', 1, 'basketproduct', '2020-01-15 15:00:05', 'white', '#ffffff', 0.48),
 (9, 'basketproduct5', 1, 'basketproduct', '2020-01-16 15:00:05', 'yellow', '#ffff00', 0.73),
 (10, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'red', '#ff3300', 0.76),
-(11, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'blue', '#00ccff', 0.76),
-(12, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76),
-(13, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'green', '#33cc33', 0.76),
-(14, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'orange', '#ff9900', 0.76),
-(15, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'black', '#000000', 0.76),
-(16, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'white', '#ffffff', 0.76),
-(17, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'red', '#00ccff', 0.76),
-(18, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76);
+(11, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'blue', '#00ccff', 0.76),
+(12, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76),
+(13, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'green', '#33cc33', 0.76),
+(14, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'orange', '#ff9900', 0.76),
+(15, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'black', '#000000', 0.76),
+(16, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'white', '#ffffff', 0.76),
+(17, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'red', '#00ccff', 0.76),
+(18, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76);
 
 -- --------------------------------------------------------
 
@@ -1869,7 +1916,7 @@ INSERT INTO `Products-Sizes` (`prodId`, `size_name`, `stock`) VALUES
 (3, 'l', 9),
 (3, 'm', 1),
 (3, 's', 1),
-(4, 'l', 3),
+(4, 'l', 0),
 (4, 'm', 8),
 (4, 's', 3),
 (5, 'l', 3),
@@ -1998,156 +2045,156 @@ CREATE TABLE `ProductsMeasures` (
 --
 
 INSERT INTO `ProductsMeasures` (`prodId`, `size_name`, `body_part`, `unit_name`, `value`) VALUES
-(1, 'l', 'arm', 'centimeter', 99.65),
-(1, 'l', 'bust', 'centimeter', 104.27),
-(1, 'l', 'hip', 'centimeter', 95.67),
-(1, 'l', 'waist', 'centimeter', 87.65),
-(1, 'l', 'waist to floor', 'centimeter', 76.62),
-(1, 'm', 'arm', 'centimeter', 99.39),
-(1, 'm', 'bust', 'centimeter', 102.31),
-(1, 'm', 'hip', 'centimeter', 94.85),
-(1, 'm', 'waist', 'centimeter', 85.55),
-(1, 'm', 'waist to floor', 'centimeter', 75.18),
-(1, 's', 'arm', 'centimeter', 99.38),
-(1, 's', 'bust', 'centimeter', 101.62),
-(1, 's', 'hip', 'centimeter', 92.25),
-(1, 's', 'waist', 'centimeter', 84.18),
-(1, 's', 'waist to floor', 'centimeter', 73.24),
-(2, 'l', 'arm', 'centimeter', 62.76),
-(2, 'l', 'bust', 'centimeter', 99.43),
-(2, 'l', 'hip', 'centimeter', 56.58),
-(2, 'l', 'waist', 'centimeter', 94.91),
-(2, 'l', 'waist to floor', 'centimeter', 103.75),
-(2, 'm', 'arm', 'centimeter', 59.87),
-(2, 'm', 'bust', 'centimeter', 97.66),
-(2, 'm', 'hip', 'centimeter', 54.52),
-(2, 'm', 'waist', 'centimeter', 92.92),
-(2, 'm', 'waist to floor', 'centimeter', 100.97),
-(2, 's', 'arm', 'centimeter', 59.35),
-(2, 's', 'bust', 'centimeter', 97.36),
-(2, 's', 'hip', 'centimeter', 54.26),
-(2, 's', 'waist', 'centimeter', 92.24),
-(2, 's', 'waist to floor', 'centimeter', 99.56),
-(3, 'l', 'arm', 'centimeter', 104.44),
-(3, 'l', 'bust', 'centimeter', 88.66),
-(3, 'l', 'hip', 'centimeter', 102.36),
-(3, 'l', 'waist', 'centimeter', 87.61),
-(3, 'l', 'waist to floor', 'centimeter', 54.76),
-(3, 'm', 'arm', 'centimeter', 102.09),
-(3, 'm', 'bust', 'centimeter', 86.65),
-(3, 'm', 'hip', 'centimeter', 99.48),
-(3, 'm', 'waist', 'centimeter', 86.85),
-(3, 'm', 'waist to floor', 'centimeter', 53.75),
-(3, 's', 'arm', 'centimeter', 99.19),
-(3, 's', 'bust', 'centimeter', 84.67),
-(3, 's', 'hip', 'centimeter', 98.03),
-(3, 's', 'waist', 'centimeter', 85.22),
-(3, 's', 'waist to floor', 'centimeter', 52.37),
-(4, 'l', 'arm', 'centimeter', 94.92),
-(4, 'l', 'bust', 'centimeter', 65.08),
-(4, 'l', 'hip', 'centimeter', 100.54),
-(4, 'l', 'waist', 'centimeter', 114.58),
-(4, 'l', 'waist to floor', 'centimeter', 119.06),
-(4, 'm', 'arm', 'centimeter', 94.61),
-(4, 'm', 'bust', 'centimeter', 64),
-(4, 'm', 'hip', 'centimeter', 98.88),
-(4, 'm', 'waist', 'centimeter', 112.78),
-(4, 'm', 'waist to floor', 'centimeter', 118.05),
-(4, 's', 'arm', 'centimeter', 94.03),
-(4, 's', 'bust', 'centimeter', 63.15),
-(4, 's', 'hip', 'centimeter', 98.8),
-(4, 's', 'waist', 'centimeter', 110.21),
-(4, 's', 'waist to floor', 'centimeter', 117.42),
-(5, 'l', 'arm', 'centimeter', 109.32),
-(5, 'l', 'bust', 'centimeter', 113.93),
-(5, 'l', 'hip', 'centimeter', 78.57),
-(5, 'l', 'waist', 'centimeter', 89.18),
-(5, 'l', 'waist to floor', 'centimeter', 112.96),
-(5, 'm', 'arm', 'centimeter', 108.42),
-(5, 'm', 'bust', 'centimeter', 111.45),
-(5, 'm', 'hip', 'centimeter', 77.96),
-(5, 'm', 'waist', 'centimeter', 86.73),
-(5, 'm', 'waist to floor', 'centimeter', 110.64),
-(5, 's', 'arm', 'centimeter', 108.42),
-(5, 's', 'bust', 'centimeter', 111.2),
-(5, 's', 'hip', 'centimeter', 76.71),
-(5, 's', 'waist', 'centimeter', 86.42),
-(5, 's', 'waist to floor', 'centimeter', 108.75),
-(6, 'l', 'arm', 'centimeter', 69.79),
-(6, 'l', 'bust', 'centimeter', 99.75),
-(6, 'l', 'hip', 'centimeter', 53.88),
-(6, 'l', 'waist', 'centimeter', 88.48),
-(6, 'l', 'waist to floor', 'centimeter', 55.87),
-(6, 'm', 'arm', 'centimeter', 68.56),
-(6, 'm', 'bust', 'centimeter', 97.06),
-(6, 'm', 'hip', 'centimeter', 52.18),
-(6, 'm', 'waist', 'centimeter', 88.23),
-(6, 'm', 'waist to floor', 'centimeter', 54.41),
-(6, 's', 'arm', 'centimeter', 66.27),
-(6, 's', 'bust', 'centimeter', 96.67),
-(6, 's', 'hip', 'centimeter', 50.02),
-(6, 's', 'waist', 'centimeter', 85.51),
-(6, 's', 'waist to floor', 'centimeter', 53.44),
-(7, 'l', 'arm', 'centimeter', 120),
-(7, 'l', 'bust', 'centimeter', 90.06),
-(7, 'l', 'hip', 'centimeter', 86.04),
-(7, 'l', 'waist', 'centimeter', 68.58),
-(7, 'l', 'waist to floor', 'centimeter', 104.45),
-(7, 'm', 'arm', 'centimeter', 119.49),
-(7, 'm', 'bust', 'centimeter', 89.44),
-(7, 'm', 'hip', 'centimeter', 84.03),
-(7, 'm', 'waist', 'centimeter', 65.94),
-(7, 'm', 'waist to floor', 'centimeter', 102.11),
-(7, 's', 'arm', 'centimeter', 118.07),
-(7, 's', 'bust', 'centimeter', 88.65),
-(7, 's', 'hip', 'centimeter', 83.21),
-(7, 's', 'waist', 'centimeter', 65.91),
-(7, 's', 'waist to floor', 'centimeter', 101.99),
-(8, 'l', 'arm', 'centimeter', 125.57),
-(8, 'l', 'bust', 'centimeter', 51.54),
-(8, 'l', 'hip', 'centimeter', 65),
-(8, 'l', 'waist', 'centimeter', 119.26),
-(8, 'l', 'waist to floor', 'centimeter', 74.39),
-(8, 'm', 'arm', 'centimeter', 122.85),
-(8, 'm', 'bust', 'centimeter', 51.26),
-(8, 'm', 'hip', 'centimeter', 63.85),
-(8, 'm', 'waist', 'centimeter', 117.75),
-(8, 'm', 'waist to floor', 'centimeter', 73.68),
-(8, 's', 'arm', 'centimeter', 120.6),
-(8, 's', 'bust', 'centimeter', 50.82),
-(8, 's', 'hip', 'centimeter', 62.86),
-(8, 's', 'waist', 'centimeter', 116.38),
-(8, 's', 'waist to floor', 'centimeter', 71.8),
-(9, 'l', 'arm', 'centimeter', 120.58),
-(9, 'l', 'bust', 'centimeter', 114.74),
-(9, 'l', 'hip', 'centimeter', 83.75),
-(9, 'l', 'waist', 'centimeter', 61.24),
-(9, 'l', 'waist to floor', 'centimeter', 56.22),
-(9, 'm', 'arm', 'centimeter', 120.23),
-(9, 'm', 'bust', 'centimeter', 114.38),
-(9, 'm', 'hip', 'centimeter', 83.21),
-(9, 'm', 'waist', 'centimeter', 59.06),
-(9, 'm', 'waist to floor', 'centimeter', 54.18),
-(9, 's', 'arm', 'centimeter', 119.37),
-(9, 's', 'bust', 'centimeter', 112.56),
-(9, 's', 'hip', 'centimeter', 81.58),
-(9, 's', 'waist', 'centimeter', 57.64),
-(9, 's', 'waist to floor', 'centimeter', 51.48),
-(10, 'l', 'arm', 'centimeter', 115.56),
-(10, 'l', 'bust', 'centimeter', 67.45),
-(10, 'l', 'hip', 'centimeter', 67.96),
-(10, 'l', 'waist', 'centimeter', 94.99),
-(10, 'l', 'waist to floor', 'centimeter', 54.59),
-(10, 'm', 'arm', 'centimeter', 113.38),
-(10, 'm', 'bust', 'centimeter', 65.5),
-(10, 'm', 'hip', 'centimeter', 65.03),
-(10, 'm', 'waist', 'centimeter', 92.92),
-(10, 'm', 'waist to floor', 'centimeter', 53.77),
-(10, 's', 'arm', 'centimeter', 110.44),
-(10, 's', 'bust', 'centimeter', 64.19),
-(10, 's', 'hip', 'centimeter', 63.77),
-(10, 's', 'waist', 'centimeter', 91.1),
-(10, 's', 'waist to floor', 'centimeter', 52.01);
+(1, 'l', 'arm', 'centimeter', 77.05),
+(1, 'l', 'bust', 'centimeter', 88.87),
+(1, 'l', 'hip', 'centimeter', 59.64),
+(1, 'l', 'inseam', 'centimeter', 112.71),
+(1, 'l', 'waist', 'centimeter', 57.65),
+(1, 'm', 'arm', 'centimeter', 116.78),
+(1, 'm', 'bust', 'centimeter', 64.88),
+(1, 'm', 'hip', 'centimeter', 78.87),
+(1, 'm', 'inseam', 'centimeter', 87.02),
+(1, 'm', 'waist', 'centimeter', 113.13),
+(1, 's', 'arm', 'centimeter', 94.74),
+(1, 's', 'bust', 'centimeter', 113.34),
+(1, 's', 'hip', 'centimeter', 91.14),
+(1, 's', 'inseam', 'centimeter', 106.23),
+(1, 's', 'waist', 'centimeter', 108.91),
+(2, 'l', 'arm', 'centimeter', 97.63),
+(2, 'l', 'bust', 'centimeter', 56.8),
+(2, 'l', 'hip', 'centimeter', 98.02),
+(2, 'l', 'inseam', 'centimeter', 98.88),
+(2, 'l', 'waist', 'centimeter', 109.76),
+(2, 'm', 'arm', 'centimeter', 106.4),
+(2, 'm', 'bust', 'centimeter', 74.83),
+(2, 'm', 'hip', 'centimeter', 100.36),
+(2, 'm', 'inseam', 'centimeter', 94.72),
+(2, 'm', 'waist', 'centimeter', 120.15),
+(2, 's', 'arm', 'centimeter', 120.68),
+(2, 's', 'bust', 'centimeter', 62.38),
+(2, 's', 'hip', 'centimeter', 117.95),
+(2, 's', 'inseam', 'centimeter', 107.93),
+(2, 's', 'waist', 'centimeter', 65.45),
+(3, 'l', 'arm', 'centimeter', 54.09),
+(3, 'l', 'bust', 'centimeter', 54.75),
+(3, 'l', 'hip', 'centimeter', 84.47),
+(3, 'l', 'inseam', 'centimeter', 63.82),
+(3, 'l', 'waist', 'centimeter', 88.41),
+(3, 'm', 'arm', 'centimeter', 107.96),
+(3, 'm', 'bust', 'centimeter', 113.41),
+(3, 'm', 'hip', 'centimeter', 64.63),
+(3, 'm', 'inseam', 'centimeter', 68.01),
+(3, 'm', 'waist', 'centimeter', 70.49),
+(3, 's', 'arm', 'centimeter', 113.03),
+(3, 's', 'bust', 'centimeter', 70.67),
+(3, 's', 'hip', 'centimeter', 52.83),
+(3, 's', 'inseam', 'centimeter', 85.81),
+(3, 's', 'waist', 'centimeter', 118.39),
+(4, 'l', 'arm', 'centimeter', 57.06),
+(4, 'l', 'bust', 'centimeter', 116.02),
+(4, 'l', 'hip', 'centimeter', 60.29),
+(4, 'l', 'inseam', 'centimeter', 79.62),
+(4, 'l', 'waist', 'centimeter', 100.97),
+(4, 'm', 'arm', 'centimeter', 106.74),
+(4, 'm', 'bust', 'centimeter', 73.71),
+(4, 'm', 'hip', 'centimeter', 53.6),
+(4, 'm', 'inseam', 'centimeter', 117.16),
+(4, 'm', 'waist', 'centimeter', 95.04),
+(4, 's', 'arm', 'centimeter', 87.36),
+(4, 's', 'bust', 'centimeter', 75.24),
+(4, 's', 'hip', 'centimeter', 92.66),
+(4, 's', 'inseam', 'centimeter', 109.45),
+(4, 's', 'waist', 'centimeter', 79.18),
+(5, 'l', 'arm', 'centimeter', 116.16),
+(5, 'l', 'bust', 'centimeter', 87.75),
+(5, 'l', 'hip', 'centimeter', 64.87),
+(5, 'l', 'inseam', 'centimeter', 74.5),
+(5, 'l', 'waist', 'centimeter', 92.2),
+(5, 'm', 'arm', 'centimeter', 54.34),
+(5, 'm', 'bust', 'centimeter', 80.96),
+(5, 'm', 'hip', 'centimeter', 116.81),
+(5, 'm', 'inseam', 'centimeter', 58.92),
+(5, 'm', 'waist', 'centimeter', 93.28),
+(5, 's', 'arm', 'centimeter', 58.54),
+(5, 's', 'bust', 'centimeter', 90.07),
+(5, 's', 'hip', 'centimeter', 78.81),
+(5, 's', 'inseam', 'centimeter', 115.74),
+(5, 's', 'waist', 'centimeter', 67.23),
+(6, 'l', 'arm', 'centimeter', 110.14),
+(6, 'l', 'bust', 'centimeter', 116.44),
+(6, 'l', 'hip', 'centimeter', 116.39),
+(6, 'l', 'inseam', 'centimeter', 120.36),
+(6, 'l', 'waist', 'centimeter', 73.72),
+(6, 'm', 'arm', 'centimeter', 84.54),
+(6, 'm', 'bust', 'centimeter', 113.08),
+(6, 'm', 'hip', 'centimeter', 118.77),
+(6, 'm', 'inseam', 'centimeter', 100.15),
+(6, 'm', 'waist', 'centimeter', 68.54),
+(6, 's', 'arm', 'centimeter', 50.21),
+(6, 's', 'bust', 'centimeter', 76.47),
+(6, 's', 'hip', 'centimeter', 98.67),
+(6, 's', 'inseam', 'centimeter', 111.49),
+(6, 's', 'waist', 'centimeter', 116.18),
+(7, 'l', 'arm', 'centimeter', 107.96),
+(7, 'l', 'bust', 'centimeter', 84.36),
+(7, 'l', 'hip', 'centimeter', 93.34),
+(7, 'l', 'inseam', 'centimeter', 70.53),
+(7, 'l', 'waist', 'centimeter', 83.01),
+(7, 'm', 'arm', 'centimeter', 71.67),
+(7, 'm', 'bust', 'centimeter', 113.65),
+(7, 'm', 'hip', 'centimeter', 99.38),
+(7, 'm', 'inseam', 'centimeter', 55.76),
+(7, 'm', 'waist', 'centimeter', 105.89),
+(7, 's', 'arm', 'centimeter', 90.61),
+(7, 's', 'bust', 'centimeter', 101.34),
+(7, 's', 'hip', 'centimeter', 90.01),
+(7, 's', 'inseam', 'centimeter', 99.11),
+(7, 's', 'waist', 'centimeter', 115.76),
+(8, 'l', 'arm', 'centimeter', 108.92),
+(8, 'l', 'bust', 'centimeter', 116.73),
+(8, 'l', 'hip', 'centimeter', 69.39),
+(8, 'l', 'inseam', 'centimeter', 73.88),
+(8, 'l', 'waist', 'centimeter', 66.04),
+(8, 'm', 'arm', 'centimeter', 102.09),
+(8, 'm', 'bust', 'centimeter', 76.84),
+(8, 'm', 'hip', 'centimeter', 80.17),
+(8, 'm', 'inseam', 'centimeter', 50.85),
+(8, 'm', 'waist', 'centimeter', 95.91),
+(8, 's', 'arm', 'centimeter', 70.33),
+(8, 's', 'bust', 'centimeter', 120.07),
+(8, 's', 'hip', 'centimeter', 57.59),
+(8, 's', 'inseam', 'centimeter', 53.04),
+(8, 's', 'waist', 'centimeter', 112.32),
+(9, 'l', 'arm', 'centimeter', 98.46),
+(9, 'l', 'bust', 'centimeter', 98.66),
+(9, 'l', 'hip', 'centimeter', 105.78),
+(9, 'l', 'inseam', 'centimeter', 82.31),
+(9, 'l', 'waist', 'centimeter', 52.44),
+(9, 'm', 'arm', 'centimeter', 64.03),
+(9, 'm', 'bust', 'centimeter', 91.46),
+(9, 'm', 'hip', 'centimeter', 67.74),
+(9, 'm', 'inseam', 'centimeter', 81.32),
+(9, 'm', 'waist', 'centimeter', 104.21),
+(9, 's', 'arm', 'centimeter', 120.42),
+(9, 's', 'bust', 'centimeter', 105.14),
+(9, 's', 'hip', 'centimeter', 94.28),
+(9, 's', 'inseam', 'centimeter', 69.31),
+(9, 's', 'waist', 'centimeter', 77.81),
+(10, 'l', 'arm', 'centimeter', 69.93),
+(10, 'l', 'bust', 'centimeter', 107.79),
+(10, 'l', 'hip', 'centimeter', 65.53),
+(10, 'l', 'inseam', 'centimeter', 102.83),
+(10, 'l', 'waist', 'centimeter', 53.96),
+(10, 'm', 'arm', 'centimeter', 77.58),
+(10, 'm', 'bust', 'centimeter', 114.69),
+(10, 'm', 'hip', 'centimeter', 95.85),
+(10, 'm', 'inseam', 'centimeter', 87.22),
+(10, 'm', 'waist', 'centimeter', 96.72),
+(10, 's', 'arm', 'centimeter', 62.6),
+(10, 's', 'bust', 'centimeter', 80.89),
+(10, 's', 'hip', 'centimeter', 55.83),
+(10, 's', 'inseam', 'centimeter', 53.19),
+(10, 's', 'waist', 'centimeter', 63.41);
 
 -- --------------------------------------------------------
 
@@ -2708,9 +2755,40 @@ CREATE TABLE `Sizes` (
 --
 
 INSERT INTO `Sizes` (`sizeName`) VALUES
+('32'),
+('33'),
+('34'),
+('35'),
+('36'),
+('37'),
+('38'),
+('39'),
+('3xl'),
+('40'),
+('41'),
+('42'),
+('43'),
+('44'),
+('45'),
+('46'),
+('47'),
+('48'),
+('49'),
+('4xl'),
+('50'),
+('51'),
+('52'),
+('53'),
+('54'),
+('55'),
+('56'),
 ('l'),
 ('m'),
-('s');
+('s'),
+('xl'),
+('xs'),
+('xxl'),
+('xxs');
 
 -- --------------------------------------------------------
 
@@ -2721,15 +2799,21 @@ INSERT INTO `Sizes` (`sizeName`) VALUES
 CREATE TABLE `Translations` (
   `translationID` int(11) NOT NULL,
   `en` text NOT NULL,
-  `fr` text NOT NULL
+  `iso_lang` varchar(10) NOT NULL,
+  `translation` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `Translations`
 --
 
-INSERT INTO `Translations` (`translationID`, `en`, `fr`) VALUES
-(1, 'free with meimbox', 'gratuit avec meimbox');
+INSERT INTO `Translations` (`translationID`, `en`, `iso_lang`, `translation`) VALUES
+(1, 'free with meimbox', 'fr', 'gratuit avec meimbox'),
+(2, 'size customization for free by our tailor', 'fr', 'personnalisation de la taille gratuitement par notre tailleur'),
+(3, 'delivery in less than 5 business days', 'fr', 'livraison en moins de 5 jours ouvrés'),
+(4, 'return 100% free', 'fr', 'retour 100% gratuit'),
+(5, 'access to the entire item catalog', 'fr', 'accès à l\'ensemble du catalogue d\'articles'),
+(6, 'free shipping', 'fr', 'livraison gratuite');
 
 -- --------------------------------------------------------
 
@@ -2738,8 +2822,7 @@ INSERT INTO `Translations` (`translationID`, `en`, `fr`) VALUES
 --
 
 CREATE TABLE `TranslationStations` (
-  `usedInside` varchar(50) NOT NULL,
-  `station` int(11) NOT NULL,
+  `station` varchar(100) NOT NULL,
   `iso_lang` varchar(10) NOT NULL,
   `translation` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -2748,121 +2831,149 @@ CREATE TABLE `TranslationStations` (
 -- Déchargement des données de la table `TranslationStations`
 --
 
-INSERT INTO `TranslationStations` (`usedInside`, `station`, `iso_lang`, `translation`) VALUES
-('error', 1, 'en', 'Sorry, this service is temporarily unavailable'),
-('error', 1, 'fr', 'Désolé, ce service est pontuellement indisponible'),
-('error', 2, 'en', 'this field can not be empty'),
-('error', 2, 'fr', 'ce champ ne peut pas être vide'),
-('error', 3, 'en', 'this field cannot contain numbers of the form 1997 | 297.829 or 0.321, etc ...'),
-('error', 3, 'fr', 'ce champ ne peut contenir que des nombres au format 1997 | 297,829 ou 0,321, etc...'),
-('error', 4, 'en', 'this field can only contain letters, numbers, spaces and the special characters `-` and` _`'),
-('error', 4, 'fr', 'ce champ peut uniquement contenir des lettres, des chiffres, des espaces ansi que les caractères spéciaux `-` et `_`'),
-('error', 5, 'en', 'you must tick a choice'),
-('error', 5, 'fr', 'vous devez cocher un choix'),
-('error', 6, 'en', 'the maximum number of characters for this field is'),
-('error', 6, 'fr', 'le nombre de caractère maximum pour ce champ est de'),
-('error', 7, 'en', 'Sorry, You have reached the maximum number of measurements.\\nNumber of current measures:'),
-('error', 7, 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure.\\nNombre de measure actuelle:'),
-('grid.php', 1, 'en', 'filters'),
-('grid.php', 1, 'fr', 'filtres'),
-('grid.php', 2, 'en', 'sorte by'),
-('grid.php', 2, 'fr', 'trier'),
-('grid.php', 3, 'en', 'newest'),
-('grid.php', 3, 'fr', 'les plus récents'),
-('grid.php', 4, 'en', 'older'),
-('grid.php', 4, 'fr', 'les moins récents'),
-('grid.php', 5, 'en', 'price - hight to low'),
-('grid.php', 5, 'fr', 'prix - décroissant'),
-('grid.php', 6, 'en', 'price - low to hight'),
-('grid.php', 6, 'fr', 'prix - croissant'),
-('grid.php', 7, 'en', 'type'),
-('grid.php', 7, 'fr', 'type'),
-('grid.php', 8, 'en', 'category'),
-('grid.php', 8, 'fr', 'catégorie'),
-('grid.php', 9, 'en', 'size'),
-('grid.php', 9, 'fr', 'taille'),
-('grid.php', 10, 'en', 'color'),
-('grid.php', 10, 'fr', 'couleur'),
-('grid.php', 11, 'en', 'price'),
-('grid.php', 11, 'fr', 'prix'),
-('grid.php', 12, 'en', 'minimum price'),
-('grid.php', 12, 'fr', 'prix minimum'),
-('grid.php', 13, 'en', 'maximum price'),
-('grid.php', 13, 'fr', 'prix maximum'),
-('grid.php', 14, 'en', 'apply'),
-('grid.php', 14, 'fr', 'filtrer'),
-('grid.php', 15, 'en', 'close filters'),
-('grid.php', 15, 'fr', 'fermer'),
-('grid.php', 16, 'en', 'measure name'),
-('grid.php', 16, 'fr', 'nom de la mesure'),
-('grid.php', 17, 'en', 'customize size'),
-('grid.php', 17, 'fr', 'personnaliser'),
-('grid.php', 18, 'en', 'choose a reference brand'),
-('grid.php', 18, 'fr', 'choisir une marque de référence'),
-('grid.php', 19, 'en', 'give my measurements'),
-('grid.php', 19, 'fr', 'donner mes mensurations'),
-('grid.php', 20, 'en', 'choose'),
-('grid.php', 20, 'fr', 'choisir'),
-('grid.php', 21, 'en', 'give measurements'),
-('grid.php', 21, 'fr', 'indiquer mensurations'),
-('grid.php', 22, 'en', 'manage measurements'),
-('grid.php', 22, 'fr', 'gérer mes mensurations'),
-('grid.php', 23, 'en', 'choose cut'),
-('grid.php', 23, 'fr', 'choisir une coupe'),
-('grid.php', 24, 'en', 'add to box'),
-('grid.php', 24, 'fr', 'ajouter aux boxes'),
-('grid.php', 25, 'en', 'add to cart'),
-('grid.php', 25, 'fr', 'ajouter au panier'),
-('grid.php', 26, 'en', '3D secure & <br>AES-256 encrypted payement'),
-('grid.php', 26, 'fr', 'paiement crypté avec AES-256 et sécurisé avec 3D secure'),
-('grid.php', 27, 'en', 'customer service 24h/7 response in 1h'),
-('grid.php', 27, 'fr', 'service client 24h / 7 en 1h'),
-('grid.php', 28, 'en', 'free & <br>easy return'),
-('grid.php', 28, 'fr', 'retour facile et gratuit'),
-('grid.php', 29, 'en', 'details'),
-('grid.php', 29, 'fr', 'descriptions'),
-('grid.php', 30, 'en', 'shipping + return'),
-('grid.php', 30, 'fr', 'livraison + retour'),
-('grid.php', 31, 'en', 'delivery and return terms'),
-('grid.php', 31, 'fr', 'modalité de livraison et retour'),
-('grid.php', 32, 'en', 'suggestions'),
-('grid.php', 32, 'fr', 'suggestions'),
-('grid.php', 33, 'en', 'brand reference'),
-('grid.php', 33, 'fr', 'marques de référence'),
-('grid.php', 34, 'en', 'select'),
-('grid.php', 34, 'fr', 'sélectionner'),
-('grid.php', 35, 'en', 'choose a reference brand for the size:'),
-('grid.php', 35, 'fr', 'choisissez une marque de référence pour la taille:'),
-('grid.php', 36, 'en', 'my measurements'),
-('grid.php', 36, 'fr', 'mes mensurations'),
-('grid.php', 37, 'en', 'save'),
-('grid.php', 37, 'fr', 'enregistrer'),
-('grid.php', 38, 'en', 'Indicate your measurements:'),
-('grid.php', 38, 'fr', 'Indiquez vos mensurations:'),
-('grid.php', 39, 'en', 'bust'),
-('grid.php', 39, 'fr', 'buste'),
-('grid.php', 40, 'en', 'arm'),
-('grid.php', 40, 'fr', 'bras'),
-('grid.php', 41, 'en', 'waist'),
-('grid.php', 41, 'fr', 'taille'),
-('grid.php', 42, 'en', 'hip'),
-('grid.php', 42, 'fr', 'hanche'),
-('grid.php', 43, 'en', 'inseam'),
-('grid.php', 43, 'fr', 'entrejambe'),
-('grid.php', 44, 'en', 'add measurement'),
-('grid.php', 44, 'fr', 'ajouter une mesure'),
-('grid.php', 45, 'en', 'your measurements'),
-('grid.php', 45, 'fr', 'vos mensurations'),
-('grid.php', 46, 'en', 'customization'),
-('grid.php', 46, 'fr', 'personnalisation'),
-('grid.php', 47, 'en', 'brand'),
-('grid.php', 47, 'fr', 'marque'),
-('grid.php', 48, 'en', 'measure'),
-('grid.php', 48, 'fr', 'mesure'),
-('grid.php', 49, 'en', 'edit'),
-('grid.php', 49, 'fr', 'modifier'),
-('grid.php', 50, 'en', 'Are you sure you want to delete this measurement?'),
-('grid.php', 50, 'fr', 'Voulez-vous vraiment supprimer cette mesure?');
+INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
+('ER1', 'en', 'Sorry, this service is temporarily unavailable'),
+('ER1', 'fr', 'Désolé, ce service est pontuellement indisponible'),
+('ER10', 'en', 'Please select a size'),
+('ER10', 'fr', 'veuillez choisir une taille'),
+('ER11', 'en', 'if you choose the \'Size\' option you must choose a size.'),
+('ER11', 'fr', 'si vous choisissez l\'option \'Taille\' vous devez choisir une taille.'),
+('ER12', 'en', 'if you choose the option \'Custom size\' you must choose one of your measurements or create a new one.'),
+('ER12', 'fr', 'si vous choisissez l\'option \'Taille personnalisée\' vous devez choisir une de vos mesures ou en créer une nouvelle.'),
+('ER13', 'en', 'sorry, the stock of this product is exhausted for the moment.'),
+('ER13', 'fr', 'désolé, le stock de ce produit est épuisé pour le moment.'),
+('ER14', 'en', 'Sorry, this box has reached the maximum number of items: '),
+('ER14', 'fr', 'Désolé, cette box a atteint le nombre maximum d\'article: '),
+('ER2', 'en', 'this field can not be empty'),
+('ER2', 'fr', 'ce champ ne peut pas être vide'),
+('ER3', 'en', 'this field cannot contain numbers of the form 1997 | 297.829 or 0.321, etc ...'),
+('ER3', 'fr', 'ce champ ne peut contenir des nombres de la forme 1997 | 297,829 ou 0,321, etc...'),
+('ER4', 'en', 'this field can only contain letters, numbers, spaces and the special characters `-` and ` _`'),
+('ER4', 'fr', 'ce champ peut uniquement contenir des lettres, des chiffres, des espaces ansi que les caractères spéciaux `-` et `_`'),
+('ER5', 'en', 'you must tick a choice'),
+('ER5', 'fr', 'vous devez cocher un choix'),
+('ER6', 'en', 'the maximum number of characters for this field is'),
+('ER6', 'fr', 'le nombre de caractère maximum pour ce champ est de'),
+('ER7', 'en', 'Sorry, You have reached the maximum number of measurements. \nNumber of current measures:'),
+('ER7', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure. \nNombre de measure actuelle:'),
+('ER8', 'en', 'Sorry, You have reached the maximum number of measurements.\r\nNumber of current measures:'),
+('ER8', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure.\r\nNombre de measure actuelle:'),
+('ER9', 'en', 'please choose \'Size\' or \'Custom size\' option'),
+('ER9', 'fr', 'veuillez choisir l\'option \'Taille\' ou \'Taille personnalisée\''),
+('US1', 'en', 'filters'),
+('US1', 'fr', 'filtres'),
+('US10', 'en', 'color'),
+('US10', 'fr', 'couleur'),
+('US11', 'en', 'price'),
+('US11', 'fr', 'prix'),
+('US12', 'en', 'minimum price'),
+('US12', 'fr', 'prix minimum'),
+('US13', 'en', 'maximum price'),
+('US13', 'fr', 'prix maximum'),
+('US14', 'en', 'apply'),
+('US14', 'fr', 'filtrer'),
+('US15', 'en', 'close filters'),
+('US15', 'fr', 'fermer les filtres'),
+('US16', 'en', 'measure name'),
+('US16', 'fr', 'nom de la mesure'),
+('US17', 'en', 'custom size'),
+('US17', 'fr', 'taille personnalisée'),
+('US18', 'en', 'choose a reference brand'),
+('US18', 'fr', 'choisir une marque de référence'),
+('US19', 'en', 'give my measurements'),
+('US19', 'fr', 'donner mes mensurations'),
+('US2', 'en', 'sorte by'),
+('US2', 'fr', 'trier'),
+('US20', 'en', 'choose'),
+('US20', 'fr', 'choisir'),
+('US21', 'en', 'give measurements'),
+('US21', 'fr', 'indiquer mensurations'),
+('US22', 'en', 'manage measurements'),
+('US22', 'fr', 'gérer mes mensurations'),
+('US23', 'en', 'choose cut'),
+('US23', 'fr', 'choisir une coupe'),
+('US24', 'en', 'add to box'),
+('US24', 'fr', 'ajouter aux boxes'),
+('US25', 'en', 'add to cart'),
+('US25', 'fr', 'ajouter au panier'),
+('US26', 'en', '3D secure & <br>AES-256 encrypted payement'),
+('US26', 'fr', 'paiement crypté avec AES-256 et sécurisé avec 3D secure'),
+('US27', 'en', 'customer service 24h/7 response in 1h'),
+('US27', 'fr', 'service client 24h / 7 en 1h'),
+('US28', 'en', 'free & <br>easy return'),
+('US28', 'fr', 'retour facile et gratuit'),
+('US29', 'en', 'details'),
+('US29', 'fr', 'descriptions'),
+('US3', 'en', 'newest'),
+('US3', 'fr', 'les plus récents'),
+('US30', 'en', 'shipping + return'),
+('US30', 'fr', 'livraison + retour'),
+('US31', 'en', 'delivery and return terms'),
+('US31', 'fr', 'modalité de livraison et retour'),
+('US32', 'en', 'suggestions'),
+('US32', 'fr', 'suggestions'),
+('US33', 'en', 'reference brand'),
+('US33', 'fr', 'marques de référence'),
+('US34', 'en', 'select'),
+('US34', 'fr', 'sélectionner'),
+('US35', 'en', 'choose a reference brand for the size:'),
+('US35', 'fr', 'choisissez une marque de référence pour la taille:'),
+('US36', 'en', 'my measurements'),
+('US36', 'fr', 'mes mensurations'),
+('US37', 'en', 'save'),
+('US37', 'fr', 'enregistrer'),
+('US38', 'en', 'indicate your measurements:'),
+('US38', 'fr', 'indiquez vos mensurations:'),
+('US39', 'en', 'bust'),
+('US39', 'fr', 'buste'),
+('US4', 'en', 'older'),
+('US4', 'fr', 'les moins récents'),
+('US40', 'en', 'arm'),
+('US40', 'fr', 'bras'),
+('US41', 'en', 'waist'),
+('US41', 'fr', 'taille'),
+('US42', 'en', 'hip'),
+('US42', 'fr', 'hanche'),
+('US43', 'en', 'inseam'),
+('US43', 'fr', 'entrejambe'),
+('US44', 'en', 'add measurement'),
+('US44', 'fr', 'ajouter une mesure'),
+('US45', 'en', 'your measurements'),
+('US45', 'fr', 'vos mensurations'),
+('US46', 'en', 'customization'),
+('US46', 'fr', 'personnalisation'),
+('US47', 'en', 'brand'),
+('US47', 'fr', 'marque'),
+('US48', 'en', 'measure'),
+('US48', 'fr', 'mesure'),
+('US49', 'en', 'edit'),
+('US49', 'fr', 'modifier'),
+('US5', 'en', 'price - hight to low'),
+('US5', 'fr', 'prix - décroissant'),
+('US50', 'en', 'Are you sure you want to delete this measurement?'),
+('US50', 'fr', 'Voulez-vous vraiment supprimer cette mesure?'),
+('US51', 'en', 'no result'),
+('US51', 'fr', 'aucun resultat'),
+('US52', 'en', 'cut'),
+('US52', 'fr', 'coupe'),
+('US53', 'en', 'items'),
+('US53', 'fr', 'articles'),
+('US54', 'en', 'quantity'),
+('US54', 'fr', 'quantité'),
+('US55', 'en', 'box'),
+('US55', 'fr', 'box'),
+('US57', 'en', 'total'),
+('US57', 'fr', 'total'),
+('US58', 'en', 'Are you sure you want to delete this box?'),
+('US58', 'fr', 'Voulez-vous vraiment supprimer cette box?'),
+('US6', 'en', 'price - low to hight'),
+('US6', 'fr', 'prix - croissant'),
+('US7', 'en', 'type'),
+('US7', 'fr', 'type'),
+('US8', 'en', 'category'),
+('US8', 'fr', 'catégorie'),
+('US9', 'en', 'size'),
+('US9', 'fr', 'taille');
 
 -- --------------------------------------------------------
 
@@ -2871,7 +2982,7 @@ INSERT INTO `TranslationStations` (`usedInside`, `station`, `iso_lang`, `transla
 --
 
 CREATE TABLE `Users` (
-  `userId` varchar(25) NOT NULL,
+  `userID` int(11) NOT NULL,
   `lang_` varchar(10) NOT NULL,
   `mail` varchar(100) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
@@ -2888,7 +2999,7 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`userID`, `lang_`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
-(651853948, 'en', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'man', '2020-01-06 15:00:05'),
+(651853948, 'fr', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'man', '2020-01-06 15:00:05'),
 (666200808, 'en', 'rukefiwoh-5422@yopmail.com', 'qffrzrrfzfzfqcrzvrv', 'bob', 'makinson', '1995-02-27', 0, 'other', '2020-01-05 15:00:05'),
 (846470517, 'fr', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'woman', '2020-01-08 15:00:05'),
 (934967739, 'en', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'man', '2020-02-27 18:02:20'),
@@ -2901,7 +3012,7 @@ INSERT INTO `Users` (`userID`, `lang_`, `mail`, `password`, `firstname`, `lastna
 --
 
 CREATE TABLE `UsersMeasures` (
-  `userId` varchar(25) NOT NULL,
+  `userId` int(11) NOT NULL,
   `measureID` varchar(100) NOT NULL,
   `measureName` varchar(25) NOT NULL,
   `userBust` double NOT NULL,
@@ -2918,10 +3029,10 @@ CREATE TABLE `UsersMeasures` (
 --
 
 INSERT INTO `UsersMeasures` (`userId`, `measureID`, `measureName`, `userBust`, `userArm`, `userWaist`, `userHip`, `userInseam`, `unit_name`, `setDate`) VALUES
+(651853948, '2191802te91kv3ee27a280h02', 'my last measure', 22, 11, 11, 11, 11, 'inch', '2020-09-12 19:27:23'),
 (651853948, '651853948172', 'many dim1 devient isa 01', 68.34, 107.14, 98.29, 101.07, 64.96, 'inch', '2017-01-08 00:00:00'),
-(651853948, '651853948740', 'many dim2', 104.23, 89.96, 100.27, 62.36, 114.95, 'centimeter', '2018-01-18 00:00:00'),
-(997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00'),
-(651853948, 'yeir4ywxbhor39ed7yto9kipdsjmb7djazwdrt7otka20200501224941wq1o2uhtngwpq63fnpujb496se7q6mh4gq9ci3lfua4', 'the other count', 11111.11111, 22222.22222, 33333.33333, 44444.44444, 55555.55555, 'centimeter', '2020-05-01 22:49:41');
+(651853948, '651853948740', 'many dim auto test', 11.11, 22.22, 33.33, 44.44, 55.555, 'inch', '2018-01-18 00:00:00'),
+(997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00');
 
 --
 -- Index pour les tables déchargées
@@ -2959,19 +3070,16 @@ ALTER TABLE `Basket-DiscountCodes`
 -- Index pour la table `Baskets-Box`
 --
 ALTER TABLE `Baskets-Box`
-  ADD PRIMARY KEY (`userId`,`boxId`),
-  ADD KEY `fk_boxId.Baskets-Box-FROM-Box` (`boxId`);
+  ADD PRIMARY KEY (`boxId`) USING BTREE,
+  ADD KEY `userId` (`userId`);
 
 --
 -- Index pour la table `Baskets-Products`
 --
 ALTER TABLE `Baskets-Products`
-  ADD PRIMARY KEY (`userId`,`prodId`,`sequenceID`) USING BTREE,
+  ADD PRIMARY KEY (`userId`,`prodId`) USING BTREE,
   ADD KEY `fk_basketProdId.Baskets-Products-FROM-Products` (`prodId`),
-  ADD KEY `fk_size_name.Baskets-Products-FROM-Sizes` (`size_name`),
-  ADD KEY `fk_brand_name.Baskets-Products-FROM-BrandsMeasures` (`brand_name`),
-  ADD KEY `fk_measureId.Baskets-Products-FROM-UsersMeasures` (`measureId`),
-  ADD KEY `fk_cut_name.Baskets-Products-FROM-Cuts` (`cut_name`);
+  ADD KEY `fk_size_name.Baskets-Products-FROM-Sizes` (`size_name`);
 
 --
 -- Index pour la table `BodyParts`
@@ -2991,12 +3099,18 @@ ALTER TABLE `Box-Products`
   ADD KEY `fk_cut_name.Box-Products-FROM-Cuts` (`cut_name`);
 
 --
+-- Index pour la table `BoxArguments`
+--
+ALTER TABLE `BoxArguments`
+  ADD PRIMARY KEY (`box_color`,`argID`);
+
+--
 -- Index pour la table `BoxBuyPrice`
 --
 ALTER TABLE `BoxBuyPrice`
   ADD PRIMARY KEY (`box_color`,`setDate`),
-  ADD KEY `fk_buy_country.BoxBuyPrice-FROM-BuyCountries` (`buy_country`),
-  ADD KEY `fk_iso_currency.BoxBuyPrice-FROM-Currencies` (`iso_currency`);
+  ADD KEY `fk_iso_currency.BoxBuyPrice-FROM-Currencies` (`iso_currency`),
+  ADD KEY `fk_buy_country.BoxBuyPrice-FROM-Countries` (`buy_country`);
 
 --
 -- Index pour la table `BoxColors`
@@ -3238,8 +3352,8 @@ ALTER TABLE `PagesParameters`
 --
 ALTER TABLE `ProductBuyPrice`
   ADD PRIMARY KEY (`prodId`,`buyDate`),
-  ADD KEY `fk_buy_country.ProductBuyPrice-FROM-BuyCountries` (`buy_country`),
-  ADD KEY `fk_iso_currency.ProductBuyPrice-FROM-Currencies` (`iso_currency`);
+  ADD KEY `fk_iso_currency.ProductBuyPrice-FROM-Currencies` (`iso_currency`),
+  ADD KEY `fk_buy_country.ProductBuyPrice-FROM-Countries` (`buy_country`);
 
 --
 -- Index pour la table `ProductFunctions`
@@ -3301,7 +3415,7 @@ ALTER TABLE `ProductsDiscounts`
 -- Index pour la table `ProductsMeasures`
 --
 ALTER TABLE `ProductsMeasures`
-  ADD PRIMARY KEY (`prodId`,`size_name`,`body_part`,`unit_name`) USING BTREE,
+  ADD PRIMARY KEY (`prodId`,`size_name`,`body_part`) USING BTREE,
   ADD KEY `FK_body_part.ProductsMeasures-FROM-BodyPart` (`body_part`),
   ADD KEY `FK_unit_name.ProductsMeasures-FROM-MeasureUnits` (`unit_name`);
 
@@ -3349,13 +3463,14 @@ ALTER TABLE `Sizes`
 -- Index pour la table `Translations`
 --
 ALTER TABLE `Translations`
-  ADD PRIMARY KEY (`translationID`);
+  ADD PRIMARY KEY (`translationID`,`iso_lang`) USING BTREE,
+  ADD KEY `fk_Translation.isolang-FROM-Languages` (`iso_lang`);
 
 --
 -- Index pour la table `TranslationStations`
 --
 ALTER TABLE `TranslationStations`
-  ADD PRIMARY KEY (`usedInside`,`station`,`iso_lang`) USING BTREE,
+  ADD PRIMARY KEY (`station`,`iso_lang`) USING BTREE,
   ADD KEY `fk_iso_lang.TranslationStations-FROM-Languages` (`iso_lang`);
 
 --
@@ -3388,7 +3503,7 @@ ALTER TABLE `Products`
 -- AUTO_INCREMENT pour la table `Translations`
 --
 ALTER TABLE `Translations`
-  MODIFY `translationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `translationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Contraintes pour les tables déchargées
@@ -3427,9 +3542,6 @@ ALTER TABLE `Baskets-Box`
 --
 ALTER TABLE `Baskets-Products`
   ADD CONSTRAINT `fk_basketProdId.Baskets-Products-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_brand_name.Baskets-Products-FROM-BrandsMeasures` FOREIGN KEY (`brand_name`) REFERENCES `BrandsMeasures` (`brandName`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_cut_name.Baskets-Products-FROM-Cuts` FOREIGN KEY (`cut_name`) REFERENCES `Cuts` (`cutName`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_measureId.Baskets-Products-FROM-UsersMeasures` FOREIGN KEY (`measureId`) REFERENCES `UsersMeasures` (`measureID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_size_name.Baskets-Products-FROM-Sizes` FOREIGN KEY (`size_name`) REFERENCES `Sizes` (`sizeName`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_userId.Baskets-Products-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
@@ -3445,11 +3557,17 @@ ALTER TABLE `Box-Products`
   ADD CONSTRAINT `fk_size_name.Box-Products-FROM-Sizes` FOREIGN KEY (`size_name`) REFERENCES `Sizes` (`sizeName`) ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `BoxArguments`
+--
+ALTER TABLE `BoxArguments`
+  ADD CONSTRAINT `fk_box_color.BoxArguments-FROM-BoxColors` FOREIGN KEY (`box_color`) REFERENCES `BoxColors` (`boxColor`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `BoxBuyPrice`
 --
 ALTER TABLE `BoxBuyPrice`
   ADD CONSTRAINT `fk_box_color.BoxBuyPrice-FROM-BoxColors` FOREIGN KEY (`box_color`) REFERENCES `BoxColors` (`boxColor`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_buy_country.BoxBuyPrice-FROM-BuyCountries` FOREIGN KEY (`buy_country`) REFERENCES `BuyCountries` (`buyCountry`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_buy_country.BoxBuyPrice-FROM-Countries` FOREIGN KEY (`buy_country`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_iso_currency.BoxBuyPrice-FROM-Currencies` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE;
 
 --
@@ -3619,7 +3737,7 @@ ALTER TABLE `PagesParameters`
 -- Contraintes pour la table `ProductBuyPrice`
 --
 ALTER TABLE `ProductBuyPrice`
-  ADD CONSTRAINT `fk_buy_country.ProductBuyPrice-FROM-BuyCountries` FOREIGN KEY (`buy_country`) REFERENCES `BuyCountries` (`buyCountry`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_buy_country.ProductBuyPrice-FROM-Countries` FOREIGN KEY (`buy_country`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_iso_currency.ProductBuyPrice-FROM-Currencies` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_prodId.ProductBuyPrice-Products-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -3677,7 +3795,7 @@ ALTER TABLE `ProductsDiscounts`
 --
 ALTER TABLE `ProductsMeasures`
   ADD CONSTRAINT `FK_body_part.ProductsMeasures-FROM-BodyPart` FOREIGN KEY (`body_part`) REFERENCES `BodyParts` (`bodyPart`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_prodId_size_name.ProductsMeasures-FROM-Products-Sizes` FOREIGN KEY (`prodId`,`size_name`) REFERENCES `Products-Sizes` (`prodId`, `size_name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_prodId.size_name.ProductsMeasures-FROM-Products-Sizes` FOREIGN KEY (`prodId`,`size_name`) REFERENCES `Products-Sizes` (`prodId`, `size_name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_unit_name.ProductsMeasures-FROM-MeasureUnits` FOREIGN KEY (`unit_name`) REFERENCES `MeasureUnits` (`unitName`) ON UPDATE CASCADE;
 
 --
@@ -3701,6 +3819,12 @@ ALTER TABLE `ProductsShippings`
   ADD CONSTRAINT `fk_country_.ProductsShipping-FROM-Countries` FOREIGN KEY (`country_`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_iso_currency.ProductsShipping-FROM-CurrenciesIsoCodes` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_prodId.ProductsShipping-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Translations`
+--
+ALTER TABLE `Translations`
+  ADD CONSTRAINT `fk_Translation.isolang-FROM-Languages` FOREIGN KEY (`iso_lang`) REFERENCES `Languages` (`langIsoCode`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `TranslationStations`
