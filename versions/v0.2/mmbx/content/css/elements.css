@@ -728,6 +728,9 @@
     background-color: var(--color-orange);
     border: var(--color-orange) 1px;
 } */
+.grey-tag-button:hover{
+    background-color: var(--color-shadow-05);
+}
 
 .grey-button {
     color: var(--color-blue);
@@ -765,6 +768,19 @@
 /*————————————————————— COLOR BUTTON UP —————————————————————————————————————*/
 
 /*————————————————————— STADARD-BUTTON DOWN —————————————————————————————————*/
+
+.standard-tag-button {
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
+    cursor: pointer;
+    padding: 3px;
+}
+
+.standard-tag-button:hover {
+    border-radius: var(--border-float-radius);
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
+}
 
 .standard-button {
     width: 100%;

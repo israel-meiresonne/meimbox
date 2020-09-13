@@ -55,6 +55,7 @@ class Basket extends ModelFunctionality
     public const KEY_TOTAL = "basket_total";
     public const KEY_SUBTOTAL = "basket_subtotal";
     public const KEY_VAT = "basket_vat";
+    public const KEY_BSKT_QUANTITY = "basket_quantity";
 
     /**
      * Constructor
@@ -191,16 +192,6 @@ class Basket extends ModelFunctionality
         return null;
     }
 
-    // /**
-    //  * To check if basket holds a box following a id given in param
-    //  * @param string $boxID id of the box to look for
-    //  * @return boolean true if the box with the id given exist else false
-    //  */
-    // public function existBox($boxID)
-    // {
-    //     return !($this->getBoxe($boxID) === null);
-    // }
-
     /**
      * Getter for basket's basketproduct
      * @return BasketProduct[] basket's basketproduct
@@ -220,6 +211,28 @@ class Basket extends ModelFunctionality
     {
         $cart = array_merge($this->getBoxes(), $this->getBasketProducts());
         return $cart;
+    }
+
+    /**
+     * To get the quantity of boxproduct and basketproduct inside the basket
+     * @return int
+     */
+    public function getQuantity()
+    {
+        $basketProducts = $this->getBasketProducts();
+        $boxes = $this->getBoxes();
+        $quantity = 0;
+        if (!empty($basketProducts)) {
+            foreach ($basketProducts as $basketProduct) {
+                $quantity += $basketProduct->getQuantity();
+            }
+        }
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                $quantity += $box->getNbProduct();
+            }
+        }
+        return $quantity;
     }
 
     /**

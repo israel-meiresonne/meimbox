@@ -16,29 +16,40 @@ $datas["submitButtonTxt"] = $translator->translateStation("US34");
 $datas["submitIsDesabled"] = true;
 $datas["submitClass"] = "standard-button-desabled";
 
-$dad = ModelFunctionality::generateDateCode(25);
-$dadx = "#" . $dad;
-$brotherx = ModelFunctionality::generateDateCode(25);
+// $dad = ModelFunctionality::generateDateCode(25);
+// $dadx = "#" . $dad;
+// $brotherx = ModelFunctionality::generateDateCode(25);
 $sbtnx = "#" . $datas["submitButtonId"];
 $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
-$boxDatas = [
-    "elements" => $boxes,
+
+// $boxDatas = [
+//     "elements" => $boxes,
+//     "country" => $country,
+//     "currency" => $currency,
+//     "dad" => $dad,
+//     "dadx" => $dadx,
+//     "brotherx" => $brotherx,
+//     "sbtnx" => $sbtnx
+// ];
+// $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
+
+// $contentDatas = [
+//     "instruction" => "select a box where to put your item:",
+//     "content" => $cart,
+//     "btnTxt" => "ajouter une box",
+//     "btnId" => "box_manager_open_princing",
+//     "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window')"
+//     // "btnDataAttr" => 
+// ];
+// $datas["content"] = $this->generateFile('view/elements/popupContent.php', $contentDatas);
+$contentDatas = [
+    "boxes" => $boxes,
     "country" => $country,
     "currency" => $currency,
-    "dad" => $dad,
-    "dadx" => $dadx,
-    "brotherx" => $brotherx,
-    "sbtnx" => $sbtnx
+    // "dad" => $dad,
+    // "dadx" => $dadx,
+    // "brotherx" => $brotherx,
+    // "sbtnx" => $sbtnx
 ];
-$cart = $this->generateFile('view/elements/cart.php', $boxDatas);
-
-$contentDatas = [
-    "instruction" => "select a box where to put your item:",
-    "content" => $cart,
-    "btnTxt" => "ajouter une box",
-    "btnId" => "box_manager_open_princing",
-    "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window')"
-    // "btnDataAttr" => 
-];
-$datas["content"] = $this->generateFile('view/elements/popupContent.php', $contentDatas);
+$datas["content"] = $this->generateFile('view/elements/popupBoxManagerContent.php', $contentDatas);
 echo $this->generateFile('view/elements/popup.php', $datas);

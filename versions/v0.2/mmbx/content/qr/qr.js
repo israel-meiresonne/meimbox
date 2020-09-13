@@ -92,6 +92,7 @@
 
     var addProdRSP = function (r) {
         if (r.isSuccess) {
+            getBoxMngr();
             openPopUp("#box_manager_window");
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);

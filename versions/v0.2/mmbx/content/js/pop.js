@@ -3,6 +3,7 @@
     var baskettotal = "total";
     var basketsubtotal = "basketsubtotal";
     var basketvat = "vat";
+    var basketquantity = "quantity";
     // ++++ attr down ++++
     onclickattr = "onclick";
     idattr = "id";
@@ -44,6 +45,9 @@
         var h = $(selector).height();
         $(selector).height(h);
         $(selector).animate({ width: '0%' }, TS, function () {
+            $(this).slideUp(TS, function () {
+                $(this).remove();
+            });
         });
     }
     displayFlexOn = (x, t = TS) => {
@@ -407,8 +411,7 @@
     }
     var getBoxMngrRSP = (r) => {
         if (r.isSuccess) {
-            $("#box_manager_window").html(r.results[A_GET_BX_MNGR]);
-            switchCloseNext($("#box_manager_window"), $("#basket_pop"));
+            $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_GET_BX_MNGR]);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
@@ -431,7 +434,7 @@
     }
     var addBoxRSP = (r, cbtnx) => {
         if (r.isSuccess) {
-            $("#box_manager_window").html(r.results[A_ADD_BOX]);
+            $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BOX]);
             $(cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
@@ -455,17 +458,22 @@
     var removeBoxRSP = (r, x) => {
         if (r.isSuccess) {
             removeAnim(x);
-            var ttx = $("[" + basketdata + "='" + baskettotal + "']");
-            var ttv = r.results[KEY_TOTAL];
-            fadeValue(ttx, ttv);
+            getBasketPop();
+            // var ttx = $("[" + basketdata + "='" + baskettotal + "']");
+            // var ttv = r.results[KEY_TOTAL];
+            // fadeValue(ttx, ttv);
 
-            var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
-            var sbtv = r.results[KEY_SUBTOTAL];
-            fadeValue(sbtx, sbtv);
+            // var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
+            // var sbtv = r.results[KEY_SUBTOTAL];
+            // fadeValue(sbtx, sbtv);
 
-            var vatx = $("[" + basketdata + "='" + basketvat + "']");
-            var vatv = r.results[KEY_TOTAL];
-            fadeValue(vatx, vatv);
+            // var vatx = $("[" + basketdata + "='" + basketvat + "']");
+            // var vatv = r.results[KEY_TOTAL];
+            // fadeValue(vatx, vatv);
+            
+            // var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
+            // var qtyv = r.results[KEY_BSKT_QUANTITY];
+            // fadeValue(qtyx, qtyv);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[ALERT_DELETE_BOX] != null && r.errors[ALERT_DELETE_BOX] != "") {
@@ -503,10 +511,8 @@
     }
     var addBoxProductRSP = (r, cbtnx) => {
         if (r.isSuccess) {
-            $("#box_manager_window").html(r.results[A_ADD_BXPROD]);
-            // switchBackPopUp($("#box_manager_window"), $("#basket_pop"), switchCloseNext);
-            switchCloseNext($("#box_manager_window"), $("#basket_pop"));
-            // $(cbtnx).click();
+            $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BXPROD]);
+            switchCloseNext($("#box_manager_window"), $("#basket_pop"), getBasketPop);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[A_ADD_BXPROD] != null && r.errors[A_ADD_BXPROD] != "") {
@@ -514,6 +520,43 @@
         }
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/
+    /*—————————————————— BASKET MANAGER DOWN ————————————————————————————————*/
+    getBasketPop = () => {
+        var d = {
+            "a": A_GET_BSKT_POP,
+            "d": null,
+            "r": getBasketPopRSP,
+            "l": "#basket_pop_loading",
+            // "x": cbtnx,
+            "sc": () => { displayFlexOn(d.l) },
+            "rc": () => { displayFlexOff(d.l) }
+        };
+        SND(d);
+    }
+    var getBasketPopRSP = (r) => {
+        if (r.isSuccess) {
+            $("#basket_pop .pop_up-content-block-inner").html(r.results[A_GET_BSKT_POP]);
+            var ttx = $("[" + basketdata + "='" + baskettotal + "']");
+            var ttv = r.results[KEY_TOTAL];
+            fadeValue(ttx, ttv);
+
+            var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
+            var sbtv = r.results[KEY_SUBTOTAL];
+            fadeValue(sbtx, sbtv);
+
+            var vatx = $("[" + basketdata + "='" + basketvat + "']");
+            var vatv = r.results[KEY_TOTAL];
+            fadeValue(vatx, vatv);
+            
+            var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
+            var qtyv = r.results[KEY_BSKT_QUANTITY];
+            fadeValue(qtyx, qtyv);
+        } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
+            popAlert(r.errors[FAT_ERR].message);
+        }
+    }
+    /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
+
 
     $(document).ready(() => {
         /*—————————————————— BRAND DOWN ———————————————————————————————————————*/
