@@ -2,16 +2,20 @@
 require_once 'model/boxes-management/Box.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Translator $translator to translate
  * @param Box $box the box to display
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
+ * @param string $elementId id of the element (allway given)
  * @param string $dadx selector of the dad (if set it activate the select fonctionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
 
+/**
+ * @var Box
+ */
+$box = $box;
 if (empty($dadx)) {
     $dadx = null;
     $brotherx = null;
@@ -27,7 +31,6 @@ $price = $box->getPriceFormated();
     <div class="box-display-block">
         <?php
         $datas = [
-            "translator" => $translator,
             "title" => $translator->translateString($box->getColor()),
             "color" => null,
             "colorRGB" => null,
@@ -36,10 +39,14 @@ $price = $box->getPriceFormated();
             "price" => $price
         ];
         $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);
+        $boxID = $box->getBoxID();
+        $elementIdx = "#" . $elementId;
         $datas = [
             "properties" => $properties,
             "price" => $price,
             "pictureSrc" => $box->getPictureSource(),
+            "elementId" => $elementId,
+            "deleteFunc" => "removeBox('$boxID', '$elementIdx')",
             "dadx" => $dadx,
             "brotherx" => $brotherx,
             "submitdata" => $submitdata
@@ -56,7 +63,6 @@ $price = $box->getPriceFormated();
 
                     foreach ($products as $product) {
                         $datas = [
-                            "translator" => $translator,
                             "product" => $product,
                             "country" => $country,
                             "currency" => $currency,

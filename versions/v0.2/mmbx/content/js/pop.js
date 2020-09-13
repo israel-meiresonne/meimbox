@@ -1,6 +1,8 @@
 (() => {
     // ++++ val down ++++
-
+    var baskettotal = "total";
+    var basketsubtotal = "basketsubtotal";
+    var basketvat = "vat";
     // ++++ attr down ++++
     onclickattr = "onclick";
     idattr = "id";
@@ -12,6 +14,7 @@
     const datatarget = "data-datatarget";
     const submitdata = "data-submitdata";
     popstack = "data-switchstack";
+    const basketdata = "data-basket";
     // closepop = 'data-popdata="closebtn"';
     // ++++ class down ++++
     const selected = "popup-selected";
@@ -41,9 +44,6 @@
         var h = $(selector).height();
         $(selector).height(h);
         $(selector).animate({ width: '0%' }, TS, function () {
-            $(this).slideUp(TS, function () {
-                $(this).remove();
-            });
         });
     }
     displayFlexOn = (x, t = TS) => {
@@ -61,6 +61,12 @@
         $(x).fadeOut(t / 2, function () {
             $(this).replaceWith(y);
             $(y).fadeIn(t);
+        });
+    }
+    fadeValue = (x, v, t = TS) => {
+        $(x).fadeOut(t / 2, function () {
+            $(this).text(v);
+            $(x).fadeIn(t);
         });
     }
     createNone = function (x) {
@@ -101,13 +107,6 @@
         console.log(sbtnx);
         after(launchx);
     }
-    // switchCloseNext = (fromx, tox) => {
-    //     var fbtn = $(fromx).find("." + closebtnCls);
-    //     var stack = getStack(fbtn);
-    //     var e = "closePopUp('" + getX(tox) + "')";
-    //     stack.push(e);
-    //     $(fbtn).attr(popstack, json_encode(stack));
-    // }
     switchCloseNext = (fromx, tox, before = () => { }, after = () => { }) => {
         before(fromx, tox);
         var tbtn = $(tox).find("." + closebtnCls);
@@ -394,7 +393,26 @@
     }
     /*—————————————————— MEASURE ADDER UP ———————————————————————————————————*/
     /*—————————————————— BOX MANAGER DOWN ———————————————————————————————————*/
-
+    getBoxMngr = () => {
+        var d = {
+            "a": A_GET_BX_MNGR,
+            "d": null,
+            "r": getBoxMngrRSP,
+            "l": "#box_pricing_loading",
+            // "x": cbtnx,
+            "sc": () => { displayFlexOn(d.l) },
+            "rc": () => { displayFlexOff(d.l) }
+        };
+        SND(d);
+    }
+    var getBoxMngrRSP = (r) => {
+        if (r.isSuccess) {
+            $("#box_manager_window").html(r.results[A_GET_BX_MNGR]);
+            switchCloseNext($("#box_manager_window"), $("#basket_pop"));
+        } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
+            popAlert(r.errors[FAT_ERR].message);
+        }
+    }
     /*—————————————————— BOX MANAGER UP —————————————————————————————————————*/
     /*—————————————————— PRICING MANAGER DOWN ———————————————————————————————*/
     addBox = (color, popx) => {
@@ -417,6 +435,41 @@
             $(cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
+        }
+    }
+    removeBox = (bxid, x) => {
+        if (popAsk(ALERT_DELETE_BOX)) {
+            var params = mapToParam({ [KEY_BOX_ID]: bxid });
+            var d = {
+                "a": A_DELETE_BOX,
+                "d": params,
+                "r": removeBoxRSP,
+                "l": "#basket_pop_loading",
+                "x": x,
+                "sc": () => { displayFlexOn(d.l) },
+                "rc": () => { displayFlexOff(d.l) }
+            };
+            SND(d);
+        }
+    }
+    var removeBoxRSP = (r, x) => {
+        if (r.isSuccess) {
+            removeAnim(x);
+            var ttx = $("[" + basketdata + "='" + baskettotal + "']");
+            var ttv = r.results[KEY_TOTAL];
+            fadeValue(ttx, ttv);
+
+            var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
+            var sbtv = r.results[KEY_SUBTOTAL];
+            fadeValue(sbtx, sbtv);
+
+            var vatx = $("[" + basketdata + "='" + basketvat + "']");
+            var vatv = r.results[KEY_TOTAL];
+            fadeValue(vatx, vatv);
+        } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
+            popAlert(r.errors[FAT_ERR].message);
+        } else if (r.errors[ALERT_DELETE_BOX] != null && r.errors[ALERT_DELETE_BOX] != "") {
+            popAlert(r.errors[ALERT_DELETE_BOX].message);
         }
     }
     addBoxProduct = (sbtnx, popx) => {

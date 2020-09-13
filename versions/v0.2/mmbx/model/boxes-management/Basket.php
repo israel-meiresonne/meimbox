@@ -52,6 +52,10 @@ class Basket extends ModelFunctionality
      */
     private $discountCodes;
 
+    public const KEY_TOTAL = "basket_total";
+    public const KEY_SUBTOTAL = "basket_subtotal";
+    public const KEY_VAT = "basket_vat";
+
     /**
      * Constructor
      * @var int $userID identifiant of the user
@@ -181,11 +185,21 @@ class Basket extends ModelFunctionality
         foreach ($boxes as $key => $boxe) {
             $found = $boxes[$key]->getBoxID() == $boxID;
             if ($found) {
-                return $boxe;
+                return $boxes[$key];
             }
         }
         return null;
     }
+
+    // /**
+    //  * To check if basket holds a box following a id given in param
+    //  * @param string $boxID id of the box to look for
+    //  * @return boolean true if the box with the id given exist else false
+    //  */
+    // public function existBox($boxID)
+    // {
+    //     return !($this->getBoxe($boxID) === null);
+    // }
 
     /**
      * Getter for basket's basketproduct
@@ -212,7 +226,7 @@ class Basket extends ModelFunctionality
      * To get basket's total price
      * @return Price basket's total price
      */
-    public function getSum()
+    public function getTotal()
     {
         $basketProducts = $this->getBasketProducts();
         $boxes = $this->getBoxes();
@@ -230,7 +244,50 @@ class Basket extends ModelFunctionality
             }
         }
         $currency = $this->getCurrency();
-        return (new Price($sum,$currency));
+        return (new Price($sum, $currency));
+    }
+
+    /**
+     * To get basket's subtotal amount
+     * @return Price basket's subtotal amount
+     */
+    public function getSubTotal()
+    {
+        $country = $this->getCountry();
+        $total = $this->getTotal()->getPrice();
+        $vat = $country->getVat();
+        $subtotal = ($total / (1 + $vat));
+        $currency = $this->getCurrency();
+        return (new Price($subtotal, $currency));
+    }
+
+    /**
+     * To get basket's subtotal amount
+     * @return Price basket's subtotal amount
+     */
+    public function getVatAmount()
+    {
+        $country = $this->getCountry();
+        $total = $this->getTotal()->getPrice();
+        $vat = $country->getVat();
+        $subtotal = ($total / (1 + $vat));
+        $vatAmount = $total - $subtotal;
+        $currency = $this->getCurrency();
+        return (new Price($vatAmount, $currency));
+    }
+
+    /**
+     * Check if still enough place in box to add one product
+     * @param string $boxID id of the box to look for
+     * @return boolean true if still space in the box else false
+     */
+    public function stillSpace($boxID)
+    {
+        $box = $this->getBoxe($boxID);
+        if ($box == null) {
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        return $box->getSpace();
     }
 
     /**
@@ -255,27 +312,23 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * To check if basket holds a box following a id given in param
-     * @param string $boxID id of the box to look for
-     * @return boolean true if the box with the id given exist else false
+     * To delete box from Visitor's basket
+     * + also delete from db
+     * @param Response $response where to strore results
+     * @param string $boxID id of box in Visitor's basket
      */
-    public function existBox($boxID)
+    public function deleteBox(Response $response, $boxID)
     {
-        return !($this->getBoxe($boxID) === null);
-    }
-
-    /**
-     * Check if still enough place in box to add one product
-     * @param string $boxID id of the box to look for
-     * @return boolean true if still space in the box else false
-     */
-    public function stillSpace($boxID)
-    {
-        $box = $this->getBoxe($boxID);
-        if ($box == null) {
-            throw new Exception("This box don't exist boxID:'$boxID'");
+        $this->emptyBox($response, $boxID);
+        if (!$response->containError()) {
+            $box = $this->getBoxe($boxID);
+            $box->deleteBox($response);
+            if (!$response->containError()) {
+                $key = $box->getDateInSec();
+                $this->boxes[$key] = null;
+                unset($this->boxes[$key]);
+            }
         }
-        return $box->getSpace();
     }
 
     /**
@@ -292,5 +345,19 @@ class Basket extends ModelFunctionality
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
         $box->addProduct($response, $prodID, $sizeObj);
+    }
+
+    /**
+     * To delete all product inside a box
+     * @param Response $response where to strore results
+     * @param string $boxID id of box in Visitor's basket
+     */
+    private function emptyBox(Response $response, $boxID)
+    {
+        $box = $this->getBoxe($boxID);
+        if (empty($box)) {
+            throw new Exception("This box don't exist, boxId: $boxID");
+        }
+        ($box->getSizeMax() != $box->getSpace()) ? $box->emptyBox($response) : null;
     }
 }

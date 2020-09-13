@@ -28,13 +28,17 @@ require_once 'model/boxes-management/BoxProduct.php';
 ?>
 <div class="cart-wrap">
     <ul <?= $Tagdad ?> class="remove-ul-default-att" <?= $Tagsbtnx ?> >
-        <?php foreach ($elements as $element) : ?>
-            <li class="li-cart-element-container remove-li-default-att">
+        <?php foreach ($elements as $element) : 
+            $elementId = ModelFunctionality::generateDateCode(25);
+            $TagelementId = "id='". $elementId ."'";
+            ?>
+            <li <?= $TagelementId ?> class="li-cart-element-container remove-li-default-att">
                 <?php
                 switch (get_class($element)) {
                     case BasketProduct::class:
                         $submitdata = $element->getProdID();
                         $datas = [
+                            "elementId" => $elementId,
                             "product" => $element,
                             "country" => $country,
                             "currency" => $currency,
@@ -47,7 +51,7 @@ require_once 'model/boxes-management/BoxProduct.php';
                     case Box::class:
                         $submitdata = $element->getBoxID();
                         $datas = [
-                            "translator" => $translator,
+                            "elementId" => $elementId,
                             "box" => $element,
                             "country" => $country,
                             "currency" => $currency,

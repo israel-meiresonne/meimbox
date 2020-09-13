@@ -2506,12 +2506,12 @@
 											"subViews": [
 												{
 													"_type": "ERDColumnView",
-													"_id": "AAAAAAFwSPsrlJ7/TtA=",
+													"_id": "AAAAAAFwSPsrlZ8CT7M=",
 													"_parent": {
 														"$ref": "AAAAAAFwSPsrdp74dyM="
 													},
 													"model": {
-														"$ref": "AAAAAAFwSPsTeJ7opcc="
+														"$ref": "AAAAAAFwSPsTeJ7paJg="
 													},
 													"font": "Arial;13;0",
 													"left": 1917,
@@ -2521,12 +2521,12 @@
 												},
 												{
 													"_type": "ERDColumnView",
-													"_id": "AAAAAAFwSPsrlZ8CT7M=",
+													"_id": "AAAAAAFwSPsrlJ7/TtA=",
 													"_parent": {
 														"$ref": "AAAAAAFwSPsrdp74dyM="
 													},
 													"model": {
-														"$ref": "AAAAAAFwSPsTeJ7paJg="
+														"$ref": "AAAAAAFwSPsTeJ7opcc="
 													},
 													"font": "Arial;13;0",
 													"left": 1917,
@@ -19151,22 +19151,6 @@
 							"columns": [
 								{
 									"_type": "ERDColumn",
-									"_id": "AAAAAAFwSPsTeJ7opcc=",
-									"_parent": {
-										"$ref": "AAAAAAFwSPsTeJ7khBw="
-									},
-									"name": "userId",
-									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
-									"primaryKey": true,
-									"foreignKey": true,
-									"referenceTo": {
-										"$ref": "AAAAAAFwMOip8m6G7G4="
-									}
-								},
-								{
-									"_type": "ERDColumn",
 									"_id": "AAAAAAFwSPsTeJ7paJg=",
 									"_parent": {
 										"$ref": "AAAAAAFwSPsTeJ7khBw="
@@ -19179,6 +19163,21 @@
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwSfrP96jbCj8="
+									}
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAFwSPsTeJ7opcc=",
+									"_parent": {
+										"$ref": "AAAAAAFwSPsTeJ7khBw="
+									},
+									"name": "userId",
+									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
+									"type": "INTEGER",
+									"length": "11",
+									"foreignKey": true,
+									"referenceTo": {
+										"$ref": "AAAAAAFwMOip8m6G7G4="
 									}
 								}
 							]

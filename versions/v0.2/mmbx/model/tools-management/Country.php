@@ -47,15 +47,6 @@ class Country extends ModelFunctionality
         }
     }
 
-    // private function __construct1($countryName)
-    // {
-    //     if ($this->existCountry($countryName)) {
-    //         $this->buildCurrency($countryName);
-    //     } else {
-    //         $this->buildCurrency(self::$DEFAULT_COUNTRY_NAME);
-    //     }
-    // }
-
     /**
      * Initialize Language's constants
      */
@@ -65,6 +56,19 @@ class Country extends ModelFunctionality
             self::$DEFAULT_COUNTRY_NAME  = "DEFAULT_COUNTRY_NAME";
             self::$DEFAULT_COUNTRY_NAME = $this->getConstantLine(self::$DEFAULT_COUNTRY_NAME)["stringValue"];
         }
+    }
+
+    /**
+     * Anitialize this Country's attributs
+     * @param string $isoCurrency currncy's iso code
+     */
+    private function buildCurrency($countryName)
+    {
+        $country = $this->getCountryLine($countryName);
+        $this->countryName = $countryName;
+        $this->isoCountry = $country["isoCountry"];
+        $this->isUE = $country["isUE"];
+        $this->vat = $country["vat"];
     }
 
     /**
@@ -85,6 +89,15 @@ class Country extends ModelFunctionality
         return $this->countryName;
     }
 
+    /**
+     * Getter of the country's vat
+     * @return string The country's vat
+     */
+    public function getVat()
+    {
+        return $this->vat;
+    }
+
     // /**
     //  * To get a protected copy of a Country instance
     //  * @return Country a protected copy of the Country instance
@@ -99,24 +112,11 @@ class Country extends ModelFunctionality
     //     return $copy;
     // }
 
-    /**
-     * Anitialize this Country's attributs
-     * @param string $isoCurrency currncy's iso code
-     */
-    private function buildCurrency($countryName)
-    {
-        $country = $this->getCountryLine($countryName);
-        $this->countryName = $countryName;
-        $this->isoCountry = $country["isoCountry"];
-        $this->isUE = $country["isUE"];
-        $this->vat = $country["vat"];
-    }
-
-    public function __toString()
-    {
-        Helper::printLabelValue("isoCountry", $this->isoCountry);
-        Helper::printLabelValue("countryName", $this->countryName);
-        Helper::printLabelValue("isUE", $this->isUE);
-        Helper::printLabelValue("vat", $this->vat);
-    }
+    // public function __toString()
+    // {
+    //     Helper::printLabelValue("isoCountry", $this->isoCountry);
+    //     Helper::printLabelValue("countryName", $this->countryName);
+    //     Helper::printLabelValue("isUE", $this->isUE);
+    //     Helper::printLabelValue("vat", $this->vat);
+    // }
 }

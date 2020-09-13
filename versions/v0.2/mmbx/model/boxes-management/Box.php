@@ -628,4 +628,31 @@ class Box extends ModelFunctionality
             $this->insert($response, $sql, $values);
         }
     }
+
+    /**
+     * To delete all product inside the box
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     */
+    public function emptyBox(Response $response)
+    {
+        $boxID = $this->getBoxID();
+        $sql = "DELETE FROM `Box-Products` WHERE `Box-Products`.`boxId` = '$boxID'";
+        $this->delete($response, $sql);
+        if(!$response->containError()){
+            $this->setBoxProducts();
+        }
+    }
+    
+    /**
+     * To delete box from db
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     */
+    public function deleteBox(Response $response)
+    {
+        $boxID = $this->getBoxID();
+        $sql = "DELETE FROM `Baskets-Box` WHERE `Baskets-Box`.`boxId` = '$boxID';";
+        $this->delete($response, $sql);
+    }
 }
