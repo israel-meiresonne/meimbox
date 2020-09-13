@@ -11,13 +11,19 @@ require_once 'model/view-management/PageContent.php';
 require_once 'model/special/MyError.php';
 /**
  *  ——————————————————————————————— NEED —————————————————————————————————————
- * @param Language $language the Visitor's language
+ * @param Visitor|Client|Administrator $person the user
  * @param string $webRoot domaine's root
  * @param string $title page's title
  * @param string $head complementary datas for the head
  * @param string $content the page's content
  * @param string $fullscreen full screen elements like popup
  */
+
+// /**
+//  * @var Visitor|Client|Administrator
+//  */
+// $person = $person;
+// $language = $person->getLanguage();
 
 ?>
 <!DOCTYPE html>
@@ -133,6 +139,7 @@ require_once 'model/special/MyError.php';
         const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
 
         const A_GET_BX_MNGR = "<?= ControllerItem::A_GET_BX_MNGR ?>";
+        const A_GET_BSKT_POP = "<?= ControllerItem::A_GET_BSKT_POP ?>";
         const A_ADD_BOX = "<?= ControllerItem::A_ADD_BOX ?>";
         const A_ADD_BXPROD = "<?= ControllerItem::A_ADD_BXPROD ?>";
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
@@ -141,6 +148,7 @@ require_once 'model/special/MyError.php';
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
+        const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
@@ -236,8 +244,7 @@ require_once 'model/special/MyError.php';
                 <div class="navbar-block navbar-center-block">
                     <ul class="navbar-ul remove-ul-default-att">
                         <li class="navbar-li remove-li-default-att center-block-li">
-
-                            <div class="img-text-block">
+                            <div class="grey-tag-button standard-tag-button img-text-block">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="content/brain/permanent/icons8-pill-yellow-red.png" alt="">
@@ -245,11 +252,10 @@ require_once 'model/special/MyError.php';
                                     <span class="img-text-span">new drop</span>
                                 </div>
                             </div>
-
                         </li>
 
                         <li class="navbar-li remove-li-default-att center-block-li">
-                            <div class="img-text-block">
+                            <div class="grey-tag-button standard-tag-button img-text-block">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="content/brain/permanent/icons8-plus-math-96.png" alt="">
@@ -293,7 +299,7 @@ require_once 'model/special/MyError.php';
                             </div>
                         </li> -->
                         <li class="navbar-li remove-li-default-att">
-                            <div class="img-text-block ">
+                            <div class="grey-tag-button standard-tag-button img-text-block">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="content/brain/permanent/icons8-contacts-96.png" alt="">
@@ -303,13 +309,13 @@ require_once 'model/special/MyError.php';
                             </div>
                         </li>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop')">
+                            <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
                                 <div class="img-text-block  navbar-basket-wrap">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
                                             <img src="content/brain/permanent/icons8-shopping-cart-96.png" alt="">
                                         </div>
-                                        <span class="img-text-span basket-logo-span">(3)</span>
+                                        <span class="img-text-span basket-logo-span">(<span data-basket="quantity">3</span>)</span>
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +349,7 @@ require_once 'model/special/MyError.php';
 
                     </div> -->
                 <div class="navbar-new_drop-add_box-block">
-                    <div class="img-text-block">
+                    <div class="grey-tag-button standard-tag-button img-text-block">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
                                 <img src="content/brain/permanent/icons8-pill-yellow-red.png" alt="">
@@ -352,7 +358,7 @@ require_once 'model/special/MyError.php';
                         </div>
                     </div>
 
-                    <div class="img-text-block">
+                    <div class="grey-tag-button standard-tag-button img-text-block">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
                                 <img src="content/brain/permanent/icons8-plus-math-96.png" alt="">
@@ -363,13 +369,13 @@ require_once 'model/special/MyError.php';
                 </div>
 
                 <div class="navbar-basket-block navbar-right-block flex-row">
-                    <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop')">
+                    <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
                         <div class="img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
                                     <img src="content/brain/permanent/icons8-shopping-cart-96.png" alt="">
                                 </div>
-                                <span class="img-text-span basket-logo-span">(3)</span>
+                                <span class="img-text-span basket-logo-span"><span data-basket="quantity">3</span></span>
                             </div>
                         </div>
                     </div>
@@ -379,7 +385,8 @@ require_once 'model/special/MyError.php';
         </nav>
     </header>
     <?= $content ?>
-    <?= ""//$fullscreen ?>
+    <?= "" //$fullscreen 
+    ?>
 </body>
 
 </html>

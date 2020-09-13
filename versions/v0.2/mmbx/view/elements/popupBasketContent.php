@@ -2,8 +2,7 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Box[]|BasketProduct[] $basket list of element inside
- * user's basket
+ * @param Basket $basket Visitor's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  */

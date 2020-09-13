@@ -44,6 +44,12 @@ class ControllerItem extends ControllerSecure
      * Holds the query value for Ajax request
      * @var string
      */
+    public const A_GET_BSKT_POP = "item/getBasketPop";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
     public const A_ADD_BOX = "item/addBox";
 
     /**
@@ -336,8 +342,17 @@ class ControllerItem extends ControllerSecure
         $response = new Response();
         $datasView = [];
         if(!$response->containError()){
-            
+            $boxes = $this->person->getBasket()->getBoxes();
+            $country = $this->person->getCountry();
+            $currency = $this->person->getCurrency();
+            $datasView = [
+                "boxes" => $boxes,
+                "country" => $country,
+                "currency" => $currency
+            ];
+            $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
         }
+        $this->generateJsonView($datasView, $response, $language);
     }
 
     /**
@@ -363,7 +378,7 @@ class ControllerItem extends ControllerSecure
                     "country" => $country,
                     "currency" => $currency
                 ];
-                $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManager.php');
+                $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManagerContent.php');
             }
         }
         $this->generateJsonView($datasView, $response, $language);
@@ -384,12 +399,15 @@ class ControllerItem extends ControllerSecure
             $boxID = Query::getParam(Box::KEY_BOX_ID);
             $this->person->deleteBox($response, $boxID);
             if(!$response->containError()){
-                $total = $this->person->getBasket()->getTotal()->getFormated();
-                $subtotal = $this->person->getBasket()->getSubTotal()->getFormated();
-                $vat = $this->person->getBasket()->getVatAmount()->getFormated();
+                $basket = $this->person->getBasket();
+                $total = $basket->getTotal()->getFormated();
+                $subtotal = $basket->getSubTotal()->getFormated();
+                $vat = $basket->getVatAmount()->getFormated();
+                $quantity = $basket->getQuantity();
                 $response->addResult(Basket::KEY_TOTAL, $total);
                 $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
                 $response->addResult(Basket::KEY_VAT, $vat);
+                $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
             }
         }
         $this->generateJsonView($datasView, $response, $language);
@@ -419,8 +437,40 @@ class ControllerItem extends ControllerSecure
                     "country" => $country,
                     "currency" => $currency
                 ];
-                $response->addFiles(self::A_ADD_BXPROD, 'view/elements/popupBoxManager.php');
+                $response->addFiles(self::A_ADD_BXPROD, 'view/elements/popupBoxManagerContent.php');
             }
+        }
+        $this->generateJsonView($datasView, $response, $language);
+    }
+
+    /**
+     * To get  basket popup
+     */
+    public function getBasketPop()
+    {
+        $this->secureSession();
+        $language = $this->person->getLanguage();
+        $response = new Response();
+        $datasView = [];
+        if(!$response->containError()){
+            $basket = $this->person->getBasket();
+            $country = $this->person->getCountry();
+            $currency = $this->person->getCurrency();
+            $datasView = [
+                "basket" => $basket,
+                "country" => $country,
+                "currency" => $currency
+            ];
+            $response->addFiles(self::A_GET_BSKT_POP, "view/elements/popupBasketContent.php");
+            
+            $total = $basket->getTotal()->getFormated();
+            $subtotal = $basket->getSubTotal()->getFormated();
+            $vat = $basket->getVatAmount()->getFormated();
+            $quantity = $basket->getQuantity();
+            $response->addResult(Basket::KEY_TOTAL, $total);
+            $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
+            $response->addResult(Basket::KEY_VAT, $vat);
+            $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
         }
         $this->generateJsonView($datasView, $response, $language);
     }
