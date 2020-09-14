@@ -728,7 +728,8 @@
     background-color: var(--color-orange);
     border: var(--color-orange) 1px;
 } */
-.grey-tag-button:hover{
+
+.grey-tag-button:hover {
     background-color: var(--color-shadow-05);
 }
 
@@ -1410,10 +1411,14 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .cart-element-edit-inner {
-    margin: auto;
+    /* margin: auto; */
+    position: relative;
+    width: 100%;
+    margin: auto 0;
 }
 
 .cart-element-edit-block button {
+    width: 100%;
     padding: 0;
     color: var(--color-label);
     text-transform: capitalize;
@@ -2604,3 +2609,76 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*—————————————————————————————— CHECKED-TEXT UP ————————————————————————————*/
+
+/*—————————————————————————————— MINI_POP_UP DOWN ———————————————————————————*/
+
+/*TO REMOVE*/
+
+.minipop-content ul {
+    padding: 5px;
+    text-align: center;
+}
+
+.minipop-wrap {
+    display: none;
+    position: absolute;
+    width: 143px;
+    cursor: auto;
+}
+
+.minipop-content {
+    background: var(--color-white);
+    box-shadow: var(--box-shadow);
+    border: var(--border-float);
+    border-radius: var(--border-float-radius);
+}
+
+/*+++++ minipop position down +++++*/
+
+.minipop-up {
+    padding-bottom: 13px;
+    top: 0;
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+}
+
+.minipop-up::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    right: 50%;
+    width: 18px;
+    height: 18px;
+    border: var(--border-float);
+    border-width: 0 1px 1px 0;
+    border-radius: 30px 0 0px 0;
+    transform: rotate(45deg);
+    background-color: var(--color-white);
+}
+
+.minipop-down {
+    padding-top: 13px;
+    bottom: 0;
+    transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+}
+
+.minipop-down::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 50%;
+    width: 18px;
+    height: 18px;
+    border: var(--border-float);
+    border-width: 0 1px 1px 0;
+    border-radius: 30px 0 0px 0;
+    transform: rotate(225deg);
+    background-color: var(--color-white);
+}
+
+/*—————————————————————————————— MINI_POP_UP UP —————————————————————————————*/
