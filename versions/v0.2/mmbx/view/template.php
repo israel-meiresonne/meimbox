@@ -255,7 +255,7 @@ require_once 'model/special/MyError.php';
                         </li>
 
                         <li class="navbar-li remove-li-default-att center-block-li">
-                            <div class="grey-tag-button standard-tag-button img-text-block">
+                            <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="content/brain/permanent/icons8-plus-math-96.png" alt="">
@@ -358,7 +358,7 @@ require_once 'model/special/MyError.php';
                         </div>
                     </div>
 
-                    <div class="grey-tag-button standard-tag-button img-text-block">
+                    <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
                                 <img src="content/brain/permanent/icons8-plus-math-96.png" alt="">

@@ -4,6 +4,11 @@
     var basketsubtotal = "basketsubtotal";
     var basketvat = "vat";
     var basketquantity = "quantity";
+    // const popopen = "openPopUp";
+    // const popswitchclosenext= "switchCloseNext";
+    // const popswitch= "switchPopUp";
+    // const popswitchback = "switchBackPopUp";
+    // const popclose = "closePopUp";
     // ++++ attr down ++++
     onclickattr = "onclick";
     idattr = "id";
@@ -16,21 +21,40 @@
     const submitdata = "data-submitdata";
     popstack = "data-switchstack";
     const basketdata = "data-basket";
+    const popbehavior = "data-popbehavior";
+    const popfromx = "data-popfromx";
+    const poptox = "data-poptox";
+    const databefore = "data-before";
+    const dataafter = "data-after";
     // closepop = 'data-popdata="closebtn"';
     // ++++ class down ++++
     const selected = "popup-selected";
     disableCls = "standard-button-desabled";
     closebtnCls = "popup_close_btn";
     // ++++ shortcut down ++++
+    empty = (v) => {
+        return (v == null || v.length == 0);
+    }
     getTag = (x) => {
         return $(x).prop("tagName").toLocaleLowerCase();
     }
     getX = (x) => {
         return (typeof (x) == "string") ? x : "#" + $(x).attr(idattr);
     }
+    getCloseBtn = (popx) => {
+        return $(popx).find("." + closebtnCls);
+    }
+    getFunc = (a, x) => {
+        var f = $(x).attr(a);
+        return (!empty(f)) ? f : () => { };
+    }
     getStack = (x) => {
         var json = $(x).attr(popstack);
         return (json != null) ? json_decode(json) : [];
+    }
+    setStack = (x, tab) => {
+        var stack = json_encode(tab);
+        $(x).attr(popstack, stack);
     }
     enable = function (x) {
         $(x).removeClass(disableCls);
@@ -85,8 +109,9 @@
         var xbtn = $(x).find("." + closebtnCls);
         var idx = getX(x);
         $(xbtn).attr(onclickattr, "closePopUp('" + idx + "')");
-        var stack = json_encode([]);
-        $(xbtn).attr(popstack, stack);
+        // var stack = json_encode([]);
+        // $(xbtn).attr(popstack, stack);
+        setStack(xbtn, []);
 
         $(FCID).fadeIn(TS, function () {
             displayFlexOn(x);
@@ -116,8 +141,9 @@
         var tbtn = $(tox).find("." + closebtnCls);
         var idx = getX(tox);
         $(tbtn).attr(onclickattr, "closePopUp('" + idx + "')");
-        var stack = json_encode([]);
-        $(tbtn).attr(popstack, stack);
+        // var stack = json_encode([]);
+        // $(tbtn).attr(popstack, stack);
+        setStack(tbtn, []);
 
         switcher(fromx, tox);
         after(fromx, tox);
@@ -131,7 +157,8 @@
         var tbtn = $(tox).find("." + closebtnCls);
         $(tbtn).attr(onclickattr, "switchBackPopUp('" + getX(tox) + "', '" + getX(fromx) + "')");
         stack.push(fevent);
-        $(tbtn).attr(popstack, json_encode(stack));
+        // $(tbtn).attr(popstack, json_encode(stack));
+        setStack(tbtn, stack);
 
         switcher(fromx, tox);
         after(fromx, tox);
@@ -149,7 +176,8 @@
         var tbtn = $(tox).find("." + closebtnCls);
         var tevent = stack.pop();
         $(tbtn).attr(onclickattr, tevent);
-        $(tbtn).attr(popstack, json_encode(stack));
+        // $(tbtn).attr(popstack, json_encode(stack));
+        setStack(tbtn, stack);
 
         switcher(fromx, tox);
         after(fromx, tox);
@@ -418,23 +446,37 @@
     }
     /*—————————————————— BOX MANAGER UP —————————————————————————————————————*/
     /*—————————————————— PRICING MANAGER DOWN ———————————————————————————————*/
-    addBox = (color, popx) => {
+    setAddBoxAfter = () => {
+        $(".pricing-wrap .product_add-button-block button").attr(dataafter, 'addBoxAfter');
+    }
+    addBoxAfter = () => {
+        getBasketPop();
+        var fromx = "#box_pricing_window";
+        var cbtnx = getCloseBtn(fromx);
+        var tox = "#basket_pop";
+        $(cbtnx).attr(onclickattr, "switchCloseNext('" + fromx + "','" + tox + "')");
+        $(".pricing-wrap .product_add-button-block button").removeAttr(dataafter);
+    }
+    addBox = (color, popx, sbtnx) => {
         var param = mapToParam({ [KEY_BOX_COLOR]: color });
         var cbtnx = $(popx).find("." + closebtnCls);
+        var before = getFunc(databefore, sbtnx);
+        var after = getFunc(dataafter, sbtnx);
         var d = {
             "a": A_ADD_BOX,
             "d": param,
             "r": addBoxRSP,
             "l": "#box_pricing_loading",
             "x": cbtnx,
-            "sc": () => { displayFlexOn(d.l) },
-            "rc": () => { displayFlexOff(d.l) }
+            "sc": () => { eval(before)(); displayFlexOn(d.l) },
+            "rc": () => { eval(after)(); displayFlexOff(d.l) }
         };
         SND(d);
     }
     var addBoxRSP = (r, cbtnx) => {
         if (r.isSuccess) {
-            $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BOX]);
+            // $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BOX]);
+            getBoxMngr();
             $(cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
@@ -458,22 +500,8 @@
     var removeBoxRSP = (r, x) => {
         if (r.isSuccess) {
             removeAnim(x);
-            getBasketPop();
-            // var ttx = $("[" + basketdata + "='" + baskettotal + "']");
-            // var ttv = r.results[KEY_TOTAL];
-            // fadeValue(ttx, ttv);
-
-            // var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
-            // var sbtv = r.results[KEY_SUBTOTAL];
-            // fadeValue(sbtx, sbtv);
-
-            // var vatx = $("[" + basketdata + "='" + basketvat + "']");
-            // var vatv = r.results[KEY_TOTAL];
-            // fadeValue(vatx, vatv);
-            
-            // var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
-            // var qtyv = r.results[KEY_BSKT_QUANTITY];
-            // fadeValue(qtyx, qtyv);
+            basketUpdatePrices(r);
+            // getBasketPop();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[ALERT_DELETE_BOX] != null && r.errors[ALERT_DELETE_BOX] != "") {
@@ -533,9 +561,8 @@
         };
         SND(d);
     }
-    var getBasketPopRSP = (r) => {
+    basketUpdatePrices = (r) => {
         if (r.isSuccess) {
-            $("#basket_pop .pop_up-content-block-inner").html(r.results[A_GET_BSKT_POP]);
             var ttx = $("[" + basketdata + "='" + baskettotal + "']");
             var ttv = r.results[KEY_TOTAL];
             fadeValue(ttx, ttv);
@@ -547,10 +574,16 @@
             var vatx = $("[" + basketdata + "='" + basketvat + "']");
             var vatv = r.results[KEY_TOTAL];
             fadeValue(vatx, vatv);
-            
+
             var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
             var qtyv = r.results[KEY_BSKT_QUANTITY];
             fadeValue(qtyx, qtyv);
+        }
+    }
+    var getBasketPopRSP = (r) => {
+        if (r.isSuccess) {
+            $("#basket_pop .pop_up-content-block-inner").html(r.results[A_GET_BSKT_POP]);
+            basketUpdatePrices(r);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
