@@ -3,7 +3,7 @@ require_once 'model/boxes-management/BasketProduct.php';
 require_once 'model/boxes-management/BoxProduct.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Translator $translator to translate
+ * @param string $containerId id of the tag that contain datas generated
  * @param BoxProduct|BasketProduct $product a boxproduct to display
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency

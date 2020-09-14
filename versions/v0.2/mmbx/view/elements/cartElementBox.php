@@ -2,6 +2,7 @@
 require_once 'model/boxes-management/Box.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param string $containerId id of the tag that contain datas generated
  * @param Box $box the box to display
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
@@ -22,6 +23,10 @@ if (empty($dadx)) {
     $submitdata = null;
 }
 
+$containerIdx = "#" . $containerId;
+$boxID = $box->getBoxID();
+$elementIdx = "#" . $elementId;
+
 /**
  * @var Price
  */
@@ -30,6 +35,7 @@ $price = $box->getPriceFormated();
 <div class="box-wrap">
     <div class="box-display-block">
         <?php
+        /*———————————————————————— GET PROPERTIES DWON ——————————————————————*/
         $datas = [
             "title" => $translator->translateString($box->getColor()),
             "color" => null,
@@ -39,10 +45,46 @@ $price = $box->getPriceFormated();
             "price" => $price
         ];
         $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);
-        $boxID = $box->getBoxID();
-        $elementIdx = "#" . $elementId;
+        /*———————————————————————— GET PROPERTIES UP ————————————————————————*/
+
+
+        /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
+        switch ($containerId):
+            case 'box_manager_window':
+                $editFunc = null;
+                $miniPopEdit = null;
+                break;
+
+            default:
+                ob_start(); ?>
+                <ul class="remove-ul-default-att">
+                    <li class="grey-tag-button standard-tag-button remove-li-default-att">
+                        <span onclick="emptyBox('<?= $boxID ?>','<?= $elementIdx ?>')">empty the box</span>
+                    </li>
+                    <li class="grey-tag-button standard-tag-button remove-li-default-att">
+                        <span onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">move to</span>
+                    </li>
+                </ul>
+        <?php
+                $miniPopContent  = ob_get_clean();
+                $miniPopId = ModelFunctionality::generateDateCode(25);
+                $miniPopIdx = "#" . $miniPopId;
+                $datas = [
+                    "id" => $miniPopId,
+                    "dir" => "down",
+                    "content" => $miniPopContent
+                ];
+                $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
+                $editFunc = "openMiniPop('$miniPopIdx')";
+                break;
+        endswitch;
+        /*———————————————————————— CONFIG EDIT BUTTON UP ————————————————————*/
+
+
         $datas = [
             "properties" => $properties,
+            "miniPopEdit" => $miniPopEdit,
+            "editFunc" => $editFunc,
             "price" => $price,
             "pictureSrc" => $box->getPictureSource(),
             "elementId" => $elementId,
@@ -53,6 +95,7 @@ $price = $box->getPriceFormated();
         ];
         echo $this->generateFile('view/elements/cartElement.php', $datas);
         ?>
+
     </div>
     <div class="box-product-set" style="display: none;">
         <ul class="box-product-set-ul remove-ul-default-att">

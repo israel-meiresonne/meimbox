@@ -10,6 +10,8 @@
  *      </div>
  * @param string $pictureSrc the source of the picture of the cart element's 
  * + the picture conatin all the directory like my/file/is/here/$picture
+ * @param string|null $miniPopEdit mini pop up for edit button
+ * @param string|null $editFunc function for edit button
  * @param string|null $price price property in a displayable format (with currency)
  * @param boolean $showArrow set true to display the arrow else set false
  * ——————————————————————————————— ID & DATA DOWN —————————————————————————————————————
@@ -23,15 +25,9 @@
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
 $showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
-// if(isset($$elementId)){
-//     $flag = str_replace("#", "", $flagx);
-//     $Tagflag = "id='". $flag ."'";
-//     $TagdeleteFunc = 'onclick="' . $deleteFunc . '"';
-// } else {
-//     $Tagflag = "";
-//     $TagdeleteFunc = "";
-// }
 $TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
+
+$TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : "";
 
 
 if (!empty($dadx)) {
@@ -74,21 +70,30 @@ if (!empty($dadx)) {
                 <img src="<?= $pictureSrc ?>">
             </div>
             <div class="cart-element-property-set box-property-set">
-                <?php echo $properties ?>
+                <?= $properties ?>
             </div>
         </div>
         <div class="cart-element-edit-block edit-block-external">
-            <div class="cart-element-edit-inner">
-                <button class="cart-element-edit-button remove-button-default-att"><?= $translator->translateStation("US49") ?></button>
-                <div class="minipop-wrap minipop-down">
-                    <div class="minipop-content">
-                        <ul class="remove-ul-default-att">
-                            <li class="grey-tag-button standard-tag-button remove-li-default-att">empty the box</li>
-                            <li class="grey-tag-button standard-tag-button remove-li-default-att">move to</li>
-                        </ul>
-                    </div>
+            <?php
+            if (!empty($TagEditFunc)) : ?>
+                <div class="cart-element-edit-inner">
+                    <button class="cart-element-edit-button remove-button-default-att" <?= $TagEditFunc ?>><?= $translator->translateStation("US49") ?></button>
+                    <?php
+                    if (isset($miniPopEdit)) {
+                        echo $miniPopEdit;
+                    }
+                    ?>
+                    <!-- <div class="minipop-wrap minipop-down">
+                        <div class="minipop-content">
+                            <ul class="remove-ul-default-att">
+                                <li class="grey-tag-button standard-tag-button remove-li-default-att">empty the box</li>
+                                <li class="grey-tag-button standard-tag-button remove-li-default-att">move to</li>
+                            </ul>
+                        </div>
+                    </div> -->
                 </div>
-            </div>
+            <?php
+            endif; ?>
         </div>
         <?php if (isset($price)) : ?>
             <div class="cart-element-price-block">

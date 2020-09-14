@@ -693,53 +693,17 @@
 
 /*————————————————————— COLOR BUTTON DOWN ———————————————————————————————————*/
 
-/* .blue-button {
-    color: var(--color-blue_esi);
-    background-color: var(--color-white);
-    border: var(--color-blue_esi) 1px solid;
-}
-
-.blue-button:hover {
-    color: var(--color-white);
-    background-color: var(--color-blue_esi);
-    border: var(--color-blue_esi) 1px;
-}
-
-.red-button {
-    color: var(--color-red);
-    background-color: var(--color-white);
-    border: var(--color-red) 1px solid;
-}
-
-.red-button:hover {
-    color: var(--color-white);
-    background-color: var(--color-red);
-    border: var(--color-red) 1px;
-}
-
-.orange-button {
-    color: var(--color-orange);
-    background-color: var(--color-white);
-    border: var(--color-orange) 1px solid;
-}
-
-.orange-button:hover {
-    color: var(--color-white);
-    background-color: var(--color-orange);
-    border: var(--color-orange) 1px;
-} */
-
 .grey-tag-button:hover {
     background-color: var(--color-shadow-05);
 }
 
-.grey-button {
+.blue-button {
     color: var(--color-blue);
     background-color: var(--color-white);
     border: var(--color-blue) 1px solid;
 }
 
-.grey-button:hover {
+.blue-button:hover {
     color: var(--color-white);
     background-color: var(--color-blue);
     border: var(--color-blue) 1px;
@@ -756,15 +720,6 @@
     background-color: var(--color-green);
     border: var(--color-green) 1px;
 }
-
-/* .green-desabled {
-    color: var(--color-green-02) !important;
-    cursor: initial;
-}
-
-.green-desabled::after {
-    border-color: var(--color-green-02) !important;
-} */
 
 /*————————————————————— COLOR BUTTON UP —————————————————————————————————————*/
 
@@ -1415,6 +1370,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: relative;
     width: 100%;
     margin: auto 0;
+}
+
+.cart-element-edit-block .minipop-wrap li::first-letter {
+    text-transform: capitalize;
 }
 
 .cart-element-edit-block button {

@@ -31,7 +31,7 @@
     const selected = "popup-selected";
     disableCls = "standard-button-desabled";
     closebtnCls = "popup_close_btn";
-    // ++++ shortcut down ++++
+    /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
         return (v == null || v.length == 0);
     }
@@ -84,6 +84,12 @@
             $(x).css("display", "none");
         })
     }
+    displayFadeIn = (x, t = TS) => {
+        $(x).fadeIn(t);
+    }
+    displayFadeOut = (x, t = TS) => {
+        $(x).fadeOut(t);
+    }
     replaceFade = function (x, y, t = TS) {
         $(y).css("display", "none");
         $(x).fadeOut(t / 2, function () {
@@ -103,7 +109,17 @@
         return y;
     }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
-    /*—————————————————— BEHAVIOR DOWN ——————————————————————————————————————*/
+    /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/
+    openMiniPop = (x, before = () => { }, after = () => { }) => {
+        before(x);
+        displayFadeIn(x);
+        after(x);
+        setTimeout(() => {
+            miniPopIsOpen = true;
+        }, TS)
+    }
+    /*—————————————————— MINI_POPUP BEHAVIOR UP —————————————————————————————*/
+    /*—————————————————— POPUP BEHAVIOR DOWN ————————————————————————————————*/
     openPopUp = function (x, before = () => { }, after = () => { }) {
         before(x);
         var xbtn = $(x).find("." + closebtnCls);
@@ -148,7 +164,7 @@
         switcher(fromx, tox);
         after(fromx, tox);
     }
-    switchPopUp = function (fromx, tox, before = () => { }, after = () => { }) {
+    switchPopUp = (fromx, tox, before = () => { }, after = () => { }) => {
         before(fromx, tox)
         var fbtn = $(fromx).find("." + closebtnCls);
         var fevent = $(fbtn).attr(onclickattr);
@@ -189,7 +205,7 @@
         });
         after(x);
     }
-    /*—————————————————— BEHAVIOR UP ——————————————————————————————————————*/
+    /*—————————————————— POPUP BEHAVIOR UP ——————————————————————————————————*/
     /*—————————————————— BRAND DOWN ———————————————————————————————————————*/
     selectBrand = (sbtnx) => {
         var x = $(sbtnx).attr(datatarget);
@@ -587,6 +603,23 @@
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
+    }
+    emptyBox = (bxid, x) => {
+        console.log("boxID:", bxid);
+        console.log("elementx:", x);
+        // if (popAsk(ALERT_DELETE_BOX)) {
+        //     var params = mapToParam({ [KEY_BOX_ID]: bxid });
+        //     var d = {
+        //         "a": A_DELETE_BOX,
+        //         "d": params,
+        //         "r": removeBoxRSP,
+        //         "l": "#basket_pop_loading",
+        //         "x": x,
+        //         "sc": () => { displayFlexOn(d.l) },
+        //         "rc": () => { displayFlexOff(d.l) }
+        //     };
+        //     SND(d);
+        // }
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
 

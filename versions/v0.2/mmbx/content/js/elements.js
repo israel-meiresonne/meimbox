@@ -393,6 +393,15 @@
     }
 
     $(document).ready(function () {
+        /*—————————————————— ALL CLICK DOWN —————————————————————————————————*/
+        $(document).click(() => {
+            console.log(miniPopIsOpen);
+            if (miniPopIsOpen) {
+                miniPopIsOpen = false;
+                displayFadeOut($(".minipop-wrap"));
+            }
+        })
+        /*—————————————————— ALL CLICK UP ———————————————————————————————————*/
         //—————————————————— SELECT DOWN —————————————————
         $('select').change(function () {
             animateSelect(this);
@@ -472,24 +481,6 @@
         });
         //—————————————————— NEWLETTER UP ————————————————————————
         /*—————————————————— SIZE CUSTOMISER DOWN ———————————————————————————*/
-        //—— BRAND DOWN ——//
-        // $("#choose_brand_button").click(function () {
-        //     var x = $("#customize_brand_reference");
-        //     openPopUp(x);
-        // });
-        //—— NOT MEASUREMENT DOWN ——//
-        // $("#add_measurement_button").click(function () {
-        //     var x = $("#measure_adder");
-        //     openPopUp(x);
-        //     // $("#add_measure_window").fadeIn(TS);
-        //     $("#measure_adder_close_button").attr("onclick", "closePopUp('#measure_adder')");
-        // });
-        //-OPEN
-        // $("#manage_measurement_button").click(function () {
-        //     var x = $("#measure_manager");
-        //     openPopUp(x);
-        //     // $("#measure_manager").fadeIn(TS);
-        // });
         //—— MEASUREMENT INPUT DOWN ——// 0_REACTIVER_0
         $("#measure_adder .checkbox-container .checkbox-label input").click(function () {
             var x = $("#measure_adder .measure_input-container-inner .input-unit");

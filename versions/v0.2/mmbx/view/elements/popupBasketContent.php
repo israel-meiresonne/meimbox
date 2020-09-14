@@ -7,11 +7,14 @@
  * @param Currency $currency Visitor's current Currency
  */
 
+$containerId = "basket_pop"; // id of the tag that holds datas generated
+
 /**
  * @var Basket
  */
 $basket = $basket;
 $boxDatas = [
+    "containerId" => $containerId,
     "elements" => $basket->getMerge(),
     "country" => $country,
     "currency" => $currency,
@@ -29,7 +32,7 @@ echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
         <ul class="basketpop-resume-buttons remove-ul-default-att">
             <li class="remove-li-default-att">
                 <a href="">
-                    <button class="grey-button standard-button remove-button-default-att">view bag details</button>
+                    <button class="blue-button standard-button remove-button-default-att">view bag details</button>
                 </a>
             </li>
             <li class="remove-li-default-att">
