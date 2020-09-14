@@ -24,6 +24,8 @@ $boxes = Box::getSamples($language, $country, $currency);
             <?php
             foreach ($boxes as $box) :
                 $popx = "#box_pricing_window";
+                $sbtn = ModelFunctionality::generateDateCode(25);
+                $sbtnx = "#". $sbtn;
             ?>
                 <li class="box_price-box-set-li remove-li-default-att">
                     <div class="pricing-wrap">
@@ -44,7 +46,7 @@ $boxes = Box::getSamples($language, $country, $currency);
                                     </div>
                                 </div>
                                 <div class="product_add-button-block">
-                                    <button class="green-button standard-button remove-button-default-att" onclick="addBox('<?= $box->getColorCode() ?>','<?= $popx ?>')">
+                                    <button id="<?= $sbtn ?>" class="green-button standard-button remove-button-default-att" onclick="addBox('<?= $box->getColorCode() ?>','<?= $popx ?>','<?= $sbtnx ?>')">
                                         <?= $translator->translateStation("US25") ?>
                                     </button>
                                 </div>
