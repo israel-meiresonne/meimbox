@@ -80,6 +80,14 @@ if (!empty($dadx)) {
         <div class="cart-element-edit-block edit-block-external">
             <div class="cart-element-edit-inner">
                 <button class="cart-element-edit-button remove-button-default-att"><?= $translator->translateStation("US49") ?></button>
+                <div class="minipop-wrap minipop-down">
+                    <div class="minipop-content">
+                        <ul class="remove-ul-default-att">
+                            <li class="grey-tag-button standard-tag-button remove-li-default-att">empty the box</li>
+                            <li class="grey-tag-button standard-tag-button remove-li-default-att">move to</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <?php if (isset($price)) : ?>
