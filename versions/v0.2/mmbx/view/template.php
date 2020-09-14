@@ -161,6 +161,7 @@ require_once 'model/special/MyError.php';
         const JXF = "content/qr/qr.php";
         const LANG = "lang=" + $("html").attr("lang");
         const FCID = "#full_screen_div";
+        var miniPopIsOpen = false;
 
         /**
          * @param {number} number 

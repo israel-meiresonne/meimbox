@@ -3,7 +3,7 @@ require_once 'model/boxes-management/BasketProduct.php';
 require_once 'model/boxes-management/BoxProduct.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Translator $translator to translate
+ * @param string $containerId id of the tag that contain datas generated
  * @param Box[]|BasketProduct[] $elements user's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
@@ -38,6 +38,7 @@ require_once 'model/boxes-management/BoxProduct.php';
                     case BasketProduct::class:
                         $submitdata = $element->getProdID();
                         $datas = [
+                            "containerId" => $containerId,
                             "elementId" => $elementId,
                             "product" => $element,
                             "country" => $country,
@@ -51,6 +52,7 @@ require_once 'model/boxes-management/BoxProduct.php';
                     case Box::class:
                         $submitdata = $element->getBoxID();
                         $datas = [
+                            "containerId" => $containerId,
                             "elementId" => $elementId,
                             "box" => $element,
                             "country" => $country,

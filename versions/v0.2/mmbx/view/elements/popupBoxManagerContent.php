@@ -6,6 +6,8 @@
  * @param Currency $currency Visitor's current Currency
  */
 
+$containerId = "box_manager_window"; // id of the tag that holds datas generated
+
 $dad = ModelFunctionality::generateDateCode(25);
 $dadx = "#" . $dad;
 $brotherx = ModelFunctionality::generateDateCode(25);
@@ -13,6 +15,7 @@ $sbtnx = "#box_manager_select_box";
 // $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
 
 $boxDatas = [
+    "containerId" => $containerId,
     "elements" => $boxes,
     "country" => $country,
     "currency" => $currency,
