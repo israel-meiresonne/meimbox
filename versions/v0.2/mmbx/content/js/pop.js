@@ -4,11 +4,6 @@
     var basketsubtotal = "basketsubtotal";
     var basketvat = "vat";
     var basketquantity = "quantity";
-    // const popopen = "openPopUp";
-    // const popswitchclosenext= "switchCloseNext";
-    // const popswitch= "switchPopUp";
-    // const popswitchback = "switchBackPopUp";
-    // const popclose = "closePopUp";
     // ++++ attr down ++++
     onclickattr = "onclick";
     idattr = "id";
@@ -21,11 +16,11 @@
     const submitdata = "data-submitdata";
     popstack = "data-switchstack";
     const basketdata = "data-basket";
-    const popbehavior = "data-popbehavior";
-    const popfromx = "data-popfromx";
-    const poptox = "data-poptox";
     const databefore = "data-before";
     const dataafter = "data-after";
+    const dataprodid = "data-" + INPUT_PROD_ID;
+    const databoxid = "data-" + KEY_BOX_ID;
+    const dataonclick = "data-onclick";
     // closepop = 'data-popdata="closebtn"';
     // ++++ class down ++++
     const selected = "popup-selected";
@@ -41,7 +36,7 @@
     getX = (x) => {
         return (typeof (x) == "string") ? x : "#" + $(x).attr(idattr);
     }
-    getCloseBtn = (popx) => {
+    getCloseButton = (popx) => {
         return $(popx).find("." + closebtnCls);
     }
     getFunc = (a, x) => {
@@ -441,13 +436,14 @@
     }
     /*—————————————————— MEASURE ADDER UP ———————————————————————————————————*/
     /*—————————————————— BOX MANAGER DOWN ———————————————————————————————————*/
-    getBoxMngr = () => {
+    getBoxMngr = (conf) => {
+        var params = mapToParam({ [A_GET_BX_MNGR]: conf });
         var d = {
             "a": A_GET_BX_MNGR,
-            "d": null,
+            "d": params,
             "r": getBoxMngrRSP,
             "l": "#box_pricing_loading",
-            // "x": cbtnx,
+            "x": conf,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOff(d.l) }
         };
@@ -456,6 +452,7 @@
     var getBoxMngrRSP = (r) => {
         if (r.isSuccess) {
             $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_GET_BX_MNGR]);
+            // $("#box_manager_window").html(r.results[A_GET_BX_MNGR]);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
@@ -468,7 +465,7 @@
     addBoxAfter = () => {
         getBasketPop();
         var fromx = "#box_pricing_window";
-        var cbtnx = getCloseBtn(fromx);
+        var cbtnx = getCloseButton(fromx);
         var tox = "#basket_pop";
         $(cbtnx).attr(onclickattr, "switchCloseNext('" + fromx + "','" + tox + "')");
         $(".pricing-wrap .product_add-button-block button").removeAttr(dataafter);
@@ -492,7 +489,7 @@
     var addBoxRSP = (r, cbtnx) => {
         if (r.isSuccess) {
             // $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BOX]);
-            getBoxMngr();
+            getBoxMngr(CONF_ADD_BXPROD);
             $(cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
@@ -565,6 +562,27 @@
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/
     /*—————————————————— BASKET MANAGER DOWN ————————————————————————————————*/
+    setMoveBoxProduct = (btnx) => {
+        var sbtn = $("#sumbit_box_manager");
+        var sfunc = $(sbtn).attr(onclickattr);
+        $(sbtn).attr(dataonclick, sfunc);
+
+        var func = $(btnx).attr(dataonclick);
+        disable(sbtn);
+        $(sbtn).attr(onclickattr, func);
+
+        var cbtn = getCloseButton("#box_manager_window");
+        var cfunc = $(cbtn).attr(onclickattr);
+        var newcfunc = cfunc + ";unsetMoveBoxProduct()";
+        $(cbtn).attr(onclickattr, newcfunc);
+    }
+    unsetMoveBoxProduct = () => {
+        var sbtn = $("#sumbit_box_manager");
+        disable(sbtn);
+        var sfunc = $(sbtn).attr(dataonclick);
+        $(sbtn).attr(onclickattr, sfunc);
+        $(sbtn).removeAttr(dataonclick);
+    }
     getBasketPop = () => {
         var d = {
             "a": A_GET_BSKT_POP,

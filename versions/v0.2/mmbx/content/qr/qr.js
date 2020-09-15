@@ -89,11 +89,28 @@
             }
         });
     }
-
+    checkBoxProductStock = (frmx) => {
+        // e.preventDefault();
+        // var frm = $("#add_prod_form input");
+        var frm = $(frmx).find("input");
+        var d = {
+            "frm": frm,
+            "frmCbk": function () {
+                return "&" + INPUT_PROD_ID + "=" + prodID;
+            },
+            "a": A_SBMT_BXPROD,
+            "r": addProdRSP,
+            "l": "#add_prod_loading",
+            "sc": () => { $(d.l).css("display", "flex") },
+            "rc": () => { displayFadeOut(d.l) }
+        };
+        frmSND(d);
+    }
     var addProdRSP = function (r) {
         if (r.isSuccess) {
-            getBoxMngr();
-            openPopUp("#box_manager_window");
+            getBoxMngr(CONF_ADD_BXPROD);
+            before = () => { disable("#sumbit_box_manager"); }
+            openPopUp("#box_manager_window", before);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
@@ -121,25 +138,25 @@
         /*———————————————————————— FILTER POST UP ———————————————————————————*/
         /*—————————————————— ADD PRODUCT DOWN ———————————————————————————————*/
         /*———— sumbit sizes down ————*/
-        $("#select_size_for_box").click(function (e) {
-            e.preventDefault();
-            var frm = $("#add_prod_form input");
-            var datas = {
-                "frm": frm,
-                "frmCbk": function () {
-                    return "&" + INPUT_PROD_ID + "=" + prodID;
-                },
-                "a": A_SBMT_BXPROD,
-                "r": addProdRSP,
-                "l": "#add_prod_loading",
-                "sc": addProdFlex_on,
-                "rc": function () { }
-            };
-            frmSND(datas);
-        });
-        var addProdFlex_on = function () {
-            $("#add_prod_loading").css("display", "flex");
-        }
+        // $("#select_size_for_box").click(function (e) {
+        //     e.preventDefault();
+        //     var frm = $("#add_prod_form input");
+        //     var datas = {
+        //         "frm": frm,
+        //         "frmCbk": function () {
+        //             return "&" + INPUT_PROD_ID + "=" + prodID;
+        //         },
+        //         "a": A_SBMT_BXPROD,
+        //         "r": addProdRSP,
+        //         "l": "#add_prod_loading",
+        //         "sc": addProdFlex_on,
+        //         "rc": function () { }
+        //     };
+        //     frmSND(datas);
+        // });
+        // var addProdFlex_on = function () {
+        //     $("#add_prod_loading").css("display", "flex");
+        // }
         /*———— sumbit sizes up ———*/
         /*—————————————————— ADD PRODUCT UP —————————————————————————————————*/
 

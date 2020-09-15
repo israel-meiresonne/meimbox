@@ -2,7 +2,7 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $instruction instruction to display
+ * @param string $msgStation station from Translator of the instruction to display
  * @param string $content content to display inside
  * @param string $btnId id of the button
  * @param string $btnTxt text to display on button
@@ -14,10 +14,15 @@
  */
 $btnFunc = (!empty($btnFunc)) ? 'onclick="' . $btnFunc . '"' : "";
 $btnDataAttr = (!empty($btnDataAttr)) ? $btnDataAttr : "";
+
+/**
+ * @var  Translator
+ */
+$translator = $translator;
 ?>
 
 <div class="popup-content-instruct-div">
-    <p class="popup-content-instruct"><?= $instruction ?></p>
+    <p class="popup-content-instruct"><?= $translator->translateStation($msgStation) ?></p>
 </div>
 <!-- <div class="pop_up-content-block-inner-adder-list"> -->
 <?= $content ?>

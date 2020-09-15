@@ -341,16 +341,36 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if(!$response->containError()){
+        $conf = Query::getParam(self::A_GET_BX_MNGR);
+        if (empty($conf)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
             $boxes = $this->person->getBasket()->getBoxes();
             $country = $this->person->getCountry();
             $currency = $this->person->getCurrency();
-            $datasView = [
-                "boxes" => $boxes,
-                "country" => $country,
-                "currency" => $currency
-            ];
-            $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
+            switch ($conf) {
+                case Box::CONF_ADD_BXPROD:
+                    $datasView = [
+                        "boxes" => $boxes,
+                        "country" => $country,
+                        "currency" => $currency,
+                        "conf" => Box::CONF_ADD_BXPROD
+                    ];
+                    $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
+                break;
+                case Box::CONF_MV_BXPROD:
+                            $datasView = [
+                                "boxes" => $boxes,
+                                "country" => $country,
+                                "currency" => $currency,
+                                "conf" => Box::CONF_MV_BXPROD
+                            ];
+                            $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
+                    break;
+                default:
+                    $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                    break;
+            }
         }
         $this->generateJsonView($datasView, $response, $language);
     }
@@ -364,19 +384,20 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if(!Query::existParam(Box::KEY_BOX_COLOR)){
+        if (!Query::existParam(Box::KEY_BOX_COLOR)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $colorCode = Query::getParam(Box::KEY_BOX_COLOR);
             $this->person->addBox($response, $colorCode);
-            if(!$response->containError()){
+            if (!$response->containError()) {
                 $boxes = $this->person->getBasket()->getBoxes();
                 $country = $this->person->getCountry();
                 $currency = $this->person->getCurrency();
                 $datasView = [
                     "boxes" => $boxes,
                     "country" => $country,
-                    "currency" => $currency
+                    "currency" => $currency,
+                    "conf" => Box::CONF_ADD_BXPROD
                 ];
                 $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManagerContent.php');
             }
@@ -393,12 +414,12 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if(!Query::existParam(Box::KEY_BOX_ID)){
+        if (!Query::existParam(Box::KEY_BOX_ID)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $boxID = Query::getParam(Box::KEY_BOX_ID);
             $this->person->deleteBox($response, $boxID);
-            if(!$response->containError()){
+            if (!$response->containError()) {
                 $basket = $this->person->getBasket();
                 $total = $basket->getTotal()->getFormated();
                 $subtotal = $basket->getSubTotal()->getFormated();
@@ -422,20 +443,21 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if((!Query::existParam(Box::KEY_BOX_ID)) || (!Query::existParam(Product::INPUT_PROD_ID))){
+        if ((!Query::existParam(Box::KEY_BOX_ID)) || (!Query::existParam(Product::INPUT_PROD_ID))) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $boxID = Query::getParam(Box::KEY_BOX_ID);
             $prodID = Query::getParam(Product::INPUT_PROD_ID);
             $this->person->addBoxProduct($response, $boxID, $prodID);
-            if(!$response->containError()){
+            if (!$response->containError()) {
                 $boxes = $this->person->getBasket()->getBoxes();
                 $country = $this->person->getCountry();
                 $currency = $this->person->getCurrency();
                 $datasView = [
                     "boxes" => $boxes,
                     "country" => $country,
-                    "currency" => $currency
+                    "currency" => $currency,
+                    "conf" => Box::CONF_ADD_BXPROD
                 ];
                 $response->addFiles(self::A_ADD_BXPROD, 'view/elements/popupBoxManagerContent.php');
             }
@@ -452,7 +474,7 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if(!$response->containError()){
+        if (!$response->containError()) {
             $basket = $this->person->getBasket();
             $country = $this->person->getCountry();
             $currency = $this->person->getCurrency();
@@ -462,7 +484,7 @@ class ControllerItem extends ControllerSecure
                 "currency" => $currency
             ];
             $response->addFiles(self::A_GET_BSKT_POP, "view/elements/popupBasketContent.php");
-            
+
             $total = $basket->getTotal()->getFormated();
             $subtotal = $basket->getSubTotal()->getFormated();
             $vat = $basket->getVatAmount()->getFormated();

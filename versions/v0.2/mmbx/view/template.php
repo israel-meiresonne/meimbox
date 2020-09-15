@@ -143,13 +143,16 @@ require_once 'model/special/MyError.php';
         const A_ADD_BOX = "<?= ControllerItem::A_ADD_BOX ?>";
         const A_ADD_BXPROD = "<?= ControllerItem::A_ADD_BXPROD ?>";
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
-        const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
-        const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
+        
+        const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
+        const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
+        const CONF_ADD_BXPROD = "<?= Box::CONF_ADD_BXPROD ?>";
+        const CONF_MV_BXPROD = "<?= Box::CONF_MV_BXPROD ?>";
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
@@ -310,7 +313,7 @@ require_once 'model/special/MyError.php';
                             </div>
                         </li>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
+                            <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
                                 <div class="img-text-block  navbar-basket-wrap">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
@@ -370,7 +373,7 @@ require_once 'model/special/MyError.php';
                 </div>
 
                 <div class="navbar-basket-block navbar-right-block flex-row">
-                    <div class="img-text-block navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
+                    <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
                         <div class="img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">

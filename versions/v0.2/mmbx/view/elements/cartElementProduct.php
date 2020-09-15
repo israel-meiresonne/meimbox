@@ -55,13 +55,16 @@ switch ($product->getType()) {
                 $miniPopEdit = null;
                 break;
             default:
+                $spanid = ModelFunctionality::generateDateCode(25);
+                $spanidx = "#" . $spanid;
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
-                        <span class="grey-tag-button standard-tag-button" onclick="moveBoxProduct('<?= $prodID ?>','<?= $boxID ?>','<?= $elementIdx ?>','<?= $boxElementIdx ?>')">change box</span>
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $prodID ?>','<?= $boxID ?>','<?= $elementIdx ?>','<?= $boxElementIdx ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>')});">change box</span>
                     </li>
                     <li class="remove-li-default-att">
-                        <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span>
+                        <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span> -->
+                        <span class="grey-tag-button standard-tag-button" onclick="console.log('open size editor')">change size</span>
                     </li>
                 </ul>
 <?php

@@ -244,7 +244,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 $buttonTxt = $translator->translateStation("US24");
                         ?>
                                 <div class="add-button-container product-data-line">
-                                    <button id="select_size_for_box" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
+                                    <button id="select_size_for_box" class="green-button standard-button remove-button-default-att" onclick="checkBoxProductStock('#add_prod_form')"><?= $buttonTxt ?></button>
                                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
                                         <img src="content/brain/permanent/mini-loading.gif">
                                     </div>
@@ -423,7 +423,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             $datas = [
                 "boxes" => $basket->getBoxes(),
                 "country" => $country,
-                "currency" => $currency
+                "currency" => $currency,
+                "conf" => Box::CONF_ADD_BXPROD
             ];
             echo $this->generateFile('view/elements/popupBoxManager.php', $datas);
             ?>

@@ -4,6 +4,8 @@
  * @param Box[] $boxes user's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
+ * @param string $msgStation station from Translator of the instruction to display
+ * @param string $conf indicate theconfiguration of the box manager
  */
 
 $containerId = "box_manager_window"; // id of the tag that holds datas generated
@@ -11,8 +13,18 @@ $containerId = "box_manager_window"; // id of the tag that holds datas generated
 $dad = ModelFunctionality::generateDateCode(25);
 $dadx = "#" . $dad;
 $brotherx = ModelFunctionality::generateDateCode(25);
-$sbtnx = "#box_manager_select_box";
-// $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
+$sbtnx = "#sumbit_box_manager";
+
+switch($conf){
+    case Box::CONF_ADD_BXPROD:
+        // $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
+        $msgStation = "US59";
+    break;
+    case Box::CONF_MV_BXPROD:
+        // $datas["submitButtonFunc"] = "moveBoxProduct('$sbtnx')";
+        $msgStation = "US60";
+    break;
+}
 
 $boxDatas = [
     "containerId" => $containerId,
@@ -27,7 +39,8 @@ $boxDatas = [
 $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
 
 $contentDatas = [
-    "instruction" => "select a box where to put your item:",
+    // "instruction" => "select a box where to put your item:",
+    "msgStation" => $msgStation,
     "content" => $cart,
     "btnTxt" => "new box",
     "btnId" => "box_manager_open_princing",
