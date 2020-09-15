@@ -136,7 +136,7 @@ class Box extends ModelFunctionality
     public const REGULAR = "regular";
 
     /**
-     * Access key for attribut boxColor in ajax
+     * Access key for attribut boxID in ajax
      * @var string
      */
     public const KEY_BOX_ID = "boxid";
@@ -146,6 +146,20 @@ class Box extends ModelFunctionality
      * @var string
      */
     public const KEY_BOX_COLOR = "boxcolor";
+
+    /**
+     * To get box manager configured to add new product in box
+     * + change instruction and sumbit button
+     * @var string
+     */
+    public const CONF_ADD_BXPROD = "addBoxProduct";
+
+    /**
+     * To get box manager configured to move product to a other box
+     * + change instruction and sumbit button
+     * @var string
+     */
+    public const CONF_MV_BXPROD = "moveBoxProduct";
 
 
     /**

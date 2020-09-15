@@ -26,8 +26,10 @@ $pricingDatas = [
 ];
 $pricingContent = $this->generateFile('view/elements/popupBoxPricingContent.php', $pricingDatas);
 
+$msgStation = "US61";
 $contentDatas = [
-    "instruction" => "choose the box that suits you:",
+    // "instruction" => "choose the box that suits you:",
+    "msgStation" => $msgStation,
     "content" => $pricingContent,
 ];
 $datas["content"] = $this->generateFile('view/elements/popupContent.php', $contentDatas);

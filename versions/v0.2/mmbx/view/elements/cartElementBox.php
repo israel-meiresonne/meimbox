@@ -46,41 +46,7 @@ $price = $box->getPriceFormated();
         ];
         $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);
         /*———————————————————————— GET PROPERTIES UP ————————————————————————*/
-
-
-        /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
-        switch ($containerId):
-            case 'box_manager_window':
-                $editFunc = null;
-                $miniPopEdit = null;
-                break;
-
-            default:
-                ob_start(); ?>
-                <ul class="remove-ul-default-att">
-                    <li class="grey-tag-button standard-tag-button remove-li-default-att">
-                        <span onclick="emptyBox('<?= $boxID ?>','<?= $elementIdx ?>')">empty the box</span>
-                    </li>
-                    <li class="grey-tag-button standard-tag-button remove-li-default-att">
-                        <span onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">move to</span>
-                    </li>
-                </ul>
-        <?php
-                $miniPopContent  = ob_get_clean();
-                $miniPopId = ModelFunctionality::generateDateCode(25);
-                $miniPopIdx = "#" . $miniPopId;
-                $datas = [
-                    "id" => $miniPopId,
-                    "dir" => "down",
-                    "content" => $miniPopContent
-                ];
-                $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
-                $editFunc = "openMiniPop('$miniPopIdx')";
-                break;
-        endswitch;
-        /*———————————————————————— CONFIG EDIT BUTTON UP ————————————————————*/
-
-
+        
         $datas = [
             "properties" => $properties,
             // "miniPopEdit" => $miniPopEdit,

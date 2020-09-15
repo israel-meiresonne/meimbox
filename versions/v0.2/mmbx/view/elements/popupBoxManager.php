@@ -5,13 +5,16 @@
  * @param Box[] $boxes user's basket
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
+ * @param string $conf indicate theconfiguration of the box manager
+ * + addBoxproduct
+ * + moveBoxProduct
  */
 $datas = [];
 // $datas["windowId"] = "";
 $datas["title"] = "box manager";
 $datas["closeButtonId"] = "box_manager_close_button";
 $datas["laodingId"] = "box_manager_loading";
-$datas["submitButtonId"] = "box_manager_select_box";
+$datas["submitButtonId"] = "sumbit_box_manager";
 $datas["submitButtonTxt"] = $translator->translateStation("US34");
 $datas["submitIsDesabled"] = true;
 $datas["submitClass"] = "standard-button-desabled";
@@ -20,7 +23,17 @@ $datas["submitClass"] = "standard-button-desabled";
 // $dadx = "#" . $dad;
 // $brotherx = ModelFunctionality::generateDateCode(25);
 $sbtnx = "#" . $datas["submitButtonId"];
-$datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
+
+// switch($conf){
+//     case Box::CONF_ADD_BXPROD:
+        $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "','" . '#box_manager_window' . "')";
+        $msgStation = "US59";
+//     break;
+//     case Box::CONF_MV_BXPROD:
+//         $datas["submitButtonFunc"] = "moveBoxProduct('$sbtnx')";
+//         $msgStation = "US60";
+//     break;
+// }
 
 // $boxDatas = [
 //     "elements" => $boxes,
@@ -46,6 +59,8 @@ $contentDatas = [
     "boxes" => $boxes,
     "country" => $country,
     "currency" => $currency,
+    "msgStation" => $msgStation,
+    "conf" => $conf
     // "dad" => $dad,
     // "dadx" => $dadx,
     // "brotherx" => $brotherx,
