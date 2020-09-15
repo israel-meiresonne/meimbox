@@ -604,22 +604,11 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    emptyBox = (bxid, x) => {
+    moveBoxProduct = (pid, bxid, px, bxx) => {
+        console.log("pid:", pid);
         console.log("boxID:", bxid);
-        console.log("elementx:", x);
-        // if (popAsk(ALERT_DELETE_BOX)) {
-        //     var params = mapToParam({ [KEY_BOX_ID]: bxid });
-        //     var d = {
-        //         "a": A_DELETE_BOX,
-        //         "d": params,
-        //         "r": removeBoxRSP,
-        //         "l": "#basket_pop_loading",
-        //         "x": x,
-        //         "sc": () => { displayFlexOn(d.l) },
-        //         "rc": () => { displayFlexOff(d.l) }
-        //     };
-        //     SND(d);
-        // }
+        console.log("prodx:", px);
+        console.log("boxx:", bxx);
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
 

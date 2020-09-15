@@ -4,21 +4,26 @@ require_once 'model/boxes-management/BoxProduct.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string $containerId id of the tag that contain datas generated
+ * @param string $elementId id of the element (allway given)
+ * + this id is generated in file cart.php
+ * @param string $boxElementId id of the box element that holds the boxproduct (allway given) 
  * @param BoxProduct|BasketProduct $product a boxproduct to display
+ * @param Box $box the box witch holds the boxProduct
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  * @param boolean $showArrow set true to display the row else set false
- * @param string $elementId id of the element (allway given)
- * + this id is generated in file cart.php
  * @param string $dadx selector of the dad (if set it activate the select fonctionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  */
+
 /**
  * @var Price
  */
 $price = null;
+$elementIdx = "#" . $elementId;
+$containerIdx = "#" . $containerId;
 $showArrow = false;
 
 switch ($product->getType()) {
@@ -30,12 +35,49 @@ switch ($product->getType()) {
             $brotherx = null;
             $submitdata = null;
         }
+        /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
+        $editFunc = "console.log('edit basket product')";
+        $miniPopEdit = null;
+        /*———————————————————————— CONFIG EDIT BUTTON UP ————————————————————*/
         break;
     case BoxProduct::BOX_TYPE:
         $prodClass = "box_product-wrap";
         $dadx = null;
         $brotherx = null;
         $submitdata = null;
+        /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
+        $boxID = $box->getBoxID();
+        $prodID = $product->getProdID();
+        $boxElementIdx = "#" . $boxElementId;
+        switch ($containerId):
+            case 'box_manager_window':
+                $editFunc = null;
+                $miniPopEdit = null;
+                break;
+            default:
+                ob_start(); ?>
+                <ul class="remove-ul-default-att">
+                    <li class="remove-li-default-att">
+                        <span class="grey-tag-button standard-tag-button" onclick="moveBoxProduct('<?= $prodID ?>','<?= $boxID ?>','<?= $elementIdx ?>','<?= $boxElementIdx ?>')">change box</span>
+                    </li>
+                    <li class="remove-li-default-att">
+                        <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span>
+                    </li>
+                </ul>
+<?php
+                $miniPopContent  = ob_get_clean();
+                $miniPopId = ModelFunctionality::generateDateCode(25);
+                $miniPopIdx = "#" . $miniPopId;
+                $datas = [
+                    "id" => $miniPopId,
+                    "dir" => "down",
+                    "content" => $miniPopContent
+                ];
+                $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
+                $editFunc = "openMiniPop('$miniPopIdx')";
+                break;
+        endswitch;
+        /*———————————————————————— CONFIG EDIT BUTTON UP ————————————————————*/
         break;
 }
 $size = $product->getSelectedSize();
@@ -44,7 +86,6 @@ $size = $product->getSelectedSize();
     <?php
     $sizeObj = $product->getSelectedSize();
     $datas = [
-        "translator" => $translator,
         "title" => $product->getProdName(),
         "color" => $translator->translateString($product->getColorName()),
         "colorRGB" => $product->getColorRGB(),
@@ -60,6 +101,8 @@ $size = $product->getSelectedSize();
     krsort($pictureSrcs);
     $datas = [
         "properties" => $properties,
+        "miniPopEdit" => $miniPopEdit,
+        "editFunc" => $editFunc,
         "pictureSrc" => (count($pictureSrcs) > 0) ? array_pop(($pictureSrcs)) : null,
         "price" => $price,
         "showArrow" => $showArrow,
