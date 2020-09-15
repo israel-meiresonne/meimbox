@@ -83,8 +83,8 @@ $price = $box->getPriceFormated();
 
         $datas = [
             "properties" => $properties,
-            "miniPopEdit" => $miniPopEdit,
-            "editFunc" => $editFunc,
+            // "miniPopEdit" => $miniPopEdit,
+            // "editFunc" => $editFunc,
             "price" => $price,
             "pictureSrc" => $box->getPictureSource(),
             "elementId" => $elementId,
@@ -97,26 +97,31 @@ $price = $box->getPriceFormated();
         ?>
 
     </div>
-    <div class="box-product-set" style="display: none;">
+    <div class="box-product-set">
         <ul class="box-product-set-ul remove-ul-default-att">
-            <li class="box-product-set-li remove-li-default-att">
-                <div class="box_product-wrap">
+            <?php
+            $products = $box->getBoxProducts();
+            foreach ($products as $product) :
+                $boxElementId = $elementId;
+                $prodElementId  = ModelFunctionality::generateDateCode(25);
+            ?>
+                <li id="<?= $prodElementId ?>" class="box-product-set-li remove-li-default-att">
                     <?php
-                    $products = $box->getBoxProducts();
-
-                    foreach ($products as $product) {
-                        $datas = [
-                            "product" => $product,
-                            "country" => $country,
-                            "currency" => $currency,
-                            "showArrow" => false,
-                            "elementId" => $elementId,
-                        ];
-                        echo $this->generateFile('view/elements/cartElementProduct.php', $datas);
-                    }
+                    $datas = [
+                        "containerId" => $containerId,
+                        "elementId" => $prodElementId,
+                        "boxElementId" => $boxElementId,
+                        "product" => $product,
+                        "box" => $box,
+                        "country" => $country,
+                        "currency" => $currency,
+                        "showArrow" => false,
+                    ];
+                    echo $this->generateFile('view/elements/cartElementProduct.php', $datas);
                     ?>
-                </div>
-            </li>
+                </li>
+            <?php
+            endforeach; ?>
         </ul>
     </div>
 </div>

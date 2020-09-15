@@ -1371,9 +1371,20 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     width: 100%;
     margin: auto 0;
 }
+.cart-element-edit-block .minipop-wrap li{
+    padding: 2px;
+}
+.cart-element-edit-block .minipop-wrap li:nth-child(n+2) {
+    border-top: var(--color-shadow) 1px solid;
+}
 
 .cart-element-edit-block .minipop-wrap li::first-letter {
     text-transform: capitalize;
+}
+
+.cart-element-edit-block .minipop-wrap li span {
+    display: block;
+    width: 100%;
 }
 
 .cart-element-edit-block button {
