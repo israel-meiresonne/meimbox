@@ -552,7 +552,7 @@
     }
     var addBoxProductRSP = (r, cbtnx) => {
         if (r.isSuccess) {
-            $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BXPROD]);
+            // $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BXPROD]);
             switchCloseNext($("#box_manager_window"), $("#basket_pop"), getBasketPop);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
@@ -622,11 +622,35 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    moveBoxProduct = (pid, bxid, px, bxx) => {
-        console.log("pid:", pid);
-        console.log("boxID:", bxid);
-        console.log("prodx:", px);
-        console.log("boxx:", bxx);
+    moveBoxProduct = (bxid, pid, seq) => {
+        var targetx = $("#sumbit_box_manager").attr(datatarget);
+        var newbxid = $(targetx).attr(submitdata);
+        var map = {
+            [KEY_BOX_ID]: bxid,
+            [KEY_NEW_BOX_ID]: newbxid,
+            [KEY_PROD_ID]: pid,
+            [KEY_SEQUENCE]: seq,
+        }
+        var params = mapToParam(map);
+        var d = {
+            "a": A_MV_BXPROD,
+            "d": params,
+            "r": moveBoxProductRSP,
+            "l": "#box_manager_loading",
+            // "x": cbtnx,
+            "sc": () => { displayFadeIn(d.l) },
+            "rc": () => { displayFadeOut(d.l) }
+        };
+        SND(d);
+    }
+    moveBoxProductRSP = (r) => {
+        if (r.isSuccess) {
+            getBasketPop();
+            var cbtn = getCloseButton("#box_manager_window");
+            $(cbtn).click();
+        } else if (!empty(r.errors[FAT_ERR])) {
+            popAlert(r.errors[FAT_ERR].message);
+        }
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
 
