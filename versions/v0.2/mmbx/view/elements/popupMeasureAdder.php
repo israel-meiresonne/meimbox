@@ -37,7 +37,7 @@
         $getUnitSymbol = $measure->getwaist()->getUnit();
 
         $measure_id = $measure->getMeasureID();
-        $inputMeasureID = '<input type="hidden" name="' . Measure::MEASURE_ID_KEY . '" value="' . $measure_id . '">';
+        $inputMeasureID = '<input type="hidden" name="' . Measure::KEY_MEASURE_ID . '" value="' . $measure_id . '">';
     } else {
         $measureName = null;
         $bustVal = null;

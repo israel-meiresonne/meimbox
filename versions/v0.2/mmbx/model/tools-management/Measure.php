@@ -92,8 +92,8 @@ class Measure extends ModelFunctionality
      * Holds the access key for measure name in Query
      * @var string
      */
-    // const MEASURE_ID_KEY =  "measure_id";
-    const MEASURE_ID_KEY =  "measureID";
+    // const KEY_MEASURE_ID =  "measure_id";
+    const KEY_MEASURE_ID =  "measureID";
 
     /**
      * Holds the access key for measure name
@@ -240,7 +240,7 @@ class Measure extends ModelFunctionality
      */
     public static function getDatas4MeasurePOST()
     {
-        $datas[Measure::MEASURE_ID_KEY] = Query::existParam(Measure::MEASURE_ID_KEY) ? Query::getParam(Measure::MEASURE_ID_KEY) : null;
+        $datas[Measure::KEY_MEASURE_ID] = Query::existParam(Measure::KEY_MEASURE_ID) ? Query::getParam(Measure::KEY_MEASURE_ID) : null;
         $datas[Measure::INPUT_MEASURE_NAME] = Query::getParam(Measure::INPUT_MEASURE_NAME);
         $datas[Measure::INPUT_BUST] = Query::getParam(Measure::INPUT_BUST);
         $datas[Measure::INPUT_ARM] = Query::getParam(Measure::INPUT_ARM);

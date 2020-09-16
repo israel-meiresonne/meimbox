@@ -46,7 +46,7 @@ $editBtnTranslate = $translator->translateStation("US49");
                     $waistVal = $measure->getwaist()->getFormated();
 
                     $dataMeasure = [
-                        Measure::MEASURE_ID_KEY => $measure_id
+                        Measure::KEY_MEASURE_ID => $measure_id
                     ];
                     $dataMeasure_json = json_encode($dataMeasure);
 

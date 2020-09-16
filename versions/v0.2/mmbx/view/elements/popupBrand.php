@@ -31,7 +31,7 @@ ob_start();
         <?php
         foreach ($brandsMeasures as $brandName => $brandDatas) :
             $dataBrand = [
-                ControllerItem::BRAND_NAME_KEY => $brandName
+                SIze::KEY_BRAND_NAME => $brandName
             ];
             $dataBrand_json = json_encode($dataBrand);
             $launch = ModelFunctionality::generateDateCode(25);

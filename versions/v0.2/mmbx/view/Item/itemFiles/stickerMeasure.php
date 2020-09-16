@@ -11,7 +11,7 @@ $measureName = $measure->getMeasureName();
 $stickerTitle = $translator->translateStation("US46");
 $stickerName = $translator->translateStation("US48");
 
-$stickerTitleDatas["inputName"] = Measure::MEASURE_ID_KEY;
+$stickerTitleDatas["inputName"] = Measure::KEY_MEASURE_ID;
 $stickerTitleDatas["inputValue"] = $measure_id;
 $stickerTitleDatas["stickerTitle"] = $stickerTitle;
 $stickerTitleDatas["removeBtnId"] = null;

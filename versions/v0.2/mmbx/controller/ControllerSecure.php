@@ -8,6 +8,7 @@ require_once 'model/special/Response.php';
 require_once 'model/special/MyError.php';
 require_once 'model/special/Query.php';
 require_once 'model/tools-management/Measure.php';
+require_once 'model/special/Map.php';
 
 /**
  * This class manage security and holds elements common to several controllers
