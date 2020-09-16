@@ -135,7 +135,7 @@ require_once 'model/special/MyError.php';
 
         const QR_MEASURE_CONTENT = "<?= ControllerItem::QR_MEASURE_CONTENT ?>";
         const MEASURRE_STICKER_KEY = "<?= Measure::MEASURRE_STICKER_KEY ?>";
-        const MEASURE_ID_KEY = "<?= Measure::MEASURE_ID_KEY ?>";
+        const KEY_MEASURE_ID = "<?= Measure::KEY_MEASURE_ID ?>";
         const INPUT_MEASURE_UNIT = "<?= MeasureUnit::INPUT_MEASURE_UNIT ?>";
 
         const A_GET_BX_MNGR = "<?= ControllerItem::A_GET_BX_MNGR ?>";

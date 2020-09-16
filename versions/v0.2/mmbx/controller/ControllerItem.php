@@ -94,11 +94,11 @@ class ControllerItem extends ControllerSecure
      */
     public const QR_MEASURE_CONTENT = "measure_content";
 
-    /**
-     * Holds the access key for brand name in Query
-     * @var string
-     */
-    public const BRAND_NAME_KEY =  "brand_name";
+    // /**
+    //  * Holds the access key for brand name in Query
+    //  * @var string
+    //  */
+    // public const KEY_BRAND_NAME =  "brand_name";
 
     /**
      * Holds the access key for brand name
@@ -162,12 +162,12 @@ class ControllerItem extends ControllerSecure
         $datasView = [];
 
         $brandsMeasures = $this->person->getBrandMeasures();
-        if ((!Query::existParam(self::BRAND_NAME_KEY))
-            || (!array_key_exists(Query::getParam(self::BRAND_NAME_KEY), $brandsMeasures))
+        if ((!Query::existParam(Size::KEY_BRAND_NAME))
+            || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $brandName = Query::getParam(self::BRAND_NAME_KEY);
+            $brandName = Query::getParam(Size::KEY_BRAND_NAME);
             $datasView = [
                 "brandName" => $brandName
             ];
@@ -209,12 +209,12 @@ class ControllerItem extends ControllerSecure
         $response = new Response();
         $datasView = [];
 
-        if ((!Query::existParam(Measure::MEASURE_ID_KEY))
-            || (!$this->person->existMeasure(Query::getParam(Measure::MEASURE_ID_KEY)))
+        if ((!Query::existParam(Measure::KEY_MEASURE_ID))
+            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
             $measure = $this->person->getMeasure($measureID);
             $datasView = [
                 "measure" => $measure
@@ -234,12 +234,12 @@ class ControllerItem extends ControllerSecure
         $response = new Response();
         $datasView = [];
 
-        if ((!Query::existParam(Measure::MEASURE_ID_KEY))
-            || (!$this->person->existMeasure(Query::getParam(Measure::MEASURE_ID_KEY)))
+        if ((!Query::existParam(Measure::KEY_MEASURE_ID))
+            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
             $this->person->updateMeasure($response, $measureID);
             if (!$response->containError()) {
                 $measures = $this->person->getMeasures();
@@ -265,19 +265,19 @@ class ControllerItem extends ControllerSecure
         $response = new Response();
         $datasView = [];
 
-        if ((!Query::existParam(Measure::MEASURE_ID_KEY))
-            || (!$this->person->existMeasure(Query::getParam(Measure::MEASURE_ID_KEY)))
+        if ((!Query::existParam(Measure::KEY_MEASURE_ID))
+            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
             $this->person->deleteMeasure($response, $measureID);
             if (!$response->containError()) {
                 $measures = $this->person->getMeasures();
                 $datasView = [
                     "measures" => $measures
                 ];
-                $response->addResult(Measure::MEASURE_ID_KEY, $measureID);
+                $response->addResult(Measure::KEY_MEASURE_ID, $measureID);
                 $response->addFiles(ControllerSecure::BUTTON_KEY, 'view/elements/popupMeasureManagerAddBtn.php');
                 $response->addFiles(ControllerSecure::TITLE_KEY, 'view/elements/popupMeasureManagerTitle.php');
             }
@@ -295,12 +295,12 @@ class ControllerItem extends ControllerSecure
         $response = new Response();
         $datasView = [];
 
-        if ((!Query::existParam(Measure::MEASURE_ID_KEY))
-            || (!$this->person->existMeasure(Query::getParam(Measure::MEASURE_ID_KEY)))
+        if ((!Query::existParam(Measure::KEY_MEASURE_ID))
+            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
             $measure = $this->person->getMeasure($measureID);
             $measureUnits = $this->person->getUnits();
             $datasView = [
@@ -321,11 +321,21 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if (!Query::existParam(Product::INPUT_PROD_ID)) {
+        $prodID = Query::getParam(Product::INPUT_PROD_ID);
+        $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+        $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
+        $brand = Query::getParam(Size::INPUT_BRAND);
+        $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
+        $cut = Query::getParam(Size::INPUT_CUT);
+        if (empty($prodID)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $prodID = Query::getParam(Product::INPUT_PROD_ID);
-            $stillStock = $this->person->stillStock($response, $prodID);
+            $sizeMap = new Map();
+            $sizeMap->put($size, Map::size);
+            $sizeMap->put($brand, Map::brand);
+            $sizeMap->put($measureID, Map::measureID);
+            $sizeMap->put($cut, Map::cut);
+            $stillStock = $this->person->stillStock($response, $prodID, $sizeType, $sizeMap);
             if (!$response->containError()) {
                 if ($stillStock) {
                     $response->addResult(self::A_SBMT_BXPROD, $stillStock);
@@ -449,12 +459,22 @@ class ControllerItem extends ControllerSecure
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
-        if ((!Query::existParam(Box::KEY_BOX_ID)) || (!Query::existParam(Product::INPUT_PROD_ID))) {
+        $boxID = Query::getParam(Box::KEY_BOX_ID);
+        $prodID = Query::getParam(Product::INPUT_PROD_ID);
+        if (empty($boxID) || empty($prodID)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $boxID = Query::getParam(Box::KEY_BOX_ID);
-            $prodID = Query::getParam(Product::INPUT_PROD_ID);
-            $this->person->addBoxProduct($response, $boxID, $prodID);
+            $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+            $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
+            $brand = Query::getParam(Size::INPUT_BRAND);
+            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
+            $cut = Query::getParam(Size::INPUT_CUT);
+            $sizeMap = new Map();
+            $sizeMap->put($size, Map::size);
+            $sizeMap->put($brand, Map::brand);
+            $sizeMap->put($measureID, Map::measureID);
+            $sizeMap->put($cut, Map::cut);
+            $this->person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
             (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
         }
         $this->generateJsonView($datasView, $response, $language);
@@ -511,5 +531,32 @@ class ControllerItem extends ControllerSecure
             $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
         }
         $this->generateJsonView($datasView, $response, $language);
+    }
+
+    public function test()
+    {
+        $map = new Map();
+        var_dump($map);
+        echo "<hr>";
+        $map->put(
+            "",
+            Map::prodID
+            // Map::sizeType,
+            // Map::size,
+            // Map::brand,
+            // Map::measureID,
+            // Map::cut
+        );
+        var_dump($map);
+        echo "<hr>";
+        $data = $map->get(
+            Map::prodID
+            // Map::sizeType,
+            // Map::size,
+            // Map::brand,
+            // Map::measureID,
+            // Map::cut
+        );
+        var_dump($data);
     }
 }

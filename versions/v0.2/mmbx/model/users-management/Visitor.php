@@ -7,6 +7,7 @@ require_once 'model/tools-management/Country.php';
 require_once 'model/navigation/Location.php';
 require_once 'model/tools-management/Measure.php';
 require_once 'model/boxes-management/Basket.php';
+require_once 'model/special/Map.php';
 
 class Visitor extends ModelFunctionality
 {
@@ -424,7 +425,7 @@ class Visitor extends ModelFunctionality
     {
         $table = "UsersMeasures";
         $this->checkInput(
-            Measure::MEASURE_ID_KEY,
+            Measure::KEY_MEASURE_ID,
             [Query::ALPHA_NUMERIC],
             $response,
             $this->getDataLength($table, "measureID"),
@@ -479,21 +480,29 @@ class Visitor extends ModelFunctionality
      * + it's still stock mean that there size that fit the Visitor's submited size
      * @param Response $response where to strore results
      * @param string $prodID Product's id
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param string|null $size holds a aphanumeric size
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      * @return boolean true if it's are still stock else false
      */
-    public function stillStock(Response $response, $prodID)
+    public function stillStock(Response $response, $prodID, $sizeType, Map $sizeMap)
     {
         $stillStock = false;
-        // $sizeObj = null;
         $isCorrect = $this->checkData($prodID, ModelFunctionality::ALPHA_NUMERIC, $this->getDataLength(Product::TABLE_PRODUCTS, Product::INPUT_PROD_ID));
         if ($isCorrect && $this->existProductInDb($prodID)) {
             $tabLine = $this->getProductLine($prodID);
             switch ($tabLine["product_type"]) {
                 case BasketProduct::BASKET_TYPE:
-                    $stillStock = $this->stillBasketProductStock($response, $prodID);
+                    $stillStock = $this->stillBasketProductStock($response, $prodID, $sizeType, $sizeMap);
                     break;
                 case BoxProduct::BOX_TYPE:
-                    $stillStock = $this->stillBoxProductStock($response, $prodID);
+                    $stillStock = $this->stillBoxProductStock($response, $prodID, $sizeType, $sizeMap);
                     break;
                 default:
                     throw new Exception("Unknow product type");
@@ -505,37 +514,24 @@ class Visitor extends ModelFunctionality
         return $stillStock;
     }
 
-    //     /**
-    //  * To check if still stock for basket poduct
-    //  * @param Response $response where to strore results
-    //  * @param string $prodID Product's id
-    //  * @return boolean true if it's are still stock else false
-    //  */
-    // private function stillBasketProductStock(Response $response, $prodID)
-    // {
-    //     $stillStock = false;
-    //     $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
-    //     if (!$response->containError()) {
-    //         $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-    //         $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
-    //         $sequence = Size::buildSequence($size, null, null);
-    //         $sizeObj = new Size($sequence);
-    //         // $stillStock = $product->stillStock($size);
-    //         $stillStock = $product->stillStock($sizeObj);
-    //     }
-    //     return $stillStock;
-    // }
-
     /**
      * To check if still stock for basket poduct
      * @param Response $response where to strore results
      * @param string $prodID Product's id
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      * @return boolean true if it's are still stock else false
      */
-    private function stillBasketProductStock(Response $response, $prodID)
+    private function stillBasketProductStock(Response $response, $prodID, $sizeType, Map $sizeMap)
     {
         $stillStock = false;
-        $sizeObj = $this->extractSizeBasketProduct($response, $prodID);
+        $sizeObj = $this->extractSizeBasketProduct($response, $sizeType, $sizeMap);
         if (!$response->containError()) {
             $product = new BasketProduct($prodID, $this->lang, $this->country, $this->currency);
             $stillStock = $product->stillStock($sizeObj);
@@ -546,72 +542,47 @@ class Visitor extends ModelFunctionality
     /**
      * Exctract the Size of the basket product from the input submited
      * @param Response $response where to strore results
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      * @return Size|null Exctracted Size of the basket product
      */
-    private function extractSizeBasketProduct(Response $response)
+    private function extractSizeBasketProduct(Response $response, $sizeType, Map $sizeMap)
     {
         $sizeObj = null;
-        $this->checkSizeInput($response, BasketProduct::BASKET_TYPE);
+        $this->checkSizeInput($response, BasketProduct::BASKET_TYPE, $sizeType, $sizeMap);
         if (!$response->containError()) {
-            $size = Query::getParam(Size::SIZE_TYPE_CHAR);
+            // $size = Query::getParam(Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM);
+            $size = $sizeMap->get(Map::size);
             $sequence = Size::buildSequence($size, null, null, null);
             $sizeObj = new Size($sequence);
         }
         return $sizeObj;
     }
 
-    // /**
-    //  * To check if still stock for basket poduct
-    //  * @param Response $response where to strore results
-    //  * @param string $prodID Product's id
-    //  * @return boolean true if it's are still stock else false
-    //  */
-    // private function stillBoxProductStock(Response $response, $prodID)
-    // {
-    //     $this->checkSizeInput($response, BoxProduct::BOX_TYPE);
-    //     if (!$response->containError()) {
-    //         $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
-    //         switch ($sizeType) {
-    //             case Size::SIZE_TYPE_CHAR:
-    //                 $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-    //                 // $product = new BoxProduct($prodID, $this->lang, $this->country, $this->currency);
-    //                 $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
-    //                 $brand = null;
-    //                 if (Query::existParam(Size::INPUT_BRAND)) {
-    //                     $brand = Query::getParam(Size::INPUT_BRAND);
-    //                 }
-    //                 $sequence = Size::buildSequence($size, $brand, null);
-    //                 $sizeObj = new Size($sequence, null, null);
-    //                 // return $product->stillStock($size, $brand);
-    //                 return $product->stillStock($sizeObj);
-    //                 break;
-    //             case Size::SIZE_TYPE_MEASURE:
-    //                 $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
-    //                 $cut = Query::getParam(Size::INPUT_CUT);
-    //                 // $measure = $this->getMeasure($measureID);
-    //                 $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
-    //                 $sequence = Size::buildSequence(null, null, $measureID);
-    //                 $sizeObj = new Size($sequence, null, $cut);
-    //                 return $product->stillStock($sizeObj);
-    //                 // return true;
-    //                 break;
-    //             default:
-    //                 throw new Exception("Any size type match system's size types");
-    //                 break;
-    //         }
-    //     }
-    // }
-
     /**
      * To check if still stock for basket poduct
      * @param Response $response where to strore results
      * @param string $prodID Product's id
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      * @return boolean true if it's are still stock else false
      */
-    private function stillBoxProductStock(Response $response, $prodID)
+    private function stillBoxProductStock(Response $response, $prodID, $sizeType, Map $sizeMap)
     {
         $stillStock = false;
-        $sizeObj = $this->extractSizeBoxProduct($response, $prodID);
+        $sizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
         if (!$response->containError()) {
             $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
             $stillStock = $product->stillStock($sizeObj);
@@ -622,27 +593,40 @@ class Visitor extends ModelFunctionality
     /**
      * Exctract the Size of the box product from the input submited
      * @param Response $response where to strore results
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      * @return Size|null Exctracted Size of the box product
      */
-    private function extractSizeBoxProduct(Response $response)
+    private function extractSizeBoxProduct(Response $response, $sizeType, Map $sizeMap)
     {
         $sizeObj = null;
-        $this->checkSizeInput($response, BoxProduct::BOX_TYPE);
+        $this->checkSizeInput($response, BoxProduct::BOX_TYPE, $sizeType, $sizeMap);
         if (!$response->containError()) {
-            $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+            // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
             switch ($sizeType) {
-                case Size::SIZE_TYPE_CHAR:
-                    $size = Query::getParam(Size::SIZE_TYPE_CHAR);
-                    $brand = null;
-                    if (Query::existParam(Size::INPUT_BRAND)) {
-                        $brand = Query::getParam(Size::INPUT_BRAND);
-                    }
+                case Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM:
+                    // $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
+                    // $brand = null;
+                    // if (Query::existParam(Size::INPUT_BRAND)) {
+                    // if (!empty($brand)) {
+                    //     $brand = Query::getParam(Size::INPUT_BRAND);
+                    // }
+                    $size = $sizeMap->get(Map::size);
+                    $brand = $sizeMap->get(Map::brand);
                     $sequence = Size::buildSequence($size, $brand, null, null);
                     $sizeObj = new Size($sequence);
                     break;
-                case Size::SIZE_TYPE_MEASURE:
-                    $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
-                    $cut = Query::getParam(Size::INPUT_CUT);
+                case Size::INPUT_SIZE_TYPE_VALUE_MEASURE:
+                    // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
+                    // $cut = Query::getParam(Size::INPUT_CUT);
+                    $measureID = $sizeMap->get(Map::measureID);
+                    $cut = $sizeMap->get(Map::cut);
                     $sequence = Size::buildSequence(null, null, $measureID, $cut);
                     $sizeObj = new Size($sequence);
                     break;
@@ -659,44 +643,57 @@ class Visitor extends ModelFunctionality
      * Check size datas posted
      * @param Response $response where to strore results
      * @param string $prodType product's type
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      * @return boolean true if the data is correct else false
      */
-    private function checkSizeInput(Response $response, string $prodType)
+    private function checkSizeInput(Response $response, string $prodType, $sizeType, Map $sizeMap)
     {
         switch ($prodType) {
             case BasketProduct::BASKET_TYPE:
-                $this->checkSizeChar($response);
+                $size = $sizeMap->get(Map::size);
+                $this->checkSizeAlphaNum($response, $size);
                 if (!$response->containError()) {
                     return true;
                 }
                 break;
             case BoxProduct::BOX_TYPE:
-                $this->checkSizeType($response);
+                $this->checkSizeType($response, $sizeType);
                 if (!$response->containError()) {
-                    $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+                    // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
                     switch ($sizeType) {
-                        case Size::SIZE_TYPE_CHAR:
-                            $this->checkSizeChar($response);
+                        case Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM:
+                            $size = $sizeMap->get(Map::size);
+                            $this->checkSizeAlphaNum($response, $size);
                             if (!$response->containError()) {
-                                $this->checkBrand($response);
+                                $brand = $sizeMap->get(Map::brand);
+                                $this->checkBrand($response, $brand);
                                 if (!$response->containError()) {
                                     return true;
                                 }
                             }
                             break;
-                        case Size::SIZE_TYPE_MEASURE:
-                            if (Query::existParam(Measure::MEASURE_ID_KEY)) {
-                                $measureID = Query::getParam(Measure::MEASURE_ID_KEY);
+                        case Size::INPUT_SIZE_TYPE_VALUE_MEASURE:
+                            // if (Query::existParam(Measure::KEY_MEASURE_ID)) {
+                            if (!empty($measureID)) {
+                                // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
                                 if (!$this->existMeasure($measureID)) {
                                     $errorMsg = "ER1";
                                     $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
                                 } else {
-                                    $this->checkCut($response);
+                                    $cut = $sizeMap->get(Map::cut);
+                                    $this->checkCut($response, $cut);
                                     return true;
                                 }
                             } else {
                                 $station = "ER12";
-                                $response->addErrorStation($station, Measure::MEASURE_ID_KEY);
+                                $response->addErrorStation($station, Measure::KEY_MEASURE_ID);
                             }
                             break;
                         default:
@@ -717,12 +714,13 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @return boolean true if the size type is correct else false
      */
-    private function checkSizeType(Response $response)
+    private function checkSizeType(Response $response, $sizeType)
     {
-        if (Query::existParam(Size::INPUT_SIZE_TYPE)) {
-            if ((Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_CHAR)
-                || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_MEASURE)
-            ) {
+        // if (Query::existParam(Size::INPUT_SIZE_TYPE)) {
+        if (!empty($sizeType)) {
+            // if ((Query::getParam(Size::INPUT_SIZE_TYPE) == Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM)
+            //     || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::INPUT_SIZE_TYPE_VALUE_MEASURE)
+            if (($sizeType == Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM) || ($sizeType == Size::INPUT_SIZE_TYPE_VALUE_MEASURE)) {
                 return true;
             } else {
                 $station = "ER1";
@@ -740,10 +738,11 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @return boolean true if the char size is correct else false
      */
-    private function checkSizeChar(Response $response)
+    private function checkSizeAlphaNum(Response $response, $size)
     {
-        if (Query::existParam(Size::INPUT_CHAR_SIZE)) {
-            $size = Query::getParam(Size::INPUT_CHAR_SIZE);
+        // if (Query::existParam(Size::INPUT_ALPHANUM_SIZE)) {
+        if (!empty($size)) {
+            // $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
             $sizeList = $this->getTableValues("supoortedSizes");
             if (in_array($size, $sizeList)) {
                 return true;
@@ -753,7 +752,7 @@ class Visitor extends ModelFunctionality
             }
         } else {
             $station = "ER11";
-            $response->addErrorStation($station, Size::INPUT_CHAR_SIZE);
+            $response->addErrorStation($station, Size::INPUT_ALPHANUM_SIZE);
         }
         return false;
     }
@@ -763,10 +762,11 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @return boolean true if the brand is correct else false
      */
-    private function checkBrand(Response $response)
+    private function checkBrand(Response $response, $brand)
     {
-        if (Query::existParam(Size::INPUT_BRAND)) {
-            $brand = Query::getParam(Size::INPUT_BRAND);
+        // if (Query::existParam(Size::INPUT_BRAND)) {
+        if (!empty($brand)) {
+            // $brand = Query::getParam(Size::INPUT_BRAND);
             $brandMap = $this->getBrandMeasuresTable();
             if (key_exists($brand, $brandMap)) {
                 return true;
@@ -774,9 +774,9 @@ class Visitor extends ModelFunctionality
                 $errorMsg = "ER1";
                 $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
             }
-        } else {
+        } /*else {
             return true;
-        }
+        }*/
         return false;
     }
 
@@ -785,9 +785,9 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @return boolean true if cut is correct else false
      */
-    private function checkCut(Response $response)
+    private function checkCut(Response $response, $cut)
     {
-        $cut = Query::getParam(Size::INPUT_CUT);
+        // $cut = Query::getParam(Size::INPUT_CUT);
         $cutMap = $this->getTableValues("cuts");
         $isCorret = (!empty($cut)) ? key_exists($cut, $cutMap) : false;
         if (!$isCorret) {
@@ -839,8 +839,17 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $boxID id of box in Visitor's basket
      * @param string $prodID id of the product to add in box
+     * @param string|null $sizeType holds the type of measure
+     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
+     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * @param string|null $size holds a aphanumeric size
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds a alphanumeric value of size
+     * + $sizeMap[Map::brand] holds a brand name
+     * + $sizeMap[Map::measureID] holds a measure id
+     * + $sizeMap[Map::cut] holds a measure's cut
      */
-    public function addBoxProduct(Response $response, $boxID, $prodID)
+    public function addBoxProduct(Response $response, $boxID, $prodID, $sizeType, Map $sizeMap)
     {
         $basket = $this->getBasket();
         $box = $basket->getBoxe($boxID);
@@ -855,9 +864,9 @@ class Visitor extends ModelFunctionality
                 $errStation = "ER14" . $fullRate;
                 $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
             } else {
-                $stillStock = $this->stillStock($response, $prodID);
+                $stillStock = $this->stillStock($response, $prodID, $sizeType, $sizeMap);
                 if ((!$response->containError()) && $stillStock) {
-                    $sizeObj = $this->extractSizeBoxProduct($response);
+                    $sizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
                     if (!$response->containError()) {
                         $basket->addBoxProduct($response, $boxID, $prodID, $sizeObj);
                     }
@@ -885,7 +894,6 @@ class Visitor extends ModelFunctionality
         if ((empty($box)) || (empty($newBox)) || (!$isBoxProd)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            
         }
     }
 

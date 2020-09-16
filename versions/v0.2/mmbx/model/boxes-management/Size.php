@@ -56,6 +56,17 @@ class Size  extends ModelFunctionality
     // private $quantity;
 
     /**
+     * Holds the access key for brand name in Query
+     * @var string
+     */
+    public const KEY_BRAND_NAME =  "brand_name";
+
+    /**
+     * Acces key for size's sequence in ajax
+     */
+    public const KEY_SEQUENCE = "sequence";
+
+    /**
      * Holds string value for a null atrribut
      * @var string
      */
@@ -92,42 +103,32 @@ class Size  extends ModelFunctionality
     public const COLUMN_SIZE =  "sizeName";
 
     /**
-     * Holds the input choice available [SIZE or MEASUREMENT]
+     * Holds the input name for SIZE_TYPE_[ALPHANUM|MEASURE]
+     * + its value is INPUT_SIZE_TYPE_VALUE_ALPHANUM or INPUT_SIZE_TYPE_VALUE_MEASURE
      * @var string
      */
     public const INPUT_SIZE_TYPE =  "size_type";
     /**
      * Holds value for size type input (INPUT_SIZE_TYPE)
      */
-    public const SIZE_TYPE_CHAR = "char_size";
-    public const SIZE_TYPE_MEASURE = "measurement_size";
-
+    public const INPUT_SIZE_TYPE_VALUE_ALPHANUM = "alphanum_size";
+    public const INPUT_SIZE_TYPE_VALUE_MEASURE = "measurement_size";
     /**
      * Holds the input name
      * @var string
      */
-    public const INPUT_CHAR_SIZE =  "char_size";
-
+    public const INPUT_ALPHANUM_SIZE =  "alphanum_size";
     /**
      * Holds the input name
      * @var string
      */
     public const INPUT_BRAND =  "brand_name";
-
-    /**
-     * Acces key for size's sequence in ajax
-     */
-    public const KEY_SEQUENCE = "sequence";
-    // /**
-    //  * Holds the input name
-    //  * @var string
-    //  */
-    // public const INPUT_MEASUREMENT =  "measurement";
     /**
      * Holds the input name
      * @var string
      */
     public const INPUT_CUT =  "cut";
+
 
     /**
      * Constructor
@@ -255,7 +256,8 @@ class Size  extends ModelFunctionality
         if (($quantity + $delta) <= 0) {
             throw new Exception("Quantity can't be bellow or equals at zero: holdQuantity: $quantity, delta: $delta");
         }
-        (!empty($delta)) ? $this->quantity + $delta : ++$this->quantity;
+        (!empty($delta)) ? $this->quantity += $delta : ++$this->quantity;
+        $this->setDate = $this->getDateTime();
     }
 
     /**

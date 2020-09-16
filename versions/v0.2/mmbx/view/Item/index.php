@@ -136,7 +136,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                             "checkedLabels" => [],
                                             "labels" => $labels,
                                             "isRadio" => true,
-                                            "inputName" => Size::INPUT_CHAR_SIZE,
+                                            "inputName" => Size::INPUT_ALPHANUM_SIZE,
                                         ];
                                         echo $this->generateFile("view/elements/dropdownInput.php", $datas);
                                         ?>
@@ -159,7 +159,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                         "title" => $title,
                                         "titleId" => $titleId,
                                         "inputName" => Size::INPUT_SIZE_TYPE,
-                                        "inputValue" => Size::SIZE_TYPE_CHAR,
+                                        "inputValue" => Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM,
                                         "dataAttributs" => $dataAttributs,
                                         "isRadio" => true,
                                         "content" => $content
@@ -227,7 +227,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                             "title" => $title,
                                             "titleId" => $titleId,
                                             "inputName" => Size::INPUT_SIZE_TYPE,
-                                            "inputValue" => Size::SIZE_TYPE_MEASURE,
+                                            "inputValue" => Size::INPUT_SIZE_TYPE_VALUE_MEASURE,
                                             "dataAttributs" => $dataAttributs,
                                             "isRadio" => true,
                                             "content" => $content

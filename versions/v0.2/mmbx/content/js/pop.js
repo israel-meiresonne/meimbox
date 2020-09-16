@@ -321,7 +321,7 @@
     }
     var removeMsrRSP = function (r) {
         if (r.isSuccess) {
-            var selector = $("#mange_measure_window .close_button-wrap[data-measure_id='" + r.results[MEASURE_ID_KEY] + "']");
+            var selector = $("#mange_measure_window .close_button-wrap[data-measure_id='" + r.results[KEY_MEASURE_ID] + "']");
             var wrapper = goToParentNode(selector, removeMsrDatas.nbToWrapper);
             removeAnim(wrapper);
             $("#mange_measure_window .customize_measure-info-div").fadeOut(TS, function () {
