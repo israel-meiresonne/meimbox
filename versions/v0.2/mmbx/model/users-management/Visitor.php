@@ -851,7 +851,7 @@ class Visitor extends ModelFunctionality
         } else {
             if (!$basket->stillSpace($boxID)) {
                 // $box = $basket->getBoxe($boxID);
-                $fullRate = "(".$box->getNbProduct() . "/" . $box->getSizeMax().")";
+                $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
                 $errStation = "ER14" . $fullRate;
                 $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
             } else {
@@ -863,6 +863,29 @@ class Visitor extends ModelFunctionality
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * To move a boxproduct to a other box
+     * @param Response $response where to strore results
+     * @param string $boxID id of box where is the product
+     * @param string $newBoxID id of box where move the product
+     * @param string $prodID id of the product to move
+     * @param string $sequence product's size sequence
+     */
+    public function moveBoxProduct(Response $response, $boxID, $newBoxID, $prodID, $sequence)
+    {
+        $basket = $this->getBasket();
+        $box = $basket->getBoxe($boxID);
+        $newBox = $basket->getBoxe($newBoxID);
+        $sizeObj = new Size($sequence);
+        $product = $box->getProduct($prodID, $sizeObj);
+        $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
+        if ((empty($box)) || (empty($newBox)) || (!$isBoxProd)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            
         }
     }
 

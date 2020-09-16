@@ -142,6 +142,13 @@ class Box extends ModelFunctionality
     public const KEY_BOX_ID = "boxid";
 
     /**
+     * Second access key for attribut boxID in ajax
+     * + whend 2 boxid is given
+     * @var string
+     */
+    public const KEY_NEW_BOX_ID = "newboxid";
+
+    /**
      * Access key for attribut boxColor in ajax
      * @var string
      */

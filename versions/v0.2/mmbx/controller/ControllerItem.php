@@ -56,13 +56,19 @@ class ControllerItem extends ControllerSecure
      * Holds the query value for Ajax request
      * @var string
      */
+    public const A_DELETE_BOX = "item/deleteBox";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
     public const A_ADD_BXPROD = "item/addBoxProduct";
 
     /**
      * Holds the query value for Ajax request
      * @var string
      */
-    public const A_DELETE_BOX = "item/deleteBox";
+    public const A_MV_BXPROD = "item/moveBoxProduct";
 
     /**
      * Holds the query(qr) value for Ajax request
@@ -357,15 +363,15 @@ class ControllerItem extends ControllerSecure
                         "conf" => Box::CONF_ADD_BXPROD
                     ];
                     $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
-                break;
+                    break;
                 case Box::CONF_MV_BXPROD:
-                            $datasView = [
-                                "boxes" => $boxes,
-                                "country" => $country,
-                                "currency" => $currency,
-                                "conf" => Box::CONF_MV_BXPROD
-                            ];
-                            $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
+                    $datasView = [
+                        "boxes" => $boxes,
+                        "country" => $country,
+                        "currency" => $currency,
+                        "conf" => Box::CONF_MV_BXPROD
+                    ];
+                    $response->addFiles(self::A_GET_BX_MNGR, "view/elements/popupBoxManagerContent.php");
                     break;
                 default:
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
@@ -449,20 +455,30 @@ class ControllerItem extends ControllerSecure
             $boxID = Query::getParam(Box::KEY_BOX_ID);
             $prodID = Query::getParam(Product::INPUT_PROD_ID);
             $this->person->addBoxProduct($response, $boxID, $prodID);
-            if (!$response->containError()) {
-                $boxes = $this->person->getBasket()->getBoxes();
-                $country = $this->person->getCountry();
-                $currency = $this->person->getCurrency();
-                $datasView = [
-                    "boxes" => $boxes,
-                    "country" => $country,
-                    "currency" => $currency,
-                    "conf" => Box::CONF_ADD_BXPROD
-                ];
-                $response->addFiles(self::A_ADD_BXPROD, 'view/elements/popupBoxManagerContent.php');
-            }
+            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
         }
         $this->generateJsonView($datasView, $response, $language);
+    }
+
+    /**
+     * To move a boxproduct to a other box
+     */
+    public function moveBoxProduct()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $datasView = [];
+        $boxID = Query::getParam(Box::KEY_BOX_ID);
+        $newBoxID = Query::getParam(Box::KEY_NEW_BOX_ID);
+        $prodID = Query::getParam(Product::KEY_PROD_ID);
+        $sequence = Query::getParam(Size::KEY_SEQUENCE);
+        if (empty($boxID) || empty($newBoxID) || empty($prodID) || empty($sequence)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $this->person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
+            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
+        }
+        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
     }
 
     /**

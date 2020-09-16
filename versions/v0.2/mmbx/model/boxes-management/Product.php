@@ -176,6 +176,12 @@ abstract class Product extends ModelFunctionality
     public const INPUT_PROD_ID = "prodID";
 
     /**
+     * Access key for prodduct's id in ajax
+     * @var string attribut's name
+     */
+    public const KEY_PROD_ID = "prodid";
+
+    /**
      * Constructor 
      * @param int $prodID product's id
      * @param Language $language Visitor's language

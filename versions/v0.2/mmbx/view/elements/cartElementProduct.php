@@ -19,9 +19,15 @@ require_once 'model/boxes-management/BoxProduct.php';
  */
 
 /**
+ * @var BoxProduct|BasketProduct
+ */
+$product = $product;
+
+/**
  * @var Price
  */
 $price = null;
+
 $elementIdx = "#" . $elementId;
 $containerIdx = "#" . $containerId;
 $showArrow = false;
@@ -48,6 +54,7 @@ switch ($product->getType()) {
         /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
         $boxID = $box->getBoxID();
         $prodID = $product->getProdID();
+        $sequence = $product->getSelectedSize()->getSequence();
         $boxElementIdx = "#" . $boxElementId;
         switch ($containerId):
             case 'box_manager_window':
@@ -60,7 +67,7 @@ switch ($product->getType()) {
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
-                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $prodID ?>','<?= $boxID ?>','<?= $elementIdx ?>','<?= $boxElementIdx ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>')});">change box</span>
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>')});">change box</span>
                     </li>
                     <li class="remove-li-default-att">
                         <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span> -->

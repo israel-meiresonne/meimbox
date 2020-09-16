@@ -148,11 +148,16 @@ require_once 'model/special/MyError.php';
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
-        
-        const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
+
         const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
+        const KEY_NEW_BOX_ID = "<?= Box::KEY_NEW_BOX_ID ?>";
+        const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
         const CONF_ADD_BXPROD = "<?= Box::CONF_ADD_BXPROD ?>";
         const CONF_MV_BXPROD = "<?= Box::CONF_MV_BXPROD ?>";
+
+        const KEY_PROD_ID = "<?= Product::KEY_PROD_ID ?>"
+
+        const KEY_SEQUENCE = "<?= Size::KEY_SEQUENCE ?>"
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";

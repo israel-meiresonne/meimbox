@@ -113,6 +113,11 @@ class Size  extends ModelFunctionality
      * @var string
      */
     public const INPUT_BRAND =  "brand_name";
+
+    /**
+     * Acces key for size's sequence in ajax
+     */
+    public const KEY_SEQUENCE = "sequence";
     // /**
     //  * Holds the input name
     //  * @var string
