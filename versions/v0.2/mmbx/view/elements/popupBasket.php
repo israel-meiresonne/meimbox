@@ -11,28 +11,6 @@ $datas = [];
 $datas["title"] = "shopping bag";
 $datas["closeButtonId"] = "basket_pop_close_button";
 $datas["laodingId"] = "basket_pop_loading";
-// $datas["submitButtonId"] = "box_manager_select_box";
-// $datas["submitButtonTxt"] = $translator->translateStation("US34");
-// $datas["submitIsDesabled"] = true;
-// $datas["submitClass"] = "standard-button-desabled";
-
-// $dad = ModelFunctionality::generateDateCode(25);
-// $dadx = "#" . $dad;
-// $brotherx = ModelFunctionality::generateDateCode(25);
-// $sbtnx = "#" . $datas["submitButtonId"];
-// $datas["submitButtonFunc"] = "addBoxProduct('" . $sbtnx . "', '" . '#box_manager_window' . "')";
-
-// $boxDatas = [
-//     "translator" => $translator,
-//     "elements" => $boxes,
-//     "country" => $country,
-//     "currency" => $currency,
-//     "dad" => $dad,
-//     "dadx" => $dadx,
-//     "brotherx" => $brotherx,
-//     "sbtnx" => $sbtnx
-// ];
-// $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
 
 $contentDatas = [
     "basket" => $basket,

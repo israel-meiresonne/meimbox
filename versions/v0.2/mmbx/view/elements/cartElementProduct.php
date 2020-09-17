@@ -71,7 +71,7 @@ switch ($product->getType()) {
                     </li>
                     <li class="remove-li-default-att">
                         <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span> -->
-                        <span class="grey-tag-button standard-tag-button" onclick="console.log('open size editor')">change size</span>
+                        <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#edit_size_pop')">change size</span>
                     </li>
                 </ul>
 <?php

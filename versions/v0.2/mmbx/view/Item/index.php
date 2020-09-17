@@ -95,7 +95,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             </div>
             <div class="product-details-div">
                 <div class="product-details-inner">
-                    <div id="add_prod_form" class="product-datas-block">
+                    <!-- <div id="form_check_prod_stock" class="product-datas-block"> -->
+                    <div class="product-datas-block">
                         <div class="product-name-div product-data-line">
                             <h3>
                                 <span><?= $translator->translateString($product->getProdName()) ?> | <span style="color:<?= $product->getColorRGBText() ?>;"><?= $product->getColorName() ?></span></span>
@@ -120,150 +121,15 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 ?>
                             </ul>
                         </div>
-                        <div class="product-size-container product-data-line">
-                            <div class="product-size-inner">
-                                <div class="product-size-dropdown-container">
-                                    <?php
-                                    /* ——————————————————————————————— SIZE CHAR & BRAND —————————————————————————————————————*/
-                                    ob_start();
-                                    ?>
-                                    <div class="size-set-container">
-                                        <?php
-                                        $title = $translator->translateStation("US9");
-                                        $labels = $product->getSizeValueToValue();
-                                        $datas = [
-                                            "title" => $title,
-                                            "checkedLabels" => [],
-                                            "labels" => $labels,
-                                            "isRadio" => true,
-                                            "inputName" => Size::INPUT_ALPHANUM_SIZE,
-                                        ];
-                                        echo $this->generateFile("view/elements/dropdownInput.php", $datas);
-                                        ?>
-                                    </div>
-                                    <div class="brand-custom-container">
-                                        <hr class="hr-summary">
-                                        <div id="choose_brand" class="customize_choice-button-container">
-                                            <p><?= $translator->translateStation("US18") ?></p>
-                                            <div class="custom_selected-container"></div>
-                                            <button id="choose_brand_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#customize_brand_reference')"><?= $translator->translateStation("US20") ?></button>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    $content = ob_get_clean();
-                                    $titleId = "char_size";
-                                    $title = $translator->translateStation("US9");
-                                    $dataAttributs = "data-x='product-size-customize-block'";
-                                    // $content = "mycontent";
-                                    $datas = [
-                                        "title" => $title,
-                                        "titleId" => $titleId,
-                                        "inputName" => Size::INPUT_SIZE_TYPE,
-                                        "inputValue" => Size::SIZE_TYPE_ALPHANUM,
-                                        "dataAttributs" => $dataAttributs,
-                                        "isRadio" => true,
-                                        "content" => $content
-                                    ];
-                                    echo $this->generateFile("view/elements/dropdownCheckbox.php", $datas);
-                                    ?>
-                                </div>
-                                <div class="product-size-customize-container">
-                                    <div class="product-size-customize-block">
-                                        <?php
-                                        /* ——————————————————————————————— MEASUREMENT —————————————————————————————————————*/
-                                        ob_start() ?>
-                                        <div class="customize_choice-block">
-                                            <div class="customize_choice-measure-block">
-                                                <div class="dropdown-checkbox-block">
-                                                    <p><?= $translator->translateStation("US19") ?></p>
-                                                </div>
-                                            </div>
-                                            <hr class="hr-summary">
-                                            <div class="customize_choice-button-block">
-                                                <?php
-
-
-                                                ?>
-                                                <div id="measurement_button_div" class="customize_choice-button-container">
-                                                    <div class="custom_selected-container"></div>
-                                                    <?php
-                                                    $addMsrBtnTxt = $translator->translateStation("US21");
-                                                    $managerBtnTxt = $translator->translateStation("US22");
-                                                    if (count($measures) > 0) :
-                                                    ?>
-                                                        <button id="add_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_adder')"><?= $addMsrBtnTxt ?></button>
-                                                        <button id="manage_measurement_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_manager')"><?= $managerBtnTxt ?></button>
-                                                    <?php
-                                                    else : ?>
-                                                        <button id="add_measurement_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_adder')"><?= $addMsrBtnTxt ?></button>
-                                                        <button id="manage_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_manager')"><?= $managerBtnTxt ?></button>
-                                                    <?php
-                                                    endif; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="customize_choice-block">
-                                            <div class="customize-choice-cut">
-                                                <?php
-                                                $title = $translator->translateStation("US23");
-                                                $labels = $product->getCutsValueToValue();
-                                                $datas = [
-                                                    "title" => $title,
-                                                    "checkedLabels" => [Size::DEFAULT_CUT],
-                                                    "labels" => $labels,
-                                                    "isRadio" => true,
-                                                    "inputName" => Size::INPUT_CUT
-                                                ];
-                                                echo $this->generateFile("view/elements/dropdown.php", $datas);
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <?php
-                                        $content = ob_get_clean();
-                                        $titleId = "customize_size";
-                                        $title = $translator->translateStation("US17");
-                                        $dataAttributs = "data-x='product-size-dropdown-container'";
-                                        $datas = [
-                                            "title" => $title,
-                                            "titleId" => $titleId,
-                                            "inputName" => Size::INPUT_SIZE_TYPE,
-                                            "inputValue" => Size::SIZE_TYPE_VALUE_MEASURE,
-                                            "dataAttributs" => $dataAttributs,
-                                            "isRadio" => true,
-                                            "content" => $content
-                                        ];
-                                        echo $this->generateFile("view/elements/dropdownCheckbox.php", $datas);
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                        switch ($product->getType()):
-                            case BoxProduct::BOX_TYPE:
-                                $buttonTxt = $translator->translateStation("US24");
-                        ?>
-                                <div class="add-button-container product-data-line">
-                                    <button id="select_size_for_box" class="green-button standard-button remove-button-default-att" onclick="checkBoxProductStock('#add_prod_form')"><?= $buttonTxt ?></button>
-                                    <div id="add_prod_loading" class="btn-loading loading-img-wrap">
-                                        <img src="content/brain/permanent/mini-loading.gif">
-                                    </div>
-                                </div>
+                        <div id="form_check_prod_stock">
                             <?php
-                                break;
-                            case BasketProduct::BASKET_TYPE:
-                                $buttonTxt = $translator->translateStation("US25");
+                            $datas = [
+                                "product" => $product,
+                                "nbMeasure" => count($measures),
+                            ];
+                            echo $this->generateFile("view/elements/sizeFormContent.php", $datas);
                             ?>
-                                <div class="add-button-container product-data-line">
-                                    <button id="select_size_for_cart" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
-                                    <div id="add_prod_loading" class="btn-loading loading-img-wrap">
-                                        <img src="content/brain/permanent/mini-loading.gif">
-                                    </div>
-                                </div>
-                        <?php
-                                break;
-                        endswitch;
-                        ?>
+                        </div>
                     </div>
                     <div class="product-safe_info-block">
                         <div class="safe_info-wrap">
@@ -439,7 +305,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             echo $this->generateFile('view/elements/popupBoxPricing.php', $datas);
             ?>
         </div>
-        <div id="basket_pop" class="pricing-container pop_up-container">
+        <div id="basket_pop" class="pop_up-container">
             <?php
             $datas = [
                 "basket" => $basket,
@@ -447,6 +313,15 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                 "currency" => $currency
             ];
             echo $this->generateFile('view/elements/popupBasket.php', $datas);
+            ?>
+        </div>
+        <div id="edit_size_pop" class="pop_up-container">
+            <?php
+            $datas = [
+                "product" => $product,
+                "nbMeasure" => count($measures),
+            ];
+            echo $this->generateFile('view/elements/popupSizeForm.php', $datas);
             ?>
         </div>
     </div>
