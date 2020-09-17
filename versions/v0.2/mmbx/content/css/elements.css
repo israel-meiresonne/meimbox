@@ -469,9 +469,9 @@
     font-family: var(--main-font-family);
 }
 
-.dropdown_checkbox-inner {
+/* .dropdown_checkbox-inner {
     position: relative;
-}
+} */
 
 .dropdown_checkbox-wrap .checkbox-label {
     text-transform: initial;

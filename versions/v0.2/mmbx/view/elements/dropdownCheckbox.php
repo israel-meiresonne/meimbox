@@ -11,28 +11,21 @@
  * + NOTE: set true if it radio else false
  * @param string $content the content of the dropdown
  */
+
 $inputType = (isset($isRadio) && $isRadio) ? "radio" : "checkbox";
+$inp = ModelFunctionality::generateDateCode(25);
+$inpx = "#" . $inp;
+$body = ModelFunctionality::generateDateCode(25);
+$bodyx = "#" . $body;
 ?>
 <div class="dropdown_checkbox-wrap">
-    <div class="dropdown_checkbox-inner">
-        <div class="dropdown_checkbox-head">
-            <div class="dropdown_checkbox-title">
-                <div class="dropdown_checkbox-checkbox-block">
-                    <label class="checkbox-label" for="<?= $titleId ?>"><?= $title ?>
-                        <input id="<?= $titleId ?>" type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $inputValue ?>" <?= $dataAttributs ?>>
-                        <span class="checkbox-checkmark"></span>
-                    </label>
-                </div>
-                <!-- <div class="customize-price-block">
-                    <?php //$customDpPrice = (new Price(0, $currency))->getFormated(); 
-                    ?>
-                    <span class="customize-price-span"><?php //$customDpPrice 
-                                                        ?></span>
-                </div> -->
-            </div>
-        </div>
-        <div class="dropdown_checkbox-checkbox-list">
-           <?= $content ?>
-        </div>
+    <div class="dropdown_checkbox-head">
+        <label class="checkbox-label" for="<?= $inp ?>"><?= $title ?>
+            <input id="<?= $inp ?>" onclick="animateDropdownCheckbox('<?= $inpx ?>', '<?= $bodyx ?>');" type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $inputValue ?>" <?= $dataAttributs ?>>
+            <span class="checkbox-checkmark"></span>
+        </label>
+    </div>
+    <div id="<?= $body ?>" data-headid="<?= $inp ?>" data-inputname="<?= $inputName ?>" class="dropdown_checkbox-checkbox-list">
+        <?= $content ?>
     </div>
 </div>

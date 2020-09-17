@@ -20,10 +20,10 @@
         $(".size-set-container .checkbox-label input").click(function () {
             $(".brand-custom-container").slideDown(TS);
         });
-        $("#char_size, #customize_size").click(function () {
-            var c = $(this).attr("data-x");
-            var x = $("." + c + " .dropdown_checkbox-checkbox-list");
-            $(x).slideUp(TS);
-        });
+        // $("#char_size, #customize_size").click(function () {
+        //     var c = $(this).attr("data-x");
+        //     var x = $("." + c + " .dropdown_checkbox-checkbox-list");
+        //     $(x).slideUp(TS);
+        // });
     });
 }).call(this);

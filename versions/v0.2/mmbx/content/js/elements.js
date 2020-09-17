@@ -128,35 +128,28 @@
         })
     }
 
-    var animateDropdown = function (selector) {
-        var wrapper = selector.parentNode.parentNode
-        // var dropdownId = wrapper.getAttribute("id");
-        var wrapperId = "wrapper_" + randomInt(BNR);
-        wrapper.setAttribute("id", wrapperId);
-
-        var isDisplayed = $("#" + wrapperId + " .dropdown-checkbox-list").css("display") == "block";
-        if (isDisplayed) {
-            $("#" + wrapperId + " .dropdown-checkbox-list").slideUp(TS);
-            selector.className = selector.className.replace(/ dropdown-arrow-open/g, " dropdown-arrow-close");
+    animateDropdown = (headx, bodyx) => {
+        if (isDisplayed(bodyx)) {
+            $(bodyx).slideUp(TS);
+            $(headx).addClass("dropdown-arrow-close");
+            $(headx).removeClass("dropdown-arrow-open");
         } else {
-            $("#" + wrapperId + " .dropdown-checkbox-list").slideDown(TS);
-            selector.className = selector.className.replace(/ dropdown-arrow-close/g, " dropdown-arrow-open");
+            $(bodyx).slideDown(TS);
+            $(headx).addClass("dropdown-arrow-open");
+            $(headx).removeClass("dropdown-arrow-close");
         }
-        wrapper.removeAttribute("id");
     }
 
-    var animateDropdownCheckbox = function (selector) {
-        var wrapper = selector.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-        var wrapperId = "wrapper_" + randomInt(BNR);
-        wrapper.setAttribute("id", wrapperId);
-
-        var isDisplayed = $("#" + wrapperId + " .dropdown_checkbox-checkbox-list").css("display") == "block";
-        if (isDisplayed) {
-            $("#" + wrapperId + " .dropdown_checkbox-checkbox-list").slideUp(TS);
+    animateDropdownCheckbox = (inpx, bodyx) => {
+        var nm = $(inpx).attr(nameattr);
+        var inpid = getId(inpx);
+        var ys = $(".dropdown_checkbox-wrap [" + datainputname + "='" + nm + "']["+ dataheadid +"!='"+ inpid +"']");
+        $(ys).slideUp(TS);
+        if (isDisplayed(bodyx)) {
+            $(bodyx).slideUp(TS);
         } else {
-            $("#" + wrapperId + " .dropdown_checkbox-checkbox-list").slideDown(TS);
+            $(bodyx).slideDown(TS);
         }
-        wrapper.removeAttribute("id");
     }
 
     animateBox = function (btnx) {
@@ -430,13 +423,13 @@
 
         //—————————————————— DOPDOWN DOWN ————————————————
         $(".dropdown-head").click(function () {
-            animateDropdown(this);
+            // animateDropdown(this);
         });
         //——————————————————— DOPDOWN UP ————————————————————————
 
         /*——————————————————— DOPDOWN CHECKBOX DOWN —————————————————————————*/
         $('.dropdown_checkbox-head input[type="checkbox"], .dropdown_checkbox-head input[type="radio"]').click(function (e) {
-            animateDropdownCheckbox(this);
+            // animateDropdownCheckbox(this);
         });
         /*——————————————————— DOPDOWN CHECKBOX UP ———————————————————————————*/
 

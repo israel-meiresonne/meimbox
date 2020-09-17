@@ -12,7 +12,7 @@
  * ——— RADIO PARAMS ———
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
- * @param string $inputName the input's name
+ * @param string $inputName the input's name (needed only if $isRadio = true)
  */
 
 $inputId = 0;
