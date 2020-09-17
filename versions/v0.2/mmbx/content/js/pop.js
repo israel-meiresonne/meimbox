@@ -531,7 +531,7 @@
         }
     }
     addBoxProduct = (sbtnx, popx) => {
-        var frm = $("#add_prod_form input");
+        var frm = $("#form_check_prod_stock input");
         var x = $(sbtnx).attr(datatarget);
         var bxid = $(x).attr(submitdata);
         var param = mapToParam({ [KEY_BOX_ID]: bxid, [INPUT_PROD_ID]: prodID });
@@ -586,7 +586,6 @@
 
         $("#box_pricing_window").find("." + submitCls).attr(databoxid, bxid);
     }
-
     unsetMoveBoxProduct = () => {
         var sbtn = $("#sumbit_box_manager");
         disable(sbtn);
@@ -668,8 +667,6 @@
         }
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
-
-
     $(document).ready(() => {
         /*—————————————————— BRAND DOWN ———————————————————————————————————————*/
         //—— ADD MEASUREMENT DOWN ——// 0_REACTIVER_0

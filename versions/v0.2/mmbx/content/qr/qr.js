@@ -91,13 +91,14 @@
     }
     checkBoxProductStock = (frmx) => {
         // e.preventDefault();
-        // var frm = $("#add_prod_form input");
+        // var frm = $("#form_check_prod_stock input");
         var frm = $(frmx).find("input");
         var d = {
             "frm": frm,
-            "frmCbk": function () {
-                return "&" + INPUT_PROD_ID + "=" + prodID;
-            },
+            "frmCbk": () => { },
+            // "frmCbk": function () {
+            //     return "&" + INPUT_PROD_ID + "=" + prodID;
+            // },
             "a": A_SBMT_BXPROD,
             "r": addProdRSP,
             "l": "#add_prod_loading",
@@ -140,7 +141,7 @@
         /*———— sumbit sizes down ————*/
         // $("#select_size_for_box").click(function (e) {
         //     e.preventDefault();
-        //     var frm = $("#add_prod_form input");
+        //     var frm = $("#form_check_prod_stock input");
         //     var datas = {
         //         "frm": frm,
         //         "frmCbk": function () {

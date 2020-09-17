@@ -13,7 +13,7 @@
  *          "laodingId" => string,
  *          "submitButtonId" => string, 🚨if empty means that there isn't any submit button
  *          "submitButtonTxt" = string,
- *          "submitIsDesabled" = boolean,
+ *          "submitIsDesabled" = boolean, set true to desable submit button else false or empty
  *          "submitClass" = string
  *          "submitButtonFunc" = string
  *      ]

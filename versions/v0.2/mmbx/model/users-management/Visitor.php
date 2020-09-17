@@ -681,6 +681,7 @@ class Visitor extends ModelFunctionality
                             break;
                         case Size::SIZE_TYPE_VALUE_MEASURE:
                             // if (Query::existParam(Measure::KEY_MEASURE_ID)) {
+                                $measureID = $sizeMap->get(Map::measureID);
                             if (!empty($measureID)) {
                                 // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
                                 if (!$this->existMeasure($measureID)) {
