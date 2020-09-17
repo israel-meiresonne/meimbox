@@ -10,8 +10,9 @@
     closebtnCls = "popup_close_btn";
     const submitCls = "submit_btn_cls";
     // ++++ attr down ++++
-    onclickattr = "onclick";
     idattr = "id";
+    nameattr = "name";
+    onclickattr = "onclick";
     // ++++ data- down ++++
     const dadx = "data-dadx";
     const brotherx = "data-brotherx";
@@ -23,10 +24,11 @@
     const basketdata = "data-basket";
     const databefore = "data-before";
     const dataafter = "data-after";
-    const dataprodid = "data-" + INPUT_PROD_ID;
+    const dataprodid = "data-" + KEY_PROD_ID;
     const databoxid = "data-" + KEY_BOX_ID;
     const dataonclick = "data-onclick";
-    // closepop = 'data-popdata="closebtn"';
+    datainputname = "data-inputname";
+    dataheadid = "data-headid";
 
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
@@ -37,6 +39,9 @@
     }
     getX = (x) => {
         return (typeof (x) == "string") ? x : "#" + $(x).attr(idattr);
+    }
+    getId = (x) => {
+        return $(x).attr(idattr);
     }
     getCloseButton = (popx) => {
         return $(popx).find("." + closebtnCls);
@@ -75,6 +80,9 @@
                 $(this).remove();
             });
         });
+    }
+    isDisplayed = (x) => {
+        return !($(x).css("display") == "none");
     }
     displayFlexOn = (x, t = TS) => {
         $(x).css("opacity", "0");

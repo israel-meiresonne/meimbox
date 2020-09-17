@@ -47,7 +47,9 @@ require_once 'model/special/MyError.php';
     <?= $head ?>
     <script>
         const jx = function(a, d, r, l, x = null, sc = () => {}, rc = () => {}) {
-            $(l).fadeIn(TS, sc());
+            // $(l).fadeIn(TS, sc());
+            $(l).css("display", "block");
+            sc();
             $.ajax({
                 type: 'POST',
                 url: WR + a + "?" + LANG,

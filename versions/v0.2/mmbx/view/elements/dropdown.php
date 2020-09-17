@@ -18,14 +18,19 @@
 // $additional = (isset($additional)) ? $additional : "";
 // $inputName = (isset($inputName)) ? $inputName : "";
 // $isRadio = isset($isRadio);
+
+$head = ModelFunctionality::generateDateCode(25);
+$headx = "#" . $head;
+$body = ModelFunctionality::generateDateCode(25);
+$bodyx = "#" . $body;
 ?>
 
 <div class="dropdown-wrap">
     <div class="dropdown-inner">
-        <div class="dropdown-head dropdown-arrow-close">
+        <div id="<?= $head ?>" class="dropdown-head dropdown-arrow-close" onclick="animateDropdown('<?= $headx ?>', '<?= $bodyx ?>');">
             <span class="dropdown-title"><?= $title ?></span>
         </div>
-        <div class="dropdown-checkbox-list">
+        <div id="<?= $body ?>" class="dropdown-checkbox-list">
             <?php
             // $datas = [
             //     "title" => $title,

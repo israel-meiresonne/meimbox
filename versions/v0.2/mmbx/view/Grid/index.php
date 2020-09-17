@@ -66,16 +66,21 @@ $this->head = ob_get_clean();
                         $orderIsChecked[1] = Query::getParam("order") == Search::OLDER ? 'checked="true"' : "";
                         $orderIsChecked[2] = Query::getParam("order") == Search::HIGHT_TO_LOW ? 'checked="true"' : "";
                         $orderIsChecked[3] = Query::getParam("order") == Search::LOW_TO_HIGHT ? 'checked="true"' : "";
+
+                        $head = ModelFunctionality::generateDateCode(25);
+                        $headx = "#" . $head;
+                        $body = ModelFunctionality::generateDateCode(25);
+                        $bodyx = "#" . $body;
                         ?>
                         <div class="filter-dropdown-set">
                             <div class="filter-dropdown-inner">
                                 <div class="dropdown-container">
                                     <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
-                                            <div class="dropdown-head dropdown-arrow-close">
+                                            <div id="<?= $head ?>" class="dropdown-head dropdown-arrow-close" onclick="animateDropdown('<?= $headx ?>', '<?= $bodyx ?>');">
                                                 <span class="dropdown-title"><?= $translator->translateStation("US2") ?></span>
                                             </div>
-                                            <div class="dropdown-checkbox-list" style="display: none;">
+                                            <div id="<?= $body ?>" class="dropdown-checkbox-list">
                                                 <div class="dropdown-checkbox-block">
                                                     <label class="checkbox-label"><?= $translator->translateStation("US3") ?>
                                                         <input type="radio" name="order" value="<?= Search::NEWEST ?>" <?= $orderIsChecked[0] ?>>
@@ -114,9 +119,17 @@ $this->head = ob_get_clean();
                                     $labels =  $search->getValToTableNameMap($tabNames); // [criterVal => criterion]
                                     $criterions = $tabNames;
                                     $checkedLabels = $search->getSearchParams($criterions); // [index => criterVal]
-                                    ob_start();
-                                    require 'view/elements/dropdown.php';
-                                    echo ob_get_clean();
+                                    // ob_start();
+                                    // require 'view/elements/dropdown.php';
+                                    // echo ob_get_clean();
+                                    $datas = [
+                                        "title" => $translator->translateStation("US7"),
+                                        "checkedLabels" => $checkedLabels,
+                                        "labels" => $labels,
+                                        "isRadio" => false,
+                                        "inputName" => null,
+                                    ];
+                                    echo $this->generateFile('view/elements/dropdown.php', $datas);
                                     ?>
 
                                 </div>
@@ -155,15 +168,20 @@ $this->head = ob_get_clean();
                                     ob_start();
                                     require 'view/elements/dropdown.php';
                                     echo ob_get_clean();
+
+                                    $head = ModelFunctionality::generateDateCode(25);
+                                    $headx = "#" . $head;
+                                    $body = ModelFunctionality::generateDateCode(25);
+                                    $bodyx = "#" . $body;
                                     ?>
                                 </div>
                                 <div class="dropdown-container">
                                     <div class="dropdown-wrap">
                                         <div class="dropdown-inner">
-                                            <div class="dropdown-head dropdown-arrow-close">
+                                            <div id="<?= $head ?>" class="dropdown-head dropdown-arrow-close" onclick="animateDropdown('<?= $headx ?>', '<?= $bodyx ?>');">
                                                 <span class="dropdown-title"><?= $translator->translateStation("US11") ?></span>
                                             </div>
-                                            <div class="dropdown-checkbox-list">
+                                            <div id="<?= $body ?>" class="dropdown-checkbox-list">
                                                 <div id="min_price_input" class="input-container">
                                                     <div class="input-wrap">
                                                         <label class="input-label" for="filter_minPrice"><?= $translator->translateStation("US12") ?></label>
