@@ -599,13 +599,16 @@ class Box extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $prodID id of the product to add in box
      * @param Size $selectedSize submited size for product
+     * @param int $quantity quantity of product to add
      */
-    public function addProduct($response, $prodID, Size $selectedSize)
+    public function addProduct($response, $prodID, Size $selectedSize)//, int $quantity = null)
     {
         $boxID = $this->getBoxID();
         $product = $this->getProduct($prodID, $selectedSize);
         if (!empty($product)) {
-            $product->addQuantity();
+            // (!empty($quantity)) ? $product->addQuantity($quantity) : $product->addQuantity();;
+            $quantity = $selectedSize->getQuantity();
+            $product->addQuantity($quantity);
             $product->updateProductQuantity($response, $boxID);
         } else {
             $language = $this->getLanguage();
@@ -619,6 +622,27 @@ class Box extends ModelFunctionality
             $key = $product->getDateInSec();
             $this->boxProducts[$key] = $product;
             krsort($this->boxProducts);
+        }
+    }
+
+    /**
+     * To delete a product from a box
+     * @param Response $response where to strore results
+     * @param string $prodID id of the product to delete from box
+     * @param Size $selectedSize size of the product to delete
+     */
+    public function deleteBoxProduct(Response $response, $prodID, $selectedSize)
+    {
+        $product = $this->getProduct($prodID, $selectedSize);
+        if(empty($product)){
+            throw new Exception("This product don't exist");
+        }
+        $boxID = $this->getBoxID();
+        $product->deleteProduct($response, $boxID);
+        if(!$response->containError()){
+            $key = $this->getDateInSec();
+            $this->boxProducts[$key] = null;
+            unset($this->boxProducts[$key]);
         }
     }
 
@@ -660,11 +684,11 @@ class Box extends ModelFunctionality
         $boxID = $this->getBoxID();
         $sql = "DELETE FROM `Box-Products` WHERE `Box-Products`.`boxId` = '$boxID'";
         $this->delete($response, $sql);
-        if(!$response->containError()){
+        if (!$response->containError()) {
             $this->setBoxProducts();
         }
     }
-    
+
     /**
      * To delete box from db
      * @param Response $response if its success Response.isSuccess = true else Response

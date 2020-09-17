@@ -65,8 +65,8 @@ class BoxProduct extends Product
      */
     protected function setSizesStock()
     {
-       parent::setSizesStock();
-       $this->sizesStock = $this->decupleSizeStock($this->sizesStock);
+        parent::setSizesStock();
+        $this->sizesStock = $this->decupleSizeStock($this->sizesStock);
     }
 
     /**
@@ -177,7 +177,7 @@ class BoxProduct extends Product
         $prodID = $this->getProdID();
         $language = $this->getLanguage();
         $country = $this->getCountry();
-        $currency =$this->getCurrency();
+        $currency = $this->getCurrency();
         $sql = "SELECT `prodID` 
         FROM `Products` 
         WHERE isAvailable = 1 AND `prodID`!= '$prodID' AND `prodName` = '$this->prodName'  
@@ -244,7 +244,7 @@ class BoxProduct extends Product
     public function getDisplayablePrice()
     {
         $country = $this->getCountry();
-        $currency =$this->getCurrency();
+        $currency = $this->getCurrency();
         $tab = $this->getBoxMap($country, $currency);
         $boxesPrices = [];
         foreach ($tab as $boxColor => $datas) {
@@ -350,5 +350,22 @@ class BoxProduct extends Product
         array_push($values, $this->getQuantity());
         array_push($values, $sizeObj->getSetDate());
         $this->update($response, $sql, $values);
+    }
+
+    /**
+     * Delete from a box
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     * @param string $boxID id of box that holds the product
+     */
+    public function deleteProduct(Response $response, $boxID)
+    {
+        $prodID = $this->getProdID();
+        $sequence = $this->getSelectedSize()->getSequence();
+        $sql = "DELETE FROM `Box-Products` 
+            WHERE `Box-Products`.`boxId` = '$boxID' 
+            AND `Box-Products`.`prodId` = '$prodID' 
+            AND `Box-Products`.`sequenceID` = '$sequence';";
+        $this->delete($response, $sql);
     }
 }

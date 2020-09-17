@@ -171,11 +171,11 @@
         var isDisplayed = $("#" + wrapperId + " .box-product-set").css("display") == "block";
         if (isDisplayed) {
             $("#" + wrapperId + " .box-product-set").slideUp(TS);
-            wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow)";
+            // wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow)";
             $("#" + wrapperId + " #" + selectorId).removeClass("box-arrow-open");
         } else {
             $("#" + wrapperId + " .box-product-set").slideDown(TS);
-            wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow-right)";
+            // wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow-right)";
             $("#" + wrapperId + " #" + selectorId).addClass("box-arrow-open");
         }
         // selector.removeAttribute("id");

@@ -294,13 +294,13 @@ class Basket extends ModelFunctionality
      * @param string $boxID id of the box to look for
      * @return boolean true if still space in the box else false
      */
-    public function stillSpace($boxID)
+    public function stillSpace($boxID, int $quantity = 1)
     {
         $box = $this->getBoxe($boxID);
         if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
-        return $box->getSpace();
+        return ($box->getSpace() >= $quantity);
     }
 
     /**
@@ -337,27 +337,26 @@ class Basket extends ModelFunctionality
             $box = $this->getBoxe($boxID);
             $box->deleteBox($response);
             if (!$response->containError()) {
-                $key = $box->getDateInSec();
-                $this->boxes[$key] = null;
-                unset($this->boxes[$key]);
+                // $key = $box->getDateInSec();
+                // $this->boxes[$key] = null;
+                // unset($this->boxes[$key]);
+                $this->unsetBox($boxID);
             }
         }
     }
 
     /**
-     * To add new product in box of Visitor's basket
-     * @param Response $response where to strore results
+     * To unset a box from basket
      * @param string $boxID id of box in Visitor's basket
-     * @param string $prodID id of the product to add in box
-     * @param Size $sizeObj submited size for product
      */
-    public function addBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
+    public function unsetBox($boxID)
     {
         $box = $this->getBoxe($boxID);
-        if ($box == null) {
-            throw new Exception("This box don't exist boxID:'$boxID'");
+        if (!empty($box)) {
+            $key = $box->getDateInSec();
+            $this->boxes[$key] = null;
+            unset($this->boxes[$key]);
         }
-        $box->addProduct($response, $prodID, $sizeObj);
     }
 
     /**
@@ -372,5 +371,71 @@ class Basket extends ModelFunctionality
             throw new Exception("This box don't exist, boxId: $boxID");
         }
         ($box->getSizeMax() != $box->getSpace()) ? $box->emptyBox($response) : null;
+    }
+
+    /**
+     * To add new product in box of Visitor's basket
+     * @param Response $response where to strore results
+     * @param string $boxID id of a box in Visitor's basket
+     * @param string $prodID id of the product to add in box
+     * @param Size $sizeObj submited size for product
+     */
+    public function addBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
+    {
+        $box = $this->getBoxe($boxID);
+        if ($box == null) {
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        $box->addProduct($response, $prodID, $sizeObj);
+    }
+
+    /**
+     * To move a boxproduct to a other box
+     * @param Response $response where to strore results
+     * @param string $boxID id of a box in Visitor's basket
+     * @param string $prodID id of the product to add in box
+     * @param Size $sizeObj size of the product to move
+     */
+    public function moveBoxProduct(Response $response, $boxID, $newBoxID, $prodID, Size $sizeObj)
+    {
+        $box = $this->getBoxe($boxID);
+        $newBox = $this->getBoxe($newBoxID);
+        if (empty($box)) {
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        if (empty($newBox)) {
+            throw new Exception("This box don't exist newBox:'$newBox'");
+        }
+        $product = $box->getProduct($prodID, $sizeObj);
+        if (empty($product)) {
+            $sequence = $sizeObj->getSequence();
+            throw new Exception("This product don't exist in box, boxID: '$boxID', prodID: '$prodID', sequence:'$sequence'");
+        }
+        $selectedSize = $product->getSelectedSize();
+        $quantity = $selectedSize->getQuantity();
+        if (!$this->stillSpace($newBoxID, $quantity)) {
+            throw new Exception("This box don't have enought space stilling");
+        } else {
+            $this->addBoxProduct($response, $newBoxID, $prodID, $selectedSize);
+            if (!$response->containError()) {
+                $this->deleteBoxProduct($response, $boxID, $prodID, $selectedSize);
+            }
+        }
+    }
+
+    /**
+     * To delete a product from a box
+     * @param Response $response where to strore results
+     * @param string $boxID id of a box in Visitor's basket
+     * @param string $prodID id of the product to delete from box
+     * @param Size $sizeObj size of the product to delete
+     */
+    private function deleteBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
+    {
+        $box = $this->getBoxe($boxID);
+        if ($box == null) {
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        $box->deleteBoxProduct($response, $prodID, $sizeObj);
     }
 }

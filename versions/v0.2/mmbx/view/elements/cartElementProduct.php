@@ -67,7 +67,7 @@ switch ($product->getType()) {
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
-                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>')});">change box</span>
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});">change box</span>
                     </li>
                     <li class="remove-li-default-att">
                         <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span> -->

@@ -361,7 +361,10 @@ class ControllerItem extends ControllerSecure
         if (empty($conf)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $boxes = $this->person->getBasket()->getBoxes();
+            $boxID = Query::getParam(Box::KEY_BOX_ID);
+            $basket = $this->person->getBasket();
+            (!empty($boxID)) ? $basket->unsetBox($boxID) : null;
+            $boxes = $basket->getBoxes();
             $country = $this->person->getCountry();
             $currency = $this->person->getCurrency();
             switch ($conf) {
@@ -496,7 +499,7 @@ class ControllerItem extends ControllerSecure
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $this->person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
-            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
+            (!$response->containError()) ? $response->addResult(self::A_MV_BXPROD, $response->isSuccess()) : null;
         }
         $this->generateJsonView($datasView, $response, $this->person->getLanguage());
     }
