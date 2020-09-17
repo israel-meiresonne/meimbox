@@ -121,11 +121,13 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                 ?>
                             </ul>
                         </div>
-                        <div id="form_check_prod_stock">
+                        <div class="size-form-container">
                             <?php
                             $datas = [
+                                "formId" => "form_check_prod_stock",
                                 "product" => $product,
                                 "nbMeasure" => count($measures),
+                                "conf" => Size::CONF_SIZE_ADD_PROD
                             ];
                             echo $this->generateFile("view/elements/sizeFormContent.php", $datas);
                             ?>
@@ -315,9 +317,10 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             echo $this->generateFile('view/elements/popupBasket.php', $datas);
             ?>
         </div>
-        <div id="edit_size_pop" class="pop_up-container">
+        <div id="size_editor_pop" class="pop_up-container">
             <?php
             $datas = [
+                "formId" => "form_edit_prod_size",
                 "product" => $product,
                 "nbMeasure" => count($measures),
             ];
