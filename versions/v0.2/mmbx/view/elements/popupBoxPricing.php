@@ -13,11 +13,6 @@ $datas = [];
 $datas["title"] = "add new box";
 $datas["closeButtonId"] = "box_pricing_close_button";
 $datas["laodingId"] = "box_pricing_loading";
-// $datas["submitButtonId"] = "box_pricing_add_box";
-// $datas["submitButtonTxt"] = $translator->translateStation("US34");
-// $datas["submitIsDesabled"] = true;
-// $datas["submitClass"] = "standard-button-desabled";
-// $datas["submitButtonFunc"] = "";
 
 $pricingDatas = [
     "language" => $language,

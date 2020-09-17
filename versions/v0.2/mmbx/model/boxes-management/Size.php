@@ -79,16 +79,28 @@ class Size  extends ModelFunctionality
     public const DEFAULT_CUT =  "fit";
 
     /**
+     * Holds sequence separator
+     * @var string
+     */
+    private const SEQUENCE_SEPARATOR =  "-";
+
+    /**
      * Holds access key for supported sizes from db's Constante tale
      * @var string
      */
     public const SUPPORTED_SIZES =  "SUPPORTED_SIZES";
 
     /**
-     * Holds sequence separator
+     * Holds configuration for size formular
      * @var string
      */
-    private const SEQUENCE_SEPARATOR =  "-";
+    public const CONF_SIZE_ADD_PROD =  "CONF_SIZE_ADD_PROD";
+
+    /**
+     * Holds configuration for size formular
+     * @var string
+     */
+    public const CONF_SIZE_EDITOR =  "CONF_SIZE_EDITOR";
 
     /**
      * Holds the db's Sizes table name
@@ -346,11 +358,11 @@ class Size  extends ModelFunctionality
     public function getSizeType()
     {
         $size = $this->getsize();
-        if(!empty($size)){
+        if (!empty($size)) {
             return self::SIZE_TYPE_ALPHANUM;
         }
         $measure = $this->getmeasure();
-        if(!empty($measure)){
+        if (!empty($measure)) {
             return self::SIZE_TYPE_VALUE_MEASURE;
         }
         throw new Exception("Size's type is undefined");

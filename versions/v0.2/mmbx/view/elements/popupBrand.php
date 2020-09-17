@@ -12,7 +12,7 @@ $popUpDatas["laodingId"] = "brandPopUp_loading";
 $popUpDatas["submitButtonId"] = "brand_validate_button";
 $popUpDatas["submitButtonTxt"] = $translator->translateStation("US34");
 $popUpDatas["submitIsDesabled"] = true;
-$popUpDatas["submitClass"] = "standard-button-desabled";
+// $popUpDatas["submitClass"] = "standard-button-desabled";
 $contentTitle = $translator->translateStation("US35");
 
 $dadId = ModelFunctionality::generateDateCode(25);

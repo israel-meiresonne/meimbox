@@ -17,7 +17,7 @@ $datas["laodingId"] = "box_manager_loading";
 $datas["submitButtonId"] = "sumbit_box_manager";
 $datas["submitButtonTxt"] = $translator->translateStation("US34");
 $datas["submitIsDesabled"] = true;
-$datas["submitClass"] = "standard-button-desabled";
+// $datas["submitClass"] = "standard-button-desabled";
 
 // $dad = ModelFunctionality::generateDateCode(25);
 // $dadx = "#" . $dad;

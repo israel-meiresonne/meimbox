@@ -12,7 +12,7 @@ $popUpDatas["closeButtonId"] = "close_measure_manager";
 $popUpDatas["submitButtonId"] = "measure_select_button";
 $popUpDatas["submitButtonTxt"] = $translator->translateStation("US34");
 $popUpDatas["submitIsDesabled"] = true;
-$popUpDatas["submitClass"] = "standard-button-desabled";
+// $popUpDatas["submitClass"] = "standard-button-desabled";
 $popUpDatas["laodingId"] = "measurePopUp_loading";
 
 $dad = ModelFunctionality::generateDateCode(25);

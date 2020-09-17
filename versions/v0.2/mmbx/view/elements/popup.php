@@ -29,7 +29,8 @@
 
     if (!empty($datas["submitButtonId"])) {
         $desabled = ($datas["submitIsDesabled"] == true) ? "disabled=true" : null;
-        $submitBtnClass = (!empty($datas["submitClass"])) ? "standard-button-desabled" : null;
+        $desabledCls = (!empty($desabled)) ? "standard-button-desabled" : null;
+        $submitBtnClass = (!empty($datas["submitClass"])) ? $datas["submitClass"] : null;
         $submitButtonFunc = (!empty($datas["submitButtonFunc"])) ? 'onclick="' . $datas["submitButtonFunc"] . '"' : null;
     }
     ?>
@@ -59,7 +60,7 @@
                 <?php
                 if (!empty($datas["submitButtonId"])) : ?>
                     <div class="pop_up-validate_button-div">
-                        <button id="<?= $datas["submitButtonId"] ?>" <?= $submitButtonFunc ?> <?= $forFormId ?> <?= $desabled ?> class="green-arrow <?= $submitBtnClass ?> remove-button-default-att"><?= $datas["submitButtonTxt"] ?></button>
+                        <button id="<?= $datas["submitButtonId"] ?>" <?= $submitButtonFunc ?> <?= $forFormId ?> <?= $desabled ?> class="green-arrow <?= $submitBtnClass ?> <?= $desabledCls ?> remove-button-default-att"><?= $datas["submitButtonTxt"] ?></button>
                     </div>
                 <?php
                 endif; ?>
