@@ -400,7 +400,7 @@ abstract class Product extends ModelFunctionality
      * To increase or decrease the quantity of product holds by container
      * @param int $quantity product's quantity
      */
-    public function addQuantity(int $quantity = null)
+    public function addQuantity(int $quantity = 1)
     {
         $selectedSize = $this->getSelectedSize();
         if(!isset($selectedSize)){

@@ -13,7 +13,7 @@ class Size  extends ModelFunctionality
 {
 
     /**
-     * Holds the selected size
+     * Holds the alphanumeric value of size
      * @var string
      */
     private $size;
@@ -104,15 +104,15 @@ class Size  extends ModelFunctionality
 
     /**
      * Holds the input name for SIZE_TYPE_[ALPHANUM|MEASURE]
-     * + its value is INPUT_SIZE_TYPE_VALUE_ALPHANUM or INPUT_SIZE_TYPE_VALUE_MEASURE
+     * + its value is SIZE_TYPE_ALPHANUM or SIZE_TYPE_VALUE_MEASURE
      * @var string
      */
     public const INPUT_SIZE_TYPE =  "size_type";
     /**
      * Holds value for size type input (INPUT_SIZE_TYPE)
      */
-    public const INPUT_SIZE_TYPE_VALUE_ALPHANUM = "alphanum_size";
-    public const INPUT_SIZE_TYPE_VALUE_MEASURE = "measurement_size";
+    public const SIZE_TYPE_ALPHANUM = "alphanum_size";
+    public const SIZE_TYPE_VALUE_MEASURE = "measurement_size";
     /**
      * Holds the input name
      * @var string
@@ -250,20 +250,20 @@ class Size  extends ModelFunctionality
      * + if $delta = 0, its do nothing
      * @param int $delta amount to add/subtract on quantity
      */
-    public function addQuantity(int $delta = null)
+    public function addQuantity(int $delta)
     {
         $quantity = $this->getQuantity();
         if (($quantity + $delta) <= 0) {
             throw new Exception("Quantity can't be bellow or equals at zero: holdQuantity: $quantity, delta: $delta");
         }
-        (!empty($delta)) ? $this->quantity += $delta : ++$this->quantity;
+        // (!empty($delta)) ? $this->quantity += $delta : ++$this->quantity;
+        $this->quantity += $delta;
         $this->setDate = $this->getDateTime();
     }
 
     /**
      * Getter for Size's size value
-     * @param boolean true if you want null to be a string if empty else false
-     *  of nothing
+     * @param boolean $wantStr set true if you want null to be a string else set false or don't set
      * @return string size's size size value
      */
     public function getsize($wantStr = false)
@@ -335,6 +335,25 @@ class Size  extends ModelFunctionality
     public function getSetDate()
     {
         return $this->setDate;
+    }
+
+    /**
+     * Evaluate the type of the Size
+     * + SIZE_TYPE_ALPHANUM
+     * + SIZE_TYPE_VALUE_MEASURE
+     * @return string size's type
+     */
+    public function getSizeType()
+    {
+        $size = $this->getsize();
+        if(!empty($size)){
+            return self::SIZE_TYPE_ALPHANUM;
+        }
+        $measure = $this->getmeasure();
+        if(!empty($measure)){
+            return self::SIZE_TYPE_VALUE_MEASURE;
+        }
+        throw new Exception("Size's type is undefined");
     }
 
     /**

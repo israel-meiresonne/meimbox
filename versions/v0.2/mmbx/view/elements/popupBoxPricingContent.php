@@ -46,7 +46,7 @@ $boxes = Box::getSamples($language, $country, $currency);
                                     </div>
                                 </div>
                                 <div class="product_add-button-block">
-                                    <button id="<?= $sbtn ?>" class="green-button standard-button remove-button-default-att" onclick="addBox('<?= $box->getColorCode() ?>','<?= $popx ?>','<?= $sbtnx ?>')">
+                                    <button id="<?= $sbtn ?>" class="submit_btn_cls green-button standard-button remove-button-default-att" onclick="addBox('<?= $box->getColorCode() ?>','<?= $popx ?>','<?= $sbtnx ?>')">
                                         <?= $translator->translateStation("US25") ?>
                                     </button>
                                 </div>

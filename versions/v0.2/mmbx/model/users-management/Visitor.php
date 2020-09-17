@@ -481,8 +481,8 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $prodID Product's id
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param string|null $size holds a aphanumeric size
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
@@ -519,8 +519,8 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $prodID Product's id
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -543,8 +543,8 @@ class Visitor extends ModelFunctionality
      * Exctract the Size of the basket product from the input submited
      * @param Response $response where to strore results
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -557,7 +557,7 @@ class Visitor extends ModelFunctionality
         $sizeObj = null;
         $this->checkSizeInput($response, BasketProduct::BASKET_TYPE, $sizeType, $sizeMap);
         if (!$response->containError()) {
-            // $size = Query::getParam(Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM);
+            // $size = Query::getParam(Size::SIZE_TYPE_ALPHANUM);
             $size = $sizeMap->get(Map::size);
             $sequence = Size::buildSequence($size, null, null, null);
             $sizeObj = new Size($sequence);
@@ -570,8 +570,8 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $prodID Product's id
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -594,8 +594,8 @@ class Visitor extends ModelFunctionality
      * Exctract the Size of the box product from the input submited
      * @param Response $response where to strore results
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -610,7 +610,7 @@ class Visitor extends ModelFunctionality
         if (!$response->containError()) {
             // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
             switch ($sizeType) {
-                case Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM:
+                case Size::SIZE_TYPE_ALPHANUM:
                     // $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
                     // $brand = null;
                     // if (Query::existParam(Size::INPUT_BRAND)) {
@@ -622,7 +622,7 @@ class Visitor extends ModelFunctionality
                     $sequence = Size::buildSequence($size, $brand, null, null);
                     $sizeObj = new Size($sequence);
                     break;
-                case Size::INPUT_SIZE_TYPE_VALUE_MEASURE:
+                case Size::SIZE_TYPE_VALUE_MEASURE:
                     // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
                     // $cut = Query::getParam(Size::INPUT_CUT);
                     $measureID = $sizeMap->get(Map::measureID);
@@ -644,8 +644,8 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $prodType product's type
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -668,7 +668,7 @@ class Visitor extends ModelFunctionality
                 if (!$response->containError()) {
                     // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
                     switch ($sizeType) {
-                        case Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM:
+                        case Size::SIZE_TYPE_ALPHANUM:
                             $size = $sizeMap->get(Map::size);
                             $this->checkSizeAlphaNum($response, $size);
                             if (!$response->containError()) {
@@ -679,7 +679,7 @@ class Visitor extends ModelFunctionality
                                 }
                             }
                             break;
-                        case Size::INPUT_SIZE_TYPE_VALUE_MEASURE:
+                        case Size::SIZE_TYPE_VALUE_MEASURE:
                             // if (Query::existParam(Measure::KEY_MEASURE_ID)) {
                             if (!empty($measureID)) {
                                 // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
@@ -718,9 +718,9 @@ class Visitor extends ModelFunctionality
     {
         // if (Query::existParam(Size::INPUT_SIZE_TYPE)) {
         if (!empty($sizeType)) {
-            // if ((Query::getParam(Size::INPUT_SIZE_TYPE) == Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM)
-            //     || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::INPUT_SIZE_TYPE_VALUE_MEASURE)
-            if (($sizeType == Size::INPUT_SIZE_TYPE_VALUE_ALPHANUM) || ($sizeType == Size::INPUT_SIZE_TYPE_VALUE_MEASURE)) {
+            // if ((Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_ALPHANUM)
+            //     || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_VALUE_MEASURE)
+            if (($sizeType == Size::SIZE_TYPE_ALPHANUM) || ($sizeType == Size::SIZE_TYPE_VALUE_MEASURE)) {
                 return true;
             } else {
                 $station = "ER1";
@@ -840,8 +840,8 @@ class Visitor extends ModelFunctionality
      * @param string $boxID id of box in Visitor's basket
      * @param string $prodID id of the product to add in box
      * @param string|null $sizeType holds the type of measure
-     * + INPUT_SIZE_TYPE_VALUE_ALPHANUM => "alphanum_size";
-     * + INPUT_SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
      * @param string|null $size holds a aphanumeric size
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
@@ -885,15 +885,46 @@ class Visitor extends ModelFunctionality
      */
     public function moveBoxProduct(Response $response, $boxID, $newBoxID, $prodID, $sequence)
     {
-        $basket = $this->getBasket();
-        $box = $basket->getBoxe($boxID);
-        $newBox = $basket->getBoxe($newBoxID);
-        $sizeObj = new Size($sequence);
-        $product = $box->getProduct($prodID, $sizeObj);
-        $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
-        if ((empty($box)) || (empty($newBox)) || (!$isBoxProd)) {
+        if ($boxID == $newBoxID) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
+            try {
+                $sizeObj = new Size($sequence);
+            } catch (\Throwable $th) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            }
+            if (!$response->containError()) {
+                $basket = $this->getBasket();
+                $box = $basket->getBoxe($boxID);
+                $newBox = $basket->getBoxe($newBoxID);
+                $product = $box->getProduct($prodID, $sizeObj);
+                $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
+                if ((empty($box)) || (empty($newBox)) || (!$isBoxProd)) {
+                    $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                } else {
+                    // $sizeType = $sizeObj->getSizeType();
+                    // $sizeMap = new Map();
+                    // $sizeMap->put($sizeObj->getSize(), Map::size);
+                    // $sizeMap->put($sizeObj->getbrandName(), Map::brand);
+                    // $sizeMap->put($sizeObj->getMeasure()->getMeasureID(), Map::measureID);
+                    // $sizeMap->put($sizeObj->getCut(), Map::cut);
+                    // $this->addBoxProduct($response, $newBoxID, $prodID, $sizeType, $sizeMap); // check quantity
+                    $quantity = $sizeObj->getQuantity();
+                    if (!$basket->stillSpace($newBoxID, $quantity)) {
+                        // $box = $basket->getBoxe($boxID);
+                        // $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
+                        // $errStation = "ER15" . $fullRate;
+                        $errStation = "ER15";
+                        $response->addErrorStation($errStation, ControllerItem::A_MV_BXPROD);
+                    } else {
+                        $basket->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sizeObj);
+                    }
+
+                    // if(!$response->containError()){
+                    //     $basket->deleteBoxProduct($response, $boxID, $prodID, $sizeObj);
+                    // }
+                }
+            }
         }
     }
 

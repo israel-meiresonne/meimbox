@@ -4,6 +4,11 @@
     var basketsubtotal = "basketsubtotal";
     var basketvat = "vat";
     var basketquantity = "quantity";
+    // ++++ class down ++++
+    const selected = "popup-selected";
+    disableCls = "standard-button-desabled";
+    closebtnCls = "popup_close_btn";
+    const submitCls = "submit_btn_cls";
     // ++++ attr down ++++
     onclickattr = "onclick";
     idattr = "id";
@@ -22,10 +27,7 @@
     const databoxid = "data-" + KEY_BOX_ID;
     const dataonclick = "data-onclick";
     // closepop = 'data-popdata="closebtn"';
-    // ++++ class down ++++
-    const selected = "popup-selected";
-    disableCls = "standard-button-desabled";
-    closebtnCls = "popup_close_btn";
+
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
         return (v == null || v.length == 0);
@@ -58,6 +60,11 @@
     disable = function (x) {
         $(x).addClass(disableCls);
         $(x).attr("disabled", true);
+    }
+    pushFunc = (x, f) => {
+        var xf = $(x).attr(onclickattr);
+        var newxf = xf + ";" + f;
+        $(x).attr(onclickattr, newxf);
     }
     removeAnim = function (selector) {
         $(selector).css("overflow", "hidden");
@@ -436,13 +443,13 @@
     }
     /*—————————————————— MEASURE ADDER UP ———————————————————————————————————*/
     /*—————————————————— BOX MANAGER DOWN ———————————————————————————————————*/
-    getBoxMngr = (conf) => {
-        var params = mapToParam({ [A_GET_BX_MNGR]: conf });
+    getBoxMngr = (conf, bxid) => {
+        var params = mapToParam({ [A_GET_BX_MNGR]: conf, [KEY_BOX_ID]: bxid });
         var d = {
             "a": A_GET_BX_MNGR,
             "d": params,
             "r": getBoxMngrRSP,
-            "l": "#box_pricing_loading",
+            "l": "#box_manager_loading",
             "x": conf,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOff(d.l) }
@@ -472,7 +479,9 @@
     }
     addBox = (color, popx, sbtnx) => {
         var param = mapToParam({ [KEY_BOX_COLOR]: color });
-        var cbtnx = $(popx).find("." + closebtnCls);
+        // var cbtnx = $(popx).find("." + closebtnCls);
+        var cbtnx = getCloseButton(popx);
+        var bxid = $(sbtnx).attr(databoxid);
         var before = getFunc(databefore, sbtnx);
         var after = getFunc(dataafter, sbtnx);
         var d = {
@@ -480,17 +489,17 @@
             "d": param,
             "r": addBoxRSP,
             "l": "#box_pricing_loading",
-            "x": cbtnx,
+            "x": { "cbtnx": cbtnx, "bxid": bxid },
             "sc": () => { eval(before)(); displayFlexOn(d.l) },
             "rc": () => { eval(after)(); displayFlexOff(d.l) }
         };
         SND(d);
     }
-    var addBoxRSP = (r, cbtnx) => {
+    var addBoxRSP = (r, d) => {
         if (r.isSuccess) {
             // $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BOX]);
-            getBoxMngr(CONF_ADD_BXPROD);
-            $(cbtnx).click();
+            getBoxMngr(CONF_ADD_BXPROD, d.bxid);
+            $(d.cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
@@ -562,7 +571,7 @@
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/
     /*—————————————————— BASKET MANAGER DOWN ————————————————————————————————*/
-    setMoveBoxProduct = (btnx) => {
+    setMoveBoxProduct = (btnx, bxid) => {
         var sbtn = $("#sumbit_box_manager");
         var sfunc = $(sbtn).attr(onclickattr);
         $(sbtn).attr(dataonclick, sfunc);
@@ -572,16 +581,19 @@
         $(sbtn).attr(onclickattr, func);
 
         var cbtn = getCloseButton("#box_manager_window");
-        var cfunc = $(cbtn).attr(onclickattr);
-        var newcfunc = cfunc + ";unsetMoveBoxProduct()";
-        $(cbtn).attr(onclickattr, newcfunc);
+        var cf = "unsetMoveBoxProduct()";
+        pushFunc(cbtn, cf);
+
+        $("#box_pricing_window").find("." + submitCls).attr(databoxid, bxid);
     }
+
     unsetMoveBoxProduct = () => {
         var sbtn = $("#sumbit_box_manager");
         disable(sbtn);
         var sfunc = $(sbtn).attr(dataonclick);
         $(sbtn).attr(onclickattr, sfunc);
         $(sbtn).removeAttr(dataonclick);
+        $("#box_pricing_window").find("." + submitCls).removeAttr(databoxid);
     }
     getBasketPop = () => {
         var d = {
@@ -646,10 +658,13 @@
     moveBoxProductRSP = (r) => {
         if (r.isSuccess) {
             getBasketPop();
+            unsetMoveBoxProduct();
             var cbtn = getCloseButton("#box_manager_window");
             $(cbtn).click();
         } else if (!empty(r.errors[FAT_ERR])) {
             popAlert(r.errors[FAT_ERR].message);
+        } else if (!empty(r.errors[A_MV_BXPROD])) {
+            popAlert(r.errors[A_MV_BXPROD].message);
         }
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
