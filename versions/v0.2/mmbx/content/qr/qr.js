@@ -41,7 +41,7 @@
             f(dts);
         }
     }
-    var addErr = function (s, err) {
+    addErr = function (s, err) {
         $(s).text(err);
         $(s).slideDown(TS);
     }

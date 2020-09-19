@@ -320,7 +320,6 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         <div id="size_editor_pop" class="pop_up-container">
             <?php
             $datas = [
-                "formId" => "form_edit_prod_size",
                 "product" => $product,
                 "nbMeasure" => count($measures),
             ];

@@ -53,7 +53,19 @@ $prodID = $product->getProdID();
                     <div id="choose_brand" class="customize_choice-button-container">
                         <p><?= $translator->translateStation("US18") ?></p>
                         <div class="custom_selected-container"></div>
-                        <button id="choose_brand_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#customize_brand_reference')"><?= $translator->translateStation("US20") ?></button>
+                        <?php
+                        switch ($conf) {
+                            case Size::CONF_SIZE_ADD_PROD:
+                                // $setBrandPopFunc = "setSelectBrandItemPage";
+                                $setBrandPopFunc = "onclick=\"openPopUp('#customize_brand_reference',setSelectBrandItemPage)\"";
+                                break;
+                            case Size::CONF_SIZE_EDITOR:
+                                $setBrandPopFunc = "setSelectBrandSizeEditor";
+                                $setBrandPopFunc = "onclick=\"switchPopUp('#size_editor_pop','#customize_brand_reference',setSelectBrandSizeEditor)\"";
+                            break;
+                        }
+                        ?>
+                        <button id="choose_brand_button" class="green-button standard-button remove-button-default-att" <?= $setBrandPopFunc ?> ><?= $translator->translateStation("US20") ?></button>
                     </div>
                 </div>
                 <?php
@@ -90,19 +102,28 @@ $prodID = $product->getProdID();
                             <div id="measurement_button_div" class="customize_choice-button-container">
                                 <div class="custom_selected-container"></div>
                                 <?php
+                                switch ($conf) {
+                                    case Size::CONF_SIZE_ADD_PROD:
+                                        $addMeasureBtnFunc = "onclick=\"openPopUp('#measure_adder')\"";
+                                        $manageMeasureBtnFunc = "onclick=\"openPopUp('#measure_manager',setSelectMeasureItemPage)\"";
+                                        break;
+                                    case Size::CONF_SIZE_EDITOR:
+                                        $addMeasureBtnFunc = "onclick=\"switchPopUp('#size_editor_pop','#measure_adder')\"";
+                                        $manageMeasureBtnFunc = "onclick=\"switchPopUp('#size_editor_pop','#measure_manager',setSelectMeasureSizeEditor)\"";
+                                        break;
+                                }
                                 $addMsrBtnTxt = $translator->translateStation("US21");
                                 $managerBtnTxt = $translator->translateStation("US22");
-                                // if (count($measures) > 0) :
-                                if ($nbMeasure > 0) :
-                                ?>
-                                    <button id="add_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_adder')"><?= $addMsrBtnTxt ?></button>
-                                    <button id="manage_measurement_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_manager')"><?= $managerBtnTxt ?></button>
-                                <?php
-                                else : ?>
-                                    <button id="add_measurement_button" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_adder')"><?= $addMsrBtnTxt ?></button>
-                                    <button id="manage_measurement_button" style="display:none;" class="green-button standard-button remove-button-default-att" onclick="openPopUp('#measure_manager')"><?= $managerBtnTxt ?></button>
-                                <?php
-                                endif; ?>
+
+                                if ($nbMeasure > 0) {
+                                    $displayNoMeasure = 'style="display:none;"';
+                                    $displayMeasureEditor = null;
+                                } else {
+                                    $displayNoMeasure = null;
+                                    $displayMeasureEditor = 'style="display:none;"';
+                                } ?>
+                                <button id="add_measurement_button" <?= $displayNoMeasure ?> class="green-button standard-button remove-button-default-att" <?= $addMeasureBtnFunc ?>><?= $addMsrBtnTxt ?></button>
+                                <button id="manage_measurement_button" <?= $displayMeasureEditor ?> class="green-button standard-button remove-button-default-att" <?= $manageMeasureBtnFunc ?>><?= $managerBtnTxt ?></button>
                             </div>
                         </div>
                     </div>

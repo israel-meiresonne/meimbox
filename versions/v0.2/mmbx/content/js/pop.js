@@ -29,10 +29,11 @@
     const dataonclick = "data-onclick";
     datainputname = "data-inputname";
     dataheadid = "data-headid";
+    const datavase = "data-vase";
 
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
-        return (v == null || v.length == 0);
+        return (v == null || v == "");
     }
     getTag = (x) => {
         return $(x).prop("tagName").toLocaleLowerCase();
@@ -174,6 +175,20 @@
         switcher(fromx, tox);
         after(fromx, tox);
     }
+    transferPopBehavior = (fromx, tox, before = () => { }, after = () => { }) => {
+        before(fromx, tox);
+        var fbtn = getCloseButton(fromx);
+        var fevent = $(fbtn).attr(onclickattr);
+        var tevent = fevent.replace(getX(fromx), getX(tox));
+        var stackjson = $(fbtn).attr(popstack);
+        var tstackjson = stackjson.replace(getX(fromx), getX(tox));
+
+        var tbtn = getCloseButton(tox);
+        $(tbtn).attr(onclickattr, tevent);
+        $(tbtn).attr(popstack, tstackjson);
+        switcher(fromx, tox);
+        after(fromx, tox);
+    }
     switchPopUp = (fromx, tox, before = () => { }, after = () => { }) => {
         before(fromx, tox)
         var fbtn = $(fromx).find("." + closebtnCls);
@@ -183,7 +198,6 @@
         var tbtn = $(tox).find("." + closebtnCls);
         $(tbtn).attr(onclickattr, "switchBackPopUp('" + getX(tox) + "', '" + getX(fromx) + "')");
         stack.push(fevent);
-        // $(tbtn).attr(popstack, json_encode(stack));
         setStack(tbtn, stack);
 
         switcher(fromx, tox);
@@ -217,17 +231,24 @@
     }
     /*—————————————————— POPUP BEHAVIOR UP ——————————————————————————————————*/
     /*—————————————————— BRAND DOWN ———————————————————————————————————————*/
+    setSelectBrandItemPage = () => {
+        $("#brand_validate_button").attr(datavase, "#form_check_prod_stock .brand-custom-container .custom_selected-container");
+    }
+    setSelectBrandSizeEditor = () => {
+        $("#brand_validate_button").attr(datavase, "#form_edit_prod_size .brand-custom-container .custom_selected-container");
+    }
     selectBrand = (sbtnx) => {
         var x = $(sbtnx).attr(datatarget);
         var brandDatas = json_decode($(x).attr(submitdata));
         var param = mapToParam(brandDatas);
+        var vx = $($(sbtnx).attr(datavase));
         //build
         var d = {
             "a": A_SELECT_BRAND,
             "d": param,
             "r": selectBrandRSP,
             "l": "#brandPopUp_loading",
-            // "x": btnx,
+            "x": vx,
             "sc": () => {
                 displayFlexOn(d.l);
                 disable(sbtnx);
@@ -239,17 +260,18 @@
         };
         SND(d);
     }
-    var selectBrandRSP = function (r) {
+    var selectBrandRSP = function (r, vx) {
         if (r.isSuccess) {
-            $("#choose_brand .custom_selected-container").slideUp(TS, function () {
-                $(this).html(r.results[BRAND_STICKER_KEY]);
-                $(this).slideDown(TS);
+            var stk = createNone(r.results[BRAND_STICKER_KEY]);
+            $(vx).slideUp(TS, function () {
+                $(vx).html(stk);
+                $(vx).slideDown(TS / 10, () => {
+                    $(stk).slideDown(TS);
+                });
             })
-            var targer = $("#customize_brand_reference");
-            closePopUp(targer);
-            var submitBtn = $("#brand_validate_button")[0];
-            $(submitBtn).addClass("standard-button-desabled");
-            $(submitBtn).attr("disabled", true);
+            var cbtn = getCloseButton("#customize_brand_reference");
+            $(cbtn).click();
+            disable("#brand_validate_button");
         }
     }
     //—— ADD MEASUREMENT UP ————//
@@ -264,18 +286,24 @@
         $("#measurePopUp_loading").css("display", "flex");
         $("#mange_measure_window .customize_measure-content").css("opacity", 1);
     }
+    setSelectMeasureItemPage = () => {
+        $("#measure_select_button").attr(datavase, "#form_check_prod_stock .customize_choice-button-block .custom_selected-container");
+    }
+    setSelectMeasureSizeEditor = () => {
+        $("#measure_select_button").attr(datavase, "#form_edit_prod_size .customize_choice-button-block .custom_selected-container");
+    }
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
     selectMeasure = (sbtnx) => {
         var x = $(sbtnx).attr(datatarget);
         var brandDatas = json_decode($(x).attr(submitdata));
         var param = mapToParam(brandDatas);
-        //build
+        var vx = $($(sbtnx).attr(datavase));
         var datasSND = {
             "a": A_SELECT_MEASURE,
             "d": param,
             "r": selectMeasureRSP,
             "l": "#measurePopUp_loading",
-            // "x": btnx,
+            "x": vx,
             "sc": () => {
                 $("#measurePopUp_loading").css("display", "flex");
                 $("#mange_measure_window .customize_measure-content").css("opacity", 0);
@@ -289,17 +317,18 @@
         };
         SND(datasSND);
     }
-    var selectMeasureRSP = function (r) {
+    var selectMeasureRSP = function (r, vx) {
         if (r.isSuccess) {
-            $("#measurement_button_div .custom_selected-container").slideUp(TS, function () {
-                $(this).html(r.results[MEASURRE_STICKER_KEY]);
-                $(this).slideDown(TS);
+            var stk = createNone(r.results[MEASURRE_STICKER_KEY]);
+            $(vx).slideUp(TS, function () {
+                $(vx).html(stk);
+                $(vx).slideDown(TS / 10, () => {
+                    $(stk).slideDown(TS);
+                });
             })
-            var targer = $("#measure_manager");
-            closePopUp(targer);
-            var submitBtn = $("#measure_select_button")[0];
-            $(submitBtn).addClass("standard-button-desabled");
-            $(submitBtn).attr("disabled", true);
+            var cbtn = getCloseButton("#measure_manager");
+            $(cbtn).click();
+            disable("#measure_select_button");
         }
     }
     removeMsr = function (msr_id) {
@@ -354,21 +383,39 @@
     /*—————————————————— MEASURE MANAGER UP —————————————————————————————————*/
     /*—————————————————— MEASURE ADDER DOWN —————————————————————————————————*/
     // ++++ shortcut down ++++
-    cleanMsrAdder = () => {
+    setAddMsr = () => {
         var measureInput = $("#add_measure_form input[type='text'], #add_measure_form input[type='hidden']");
         $(measureInput).val("");
         $(measureInput).attr("value", null);
         updateInputAnimation(measureInput);
         $("#save_measure_button").attr("onclick", 'addMsr()');
+        vaseTransfer();
     }
+    setUpdateMsr = () => {
+        $("#save_measure_button").attr(onclickattr, 'updateMsr()');
+        vaseTransfer();
+    }
+    vaseTransfer = () => {
+        var vx = $("#measure_select_button").attr(datavase);
+        $("#save_measure_button").attr(datavase, vx);
+    }
+    vaseTransferBack = () => {
+        var vx = $("#save_measure_button").attr(datavase);
+        $("#measure_select_button").attr(datavase, vx);
+    }
+    // setAddMsrItemPage = () => {
+    //     $("#add_measurement_button").attr(onclickattr, "addMsr('#')")
+    // }
+    // setAddMsrSizeEditor
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
-    addMsr = function () {
+    addMsr = () => {
         var d = {
             "a": A_ADD_MEASURE,
             "frm": "#add_measure_form input",
             "frmCbk": function () { return ""; },
             "r": addMeasureRSP,
             "l": "#add_measurePopUp_loading",
+            // "x": popFunc,
             "sc": function () {
                 $(d.lds).css("display", "flex");
             },
@@ -376,17 +423,16 @@
         };
         frmSND(d);
     }
-    var addMeasureRSP = function (r) {
+    var addMeasureRSP = (r) => {
         if (r.isSuccess) {
             $("#add_measurement_button").fadeOut(TS, function () {
                 $("#manage_measurement_button").fadeIn(TS);
             });
             $("#measure_manager").html(r.results[QR_MEASURE_CONTENT]);
-
-            var after = () => {
-                $("#save_measure_button").removeAttr("onclick");
-            }
-            switchCloseNext($("#measure_adder"), $("#measure_manager"), after);
+            vaseTransferBack();
+            $("#save_measure_button").removeAttr(onclickattr);
+            var cbtn = getCloseButton($("#measure_adder"));
+            $(cbtn).click();
         } else {
             var k = Object.keys(r.errors);
             var cbxE = $("#add_measure_form .measure_input-checkbox-conatiner .checkbox_error-div .comment");
@@ -398,13 +444,14 @@
             });
         }
     }
-    updateMsr = function () {
+    updateMsr = () => {
         var d = {
             "a": A_UPDATE_MEASURE,
             "frm": "#add_measure_form input",
             "frmCbk": function () { return ""; },
             "r": updateMsrRSP,
             "l": "#add_measurePopUp_loading",
+            // "x": popFunc,
             "sc": function () {
                 $(d.lds).css("display", "flex");
             },
@@ -415,7 +462,7 @@
     var updateMsrRSP = function (r) {
         addMeasureRSP(r);
     }
-    getMsrAdder = function (msr_id) {
+    getMsrAdder = function (msr_id, popFunc) {
         var selector = $("#mange_measure_window .cart-element-edit-button[data-measure_id='" + msr_id + "']");
         var param_json = $(selector).attr("data-measure");
         var param_map = json_decode(param_json);
@@ -427,23 +474,25 @@
             "a": QR_GET_MEASURE_ADDER,
             "r": getMsrAdderRSP,
             "l": "#measurePopUp_loading",
+            "x": popFunc,
             "sc": msrMangerLoading_on,
             "rc": msrMangerLoading_off
         };
         SND(getMsrAdderDts);
     }
-    var getMsrAdderRSP = function (r) {
+    var getMsrAdderRSP = function (r, popFunc) {
         if (r.isSuccess) {
             $("#measure_adder").html(r.results[QR_GET_MEASURE_ADDER]);
-            var before = () => { $("#save_measure_button").attr("onclick", 'addMsr()'); }
-            switchPopUp($("#measure_manager"), $("#measure_adder"), before);
+            // var before = () => { $("#save_measure_button").attr("onclick", 'addMsr()'); }
+            // switchPopUp($("#measure_manager"), $("#measure_adder"));
             var btn = $("#save_measure_button");
-            var btnCls = "standard-button-desabled";
-            disable(btn, btnCls);
+            // var btnCls = "standard-button-desabled";
+            disable(btn);
             reactivate_AnimateInput_Elements();
             reactivate_ChangeInputUnit_Elements();
             reactivate_AnableMsrBtn_QR();
-            $("#save_measure_button").attr("onclick", 'updateMsr()');
+            eval(popFunc)();
+            // $("#save_measure_button").attr("onclick", 'updateMsr()');
             // $("#save_measure_button").removeAttr("onclick");
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
