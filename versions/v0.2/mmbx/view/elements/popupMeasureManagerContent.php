@@ -54,7 +54,7 @@ $editBtnTranslate = $translator->translateStation("US49");
 
                     $removeBtnFunc = 'onclick="removeMsr(\'' . $measure_id . '\')" data-measure_id=\'' . $measure_id . '\' data-measure=\'' . $dataMeasure_json . '\'';
 
-                    $editBtnFunc = 'onclick="getMsrAdder(\'' . $measure_id . '\')" data-measure_id=\'' . $measure_id . '\' data-measure=\'' . $dataMeasure_json . '\'';
+                    // $editBtnFunc = 'onclick="getMsrAdder(\'' . $measure_id . '\')" data-measure_id=\'' . $measure_id . '\' data-measure=\'' . $dataMeasure_json . '\'';
                 ?>
 
                     <li class="li-cart-element-container remove-li-default-att">
@@ -107,7 +107,8 @@ $editBtnTranslate = $translator->translateStation("US49");
 
                                 <div class="cart-element-edit-block no_price_block">
                                     <div class="cart-element-edit-inner">
-                                        <button class="cart-element-edit-button remove-button-default-att" <?= $editBtnFunc ?>><?= $editBtnTranslate ?></button>
+                                        <!-- <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>') <?= $editBtnFunc ?>><?= $editBtnTranslate ?></button> -->
+                                        <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>', () => {switchPopUp('#measure_manager','#measure_adder',()=>{},setUpdateMsr)})" data-measure_id="<?= $measure_id ?>" data-measure='<?= $dataMeasure_json ?>'><?= $editBtnTranslate ?></button>
                                     </div>
                                 </div>
                             </div>

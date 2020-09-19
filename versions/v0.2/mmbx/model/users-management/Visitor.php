@@ -276,7 +276,10 @@ class Visitor extends ModelFunctionality
         $measure = $this->getMeasure($measureID);
         if (empty($measure)) {
             throw new Exception("Impossible to unset measure cause it don't exist:");
+            // $errorMsg = "ER1";
+            // $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
         }
+        // if (!$response->containError()) {
         $sql = "SELECT * 
         FROM `UsersMeasures` um
         JOIN `Box-Products` bp ON um.measureID = bp.measureId
@@ -284,7 +287,7 @@ class Visitor extends ModelFunctionality
         $tab = $this->select($sql);
 
         if (count($tab) > 0) {
-            $errStation = "ER8";
+            $errStation = "ER16";
             $response->addErrorStation($errStation, MyError::FATAL_ERROR);
         } else {
             $measure->deleteMeasure($response, $this->userID);
@@ -292,6 +295,13 @@ class Visitor extends ModelFunctionality
                 $this->unsetMeasure($measureID);
             }
         }
+        // }
+        // if (!$response->containError()) {
+        //     $measure->deleteMeasure($response, $this->userID);
+        //     if ($response->isSuccess()) {
+        //         $this->unsetMeasure($measureID);
+        //     }
+        // }
     }
 
     /**
@@ -681,7 +691,7 @@ class Visitor extends ModelFunctionality
                             break;
                         case Size::SIZE_TYPE_VALUE_MEASURE:
                             // if (Query::existParam(Measure::KEY_MEASURE_ID)) {
-                                $measureID = $sizeMap->get(Map::measureID);
+                            $measureID = $sizeMap->get(Map::measureID);
                             if (!empty($measureID)) {
                                 // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
                                 if (!$this->existMeasure($measureID)) {

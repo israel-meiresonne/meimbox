@@ -10,7 +10,7 @@ $nbMeasure = count($measures);
 $managerAddMeasureBtn = $translator->translateStation("US44");
 
 $measureRation = " ($nbMeasure/$maxMeasure)";
-$maxMeasureAlert = $translator->translateStation("ER7") . $measureRation;
-$btnAction = ($nbMeasure >= $maxMeasure) ? 'onclick="popAlert(\'' . $maxMeasureAlert . '\')"' : 'onclick="switchPopUp(\'#measure_manager\', \'#measure_adder\', cleanMsrAdder)"';
+$maxMeasureAlert = $translator->translateStation("ER8") . $measureRation;
+$btnAction = ($nbMeasure >= $maxMeasure) ? 'onclick="popAlert(\'' . $maxMeasureAlert . '\')"' : 'onclick="switchPopUp(\'#measure_manager\', \'#measure_adder\', setAddMsr)"';
 ?>
 <button id="manager_add_measurement_button" <?= $btnAction ?> class="green-button standard-button remove-button-default-att"><?= $managerAddMeasureBtn ?></button>

@@ -6,6 +6,7 @@
  * @param BoxProduct|BasketProduct $product Visitor's basket
  * @param int $nbMeasure the number of measure holds by Visitor
  */
+$formId = "form_edit_prod_size";
 $datas = [];
 $datas["title"] = "size editor";
 $datas["closeButtonId"] = "size_form_pop_close_button";
