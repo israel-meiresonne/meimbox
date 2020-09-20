@@ -62,7 +62,7 @@ $colorRGBText = $product->getColorRGBText();
                     <div class="cube-container">
                         <a href="/inside/item/?prodID=<?= $prodID ?>">
                             <div class="cube-wrap cube-selected">
-                                <div class="cube-item-color <?= $cubeBorder ?>" style="background: <?= $colorRGB ?>;"></div>
+                                <div class="cube-item-color" style="background: <?= $colorRGB ?>;"></div>
                             </div>
                         </a>
                     </div>

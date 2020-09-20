@@ -185,13 +185,13 @@ $this->head = ob_get_clean();
                                                 <div id="min_price_input" class="input-container">
                                                     <div class="input-wrap">
                                                         <label class="input-label" for="filter_minPrice"><?= $translator->translateStation("US12") ?></label>
-                                                        <input id="filter_minPrice" class="input-error input-tag" type="number" name="minprice" value="<?= $search->getMinPrice() ?>" placeholder="<?= $translator->translateStation("US12") ?>">
+                                                        <input id="filter_minPrice" class="input-error input-tag" onchange="updateNumberInputValue('#filter_minPrice')" type="number" name="minprice" value="<?= $search->getMinPrice() ?>" placeholder="<?= $translator->translateStation("US12") ?>">
                                                     </div>
                                                 </div>
                                                 <div id="max_price_input" class="input-container">
                                                     <div class="input-wrap">
                                                         <label class="input-label" for="filter_maxPrice"><?= $translator->translateStation("US13") ?></label>
-                                                        <input id="filter_maxPrice" class="input-error input-tag" type="number" name="maxprice" value="<?= $search->getMaxPrice() ?>" placeholder="<?= $translator->translateStation("US13") ?>">
+                                                        <input id="filter_maxPrice" class="input-error input-tag" onchange="updateNumberInputValue('#filter_maxPrice')" type="number" name="maxprice" value="<?= $search->getMaxPrice() ?>" placeholder="<?= $translator->translateStation("US13") ?>">
                                                     </div>
                                                 </div>
                                             </div>

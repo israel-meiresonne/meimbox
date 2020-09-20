@@ -1,7 +1,6 @@
 <?php
-require_once 'controller/ControllerItem.php';
 /**
- * Build a brand sticker with a brand name given
+ * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string $brandName the brand's name
  */
 

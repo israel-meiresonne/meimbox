@@ -319,8 +319,13 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         </div>
         <div id="size_editor_pop" class="pop_up-container">
             <?php
+        // $selectedSize = new Size("m-null-null-null");
+        // $selectedSize = new Size("m-tommy hilfiger-null-null");
+        $selectedSize = new Size("null-null-0jj2g3rj131923p1560b90d01-fit");
+        $prod2 = $person->getBasket()->getBoxe("0860g1009tn0i31s2s6b24112")->getProduct(1, $selectedSize);
+            // var_dump($prod2);
             $datas = [
-                "product" => $product,
+                "product" => $prod2,
                 "nbMeasure" => count($measures),
             ];
             echo $this->generateFile('view/elements/popupSizeForm.php', $datas);

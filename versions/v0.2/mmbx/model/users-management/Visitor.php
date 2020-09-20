@@ -492,7 +492,7 @@ class Visitor extends ModelFunctionality
      * @param string $prodID Product's id
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param string|null $size holds a aphanumeric size
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
@@ -530,7 +530,7 @@ class Visitor extends ModelFunctionality
      * @param string $prodID Product's id
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -554,7 +554,7 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -581,7 +581,7 @@ class Visitor extends ModelFunctionality
      * @param string $prodID Product's id
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -605,7 +605,7 @@ class Visitor extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -632,7 +632,7 @@ class Visitor extends ModelFunctionality
                     $sequence = Size::buildSequence($size, $brand, null, null);
                     $sizeObj = new Size($sequence);
                     break;
-                case Size::SIZE_TYPE_VALUE_MEASURE:
+                case Size::SIZE_TYPE_MEASURE:
                     // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
                     // $cut = Query::getParam(Size::INPUT_CUT);
                     $measureID = $sizeMap->get(Map::measureID);
@@ -655,7 +655,7 @@ class Visitor extends ModelFunctionality
      * @param string $prodType product's type
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -689,7 +689,7 @@ class Visitor extends ModelFunctionality
                                 }
                             }
                             break;
-                        case Size::SIZE_TYPE_VALUE_MEASURE:
+                        case Size::SIZE_TYPE_MEASURE:
                             // if (Query::existParam(Measure::KEY_MEASURE_ID)) {
                             $measureID = $sizeMap->get(Map::measureID);
                             if (!empty($measureID)) {
@@ -730,8 +730,8 @@ class Visitor extends ModelFunctionality
         // if (Query::existParam(Size::INPUT_SIZE_TYPE)) {
         if (!empty($sizeType)) {
             // if ((Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_ALPHANUM)
-            //     || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_VALUE_MEASURE)
-            if (($sizeType == Size::SIZE_TYPE_ALPHANUM) || ($sizeType == Size::SIZE_TYPE_VALUE_MEASURE)) {
+            //     || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_MEASURE)
+            if (($sizeType == Size::SIZE_TYPE_ALPHANUM) || ($sizeType == Size::SIZE_TYPE_MEASURE)) {
                 return true;
             } else {
                 $station = "ER1";
@@ -852,7 +852,7 @@ class Visitor extends ModelFunctionality
      * @param string $prodID id of the product to add in box
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
-     * + SIZE_TYPE_VALUE_MEASURE => "measurement_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
      * @param string|null $size holds a aphanumeric size
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size

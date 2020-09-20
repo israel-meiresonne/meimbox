@@ -1,5 +1,4 @@
 <?php
-require_once 'model/tools-management/Measure.php';
 
 /**
  * Build a Measure sticker with a Measure given
