@@ -12,19 +12,56 @@
  * @var BoxProduct|BasketProduct
  */
 $product = $product;
+
+/**
+ * @var Translator
+ */
+$translator = $translator;
+
 $prodID = $product->getProdID();
-// $measures
+switch ($conf) {
+    case Size::CONF_SIZE_ADD_PROD:
+        $selectedSize = null;
+        $sizeIsChecked = false;
+        $measureIsChecked = false;
+        $TagdisplayBrand = null;
+    break;
+    case Size::CONF_SIZE_EDITOR:
+        $selectedSize = $product->getSelectedSize();
+        // $selectedSize = new Size("null-null-0jj2g3rj131923p1560b90d01-fit", "2020-09-17 20:57:22");
+        $sizeType = $selectedSize->getSizeType();
+        $brandName = $selectedSize->getbrandName();
+        $measure = $selectedSize->getmeasure();
+        switch ($sizeType) {
+            case Size::SIZE_TYPE_ALPHANUM:
+                $sizeIsChecked = true;
+                $measureIsChecked = false;
+                $TagdisplayBrand = (!empty($brandName)) ? 'style="display:block;"' : null;
+                break;
+            case Size::SIZE_TYPE_MEASURE:
+                $sizeIsChecked = false;
+                $measureIsChecked = true;
+                $TagdisplayBrand = null;
+                break;
+        }
+        break;
+}
+
 ?>
 <div id="<?= $formId ?>">
     <input type="hidden" name="<?= Product::INPUT_PROD_ID ?>" value="<?= $prodID ?>">
     <div class="product-size-container product-data-line">
         <div class="product-size-inner">
             <?php
-            if ($conf == Size::CONF_SIZE_EDITOR) : ?>
+            if ($conf == Size::CONF_SIZE_EDITOR) :
+                $qid = ModelFunctionality::generateDateCode(25);
+                $qidx = "#" . $qid;
+                $quantity = $product->getQuantity();
+            ?>
                 <div class="product-quantity-container">
                     <div class="input-wrap">
-                        <label class="input-label" for="filter_minPrice">quantity</label>
-                        <input id="filter_minPrice" class="input-tag" type="number" name="quantity" value="5" placeholder="quantity">
+                        <label class="input-label" for="<?= $qid ?>"><?= $translator->translateStation("US54") ?></label>
+                        <input id="<?= $qid ?>" class="input-tag" onchange="updateNumberInputValue('<?= $qidx ?>')" type="number" name="<?= Size::INPUT_QUANTITY ?>" value="<?= $quantity ?>" placeholder="<?= $translator->translateStation("US54") ?>">
                     </div>
                 </div>
             <?php
@@ -32,6 +69,14 @@ $prodID = $product->getProdID();
             <div class="product-size-dropdown-container">
                 <?php
                 /* ——————————————————————————————— SIZE CHAR & BRAND —————————————————————————————————————*/
+                switch ($conf) {
+                    case Size::CONF_SIZE_ADD_PROD:
+                        $checkedLabels = [];
+                        break;
+                    case Size::CONF_SIZE_EDITOR:
+                        $checkedLabels = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ? [$selectedSize->getsize()] : [];
+                        break;
+                }
                 ob_start();
                 ?>
                 <div class="size-set-container">
@@ -40,7 +85,8 @@ $prodID = $product->getProdID();
                     $labels = $product->getSizeValueToValue();
                     $datas = [
                         "title" => $title,
-                        "checkedLabels" => [],
+                        // "checkedLabels" => [],
+                        "checkedLabels" => $checkedLabels,
                         "labels" => $labels,
                         "isRadio" => true,
                         "inputName" => Size::INPUT_ALPHANUM_SIZE,
@@ -48,28 +94,37 @@ $prodID = $product->getProdID();
                     echo $this->generateFile("view/elements/dropdownInput.php", $datas);
                     ?>
                 </div>
-                <div class="brand-custom-container">
+                <div class="brand-custom-container" <?= $TagdisplayBrand ?> >
                     <hr class="hr-summary">
                     <div id="choose_brand" class="customize_choice-button-container">
                         <p><?= $translator->translateStation("US18") ?></p>
-                        <div class="custom_selected-container"></div>
+                        <div class="custom_selected-container">
+                            <?php
+                            if (!empty($brandName)) {
+                                $datas = [
+                                    "brandName" => $brandName
+                                ];
+                                echo $this->generateFile('view/Item/itemFiles/stickerBrand.php', $datas);
+                            }
+                            ?>
+                        </div>
                         <?php
                         switch ($conf) {
                             case Size::CONF_SIZE_ADD_PROD:
-                                // $setBrandPopFunc = "setSelectBrandItemPage";
                                 $setBrandPopFunc = "onclick=\"openPopUp('#customize_brand_reference',setSelectBrandItemPage)\"";
                                 break;
                             case Size::CONF_SIZE_EDITOR:
                                 $setBrandPopFunc = "setSelectBrandSizeEditor";
                                 $setBrandPopFunc = "onclick=\"switchPopUp('#size_editor_pop','#customize_brand_reference',setSelectBrandSizeEditor)\"";
-                            break;
+                                break;
                         }
                         ?>
-                        <button id="choose_brand_button" class="green-button standard-button remove-button-default-att" <?= $setBrandPopFunc ?> ><?= $translator->translateStation("US20") ?></button>
+                        <button class="choose-brand-button green-button standard-button remove-button-default-att" <?= $setBrandPopFunc ?>><?= $translator->translateStation("US20") ?></button>
                     </div>
                 </div>
                 <?php
                 $content = ob_get_clean();
+
                 $titleId = "char_size";
                 $title = $translator->translateStation("US9");
                 $dataAttributs = "data-x='product-size-customize-block'";
@@ -81,7 +136,8 @@ $prodID = $product->getProdID();
                     "inputValue" => Size::SIZE_TYPE_ALPHANUM,
                     "dataAttributs" => $dataAttributs,
                     "isRadio" => true,
-                    "content" => $content
+                    "content" => $content,
+                    "checked" => $sizeIsChecked
                 ];
                 echo $this->generateFile("view/elements/dropdownCheckbox.php", $datas);
                 ?>
@@ -100,7 +156,16 @@ $prodID = $product->getProdID();
                         <hr class="hr-summary">
                         <div class="customize_choice-button-block">
                             <div id="measurement_button_div" class="customize_choice-button-container">
-                                <div class="custom_selected-container"></div>
+                                <div class="custom_selected-container">
+                                    <?php
+                                    if (!empty($measure)) {
+                                        $datas = [
+                                            "measure" => $measure
+                                        ];
+                                        echo $this->generateFile('view/Item/itemFiles/stickerMeasure.php', $datas);
+                                    }
+                                    ?>
+                                </div>
                                 <?php
                                 switch ($conf) {
                                     case Size::CONF_SIZE_ADD_PROD:
@@ -137,7 +202,7 @@ $prodID = $product->getProdID();
                                     $checkedLabels = [Size::DEFAULT_CUT];
                                     break;
                                 case Size::CONF_SIZE_EDITOR:
-                                    $checkedLabels = [];
+                                    $checkedLabels = ($sizeType == Size::SIZE_TYPE_MEASURE) ? [$selectedSize->getCut()] : [];
                                     break;
                             }
                             $datas = [
@@ -161,10 +226,11 @@ $prodID = $product->getProdID();
                         "title" => $title,
                         "titleId" => $titleId,
                         "inputName" => Size::INPUT_SIZE_TYPE,
-                        "inputValue" => Size::SIZE_TYPE_VALUE_MEASURE,
+                        "inputValue" => Size::SIZE_TYPE_MEASURE,
                         "dataAttributs" => $dataAttributs,
                         "isRadio" => true,
-                        "content" => $content
+                        "content" => $content,
+                        "checked" => $measureIsChecked
                     ];
                     echo $this->generateFile("view/elements/dropdownCheckbox.php", $datas);
                     ?>

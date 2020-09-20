@@ -116,7 +116,7 @@ class Size  extends ModelFunctionality
 
     /**
      * Holds the input name for SIZE_TYPE_[ALPHANUM|MEASURE]
-     * + its value is SIZE_TYPE_ALPHANUM or SIZE_TYPE_VALUE_MEASURE
+     * + its value is SIZE_TYPE_ALPHANUM or SIZE_TYPE_MEASURE
      * @var string
      */
     public const INPUT_SIZE_TYPE =  "size_type";
@@ -124,7 +124,7 @@ class Size  extends ModelFunctionality
      * Holds value for size type input (INPUT_SIZE_TYPE)
      */
     public const SIZE_TYPE_ALPHANUM = "alphanum_size";
-    public const SIZE_TYPE_VALUE_MEASURE = "measurement_size";
+    public const SIZE_TYPE_MEASURE = "measurement_size";
     /**
      * Holds the input name
      * @var string
@@ -140,6 +140,11 @@ class Size  extends ModelFunctionality
      * @var string
      */
     public const INPUT_CUT =  "cut";
+    /**
+     * Holds the input name
+     * @var string
+     */
+    public const INPUT_QUANTITY =  "input_quantity";
 
 
     /**
@@ -352,7 +357,7 @@ class Size  extends ModelFunctionality
     /**
      * Evaluate the type of the Size
      * + SIZE_TYPE_ALPHANUM
-     * + SIZE_TYPE_VALUE_MEASURE
+     * + SIZE_TYPE_MEASURE
      * @return string size's type
      */
     public function getSizeType()
@@ -363,7 +368,7 @@ class Size  extends ModelFunctionality
         }
         $measure = $this->getmeasure();
         if (!empty($measure)) {
-            return self::SIZE_TYPE_VALUE_MEASURE;
+            return self::SIZE_TYPE_MEASURE;
         }
         throw new Exception("Size's type is undefined");
     }

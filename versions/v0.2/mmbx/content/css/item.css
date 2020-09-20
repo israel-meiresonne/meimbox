@@ -70,7 +70,7 @@
     #choose_brand>p::first-letter {
         text-transform: capitalize;
     }
-    #choose_brand_button{
+    .choose-brand-button{
         box-shadow: none;
     }
     .product-datas-block .product-name-div span {
@@ -338,7 +338,7 @@
     #choose_brand>p::first-letter {
         text-transform: capitalize;
     }
-    #choose_brand_button{
+    #choose-brand-button{
         box-shadow: none;
     }
     .product-datas-block .product-name-div {

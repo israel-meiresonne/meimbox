@@ -10,9 +10,9 @@
         $(".checkbox-label input").click(function () {
             animateCheckbox(this);
         });
-        $("#filter_minPrice, #filter_maxPrice").change(function () {
-            updateNumberInputValue(this);
-        });
+        // $("#filter_minPrice, #filter_maxPrice").change(function () {
+        //     updateNumberInputValue(this);
+        // });
     }
 
     reactivate_ChangeInputUnit_Elements = function () {
@@ -116,9 +116,10 @@
             $(".input-wrap span").animate({ top: '22px' }, TS);
         }
     }
+    updateNumberInputValue = function (x) {
+        var val = $(x).val();
+        $(x).attr(valueattr, strToFloat(val));
 
-    updateNumberInputValue = function (selector) {
-        selector.setAttribute("value", strToFloat(selector.value));
     }
 
     animateCheckbox = function (selector) {
@@ -412,10 +413,10 @@
         $(".checkbox-label input").click(function () {
             animateCheckbox(this);
         });
-        $("#filter_minPrice, #filter_maxPrice").change(function () {
-            updateNumberInputValue(this);
-        });
-        //———————————————————— INPUT UP ———————————————————————
+        // $("#filter_minPrice, #filter_maxPrice").change(function () {
+        //     updateNumberInputValue(this);
+        // });
+        // //———————————————————— INPUT UP ———————————————————————
 
         /*—————————————————— ARTICLE DOWN ———————————————————————————————————*/
         setArticleHeight();

@@ -68,7 +68,6 @@ $editBtnTranslate = $translator->translateStation("US49");
                                         </div>
                                     </button>
                                 </div>
-
                                 <div id="<?= $launch ?>" class="cart-element-detail-block" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $flagx ?>" data-dadx="<?= $dadx ?>">
                                     <div class="cart-element-property-set">
                                         <div class="manager-measure-property-set">
@@ -107,7 +106,6 @@ $editBtnTranslate = $translator->translateStation("US49");
 
                                 <div class="cart-element-edit-block no_price_block">
                                     <div class="cart-element-edit-inner">
-                                        <!-- <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>') <?= $editBtnFunc ?>><?= $editBtnTranslate ?></button> -->
                                         <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>', () => {switchPopUp('#measure_manager','#measure_adder',()=>{},setUpdateMsr)})" data-measure_id="<?= $measure_id ?>" data-measure='<?= $dataMeasure_json ?>'><?= $editBtnTranslate ?></button>
                                     </div>
                                 </div>

@@ -182,8 +182,10 @@ require_once 'model/special/MyError.php';
             return parseInt(Math.random() * number);
         }
 
-        const strToFloat = function(x) {
-            return Number.parseFloat(x).toFixed(2);
+        const strToFloat = function(str) {
+            var prs = str.replace(",", ".");
+            var num = Number.parseFloat(prs).toFixed(5);
+            return (num != "NaN") ? num : null;
         }
 
         var $_GETfunc = function $_GET(param) {

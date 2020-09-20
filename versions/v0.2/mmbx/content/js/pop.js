@@ -13,6 +13,7 @@
     idattr = "id";
     nameattr = "name";
     onclickattr = "onclick";
+    valueattr = "value";
     // ++++ data- down ++++
     const dadx = "data-dadx";
     const brotherx = "data-brotherx";
