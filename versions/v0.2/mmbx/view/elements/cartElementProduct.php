@@ -67,11 +67,11 @@ switch ($product->getType()) {
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
-                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});">change box</span>
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
                     </li>
                     <li class="remove-li-default-att">
-                        <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',getBoxMngr)">change size</span> -->
-                        <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#size_editor_pop')">change size</span>
+                        <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#size_editor_pop',()=>{getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')})"><?= $translator->translateStation("US62") ?></span> -->
+                        <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{switchPopUp('<?= $containerIdx ?>','#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
                     </li>
                 </ul>
 <?php

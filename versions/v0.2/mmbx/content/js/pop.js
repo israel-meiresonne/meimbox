@@ -724,6 +724,34 @@
             popAlert(r.errors[A_MV_BXPROD].message);
         }
     }
+    getSizeEditor = (bxid, pid, seq, popFunc) => {
+        var map = {
+            [KEY_BOX_ID]: bxid,
+            [KEY_PROD_ID]: pid,
+            [KEY_SEQUENCE]: seq,
+        }
+        var params = mapToParam(map);
+        var d = {
+            "a": A_GET_EDT_POP,
+            "d": params,
+            "r": getSizeEditorRSP,
+            "l": "#basket_pop_loading",
+            "x": popFunc,
+            "sc": () => { displayFadeIn(d.l) },
+            "rc": () => { displayFadeOut(d.l) }
+        };
+        SND(d);
+    }
+    getSizeEditorRSP = (r, popFunc) => {
+        if (r.isSuccess) {
+            var y = createNone(r.results[A_GET_EDT_POP]);
+            $("#size_editor_pop").html(y);
+            eval(popFunc)();
+            displayFadeIn(y);
+        } else if (!empty(r.errors[FAT_ERR])) {
+            popAlert(r.errors[FAT_ERR].message);
+        }
+    }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
     $(document).ready(() => {
         /*—————————————————— BRAND DOWN ———————————————————————————————————————*/

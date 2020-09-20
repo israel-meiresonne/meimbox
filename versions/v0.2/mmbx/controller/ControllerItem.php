@@ -71,6 +71,12 @@ class ControllerItem extends ControllerSecure
     public const A_MV_BXPROD = "item/moveBoxProduct";
 
     /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
+    public const A_GET_EDT_POP = "item/getSizeEditor";
+
+    /**
      * Holds the query(qr) value for Ajax request
      * @var string
      */
@@ -534,6 +540,33 @@ class ControllerItem extends ControllerSecure
             $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
         }
         $this->generateJsonView($datasView, $response, $language);
+    }
+
+    /**
+     * To get size editor
+     */
+    public function getSizeEditor()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $datasView = [];
+        $boxID = Query::getParam(Box::KEY_BOX_ID);
+        $prodID = Query::getParam(Product::KEY_PROD_ID);
+        $sequence = Query::getParam(Size::KEY_SEQUENCE);
+        if (empty($boxID) || empty($prodID) || empty($sequence)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $product = $this->person->getBoxProduct($response, $boxID, $prodID, $sequence);
+            if ((!$response->containError()) && (!empty($product))) {
+                $measures = $this->person->getMeasures();
+                $datasView = [
+                    "product" => $product,
+                    "nbMeasure" => count($measures),
+                ];
+                $response->addFiles(self::A_GET_EDT_POP, 'view/elements/popupSizeForm.php');
+            }
+        }
+        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
     }
 
     public function test()

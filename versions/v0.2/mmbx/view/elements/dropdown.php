@@ -14,7 +14,9 @@
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
  * @param string $inputName the input's name
+ * @param boolean $isDisplayed set true to display content else set false or empty
  */
+
 // $additional = (isset($additional)) ? $additional : "";
 // $inputName = (isset($inputName)) ? $inputName : "";
 // $isRadio = isset($isRadio);
@@ -23,6 +25,13 @@ $head = ModelFunctionality::generateDateCode(25);
 $headx = "#" . $head;
 $body = ModelFunctionality::generateDateCode(25);
 $bodyx = "#" . $body;
+
+$Tagdisplay = (!empty($isDisplayed)) ? 'style="display:block;"' : null;
+// if (!empty($isDisplayed)) {
+//     $Tagdisplay = ($checked) ? 'style="display:block;"' : null;
+// } else {
+//     $Tagdisplay = null;
+// }
 ?>
 
 <div class="dropdown-wrap">
@@ -30,20 +39,8 @@ $bodyx = "#" . $body;
         <div id="<?= $head ?>" class="dropdown-head dropdown-arrow-close" onclick="animateDropdown('<?= $headx ?>', '<?= $bodyx ?>');">
             <span class="dropdown-title"><?= $title ?></span>
         </div>
-        <div id="<?= $body ?>" class="dropdown-checkbox-list">
-            <?php
-            // $datas = [
-            //     "title" => $title,
-            //     "checkedLabels" => $checkedLabels,
-            //     "labels" => $labels,
-            //     "isRadio" => $isRadio,
-            //     "inputName" => $inputName,
-            //     // "additional" => $additional
-            // ];
-            // echo $this->generateFile('view/elements/dropdownInput.php', $datas);
-            require 'view/elements/dropdownInput.php';
-            ?>
-
+        <div id="<?= $body ?>" class="dropdown-checkbox-list" <?= $Tagdisplay ?>>
+            <?php require 'view/elements/dropdownInput.php'; ?>
         </div>
     </div>
 </div>
