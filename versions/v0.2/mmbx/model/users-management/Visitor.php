@@ -201,7 +201,7 @@ class Visitor extends ModelFunctionality
      * @param string $sequence product's size sequence
      * @return BoxProduct|null box product from Visitor's basket
      */
-    public function getBoxProduct(Response $response, $boxID, $prodID, $sequence)
+    public function getProduct(Response $response, $prodID, $sequence, $boxID = null)
     {
         $product = null;
         try {
@@ -211,12 +211,25 @@ class Visitor extends ModelFunctionality
         }
         if (!$response->containError()) {
             $basket = $this->getBasket();
-            $box = $basket->getBoxe($boxID);
-            $product = $box->getProduct($prodID, $sizeObj);
-            $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
-            if ((empty($box)) || (!$isBoxProd)) {
-                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            $tabLine = $this->getProductLine($prodID);
+            switch ($tabLine["product_type"]) {
+                case BasketProduct::BASKET_TYPE:
+                    $product = $basket->getBasketProduct($prodID, $sizeObj);
+                    break;
+                case BoxProduct::BOX_TYPE:
+                    $box = $basket->getBoxe($boxID);
+                    // $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
+                    if (empty($box)) {
+                        $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                    }
+                    if(!$response->containError()){
+                        $product = $box->getProduct($prodID, $sizeObj);
+                    }
+                    break;
+                default:
+                    throw new Exception("Unknow product type");
             }
+
         }
         return $product;
     }
@@ -882,7 +895,6 @@ class Visitor extends ModelFunctionality
      * @param string|null $sizeType holds the type of measure
      * + SIZE_TYPE_ALPHANUM => "alphanum_size";
      * + SIZE_TYPE_MEASURE => "measurement_size";
-     * @param string|null $size holds a aphanumeric size
      * @param Map $sizeMap map that contain data to build a Size
      * + $sizeMap[Map::size] holds a alphanumeric value of size
      * + $sizeMap[Map::brand] holds a brand name
@@ -899,7 +911,6 @@ class Visitor extends ModelFunctionality
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             if (!$basket->stillSpace($boxID)) {
-                // $box = $basket->getBoxe($boxID);
                 $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
                 $errStation = "ER14" . $fullRate;
                 $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
@@ -909,6 +920,51 @@ class Visitor extends ModelFunctionality
                     $sizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
                     if (!$response->containError()) {
                         $basket->addBoxProduct($response, $boxID, $prodID, $sizeObj);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * To update box product's size
+     * @param Response $response where to strore results
+     * @param string $boxID id of box in Visitor's basket
+     * @param string $prodID id of the product to update
+     * @param string $sequence sequence of the holds size
+     * @param string|null $sizeType holds the new type of measure
+     * + SIZE_TYPE_ALPHANUM => "alphanum_size";
+     * + SIZE_TYPE_MEASURE => "measurement_size";
+     * @param Map $sizeMap map that contain data to build a Size
+     * + $sizeMap[Map::size] holds the new alphanumeric value of size
+     * + $sizeMap[Map::brand] holds the new brand name
+     * + $sizeMap[Map::measureID] holds the new measure id
+     * + $sizeMap[Map::cut] holds the new measure's cut
+     * + $sizeMap[Map::quantity] holds the new quantity of product
+     */
+    public function updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap)
+    {
+        $basket = $this->getBasket();
+        $box = $basket->getBoxe($boxID);
+        if(empty($box)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            try {
+                $sizeObj = new Size($sequence);
+            } catch (\Throwable $th) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            }
+            if(!$response->containError()){
+                $product = $box->getProduct($prodID, $sizeObj);
+                if(empty($product)) {
+                    $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                } else {
+                    $quantity = $sizeMap->get(Map::quantity);
+                    $this->checkInput()
+                    if (!$basket->stillSpace($boxID, $quantity)) {
+                        $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
+                        $errStation = "ER14" . $fullRate;
+                        $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
                     }
                 }
             }

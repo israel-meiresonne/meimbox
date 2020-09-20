@@ -68,6 +68,12 @@ class ControllerItem extends ControllerSecure
      * Holds the query value for Ajax request
      * @var string
      */
+    public const A_EDT_BXPROD = "item/updateBoxProduct";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
     public const A_MV_BXPROD = "item/moveBoxProduct";
 
     /**
@@ -99,12 +105,6 @@ class ControllerItem extends ControllerSecure
      * @var string
      */
     public const QR_MEASURE_CONTENT = "measure_content";
-
-    // /**
-    //  * Holds the access key for brand name in Query
-    //  * @var string
-    //  */
-    // public const KEY_BRAND_NAME =  "brand_name";
 
     /**
      * Holds the access key for brand name
@@ -490,6 +490,38 @@ class ControllerItem extends ControllerSecure
     }
 
     /**
+     * To update a box product
+     */
+    public function updateBoxProduct()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $datasView = [];
+        $boxID = Query::getParam(Box::KEY_BOX_ID);
+        $prodID = Query::getParam(Product::INPUT_PROD_ID);
+        $sequence = Query::getParam(Size::KEY_SEQUENCE);
+        if (empty($boxID) || empty($prodID) || empty($sequence)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+            $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
+            $brand = Query::getParam(Size::INPUT_BRAND);
+            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
+            $cut = Query::getParam(Size::INPUT_CUT);
+            $quantity = Query::getParam(Size::INPUT_QUANTITY);
+            $sizeMap = new Map();
+            $sizeMap->put($size, Map::size);
+            $sizeMap->put($brand, Map::brand);
+            $sizeMap->put($measureID, Map::measureID);
+            $sizeMap->put($cut, Map::cut);
+            $sizeMap->put($quantity, Map::quantity);
+            $this->person->updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap);
+            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
+        }
+        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+    }
+
+    /**
      * To move a boxproduct to a other box
      */
     public function moveBoxProduct()
@@ -550,16 +582,18 @@ class ControllerItem extends ControllerSecure
         $this->secureSession();
         $response = new Response();
         $datasView = [];
-        $boxID = Query::getParam(Box::KEY_BOX_ID);
         $prodID = Query::getParam(Product::KEY_PROD_ID);
         $sequence = Query::getParam(Size::KEY_SEQUENCE);
-        if (empty($boxID) || empty($prodID) || empty($sequence)) {
+        if (empty($prodID) || empty($sequence)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $product = $this->person->getBoxProduct($response, $boxID, $prodID, $sequence);
+            $boxID = Query::getParam(Box::KEY_BOX_ID);
+            $product = $this->person->getProduct($response, $prodID, $sequence, $boxID);
+            $box = ($product->getType() == BoxProduct::BOX_TYPE) ? $this->person->getBasket()->getBoxe($boxID) : null;
             if ((!$response->containError()) && (!empty($product))) {
                 $measures = $this->person->getMeasures();
                 $datasView = [
+                    "box" => $box,
                     "product" => $product,
                     "nbMeasure" => count($measures),
                 ];
