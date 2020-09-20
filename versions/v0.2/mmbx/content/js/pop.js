@@ -712,7 +712,7 @@
         };
         SND(d);
     }
-    moveBoxProductRSP = (r) => {
+    var moveBoxProductRSP = (r) => {
         if (r.isSuccess) {
             getBasketPop();
             unsetMoveBoxProduct();
@@ -742,7 +742,7 @@
         };
         SND(d);
     }
-    getSizeEditorRSP = (r, popFunc) => {
+    var getSizeEditorRSP = (r, popFunc) => {
         if (r.isSuccess) {
             var y = createNone(r.results[A_GET_EDT_POP]);
             $("#size_editor_pop").html(y);
@@ -753,6 +753,36 @@
         }
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
+    /*—————————————————— SIZE EDITOR DOWN ———————————————————————————————————*/
+    updateBoxProduct = (bxid, pid, seq) => {
+        var frm = $("#form_edit_prod_size input");
+        var map = {
+            // [KEY_BOX_ID]: bxid,
+            // [KEY_PROD_ID]: pid,
+            [KEY_SEQUENCE]: seq,
+        }
+        var params = mapToParam(map);
+        var d = {
+            "frm": frm,
+            "a": A_EDT_BXPROD,
+            "frmCbk": () => { return params },
+            "r": updateBoxProductRSP,
+            "l": "#size_form_pop_loading",
+            "x": cbtnx,
+            "sc": () => { displayFlexOn(d.l, TS / 10); },
+            "rc": () => { displayFlexOff(d.l, TS); }
+        };
+        frmSND(d);
+    }
+    var updateBoxProductRSP = (r) => {
+        if (r.isSuccess) {
+            var cbtn = getCloseButton("#size_editor_pop");
+            $(cbtn).click();
+        } else if (!empty(r.errors[FAT_ERR])) {
+            popAlert(r.errors[FAT_ERR].message);
+        }
+    }
+    /*—————————————————— SIZE EDITOR UP —————————————————————————————————————*/
     $(document).ready(() => {
         /*—————————————————— BRAND DOWN ———————————————————————————————————————*/
         //—— ADD MEASUREMENT DOWN ——// 0_REACTIVER_0

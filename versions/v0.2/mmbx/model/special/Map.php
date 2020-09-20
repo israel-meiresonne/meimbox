@@ -13,6 +13,7 @@ class Map
     public const brand = "brand";
     public const measureID = "measureID";
     public const cut = "cut";
+    public const quantity = "quantity";
 
     public function __construct()
     {

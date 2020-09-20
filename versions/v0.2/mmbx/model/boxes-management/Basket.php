@@ -202,6 +202,28 @@ class Basket extends ModelFunctionality
     }
 
     /**
+     * To get basket product with the given size
+     * @param string $prodID id of the product tto look for
+     * @param Size $sizeObj size of the product tto look for
+     * @return BasketProduct|null basket product with the given size
+     */
+    public function getBasketProduct($prodID, Size $sizeObj)
+    {
+        $products = $this->getBasketProducts();
+        if (count($products) > 0) {
+            foreach ($products as $key => $product) {
+                $selectedSize = $product->getSelectedSize();
+                if (($prodID == $product->getProdID())
+                    && ($sizeObj->getSequence() == $selectedSize->getSequence())
+                ) {
+                    return $products[$key];
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Getter for basket's content
      * + merge list of basket product and boxes
      * + content is ordered from newest to older

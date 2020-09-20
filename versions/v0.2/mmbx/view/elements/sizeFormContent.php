@@ -3,6 +3,7 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string $formId id of the forrmular
+ * @param Box|null $box box that contain the boxproduct
  * @param BoxProduct|BasketProduct $product Visitor's basket
  * @param int $nbMeasure the number of measure holds by Visitor
  * @param string $conf configuation to determinate the layout
@@ -19,13 +20,19 @@ $product = $product;
 $translator = $translator;
 
 $prodID = $product->getProdID();
+
+/**
+ * @var Box
+ */
+$box = $box;
+
 switch ($conf) {
     case Size::CONF_SIZE_ADD_PROD:
         $selectedSize = null;
         $sizeIsChecked = false;
         $measureIsChecked = false;
         $TagdisplayBrand = null;
-    break;
+        break;
     case Size::CONF_SIZE_EDITOR:
         $selectedSize = $product->getSelectedSize();
         // $selectedSize = new Size("null-null-0jj2g3rj131923p1560b90d01-fit", "2020-09-17 20:57:22");
@@ -57,7 +64,11 @@ switch ($conf) {
                 $qid = ModelFunctionality::generateDateCode(25);
                 $qidx = "#" . $qid;
                 $quantity = $product->getQuantity();
+                if (!empty($box)) :
             ?>
+                    <input type="hidden" name="<?= Box::KEY_BOX_ID ?>" value="<?= $box->getBoxID() ?>">
+                <?php
+                endif; ?>
                 <div class="product-quantity-container">
                     <div class="input-wrap">
                         <label class="input-label" for="<?= $qid ?>"><?= $translator->translateStation("US54") ?></label>
@@ -94,7 +105,7 @@ switch ($conf) {
                     echo $this->generateFile("view/elements/dropdownInput.php", $datas);
                     ?>
                 </div>
-                <div class="brand-custom-container" <?= $TagdisplayBrand ?> >
+                <div class="brand-custom-container" <?= $TagdisplayBrand ?>>
                     <hr class="hr-summary">
                     <div id="choose_brand" class="customize_choice-button-container">
                         <p><?= $translator->translateStation("US18") ?></p>

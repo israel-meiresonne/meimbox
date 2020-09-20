@@ -760,7 +760,6 @@ abstract class ModelFunctionality extends Model
         if (!isset(self::$productMap) || (!key_exists($prodID, self::$productMap))) {
             $sql = "SELECT * FROM `Products` WHERE `prodID` = '$prodID'";
             $this->setProductMap($sql);
-
         }
         // return (count(self::$productMap) == 1);
         return (key_exists($prodID, self::$productMap));
@@ -796,7 +795,10 @@ abstract class ModelFunctionality extends Model
     protected function getProductLine($prodID)
     {
         if ((!isset(self::$productMap)) || (!key_exists($prodID, self::$productMap))) {
-            throw new Exception("This product don't exist!");
+            $this->existProductInDb($prodID);
+            if ((!isset(self::$productMap)) || (!key_exists($prodID, self::$productMap))) {
+                throw new Exception("This product don't exist!");
+            }
         }
         // if (!$this->existProductInDb($prodID)) {
         //     throw new Exception("This product don't exist!");
