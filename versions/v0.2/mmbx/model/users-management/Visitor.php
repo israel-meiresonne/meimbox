@@ -193,6 +193,35 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * To get box product from Visitor's basket
+     * @param Response $response where to strore results
+     * @param string $boxID id of box where is the product
+     * @param string $newBoxID id of box where move the product
+     * @param string $prodID id of the product to move
+     * @param string $sequence product's size sequence
+     * @return BoxProduct|null box product from Visitor's basket
+     */
+    public function getBoxProduct(Response $response, $boxID, $prodID, $sequence)
+    {
+        $product = null;
+        try {
+            $sizeObj = new Size($sequence);
+        } catch (\Throwable $th) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        }
+        if (!$response->containError()) {
+            $basket = $this->getBasket();
+            $box = $basket->getBoxe($boxID);
+            $product = $box->getProduct($prodID, $sizeObj);
+            $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
+            if ((empty($box)) || (!$isBoxProd)) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            }
+        }
+        return $product;
+    }
+
+    /**
      * To get the measure with the id given in param
      * @param string $measureID id of the measure to look for
      * @return Measure|null Measure if it's found else return null
@@ -913,27 +942,14 @@ class Visitor extends ModelFunctionality
                 if ((empty($box)) || (empty($newBox)) || (!$isBoxProd)) {
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                 } else {
-                    // $sizeType = $sizeObj->getSizeType();
-                    // $sizeMap = new Map();
-                    // $sizeMap->put($sizeObj->getSize(), Map::size);
-                    // $sizeMap->put($sizeObj->getbrandName(), Map::brand);
-                    // $sizeMap->put($sizeObj->getMeasure()->getMeasureID(), Map::measureID);
-                    // $sizeMap->put($sizeObj->getCut(), Map::cut);
-                    // $this->addBoxProduct($response, $newBoxID, $prodID, $sizeType, $sizeMap); // check quantity
-                    $quantity = $sizeObj->getQuantity();
+                    $selectedSize = $product->getSelectedSize();
+                    $quantity = $selectedSize->getQuantity();
                     if (!$basket->stillSpace($newBoxID, $quantity)) {
-                        // $box = $basket->getBoxe($boxID);
-                        // $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
-                        // $errStation = "ER15" . $fullRate;
                         $errStation = "ER15";
                         $response->addErrorStation($errStation, ControllerItem::A_MV_BXPROD);
                     } else {
-                        $basket->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sizeObj);
+                        $basket->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $selectedSize);
                     }
-
-                    // if(!$response->containError()){
-                    //     $basket->deleteBoxProduct($response, $boxID, $prodID, $sizeObj);
-                    // }
                 }
             }
         }

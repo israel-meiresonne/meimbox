@@ -146,6 +146,8 @@ require_once 'model/special/MyError.php';
         const A_ADD_BXPROD = "<?= ControllerItem::A_ADD_BXPROD ?>";
         const A_MV_BXPROD = "<?= ControllerItem::A_MV_BXPROD ?>";
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
+        const A_GET_EDT_POP = "<?= ControllerItem::A_GET_EDT_POP ?>";
+
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";

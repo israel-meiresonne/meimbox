@@ -202,7 +202,7 @@ switch ($conf) {
                                     $checkedLabels = [Size::DEFAULT_CUT];
                                     break;
                                 case Size::CONF_SIZE_EDITOR:
-                                    $checkedLabels = ($sizeType == Size::SIZE_TYPE_MEASURE) ? [$selectedSize->getCut()] : [];
+                                    $checkedLabels = ($sizeType == Size::SIZE_TYPE_MEASURE) ? [$selectedSize->getCut()] : [Size::DEFAULT_CUT];
                                     break;
                             }
                             $datas = [
@@ -211,7 +211,8 @@ switch ($conf) {
                                 "checkedLabels" => $checkedLabels,
                                 "labels" => $labels,
                                 "isRadio" => true,
-                                "inputName" => Size::INPUT_CUT
+                                "inputName" => Size::INPUT_CUT,
+                                "isDisplayed" => $measureIsChecked,
                             ];
                             echo $this->generateFile("view/elements/dropdown.php", $datas);
                             ?>
