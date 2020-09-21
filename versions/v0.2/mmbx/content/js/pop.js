@@ -56,6 +56,9 @@
         var json = $(x).attr(popstack);
         return (json != null) ? json_decode(json) : [];
     }
+    getKeys = (obj) => {
+        return Object.keys(obj);
+    }
     setStack = (x, tab) => {
         var stack = json_encode(tab);
         $(x).attr(popstack, stack);
@@ -754,32 +757,51 @@
     }
     /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
     /*—————————————————— SIZE EDITOR DOWN ———————————————————————————————————*/
-    updateBoxProduct = (bxid, pid, seq) => {
-        var frm = $("#form_edit_prod_size input");
-        var map = {
-            // [KEY_BOX_ID]: bxid,
-            // [KEY_PROD_ID]: pid,
-            [KEY_SEQUENCE]: seq,
-        }
-        var params = mapToParam(map);
+    // updateBoxProduct = (bxid, pid, seq) => {
+    updateBoxProduct = () => {
+        var inps = $("#form_edit_prod_size input");
+        // var map = {
+        //     // [KEY_BOX_ID]: bxid,
+        //     // [KEY_PROD_ID]: pid,
+        //     [KEY_SEQUENCE]: seq,
+        // }
+        // var params = mapToParam(map);
         var d = {
-            "frm": frm,
+            "frm": inps,
             "a": A_EDT_BXPROD,
-            "frmCbk": () => { return params },
+            "frmCbk": () => {},
             "r": updateBoxProductRSP,
             "l": "#size_form_pop_loading",
-            "x": cbtnx,
+            "x": inps,
             "sc": () => { displayFlexOn(d.l, TS / 10); },
             "rc": () => { displayFlexOff(d.l, TS); }
         };
         frmSND(d);
     }
-    var updateBoxProductRSP = (r) => {
+    var updateBoxProductRSP = (r,inps) => {
         if (r.isSuccess) {
+            getBasketPop();
             var cbtn = getCloseButton("#size_editor_pop");
             $(cbtn).click();
-        } else if (!empty(r.errors[FAT_ERR])) {
-            popAlert(r.errors[FAT_ERR].message);
+        } else if(!empty(r.errors)){
+            var ks = getKeys(r.errors);
+            ks.forEach(k =>{
+                var x = $("#add_measure_form .input-tag" + "[name='" + k + "']+.comment");
+                addErr(x, r.errors[k].message);
+            });
+            
+            if (!empty(r.errors[FAT_ERR])) {
+                popAlert(r.errors[FAT_ERR].message);
+            }
+
+            // var k = Object.keys(r.errors);
+            // var cbxE = $("#add_measure_form .measure_input-checkbox-conatiner .checkbox_error-div .comment");
+            // k.forEach(n => {
+            //     var s = $("#add_measure_form .input-tag" + "[name='" + n + "']+.comment");
+            //     addErr(s, r.errors[n].message);
+            //     (n == INPUT_MEASURE_UNIT) ? addErr(cbxE, r.errors[n].message) : "";
+            //     (n == FAT_ERR) ? popAlert(r.errors[n].message) : "";
+            // });
         }
     }
     /*—————————————————— SIZE EDITOR UP —————————————————————————————————————*/

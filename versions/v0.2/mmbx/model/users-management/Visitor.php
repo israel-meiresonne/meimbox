@@ -223,14 +223,13 @@ class Visitor extends ModelFunctionality
                     if (empty($box)) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                     }
-                    if(!$response->containError()){
+                    if (!$response->containError()) {
                         $product = $box->getProduct($prodID, $sizeObj);
                     }
                     break;
                 default:
                     throw new Exception("Unknow product type");
             }
-
         }
         return $product;
     }
@@ -449,25 +448,25 @@ class Visitor extends ModelFunctionality
     {
         // $this->checkMeasureInput($response);
         // if (!$response->containError()) {
-            // $measureDatas = Measure::getDatas4MeasurePOST();
-            // $newMeasure = new Measure($measureDatas);
-            $measureID = $measureMap->get(Map::measureID);
-            $newMeasure = new Measure($measureMap);
-            $userID = $this->getUserID();
+        // $measureDatas = Measure::getDatas4MeasurePOST();
+        // $newMeasure = new Measure($measureDatas);
+        $measureID = $measureMap->get(Map::measureID);
+        $newMeasure = new Measure($measureMap);
+        $userID = $this->getUserID();
 
-            $oldMeasure = $this->getMeasure($measureID);
-            $oldMeasure->updateMeasure($response, $userID, $newMeasure);
-            if ($response->isSuccess()) {
-                $key = $this->getMeasureKey($measureID);
-                $this->unsetMeasure($measureID);
-                $this->measures[$key] = $newMeasure;
-                $this->sortMeasure();
-            } else {
-                if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
-                    $errorMsg = "ER1";
-                    $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
-                }
+        $oldMeasure = $this->getMeasure($measureID);
+        $oldMeasure->updateMeasure($response, $userID, $newMeasure);
+        if ($response->isSuccess()) {
+            $key = $this->getMeasureKey($measureID);
+            $this->unsetMeasure($measureID);
+            $this->measures[$key] = $newMeasure;
+            $this->sortMeasure();
+        } else {
+            if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
+                $errorMsg = "ER1";
+                $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
             }
+        }
         // }
     }
 
@@ -492,64 +491,6 @@ class Visitor extends ModelFunctionality
             $response->addErrorStation($errStation, MyError::FATAL_ERROR);
         }
     }
-
-    // /**
-    //  * Check measure datas posted
-    //  * @param Response $response where to strore results
-    //  */
-    // private function checkMeasureInput(Response $response)
-    // {
-    //     $table = "UsersMeasures";
-    //     $this->checkInput(
-    //         Measure::KEY_MEASURE_ID,
-    //         [Query::ALPHA_NUMERIC],
-    //         $response,
-    //         $this->getDataLength($table, "measureID"),
-    //         false
-    //     );
-    //     $this->checkInput(
-    //         MeasureUnit::INPUT_MEASURE_UNIT,
-    //         [Query::CHECKBOX, Query::STRING_TYPE],
-    //         $response,
-    //         $this->getDataLength($table, "unit_name")
-    //     );
-    //     $this->checkInput(
-    //         Measure::INPUT_MEASURE_NAME,
-    //         [Query::PSEUDO],
-    //         $response,
-    //         $this->getDataLength($table, "measureName")
-    //     );
-    //     $this->checkInput(
-    //         Measure::INPUT_BUST,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $this->getDataLength($table, "userBust")
-    //     );
-    //     $this->checkInput(
-    //         Measure::INPUT_ARM,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $this->getDataLength($table, "userArm")
-    //     );
-    //     $this->checkInput(
-    //         Measure::INPUT_WAIST,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $this->getDataLength($table, "userWaist")
-    //     );
-    //     $this->checkInput(
-    //         Measure::INPUT_HIP,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $this->getDataLength($table, "userHip")
-    //     );
-    //     $this->checkInput(
-    //         Measure::INPUT_INSEAM,
-    //         [Query::NUMBER_FLOAT],
-    //         $response,
-    //         $this->getDataLength($table, "userInseam")
-    //     );
-    // }
 
     /**
      * Check if it's still stock for the product submited by Visitor
@@ -637,6 +578,8 @@ class Visitor extends ModelFunctionality
             $size = $sizeMap->get(Map::size);
             $sequence = Size::buildSequence($size, null, null, null);
             $sizeObj = new Size($sequence);
+            $quantity = $sizeMap->get(Map::quantity);
+            (!empty($quantity)) ? $sizeObj->setQuantity($quantity) : null;
         }
         return $sizeObj;
     }
@@ -687,24 +630,20 @@ class Visitor extends ModelFunctionality
             // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
             switch ($sizeType) {
                 case Size::SIZE_TYPE_ALPHANUM:
-                    // $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
-                    // $brand = null;
-                    // if (Query::existParam(Size::INPUT_BRAND)) {
-                    // if (!empty($brand)) {
-                    //     $brand = Query::getParam(Size::INPUT_BRAND);
-                    // }
                     $size = $sizeMap->get(Map::size);
                     $brand = $sizeMap->get(Map::brand);
                     $sequence = Size::buildSequence($size, $brand, null, null);
                     $sizeObj = new Size($sequence);
+                    $quantity = $sizeMap->get(Map::quantity);
+                    (!empty($quantity)) ? $sizeObj->setQuantity($quantity) : null;
                     break;
                 case Size::SIZE_TYPE_MEASURE:
-                    // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-                    // $cut = Query::getParam(Size::INPUT_CUT);
                     $measureID = $sizeMap->get(Map::measureID);
                     $cut = $sizeMap->get(Map::cut);
                     $sequence = Size::buildSequence(null, null, $measureID, $cut);
                     $sizeObj = new Size($sequence);
+                    $quantity = $sizeMap->get(Map::quantity);
+                    (!empty($quantity)) ? $sizeObj->setQuantity($quantity) : null;
                     break;
                 default:
                     throw new Exception("Any size type match system's size types");
@@ -966,30 +905,47 @@ class Visitor extends ModelFunctionality
      * + $sizeMap[Map::cut] holds the new measure's cut
      * + $sizeMap[Map::quantity] holds the new quantity of product
      */
-    public function updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap)
+    public function updateBoxProduct(Response $response, $boxID, $prodID, $sequence, $sizeType, Map $sizeMap)
     {
-        $basket = $this->getBasket();
-        $box = $basket->getBoxe($boxID);
-        if(empty($box)) {
-            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        $newQty = $sizeMap->get(Map::quantity);
+        if ($newQty <= 0) {
+            $response->addErrorStation("ER17", Size::INPUT_QUANTITY);
         } else {
-            try {
-                $sizeObj = new Size($sequence);
-            } catch (\Throwable $th) {
+            $basket = $this->getBasket();
+            $box = $basket->getBoxe($boxID);
+            if (empty($box)) {
                 $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-            }
-            if(!$response->containError()){
-                $product = $box->getProduct($prodID, $sizeObj);
-                if(empty($product)) {
+            } else {
+                try {
+                    $holdSizeObj = new Size($sequence);
+                } catch (\Throwable $th) {
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-                } else {
-                    $quantity = $sizeMap->get(Map::quantity);
-                    // $this->checkInput()
-                    // if (!$basket->stillSpace($boxID, $quantity)) {
-                    //     $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
-                    //     $errStation = "ER14" . $fullRate;
-                    //     $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
-                    // }
+                }
+                if (!$response->containError()) {
+                    $product = $box->getProduct($prodID, $holdSizeObj);
+                    if (empty($product)) {
+                        $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                    } else {
+                        $quantity = $product->getQuantity();
+                        $needleSpace = $newQty - $quantity;
+                        if (!$basket->stillSpace($boxID, $needleSpace)) {
+                            $errStation = "ER18";
+                            $response->addErrorStation($errStation, ControllerItem::A_EDT_BXPROD);
+                        } else {
+                            $stillStock = $this->stillStock($response, $prodID, $sizeType, $sizeMap);
+                            if (!$response->containError()) {
+                                if(!$stillStock){
+                                    $response->addErrorStation("ER13", ControllerItem::A_EDT_BXPROD);
+                                } else {
+                                    $newSizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
+                                    $TrueHoldSize = $product->getSelectedSize();
+                                    if (!$response->containError()) {
+                                        $basket->updateBoxProduct($response, $boxID, $prodID, $TrueHoldSize, $newSizeObj);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

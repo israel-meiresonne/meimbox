@@ -54,7 +54,7 @@ abstract class ControllerSecure extends Controller
      * Holds the REGEX
      */
     private const SIZE_REGEX = "#^[xX]*[sS]{1}$|^[ml]{1}$|^[xX]*[l]{1}$#";
-    private const INT_REGEX = "#(^[0-9]+$#";
+    private const INT_REGEX = "#^[0-9]+$#";
     private const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
     private const STRING_REGEX = "#^[a-zA-Z]+$#";
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
@@ -86,11 +86,8 @@ abstract class ControllerSecure extends Controller
      * @return mixed|null cleaned value
      */
     // public function checkInput($input, $dataTypes, Response $response, $length = null, $required = true)
-    public function checkInput(Response $response, $input, $data, $dataTypes, $length = null, $required = true)
+    public function checkInput(Response $response, $input, $data, array $dataTypes, $length = null, $required = true)
     {
-        // $inputExist = Query::existParam($input);
-        // $inputExist = Query::existParam($input);
-        // if (($required) && (!$inputExist)) {
         if ($required && empty($data)) {
             $errorStation = ($dataTypes[0] == self::CHECKBOX) ? "ER5"
                 : "ER2";
@@ -117,6 +114,15 @@ abstract class ControllerSecure extends Controller
                     $response->addErrorStation($errStation, $input);
                 } else {
                     $value = $this->convertParam(self::NUMBER_FLOAT, $data);
+                }
+                break;
+            
+                case self::NUMBER_INT:
+                if (preg_match(self::INT_REGEX, $data) != 1) {
+                    $errStation = "ER7";
+                    $response->addErrorStation($errStation, $input);
+                } else {
+                    $value = $this->convertParam(self::NUMBER_INT, $data);
                 }
                 break;
 
@@ -177,22 +183,21 @@ abstract class ControllerSecure extends Controller
      */
     private function convertParam($dataType, $data)
     {
-        // if (Query::existParam($input)) {
         $value = null;
         switch ($dataType) {
             case self::NUMBER_FLOAT:
-                // $data = Query::getParam($input);
                 $value = (float) str_replace(",", ".", $data);
                 break;
+            case self::NUMBER_INT:
+                $value = (int) $data;
+                break;
             case self::PSEUDO || self::ALPHA_NUMERIC || self::STRING_TYPE:
-                // $data = Query::getParam($input);
                 $value = strtolower($data);
                 break;
             default:
                 throw new Exception("This data type ('$dataType') don't exist, file: " . __FILE__ . " line: " . __LINE__);
                 break;
         }
-        // }
         return $value;
     }
 }

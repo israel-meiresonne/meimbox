@@ -914,39 +914,39 @@ abstract class ModelFunctionality extends Model
     //     return $response->isSuccess();
     // }
 
-    /**
-     * To check if data is in the correct format
-     * @param string|int|float|boolean $data the data to check
-     * @param string $data the regex format to match
-     * @return boolean true if  data is in correct format else false
-     */
-    public function checkData($data, $format, $length = null)
-    {
-        $data = strval($data);
-        if ((!empty($length)) && (strlen($data)) > $length) {
-            return false;
-        }
-        switch ($format) {
-            case self::NUMBER_FLOAT:
-                if (preg_match(self::FLOAT_REGEX, $data) == 1) {
-                    return true;
-                }
+    // /**
+    //  * To check if data is in the correct format
+    //  * @param string|int|float|boolean $data the data to check
+    //  * @param string $data the regex format to match
+    //  * @return boolean true if  data is in correct format else false
+    //  */
+    // public function checkData($data, $format, $length = null)
+    // {
+    //     $data = strval($data);
+    //     if ((!empty($length)) && (strlen($data)) > $length) {
+    //         return false;
+    //     }
+    //     switch ($format) {
+    //         case self::NUMBER_FLOAT:
+    //             if (preg_match(self::FLOAT_REGEX, $data) == 1) {
+    //                 return true;
+    //             }
 
-            case self::PSEUDO:
-                if (preg_match(self::PSEUDO_REGEX, $data) == 1) {
-                    return true;
-                }
-                break;
+    //         case self::PSEUDO:
+    //             if (preg_match(self::PSEUDO_REGEX, $data) == 1) {
+    //                 return true;
+    //             }
+    //             break;
 
-            case self::ALPHA_NUMERIC:
-                if (preg_match(self::PALPHA_NUMERIC_REGEX, $data) == 1) {
-                    return true;
-                }
-                break;
-            default:
-                throw new Exception("This data format don't exist");
-        }
-    }
+    //         case self::ALPHA_NUMERIC:
+    //             if (preg_match(self::PALPHA_NUMERIC_REGEX, $data) == 1) {
+    //                 return true;
+    //             }
+    //             break;
+    //         default:
+    //             throw new Exception("This data format don't exist");
+    //     }
+    // }
 
     /**
      * To get the column's length from db

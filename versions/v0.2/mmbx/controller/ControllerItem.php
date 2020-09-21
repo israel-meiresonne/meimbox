@@ -635,26 +635,34 @@ class ControllerItem extends ControllerSecure
         $this->secureSession();
         $response = new Response();
         $datasView = [];
-        $boxID = Query::getParam(Box::KEY_BOX_ID);
-        $prodID = Query::getParam(Product::INPUT_PROD_ID);
-        $sequence = Query::getParam(Size::KEY_SEQUENCE);
-        if (empty($boxID) || empty($prodID) || empty($sequence)) {
-            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-        } else {
-            $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
-            $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
-            $brand = Query::getParam(Size::INPUT_BRAND);
-            $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-            $cut = Query::getParam(Size::INPUT_CUT);
-            $quantity = Query::getParam(Size::INPUT_QUANTITY);
-            $sizeMap = new Map();
-            $sizeMap->put($size, Map::size);
-            $sizeMap->put($brand, Map::brand);
-            $sizeMap->put($measureID, Map::measureID);
-            $sizeMap->put($cut, Map::cut);
-            $sizeMap->put($quantity, Map::quantity);
-            $this->person->updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap);
-            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
+        $quantity = $this->checkInput(
+            $response,
+            Size::INPUT_QUANTITY,
+            Query::getParam(Size::INPUT_QUANTITY),
+            [self::NUMBER_INT],
+            $this->person->getDataLength("`Box-Products`", "quantity")
+        );
+        if (!$response->containError()) {
+            $boxID = Query::getParam(Box::KEY_BOX_ID);
+            $prodID = Query::getParam(Product::INPUT_PROD_ID);
+            $sequence = Query::getParam(Size::KEY_SEQUENCE);
+            if (empty($boxID) || empty($prodID) || empty($sequence)) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            } else {
+                $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
+                $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
+                $brand = Query::getParam(Size::INPUT_BRAND);
+                $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
+                $cut = Query::getParam(Size::INPUT_CUT);
+                $sizeMap = new Map();
+                $sizeMap->put($size, Map::size);
+                $sizeMap->put($brand, Map::brand);
+                $sizeMap->put($measureID, Map::measureID);
+                $sizeMap->put($cut, Map::cut);
+                $sizeMap->put($quantity, Map::quantity);
+                $this->person->updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap);
+                (!$response->containError()) ? $response->addResult(self::A_EDT_BXPROD, true) : null;
+            }
         }
         $this->generateJsonView($datasView, $response, $this->person->getLanguage());
     }

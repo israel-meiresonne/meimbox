@@ -9,6 +9,7 @@
  *      ]
  * + label : used as displayed name and as input's value attribut
  * + paramName : used as input's name attribut
+ * @param string|null $func function for input
  * ——— RADIO PARAMS ———
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
@@ -17,6 +18,7 @@
 
 $inputId = 0;
 $inputType = (isset($isRadio) && $isRadio) ? "radio" : "checkbox";
+$Tagfunc = (!empty($func)) ? 'onclick="'.$func.'";' : null;
 foreach ($labels as $label => $paramName) : // box item
     $checkedAtt = in_array($label, $checkedLabels) ? 'checked="true"' : "";
     if ((isset($isRadio) && $isRadio)) {
@@ -28,7 +30,7 @@ foreach ($labels as $label => $paramName) : // box item
 ?>
     <div class="dropdown-checkbox-block">
         <label class="checkbox-label"><?= $translator->translateString($label) ?>
-            <input type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $label ?>" <?= $checkedAtt ?>>
+            <input <?= $Tagfunc ?> type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $label ?>" <?= $checkedAtt ?>>
             <span class="checkbox-checkmark"></span>
         </label>
     </div>

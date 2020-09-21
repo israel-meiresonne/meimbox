@@ -69,6 +69,7 @@ switch ($conf) {
                     <input type="hidden" name="<?= Box::KEY_BOX_ID ?>" value="<?= $box->getBoxID() ?>">
                 <?php
                 endif; ?>
+                <input type="hidden" name="<?= Size::KEY_SEQUENCE ?>" value="<?= $selectedSize->getSequence() ?>">
                 <div class="product-quantity-container">
                     <div class="input-wrap">
                         <label class="input-label" for="<?= $qid ?>"><?= $translator->translateStation("US54") ?></label>
@@ -92,6 +93,7 @@ switch ($conf) {
                 ?>
                 <div class="size-set-container">
                     <?php
+                    $brandCtnId = ModelFunctionality::generateDateCode(25);
                     $title = $translator->translateStation("US9");
                     $labels = $product->getSizeValueToValue();
                     $datas = [
@@ -101,11 +103,12 @@ switch ($conf) {
                         "labels" => $labels,
                         "isRadio" => true,
                         "inputName" => Size::INPUT_ALPHANUM_SIZE,
+                        "func" => "$('#". $brandCtnId ."').slideDown(TS);"
                     ];
                     echo $this->generateFile("view/elements/dropdownInput.php", $datas);
                     ?>
                 </div>
-                <div class="brand-custom-container" <?= $TagdisplayBrand ?>>
+                <div id="<?= $brandCtnId ?>" class="brand-custom-container" <?= $TagdisplayBrand ?>>
                     <hr class="hr-summary">
                     <div id="choose_brand" class="customize_choice-button-container">
                         <p><?= $translator->translateStation("US18") ?></p>
