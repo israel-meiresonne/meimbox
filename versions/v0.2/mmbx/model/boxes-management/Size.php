@@ -238,8 +238,8 @@ class Size  extends ModelFunctionality
                 throw new Exception("The measureID '$datas[2]' don't exist");
             }
             $tabLine = $tab[0];
-            $measureDatas = Measure::getDatas4Measure($tabLine);
-            $datas[2] = new Measure($measureDatas);
+            $measureMap = Measure::getDatas4Measure($tabLine);
+            $datas[2] = new Measure($measureMap);
             if ($datas[3] == self::STR_NULL) {
                 throw new Exception("Param '\$cut' have to be setted when '\$measureID' is setted" . " in: " . __FILE__);
             }

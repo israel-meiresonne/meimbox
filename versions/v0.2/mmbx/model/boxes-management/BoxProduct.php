@@ -41,7 +41,8 @@ class BoxProduct extends Product
         // $sql = "SELECT * FROM `ProductsMeasures` WHERE `prodId` = '$this->prodID'";
         $sql = "SELECT * FROM `ProductsMeasures` 
                 WHERE `prodId` = '$prodID'
-                AND `value` IN	(SELECT MAX(`value`) FROM `ProductsMeasures` WHERE `prodId` = '$prodID'
+                AND `value` IN	(SELECT MAX(`value`) FROM `ProductsMeasures` 
+                                WHERE `prodId` = '$prodID'
                                 GROUP BY `body_part` ASC)";
         $tab = $this->select($sql);
         if (count($tab) == 0) {
@@ -55,9 +56,14 @@ class BoxProduct extends Product
             if ($measureDatas["unit_name"] != $tabLine["unit_name"]) {
                 throw new Exception("Product unit measure must be the same for all its measures: id=$prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
             }
-            $measureDatas[$tabLine["body_part"]] = (float) $tabLine["value"];
+            // $bodyPart = "user" . ucfirst($tabLine["body_part"]);
+            $bodyPart = $tabLine["body_part"];
+            $measureDatas[$bodyPart] = (float) $tabLine["value"];
         }
-        $this->measure = new Measure($measureDatas);
+        $measureMap = Measure::getDatas4Measure($measureDatas);
+
+        // $this->measure = new Measure($measureDatas);
+        $this->measure = new Measure($measureMap);
     }
 
     /**

@@ -121,15 +121,16 @@ class Visitor extends ModelFunctionality
         foreach ($tab as $tabLine) {
             $values = [];
             $values["measureID"] = $tabLine["measureID"];
-            $values["measure_name"] = $tabLine["measureName"];
+            $values["unitName"] = $tabLine["unit_name"];
+            $values["measureName"] = $tabLine["measureName"];
             $values["bust"] = !empty($tabLine["userBust"]) ? (float) $tabLine["userBust"] : null;
             $values["arm"] = !empty($tabLine["userArm"]) ? (float) $tabLine["userArm"] : null;
             $values["waist"] = !empty($tabLine["userWaist"]) ? (float) $tabLine["userWaist"] : null;
             $values["hip"] = !empty($tabLine["userHip"]) ? (float) $tabLine["userHip"] : null;
             $values["inseam"] = !empty($tabLine["userInseam"]) ? (float) $tabLine["userInseam"] : null;
-            $values["unit_name"] = $tabLine["unit_name"];
             $values["setDate"] = $tabLine["setDate"];
-            $measure = new Measure($values);
+            $measureMap = Measure::getDatas4Measure($values);
+            $measure = new Measure($measureMap);
             $key = $measure->getDateInSec();
             $this->measures[$key] = $measure;
         }
@@ -391,27 +392,39 @@ class Visitor extends ModelFunctionality
     /**
      * Add a new measure to Visitor
      * @param Response $response to push in result or accured error
+     * @param Map $measureMap contain measure's submited datas
+     * + $measureMap[Map::measureID] holds measure's measureID
+     * + $measureMap[Map::unitName] holds measure's unit name
+     * + $measureMap[Map::measureName] holds measure's name
+     * + $measureMap[Map::bust] holds measure's Bust value
+     * + $measureMap[Map::arm] holds measure's Arm value
+     * + $measureMap[Map::waist] holds measure's Waist value
+     * + $measureMap[Map::hip] holds measure's Hip value
+     * + $measureMap[Map::inseam] holds measure's Inseam value
      */
-    public function addMeasure(Response $response)
+    public function addMeasure(Response $response, Map $measureMap)
     {
-        if (count($this->measures) < self::$MAX_MEASURE) {
-            $this->checkMeasureInput($response);
+        $measures = $this->getMeasures();
+        if (count($measures) < self::$MAX_MEASURE) {
+            // $this->checkMeasureInput($response);
             if (!$response->containError()) {
-                $measureDatas = Measure::getDatas4MeasurePOST();
-                $measure = new Measure($measureDatas);
+                // $measureDatas = Measure::getDatas4MeasurePOST();
+                // $measure = new Measure($measureDatas);
+                $measure = new Measure($measureMap);
+                $userID = $this->getUserID();
                 // $saveResponse = $measure->save($this->userID);
-                $measure->save($response, $this->userID);
-                if ($response->isSuccess()) {
+                $measure->insertMeasure($response, $userID);
+                if (!$response->containError()) {
                     $key = $measure->getDateInSec();
                     $this->measures[$key] = $measure;
                     $this->sortMeasure();
                     $response->addResult(ControllerItem::QR_MEASURE_CONTENT, $this->measures);
-                } else {
+                } /*else {
                     if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
                         $errorMsg = "ER1";
                         $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
                     }
-                }
+                }*/
             }
         } else {
             $errorMsg = "ER1";
@@ -422,17 +435,28 @@ class Visitor extends ModelFunctionality
     /**
      * Update a Visitor's measure
      * @param Response $response to push in result or accured error
-     * @param string $measureID measure's id
+     * @param Map $measureMap contain measure's submited datas
+     * + $measureMap[Map::measureID] holds measure's measureID
+     * + $measureMap[Map::unitName] holds measure's unit name
+     * + $measureMap[Map::measureName] holds measure's name
+     * + $measureMap[Map::bust] holds measure's Bust value
+     * + $measureMap[Map::arm] holds measure's Arm value
+     * + $measureMap[Map::waist] holds measure's Waist value
+     * + $measureMap[Map::hip] holds measure's Hip value
+     * + $measureMap[Map::inseam] holds measure's Inseam value
      */
-    public function updateMeasure(Response $response, $measureID)
+    public function updateMeasure(Response $response, Map $measureMap)
     {
-        $this->checkMeasureInput($response);
-        if (!$response->containError()) {
-            $measureDatas = Measure::getDatas4MeasurePOST();
-            $newMeasure = new Measure($measureDatas);
+        // $this->checkMeasureInput($response);
+        // if (!$response->containError()) {
+            // $measureDatas = Measure::getDatas4MeasurePOST();
+            // $newMeasure = new Measure($measureDatas);
+            $measureID = $measureMap->get(Map::measureID);
+            $newMeasure = new Measure($measureMap);
+            $userID = $this->getUserID();
 
             $oldMeasure = $this->getMeasure($measureID);
-            $oldMeasure->updateMeasure($response, $this->userID, $newMeasure);
+            $oldMeasure->updateMeasure($response, $userID, $newMeasure);
             if ($response->isSuccess()) {
                 $key = $this->getMeasureKey($measureID);
                 $this->unsetMeasure($measureID);
@@ -444,7 +468,7 @@ class Visitor extends ModelFunctionality
                     $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
                 }
             }
-        }
+        // }
     }
 
     /**
@@ -469,63 +493,63 @@ class Visitor extends ModelFunctionality
         }
     }
 
-    /**
-     * Check measure datas posted
-     * @param Response $response where to strore results
-     */
-    private function checkMeasureInput(Response $response)
-    {
-        $table = "UsersMeasures";
-        $this->checkInput(
-            Measure::KEY_MEASURE_ID,
-            [Query::ALPHA_NUMERIC],
-            $response,
-            $this->getDataLength($table, "measureID"),
-            false
-        );
-        $this->checkInput(
-            MeasureUnit::INPUT_MEASURE_UNIT,
-            [Query::CHECKBOX, Query::STRING_TYPE],
-            $response,
-            $this->getDataLength($table, "unit_name")
-        );
-        $this->checkInput(
-            Measure::INPUT_MEASURE_NAME,
-            [Query::PSEUDO],
-            $response,
-            $this->getDataLength($table, "measureName")
-        );
-        $this->checkInput(
-            Measure::INPUT_BUST,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $this->getDataLength($table, "userBust")
-        );
-        $this->checkInput(
-            Measure::INPUT_ARM,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $this->getDataLength($table, "userArm")
-        );
-        $this->checkInput(
-            Measure::INPUT_WAIST,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $this->getDataLength($table, "userWaist")
-        );
-        $this->checkInput(
-            Measure::INPUT_HIP,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $this->getDataLength($table, "userHip")
-        );
-        $this->checkInput(
-            Measure::INPUT_INSEAM,
-            [Query::NUMBER_FLOAT],
-            $response,
-            $this->getDataLength($table, "userInseam")
-        );
-    }
+    // /**
+    //  * Check measure datas posted
+    //  * @param Response $response where to strore results
+    //  */
+    // private function checkMeasureInput(Response $response)
+    // {
+    //     $table = "UsersMeasures";
+    //     $this->checkInput(
+    //         Measure::KEY_MEASURE_ID,
+    //         [Query::ALPHA_NUMERIC],
+    //         $response,
+    //         $this->getDataLength($table, "measureID"),
+    //         false
+    //     );
+    //     $this->checkInput(
+    //         MeasureUnit::INPUT_MEASURE_UNIT,
+    //         [Query::CHECKBOX, Query::STRING_TYPE],
+    //         $response,
+    //         $this->getDataLength($table, "unit_name")
+    //     );
+    //     $this->checkInput(
+    //         Measure::INPUT_MEASURE_NAME,
+    //         [Query::PSEUDO],
+    //         $response,
+    //         $this->getDataLength($table, "measureName")
+    //     );
+    //     $this->checkInput(
+    //         Measure::INPUT_BUST,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $this->getDataLength($table, "userBust")
+    //     );
+    //     $this->checkInput(
+    //         Measure::INPUT_ARM,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $this->getDataLength($table, "userArm")
+    //     );
+    //     $this->checkInput(
+    //         Measure::INPUT_WAIST,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $this->getDataLength($table, "userWaist")
+    //     );
+    //     $this->checkInput(
+    //         Measure::INPUT_HIP,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $this->getDataLength($table, "userHip")
+    //     );
+    //     $this->checkInput(
+    //         Measure::INPUT_INSEAM,
+    //         [Query::NUMBER_FLOAT],
+    //         $response,
+    //         $this->getDataLength($table, "userInseam")
+    //     );
+    // }
 
     /**
      * Check if it's still stock for the product submited by Visitor
@@ -546,9 +570,9 @@ class Visitor extends ModelFunctionality
     public function stillStock(Response $response, $prodID, $sizeType, Map $sizeMap)
     {
         $stillStock = false;
-        $isCorrect = $this->checkData($prodID, ModelFunctionality::ALPHA_NUMERIC, $this->getDataLength(Product::TABLE_PRODUCTS, Product::INPUT_PROD_ID));
-        if ($isCorrect && $this->existProductInDb($prodID)) {
-            $tabLine = $this->getProductLine($prodID);
+        // $isCorrect = $this->checkData($prodID, ModelFunctionality::ALPHA_NUMERIC, $this->getDataLength(Product::TABLE_PRODUCTS, Product::INPUT_PROD_ID));
+        $tabLine = $this->getProductLine($prodID);
+        if (!empty($tabLine)) {
             switch ($tabLine["product_type"]) {
                 case BasketProduct::BASKET_TYPE:
                     $stillStock = $this->stillBasketProductStock($response, $prodID, $sizeType, $sizeMap);
@@ -960,12 +984,12 @@ class Visitor extends ModelFunctionality
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                 } else {
                     $quantity = $sizeMap->get(Map::quantity);
-                    $this->checkInput()
-                    if (!$basket->stillSpace($boxID, $quantity)) {
-                        $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
-                        $errStation = "ER14" . $fullRate;
-                        $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
-                    }
+                    // $this->checkInput()
+                    // if (!$basket->stillSpace($boxID, $quantity)) {
+                    //     $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
+                    //     $errStation = "ER14" . $fullRate;
+                    //     $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
+                    // }
                 }
             }
         }

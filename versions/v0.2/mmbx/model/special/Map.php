@@ -6,14 +6,37 @@
 class Map
 {
     private $map;
-
+    public const setDate = "setDate";
+    
+    /**
+     * key for Size
+     * @var string
+     */
     public const prodID = "prodID";
     public const sizeType = "sizeType";
     public const size = "size";
     public const brand = "brand";
-    public const measureID = "measureID";
+    // public const measureID = "measureID";
     public const cut = "cut";
     public const quantity = "quantity";
+    
+    /**
+     * key for Measure
+     * @var string
+     */
+    public const measureID = "measureID";
+    public const measureName = "measureName";
+    public const bust = "bust";
+    public const arm = "arm";
+    public const waist = "waist";
+    public const hip = "hip";
+    public const inseam = "inseam";
+
+    /**
+     * key for MeasureUnit
+     * @var string
+     */
+    public const unitName = "unitName";
 
     public function __construct()
     {
@@ -62,23 +85,25 @@ class Map
         if (empty($keys)) {
             throw new Exception("\$kyes can't be empty");
         }
+        $data = null;
         if (count($keys) == 1) {
             $key = $keys[0];
-            return $this->map[$key];
+            $data = ((gettype($this->map) == "array") && key_exists($key, $this->map)) ?  $this->map[$key] : null;
         } else {
             $key = $keys[0];
-            return $this->getRec($this->map[$key], $keys, 1);
+            $data = ((gettype($this->map) == "array") && key_exists($key, $this->map)) ? $this->getRec($this->map[$key], $keys, 1) : null;
         }
+        return $data;
     }
 
     private function getRec($recMap, $keys, $i)
     {
         if ($i == (count($keys) - 1)) {
             $key = $keys[$i];
-            return $recMap[$key];
+            return ((gettype($recMap) == "array") && key_exists($key, $recMap)) ? $recMap[$key] : null;
         } else {
             $key = $keys[$i];
-            return $this->getRec($recMap[$key], $keys, ++$i);
+            return ((gettype($recMap) == "array") && key_exists($key, $recMap)) ? $this->getRec($recMap[$key], $keys, ++$i) : null;
         }
     }
 }

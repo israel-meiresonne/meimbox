@@ -21,10 +21,10 @@ $translator = $translator;
 
 $prodID = $product->getProdID();
 
-/**
- * @var Box
- */
-$box = $box;
+// /**
+//  * @var Box
+//  */
+// $box = $box;
 
 switch ($conf) {
     case Size::CONF_SIZE_ADD_PROD:
