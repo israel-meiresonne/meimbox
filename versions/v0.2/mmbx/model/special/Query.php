@@ -96,24 +96,24 @@ class Query
         return $data;
     }
 
-    /**
-     * Convert data in params into the correct format
-     * @param string $dataType the type to convert data to
-     * @param string $key access key to get data from param list
-     */
-    public static function convertParam($dataType, $key)
-    {
-        if (self::existParam($key)) {
-            switch ($dataType) {
-                case ModelFunctionality::NUMBER_FLOAT:
-                    $value = self::getParam($key);
-                    self::$params[$key] = (float) str_replace(",", ".", $value);
-                    break;
-                case ModelFunctionality::PSEUDO|ModelFunctionality::ALPHA_NUMERIC|ModelFunctionality::STRING_TYPE:
-                    $value = self::getParam($key);
-                    self::$params[$key] = strtolower($value);
-                    break;
-            }
-        }
-    }
+    // /**
+    //  * Convert data in params into the correct format
+    //  * @param string $dataType the type to convert data to
+    //  * @param string $key access key to get data from param list
+    //  */
+    // public static function convertParam($dataType, $key)
+    // {
+    //     if (self::existParam($key)) {
+    //         switch ($dataType) {
+    //             case ModelFunctionality::NUMBER_FLOAT:
+    //                 $value = self::getParam($key);
+    //                 self::$params[$key] = (float) str_replace(",", ".", $value);
+    //                 break;
+    //             case ModelFunctionality::PSEUDO|ModelFunctionality::ALPHA_NUMERIC|ModelFunctionality::STRING_TYPE:
+    //                 $value = self::getParam($key);
+    //                 self::$params[$key] = strtolower($value);
+    //                 break;
+    //         }
+    //     }
+    // }
 }

@@ -103,32 +103,39 @@ class Measure extends ModelFunctionality
 
     /**
      * Constructor
-     * 
-     * @param string[] $datas measure's value
-     * + NOTE: measure's unit (unit_name) must be the same for all body part
-     * + $datas => [
-     *      "measureID" => string,
-     *      "bust" => float,
-     *      "arm" => float,
-     *      "waist" => float,
-     *      "hip" => float,
-     *      "inseam" => float,
-     *      "unit_name" => string,
-     *      "setDate" => string
-     * ]
+     * @param Map $measureMap contain measure's submited datas
+     * + $measureMap[Map::measureID] holds measure's measureID
+     * + $measureMap[Map::unitName] holds measure's unit name
+     * + $measureMap[Map::measureName] holds measure's name
+     * + $measureMap[Map::bust] holds measure's Bust value
+     * + $measureMap[Map::arm] holds measure's Arm value
+     * + $measureMap[Map::waist] holds measure's Waist value
+     * + $measureMap[Map::hip] holds measure's Hip value
+     * + $measureMap[Map::inseam] holds measure's Inseam value
+     * + $measureMap[Map::setDate] holds measure's creation date
      *
      */
-    public function __construct($datas)
+    public function __construct(Map $measureMap)
     {
-        $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(self::ID_LENGTH);
-        $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(self::ID_LENGTH);;
-        $unitName = $datas["unit_name"];
-        $this->bust = (!empty($datas["bust"])) ? new MeasureUnit($datas["bust"], $unitName) : null;
-        $this->arm = (!empty($datas["arm"])) ? new MeasureUnit($datas["arm"], $unitName) : null;
-        $this->waist = (!empty($datas["waist"])) ? new MeasureUnit($datas["waist"], $unitName) : null;
-        $this->hip = (!empty($datas["hip"])) ? new MeasureUnit($datas["hip"], $unitName) : null;
-        $this->inseam = (!empty($datas["inseam"])) ? new MeasureUnit($datas["inseam"], $unitName) : null;
-        $this->setDate = !empty($datas["setDate"]) ? $datas["setDate"] : $this->getDateTime();
+        // $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(self::ID_LENGTH);
+        // $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(self::ID_LENGTH);;
+        // $unitName = $datas["unit_name"];
+        // $this->bust = (!empty($datas["bust"])) ? new MeasureUnit($datas["bust"], $unitName) : null;
+        // $this->arm = (!empty($datas["arm"])) ? new MeasureUnit($datas["arm"], $unitName) : null;
+        // $this->waist = (!empty($datas["waist"])) ? new MeasureUnit($datas["waist"], $unitName) : null;
+        // $this->hip = (!empty($datas["hip"])) ? new MeasureUnit($datas["hip"], $unitName) : null;
+        // $this->inseam = (!empty($datas["inseam"])) ? new MeasureUnit($datas["inseam"], $unitName) : null;
+        // $this->setDate = !empty($datas["setDate"]) ? $datas["setDate"] : $this->getDateTime();
+
+        $unitName = $measureMap->get(Map::unitName);
+        $this->measureID = (!empty($measureMap->get(Map::measureID))) ? $measureMap->get(Map::measureID) : $this->generateDateCode(self::ID_LENGTH);
+        $this->measureName = (!empty($measureMap->get(Map::measureName))) ? $measureMap->get(Map::measureName) : $this->generateDateCode(self::ID_LENGTH);;
+        $this->bust = (!empty($measureMap->get(Map::bust))) ? new MeasureUnit($measureMap->get(Map::bust), $unitName) : null;
+        $this->arm = (!empty($measureMap->get(Map::arm))) ? new MeasureUnit($measureMap->get(Map::arm), $unitName) : null;
+        $this->waist = (!empty($measureMap->get(Map::waist))) ? new MeasureUnit($measureMap->get(Map::waist), $unitName) : null;
+        $this->hip = (!empty($measureMap->get(Map::hip))) ? new MeasureUnit($measureMap->get(Map::hip), $unitName) : null;
+        $this->inseam = (!empty($measureMap->get(Map::inseam))) ? new MeasureUnit($measureMap->get(Map::inseam), $unitName) : null;
+        $this->setDate = !empty($measureMap->get(Map::setDate)) ? $measureMap->get(Map::setDate) : $this->getDateTime();
     }
 
     /**
@@ -218,38 +225,46 @@ class Measure extends ModelFunctionality
      *      "unit_name" => string,
      *      "setDate" => string
      * ]
-     * @return string[] a map that contain all value needed to create a Measure
+     * @return Map a map that contain all value needed to create a Measure
      */
     public static function getDatas4Measure($tabLine)
     {
-        $datas["measureID"] = $tabLine["measureID"];
-        $datas["measure_name"] = $tabLine["measureName"];
-        $datas["bust"] = $tabLine["userBust"];
-        $datas["arm"] = $tabLine["userArm"];
-        $datas["waist"] = $tabLine["userWaist"];
-        $datas["hip"] = $tabLine["userHip"];
-        $datas["inseam"] = $tabLine["userInseam"];
-        $datas["unit_name"] = $tabLine["unit_name"];
-        $datas["setDate"] = $tabLine["setDate"];
-        return $datas;
+        foreach($tabLine as $key => $data){
+            if(preg_match("#user#", $key) == 1){
+                $newKey = strtolower(str_replace("#user#", "", $key));
+                $tabLine[$newKey] = $data;
+            }
+        }
+
+        $measureMap = new Map();
+        (!empty($tabLine["measureID"])) ? $measureMap->put($tabLine["measureID"], Map::measureID) : null;
+        (!empty($tabLine["unitName"])) ? $measureMap->put($tabLine["unitName"], Map::unitName) : null;
+        (!empty($tabLine["measureName"])) ? $measureMap->put($tabLine["measureName"], Map::measureName) : null;
+        (!empty($tabLine["bust"])) ? $measureMap->put($tabLine["bust"], Map::bust) : null;
+        (!empty($tabLine["arm"])) ? $measureMap->put($tabLine["arm"], Map::arm) : null;
+        (!empty($tabLine["waist"])) ? $measureMap->put($tabLine["waist"], Map::waist) : null;
+        (!empty($tabLine["hip"])) ? $measureMap->put($tabLine["hip"], Map::hip) : null;
+        (!empty($tabLine["inseam"])) ? $measureMap->put($tabLine["inseam"], Map::inseam) : null;
+        (!empty($tabLine["setDate"])) ? $measureMap->put($tabLine["setDate"], Map::setDate) : null;
+        return $measureMap;
     }
 
-    /**
-     * Build a map that contain all value needed to create a Measure with datas posted($_POST)
-     * @return string[] a map that contain all value needed to create a Measure
-     */
-    public static function getDatas4MeasurePOST()
-    {
-        $datas[Measure::KEY_MEASURE_ID] = Query::existParam(Measure::KEY_MEASURE_ID) ? Query::getParam(Measure::KEY_MEASURE_ID) : null;
-        $datas[Measure::INPUT_MEASURE_NAME] = Query::getParam(Measure::INPUT_MEASURE_NAME);
-        $datas[Measure::INPUT_BUST] = Query::getParam(Measure::INPUT_BUST);
-        $datas[Measure::INPUT_ARM] = Query::getParam(Measure::INPUT_ARM);
-        $datas[Measure::INPUT_WAIST] = Query::getParam(Measure::INPUT_WAIST);
-        $datas[Measure::INPUT_HIP] = Query::getParam(Measure::INPUT_HIP);
-        $datas[Measure::INPUT_INSEAM] = Query::getParam(Measure::INPUT_INSEAM);
-        $datas[MeasureUnit::INPUT_MEASURE_UNIT] = Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT);
-        return $datas;
-    }
+    // /**
+    //  * Build a map that contain all value needed to create a Measure with datas posted($_POST)
+    //  * @return string[] a map that contain all value needed to create a Measure
+    //  */
+    // public static function getDatas4MeasurePOST()
+    // {
+    //     $datas[Measure::KEY_MEASURE_ID] = Query::existParam(Measure::KEY_MEASURE_ID) ? Query::getParam(Measure::KEY_MEASURE_ID) : null;
+    //     $datas[Measure::INPUT_MEASURE_NAME] = Query::getParam(Measure::INPUT_MEASURE_NAME);
+    //     $datas[Measure::INPUT_BUST] = Query::getParam(Measure::INPUT_BUST);
+    //     $datas[Measure::INPUT_ARM] = Query::getParam(Measure::INPUT_ARM);
+    //     $datas[Measure::INPUT_WAIST] = Query::getParam(Measure::INPUT_WAIST);
+    //     $datas[Measure::INPUT_HIP] = Query::getParam(Measure::INPUT_HIP);
+    //     $datas[Measure::INPUT_INSEAM] = Query::getParam(Measure::INPUT_INSEAM);
+    //     $datas[MeasureUnit::INPUT_MEASURE_UNIT] = Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT);
+    //     return $datas;
+    // }
 
     /**
      * Save the measure by INSERT it in database
@@ -257,7 +272,7 @@ class Measure extends ModelFunctionality
      * @param Response $response if its success Response.isSuccess = true else Response
      *  contain the error thrown
      */
-    public function save($response, $userID)
+    public function insertMeasure($response, $userID)
     {
         $bracket = "(?,?,?,?,?,?,?,?,?,?)";
         $sql = "INSERT INTO `UsersMeasures`(`userId`, `measureID`, `measureName`, `userBust`, `userArm`, `userWaist`, `userHip`, `userInseam`, `unit_name`, `setDate`) 
@@ -307,13 +322,6 @@ class Measure extends ModelFunctionality
         `userInseam` = ?,
         `unit_name` = ?
         WHERE `userId`= '$userID' AND `measureID`= '$this->measureID'";
-
-        // $this->measureName = $newMeasure->getMeasureName();
-        // $this->bust = $newMeasure->getbust()->getCopy();
-        // $this->arm = $newMeasure->getarm()->getCopy();
-        // $this->waist = $newMeasure->getwaist()->getCopy();
-        // $this->hip = $newMeasure->gethip()->getCopy();
-        // $this->inseam = $newMeasure->getinseam()->getCopy();
         $values = [];
         array_push($values, $newMeasure->measureName);
         array_push($values, $newMeasure->bust->getValue());

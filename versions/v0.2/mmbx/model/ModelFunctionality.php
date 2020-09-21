@@ -125,31 +125,31 @@ abstract class ModelFunctionality extends Model
 
     const CRUD_STATUS = "crud_status";
 
-    /*———————————————————————————— INPUT ATTRIBUTS DOWN ———————————————————————*/
-    /**
-     * Holds the input type
-     */
-    const CHECKBOX = "checckbox";
-    const PSEUDO = "pseudo";
-    const NAME = "name";  // handle space and `-`
-    const EMAIL = "email";
-    const PHONE_NUMBER = "phone";
-    const PASSWORD = "psw";
-    const SIZE = "size";
-    const BOOLEAN_TYPE = "boolean";
-    const STRING_TYPE = "string";
-    const NUMBER_FLOAT = "float";
-    const NUMBER_INT = "int";
-    const ALPHA_NUMERIC = "alpha_numeric";
+    // /*———————————————————————————— INPUT ATTRIBUTS DOWN ———————————————————————*/
+    // /**
+    //  * Holds the input type
+    //  */
+    // const CHECKBOX = "checckbox";
+    // const PSEUDO = "pseudo";
+    // const NAME = "name";  // handle space and `-`
+    // const EMAIL = "email";
+    // const PHONE_NUMBER = "phone";
+    // const PASSWORD = "psw";
+    // const SIZE = "size";
+    // const BOOLEAN_TYPE = "boolean";
+    // const STRING_TYPE = "string";
+    // const NUMBER_FLOAT = "float";
+    // const NUMBER_INT = "int";
+    // const ALPHA_NUMERIC = "alpha_numeric";
 
-    const SIZE_REGEX = "#^[xX]*[sS]{1}$|^[ml]{1}$|^[xX]*[l]{1}$#";
-    const INT_REGEX = "#(^[0-9]+$#";
-    const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
-    const STRING_REGEX = "#^[a-zA-Z]+$#";
-    const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
-    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+    // const SIZE_REGEX = "#^[xX]*[sS]{1}$|^[ml]{1}$|^[xX]*[l]{1}$#";
+    // const INT_REGEX = "#(^[0-9]+$#";
+    // const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
+    // const STRING_REGEX = "#^[a-zA-Z]+$#";
+    // const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
+    // const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
 
-    /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
+    // /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
     /*———————————————————————————— CRUD DOWN ————————————————————————————————*/
 
     /**
@@ -829,90 +829,90 @@ abstract class ModelFunctionality extends Model
     /*———————————————————————————— PRODUCT ACCESS UP ————————————————————————*/
     /*———————————————————————————— CHECK DATAS DOWN —————————————————————————*/
 
-    /**
-     * Check the input value passed in param and push error accured in Response
-     * @param string $key the name input to check (in $_POST, $_GET or $_SESSION)
-     * @param string[] $dataTypes the types of the filter to check input.
-     * + NOTE: combinaison available => 
-     *      [TYPE], 
-     *      [CHECKBOX, TYPE]
-     * @param boolean $required set true if value can be empty alse false
-     * @param Response $response to push in error accured
-     * @return boolean true if is success else false
-     */
-    public function checkInput($key, $dataTypes, Response $response, $length = null, $required = true)
-    {
-        $keyExist = Query::existParam($key);
-        if (($required) && (!$keyExist)) {
-            $errorStation = ($dataTypes[0] == self::CHECKBOX) ? "ER5"
-                : "ER2";
-            $response->addErrorStation($errorStation, $key);
-            return $response->isSuccess();
-        }
-        if (!$keyExist) {
-            return false;
-        }
+    // /**
+    //  * Check the input value passed in param and push error accured in Response
+    //  * @param string $key the name input to check (in $_POST, $_GET or $_SESSION)
+    //  * @param string[] $dataTypes the types of the filter to check input.
+    //  * + NOTE: combinaison available => 
+    //  *      [TYPE], 
+    //  *      [CHECKBOX, TYPE]
+    //  * @param boolean $required set true if value can be empty alse false
+    //  * @param Response $response to push in error accured
+    //  * @return boolean true if is success else false
+    //  */
+    // public function checkInput($key, $dataTypes, Response $response, $length = null, $required = true)
+    // {
+    //     $keyExist = Query::existParam($key);
+    //     if (($required) && (!$keyExist)) {
+    //         $errorStation = ($dataTypes[0] == self::CHECKBOX) ? "ER5"
+    //             : "ER2";
+    //         $response->addErrorStation($errorStation, $key);
+    //         return $response->isSuccess();
+    //     }
+    //     if (!$keyExist) {
+    //         return false;
+    //     }
 
-        $value = Query::getParam($key);
-        if (!empty($length) && (strlen($value) > $length)) {
-            $errorStationTxt = "ER6";
-            $errorStationTxt .= " " . $length; // translateError will split errorStation from the lenght
-            $response->addErrorStation($errorStationTxt, $key);
-            return $response->isSuccess();
-        }
+    //     $value = Query::getParam($key);
+    //     if (!empty($length) && (strlen($value) > $length)) {
+    //         $errorStationTxt = "ER6";
+    //         $errorStationTxt .= " " . $length; // translateError will split errorStation from the lenght
+    //         $response->addErrorStation($errorStationTxt, $key);
+    //         return $response->isSuccess();
+    //     }
 
-        switch ($dataTypes[0]) {
-            case self::NUMBER_FLOAT:
-                if (preg_match(self::FLOAT_REGEX, $value) != 1) {
-                    $errStation = "ER3";
-                    $response->addErrorStation($errStation, $key);
-                } else {
-                    Query::convertParam(self::NUMBER_FLOAT, $key);
-                }
-                break;
+    //     switch ($dataTypes[0]) {
+    //         case self::NUMBER_FLOAT:
+    //             if (preg_match(self::FLOAT_REGEX, $value) != 1) {
+    //                 $errStation = "ER3";
+    //                 $response->addErrorStation($errStation, $key);
+    //             } else {
+    //                 Query::convertParam(self::NUMBER_FLOAT, $key);
+    //             }
+    //             break;
 
-            case self::PSEUDO:
-                if (preg_match(self::PSEUDO_REGEX, $value) != 1) {
-                    $errStation = "ER4";
-                    $response->addErrorStation($errStation, $key);
-                } else {
-                    Query::convertParam(self::PSEUDO, $key);
-                }
-                break;
+    //         case self::PSEUDO:
+    //             if (preg_match(self::PSEUDO_REGEX, $value) != 1) {
+    //                 $errStation = "ER4";
+    //                 $response->addErrorStation($errStation, $key);
+    //             } else {
+    //                 Query::convertParam(self::PSEUDO, $key);
+    //             }
+    //             break;
 
-            case self::ALPHA_NUMERIC:
-                if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
-                    $errStation = "ER1";
-                    $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                } else {
-                    Query::convertParam(self::ALPHA_NUMERIC, $key);
-                }
-                break;
+    //         case self::ALPHA_NUMERIC:
+    //             if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
+    //                 $errStation = "ER1";
+    //                 $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+    //             } else {
+    //                 Query::convertParam(self::ALPHA_NUMERIC, $key);
+    //             }
+    //             break;
 
-            case self::CHECKBOX:
-                $cbxType = $dataTypes[1];
-                switch ($cbxType) {
-                    case self::STRING_TYPE:
-                        if (preg_match(self::STRING_REGEX, $value) != 1) {
-                            $errStation = "ER1";
-                            $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                        } else {
-                            Query::convertParam(self::STRING_TYPE, $key);
-                        }
-                        break;
-                    case self::SIZE:
-                        if ((preg_match(self::SIZE_REGEX, $value) != 1) || (preg_match(self::INT_REGEX, $value) != 1)) {
-                            $errStation = "ER1";
-                            $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                        } else {
-                            Query::convertParam(self::STRING_TYPE, $key);
-                        }
-                        break;
-                }
-                break;
-        }
-        return $response->isSuccess();
-    }
+    //         case self::CHECKBOX:
+    //             $cbxType = $dataTypes[1];
+    //             switch ($cbxType) {
+    //                 case self::STRING_TYPE:
+    //                     if (preg_match(self::STRING_REGEX, $value) != 1) {
+    //                         $errStation = "ER1";
+    //                         $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+    //                     } else {
+    //                         Query::convertParam(self::STRING_TYPE, $key);
+    //                     }
+    //                     break;
+    //                 case self::SIZE:
+    //                     if ((preg_match(self::SIZE_REGEX, $value) != 1) || (preg_match(self::INT_REGEX, $value) != 1)) {
+    //                         $errStation = "ER1";
+    //                         $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+    //                     } else {
+    //                         Query::convertParam(self::STRING_TYPE, $key);
+    //                     }
+    //                     break;
+    //             }
+    //             break;
+    //     }
+    //     return $response->isSuccess();
+    // }
 
     /**
      * To check if data is in the correct format
