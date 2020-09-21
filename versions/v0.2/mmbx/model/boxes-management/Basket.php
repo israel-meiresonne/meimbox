@@ -412,6 +412,24 @@ class Basket extends ModelFunctionality
     }
 
     /**
+     * To update a box product
+     * @param Response $response where to strore results
+     * @param string $boxID id of the box that holds the product
+     * @param string $prodID id of the product to add in box
+     * @param Size $holdsSize product's holds Size
+     * @param Size $newSize product's new Size
+     */
+    public function updateBoxProduct(Response $response, $boxID, $prodID, Size $holdSize, Size $newSize)
+    {
+        $box = $this->getBoxe($boxID);
+        if ($box == null) {
+            throw new Exception("This box don't exist boxID:'$boxID'");
+        }
+        // $product->selecteSize($newSize);
+        $box->updateProduct($response, $prodID, $holdSize, $newSize);
+    }
+
+    /**
      * To move a boxproduct to a other box
      * @param Response $response where to strore results
      * @param string $boxID id of a box in Visitor's basket

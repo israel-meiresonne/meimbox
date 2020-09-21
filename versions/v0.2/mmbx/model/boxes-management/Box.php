@@ -609,7 +609,7 @@ class Box extends ModelFunctionality
             // (!empty($quantity)) ? $product->addQuantity($quantity) : $product->addQuantity();;
             $quantity = $selectedSize->getQuantity();
             $product->addQuantity($quantity);
-            $product->updateProductQuantity($response, $boxID);
+            $product->updateProduct($response, $boxID);
         } else {
             $language = $this->getLanguage();
             $country = $this->getCountry();
@@ -623,6 +623,21 @@ class Box extends ModelFunctionality
             $this->boxProducts[$key] = $product;
             krsort($this->boxProducts);
         }
+    }
+
+    /**
+     * To update a box product
+     * @param Response $response where to strore results
+     * @param string $prodID id of the product to add in box
+     * @param Size $holdsSize product's holds Size
+     * @param Size $newSize product's new Size
+     */
+    public function updateProduct(Response $response, $prodID, Size $holdsSize, Size $newSize)
+    {
+        $boxID = $this->getBoxID();
+        $product = $this->getProduct($prodID, $holdsSize);
+        $product->selecteSize($newSize);
+        $product->updateProduct($response, $boxID, $holdsSize);
     }
 
     /**

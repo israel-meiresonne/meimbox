@@ -210,6 +210,43 @@ class Measure extends ModelFunctionality
         return strtotime($this->setDate);
     }
 
+
+    /**
+     * Check if first measure is bellow seconde measure
+     * + all measure not null from second is compared to first
+     * + formula: (first + cut) <= second
+     * @param Measure $firstM
+     * @param Measure $secondM 
+     * @param string $cut used to get error margin
+     * @return boolean true if first measure is bellow all measure of second else false
+     */
+    public static function compare(Measure $first, Measure $second, $cut)
+    {
+        $isBellow = false;
+        $cutMap = parent::getTableValues("cuts");
+        $value = $cutMap[$cut]["cutMeasure"];
+        $unitName = $cutMap[$cut]["unit_name"];
+        $cutObj = new MeasureUnit($value, $unitName);
+        $isBellow = (!empty($second->bust)) ? MeasureUnit::compare($first->bust, $second->bust, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->arm)) ? MeasureUnit::compare($first->arm, $second->arm, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->waist)) ? MeasureUnit::compare($first->waist, $second->waist, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->hip)) ? MeasureUnit::compare($first->hip, $second->hip, $cutObj) : $isBellow;
+        if (!$isBellow) {
+            return $isBellow;
+        }
+        $isBellow = (!empty($second->inseam)) ? MeasureUnit::compare($first->inseam, $second->inseam, $cutObj) : $isBellow;
+        return $isBellow;
+    }
+
     /**
      * Build a map that contain all value needed to create a Measure
      * + the map used to build is a line from db
@@ -229,13 +266,16 @@ class Measure extends ModelFunctionality
      */
     public static function getDatas4Measure($tabLine)
     {
-        foreach($tabLine as $key => $data){
-            if(preg_match("#user#", $key) == 1){
-                $newKey = strtolower(str_replace("#user#", "", $key));
+        foreach ($tabLine as $key => $data) {
+            if (preg_match("#user#", $key) == 1) {
+                $newKey = strtolower(str_replace("user", "", $key));
+                $tabLine[$newKey] = $data;
+            }
+            if (preg_match("#unit_name#", $key) == 1) {
+                $newKey = str_replace("unit_name", "unitName", $key);
                 $tabLine[$newKey] = $data;
             }
         }
-
         $measureMap = new Map();
         (!empty($tabLine["measureID"])) ? $measureMap->put($tabLine["measureID"], Map::measureID) : null;
         (!empty($tabLine["unitName"])) ? $measureMap->put($tabLine["unitName"], Map::unitName) : null;
@@ -249,22 +289,7 @@ class Measure extends ModelFunctionality
         return $measureMap;
     }
 
-    // /**
-    //  * Build a map that contain all value needed to create a Measure with datas posted($_POST)
-    //  * @return string[] a map that contain all value needed to create a Measure
-    //  */
-    // public static function getDatas4MeasurePOST()
-    // {
-    //     $datas[Measure::KEY_MEASURE_ID] = Query::existParam(Measure::KEY_MEASURE_ID) ? Query::getParam(Measure::KEY_MEASURE_ID) : null;
-    //     $datas[Measure::INPUT_MEASURE_NAME] = Query::getParam(Measure::INPUT_MEASURE_NAME);
-    //     $datas[Measure::INPUT_BUST] = Query::getParam(Measure::INPUT_BUST);
-    //     $datas[Measure::INPUT_ARM] = Query::getParam(Measure::INPUT_ARM);
-    //     $datas[Measure::INPUT_WAIST] = Query::getParam(Measure::INPUT_WAIST);
-    //     $datas[Measure::INPUT_HIP] = Query::getParam(Measure::INPUT_HIP);
-    //     $datas[Measure::INPUT_INSEAM] = Query::getParam(Measure::INPUT_INSEAM);
-    //     $datas[MeasureUnit::INPUT_MEASURE_UNIT] = Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT);
-    //     return $datas;
-    // }
+    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
 
     /**
      * Save the measure by INSERT it in database
@@ -331,41 +356,5 @@ class Measure extends ModelFunctionality
         array_push($values, $newMeasure->inseam->getValue());
         array_push($values, $newMeasure->inseam->getUnitName());
         $this->update($response, $sql, $values);
-    }
-
-    /**
-     * Check if first measure is bellow seconde measure
-     * + all measure not null from second is compared to first
-     * + formula: (first + cut) <= second
-     * @param Measure $firstM
-     * @param Measure $secondM 
-     * @param string $cut used to get error margin
-     * @return boolean true if first measure is bellow all measure of second else false
-     */
-    public static function compare(Measure $first, Measure $second, $cut)
-    {
-        $isBellow = false;
-        $cutMap = parent::getTableValues("cuts");
-        $value = $cutMap[$cut]["cutMeasure"];
-        $unitName = $cutMap[$cut]["unit_name"];
-        $cutObj = new MeasureUnit($value, $unitName);
-        $isBellow = (!empty($second->bust)) ? MeasureUnit::compare($first->bust, $second->bust, $cutObj) : $isBellow;
-        if (!$isBellow) {
-            return $isBellow;
-        }
-        $isBellow = (!empty($second->arm)) ? MeasureUnit::compare($first->arm, $second->arm, $cutObj) : $isBellow;
-        if (!$isBellow) {
-            return $isBellow;
-        }
-        $isBellow = (!empty($second->waist)) ? MeasureUnit::compare($first->waist, $second->waist, $cutObj) : $isBellow;
-        if (!$isBellow) {
-            return $isBellow;
-        }
-        $isBellow = (!empty($second->hip)) ? MeasureUnit::compare($first->hip, $second->hip, $cutObj) : $isBellow;
-        if (!$isBellow) {
-            return $isBellow;
-        }
-        $isBellow = (!empty($second->inseam)) ? MeasureUnit::compare($first->inseam, $second->inseam, $cutObj) : $isBellow;
-        return $isBellow;
     }
 }

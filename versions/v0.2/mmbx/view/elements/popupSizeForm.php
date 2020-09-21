@@ -15,7 +15,22 @@ $datas["laodingId"] = "size_form_pop_loading";
 $datas["submitButtonId"] = "update_size_btn";
 $datas["submitButtonTxt"] = "change size";
 $datas["submitIsDesabled"] = false;
-$datas["submitButtonFunc"] = "console.log('update size')";
+
+/**
+ * @var Box
+ */
+$box = $box;
+/**
+ * @var BoxProduct|BasketProduct
+ */
+$product = $product;
+
+$boxID = $box->getBoxID();
+
+$prodID = $product->getProdID();
+
+// $datas["submitButtonFunc"] = "updateBoxProduct('". $boxID ."','". $prodID ."','". $boxID ."')";
+$datas["submitButtonFunc"] = "updateBoxProduct()";
 
 $contentDatas = [
     "formId" => $formId,

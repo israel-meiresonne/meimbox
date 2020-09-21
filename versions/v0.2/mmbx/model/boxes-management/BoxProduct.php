@@ -50,10 +50,10 @@ class BoxProduct extends Product
         }
         $measureDatas  = [];
         foreach ($tab as $tabLine) {
-            if (!isset($measureDatas["unit_name"])) {
-                $measureDatas["unit_name"] = $tabLine["unit_name"];
+            if (!isset($measureDatas["unitName"])) {
+                $measureDatas["unitName"] = $tabLine["unit_name"];
             }
-            if ($measureDatas["unit_name"] != $tabLine["unit_name"]) {
+            if ($measureDatas["unitName"] != $tabLine["unit_name"]) {
                 throw new Exception("Product unit measure must be the same for all its measures: id=$prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
             }
             // $bodyPart = "user" . ucfirst($tabLine["body_part"]);
@@ -340,19 +340,30 @@ class BoxProduct extends Product
      *  contain the error thrown
      * @param string $boxID id of box that holds the product
      */
-    public function updateProductQuantity(Response $response, $boxID)
+    public function updateProduct(Response $response, $boxID, Size $holdSize = null) // regex \[value-[0-9]*\]
     {
         $prodID = $this->getProdID();
         $sizeObj = $this->getSelectedSize();
-        $sequence = $sizeObj->getSequence();
+        // $holdSize = (empty($holdSize)) ? $sizeObj : $holdSize;
+        $sequence = (!empty($holdSize)) ? $holdSize->getSequence() : $sizeObj->getSequence();
         $sql =
             "UPDATE `Box-Products` SET 
-            `quantity`=?,
-            `setDate`=? 
+            `sequenceID`= ?,
+            `size_name`= ?,
+            `brand_name`= ?,
+            `measureId`= ?,
+            `cut_name`= ?,
+            `quantity`= ?,
+            `setDate`= ? 
             WHERE `boxId`= '$boxID' 
             AND `prodId`= '$prodID' 
             AND `sequenceID`= '$sequence'";
         $values = [];
+        array_push($values, $sizeObj->getSequence());
+        array_push($values, $sizeObj->getsize());
+        array_push($values, $sizeObj->getbrandName());
+        array_push($values, $sizeObj->getmeasureID());
+        array_push($values, $sizeObj->getCut());
         array_push($values, $this->getQuantity());
         array_push($values, $sizeObj->getSetDate());
         $this->update($response, $sql, $values);
