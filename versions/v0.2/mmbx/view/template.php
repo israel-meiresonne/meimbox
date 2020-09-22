@@ -50,9 +50,12 @@ require_once 'model/special/MyError.php';
             // $(l).fadeIn(TS, sc());
             $(l).css("display", "block");
             sc();
+            // var url = rburl(a);
             $.ajax({
                 type: 'POST',
-                url: WR + a + "?" + LANG,
+                // url: WR + a + "?" + LANG,
+                // url: url,
+                url: a,
                 data: d,
                 dataType: 'json',
                 success: function(j) {
@@ -62,6 +65,15 @@ require_once 'model/special/MyError.php';
                 }
             });
         }
+
+        const rburl = (a) => {
+            var as = a.split("/");
+            var u = as[0] + AJX;
+            for (var i = 1; i < as.length; i++) {
+                u += as[i];
+            }
+            return u;
+        };
 
         /**
          * var datas = {
@@ -104,7 +116,8 @@ require_once 'model/special/MyError.php';
          * };
          */
         const SND = function(datas) {
-            var a = datas.a;
+            // var a = datas.a;
+            var a = rburl(datas.a);
             var d = datas.d;
             var r = datas.r;
             var l = datas.l;
@@ -112,7 +125,7 @@ require_once 'model/special/MyError.php';
             var sc = datas.sc;
             var rc = datas.rc;
             console.log("send: ", d);
-            console.log("to: ", WR + a + "?" + LANG);
+            console.log("to: ", a);
             jx(a, d, r, l, x, sc, rc);
         }
     </script>
@@ -174,6 +187,7 @@ require_once 'model/special/MyError.php';
 
         const TS = 450;
         const BNR = 1000000;
+        const AJX = "<?= ControllerSecure::AJX ?>";
         const JXF = "content/qr/qr.php";
         const LANG = "lang=" + $("html").attr("lang");
         const FCID = "#full_screen_div";

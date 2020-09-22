@@ -19,6 +19,12 @@ abstract class ControllerSecure extends Controller
      * Holds key to store response
      * @var string
      */
+    public const AJX = "/qr/";
+
+    /**
+     * Holds key to store response
+     * @var string
+     */
     public const TITLE_KEY = "title_key";
 
     /**
