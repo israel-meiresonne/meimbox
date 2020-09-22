@@ -973,19 +973,55 @@ class Visitor extends ModelFunctionality
                 $basket = $this->getBasket();
                 $box = $basket->getBoxe($boxID);
                 $newBox = $basket->getBoxe($newBoxID);
-                $product = $box->getProduct($prodID, $sizeObj);
-                $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
-                if ((empty($box)) || (empty($newBox)) || (!$isBoxProd)) {
+                if ((empty($box)) || (empty($newBox))) {
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                 } else {
-                    $selectedSize = $product->getSelectedSize();
-                    $quantity = $selectedSize->getQuantity();
-                    if (!$basket->stillSpace($newBoxID, $quantity)) {
-                        $errStation = "ER15";
-                        $response->addErrorStation($errStation, ControllerItem::A_MV_BXPROD);
-                    } else {
-                        $basket->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $selectedSize);
+                    $product = $box->getProduct($prodID, $sizeObj);
+                    $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
+                    if (!$isBoxProd) {
+                        $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                    } else{
+                        $selectedSize = $product->getSelectedSize();
+                        $quantity = $selectedSize->getQuantity();
+                        if (!$basket->stillSpace($newBoxID, $quantity)) {
+                            $errStation = "ER15";
+                            $response->addErrorStation($errStation, ControllerItem::A_MV_BXPROD);
+                        } else {
+                            $basket->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $selectedSize);
+                        }
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * To delete a boxproduct
+     * @param Response $response where to strore results
+     * @param string $boxID id of box where is the product
+     * @param string $prodID id of the product to delete
+     * @param string $sequence product's size sequence
+     */
+    public function deleteBoxProduct(Response $response, $boxID, $prodID, $sequence)
+    {
+        try {
+            $sampleSize = new Size($sequence);
+        } catch (\Throwable $th) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        }
+        if(!$response->containError()){
+            $basket = $this->getBasket();
+            $box = $basket->getBoxe($boxID);
+            if (empty($box)) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            } else {
+                $product = $box->getProduct($prodID, $sampleSize);
+                $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
+                if (!$isBoxProd) {
+                    $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                } else{
+                    $selectedSize = $product->getSelectedSize();
+                    $basket->deleteBoxProduct($response, $boxID, $prodID, $selectedSize);
                 }
             }
         }

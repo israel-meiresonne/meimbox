@@ -468,14 +468,14 @@ class Basket extends ModelFunctionality
      * @param Response $response where to strore results
      * @param string $boxID id of a box in Visitor's basket
      * @param string $prodID id of the product to delete from box
-     * @param Size $sizeObj size of the product to delete
+     * @param Size $size size of the product to delete
      */
-    private function deleteBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
+    public function deleteBoxProduct(Response $response, $boxID, $prodID, Size $size)
     {
         $box = $this->getBoxe($boxID);
         if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
-        $box->deleteBoxProduct($response, $prodID, $sizeObj);
+        $box->deleteBoxProduct($response, $prodID, $size);
     }
 }

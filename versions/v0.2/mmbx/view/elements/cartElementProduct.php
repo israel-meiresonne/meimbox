@@ -41,6 +41,9 @@ switch ($product->getType()) {
             $brotherx = null;
             $submitdata = null;
         }
+        /*———————————————————————— CONFIG DELETE BUTTON DOWN ————————————————*/
+        $deleteFunc = "console.log('delete basket product')";
+        /*———————————————————————— CONFIG DELETE BUTTON UP ——————————————————*/
         /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
         $editFunc = "console.log('edit basket product')";
         $miniPopEdit = null;
@@ -51,11 +54,14 @@ switch ($product->getType()) {
         $dadx = null;
         $brotherx = null;
         $submitdata = null;
-        /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
         $boxID = $box->getBoxID();
         $prodID = $product->getProdID();
         $sequence = $product->getSelectedSize()->getSequence();
         $boxElementIdx = "#" . $boxElementId;
+        /*———————————————————————— CONFIG DELETE BUTTON DOWN ————————————————*/
+        $deleteFunc = "removeBoxProduct('$boxID', '$prodID', '$sequence', '$boxElementIdx', '$elementIdx')";
+        /*———————————————————————— CONFIG DELETE BUTTON UP ——————————————————*/
+        /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
         switch ($containerId):
             case 'box_manager_window':
                 $editFunc = null;
@@ -110,13 +116,14 @@ $size = $product->getSelectedSize();
     $pictureSrcs = $product->getPictureSources();
     krsort($pictureSrcs);
     $datas = [
+        "elementId" => $elementId,
+        "deleteFunc" => $deleteFunc,
         "properties" => $properties,
         "miniPopEdit" => $miniPopEdit,
         "editFunc" => $editFunc,
         "pictureSrc" => (count($pictureSrcs) > 0) ? array_pop(($pictureSrcs)) : null,
         "price" => $price,
         "showArrow" => $showArrow,
-        "elementId" => $elementId,
         "dadx" => $dadx,
         "brotherx" => $brotherx,
         "submitdata" => $submitdata

@@ -67,7 +67,7 @@ if (isset($nbItem) && isset($max)) :
 ?>
     <div class="cart-element-property-div">
         <span class="cart-element-property"><?= $translator->translateStation("US53") ?>: </span>
-        <span class="cart-element-value"><?= $nbItem ?>/<?= $max ?></span>
+        <span class="cart-element-value" data-basket="boxrate" ><?= $nbItem ?>/<?= $max ?></span>
     </div>
 <?php
 endif;
