@@ -2,6 +2,10 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param string $elementId id of the element (allway given)
+ * + this id is generated in file cart.php
+ * @param string $deleteFunc onclick function to delete element
+ * + i.e: $deleteFunc = "slideSomething('param1','param2');jumpFrom('param1','param2')"
  * @param string $properties html tags to put in as content
  * + use class 'cart-element-property-div' to build properties set
  *      <div class="cart-element-property-div">
@@ -15,10 +19,6 @@
  * @param string|null $price price property in a displayable format (with currency)
  * @param boolean $showArrow set true to display the arrow else set false
  * ——————————————————————————————— ID & DATA DOWN —————————————————————————————————————
- * @param string $elementId id of the element (allway given)
- * + this id is generated in file cart.php
- * @param string $deleteFunc onclick function to delete element
- * + i.e: $deleteFunc = "slideSomething('param1','param2');jumpFrom('param1','param2')"
  * @param string $dadx selector of the dad (if set it activate the selectPopUp functionality)
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)

@@ -646,7 +646,7 @@ class Box extends ModelFunctionality
      * @param string $prodID id of the product to delete from box
      * @param Size $selectedSize size of the product to delete
      */
-    public function deleteBoxProduct(Response $response, $prodID, $selectedSize)
+    public function deleteBoxProduct(Response $response, $prodID, Size $selectedSize)
     {
         $product = $this->getProduct($prodID, $selectedSize);
         if(empty($product)){
@@ -655,7 +655,7 @@ class Box extends ModelFunctionality
         $boxID = $this->getBoxID();
         $product->deleteProduct($response, $boxID);
         if(!$response->containError()){
-            $key = $this->getDateInSec();
+            $key = $product->getDateInSec();
             $this->boxProducts[$key] = null;
             unset($this->boxProducts[$key]);
         }

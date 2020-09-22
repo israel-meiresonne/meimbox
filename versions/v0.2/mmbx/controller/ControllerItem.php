@@ -80,6 +80,12 @@ class ControllerItem extends ControllerSecure
      * Holds the query value for Ajax request
      * @var string
      */
+    public const A_DLT_BXPROD = "item/deleteBoxProduct";
+
+    /**
+     * Holds the query value for Ajax request
+     * @var string
+     */
     public const A_GET_EDT_POP = "item/getSizeEditor";
 
     /**
@@ -684,6 +690,33 @@ class ControllerItem extends ControllerSecure
         } else {
             $this->person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
             (!$response->containError()) ? $response->addResult(self::A_MV_BXPROD, $response->isSuccess()) : null;
+        }
+        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+    }
+
+    /**
+     * To delete a box product
+     */
+    public function deleteBoxProduct()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $datasView = [];
+        $boxID = Query::getParam(Box::KEY_BOX_ID);
+        $prodID = Query::getParam(Product::KEY_PROD_ID);
+        $sequence = Query::getParam(Size::KEY_SEQUENCE);
+        if (empty($boxID) || empty($prodID) || empty($sequence)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $this->person->deleteBoxProduct($response, $boxID, $prodID, $sequence);
+            if (!$response->containError()) {
+                $basket = $this->person->getBasket();
+                $quantity = $basket->getQuantity();
+                $box = $basket->getBoxe($boxID);
+                $boxRate = $box->getNbProduct()."/".$box->getSizeMax();
+                $response->addResult(Box::KEY_BOX_ID, $boxRate);
+                $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
+            }
         }
         $this->generateJsonView($datasView, $response, $this->person->getLanguage());
     }

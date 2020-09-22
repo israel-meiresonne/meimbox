@@ -1,9 +1,10 @@
 (() => {
     // ++++ val down ++++
-    var baskettotal = "total";
-    var basketsubtotal = "basketsubtotal";
-    var basketvat = "vat";
-    var basketquantity = "quantity";
+    const baskettotal = "total";
+    const basketsubtotal = "basketsubtotal";
+    const basketvat = "vat";
+    const basketquantity = "quantity";
+    const basketboxrate = "boxrate";
     // ++++ class down ++++
     const selected = "popup-selected";
     disableCls = "standard-button-desabled";
@@ -76,11 +77,11 @@
         var newxf = xf + ";" + f;
         $(x).attr(onclickattr, newxf);
     }
-    removeAnim = function (selector) {
-        $(selector).css("overflow", "hidden");
-        var h = $(selector).height();
-        $(selector).height(h);
-        $(selector).animate({ width: '0%' }, TS, function () {
+    removeAnim = function (x) {
+        $(x).css("overflow", "hidden");
+        var h = $(x).height();
+        $(x).height(h);
+        $(x).animate({ width: '0%' }, TS, function () {
             $(this).slideUp(TS, function () {
                 $(this).remove();
             });
@@ -583,7 +584,7 @@
     var removeBoxRSP = (r, x) => {
         if (r.isSuccess) {
             removeAnim(x);
-            basketUpdatePrices(r);
+            basketUpdateDatas(r);
             // getBasketPop();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
@@ -667,7 +668,7 @@
         };
         SND(d);
     }
-    basketUpdatePrices = (r) => {
+    basketUpdateDatas = (r) => {
         if (r.isSuccess) {
             var ttx = $("[" + basketdata + "='" + baskettotal + "']");
             var ttv = r.results[KEY_TOTAL];
@@ -689,7 +690,7 @@
     var getBasketPopRSP = (r) => {
         if (r.isSuccess) {
             $("#basket_pop .pop_up-content-block-inner").html(r.results[A_GET_BSKT_POP]);
-            basketUpdatePrices(r);
+            basketUpdateDatas(r);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
@@ -727,6 +728,38 @@
             popAlert(r.errors[A_MV_BXPROD].message);
         }
     }
+    removeBoxProduct = (bxid, pid, seq, bxelx, elx) => {
+        if (popAsk(ALERT_DLT_BXPROD)) {
+            var map = {
+                [KEY_BOX_ID]: bxid,
+                [KEY_PROD_ID]: pid,
+                [KEY_SEQUENCE]: seq,
+            }
+            var params = mapToParam(map);
+            var d = {
+                "a": A_DLT_BXPROD,
+                "d": params,
+                "r": removeBoxProductRSP,
+                // "l": "#box_manager_loading",
+                "x": {"bxelx":bxelx, "elx":elx},
+                "sc": () => {},
+                "rc": () => {}
+            };
+            SND(d);
+        }
+    }
+    var removeBoxProductRSP = (r, d) => {
+        if (r.isSuccess) {
+            basketUpdateDatas(r);
+            var x = $(d.bxelx).find("["+basketdata+"="+ basketboxrate +"]");
+            fadeValue(x, r.results[KEY_BOX_ID]);
+            removeAnim(d.elx);
+        } else if (!empty(r.errors[FAT_ERR])) {
+            popAlert(r.errors[FAT_ERR].message);
+        }
+    }
+    /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
+    /*—————————————————— SIZE EDITOR DOWN ———————————————————————————————————*/
     getSizeEditor = (bxid, pid, seq, popFunc) => {
         var map = {
             [KEY_BOX_ID]: bxid,
@@ -755,8 +788,6 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    /*—————————————————— BASKET MANAGER UP ——————————————————————————————————*/
-    /*—————————————————— SIZE EDITOR DOWN ———————————————————————————————————*/
     // updateBoxProduct = (bxid, pid, seq) => {
     updateBoxProduct = () => {
         var inps = $("#form_edit_prod_size input");
@@ -769,7 +800,7 @@
         var d = {
             "frm": inps,
             "a": A_EDT_BXPROD,
-            "frmCbk": () => {},
+            "frmCbk": () => { },
             "r": updateBoxProductRSP,
             "l": "#size_form_pop_loading",
             "x": inps,
@@ -778,18 +809,18 @@
         };
         frmSND(d);
     }
-    var updateBoxProductRSP = (r,inps) => {
+    var updateBoxProductRSP = (r, inps) => {
         if (r.isSuccess) {
             getBasketPop();
             var cbtn = getCloseButton("#size_editor_pop");
             $(cbtn).click();
-        } else if(!empty(r.errors)){
+        } else if (!empty(r.errors)) {
             var ks = getKeys(r.errors);
-            ks.forEach(k =>{
+            ks.forEach(k => {
                 var x = $("#add_measure_form .input-tag" + "[name='" + k + "']+.comment");
                 addErr(x, r.errors[k].message);
             });
-            
+
             if (!empty(r.errors[FAT_ERR])) {
                 popAlert(r.errors[FAT_ERR].message);
             }

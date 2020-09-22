@@ -146,6 +146,7 @@ require_once 'model/special/MyError.php';
         const A_ADD_BXPROD = "<?= ControllerItem::A_ADD_BXPROD ?>";
         const A_EDT_BXPROD = "<?= ControllerItem::A_EDT_BXPROD ?>";
         const A_MV_BXPROD = "<?= ControllerItem::A_MV_BXPROD ?>";
+        const A_DLT_BXPROD = "<?= ControllerItem::A_DLT_BXPROD ?>";
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
         const A_GET_EDT_POP = "<?= ControllerItem::A_GET_EDT_POP ?>";
 
@@ -154,6 +155,7 @@ require_once 'model/special/MyError.php';
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
+        const ALERT_DLT_BXPROD = "<?= $translator->translateStation("US64") ?>";
 
         const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
         const KEY_NEW_BOX_ID = "<?= Box::KEY_NEW_BOX_ID ?>";
