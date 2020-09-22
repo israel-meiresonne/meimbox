@@ -49,7 +49,7 @@ class BasketProduct extends Product
         // $this->setDiscount($country);
     }
 
-        // /**
+    // /**
     //  * Setter for product's size and stock
     //  */
     // protected function setSizesStock()
@@ -134,23 +134,6 @@ class BasketProduct extends Product
         }
     }
 
-    // /**
-    //  * To set all other properties that nat in Product table
-    //  * @param Language $lang Visitor's language
-    //  * @param Country $country the Visitor's country
-    //  * @param Currency the Visitor's current Currency
-    //  */
-    // public function CompleteProperties($lang, $country, $currency)
-    // {
-    // $this->setPictures();
-    // $this->setSizesStock();
-    // $this->setCollections();
-    // $this->setProdFunctions();
-    // $this->setCategories();
-    // $this->setDescriptions($lang);
-    // $this->setSameProducts($country, $currency);
-    // }
-
     /**
      * Fill the same product list with product sharing the same name that the 
      * current product
@@ -160,7 +143,7 @@ class BasketProduct extends Product
         $this->sameProducts = [];
         $language = $this->getLanguage();
         $country = $this->getCountry();
-        $currency =$this->getCurrency();
+        $currency = $this->getCurrency();
         $sql = "SELECT `prodID` 
         FROM `Products` 
         WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
@@ -183,16 +166,6 @@ class BasketProduct extends Product
         return self::BASKET_TYPE;
     }
 
-    // /**
-    //  * Getter for product's stock for each size
-    //  * @return int[] product's stock for each size
-    //  */
-    // protected function getSizeStock()
-    // {
-    //     (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
-    //     return $this->sizesStock;
-    // }
-
     /**
      * Getter for sameProducts
      * @return BasketProduct[] same Products than the current product
@@ -211,7 +184,7 @@ class BasketProduct extends Product
     public function getPrice()
     {
         $country = $this->getCountry();
-        $currency =$this->getCurrency();
+        $currency = $this->getCurrency();
         (!isset($this->price)) ? $this->setPrice($country, $currency) : null;
         return $this->price;
     }

@@ -21,7 +21,8 @@ foreach ($products as $product) :
         <li class="remove-li-default-att">
             <div class="cube-container">
                 <div class="cube-wrap <?= $selectedCube ?>">
-                    <a href="/inside/item/?prodID=<?= $product->getProdID() ?>">
+                    <!-- <a href="/inside/item/?prodID=<?= $product->getProdID() ?>"> -->
+                    <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
                         <div class="cube-item-color <?= $sameCubeBorder ?>" style="background: <?= $sameColorRGB ?>;"></div>
                     </a>
                 </div>
@@ -33,7 +34,8 @@ foreach ($products as $product) :
         <li class="remove-li-default-att">
             <div class="cube-container">
                 <div class="cube-wrap">
-                    <a href="/inside/item/?prodID=<?= $product->getProdID() ?>">
+                    <!-- <a href="/inside/item/?prodID=<?= $product->getProdID() ?>"> -->
+                    <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
                         <div class="cube-item-color cube-more_color">
                             <img src="content/brain/permanent/icons8-plus-math-96.png">
                         </div>

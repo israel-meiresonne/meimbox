@@ -6,7 +6,7 @@ require_once 'model/tools-management/Language.php';
 
 abstract class Product extends ModelFunctionality
 {
-     
+
     /**
      * the Visitor's language
      * @var Language
@@ -142,10 +142,22 @@ abstract class Product extends ModelFunctionality
     protected $buyPrice;
 
     /**
-     * Holds max number of cube displayable in artcicle product
+     * Holds the directory where product's picture are stored
      * @var string
      */
     private const PICTURE_DIR = "content/brain/prod/";
+
+    /**
+     * Holds page's name
+     * @var string
+     */
+    public const PAGE_ITEM = "item/";
+
+    /**
+     * Holds glue used to stick strings
+     * @var string
+     */
+    public const GLUE = "-";
 
     /**
      * Holds max number of cube displayable in artcicle product
@@ -329,6 +341,7 @@ abstract class Product extends ModelFunctionality
         FROM `Products-Collections`
         WHERE `prodId` = '$this->prodID'";
         $tab = $this->select($sql);
+        // var_dump($tab);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
                 $this->collections[$tabLine["collection_name"]]["beginDate"] = $tabLine["beginDate"];
@@ -403,7 +416,7 @@ abstract class Product extends ModelFunctionality
     public function addQuantity(int $quantity = 1)
     {
         $selectedSize = $this->getSelectedSize();
-        if(!isset($selectedSize)){
+        if (!isset($selectedSize)) {
             throw new Exception("Can't get product's selected size cause it not initialized!");
         }
         return $selectedSize->addQuantity($quantity);
@@ -484,12 +497,49 @@ abstract class Product extends ModelFunctionality
     {
         $picSrc = [];
         $pictures = $this->getPictures();
-        if(count($pictures) > 0){
+        if (count($pictures) > 0) {
             foreach ($pictures as $key => $picture) {
                 $picSrc[$key] = self::PICTURE_DIR . $picture;
             }
         }
         return $picSrc;
+    }
+
+    // /**
+    //  * To get a url whitch refer to page given in param
+    //  * @param $page page that url refer to
+    //  * @return string 
+    //  */
+    // public abstract function getUrl(string $page);
+
+    /**
+     * To get a url that display product on the page given in param
+     * @param $page page that url refer to
+     * @return string 
+     */
+    public function getUrl(string $page)
+    {
+        $url = "";
+        switch ($page) {
+            case self::PAGE_ITEM:
+                $prodID = $this->getProdID();
+                $url .= self::PAGE_ITEM . $prodID;
+                $prodName = $this->getProdName();
+                $color = $this->getColorName();
+                $datas = [];
+                array_push($datas, $prodName, $color);
+                $collections = $this->getCollections();
+                $functions  = $this->getProdFunctions();
+                $categories = $this->getCategories();
+                $datas = array_merge($datas, $collections, $functions, $categories);
+                $info = (count($datas) > 0) ? "/" . implode(self::GLUE, $datas) : "";
+                $url .= str_replace(["0","1","2","3","4","5","6","7","8","9"], "", $info);
+                break;
+            default:
+                throw new Exception("This url page don't exist, page:$page");
+                break;
+        }
+        return $url;
     }
 
     /**
@@ -501,11 +551,6 @@ abstract class Product extends ModelFunctionality
         (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
         return $this->sizesStock;
     }
-    // /**
-    //  * Getter for product's stock for each size
-    //  * @return int[] product's stock for each size
-    //  */
-    // protected abstract function getSizeStock();
 
     /**
      * Getter for the product's sizes
@@ -584,7 +629,7 @@ abstract class Product extends ModelFunctionality
     public function getQuantity()
     {
         $selectedSize = $this->getSelectedSize();
-        if(!isset($selectedSize)){
+        if (!isset($selectedSize)) {
             throw new Exception("Can't get product's selected size cause it not initialized!");
         }
         return $selectedSize->getQuantity();
@@ -607,14 +652,6 @@ abstract class Product extends ModelFunctionality
      */
     public abstract function getDisplayablePrice();
 
-    // /**
-    //  * Getter for sameProducts
-    //  * @return BasketProduct[]|BoxProduct[] a prodtected copy of sameProducts
-    //  */
-    // public function getSameProducts()
-    // {
-    //     return $this->cloneMap($this->sameProducts);
-    // }
     /**
      * Getter for sameProducts
      * @return BasketProduct[]|BoxProduct[] a prodtected copy of sameProducts
@@ -649,7 +686,7 @@ abstract class Product extends ModelFunctionality
     public function getDateInSec()
     {
         $selectedSize = $this->getSelectedSize();
-        if(!isset($selectedSize)){
+        if (!isset($selectedSize)) {
             throw new Exception("Can't get product's selected size cause it not initialized!");
         }
         return strtotime($selectedSize->getSetDate());

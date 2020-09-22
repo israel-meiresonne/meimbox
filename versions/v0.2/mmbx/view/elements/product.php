@@ -2,7 +2,7 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param BasketProduct|BoxProduct $product a product with all its properties set
+ * @param BasketProduct|BoxProduct $product a product to display
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  */
@@ -13,7 +13,8 @@
 $product = $product;
 
 $prodID = $product->getProdID();
-$pictures = $product->getPictures();
+// $pictures = $product->getPictures();
+$pictures = $product->getPictureSources();
 $colorRGB = $product->getColorRGB();
 $colorRGBText = $product->getColorRGBText();
 // $cubeBorder = ($colorRGB == Product::WHITE_RGB) ? "cube-border" : "";
@@ -21,7 +22,8 @@ $colorRGBText = $product->getColorRGBText();
 
 <article class="product-article-wrap">
     <div class="product-img-set">
-        <a href="/inside/item/?prodID=<?= $prodID ?>">
+        <!-- <a href="/inside/item/?prodID=<?= $prodID ?>"> -->
+        <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
             <?php
             $i = 0;
             foreach ($pictures as $picture) :
@@ -29,7 +31,8 @@ $colorRGBText = $product->getColorRGBText();
                     case 0:
             ?>
                         <div class="product-img-wrap product-img-first">
-                            <img src="content/brain/prod/<?= $picture ?>">
+                            <!-- <img src="content/brain/prod/<?= $picture ?>"> -->
+                            <img src="<?= $picture ?>">
                         </div>
                     <?php
                         $i++;
@@ -37,7 +40,8 @@ $colorRGBText = $product->getColorRGBText();
                     case 1;
                     ?>
                         <div class="product-img-wrap product-img-second">
-                            <img src="content/brain/prod/<?= $picture ?>">
+                            <!-- <img src="content/brain/prod/<?= $picture ?>"> -->
+                            <img src="<?= $picture ?>">
                         </div>
             <?php
                         $i++;
@@ -60,7 +64,8 @@ $colorRGBText = $product->getColorRGBText();
             <ul class="remove-ul-default-att">
                 <li class="remove-li-default-att">
                     <div class="cube-container">
-                        <a href="/inside/item/?prodID=<?= $prodID ?>">
+                        <!-- <a href="/inside/item/?prodID=<?= $prodID ?>"> -->
+                        <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
                             <div class="cube-wrap cube-selected">
                                 <div class="cube-item-color" style="background: <?= $colorRGB ?>;"></div>
                             </div>

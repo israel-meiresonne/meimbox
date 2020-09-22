@@ -78,7 +78,8 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
             <div class="product-pictures-div">
                 <div class="product-pictures-inner">
                     <?php
-                    $pictures = $product->getPictures();
+                    // $pictures = $product->getPictures();
+                    $pictures = $product->getPictureSources();
                     $elements = [];
                     foreach ($pictures as $index => $picture) {
                         $element = $this->generateFile("view/Item/itemFiles/sliderPicture.php", ["picture" => $picture]);
