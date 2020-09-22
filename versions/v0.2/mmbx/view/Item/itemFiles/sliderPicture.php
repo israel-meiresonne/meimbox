@@ -7,5 +7,6 @@
 
 ?>
 <article class="slider-article">
-    <img src="content/brain/prod/<?= $picture ?>">
+    <!-- <img src="content/brain/prod/<?= $picture ?>"> -->
+    <img src="<?= $picture ?>">
 </article>
