@@ -24,7 +24,7 @@ class ControllerGrid extends ControllerSecure
 
     public function index()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();
         $language = $this->person->getLanguage();
@@ -42,7 +42,7 @@ class ControllerGrid extends ControllerSecure
      */
     public function filter()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $response = new Response();
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();
