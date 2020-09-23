@@ -68,15 +68,22 @@ abstract class ControllerSecure extends Controller
 
     /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
 
-    /**
-     * Initialized the person attribut
-     * + determines if the user is a Visitor, Client or Administrator
-     */
-    protected function secureSession()
+    public function __construct()
     {
         date_default_timezone_set('Europe/Paris');
         $this->person = new Client(651853948);
     }
+
+    // /**
+    //  * Initialized the person attribut
+    //  * + determines if the user is a Visitor, Client or Administrator
+    //  */
+    // protected function secureSession()
+    // {
+        // date_default_timezone_set('Europe/Paris');
+        // $this->person = new Client(651853948);
+
+    // }
 
 
     /**

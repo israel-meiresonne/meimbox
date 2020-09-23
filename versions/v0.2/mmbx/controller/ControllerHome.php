@@ -6,7 +6,7 @@ class ControllerHome extends ControllerSecure
 {
     public function index()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $this->generateView(array("language" => $language));
     }

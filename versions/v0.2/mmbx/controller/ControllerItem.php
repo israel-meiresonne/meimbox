@@ -132,7 +132,7 @@ class ControllerItem extends ControllerSecure
 
     public function index()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();
         $language = $this->person->getLanguage();
@@ -168,7 +168,7 @@ class ControllerItem extends ControllerSecure
      */
     public function selectBrand()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -193,7 +193,7 @@ class ControllerItem extends ControllerSecure
      */
     public function addMeasure()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $response = new Response();
         $datasView = [];
 
@@ -286,7 +286,7 @@ class ControllerItem extends ControllerSecure
      */
     public function selectMeasure()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -311,7 +311,7 @@ class ControllerItem extends ControllerSecure
      */
     public function updateMeasure()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -410,7 +410,7 @@ class ControllerItem extends ControllerSecure
      */
     public function deleteMeasure()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -440,7 +440,7 @@ class ControllerItem extends ControllerSecure
      */
     public function getMeasureAdder()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -467,7 +467,7 @@ class ControllerItem extends ControllerSecure
      */
     public function submitBoxProduct()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -503,7 +503,7 @@ class ControllerItem extends ControllerSecure
      */
     public function getBoxManager()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -549,7 +549,7 @@ class ControllerItem extends ControllerSecure
      */
     public function addBox()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -579,7 +579,7 @@ class ControllerItem extends ControllerSecure
      */
     public function deleteBox()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -608,7 +608,7 @@ class ControllerItem extends ControllerSecure
      */
     public function addBoxProduct()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -638,7 +638,7 @@ class ControllerItem extends ControllerSecure
      */
     public function updateBoxProduct()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $quantity = $this->checkInput(
@@ -678,7 +678,7 @@ class ControllerItem extends ControllerSecure
      */
     public function moveBoxProduct()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $boxID = Query::getParam(Box::KEY_BOX_ID);
@@ -699,7 +699,7 @@ class ControllerItem extends ControllerSecure
      */
     public function deleteBoxProduct()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $boxID = Query::getParam(Box::KEY_BOX_ID);
@@ -726,7 +726,7 @@ class ControllerItem extends ControllerSecure
      */
     public function getBasketPop()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -758,7 +758,7 @@ class ControllerItem extends ControllerSecure
      */
     public function getSizeEditor()
     {
-        $this->secureSession();
+        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $prodID = Query::getParam(Product::KEY_PROD_ID);
