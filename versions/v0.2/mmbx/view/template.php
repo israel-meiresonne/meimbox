@@ -11,7 +11,7 @@ require_once 'model/view-management/PageContent.php';
 require_once 'model/special/MyError.php';
 /**
  *  ——————————————————————————————— NEED —————————————————————————————————————
- * @param Visitor|Client|Administrator $person the user
+ * @param Visitor|Client|Administrator $person the current user
  * @param string $webRoot domaine's root
  * @param string $title page's title
  * @param string $head complementary datas for the head
@@ -19,15 +19,15 @@ require_once 'model/special/MyError.php';
  * @param string $fullscreen full screen elements like popup
  */
 
-// /**
-//  * @var Visitor|Client|Administrator
-//  */
-// $person = $person;
-// $language = $person->getLanguage();
-
+/**
+ * @var Visitor|Client|Administrator
+ */
+$person = $person;
+$language = $person->getLanguage();
+// var_dump($language);
 ?>
 <!DOCTYPE html>
-<html lang="<?= $language ?>">
+<html lang="<?= $language->getIsoLang() ?>">
 
 <head>
     <meta charset="UTF-8">

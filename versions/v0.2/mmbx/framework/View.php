@@ -66,6 +66,12 @@ class View
      */
     private $translator;
 
+    /**
+     *  the current user
+     * @var Visitor|Client|Administrator
+     */
+    private $person;
+
     /** Nom du fichier associé à la vue */
     // rnvs : string qui contient le chemin vers le fichier php qui correspond
     //        à l'action de la vue effective
@@ -79,12 +85,6 @@ class View
     // rnvs : cela se passe dans View::generateFile() 
     //        par le biais du statement require $file; 
     private $title;
-
-    /**
-     * Holds the page's language
-     * @var string
-     */
-    private $language;
 
     /**
      * Holds the page's meta data description
@@ -117,10 +117,13 @@ class View
      * 
      * @param string $action Action à laquelle la vue est associée
      * @param string $controller Nom du contrôleur auquel la vue est associée
-     * @param Language $language the Visitor's current language
+     * @param Visitor|Client|Administrator $person the current user
      */
-    public function __construct($action, $controller = "", Language $language = null)
+    // public function __construct($action, $controller = "", Language $language = null)
+    public function __construct($action, $controller = "", Visitor $person = null)
     {
+        $this->person = $person;
+        $language = (!empty($person)) ? $person->getLanguage() : null;
         $this->translator = isset($language) ? new Translator($language) : new Translator();
         // Détermination du nom du fichier vue à partir de l'action et du constructeur
         // La convention de nommage des fichiers vues est : view/<$controller>/<$action>.php
@@ -175,12 +178,13 @@ class View
         $view = $this->generateFile(
             'view/template.php',
             array(
+                'person' => $this->person,
+                'webRoot' => $webRoot,
                 'title' => $this->title,
-                'language' => $this->language,
                 'description' => $this->description,
                 'head' => $this->head,
                 'content' => $content,
-                'webRoot' => $webRoot
+                // 'language' => $this->language,
             )
         );
 

@@ -106,10 +106,11 @@ abstract class Controller {
      *        voir ControllerConnection::connect si connexion échoue
      * 
      * @param array $datasView Données nécessaires pour la génération de la vue
-     * @param Language $language the Visitor's current language
+     * @param Visitor|Client|Administrator $person the current user
      * @param string $action Action associée à la vue (permet à un contrôleur de générer une vue pour une action spécifique)
      */
-    protected function generateView($datasView = array(), Language $language = null, $action = null) {
+    // protected function generateView($datasView = array(), Language $language, $action = null) {
+    protected function generateView($datasView = array(), Visitor $person, $action = null) {
         // Utilisation de l'action actuelle par défaut
         // $actionView = $this->action;  // rnvs : comm
         // if ($action != null) {        // rnvs : comm
@@ -145,7 +146,7 @@ abstract class Controller {
         //        et stocke ce chemin comme une string dans l'attribut $file
         //        de la View
         // rnvs : en particulier : il y a 1! classe vue (View)
-        $view = new View($actionView, $controllerView, $language);
+        $view = new View($actionView, $controllerView, $person);
         
         // rnvs : rappel : $dataview est un tableau associatif produit
         //        dans la méthode de l'action du contrôleur effectivement
@@ -169,13 +170,14 @@ abstract class Controller {
     /** generateJsonView($viewDatas, $language, $response)
      * Generate a json view with an object Response
      * @param array $datasView datas used to generate the view
-     * @param Language $language the Visitor's current language
      * @param Response $response contain results ready and/or prepared or errors
+     * @param Visitor|Client|Administrator $person the current user
      */
-    protected function generateJsonView($datasView = array(), Response $response, Language $language = null) {
+    // protected function generateJsonView($datasView = array(), Response $response, Language $language) {
+    protected function generateJsonView($datasView = array(), Response $response, Visitor $person) {
         $classController = get_class($this);
         $controllerView = str_replace("Controller", "", $classController);
-        $view = new View(null, $controllerView, $language);
+        $view = new View(null, $controllerView, $person);
         $view->generateJson($datasView, $response);
     }
 
