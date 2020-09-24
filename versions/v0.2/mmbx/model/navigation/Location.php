@@ -63,11 +63,11 @@ class Location extends ModelFunctionality
     private function getEndpoint()
     {
         // $ip = "203.194.21.241"; // Australie Alexandria
-        // $ip = "138.197.157.60"; // Canada Toronto
+        $ip = "138.197.157.60"; // Canada Toronto
         // $ip = "77.73.241.154"; // Suisse Basel
         // $ip = "126.29.117.191"; // Tokyo
         // $ip = "197.157.210.199"; // Kinshasa
-        $ip = '2a02:a03f:5029:1300:dcb7:6c2c:9965:cd78'; // brussels capital
+        // $ip = '2a02:a03f:5029:1300:dcb7:6c2c:9965:cd78'; // brussels capital
         // $ip = $_SERVER['REMOTE_ADDR'];// Recuperation de l'IP du visiteur
         /* 
             status = [success | fail]

@@ -160,7 +160,7 @@ class ControllerItem extends ControllerSecure
             "brandsMeasures" => $brandsMeasures,
             "measureUnits" => $measureUnits,
         ];
-        $this->generateView($datasView, $language);
+        $this->generateView($datasView, $this->person);
     }
 
     /**
@@ -185,7 +185,7 @@ class ControllerItem extends ControllerSecure
             ];
             $response->addFiles(self::BRAND_STICKER_KEY, "view/Item/itemFiles/stickerBrand.php");
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -198,14 +198,6 @@ class ControllerItem extends ControllerSecure
         $datasView = [];
 
         $table = "UsersMeasures";
-        // $measureID = $this->checkInput(
-        //     $response,
-        //     Measure::KEY_MEASURE_ID,
-        //     Query::getParam(Measure::KEY_MEASURE_ID),
-        //     [Query::ALPHA_NUMERIC],
-        //     $this->person->getDataLength($table, "measureID"),
-        //     false
-        // );
         $unitName = $this->checkInput(
             $response,
             MeasureUnit::INPUT_MEASURE_UNIT,
@@ -278,7 +270,7 @@ class ControllerItem extends ControllerSecure
                 $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManager.php");
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -303,7 +295,7 @@ class ControllerItem extends ControllerSecure
             ];
             $response->addFiles(Measure::MEASURRE_STICKER_KEY, "view/Item/itemFiles/stickerMeasure.php");
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -402,7 +394,7 @@ class ControllerItem extends ControllerSecure
                 }
             }
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -432,7 +424,7 @@ class ControllerItem extends ControllerSecure
                 $response->addFiles(ControllerSecure::TITLE_KEY, 'view/elements/popupMeasureManagerTitle.php');
             }
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -459,7 +451,7 @@ class ControllerItem extends ControllerSecure
             ];
             $response->addFiles(self::QR_GET_MEASURE_ADDER, 'view/elements/popupMeasureAdder.php');
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -495,7 +487,7 @@ class ControllerItem extends ControllerSecure
                 }
             }
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -541,7 +533,7 @@ class ControllerItem extends ControllerSecure
                     break;
             }
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -571,7 +563,7 @@ class ControllerItem extends ControllerSecure
                 $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManagerContent.php');
             }
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -593,14 +585,16 @@ class ControllerItem extends ControllerSecure
                 $total = $basket->getTotal()->getFormated();
                 $subtotal = $basket->getSubTotal()->getFormated();
                 $vat = $basket->getVatAmount()->getFormated();
+                $shipping = $basket->getShipping()->getFormated();
                 $quantity = $basket->getQuantity();
                 $response->addResult(Basket::KEY_TOTAL, $total);
                 $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
                 $response->addResult(Basket::KEY_VAT, $vat);
+                $response->addResult(Basket::KEY_SHIPPING, $shipping);
                 $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
             }
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -630,7 +624,7 @@ class ControllerItem extends ControllerSecure
             $this->person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
             (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -670,7 +664,7 @@ class ControllerItem extends ControllerSecure
                 (!$response->containError()) ? $response->addResult(self::A_EDT_BXPROD, true) : null;
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -691,7 +685,7 @@ class ControllerItem extends ControllerSecure
             $this->person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
             (!$response->containError()) ? $response->addResult(self::A_MV_BXPROD, $response->isSuccess()) : null;
         }
-        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -713,12 +707,12 @@ class ControllerItem extends ControllerSecure
                 $basket = $this->person->getBasket();
                 $quantity = $basket->getQuantity();
                 $box = $basket->getBoxe($boxID);
-                $boxRate = $box->getNbProduct()."/".$box->getSizeMax();
+                $boxRate = $box->getNbProduct() . "/" . $box->getSizeMax();
                 $response->addResult(Box::KEY_BOX_ID, $boxRate);
                 $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -750,7 +744,7 @@ class ControllerItem extends ControllerSecure
             $response->addResult(Basket::KEY_VAT, $vat);
             $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
         }
-        $this->generateJsonView($datasView, $response, $language);
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     /**
@@ -779,7 +773,7 @@ class ControllerItem extends ControllerSecure
                 $response->addFiles(self::A_GET_EDT_POP, 'view/elements/popupSizeForm.php');
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person->getLanguage());
+        $this->generateJsonView($datasView, $response, $this->person);
     }
 
     public function test()
@@ -787,25 +781,13 @@ class ControllerItem extends ControllerSecure
         $map = new Map();
         var_dump($map);
         echo "<hr>";
-        $map->put(
-            "fuck",
-            Map::prodID
-            // Map::sizeType
-            // Map::size,
-            // Map::brand,
-            // Map::measureID,
-            // Map::cut
-        );
+        $map->put("fuck", Map::prodID, "hello1");
         var_dump($map);
         echo "<hr>";
-        $data = $map->get(
-            Map::prodID
-            // Map::sizeType,
-            // Map::size
-            // Map::brand,
-            // Map::measureID,
-            // Map::cut
-        );
-        var_dump($data);
+        $map->put("fuck2", Map::prodID, "hello2");
+        print_r($map);
+        echo "<hr>";
+        $data = $map->get(Map::prodID);
+        print_r($data);
     }
 }

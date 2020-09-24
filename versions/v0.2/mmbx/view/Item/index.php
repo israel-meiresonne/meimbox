@@ -1,6 +1,12 @@
 <?php
-require_once 'model/boxes-management/Size.php';
 
+/**
+ * @var array
+ */
+$measureUnits = $measureUnits;
+
+$this->title = "item";
+$this->description = "item page";
 /**
  * @var Translator
  */
@@ -11,6 +17,9 @@ $translator = $translator;
  */
 $product = $product;
 $prodID = $product->getProdID();
+
+$datas = ["prodID" => $prodID];
+$this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
 
 /**
  * @var BoxProduct[]|BasketProduct[]
@@ -41,6 +50,7 @@ switch (get_class($person)) {
         $measures = [];
         break;
 }
+
 $language = $person->getLanguage();
 $country = $person->getCountry();
 $currency = $person->getCurrency();
@@ -51,22 +61,6 @@ $basket = $person->getBasket();
  * @var array
  */
 $brandsMeasures = $brandsMeasures;
-
-/**
- * @var array
- */
-$measureUnits = $measureUnits;
-
-$this->title = "item";
-$this->lang = $language->getIsoLang();
-$this->description = "item page";
-// ob_start();
-// require 'itemFiles/head.php';
-// $this->head = ob_get_clean();
-$datas = [
-    "prodID" => $prodID
-];
-$this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
 ?>
 
 <div class="item_page-inner">
@@ -141,7 +135,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                     <div class="img_text_down-wrap">
                                         <div class="img_text_down-img-div">
                                             <div class="img_text_down-img-inner">
-                                                <img src="content/brain/permanent/icons8-card-security-150.png">
+                                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-card-security-150.png">
                                             </div>
                                         </div>
                                         <div class="img_text_down-text-div">
@@ -158,7 +152,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                     <div class="img_text_down-wrap">
                                         <div class="img_text_down-img-div">
                                             <div class="img_text_down-img-inner">
-                                                <img src="content/brain/permanent/icons8-headset-96.png">
+                                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-headset-96.png">
                                             </div>
                                         </div>
                                         <div class="img_text_down-text-div">
@@ -170,7 +164,7 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
                                     <div class="img_text_down-wrap">
                                         <div class="img_text_down-img-div">
                                             <div class="img_text_down-img-inner">
-                                                <img src="content/brain/permanent/return-box.png">
+                                                <img src="<?= self::DIR_STATIC_FILES ?>return-box.png">
                                             </div>
                                         </div>
                                         <div class="img_text_down-text-div">
@@ -262,75 +256,4 @@ $this->head = $this->generateFile('view/Item/itemFiles/head.php', $datas);
         ?>
     </div>
 
-    <!-- <div id="full_screen_div" class="full_screen-block"> -->
-    <div id="full_screen_div" class="full_screen-block">
-        <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
-            <?php
-            $datas = ["brandsMeasures" => $brandsMeasures];
-            echo $this->generateFile("view/elements/popupBrand.php", $datas);
-            ?>
-        </div>
-        <div id="measure_manager" class="customize_measure-block pop_up-container">
-            <?php
-            $datas = [
-                "measures" => $measures,
-                "measureUnits" => $measureUnits
-            ];
-            echo $this->generateFile("view/elements/popupMeasureManager.php", $datas);
-            ?>
-        </div>
-        <div id="measure_adder" class="customize_measure-block pop_up-container">
-            <?php
-            $datas = [
-                "measureUnits" => $measureUnits
-            ];
-            echo $this->generateFile("view/elements/popupMeasureAdder.php", $datas);
-            ?>
-        </div>
-        <div id="box_manager_window" class="box_manager-container pop_up-container">
-            <?php
-            $datas = [
-                "boxes" => $basket->getBoxes(),
-                "country" => $country,
-                "currency" => $currency,
-                "conf" => Box::CONF_ADD_BXPROD
-            ];
-            echo $this->generateFile('view/elements/popupBoxManager.php', $datas);
-            ?>
-        </div>
-        <div id="box_pricing_window" class="pricing-container pop_up-container">
-            <?php
-            $datas = [
-                "language" => $language,
-                "country" => $country,
-                "currency" => $currency
-            ];
-            echo $this->generateFile('view/elements/popupBoxPricing.php', $datas);
-            ?>
-        </div>
-        <div id="basket_pop" class="pop_up-container">
-            <?php
-            $datas = [
-                "basket" => $basket,
-                "country" => $country,
-                "currency" => $currency
-            ];
-            echo $this->generateFile('view/elements/popupBasket.php', $datas);
-            ?>
-        </div>
-        <div id="size_editor_pop" class="pop_up-container">
-            <?php
-        // $selectedSize = new Size("m-null-null-null");
-        // $selectedSize = new Size("m-tommy hilfiger-null-null");
-        // $selectedSize = new Size("null-null-0jj2g3rj131923p1560b90d01-fit");
-        // $prod2 = $person->getBasket()->getBoxe("0860g1009tn0i31s2s6b24112")->getProduct(1, $selectedSize);
-        //     // var_dump($prod2);
-        //     $datas = [
-        //         "product" => $prod2,
-        //         "nbMeasure" => count($measures),
-        //     ];
-        //     echo $this->generateFile('view/elements/popupSizeForm.php', $datas);
-            ?>
-        </div>
-    </div>
 </div>

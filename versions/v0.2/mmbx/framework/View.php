@@ -98,6 +98,8 @@ class View
      */
     private $head;
 
+    private const DIR_STATIC_FILES = "content/brain/permanent/";
+
     /**
      * Constructeur
      * 

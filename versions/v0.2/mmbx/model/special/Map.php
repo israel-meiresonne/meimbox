@@ -9,6 +9,15 @@ class Map
     public const setDate = "setDate";
     
     /**
+     * key for Country
+     * @var string
+     */
+    public const isoCountry = "isoCountry";
+    public const isoCurrency = "iso_currency";
+    public const isUE = "isUE";
+    public const vat = "vat";
+    
+    /**
      * key for Size
      * @var string
      */
@@ -38,6 +47,15 @@ class Map
      */
     public const unitName = "unitName";
 
+    /**
+     * key for input datas
+     * @var string
+     */
+    public const inputName = "inputName";
+    public const inputValue = "inputValue";
+    public const isChecked = "isChecked";
+    public const inputFunc = "inputFunc";
+
     public function __construct()
     {
         $this->map = [];
@@ -59,15 +77,23 @@ class Map
             $this->map[$key] = $data;
         } else {
             $key = $keys[0];
-            $this->map[$key] = $this->putRec($data, $keys, 1);
+            if(key_exists($key, $this->map)){
+                $this->map[$key] = $this->putRec($this->map[$key], $data, $keys, 1);
+            } else {
+                $this->map[$key] = $this->putRec([], $data, $keys, 1);
+            }
         }
     }
 
-    private function putRec($data, $keys, $i)
+    private function putRec($recMap, $data, $keys, $i)
     {
         if ($i < count($keys)) {
             $key = $keys[$i];
-            $recMap[$key] = $this->putRec($data, $keys, ++$i);
+            if(key_exists($key, $recMap)){
+                $recMap[$key] = $this->putRec($recMap[$key], $data, $keys, ++$i);
+            } else {
+                $recMap[$key] = $this->putRec([], $data, $keys, ++$i);
+            }
             return $recMap;
         } else {
             return $data;
@@ -105,5 +131,14 @@ class Map
             $key = $keys[$i];
             return ((gettype($recMap) == "array") && key_exists($key, $recMap)) ? $this->getRec($recMap[$key], $keys, ++$i) : null;
         }
+    }
+
+    /**
+     * To get of the first array of the map
+     * @return mixed[] the first array of the map
+     */
+    public function getKeys()
+    {
+        return array_keys($this->map);
     }
 }

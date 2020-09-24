@@ -21,7 +21,7 @@ class ControllerDashboard extends ControllerSecure
     public function shopbag()
     {
         $datasView = [];
-        $this->generateView($datasView, $this->person->getLanguage(), self::PG_SHOPBAG);
+        $this->generateView($datasView, $this->person, self::PG_SHOPBAG);
     }
 
     /**

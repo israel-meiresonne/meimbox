@@ -8,6 +8,6 @@ class ControllerHome extends ControllerSecure
     {
         // $this->secureSession();
         $language = $this->person->getLanguage();
-        $this->generateView(array("language" => $language));
+        $this->generateView([], $this->person);
     }
 }

@@ -3,23 +3,19 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string $title name of the dropdown element
- * @param string[] $checkedLabels list of checked input label
- * @param string[] $labels list of input label that return the name of the input
- * $labels => [
- *          label => paramName
+ * @param Map $inputMap map with all necessary datas to build a input
+ * + $inputMap[label] =>[
+ *          Map::inputName => string,
+ *          Map::inputValue => string,
+ *          Map::isChecked => boolean,  // set true to check input else false
+ *          Map::inputFunc => string|null,   // function to place on the input
  *      ]
- * + label : used as displayed name and as input's value attribut
- * + paramName : used as input's name attribut
- * ——— RADIO PARAMS ———
+ * + 🚨only one input of $inputMap can has Map::isChecked = true
+ * @param string $func function placed on all input
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
- * @param string $inputName the input's name
- * @param boolean $isDisplayed set true to display content else set false or empty
+ * @param boolean $isDisplayed set true to display content else set false
  */
-
-// $additional = (isset($additional)) ? $additional : "";
-// $inputName = (isset($inputName)) ? $inputName : "";
-// $isRadio = isset($isRadio);
 
 $head = ModelFunctionality::generateDateCode(25);
 $headx = "#" . $head;
@@ -35,7 +31,14 @@ $Tagdisplay = (!empty($isDisplayed)) ? 'style="display:block;"' : null;
             <span class="dropdown-title"><?= $title ?></span>
         </div>
         <div id="<?= $body ?>" class="dropdown-checkbox-list" <?= $Tagdisplay ?>>
-            <?php require 'view/elements/dropdownInput.php'; ?>
+            <?php 
+            $datas = [
+                "inputMap" => $inputMap,
+                "func" => $func,
+                "isRadio" => $isRadio
+            ];
+            echo $this->generateFile('view/elements/dropdown/dropdownInput2.php', $datas); 
+            ?>
         </div>
     </div>
 </div>

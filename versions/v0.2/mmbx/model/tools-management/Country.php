@@ -1,6 +1,7 @@
 <?php
 
 require_once 'model/ModelFunctionality.php';
+require_once 'model/special/Map.php';
 
 class Country extends ModelFunctionality
 {
@@ -36,6 +37,11 @@ class Country extends ModelFunctionality
      */
     private static $DEFAULT_COUNTRY_NAME;
 
+    /**
+     * Acces key for country's iso code
+     * @var string
+     */
+    public const KEY_ISO_CODE = "iso_country";
 
     public function __construct($countryName)
     {
@@ -90,6 +96,15 @@ class Country extends ModelFunctionality
     }
 
     /**
+     * Getter of the default country name in English
+     * @return string The country's name in English
+     */
+    public function getCountryNameDefault()
+    {
+        return self::$DEFAULT_COUNTRY_NAME;
+    }
+
+    /**
      * Getter of the country's vat
      * @return string The country's vat
      */
@@ -98,25 +113,37 @@ class Country extends ModelFunctionality
         return $this->vat;
     }
 
-    // /**
-    //  * To get a protected copy of a Country instance
-    //  * @return Country a protected copy of the Country instance
-    //  */
-    // public function getCopy()
-    // {
-    //     $copy = clone $this;
-    //     $copy->isoCountry = $this->isoCountry;
-    //     $copy->countryName = $this->countryName;
-    //     $copy->isUE = $this->isUE;
-    //     $copy->vat = $this->vat;
-    //     return $copy;
-    // }
+    /**
+     * Getter of the country's vat in displayable format
+     * @return string The country's vat in displayable format
+     */
+    public function getVatDisplayable()
+    {
+        $vat = $this->getVat();
+        $display = number_format(($vat*100), 0, "", "")."%";
+        return $display;
+    }
 
-    // public function __toString()
-    // {
-    //     Helper::printLabelValue("isoCountry", $this->isoCountry);
-    //     Helper::printLabelValue("countryName", $this->countryName);
-    //     Helper::printLabelValue("isUE", $this->isUE);
-    //     Helper::printLabelValue("vat", $this->vat);
-    // }
+    /**
+     * To get countries supported and their datas
+     * @return Map countries supported and their datas
+     * $countriesMap[countryName] => [
+     *      Map::isoCountry => string
+     *      Map::isoCurrency => string 
+     *      Map::isUE => boolean
+     *      Map::vat => float
+     * ]
+     */
+    public static function getCountries()
+    {
+        $coutries = parent::getCountriesDb();
+        $countriesMap = new Map();
+        foreach($coutries as $countryName => $datas){
+            $countriesMap->put($datas["isoCountry"], $countryName, Map::isoCountry);
+            $countriesMap->put($datas["iso_currency"], $countryName, Map::isoCurrency);
+            $countriesMap->put($datas["isUE"], $countryName, Map::isUE);
+            $countriesMap->put($datas["vat"], $countryName, Map::vat);
+        }
+        return $countriesMap;
+    }
 }
