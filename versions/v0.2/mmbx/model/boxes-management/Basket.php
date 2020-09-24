@@ -55,6 +55,7 @@ class Basket extends ModelFunctionality
     public const KEY_TOTAL = "basket_total";
     public const KEY_SUBTOTAL = "basket_subtotal";
     public const KEY_VAT = "basket_vat";
+    public const KEY_SHIPPING = "basket_shipping";
     public const KEY_BSKT_QUANTITY = "basket_quantity";
 
     /**
@@ -278,8 +279,10 @@ class Basket extends ModelFunctionality
                 $sum += $box->getPrice()->getPrice();
             }
         }
+        $sum += $this->getShipping()->getPrice();
         $currency = $this->getCurrency();
         return (new Price($sum, $currency));
+        // return (new Price(1819.41, $currency));
     }
 
     /**
@@ -289,7 +292,7 @@ class Basket extends ModelFunctionality
     public function getSubTotal()
     {
         $country = $this->getCountry();
-        $total = $this->getTotal()->getPrice();
+        $total = $this->getTotal()->getPrice() - $this->getShipping()->getPrice();
         $vat = $country->getVat();
         $subtotal = ($total / (1 + $vat));
         $currency = $this->getCurrency();
@@ -302,13 +305,22 @@ class Basket extends ModelFunctionality
      */
     public function getVatAmount()
     {
-        $country = $this->getCountry();
-        $total = $this->getTotal()->getPrice();
-        $vat = $country->getVat();
-        $subtotal = ($total / (1 + $vat));
+        $total = $this->getTotal()->getPrice() - $this->getShipping()->getPrice();
+        $subtotal = $this->getSubTotal()->getPrice();
         $vatAmount = $total - $subtotal;
         $currency = $this->getCurrency();
         return (new Price($vatAmount, $currency));
+    }
+
+    /**
+     * To get Basket's shipping cost
+     * @return Price Basket's shipping cost
+     */
+    public function getShipping()
+    {
+        $currency = $this->getCurrency();
+        return (new Price(7.97, $currency));
+        // return (new Price(rand(4, 30) / rand(3, 5), $currency));
     }
 
     /**

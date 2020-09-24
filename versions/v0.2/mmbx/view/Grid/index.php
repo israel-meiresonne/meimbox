@@ -31,7 +31,7 @@ $this->head = ob_get_clean();
                     <div class="img-text-block">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="content/brain/permanent/icons8-setting-80.png">
+                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-setting-80.png">
                             </div>
                             <span class="img-text-span"><?= $translator->translateStation("US1") ?></span>
                         </div>
@@ -220,7 +220,7 @@ $this->head = ob_get_clean();
                         ?>
                     </ul>
                     <div id="prodGrid_loading" class="loading-img-wrap">
-                        <img src="content/brain/permanent/loading.gif">
+                        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
                     </div>
                 </div>
             </div>

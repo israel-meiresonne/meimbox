@@ -119,6 +119,13 @@
     z-index: 5;
 }
 
+.info-style {
+    color: var(--color-text-05) !important;
+    text-transform: initial !important;
+    font-family: var(--italic-font-family);
+    font-style: italic;
+}
+
 header {
     position: fixed;
     width: 100%;
@@ -366,7 +373,7 @@ header {
         margin-left: auto;
         cursor: pointer;
     }
-    .navbar-mobile .navbar-basket-block .img-text-block{
+    .navbar-mobile .navbar-basket-block .img-text-block {
         height: 100%;
     }
     .navbar-mobile .navbar-basket-block .img-text-img {

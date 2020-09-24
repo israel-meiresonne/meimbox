@@ -166,6 +166,7 @@ $language = $person->getLanguage();
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
+        const KEY_SHIPPING = "<?= Basket::KEY_SHIPPING ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
         const ALERT_DLT_BXPROD = "<?= $translator->translateStation("US64") ?>";
@@ -343,6 +344,7 @@ $language = $person->getLanguage();
                         </li>
                         <li class="navbar-li remove-li-default-att">
                             <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
+                            <!-- <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="getBasketPop(()=>{openPopUp('#basket_pop')})"> -->
                                 <div class="img-text-block  navbar-basket-wrap">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
@@ -403,6 +405,7 @@ $language = $person->getLanguage();
 
                 <div class="navbar-basket-block navbar-right-block flex-row">
                     <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
+                    <!-- <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="getBasketPop(()=>{openPopUp('#basket_pop')})"> -->
                         <div class="img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
@@ -417,9 +420,10 @@ $language = $person->getLanguage();
             <div class="collapse-container"></div>
         </nav>
     </header>
-    <?= $content ?>
-    <?= "" //$fullscreen 
-    ?>
+    <div class="template-content">
+        <?= $content ?>
+        <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
+    </div>
 </body>
 
 </html>

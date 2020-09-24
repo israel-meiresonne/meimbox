@@ -355,7 +355,7 @@ abstract class ModelFunctionality extends Model
      */
     protected function existCountry($countryName)
     {
-        !isset(self::$countries) ? $this->setCountrys() : null;
+        !isset(self::$countries) ? self::setCountrys() : null;
         return key_exists($countryName, self::$countries);
     }
 
@@ -366,7 +366,7 @@ abstract class ModelFunctionality extends Model
      */
     protected function getCountryLine($countryName)
     {
-        !isset(self::$countries) ? $this->setCountrys() : null;
+        !isset(self::$countries) ? self::setCountrys() : null;
         if (!key_exists($countryName, self::$countries)) {
             throw new Exception("This country don't exist!");
         }
@@ -374,13 +374,24 @@ abstract class ModelFunctionality extends Model
     }
 
     /**
+     * To get db's country values in map format
+     * @param string $countryName country's english name
+     * @return string[] table with iso country values
+     */
+    protected static function getCountriesDb()
+    {
+        !isset(self::$countries) ? self::setCountrys() : null;
+        return self::$countries;
+    }
+
+    /**
      * Set country map with db
      */
-    private function setCountrys()
+    private static function setCountrys()
     {
         self::$countries = [];
         $query = 'SELECT * FROM `Countries`';
-        $tab = $this->select($query);
+        $tab = self::select($query);
 
         foreach ($tab as $tabLine) {
             self::$countries[$tabLine["country"]]["isoCountry"] = $tabLine["isoCountry"];

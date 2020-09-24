@@ -34,7 +34,7 @@ class ControllerGrid extends ControllerSecure
             "search" => $search,
             "person" => $this->person
         ];
-        $this->generateView($viewDatas, $language);
+        $this->generateView($viewDatas, $this->person);
     }
 
     /**
@@ -69,6 +69,6 @@ class ControllerGrid extends ControllerSecure
                 ]
             ]
         ];
-        $this->generateJsonView($viewDatas, $response, $language);
+        $this->generateJsonView($viewDatas, $response, $this->person);
     }
 }

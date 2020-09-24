@@ -1,8 +1,9 @@
 (() => {
     // ++++ val down ++++
     const baskettotal = "total";
-    const basketsubtotal = "basketsubtotal";
+    const basketsubtotal = "subtotal";
     const basketvat = "vat";
+    const basketshipping = "shipping";
     const basketquantity = "quantity";
     const basketboxrate = "boxrate";
     // ++++ class down ++++
@@ -633,6 +634,29 @@
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/
     /*—————————————————— BASKET MANAGER DOWN ————————————————————————————————*/
+    basketUpdateDatas = (r) => {
+        if (r.isSuccess) {
+            var ttx = $("[" + basketdata + "='" + baskettotal + "']");
+            var ttv = r.results[KEY_TOTAL];
+            fadeValue(ttx, ttv);
+
+            var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
+            var sbtv = r.results[KEY_SUBTOTAL];
+            fadeValue(sbtx, sbtv);
+
+            var vatx = $("[" + basketdata + "='" + basketvat + "']");
+            var vatv = r.results[KEY_VAT];
+            fadeValue(vatx, vatv);
+            
+            var shipx = $("[" + basketdata + "='" + basketshipping + "']");
+            var shipv = r.results[KEY_SHIPPING];
+            fadeValue(shipx, shipv);
+
+            var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
+            var qtyv = r.results[KEY_BSKT_QUANTITY];
+            fadeValue(qtyx, qtyv);
+        }
+    }
     setMoveBoxProduct = (btnx, bxid) => {
         var sbtn = $("#sumbit_box_manager");
         var sfunc = $(sbtn).attr(onclickattr);
@@ -667,25 +691,6 @@
             "rc": () => { displayFlexOff(d.l) }
         };
         SND(d);
-    }
-    basketUpdateDatas = (r) => {
-        if (r.isSuccess) {
-            var ttx = $("[" + basketdata + "='" + baskettotal + "']");
-            var ttv = r.results[KEY_TOTAL];
-            fadeValue(ttx, ttv);
-
-            var sbtx = $("[" + basketdata + "='" + basketsubtotal + "']");
-            var sbtv = r.results[KEY_SUBTOTAL];
-            fadeValue(sbtx, sbtv);
-
-            var vatx = $("[" + basketdata + "='" + basketvat + "']");
-            var vatv = r.results[KEY_TOTAL];
-            fadeValue(vatx, vatv);
-
-            var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
-            var qtyv = r.results[KEY_BSKT_QUANTITY];
-            fadeValue(qtyx, qtyv);
-        }
     }
     var getBasketPopRSP = (r) => {
         if (r.isSuccess) {
@@ -741,9 +746,9 @@
                 "d": params,
                 "r": removeBoxProductRSP,
                 // "l": "#box_manager_loading",
-                "x": {"bxelx":bxelx, "elx":elx},
-                "sc": () => {},
-                "rc": () => {}
+                "x": { "bxelx": bxelx, "elx": elx },
+                "sc": () => { },
+                "rc": () => { }
             };
             SND(d);
         }
@@ -751,7 +756,7 @@
     var removeBoxProductRSP = (r, d) => {
         if (r.isSuccess) {
             basketUpdateDatas(r);
-            var x = $(d.bxelx).find("["+basketdata+"="+ basketboxrate +"]");
+            var x = $(d.bxelx).find("[" + basketdata + "=" + basketboxrate + "]");
             fadeValue(x, r.results[KEY_BOX_ID]);
             removeAnim(d.elx);
         } else if (!empty(r.errors[FAT_ERR])) {
