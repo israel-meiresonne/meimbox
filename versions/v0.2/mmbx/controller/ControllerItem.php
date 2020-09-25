@@ -785,18 +785,18 @@ class ControllerItem extends ControllerSecure
         $this->generateJsonView($datasView, $response, $this->person);
     }
 
-    public function test()
-    {
-        $map = new Map();
-        var_dump($map);
-        echo "<hr>";
-        $map->put("fuck", Map::prodID, "hello1");
-        var_dump($map);
-        echo "<hr>";
-        $map->put("fuck2", Map::prodID, "hello2");
-        print_r($map);
-        echo "<hr>";
-        $data = $map->get(Map::prodID);
-        print_r($data);
-    }
+    // public function test()
+    // {
+    //     $map = new Map();
+    //     var_dump($map);
+    //     echo "<hr>";
+    //     $map->put("fuck", Map::prodID, "hello1");
+    //     var_dump($map);
+    //     echo "<hr>";
+    //     $map->put("fuck2", Map::prodID, "hello2");
+    //     print_r($map);
+    //     echo "<hr>";
+    //     $data = $map->get(Map::prodID);
+    //     print_r($data);
+    // }
 }

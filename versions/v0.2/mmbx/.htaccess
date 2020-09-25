@@ -13,5 +13,9 @@ RewriteRule ^dashboard/shopbag/*$	                index.php?controller=dashboard
 RewriteRule ^dashboard/orders/*$	                index.php?controller=dashboard&action=orders [QSA,NC,L]
 RewriteRule ^dashboard/*$	                        index.php?controller=dashboard&action=index [QSA,NC,L]
 
+# Checkout
+RewriteRule ^checkout/qr/+([A-z]+)/*$               index.php?controller=checkout&action=$1 [QSA,NC,L]
+RewriteRule ^checkout/*$	                        index.php?controller=checkout&action=index [QSA,NC,L]
+
 # default
 # RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2 [QSA,NC]
