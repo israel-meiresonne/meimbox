@@ -17,8 +17,7 @@ $currency = $person->getCurrency();
 $measures = $person->getMeasures();
 $basket = $person->getBasket();
 
-$datas = [];
-$this->head = $this->generateFile('view/Dashboard/files/head.php', $datas);
+$this->head = $this->generateFile('view/Dashboard/files/head.php', []);
 ?>
 
 
