@@ -574,7 +574,7 @@
                 "a": A_DELETE_BOX,
                 "d": params,
                 "r": removeBoxRSP,
-                "l": "#basket_pop_loading",
+                "l": ".basket_pop_loading",
                 "x": x,
                 "sc": () => { displayFlexOn(d.l) },
                 "rc": () => { displayFlexOff(d.l) }
@@ -685,7 +685,7 @@
             "a": A_GET_BSKT_POP,
             "d": null,
             "r": getBasketPopRSP,
-            "l": "#basket_pop_loading",
+            "l": ".basket_pop_loading",
             // "x": cbtnx,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOff(d.l) }
@@ -695,6 +695,7 @@
     var getBasketPopRSP = (r) => {
         if (r.isSuccess) {
             $("#basket_pop .pop_up-content-block-inner").html(r.results[A_GET_BSKT_POP]);
+            $("#shopping_bag").html(r.results[KEY_CART_FILE]);
             basketUpdateDatas(r);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
@@ -776,7 +777,7 @@
             "a": A_GET_EDT_POP,
             "d": params,
             "r": getSizeEditorRSP,
-            "l": "#basket_pop_loading",
+            "l": ".basket_pop_loading",
             "x": popFunc,
             "sc": () => { displayFadeIn(d.l) },
             "rc": () => { displayFadeOut(d.l) }

@@ -249,7 +249,7 @@ class Search extends ModelFunctionality
         $categories = [];
         $colors = [];
         $sizes = [];
-        $params = Query::getRegexParams("#_[0-9]+#");
+        $params = Query::getParamsRegex("#_[0-9]+#");
         foreach ($params as $param => $value) {
             $shortParam = preg_replace("#_[0-9]+#", "", $param);
             switch ($shortParam) {

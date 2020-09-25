@@ -62,21 +62,43 @@ switch ($product->getType()) {
         $deleteFunc = "removeBoxProduct('$boxID', '$prodID', '$sequence', '$boxElementIdx', '$elementIdx')";
         /*———————————————————————— CONFIG DELETE BUTTON UP ——————————————————*/
         /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
+        $spanid = ModelFunctionality::generateDateCode(25);
+        $spanidx = "#" . $spanid;
         switch ($containerId):
             case 'box_manager_window':
                 $editFunc = null;
                 $miniPopEdit = null;
                 break;
-            default:
-                $spanid = ModelFunctionality::generateDateCode(25);
-                $spanidx = "#" . $spanid;
+            case 'shopping_bag':
+                ob_start(); ?>
+                <ul class="remove-ul-default-att">
+                    <li class="remove-li-default-att">
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="openPopUp('#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
+                    </li>
+                    <li class="remove-li-default-att">
+                        <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{openPopUp('#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
+                    </li>
+                </ul>
+            <?php
+                $miniPopContent  = ob_get_clean();
+                $miniPopId = ModelFunctionality::generateDateCode(25);
+                $miniPopIdx = "#" . $miniPopId;
+                $datas = [
+                    "id" => $miniPopId,
+                    "dir" => "down",
+                    "content" => $miniPopContent
+                ];
+                $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
+                $editFunc = "openMiniPop('$miniPopIdx')";
+                break;
+
+            case 'basket_pop':
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
                         <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
                     </li>
                     <li class="remove-li-default-att">
-                        <!-- <span class="grey-tag-button standard-tag-button" onclick="switchPopUp('<?= $containerIdx ?>','#size_editor_pop',()=>{getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')})"><?= $translator->translateStation("US62") ?></span> -->
                         <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{switchPopUp('<?= $containerIdx ?>','#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
                     </li>
                 </ul>
@@ -92,6 +114,7 @@ switch ($product->getType()) {
                 $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
                 $editFunc = "openMiniPop('$miniPopIdx')";
                 break;
+            // default:
         endswitch;
         /*———————————————————————— CONFIG EDIT BUTTON UP ————————————————————*/
         break;
