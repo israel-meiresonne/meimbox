@@ -27,7 +27,7 @@ require_once 'model/boxes-management/BoxProduct.php';
 
 ?>
 <div class="cart-wrap">
-    <ul <?= $Tagdad ?> class="remove-ul-default-att" <?= $Tagsbtnx ?> >
+    <ul <?= $Tagdad ?> class="cart-ul remove-ul-default-att" <?= $Tagsbtnx ?> >
         <?php foreach ($elements as $element) : 
             $elementId = ModelFunctionality::generateDateCode(25);
             $TagelementId = "id='". $elementId ."'";

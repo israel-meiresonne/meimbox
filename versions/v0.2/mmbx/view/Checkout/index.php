@@ -175,7 +175,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                             </div>
                                         </div>
                                     </div>
-
                                     <hr class="hr-summary">
                                     <div class="connection-wrap-inner login-wrap-inner">
                                         <form class="login-form-tag">
@@ -187,7 +186,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                         <p class="comment"></p>
                                                     </div>
                                                 </div>
-
                                                 <div class="connection-input-container">
                                                     <div class="input-wrap">
                                                         <label class="input-label" for="login_password">password</label>
@@ -196,15 +194,9 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="login-password-div  login-input-block">
-
-
-
                                             </div>
-
                                             <div class="login-remember-forgot-div login-input-block">
-
                                                 <div class="connection-input-container login-remember-block">
                                                     <div class="connection-chcekbox-div">
                                                         <label for="login_remember" class="checkbox-label">remember me
@@ -217,7 +209,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 <div class="connection-input-container login-forgot-block">
                                                     <a href="" target="_blank">forgot password</a>
                                                 </div>
-
                                             </div>
                                         </form>
                                     </div>
@@ -225,7 +216,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 
                             </div>
                         </div>
-
                         <div class="address-container">
                             <div class="form-wrap">
                                 <div class="form-title-block address-title-block">
@@ -233,7 +223,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                         <span class="form-title">shipping address</span>
                                     </div>
                                 </div>
-
                                 <hr class="hr-summary">
                                 <div class="form-wrap-inner address-wrap-inner">
                                     <form class="address-form-tag">
@@ -253,7 +242,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-input-block form-double-input-block">
                                             <div class="form-input-container">
                                                 <div class="input-wrap">
@@ -270,7 +258,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-input-block form-double-input-block">
                                             <div class="form-input-container">
                                                 <div class="form-input-dropdown-container">
@@ -302,10 +289,8 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                         </div>
                                                     </div>
                                                     <p class="comment"></p>
-
                                                 </div>
                                             </div>
-
                                             <div class="form-input-container">
                                                 <div class="input-wrap">
                                                     <label class="input-label" for="address_zipcode">postal code</label>
@@ -314,7 +299,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-input-block form-simple-input-block">
                                             <div class="form-input-container">
                                                 <div class="input-wrap">
@@ -328,14 +312,12 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                 </div>
                             </div>
                         </div>
-
                         <div class="payement-div">
                             <div class="summary-detail-button-div">
                                 <div class="summary-detail-button-inner">
                                     <button class="green-button standard-button remove-button-default-att">checkout</button>
                                 </div>
                             </div>
-
                             <div class="summary-detail-safe_info-div">
                                 <div class="summary-detail-safe_info-inner">
                                     <div class="safe_info-wrap">
@@ -392,14 +374,11 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                     </div>
                                 </div>
                             </div>
-
                             <div class="summary-detail-collapse-div">
                                 <div class="summary-detail-collapse-inner">
-
                                     <div class="collapse-wrap">
                                         <ul class="remove-ul-default-att">
                                             <li class="remove-li-default-att">
-
                                                 <div class="collapse-div">
                                                     <div class="collapse-title-div">
                                                         <div class="collapse-title">contact us</div>
@@ -412,10 +391,8 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <div class="collapse-text-div collapse-text-hidded">
                                                         <div class="collapse-text-inner">
-
                                                             <ul class="contact-ul remove-ul-default-att">
                                                                 <li class="contact-li remove-li-default-att">
 
@@ -425,7 +402,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                                         </div>
                                                                         <span class="img-text-span">+472 13 13 24</span>
                                                                     </div>
-
                                                                 </li>
                                                                 <li class="contact-li remove-li-default-att">
 
@@ -435,14 +411,11 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                                         </div>
                                                                         <span class="img-text-span">email@monsite.com</span>
                                                                     </div>
-
                                                                 </li>
                                                             </ul>
-
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </li>
                                             <li class="remove-li-default-att">
                                                 <div class="collapse-div">
@@ -457,7 +430,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <div class="collapse-text-div collapse-text-hidded">
                                                         <div class="collapse-text-inner">
                                                             <ul class="payement-ul remove-ul-default-att">
@@ -516,15 +488,12 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                             </li>
                                         </ul>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-
-
                 <div class="summary_cart-block">
                     <div class="summary_cart-inner">
                         <div class="cart-block">
@@ -534,391 +503,394 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                         <span class="form-title">cart</span>
                                     </div>
                                     <div class="summary-detail-arrow-button-div">
-                                        <div class="summary-detail-arrow-button-inner">
-                                            <button class="summary-detail-arrow-button remove-button-default-att">
-                                                <div class="arrow-element-wrap">
-                                                    <span class="arrow-span"></span>
-                                                </div>
-                                            </button>
+                                        <div class="arrow-element-container">
+                                            <div class="arrow-element-wrap">
+                                                <span class="arrow-span"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="cart-wrap">
+                                <div id="checkout_cart">
                                     <hr class="hr-summary">
-                                    <ul class="cart-ul remove-ul-default-att">
-
-                                        <li class="li-cart-element-container remove-li-default-att">
-                                            <div class="basket_product-wrap">
-                                                <div class="cart-element-wrap">
-                                                    <div class="cart-element-inner">
-
-                                                        <div class="cart-element-detail-block">
-                                                            <div class="cart-element-img-div">
-                                                                <img src="outside/brain/prod/picture01.jpeg">
-                                                            </div>
-                                                            <div class="cart-element-property-set">
-                                                                <div class="cart-element-property-div">
-                                                                    <span>essential double coat</span>
-                                                                </div>
-                                                                <div class="cart-element-property-div">
-                                                                    <span class="cart-element-property">color: </span>
-                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                </div>
-                                                                <div class="cart-element-property-div">
-                                                                    <span class="cart-element-property">size: </span>
-                                                                    <span class="cart-element-value">s</span>
-                                                                </div>
-                                                                <div class="cart-element-property-div">
-                                                                    <span class="cart-element-property">quantity: </span>
-                                                                    <span class="cart-element-value">2</span>
-                                                                </div>
-                                                                <div class="cart-element-property-div cart-element-property-price-div">
-                                                                    <span class="cart-element-property">price: </span>
-                                                                    <span class="cart-element-value">$52.50 usd</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="cart-element-price-block">
-                                                            <div class="cart-element-price-inner">
-                                                                <span>$52.50 usd</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="li-cart-element-container remove-li-default-att">
-                                            <div class="box-wrap">
-                                                <div class="box-display-block">
+                                    <?php
+                                    $boxDatas = [
+                                        "containerId" => "checkout_cart",
+                                        "elements" => $basket->getMerge(),
+                                        "country" => $country,
+                                        "currency" => $currency,
+                                    ];
+                                    echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
+                                    ?>
+                                    <!-- <div class="cart-wrap">
+                                        <hr class="hr-summary">
+                                        <ul class="cart-ul remove-ul-default-att">
+                                            <li class="li-cart-element-container remove-li-default-att">
+                                                <div class="basket_product-wrap">
                                                     <div class="cart-element-wrap">
                                                         <div class="cart-element-inner">
 
                                                             <div class="cart-element-detail-block">
                                                                 <div class="cart-element-img-div">
-                                                                    <img src="<?= self::DIR_STATIC_FILES ?>box-gold-128.png">
+                                                                    <img src="outside/brain/prod/picture01.jpeg">
                                                                 </div>
-                                                                <div class="cart-element-property-set box-property-set">
-                                                                    <div class="box-property-set-inner">
-                                                                        <div class="cart-element-property-div">
-                                                                            <span>golden box</span>
-                                                                        </div>
-                                                                        <div class="cart-element-property-div">
-                                                                            <span class="cart-element-property">item: </span>
-                                                                            <span class="cart-element-value">3</span>
-                                                                        </div>
-                                                                        <div class="cart-element-property-div cart-element-property-price-div">
-                                                                            <span class="cart-element-property">price: </span>
-                                                                            <span class="cart-element-value">$52.50 usd</span>
-                                                                        </div>
+                                                                <div class="cart-element-property-set">
+                                                                    <div class="cart-element-property-div">
+                                                                        <span>essential double coat</span>
+                                                                    </div>
+                                                                    <div class="cart-element-property-div">
+                                                                        <span class="cart-element-property">color: </span>
+                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                    </div>
+                                                                    <div class="cart-element-property-div">
+                                                                        <span class="cart-element-property">size: </span>
+                                                                        <span class="cart-element-value">s</span>
+                                                                    </div>
+                                                                    <div class="cart-element-property-div">
+                                                                        <span class="cart-element-property">quantity: </span>
+                                                                        <span class="cart-element-value">2</span>
+                                                                    </div>
+                                                                    <div class="cart-element-property-div cart-element-property-price-div">
+                                                                        <span class="cart-element-property">price: </span>
+                                                                        <span class="cart-element-value">$52.50 usd</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                             <div class="cart-element-price-block">
                                                                 <div class="cart-element-price-inner">
                                                                     <span>$52.50 usd</span>
                                                                 </div>
                                                             </div>
-
-                                                            <div class="cart-element-arrow-block">
-                                                                <div class="cart-element-arrow-inner">
-                                                                    <button class="cart-element-arrow-button remove-button-default-att">
-                                                                        <div class="arrow-element-wrap">
-                                                                            <span class="arrow-span"></span>
-                                                                        </div>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </li>
 
-                                                <div class="box-product-set">
-                                                    <ul class="box-product-set-ul remove-ul-default-att">
-                                                        <li class="box-product-set-li remove-li-default-att">
+                                            <li class="li-cart-element-container remove-li-default-att">
+                                                <div class="box-wrap">
+                                                    <div class="box-display-block">
+                                                        <div class="cart-element-wrap">
+                                                            <div class="cart-element-inner">
 
-                                                            <div class="box_product-wrap">
-                                                                <div class="cart-element-wrap">
-                                                                    <div class="cart-element-inner">
-
-                                                                        <div class="cart-element-detail-block">
-                                                                            <div class="cart-element-img-div">
-                                                                                <img src="outside/brain/prod/picture01.jpeg">
+                                                                <div class="cart-element-detail-block">
+                                                                    <div class="cart-element-img-div">
+                                                                        <img src="<?= self::DIR_STATIC_FILES ?>box-gold-128.png">
+                                                                    </div>
+                                                                    <div class="cart-element-property-set box-property-set">
+                                                                        <div class="box-property-set-inner">
+                                                                            <div class="cart-element-property-div">
+                                                                                <span>golden box</span>
                                                                             </div>
-                                                                            <div class="cart-element-property-set">
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span>essential double coat</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">color: </span>
-                                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">size: </span>
-                                                                                    <span class="cart-element-value">s</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">quantity: </span>
-                                                                                    <span class="cart-element-value">2</span>
-                                                                                </div>
+                                                                            <div class="cart-element-property-div">
+                                                                                <span class="cart-element-property">item: </span>
+                                                                                <span class="cart-element-value">3</span>
+                                                                            </div>
+                                                                            <div class="cart-element-property-div cart-element-property-price-div">
+                                                                                <span class="cart-element-property">price: </span>
+                                                                                <span class="cart-element-value">$52.50 usd</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
 
-                                                        </li>
-                                                        <li class="box-product-set-li remove-li-default-att">
-
-                                                            <div class="box_product-wrap">
-                                                                <div class="cart-element-wrap">
-                                                                    <div class="cart-element-inner">
-
-                                                                        <div class="cart-element-detail-block">
-                                                                            <div class="cart-element-img-div">
-                                                                                <img src="outside/brain/prod/picture01.jpeg">
-                                                                            </div>
-                                                                            <div class="cart-element-property-set">
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span>essential double coat</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">color: </span>
-                                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">size: </span>
-                                                                                    <span class="cart-element-value">s</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">quantity: </span>
-                                                                                    <span class="cart-element-value">2</span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                <div class="cart-element-price-block">
+                                                                    <div class="cart-element-price-inner">
+                                                                        <span>$52.50 usd</span>
                                                                     </div>
                                                                 </div>
-                                                            </div>
 
-                                                        </li>
-                                                        <li class="box-product-set-li remove-li-default-att">
-
-                                                            <div class="box_product-wrap">
-                                                                <div class="cart-element-wrap">
-                                                                    <div class="cart-element-inner">
-
-                                                                        <div class="cart-element-detail-block">
-                                                                            <div class="cart-element-img-div">
-                                                                                <img src="outside/brain/prod/picture01.jpeg">
+                                                                <div class="cart-element-arrow-block">
+                                                                    <div class="cart-element-arrow-inner">
+                                                                        <button class="cart-element-arrow-button remove-button-default-att">
+                                                                            <div class="arrow-element-wrap">
+                                                                                <span class="arrow-span"></span>
                                                                             </div>
-                                                                            <div class="cart-element-property-set">
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span>essential double coat</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">color: </span>
-                                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">size: </span>
-                                                                                    <span class="cart-element-value">s</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">quantity: </span>
-                                                                                    <span class="cart-element-value">2</span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                        </button>
                                                                     </div>
                                                                 </div>
+
                                                             </div>
-
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </li>
-
-                                        <li class="li-cart-element-container remove-li-default-att">
-                                            <div class="box-wrap">
-                                                <div class="box-display-block">
-                                                    <div class="cart-element-wrap">
-                                                        <div class="cart-element-inner">
-
-                                                            <div class="cart-element-detail-block">
-                                                                <div class="cart-element-img-div">
-                                                                    <img src="<?= self::DIR_STATIC_FILES ?>box-gold-128.png">
-                                                                </div>
-                                                                <div class="cart-element-property-set box-property-set">
-                                                                    <div class="box-property-set-inner">
-                                                                        <div class="cart-element-property-div">
-                                                                            <span>golden box</span>
-                                                                        </div>
-                                                                        <div class="cart-element-property-div">
-                                                                            <span class="cart-element-property">item: </span>
-                                                                            <span class="cart-element-value">3</span>
-                                                                        </div>
-                                                                        <div class="cart-element-property-div cart-element-property-price-div">
-                                                                            <span class="cart-element-property">price: </span>
-                                                                            <span class="cart-element-value">$52.50 usd</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="cart-element-price-block">
-                                                                <div class="cart-element-price-inner">
-                                                                    <span>$52.50 usd</span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="cart-element-arrow-block">
-                                                                <div class="cart-element-arrow-inner">
-                                                                    <button class="cart-element-arrow-button remove-button-default-att">
-                                                                        <div class="arrow-element-wrap">
-                                                                            <span class="arrow-span"></span>
-                                                                        </div>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-
                                                         </div>
                                                     </div>
+
+                                                    <div class="box-product-set">
+                                                        <ul class="box-product-set-ul remove-ul-default-att">
+                                                            <li class="box-product-set-li remove-li-default-att">
+
+                                                                <div class="box_product-wrap">
+                                                                    <div class="cart-element-wrap">
+                                                                        <div class="cart-element-inner">
+
+                                                                            <div class="cart-element-detail-block">
+                                                                                <div class="cart-element-img-div">
+                                                                                    <img src="outside/brain/prod/picture01.jpeg">
+                                                                                </div>
+                                                                                <div class="cart-element-property-set">
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span>essential double coat</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">color: </span>
+                                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">size: </span>
+                                                                                        <span class="cart-element-value">s</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">quantity: </span>
+                                                                                        <span class="cart-element-value">2</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+                                                            <li class="box-product-set-li remove-li-default-att">
+
+                                                                <div class="box_product-wrap">
+                                                                    <div class="cart-element-wrap">
+                                                                        <div class="cart-element-inner">
+
+                                                                            <div class="cart-element-detail-block">
+                                                                                <div class="cart-element-img-div">
+                                                                                    <img src="outside/brain/prod/picture01.jpeg">
+                                                                                </div>
+                                                                                <div class="cart-element-property-set">
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span>essential double coat</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">color: </span>
+                                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">size: </span>
+                                                                                        <span class="cart-element-value">s</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">quantity: </span>
+                                                                                        <span class="cart-element-value">2</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+                                                            <li class="box-product-set-li remove-li-default-att">
+
+                                                                <div class="box_product-wrap">
+                                                                    <div class="cart-element-wrap">
+                                                                        <div class="cart-element-inner">
+
+                                                                            <div class="cart-element-detail-block">
+                                                                                <div class="cart-element-img-div">
+                                                                                    <img src="outside/brain/prod/picture01.jpeg">
+                                                                                </div>
+                                                                                <div class="cart-element-property-set">
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span>essential double coat</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">color: </span>
+                                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">size: </span>
+                                                                                        <span class="cart-element-value">s</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">quantity: </span>
+                                                                                        <span class="cart-element-value">2</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
                                                 </div>
+                                            </li>
 
-                                                <div class="box-product-set">
-                                                    <ul class="box-product-set-ul remove-ul-default-att">
-                                                        <li class="box-product-set-li remove-li-default-att">
-                                                            <div class="box_product-wrap">
-                                                                <div class="cart-element-wrap">
-                                                                    <div class="cart-element-inner">
+                                            <li class="li-cart-element-container remove-li-default-att">
+                                                <div class="box-wrap">
+                                                    <div class="box-display-block">
+                                                        <div class="cart-element-wrap">
+                                                            <div class="cart-element-inner">
 
-                                                                        <div class="cart-element-detail-block">
-                                                                            <div class="cart-element-img-div">
-                                                                                <img src="outside/brain/prod/picture01.jpeg">
+                                                                <div class="cart-element-detail-block">
+                                                                    <div class="cart-element-img-div">
+                                                                        <img src="<?= self::DIR_STATIC_FILES ?>box-gold-128.png">
+                                                                    </div>
+                                                                    <div class="cart-element-property-set box-property-set">
+                                                                        <div class="box-property-set-inner">
+                                                                            <div class="cart-element-property-div">
+                                                                                <span>golden box</span>
                                                                             </div>
-                                                                            <div class="cart-element-property-set">
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span>essential double coat</span>
+                                                                            <div class="cart-element-property-div">
+                                                                                <span class="cart-element-property">item: </span>
+                                                                                <span class="cart-element-value">3</span>
+                                                                            </div>
+                                                                            <div class="cart-element-property-div cart-element-property-price-div">
+                                                                                <span class="cart-element-property">price: </span>
+                                                                                <span class="cart-element-value">$52.50 usd</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="cart-element-price-block">
+                                                                    <div class="cart-element-price-inner">
+                                                                        <span>$52.50 usd</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="cart-element-arrow-block">
+                                                                    <div class="cart-element-arrow-inner">
+                                                                        <button class="cart-element-arrow-button remove-button-default-att">
+                                                                            <div class="arrow-element-wrap">
+                                                                                <span class="arrow-span"></span>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="box-product-set">
+                                                        <ul class="box-product-set-ul remove-ul-default-att">
+                                                            <li class="box-product-set-li remove-li-default-att">
+                                                                <div class="box_product-wrap">
+                                                                    <div class="cart-element-wrap">
+                                                                        <div class="cart-element-inner">
+
+                                                                            <div class="cart-element-detail-block">
+                                                                                <div class="cart-element-img-div">
+                                                                                    <img src="outside/brain/prod/picture01.jpeg">
                                                                                 </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">color: </span>
-                                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">size: </span>
-                                                                                    <span class="cart-element-value">s</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">quantity: </span>
-                                                                                    <span class="cart-element-value">2</span>
+                                                                                <div class="cart-element-property-set">
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span>essential double coat</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">color: </span>
+                                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">size: </span>
+                                                                                        <span class="cart-element-value">s</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">quantity: </span>
+                                                                                        <span class="cart-element-value">2</span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
 
-                                                        </li>
-                                                        <li class="box-product-set-li remove-li-default-att">
+                                                            </li>
+                                                            <li class="box-product-set-li remove-li-default-att">
 
-                                                            <div class="box_product-wrap">
-                                                                <div class="cart-element-wrap">
-                                                                    <div class="cart-element-inner">
+                                                                <div class="box_product-wrap">
+                                                                    <div class="cart-element-wrap">
+                                                                        <div class="cart-element-inner">
 
-                                                                        <div class="cart-element-detail-block">
-                                                                            <div class="cart-element-img-div">
-                                                                                <img src="outside/brain/prod/picture01.jpeg">
-                                                                            </div>
-                                                                            <div class="cart-element-property-set">
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span>essential double coat</span>
+                                                                            <div class="cart-element-detail-block">
+                                                                                <div class="cart-element-img-div">
+                                                                                    <img src="outside/brain/prod/picture01.jpeg">
                                                                                 </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">color: </span>
-                                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">size: </span>
-                                                                                    <span class="cart-element-value">s</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">quantity: </span>
-                                                                                    <span class="cart-element-value">2</span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </li>
-                                                        <li class="box-product-set-li remove-li-default-att">
-
-                                                            <div class="box_product-wrap">
-                                                                <div class="cart-element-wrap">
-                                                                    <div class="cart-element-inner">
-
-                                                                        <div class="cart-element-detail-block">
-                                                                            <div class="cart-element-img-div">
-                                                                                <img src="outside/brain/prod/picture01.jpeg">
-                                                                            </div>
-                                                                            <div class="cart-element-property-set">
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span>essential double coat</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">color: </span>
-                                                                                    <span class="cart-element-value" style="color: #AF3134;">red</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">size: </span>
-                                                                                    <span class="cart-element-value">s</span>
-                                                                                </div>
-                                                                                <div class="cart-element-property-div">
-                                                                                    <span class="cart-element-property">quantity: </span>
-                                                                                    <span class="cart-element-value">2</span>
+                                                                                <div class="cart-element-property-set">
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span>essential double coat</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">color: </span>
+                                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">size: </span>
+                                                                                        <span class="cart-element-value">s</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">quantity: </span>
+                                                                                        <span class="cart-element-value">2</span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
 
-                                                        </li>
-                                                    </ul>
+                                                            </li>
+                                                            <li class="box-product-set-li remove-li-default-att">
+
+                                                                <div class="box_product-wrap">
+                                                                    <div class="cart-element-wrap">
+                                                                        <div class="cart-element-inner">
+
+                                                                            <div class="cart-element-detail-block">
+                                                                                <div class="cart-element-img-div">
+                                                                                    <img src="outside/brain/prod/picture01.jpeg">
+                                                                                </div>
+                                                                                <div class="cart-element-property-set">
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span>essential double coat</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">color: </span>
+                                                                                        <span class="cart-element-value" style="color: #AF3134;">red</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">size: </span>
+                                                                                        <span class="cart-element-value">s</span>
+                                                                                    </div>
+                                                                                    <div class="cart-element-property-div">
+                                                                                        <span class="cart-element-property">quantity: </span>
+                                                                                        <span class="cart-element-value">2</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
                                                 </div>
+                                            </li>
 
-                                            </div>
-                                        </li>
-
-                                    </ul>
+                                        </ul>
+                                    </div> -->
                                 </div>
                             </div>
-
                             <hr class="hr-summary">
-
                             <div class="cart-discount-block">
                                 <div class="form-title-block discount-title-block">
                                     <div class="form-title-div">
                                         <span class="form-title">discount codes</span>
                                     </div>
                                     <div class="summary-detail-arrow-button-div">
-                                        <div class="summary-detail-arrow-button-inner">
-                                            <button class="summary-detail-arrow-button remove-button-default-att">
-                                                <div class="arrow-element-wrap">
-                                                    <span class="arrow-span"></span>
-                                                </div>
-                                            </button>
+                                        <div class="arrow-element-container">
+                                            <div class="arrow-element-wrap">
+                                                <span class="arrow-span"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="cart-discount-inner">
+                                <div id="discount_body" class="cart-discount-inner">
                                     <hr class="hr-summary">
                                     <div class="cart-discount-input-block">
                                         <div class="input_button_left-wrap">
@@ -1019,19 +991,24 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                         </div>
 
                         <div class="summary-block">
-                            <div class="summary-wrap">
+                            <?php
+                            $datas = [
+                                "basket" => $basket,
+                                "country" => $country,
+                            ];
+                            echo $this->generateFile('view/Checkout/files/orderSummary.php', $datas);
+                            ?>
+                            <!-- <div class="summary-wrap">
                                 <div class="summary-detail-block">
                                     <div class="summary-detail-title-block">
                                         <div class="summary-detail-title-div">
                                             <span class="summary-title">Order Summary</span>
                                         </div>
                                         <div class="summary-detail-arrow-button-div">
-                                            <div class="summary-detail-arrow-button-inner">
-                                                <button class="summary-detail-arrow-button remove-button-default-att">
-                                                    <div class="arrow-element-wrap">
-                                                        <span class="arrow-span"></span>
-                                                    </div>
-                                                </button>
+                                            <div class="arrow-element-container">
+                                                <div class="arrow-element-wrap">
+                                                    <span class="arrow-span"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1265,7 +1242,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
