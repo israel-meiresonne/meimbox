@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  Dim 13 sep. 2020 à 20:52
+-- Généré le :  ven. 25 sep. 2020 à 14:14
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -115,9 +115,8 @@ CREATE TABLE `Baskets-Box` (
 --
 
 INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
-('1qd923a09g0201k626202bkp4', 651853948),
-('99590021466q23w2yg71230x0', 651853948),
-('c68nq053120w4051l9a122032', 651853948);
+('0860g1009tn0i31s2s6b24112', 651853948),
+('70r904v2240t0292ko1514055', 651853948);
 
 -- --------------------------------------------------------
 
@@ -184,8 +183,7 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('99590021466q23w2yg71230x0', 1, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-09-13 20:46:47'),
-('c68nq053120w4051l9a122032', 1, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 2, '2020-09-13 20:46:38');
+('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20');
 
 -- --------------------------------------------------------
 
@@ -357,28 +355,57 @@ CREATE TABLE `Boxes` (
 --
 
 INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
+('00222q11091224s4kcr791a5k', 'gold', '2020-09-14 12:27:25'),
+('0231001pkp23117y4y19354k0', 'regular', '2020-09-15 13:14:33'),
+('052e000e182151b1lg9b7009y', 'silver', '2020-09-17 09:50:10'),
+('0860g1009tn0i31s2s6b24112', 'gold', '2020-09-16 21:40:10'),
+('0gi1031159y53i7209g2o2r40', 'gold', '2020-09-15 13:20:53'),
+('0n57q1k1902082n05n9ug5280', 'silver', '2020-09-17 09:50:58'),
 ('0q511122812h0z24093t61yy9', 'gold', '2020-09-13 19:48:25'),
 ('0v31e9b3la122152n6cz00027', 'silver', '2020-09-13 13:25:20'),
+('102901079c41fcg2mtw96t40d', 'regular', '2020-09-17 09:49:41'),
+('1232v21310hu04d2j0w9f3b2e', 'gold', '2020-09-23 14:23:23'),
+('15921f520in5202sq5004dc01', 'gold', '2020-09-14 12:05:02'),
 ('1iq120000m126cyu63d91z083', 'gold', '2020-09-13 18:13:06'),
 ('1q00171922c021uf2sa2dn222', 'gold', '2020-09-12 21:17:22'),
 ('1qd923a09g0201k626202bkp4', 'regular', '2020-09-13 20:46:29'),
+('200e2001142d00916f4kjecbs', 'regular', '2020-09-16 21:40:04'),
 ('20w2d0a3p202o19313nbu512o', 'gold', '2020-09-13 13:25:23'),
+('21219t010s01bc057e7141273', 'gold', '2020-09-14 11:30:15'),
 ('21i510x5812l3o1918029t8q0', 'regular', '2020-09-13 18:12:59'),
 ('21mq24b3509d130z302121101', 'regular', '2020-09-13 13:01:51'),
 ('2o9157103h1030xd21yqmz087', 'gold', '2020-09-13 13:01:57'),
+('2x8gb01iw9130u22210422450', 'gold', '2020-09-14 12:45:08'),
+('30owo260119100q2f9cl25im1', 'silver', '2020-09-15 13:21:09'),
 ('415i1w13002744032n2lv3192', 'silver', '2020-09-13 13:34:24'),
 ('422qn10619331ybhv1003028f', 'gold', '2020-09-13 13:34:26'),
 ('4304q104330x2300491240j2a', 'regular', '2020-09-13 20:40:43'),
+('4vv402921y2t1p021071xgj1z', 'regular', '2020-09-14 12:14:27'),
+('70r904v2240t0292ko1514055', 'silver', '2020-09-24 17:55:02'),
+('71c239410g8tam01510507k2x', 'regular', '2020-09-14 11:57:57'),
 ('72t30890c950p116isi21209d', 'gold', '2020-09-13 18:27:09'),
+('8z441320demj9320011641962', 'silver', '2020-09-14 12:46:18'),
+('9040b4n501t002013759f26ts', 'regular', '2020-09-14 09:57:05'),
+('9283q00b42f10224e1e14520o', 'regular', '2020-09-21 20:24:34'),
 ('99590021466q23w2yg71230x0', 'silver', '2020-09-13 20:46:32'),
 ('9v164210q2200h69cf021idx1', 'regular', '2020-09-12 21:16:04'),
 ('a36201z2119v2yrkpx00v1809', 'regular', '2020-09-13 16:19:28'),
 ('c68nq053120w4051l9a122032', 'gold', '2020-09-13 20:46:35'),
 ('f059329l31019108dwhz270l2', 'silver', '2020-09-13 18:27:05'),
 ('j03qi3iy0921n80021181343w', 'silver', '2020-09-13 18:13:03'),
+('k23h21r10j70793907150552g', 'gold', '2020-09-15 21:59:03'),
+('kj140a2122c292v33v0g30901', 'gold', '2020-09-14 12:23:33'),
+('l1791ozl00700uca0222y0943', 'regular', '2020-09-17 09:04:23'),
 ('p3mp21193471s2hu30l00k150', 'silver', '2020-09-13 13:01:54'),
+('p971041s0m130742t104sw212', 'gold', '2020-09-14 21:03:14'),
+('tc4h4aqo1120d160500z22915', 'gold', '2020-09-14 12:46:10'),
 ('ttq68851h28111903a02324a0', 'gold', '2020-09-13 18:35:48'),
+('v04102j401krzp90015292223', 'gold', '2020-09-23 14:21:05'),
+('v224i0v9o1004y3020l3111a2', 'regular', '2020-09-14 12:10:02'),
+('vg2nu9x12160091342714u204', 'silver', '2020-09-16 22:14:49'),
+('w9001042m2x4h2132b1y11000', 'silver', '2020-09-14 11:30:00'),
 ('x2k38219095h1204147147091', 'regular', '2020-09-13 19:49:47'),
+('y0g00v9212r49ip12v3132k56', 'silver', '2020-09-14 12:25:39'),
 ('y7312jdrg09u61334200p7112', 'regular', '2020-09-13 13:34:21');
 
 -- --------------------------------------------------------
@@ -1245,6 +1272,21 @@ INSERT INTO `Constants` (`constName`, `stringValue`, `jsonValue`, `setDate`, `de
 ('SUPPORTED_UNIT', NULL, '[\"centimeter\", \"inch\"]', '2020-04-24 00:00:00', 'List of measure unit available for user\'s input'),
 ('SYSTEM_ID', '1', NULL, '2020-02-26 21:27:40', 'The ID of the system used as author to update order status.'),
 ('WHITE_RGB', '#ffffff', NULL, '2020-04-09 00:00:00', 'The white color\'s rbg code.');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Cookies`
+--
+
+CREATE TABLE `Cookies` (
+  `cookieID` varchar(50) NOT NULL,
+  `cookieExpire` datetime NOT NULL,
+  `cookieDomain` varchar(50) NOT NULL,
+  `cookiePath` int(50) NOT NULL,
+  `cookieSecure` tinyint(1) NOT NULL,
+  `cookieHttponly` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2844,6 +2886,14 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER13', 'fr', 'désolé, le stock de ce produit est épuisé pour le moment.'),
 ('ER14', 'en', 'Sorry, this box has reached the maximum number of items: '),
 ('ER14', 'fr', 'Désolé, cette box a atteint le nombre maximum d\'article: '),
+('ER15', 'en', 'sorry, there is not enough free space in this box to move all the copies of your item'),
+('ER15', 'fr', 'désolé, il n\'y a pas assez d\'espace libre dans cette box pour déplacer toutes les copies de votre article'),
+('ER16', 'en', 'this measurement cannot be deleted because it is used on cart items.'),
+('ER16', 'fr', 'cette mesure ne peut pas être supprimée car elle est utilisée sur des articles du panier.'),
+('ER17', 'en', 'the quantity must be at least 1'),
+('ER17', 'fr', 'la quantité doit être de minimum 1'),
+('ER18', 'en', 'sorry, the quantity indicated exceeds the space available in the box'),
+('ER18', 'fr', 'désolé, la quantité indiquée dépasse l\'espace disponible dans la box'),
 ('ER2', 'en', 'this field can not be empty'),
 ('ER2', 'fr', 'ce champ ne peut pas être vide'),
 ('ER3', 'en', 'this field cannot contain numbers of the form 1997 | 297.829 or 0.321, etc ...'),
@@ -2854,10 +2904,10 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER5', 'fr', 'vous devez cocher un choix'),
 ('ER6', 'en', 'the maximum number of characters for this field is'),
 ('ER6', 'fr', 'le nombre de caractère maximum pour ce champ est de'),
-('ER7', 'en', 'Sorry, You have reached the maximum number of measurements. \nNumber of current measures:'),
-('ER7', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure. \nNombre de measure actuelle:'),
-('ER8', 'en', 'Sorry, You have reached the maximum number of measurements.\r\nNumber of current measures:'),
-('ER8', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure.\r\nNombre de measure actuelle:'),
+('ER7', 'en', 'this field can only contain integer ex: 0,1, 2, 3, ...'),
+('ER7', 'fr', 'ce champ ne peut contenir que des nombres entiers ex: 0,1, 2, 3,...'),
+('ER8', 'en', 'Sorry, You have reached the maximum number of measurements:'),
+('ER8', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure:'),
 ('ER9', 'en', 'please choose \'Size\' or \'Custom size\' option'),
 ('ER9', 'fr', 'veuillez choisir l\'option \'Taille\' ou \'Taille personnalisée\''),
 ('US1', 'en', 'filters'),
@@ -2966,8 +3016,22 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('US57', 'fr', 'total'),
 ('US58', 'en', 'Are you sure you want to delete this box?'),
 ('US58', 'fr', 'Voulez-vous vraiment supprimer cette box?'),
+('US59', 'en', 'select a box where to place your item:'),
+('US59', 'fr', 'sélectionnez une box où placer votre article:'),
 ('US6', 'en', 'price - low to hight'),
 ('US6', 'fr', 'prix - croissant'),
+('US60', 'en', 'select a box to move your item to:'),
+('US60', 'fr', 'sélectionnez une box où déplacer votre article:'),
+('US61', 'en', 'choose the box that suits you:'),
+('US61', 'fr', 'choisissez la box qui vous convient:'),
+('US62', 'en', 'change size'),
+('US62', 'fr', 'modifier la taille'),
+('US63', 'en', 'change box'),
+('US63', 'fr', 'changer de box'),
+('US64', 'en', 'are you sure you want to delete this item?'),
+('US64', 'fr', 'voulez-vous vraiment supprimer cet article?'),
+('US65', 'en', 'country'),
+('US65', 'fr', 'pays'),
 ('US7', 'en', 'type'),
 ('US7', 'fr', 'type'),
 ('US8', 'en', 'category'),
@@ -3008,6 +3072,19 @@ INSERT INTO `Users` (`userID`, `lang_`, `mail`, `password`, `firstname`, `lastna
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Users-Cookies`
+--
+
+CREATE TABLE `Users-Cookies` (
+  `userId` int(11) NOT NULL,
+  `cookieId` varchar(50) NOT NULL,
+  `cookieValue` varchar(512) NOT NULL,
+  `setDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `UsersMeasures`
 --
 
@@ -3029,8 +3106,9 @@ CREATE TABLE `UsersMeasures` (
 --
 
 INSERT INTO `UsersMeasures` (`userId`, `measureID`, `measureName`, `userBust`, `userArm`, `userWaist`, `userHip`, `userInseam`, `unit_name`, `setDate`) VALUES
-(651853948, '2191802te91kv3ee27a280h02', 'my last measure', 22, 11, 11, 11, 11, 'inch', '2020-09-12 19:27:23'),
-(651853948, '651853948172', 'many dim1 devient isa 01', 68.34, 107.14, 98.29, 101.07, 64.96, 'inch', '2017-01-08 00:00:00'),
+(651853948, '0jj2g3rj131923p1560b90d01', 'hello', 11, 22, 22, 22, 22, 'centimeter', '2020-09-16 13:50:31'),
+(651853948, '1001nq54od2c002o903219929', 'its work motherfuck', 11, 11, 11, 11, 11, 'inch', '2020-09-21 10:49:25'),
+(651853948, '2191802te91kv3ee27a280h02', 'motherfucking pane', 23, 11, 11, 11, 11, 'inch', '2020-09-12 19:27:23'),
 (651853948, '651853948740', 'many dim auto test', 11.11, 22.22, 33.33, 44.44, 55.555, 'inch', '2018-01-18 00:00:00'),
 (997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00');
 
@@ -3202,6 +3280,12 @@ ALTER TABLE `Collections`
 --
 ALTER TABLE `Constants`
   ADD PRIMARY KEY (`constName`);
+
+--
+-- Index pour la table `Cookies`
+--
+ALTER TABLE `Cookies`
+  ADD PRIMARY KEY (`cookieID`);
 
 --
 -- Index pour la table `Countries`
@@ -3480,6 +3564,13 @@ ALTER TABLE `Users`
   ADD PRIMARY KEY (`userID`),
   ADD KEY `fk_lang_FROM-Languages` (`lang_`),
   ADD KEY `fk_sexe_FROM-Sexes` (`sexe_`);
+
+--
+-- Index pour la table `Users-Cookies`
+--
+ALTER TABLE `Users-Cookies`
+  ADD PRIMARY KEY (`userId`,`cookieId`),
+  ADD KEY `FK_cookieId.Users-Cookies-FROM-Cookies` (`cookieId`);
 
 --
 -- Index pour la table `UsersMeasures`
@@ -3838,6 +3929,13 @@ ALTER TABLE `TranslationStations`
 ALTER TABLE `Users`
   ADD CONSTRAINT `fk_lang_FROM-Languages` FOREIGN KEY (`lang_`) REFERENCES `Languages` (`langIsoCode`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sexe_FROM-Sexes` FOREIGN KEY (`sexe_`) REFERENCES `Sexes` (`sexe`) ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Users-Cookies`
+--
+ALTER TABLE `Users-Cookies`
+  ADD CONSTRAINT `FK_cookieId.Users-Cookies-FROM-Cookies` FOREIGN KEY (`cookieId`) REFERENCES `Cookies` (`cookieID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_userId.Users-Cookies-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `UsersMeasures`
