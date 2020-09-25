@@ -1,5 +1,5 @@
 <?php
-
+require_once 'controller/ControllerDashboard.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param Basket $basket Visitor's basket
@@ -31,7 +31,7 @@ echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
         </div>
         <ul class="basketpop-resume-buttons remove-ul-default-att">
             <li class="remove-li-default-att">
-                <a href="">
+                <a href="<?= ControllerDashboard::HREF_SHOPBAG ?>">
                     <button class="blue-button standard-button remove-button-default-att">view bag details</button>
                 </a>
             </li>

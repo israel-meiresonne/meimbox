@@ -4,7 +4,15 @@ require_once 'ControllerSecure.php';
 
 class ControllerDashboard extends ControllerSecure
 {
-    private const PG_SHOPBAG = "shopbag";
+    /**
+     * Holds name of a action file
+     */
+    private const ACTION_SHOPBAG = "shopbag";
+    
+    /**
+     * Holds page link (href)
+     */
+    public const HREF_SHOPBAG = "dashboard/shopbag";
 
     /**
      * The default layout: the dashboard
@@ -21,7 +29,7 @@ class ControllerDashboard extends ControllerSecure
     public function shopbag()
     {
         $datasView = [];
-        $this->generateView($datasView, $this->person, self::PG_SHOPBAG);
+        $this->generateView($datasView, $this->person, self::ACTION_SHOPBAG);
     }
 
     /**
