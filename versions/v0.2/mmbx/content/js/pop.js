@@ -33,6 +33,7 @@
     datainputname = "data-inputname";
     dataheadid = "data-headid";
     const datavase = "data-vase";
+    dataarrow = "data-arrow";
 
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {

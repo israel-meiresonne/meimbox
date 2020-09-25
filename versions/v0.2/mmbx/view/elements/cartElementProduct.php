@@ -65,10 +65,10 @@ switch ($product->getType()) {
         $spanid = ModelFunctionality::generateDateCode(25);
         $spanidx = "#" . $spanid;
         switch ($containerId):
-            case 'box_manager_window':
-                $editFunc = null;
-                $miniPopEdit = null;
-                break;
+                // case 'box_manager_window':
+                //     $editFunc = null;
+                //     $miniPopEdit = null;
+                //     break;
             case 'shopping_bag':
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
@@ -114,7 +114,10 @@ switch ($product->getType()) {
                 $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
                 $editFunc = "openMiniPop('$miniPopIdx')";
                 break;
-            // default:
+            default:
+                $editFunc = null;
+                $miniPopEdit = null;
+                break;
         endswitch;
         /*———————————————————————— CONFIG EDIT BUTTON UP ————————————————————*/
         break;

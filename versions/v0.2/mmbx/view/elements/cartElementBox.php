@@ -46,24 +46,27 @@ $price = $box->getPriceFormated();
         ];
         $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);
         /*———————————————————————— GET PROPERTIES UP ————————————————————————*/
-        
+        $boxBodyId = ModelFunctionality::generateDateCode(25);
+        // $boxBodyx = "#" . $boxBodyId;
+
+
         $datas = [
+            "elementId" => $elementId,
+            "deleteFunc" => "removeBox('$boxID', '$elementIdx')",
             "properties" => $properties,
             // "miniPopEdit" => $miniPopEdit,
             // "editFunc" => $editFunc,
             "price" => $price,
             "pictureSrc" => $box->getPictureSource(),
-            "elementId" => $elementId,
-            "deleteFunc" => "removeBox('$boxID', '$elementIdx')",
+            "boxBodyId" => $boxBodyId,
             "dadx" => $dadx,
             "brotherx" => $brotherx,
             "submitdata" => $submitdata
         ];
         echo $this->generateFile('view/elements/cartElement.php', $datas);
         ?>
-
     </div>
-    <div class="box-product-set">
+    <div id="<?= $boxBodyId ?>" class="box-product-set">
         <ul class="box-product-set-ul remove-ul-default-att">
             <?php
             $products = $box->getBoxProducts();

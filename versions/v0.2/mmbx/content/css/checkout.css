@@ -92,7 +92,10 @@
     display: none;
 }
 
-.cart-block .cart-inner .cart-wrap{
+/* .cart-block .cart-inner .cart-wrap{
+    display: none;
+} */
+#checkout_cart{
     display: none;
 }
 

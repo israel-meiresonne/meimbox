@@ -6,18 +6,19 @@
  * + this id is generated in file cart.php
  * @param string $deleteFunc onclick function to delete element
  * + i.e: $deleteFunc = "slideSomething('param1','param2');jumpFrom('param1','param2')"
+ * @param string $pictureSrc the source of the picture of the cart element's 
  * @param string $properties html tags to put in as content
  * + use class 'cart-element-property-div' to build properties set
  *      <div class="cart-element-property-div">
  *          <span class="cart-element-property">item: </span>
  *          <span class="cart-element-value">3</span>
  *      </div>
- * @param string $pictureSrc the source of the picture of the cart element's 
  * + the picture conatin all the directory like my/file/is/here/$picture
- * @param string|null $miniPopEdit mini pop up for edit button
  * @param string|null $editFunc function for edit button
+ * @param string|null $miniPopEdit mini pop up for edit button
  * @param string|null $price price property in a displayable format (with currency)
  * @param boolean $showArrow set true to display the arrow else set false
+ * @param string $boxBodyId id of the box's content holder
  * ——————————————————————————————— ID & DATA DOWN —————————————————————————————————————
  * @param string $dadx selector of the dad (if set it activate the selectPopUp functionality)
  * + i.e: "#mydadid"
@@ -105,12 +106,13 @@ if (!empty($dadx)) {
         endif;
         if ($showArrow) :
             $arrowId = ModelFunctionality::generateDateCode(25);
-            $arrowIdx = "#" . $arrowId;
+            $arrowx = "#" . $arrowId;
+            $boxBodyx = "#" . $boxBodyId;
         ?>
             <div class="cart-element-arrow-block">
                 <div class="cart-element-arrow-inner">
-                    <button id="<?= $arrowId ?>" class="cart-element-arrow-button remove-button-default-att" onclick="animateBox('<?= $arrowIdx ?>')">
-                        <div class="arrow-element-wrap">
+                    <button class="cart-element-arrow-button remove-button-default-att" onclick="toggleShutter('<?= $boxBodyx ?>', '<?= $arrowx ?>')">
+                        <div id="<?= $arrowId ?>" class="arrow-element-wrap">
                             <span class="arrow-span"></span>
                         </div>
                     </button>
