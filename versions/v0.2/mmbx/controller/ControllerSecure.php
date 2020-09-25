@@ -74,18 +74,6 @@ abstract class ControllerSecure extends Controller
         $this->person = new Client(651853948);
     }
 
-    // /**
-    //  * Initialized the person attribut
-    //  * + determines if the user is a Visitor, Client or Administrator
-    //  */
-    // protected function secureSession()
-    // {
-        // date_default_timezone_set('Europe/Paris');
-        // $this->person = new Client(651853948);
-
-    // }
-
-
     /**
      * Check the input value passed in param and push error accured in Response
      * @param Response $response to push in error accured
