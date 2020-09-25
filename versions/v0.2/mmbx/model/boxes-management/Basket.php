@@ -57,6 +57,7 @@ class Basket extends ModelFunctionality
     public const KEY_VAT = "basket_vat";
     public const KEY_SHIPPING = "basket_shipping";
     public const KEY_BSKT_QUANTITY = "basket_quantity";
+    public const KEY_CART_FILE = "cart_file";
 
     /**
      * Constructor

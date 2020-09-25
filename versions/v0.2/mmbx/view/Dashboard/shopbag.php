@@ -42,6 +42,9 @@ $this->head = $this->generateFile('view/Dashboard/files/head.php', $datas);
                         echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
                         ?>
                     </div>
+                    <div class="basket_pop_loading loading-img-wrap">
+                        <img src="content/brain/permanent/loading.gif">
+                    </div>
                 </div>
 
                 <div class="cart_summary-div-container">

@@ -731,9 +731,18 @@ class ControllerItem extends ControllerSecure
             $datasView = [
                 "basket" => $basket,
                 "country" => $country,
-                "currency" => $currency
+                "currency" => $currency,
+                "containerId" => "shopping_bag",
+                "elements" => $basket->getMerge(),
+                // cart datas
             ];
             $response->addFiles(self::A_GET_BSKT_POP, "view/elements/popupBasketContent.php");
+            // $boxDatas = [
+            //     // "containerId" => $containerId,
+            //     "country" => $country,
+            //     "currency" => $currency,
+            // ];
+            $response->addFiles(Basket::KEY_CART_FILE, 'view/elements/cart.php');
 
             $total = $basket->getTotal()->getFormated();
             $subtotal = $basket->getSubTotal()->getFormated();

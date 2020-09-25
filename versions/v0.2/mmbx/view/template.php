@@ -163,6 +163,7 @@ $language = $person->getLanguage();
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
         const A_GET_EDT_POP = "<?= ControllerItem::A_GET_EDT_POP ?>";
 
+        const KEY_CART_FILE = "<?= Basket::KEY_CART_FILE ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";

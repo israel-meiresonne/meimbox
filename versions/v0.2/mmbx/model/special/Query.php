@@ -71,7 +71,7 @@ class Query
      * @param string $regex a regular expression
      * @return string[] cleanned value from $_GET or $_POST that match the regular expression
      */
-    public static function getRegexParams($regex)
+    public static function getParamsRegex($regex)
     {
         (!self::$isset) ? self::setQuery() : null;
         $map = [];
@@ -84,9 +84,9 @@ class Query
     }
 
     /** 
-     * Clean inputs, GET inputs and POST inputs of all indesirable characteres
-     * @param string $data the value to clean
-     * @return string cleaned value of the value passed in param
+     * Clean data of all indesirable characteres
+     * @param string $data data to clean
+     * @return string data cleaned
      */
     private static function clean($data)
     {
@@ -95,25 +95,4 @@ class Query
         $data = htmlspecialchars($data);
         return $data;
     }
-
-    // /**
-    //  * Convert data in params into the correct format
-    //  * @param string $dataType the type to convert data to
-    //  * @param string $key access key to get data from param list
-    //  */
-    // public static function convertParam($dataType, $key)
-    // {
-    //     if (self::existParam($key)) {
-    //         switch ($dataType) {
-    //             case ModelFunctionality::NUMBER_FLOAT:
-    //                 $value = self::getParam($key);
-    //                 self::$params[$key] = (float) str_replace(",", ".", $value);
-    //                 break;
-    //             case ModelFunctionality::PSEUDO|ModelFunctionality::ALPHA_NUMERIC|ModelFunctionality::STRING_TYPE:
-    //                 $value = self::getParam($key);
-    //                 self::$params[$key] = strtolower($value);
-    //                 break;
-    //         }
-    //     }
-    // }
 }
