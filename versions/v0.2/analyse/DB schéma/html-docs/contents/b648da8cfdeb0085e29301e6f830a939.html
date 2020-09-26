@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>BoxArguments</title>
+    <title>Cookies</title>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic|Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="../assets/css/bootstrap.css">
 <link rel="stylesheet" href="../assets/css/jquery.bonsai.css">
@@ -18,7 +18,7 @@
 
       <!-- Name Title -->
 
-      <h1>BoxArguments</h1>
+      <h1>Cookies</h1>
 
       <!-- Type and Stereotype -->
 
@@ -46,7 +46,7 @@
           <span class="label label-info"><a href='aed60d17d94b3a0a89f96a93227dc32d.html'><span class='node-icon staruml-icon icon-ERDDataModel'></span>Data Model1</a></span>
         
           <span>::</span>
-          <span class="label label-info"><a href='556e3be175afebb7e494863830569ed3.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>BoxArguments</a></span>
+          <span class="label label-info"><a href='b648da8cfdeb0085e29301e6f830a939.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Cookies</a></span>
         
       </section>
 
@@ -198,23 +198,8 @@
           </tr>
           
           <tr>
-            <td><a href="77a098e291ab8be0774c9f51c7141937.html">box_color</a></td>
-            <td>VARCHAR(10)</td>
-            <td><span class='label label-info'>true</span></td>
-            <td><span class='label label-info'>true</span></td>
-            <td>
-              
-                <a href='7adc663fb66c4a01cf341f518d452ed4.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>BoxColors</a> ::
-              
-              <a href='004a22c2ebac931b949c3755d31b0e11.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>boxColor</a>
-            </td>
-            <td><span class='label label-info'>false</span></td>
-            <td><span class='label label-info'>false</span></td>
-          </tr>
-          
-          <tr>
-            <td><a href="a088b35af5e80ef6ec079606b6229665.html">argID</a></td>
-            <td>INTEGER</td>
+            <td><a href="f743c4e9b366a33c2272a5b688b0355a.html">cookieID</a></td>
+            <td>VARCHAR(50)</td>
             <td><span class='label label-info'>true</span></td>
             <td><span class='label label-info'>false</span></td>
             <td>
@@ -226,8 +211,8 @@
           </tr>
           
           <tr>
-            <td><a href="4526226b086e0a9fc015aef3029e0e92.html">argType</a></td>
-            <td>ENUM[advantage,drawback]</td>
+            <td><a href="e9aa0f50ec2cf32bf93850e7ef6d4f64.html">cookieExpire</a></td>
+            <td>DATETIME</td>
             <td><span class='label label-info'>false</span></td>
             <td><span class='label label-info'>false</span></td>
             <td>
@@ -239,8 +224,47 @@
           </tr>
           
           <tr>
-            <td><a href="240c95cd09db3bcd20bfe9de934eea8e.html">argValue</a></td>
-            <td>TEXT</td>
+            <td><a href="4358a3cdf3f3db29c89d067e6f6bb076.html">cookieDomain</a></td>
+            <td>VARCHAR(50)</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="053d0a9ddd5cd7dad24c0a6a7e8b775c.html">cookiePath</a></td>
+            <td>VARCHAR(50)</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="30271f3e564ec8c879856a9c10ab92e3.html">cookieSecure</a></td>
+            <td>BOOLEAN</td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+            <td>
+              
+              <span class='label label-info'>null</span>
+            </td>
+            <td><span class='label label-info'>false</span></td>
+            <td><span class='label label-info'>false</span></td>
+          </tr>
+          
+          <tr>
+            <td><a href="678994f98e89c531670ef3caf66c61da.html">cookieHttponly</a></td>
+            <td>BOOLEAN</td>
             <td><span class='label label-info'>false</span></td>
             <td><span class='label label-info'>false</span></td>
             <td>
@@ -271,10 +295,10 @@
           
           
           <tr>
-            <td><a href='7adc663fb66c4a01cf341f518d452ed4.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>BoxColors</a></td>
+            <td><a href='56f42be50507904716b475d657091e5e.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Users-Cookies</a></td>
             <td>1</td>
             <td></td>
-            <td><a href='3f869543576b206c362a5d01842df4ee.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(BoxColors—BoxArguments)</a></td>
+            <td><a href='6b669d2fae84b66c244b326e6f4fdaf3.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Users-Cookies—Cookies)</a></td>
           </tr>
           
         </table>                
@@ -308,7 +332,7 @@
     
     <tr>
         <td>name</td>
-        <td>BoxArguments</td>
+        <td>Cookies</td>
     </tr>
     
     
@@ -341,7 +365,7 @@
     <h3>Relationships</h3>
     <ul class="nav nav-list">
         
-        <li><a href='3f869543576b206c362a5d01842df4ee.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(BoxColors—BoxArguments)</a></li>
+        <li><a href='6b669d2fae84b66c244b326e6f4fdaf3.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Users-Cookies—Cookies)</a></li>
         
     </ul>
 </section>
