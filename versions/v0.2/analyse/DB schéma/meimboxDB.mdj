@@ -16127,7 +16127,7 @@
 											"font": "Arial;13;1",
 											"left": 1392,
 											"top": 3901,
-											"width": 239.2568359375,
+											"width": 242.1259765625,
 											"height": 13,
 											"text": "Users-Cookies"
 										},
@@ -16153,7 +16153,7 @@
 													"font": "Arial;13;0",
 													"left": 1397,
 													"top": 3924,
-													"width": 229.2568359375,
+													"width": 232.1259765625,
 													"height": 13
 												},
 												{
@@ -16168,7 +16168,7 @@
 													"font": "Arial;13;0",
 													"left": 1397,
 													"top": 3939,
-													"width": 229.2568359375,
+													"width": 232.1259765625,
 													"height": 13
 												},
 												{
@@ -16183,7 +16183,7 @@
 													"font": "Arial;13;0",
 													"left": 1397,
 													"top": 3954,
-													"width": 229.2568359375,
+													"width": 232.1259765625,
 													"height": 13
 												},
 												{
@@ -16198,7 +16198,7 @@
 													"font": "Arial;13;0",
 													"left": 1397,
 													"top": 3969,
-													"width": 229.2568359375,
+													"width": 232.1259765625,
 													"height": 13
 												},
 												{
@@ -16213,21 +16213,21 @@
 													"font": "Arial;13;0",
 													"left": 1397,
 													"top": 3984,
-													"width": 229.2568359375,
+													"width": 232.1259765625,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 1392,
 											"top": 3919,
-											"width": 239.2568359375,
+											"width": 242.1259765625,
 											"height": 83
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1392,
 									"top": 3896,
-									"width": 239.2568359375,
+									"width": 242.1259765625,
 									"height": 106,
 									"nameLabel": {
 										"$ref": "AAAAAAF0xO3dgZ6SS4Q="
@@ -16431,7 +16431,7 @@
 												"$ref": "AAAAAAF0xRJgP58CJSk="
 											},
 											"font": "Arial;13;0",
-											"left": 1655,
+											"left": 1658,
 											"top": 3936,
 											"height": 13,
 											"alpha": -0.5235987755982988,
@@ -16449,7 +16449,7 @@
 										"$ref": "AAAAAAFwMOhm7257uPY="
 									},
 									"lineStyle": 2,
-									"points": "1916:2936;1856:2936;1856:3928;1630:3928",
+									"points": "1916:2936;1856:2936;1856:3928;1633:3928",
 									"nameLabel": {
 										"$ref": "AAAAAAF0xRJgP58D5k8="
 									},
@@ -23314,8 +23314,8 @@
 									"_parent": {
 										"$ref": "AAAAAAF0xO3dgJ6P7hg="
 									},
-									"name": "settedDelay",
-									"documentation": "# Description\nThe time, in second, that the cookie will still available",
+									"name": "settedPeriod",
+									"documentation": "# Description\nThe time setted on the cookie to still available (in second)",
 									"type": "INTEGER"
 								}
 							]
@@ -23345,8 +23345,8 @@
 									"_parent": {
 										"$ref": "AAAAAAF0xPxPBp6uhLo="
 									},
-									"name": "cookieDelay",
-									"documentation": "# Description\nThe time setted for the cookie to still available (in second)",
+									"name": "cookiePeriod",
+									"documentation": "# Description\nThe time, in second, that the cookie will still available",
 									"type": "INTEGER"
 								},
 								{
