@@ -1848,11 +1848,15 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*———————————————————————————————— SIGN DOWN ————————————————————————————————*/
 
-.sign-container {
+.sign-container, .form_sign_file {
     border: var(--border-float);
     border-radius: var(--border-float-radius);
     box-shadow: var(--box-shadow);
     border-top: none;
+}
+
+.form_sign_file {
+    box-shadow: none !important;
 }
 
 .sign-head {

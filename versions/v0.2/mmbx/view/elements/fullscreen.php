@@ -71,4 +71,9 @@ $language = $person->getLanguage();
     </div>
     <div id="size_editor_pop" class="pop_up-container">
     </div>
+    <div id="sign_form_pop" class="pop_up-container">
+        <?php
+        echo $this->generateFile('view/elements/popup/popupFormSign.php', []);
+        ?>
+    </div>
 </div>

@@ -164,7 +164,7 @@
         }
     }
 
-    selectBody = (headx, headsx, bodyx, bodiesx, headFunc = () => { }, bodyFunc = () => { }, headsFunc = () => { }, bodiesFunc = () => { }) => {
+    selectBody = (headx, bodyx, headsx, bodiesx, headFunc = () => { }, bodyFunc = () => { }, headsFunc = () => { }, bodiesFunc = () => { }) => {
         var bodiesx = $(bodiesx);
         var headsx = $(headsx);
         for (chd of bodiesx) {
@@ -178,15 +178,14 @@
         headFunc(headx);
         bodyFunc(bodyx);
     }
-    toggleSign = (headx , bodyx) => {
+
+    toggleSign = (headx , bodyx, headsx, bodiesx) => {
         if(!$(headx).hasClass("sign-head-button-selected")){
-            headsx = $(".sign-head-button-div");
-            bodiesx = $(".sign-body");
             headFunc = (x) => {$(x).addClass("sign-head-button-selected");}
             headsFunc = (x) => {$(x).removeClass("sign-head-button-selected");}
             bodyFunc = (x) => {$(x).slideDown(TS)};
             bodiesFunc =  (x) => {$(x).slideUp(TS)};
-            selectBody(headx, headsx, bodyx, bodiesx, headFunc, bodyFunc, headsFunc, bodiesFunc);
+            selectBody(headx, bodyx, headsx, bodiesx, headFunc, bodyFunc, headsFunc, bodiesFunc);
         }
     }
 
