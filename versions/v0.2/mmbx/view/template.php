@@ -334,12 +334,12 @@ $language = $person->getLanguage();
                             </div>
                         </li> -->
                         <li class="navbar-li remove-li-default-att">
-                            <div class="grey-tag-button standard-tag-button img-text-block">
+                            <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
-                                        <img src="content/brain/permanent/icons8-contacts-96.png" alt="">
+                                        <img src="content/brain/permanent/icons8-contacts-96.png">
                                     </div>
-                                    <span class="img-text-span">sign up</span>
+                                    <span class="img-text-span"></span>
                                 </div>
                             </div>
                         </li>
