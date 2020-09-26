@@ -3,6 +3,7 @@
 require_once 'framework/Model.php';
 require_once 'model/special/Query.php';
 require_once 'model/special/MyError.php';
+require_once 'model/special/Map.php';
 
 /**
  * This class provide to model's classes common function
@@ -116,6 +117,11 @@ abstract class ModelFunctionality extends Model
      * @var string[]
      */
     private static $boxMap;
+
+    /**
+     * @var Map
+     */
+    private static $cookiesMap;
 
     /**
      * PDOStatement success code
@@ -491,23 +497,23 @@ abstract class ModelFunctionality extends Model
         return self::$boxMap[$boxColor]["arguments"];
     }
 
-    /**
-     * Check if a boxMap's attribut is set for each box
-     * @param string $attr access key of one boxMap's attribute
-     * @return boolean truee if it set else false
-     */
-    private function boxAttrIsset($attr)
-    {
-        if (isset(self::$boxMap)) {
-            return false;
-        }
-        foreach (self::$boxMap as $datas) {
-            if (!key_exists($attr, $datas)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    // /**
+    //  * Check if a boxMap's attribut is set for each box
+    //  * @param string $attr access key of one boxMap's attribute
+    //  * @return boolean truee if it set else false
+    //  */
+    // private function boxAttrIsset($attr)
+    // {
+    //     if (isset(self::$boxMap)) {
+    //         return false;
+    //     }
+    //     foreach (self::$boxMap as $datas) {
+    //         if (!key_exists($attr, $datas)) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
 
     /**
      * Setter for boxMap
@@ -720,19 +726,33 @@ abstract class ModelFunctionality extends Model
         }
     }
 
-    // /**
-    //  * Setter for MeasureUnits table
-    //  */
-    // private function setMeasureUnits()
-    // {
-    //     self::$measureUnits = [];
-    //     $sql = "SELECT * FROM `MeasureUnits`";
-    //     $tab = $this->select($sql);
-    //     foreach ($tab as $tabLine) {
-    //         self::$measureUnits[$tabLine["unitName"]]["measureUnit"] = $tabLine["measureUnit"];
-    //         self::$measureUnits[$tabLine["unitName"]]["toSystUnit"] = (!empty($tabLine["toSystUnit"])) ? (float) $tabLine["toSystUnit"] : null;
-    //     }
-    // }
+    /**
+     * To get Visitor's cookies
+     * @param string $userID Visitor's id
+     * @return Map Visitor's cookies
+     */
+    protected static function getCookiesMap($userID){
+        (!isset(self::$cookiesMap)) ? self::setCookies($userID) : null;
+        return self::$cookiesMap;
+    }
+
+    /**
+     * To set cookiesMap
+     */
+    private static function setCookies($userID)
+    {
+        self::$cookiesMap = new Map();
+        $sql = "SELECT * FROM `Users-Cookies` WHERE `userId` = '$userID'";
+        $tab = self::select($sql);
+        if(count($tab) > 0){
+            foreach($tab as $tabLine){
+                self::$cookiesMap->put($tabLine["cookieId"], Map::cookieID);
+                self::$cookiesMap->put($tabLine["cookieValue"], Map::cookieValue);
+                self::$cookiesMap->put($tabLine["setDate"], Map::setDate);
+                self::$cookiesMap->put($tabLine["settedPeriod"], Map::settedPeriod);
+            }
+        }
+    }
 
     /*———————————————————————————— STATIC TABLES ACCESS UP ——————————————————*/
     /*———————————————————————————— PRODUCT ACCESS DOWN ——————————————————————*/

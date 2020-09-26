@@ -55,6 +55,14 @@ class Map
     public const inputValue = "inputValue";
     public const isChecked = "isChecked";
     public const inputFunc = "inputFunc";
+  
+    /**
+     * key for Cookie
+     * @var string
+     */
+    public const cookieID = "cookieID";
+    public const cookieValue = "cookieValue";
+    public const settedPeriod = "settedPeriod";
 
     public function __construct()
     {

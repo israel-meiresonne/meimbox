@@ -1,5 +1,5 @@
 <?php
-require_once 'model/special/Map.php';
+// require_once 'model/special/Map.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param Basket $basket Visitor's basket

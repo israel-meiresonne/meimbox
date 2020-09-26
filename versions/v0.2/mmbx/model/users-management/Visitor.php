@@ -7,7 +7,8 @@ require_once 'model/tools-management/Country.php';
 require_once 'model/navigation/Location.php';
 require_once 'model/tools-management/Measure.php';
 require_once 'model/boxes-management/Basket.php';
-require_once 'model/special/Map.php';
+// require_once 'model/special/Map.php';
+require_once 'model/tools-management/Cookie.php';
 
 class Visitor extends ModelFunctionality
 {
@@ -79,6 +80,13 @@ class Visitor extends ModelFunctionality
     protected $measures;
 
     /**
+     * Holds the visitor's cookies
+     * @var Map a Map of Cookie
+     * + use id of the cookie as acceess key
+     */
+    protected $cookies;
+
+    /**
      * Holds how much measures can be holded
      * @var int
      */
@@ -111,6 +119,14 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * Setter for Visitor's basket
+     */
+    private function setBasket()
+    {
+        $this->basket = new Basket($this->userID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
+    }
+
+    /**
      * Setter for Visitor's measures
      */
     protected function setMeasure()
@@ -140,11 +156,25 @@ class Visitor extends ModelFunctionality
     }
 
     /**
-     * Setter for Visitor's basket
+     * Setter for Visitor's cookies
      */
-    private function setBasket()
+    protected function setCookies()
     {
-        $this->basket = new Basket($this->userID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
+        $this->cookies = new Map();
+        $userID = $this->getUserID();
+        $cookiesMap = parent::getCookiesMap($userID);
+        if (count($cookiesMap) > 0) {
+            $cookieIDs = $cookiesMap->getKeys();
+            foreach ($cookieIDs as $cookieID) {
+                if (key_exists($cookieID, $_COOKIE)) {
+                    $value = $cookiesMap->get($cookieID, Map::cookieValue);
+                    $setDate = $cookiesMap->get($cookieID, Map::setDate);
+                    $settedPeriod = $cookiesMap->get($cookieID, Map::settedPeriod);
+                    $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
+                    $this->cookies->put($cookie, $cookieID);
+                }
+            }
+        }
     }
 
     /**
@@ -232,6 +262,17 @@ class Visitor extends ModelFunctionality
             }
         }
         return $product;
+    }
+
+    /**
+     * To get a Cookie
+     * @param string $cookieID id of the cookie to get
+     * @return Cookie|null
+     */
+    public function getCookie($cookieID)
+    {
+        (!isset($this->cookies)) ? $this->setCookies() : null;
+        return $this->cookies->get($cookieID);
     }
 
     /**
@@ -934,7 +975,7 @@ class Visitor extends ModelFunctionality
                         } else {
                             $stillStock = $this->stillStock($response, $prodID, $sizeType, $sizeMap);
                             if (!$response->containError()) {
-                                if(!$stillStock){
+                                if (!$stillStock) {
                                     $response->addErrorStation("ER13", ControllerItem::A_EDT_BXPROD);
                                 } else {
                                     $newSizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
@@ -980,7 +1021,7 @@ class Visitor extends ModelFunctionality
                     $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
                     if (!$isBoxProd) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-                    } else{
+                    } else {
                         $selectedSize = $product->getSelectedSize();
                         $quantity = $selectedSize->getQuantity();
                         if (!$basket->stillSpace($newBoxID, $quantity)) {
@@ -1009,7 +1050,7 @@ class Visitor extends ModelFunctionality
         } catch (\Throwable $th) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         }
-        if(!$response->containError()){
+        if (!$response->containError()) {
             $basket = $this->getBasket();
             $box = $basket->getBoxe($boxID);
             if (empty($box)) {
@@ -1019,7 +1060,7 @@ class Visitor extends ModelFunctionality
                 $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
                 if (!$isBoxProd) {
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-                } else{
+                } else {
                     $selectedSize = $product->getSelectedSize();
                     $basket->deleteBoxProduct($response, $boxID, $prodID, $selectedSize);
                 }
