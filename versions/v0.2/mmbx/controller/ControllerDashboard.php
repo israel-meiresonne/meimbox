@@ -7,7 +7,7 @@ class ControllerDashboard extends ControllerSecure
     /**
      * Holds name of a action file
      */
-    private const ACTION_SHOPBAG = "shopbag";
+    private const ACTION_FILE_SHOPBAG = "shopbag";
     
     /**
      * Holds page link (href)
@@ -29,7 +29,7 @@ class ControllerDashboard extends ControllerSecure
     public function shopbag()
     {
         $datasView = [];
-        $this->generateView($datasView, $this->person, self::ACTION_SHOPBAG);
+        $this->generateView($datasView, $this->person, self::ACTION_FILE_SHOPBAG);
     }
 
     /**

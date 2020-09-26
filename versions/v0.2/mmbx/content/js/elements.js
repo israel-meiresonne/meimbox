@@ -153,52 +153,6 @@
         }
     }
 
-    // animateBox = function (btnx) {
-    //     selector = $(btnx)[0];
-    //     var holdId = $(selector).attr("id");
-    //     var selectorId = "arrrow_" + randomInt(BNR);
-    //     var wrapperId = "box_" + randomInt(BNR);
-    //     var wrapper = selector.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-    //     selector.setAttribute("id", selectorId);
-    //     wrapper.setAttribute("id", wrapperId);
-
-    //     var isDisplayed = $("#" + wrapperId + " .box-product-set").css("display") == "block";
-    //     if (isDisplayed) {
-    //         $("#" + wrapperId + " .box-product-set").slideUp(TS);
-    //         // wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow)";
-    //         $("#" + wrapperId + " #" + selectorId).removeClass("box-arrow-open");
-    //     } else {
-    //         $("#" + wrapperId + " .box-product-set").slideDown(TS);
-    //         // wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow-right)";
-    //         $("#" + wrapperId + " #" + selectorId).addClass("box-arrow-open");
-    //     }
-    //     // selector.removeAttribute("id");
-    //     selector.setAttribute("id", holdId);
-    //     wrapper.removeAttribute("id");
-    // }
-
-    // var animateCartSummary = function (selector) {
-    //     var arrow = selector.querySelector(".summary-detail-arrow-button");
-    //     var arrowId = "arrrow_" + randomInt(BNR);
-    //     var wrapperId = "summary_" + randomInt(BNR);
-    //     var wrapper = selector.parentNode.parentNode;
-    //     arrow.setAttribute("id", arrowId);
-    //     wrapper.setAttribute("id", wrapperId);
-
-    //     var isDisplayed = $("#" + wrapperId + " .summary-detail-inner").css("display") == "block";
-    //     if (isDisplayed) {
-    //         $("#" + wrapperId + " .summary-detail-inner").slideUp(TS);
-    //         // wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow)";
-    //         $("#" + wrapperId + " #" + arrowId).removeClass("summary-detail-arrow-open");
-    //     } else {
-    //         $("#" + wrapperId + " .summary-detail-inner").slideDown(TS);
-    //         // wrapper.getElementsByClassName("cart-element-wrap")[0].style.boxShadow = "var(--box-shadow-right)";
-    //         $("#" + wrapperId + " #" + arrowId).addClass("summary-detail-arrow-open");
-    //     }
-    //     arrow.removeAttribute("id");
-    //     wrapper.removeAttribute("id");
-    // }
-
     toggleShutter = (bodyx, arrowx = null) => {
         var arrowx = (!empty(arrowx)) ? arrowx : $(bodyx).attr(dataarrow);
         if (isDisplayed(bodyx)) {
@@ -207,6 +161,32 @@
         } else {
             $(bodyx).slideDown(TS);
             $(arrowx).addClass("arrow-element-open");
+        }
+    }
+
+    selectBody = (headx, headsx, bodyx, bodiesx, headFunc = () => { }, bodyFunc = () => { }, headsFunc = () => { }, bodiesFunc = () => { }) => {
+        var bodiesx = $(bodiesx);
+        var headsx = $(headsx);
+        for (chd of bodiesx) {
+            bodiesFunc(chd);
+        }
+        for (hd of headsx) {
+            headsFunc(hd);
+        }
+        var headx = $(headx);
+        var bodyx = $(bodyx);
+        headFunc(headx);
+        bodyFunc(bodyx);
+    }
+    toggleSign = (headx , bodyx) => {
+        if(!$(headx).hasClass("sign-head-button-selected")){
+            headsx = $(".sign-head-button-div");
+            bodiesx = $(".sign-body");
+            headFunc = (x) => {$(x).addClass("sign-head-button-selected");}
+            headsFunc = (x) => {$(x).removeClass("sign-head-button-selected");}
+            bodyFunc = (x) => {$(x).slideDown(TS)};
+            bodiesFunc =  (x) => {$(x).slideUp(TS)};
+            selectBody(headx, headsx, bodyx, bodiesx, headFunc, bodyFunc, headsFunc, bodiesFunc);
         }
     }
 

@@ -1597,9 +1597,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     height: 15px;
     margin: auto;
 }
+
 /* 
 .arrow-element-wrap-rotated {
 } */
+
 /* .arrow-element-wrap-rotated {
     width: 100%;
     height: 100%;
@@ -1844,6 +1846,60 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*————————————————————— DATA_KEY_VALUE_OPOSITE UP —————*/
 
+/*———————————————————————————————— SIGN DOWN ————————————————————————————————*/
+
+.sign-container {
+    border: var(--border-float);
+    border-radius: var(--border-float-radius);
+    box-shadow: var(--box-shadow);
+    border-top: none;
+}
+
+.sign-head {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+/* .sign-head-button-div:hover {
+    background-color: var(--color-shadow-05);
+} */
+
+.sign-head-button-div {
+    width: 50%;
+    height: 50px;
+    display: flex;
+    background: var(--color-shadow-08);
+    border-radius: 5px 5px;
+    border-top: var(--border-float);
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
+}
+
+.sign-head-button-selected {
+    background: var(--color-white);
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
+}
+
+.sign-head-button {
+    /* margin: auto; */
+    background: none;
+    border: none;
+    /* text-transform: capitalize; */
+    color: var(--color-text-05);
+    font-size: var(--middle-font-size);
+    font-family: var(--main-font-family);
+    text-transform: capitalize;
+    cursor: pointer;
+    width: 100%;
+}
+
+.sign-bodies {
+    padding: 10px;
+}
+
+/*———————————————————————————————— SIGN UP ——————————————————————————————————*/
+
 /*————————————————————— SIGN_UP DOWN ———————————————*/
 
 .connection-title-block {
@@ -1870,15 +1926,16 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     padding: 0;
     color: var(--color-link-05);
     font-size: var(--micro-font-size);
+    text-decoration: underline;
     text-transform: capitalize;
     background-color: transparent;
     border: 0;
     cursor: pointer;
 }
 
-.connection-title-button:hover {
+/* .connection-title-button:hover {
     text-decoration: underline;
-}
+} */
 
 .signup-form-tag {
     font-family: var(--main-font-family);
