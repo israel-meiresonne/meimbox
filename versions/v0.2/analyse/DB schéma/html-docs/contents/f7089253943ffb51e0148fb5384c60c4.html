@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>userId</title>
+    <title></title>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic|Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="../assets/css/bootstrap.css">
 <link rel="stylesheet" href="../assets/css/jquery.bonsai.css">
@@ -18,14 +18,14 @@
 
       <!-- Name Title -->
 
-      <h1>userId</h1>
+      <h1>(unnamed)</h1>
 
       <!-- Type and Stereotype -->
 
       <section style="margin-top: .5em;">
         <span class="alert alert-info">
-          <span class="node-icon staruml-icon icon-ERDColumn"></span>
-          ERDColumn
+          <span class="node-icon staruml-icon icon-ERDRelationshipEnd"></span>
+          ERDRelationshipEnd
         </span>
         
       </section>
@@ -46,10 +46,13 @@
           <span class="label label-info"><a href='aed60d17d94b3a0a89f96a93227dc32d.html'><span class='node-icon staruml-icon icon-ERDDataModel'></span>Data Model1</a></span>
         
           <span>::</span>
-          <span class="label label-info"><a href='2d44ec42640d71b4bbc40cd91aaec173.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Baskets-Box</a></span>
+          <span class="label label-info"><a href='56f42be50507904716b475d657091e5e.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Users-Cookies</a></span>
         
           <span>::</span>
-          <span class="label label-info"><a href='10f6202374b0bf37f3580561850ca6e2.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>userId</a></span>
+          <span class="label label-info"><a href='6b669d2fae84b66c244b326e6f4fdaf3.html'><span class='node-icon staruml-icon icon-ERDRelationship'></span>(Users-Cookies—Cookies)</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='f7089253943ffb51e0148fb5384c60c4.html'><span class='node-icon staruml-icon icon-ERDRelationshipEnd'></span>(ERDRelationshipEnd)</a></span>
         
       </section>
 
@@ -64,9 +67,7 @@
         <h3>Description</h3>
         <div>
           
-            <h1>Contrainte</h1>
-
-<ul><li>ON DELETE RESTRICT</li><li>ON UPDATE CASCADE</li></ul>
+            <span class="label label-info">none</span>
           
         </div>
       </section>
@@ -220,7 +221,7 @@
     
     <tr>
         <td>name</td>
-        <td>userId</td>
+        <td></td>
     </tr>
     
     
@@ -234,8 +235,8 @@
     
     
     <tr>
-        <td>type</td>
-        <td>INTEGER</td>
+        <td>reference</td>
+        <td><a href='56f42be50507904716b475d657091e5e.html'><span class='node-icon staruml-icon icon-ERDEntity'></span>Users-Cookies</a></td>
     </tr>
     
     
@@ -243,53 +244,8 @@
     
     
     <tr>
-        <td>length</td>
-        <td>11</td>
-    </tr>
-    
-    
-    
-    
-    
-    <tr>
-        <td>primaryKey</td>
-        <td><span class='label label-info'>false</span></td>
-    </tr>
-    
-    
-    
-    
-    
-    <tr>
-        <td>foreignKey</td>
-        <td><span class='label label-info'>true</span></td>
-    </tr>
-    
-    
-    
-    
-    
-    <tr>
-        <td>referenceTo</td>
-        <td><a href='44bca2f8d28c139376b7764e49556e40.html'><span class='node-icon staruml-icon icon-ERDColumn'></span>userID</a></td>
-    </tr>
-    
-    
-    
-    
-    
-    <tr>
-        <td>nullable</td>
-        <td><span class='label label-info'>false</span></td>
-    </tr>
-    
-    
-    
-    
-    
-    <tr>
-        <td>unique</td>
-        <td><span class='label label-info'>false</span></td>
+        <td>cardinality</td>
+        <td>1</td>
     </tr>
     
     
