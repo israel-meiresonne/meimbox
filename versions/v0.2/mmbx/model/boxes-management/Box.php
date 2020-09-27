@@ -535,27 +535,6 @@ class Box extends ModelFunctionality
         return null;
     }
 
-    // /**
-    //  * To check if exist a product in the box with the id and size given in param
-    //  * @param string $prodID id of the product to add in box
-    //  * @param Size $sizeObj1 submited size for product
-    //  * @return boolean true if the product exist in the box else false
-    //  */
-    // private function existProduct($prodID, Size $selectedSize1)
-    // {
-    //     $exist = false;
-    //     $products = $this->getBoxProducts();
-    //     foreach ($products as $product) {
-    //         $selectedSize2 = $product->getSelectedSize();
-    //         $exist = (($product->getProdID() == $prodID)
-    //             && (Size::equals($selectedSize1, $selectedSize2)));
-    //         if ($exist) {
-    //             break;
-    //         }
-    //     }
-    //     return $exist;
-    // }
-
     /**
      * To get the amount of product in the box
      * @return int amount of product in the box
@@ -668,9 +647,9 @@ class Box extends ModelFunctionality
      *  contain the error thrown
      * @param string $userID Visitor's id
      */
-    public function insertBox(Response $response, $userID)
+    public function insertBox(Response $response, $userID) // regex \[value-[0-9]*\]
     {
-        $bracket = "(?,?,?)"; // regex \[value-[0-9]*\]
+        $bracket = "(?,?,?)";
         $sql = "INSERT INTO `Boxes`(`boxID`, `box_color`, `setDate`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];

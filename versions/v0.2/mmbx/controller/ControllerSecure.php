@@ -9,6 +9,7 @@ require_once 'model/special/MyError.php';
 require_once 'model/special/Query.php';
 require_once 'model/tools-management/Measure.php';
 require_once 'model/special/Map.php';
+require_once 'model/tools-management/Cookie.php';
 
 /**
  * This class manage security and holds elements common to several controllers
@@ -71,7 +72,31 @@ abstract class ControllerSecure extends Controller
     public function __construct()
     {
         date_default_timezone_set('Europe/Paris');
-        $this->person = new Client(651853948);
+        $this->setPerson();
+        // $this->person = new Client(651853948);
+    }
+
+    /**
+     * To get Visitor's datas
+     */
+    private function setPerson()
+    {
+        $ctr = get_class($this);
+        try {
+            switch ($ctr) {
+                default:
+                    $CLT = Cookie::getCookie(Cookie::COOKIE_CLT);
+                    if (!empty($CLT)) {
+                        $this->person = new Client();
+                    } else {
+                        $this->person = new Visitor();
+                    }
+                    break;
+            }
+        } catch (\Throwable $th) {
+            echo $th;
+            echo "<hr>";
+        }
     }
 
     /**
@@ -117,8 +142,8 @@ abstract class ControllerSecure extends Controller
                     $value = $this->convertParam(self::NUMBER_FLOAT, $data);
                 }
                 break;
-            
-                case self::NUMBER_INT:
+
+            case self::NUMBER_INT:
                 if (preg_match(self::INT_REGEX, $data) != 1) {
                     $errStation = "ER7";
                     $response->addErrorStation($errStation, $input);

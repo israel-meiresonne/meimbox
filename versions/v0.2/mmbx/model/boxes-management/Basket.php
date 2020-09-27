@@ -320,7 +320,8 @@ class Basket extends ModelFunctionality
     public function getShipping()
     {
         $currency = $this->getCurrency();
-        return (new Price(7.97, $currency));
+        $bag = $this->getMerge();
+        return (!empty($bag)) ? (new Price(7.97, $currency)) : (new Price(0, $currency));
         // return (new Price(rand(4, 30) / rand(3, 5), $currency));
     }
 
