@@ -53,16 +53,24 @@ abstract class User extends  Visitor
 
     /**
      * Constructor
+     * @param string $CLT_VAL value of the user's Client  cookie (Cookie::COOKIE_CLT)
      */
-    protected function __construct($userID)
+    protected function __construct($CLT_VAL)
     {
-        parent::__construct(User::class);
-        $tab = $this->select("SELECT * FROM `Users` WHERE `userID` = '$userID'");
+        // $tab = $this->select("SELECT * FROM `Users` WHERE `userID` = '$userID'");
+        $sql = "SELECT u.* 
+                FROM `Users-Cookies` uc
+                JOIN `Users` u ON uc.`userId` = u.`userID`
+                WHERE uc.`cookieId` = '" . Cookie::COOKIE_CLT . "'
+                AND uc.`cookieValue` = '$CLT_VAL'";
+        $tab = $this->select($sql);
         if (count($tab) != 1) {
-            throw new Exception("User with id '$this->userID' don't exist");
+            throw new Exception("User with Client cookie '$CLT_VAL' don't exist");
         }
         $this->userLine = $tab[0];
         $this->userID = $this->userLine["userID"];
+        parent::__construct(User::class);
+
         $this->setDate = $this->userLine["setDate"];
         $this->lang = new Language($this->userLine["lang_"]);
         $this->mail = $this->userLine["mail"];
@@ -71,19 +79,4 @@ abstract class User extends  Visitor
         $this->birthday = $this->userLine["birthday"];
         $this->sexe = $this->userLine["sexe_"];
     }
-
-
-    // public function __toString()
-    // {
-    //     parent::__toString();
-    //     Helper::printLabelValue("mail", $this->mail);
-    //     Helper::printLabelValue("password", null);
-    //     Helper::printLabelValue("firstname", $this->firstname);
-    //     Helper::printLabelValue("lastname", $this->lastname);
-    //     Helper::printLabelValue("birthday", $this->birthday);
-    //     Helper::printLabelValue("sexe", $this->sexe);
-    //     foreach ($this->addresses as $address) {
-    //         $address->__toString();
-    //     }
-    // }
 }

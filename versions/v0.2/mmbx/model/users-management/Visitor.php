@@ -93,18 +93,84 @@ class Visitor extends ModelFunctionality
     protected static $MAX_MEASURE;
 
     /**
-     * @parram string $callerClass class of the caller (usualy User.php)
+     * @parram string $childCaller class of the caller (usualy User.php)
      */
-    public function __construct($callerClass = null)
+    public function __construct($childCaller = null)
     {
+        $isVisitor = empty($childCaller);
+        $VIS = Cookie::getCookie(Cookie::COOKIE_VIS);
+        // $VIS_isValid = false;
+        $tabLine = null;
+        if ($isVisitor && (!empty($VIS))) { // if empty its mean that the current user is a Visittor
+            $sql = "SELECT u.* 
+                FROM `Users-Cookies` uc
+                JOIN `Users` u ON uc.`userId` = u.`userID`
+                WHERE uc.`cookieId` = '" . Cookie::COOKIE_VIS . "'
+                AND uc.`cookieValue` = '$VIS'";
+            $tab = $this->select($sql);
+            $tabLine = (count($tab) > 0) ? $tab[0] : null;
+        }
+
         $this->setConstants();
-        $this->userID = ($callerClass == User::class) ? null : date("YmdHis"); // replacer par une sequance
-        $this->setDate = ($callerClass == User::class) ? null : $this->getDateTime();
         $this->location = new Location();
         $this->currency = $this->location->getCurrency();
-        $this->lang = ($callerClass == User::class) ? null : new Language();
         $this->country = new Country($this->location->getcountryName());
-        $this->measures = [];
+        if ($isVisitor) {
+            $this->userID = (!empty($tabLine)) ? $tabLine["userID"] : $this->generateCode(9, date("YmdHis")); // replacer par une sequance
+            $this->setDate = (!empty($tabLine)) ? $tabLine["setDate"] : $this->getDateTime();
+            $this->lang = (!empty($tabLine)) ? new Language($tabLine["lang_"]) : new Language();
+        }
+        $this->setMeasure();
+        ($isVisitor && (empty($tabLine))) ? $this->insertVisitor() : null;
+        $this->manageCookie(Cookie::COOKIE_VIS);
+    }
+
+    /**
+     * Generate of update cookie with the id given in param
+     * @param string $cookieID id of the cookie to managee
+     */
+    protected function manageCookie($cookieID)
+    {
+        $cookieState = null;
+        $userID = $this->getUserID();
+        $usersCookiesMap = $this->getUsersCookiesMap($userID);
+        $cookieIDs = $usersCookiesMap->getKeys();
+        $inDb = in_array($cookieID, $cookieIDs);
+        $onUser = (!empty(Cookie::getCookie($cookieID)));
+        if ($inDb && $onUser) {
+            // --- cookie exist
+            $cookieState = Cookie::STATE_UPDATE;
+        } else if ($inDb && (!$onUser)) {
+            // --- cookie expired
+            $cookieState = Cookie::STATE_GENERATE;
+        } else if ((!$inDb) && $onUser) {
+            // --- cookie invalid
+            $cookieState = Cookie::STATE_GENERATE;
+        } else if ((!$inDb) && (!$onUser)) {
+            // --- cookie don't exist
+            $cookieState = Cookie::STATE_GENERATE;
+        }
+        // var_dump("inDb", $inDb); echo "<br>";
+        // var_dump("onUser", $onUser); echo "<br>";
+        // var_dump("cookieState", $cookieState); echo "<br>";
+        $cookies = $this->getCookies();
+        switch ($cookieState) {
+            case Cookie::STATE_GENERATE:
+                $cookieValue = $this->generateCode(25);
+                $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
+                $cookies->put($newCookie, $cookieID);
+                break;
+            case Cookie::STATE_UPDATE:
+                $holdCookie = $this->getCookie($cookieID);
+                $cookieValue = $holdCookie->getValue();
+                $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
+                $cookies->put($newCookie, $cookieID);
+                // $this->cookies->put($newCookie, $cookieID);
+                break;
+            default:
+                throw new Exception("Unkwo cookie state, cookieState:'$cookieState");
+                break;
+        }
     }
 
     /**
@@ -134,42 +200,45 @@ class Visitor extends ModelFunctionality
         $this->measures = [];
         $sql = "SELECT * FROM `UsersMeasures` WHERE `userId` = '$this->userID'";
         $tab = $this->select($sql);
-        foreach ($tab as $tabLine) {
-            $values = [];
-            $values["measureID"] = $tabLine["measureID"];
-            $values["unitName"] = $tabLine["unit_name"];
-            $values["measureName"] = $tabLine["measureName"];
-            $values["bust"] = !empty($tabLine["userBust"]) ? (float) $tabLine["userBust"] : null;
-            $values["arm"] = !empty($tabLine["userArm"]) ? (float) $tabLine["userArm"] : null;
-            $values["waist"] = !empty($tabLine["userWaist"]) ? (float) $tabLine["userWaist"] : null;
-            $values["hip"] = !empty($tabLine["userHip"]) ? (float) $tabLine["userHip"] : null;
-            $values["inseam"] = !empty($tabLine["userInseam"]) ? (float) $tabLine["userInseam"] : null;
-            $values["setDate"] = $tabLine["setDate"];
-            $measureMap = Measure::getDatas4Measure($values);
-            $measure = new Measure($measureMap);
-            $key = $measure->getDateInSec();
-            $this->measures[$key] = $measure;
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                $values = [];
+                $values["measureID"] = $tabLine["measureID"];
+                $values["unitName"] = $tabLine["unit_name"];
+                $values["measureName"] = $tabLine["measureName"];
+                $values["bust"] = !empty($tabLine["userBust"]) ? (float) $tabLine["userBust"] : null;
+                $values["arm"] = !empty($tabLine["userArm"]) ? (float) $tabLine["userArm"] : null;
+                $values["waist"] = !empty($tabLine["userWaist"]) ? (float) $tabLine["userWaist"] : null;
+                $values["hip"] = !empty($tabLine["userHip"]) ? (float) $tabLine["userHip"] : null;
+                $values["inseam"] = !empty($tabLine["userInseam"]) ? (float) $tabLine["userInseam"] : null;
+                $values["setDate"] = $tabLine["setDate"];
+                $measureMap = Measure::getDatas4Measure($values);
+                $measure = new Measure($measureMap);
+                $key = $measure->getDateInSec();
+                $this->measures[$key] = $measure;
+            }
+            krsort($this->measures);
+            $this->sortMeasure();
+            // $this->measures = [];
         }
-        krsort($this->measures);
-        $this->sortMeasure();
-        // $this->measures = [];
     }
 
     /**
      * Setter for Visitor's cookies
+     * + check if cookie exist in db and $_COOKIE
+     * + check if value of the cookie from $_COOKIE match the value in db
      */
     protected function setCookies()
     {
         $this->cookies = new Map();
-        $userID = $this->getUserID();
-        $cookiesMap = parent::getCookiesMap($userID);
-        if (count($cookiesMap) > 0) {
-            $cookieIDs = $cookiesMap->getKeys();
-            foreach ($cookieIDs as $cookieID) {
-                if (key_exists($cookieID, $_COOKIE)) {
-                    $value = $cookiesMap->get($cookieID, Map::cookieValue);
-                    $setDate = $cookiesMap->get($cookieID, Map::setDate);
-                    $settedPeriod = $cookiesMap->get($cookieID, Map::settedPeriod);
+        if (!empty($_COOKIE)) {
+            $userID = $this->getUserID();
+            $usersCookiesMap = $this->getUsersCookiesMap($userID);
+            $cookieIDs = $usersCookiesMap->getKeys();
+            foreach ($_COOKIE as $cookieID => $value) {
+                if (in_array($cookieID, $cookieIDs) && ($value == $usersCookiesMap->get($cookieID, Map::value))) {
+                    $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
+                    $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
                     $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
                     $this->cookies->put($cookie, $cookieID);
                 }
@@ -184,6 +253,15 @@ class Visitor extends ModelFunctionality
     public function getUserID()
     {
         return $this->userID;
+    }
+
+    /**
+     * Getter for creation date of the Visitor
+     * @return string creation date of the Visitor
+     */
+    public function getSetDate()
+    {
+        return $this->setDate;
     }
 
     /**
@@ -265,14 +343,24 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * To get Visitor's Cookies
+     * @return Map
+     */
+    public function getCookies()
+    {
+        (!isset($this->cookies)) ? $this->setCookies() : null;
+        return $this->cookies;
+    }
+
+    /**
      * To get a Cookie
      * @param string $cookieID id of the cookie to get
      * @return Cookie|null
      */
     public function getCookie($cookieID)
     {
-        (!isset($this->cookies)) ? $this->setCookies() : null;
-        return $this->cookies->get($cookieID);
+        $cookies = $this->getCookies();
+        return $cookies->get($cookieID);
     }
 
     /**
@@ -1069,4 +1157,20 @@ class Visitor extends ModelFunctionality
     }
 
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
+    /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
+    /**
+     * To insert new Visitor in db
+     */
+    private function insertVisitor()
+    {
+        $response = new Response();
+        $bracket = "(?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Users`(`userID`, `lang_`, `setDate`) 
+                VALUES " . $this->buildBracketInsert(1, $bracket);
+        $values = [];
+        array_push($values, $this->getUserID());
+        array_push($values, $this->getLanguage()->getIsoLang());
+        array_push($values, $this->getSetDate());
+        $this->insert($response, $sql, $values);
+    }
 }

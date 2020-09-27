@@ -121,6 +121,12 @@ abstract class ModelFunctionality extends Model
     /**
      * @var Map
      */
+    private static $usersCookiesMap;
+
+    /**
+     * Holds cookies datas need to config cookies
+     * @var Map
+     */
     private static $cookiesMap;
 
     /**
@@ -727,29 +733,67 @@ abstract class ModelFunctionality extends Model
     }
 
     /**
-     * To get Visitor's cookies
-     * @param string $userID Visitor's id
-     * @return Map Visitor's cookies
+     * To get cookies datas from db to config cookies
+     * @return Map cookies datas
      */
-    protected static function getCookiesMap($userID){
-        (!isset(self::$cookiesMap)) ? self::setCookies($userID) : null;
+    protected static function getCookiesMap()
+    {
+        (!isset(self::$cookiesMap)) ? self::setCookiesMap() : null;
         return self::$cookiesMap;
     }
 
     /**
      * To set cookiesMap
      */
-    private static function setCookies($userID)
+    private static function setCookiesMap()
     {
         self::$cookiesMap = new Map();
+        $sql = "SELECT * FROM `Cookies`";
+        $tab = self::select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                // self::$cookiesMap->put($tabLine["cookieID"], Map::cookieID);
+                $cookieID = $tabLine["cookieID"];
+                self::$cookiesMap->put($tabLine["cookiePeriod"], $cookieID, Map::period);
+                self::$cookiesMap->put($tabLine["cookieDomain"], $cookieID, Map::domain);
+                self::$cookiesMap->put($tabLine["cookiePath"], $cookieID, Map::path);
+
+                $cookieSecure = (bool)$tabLine["cookieSecure"];
+                self::$cookiesMap->put($cookieSecure, $cookieID, Map::secure);
+
+                $cookieHttponly = (bool)$tabLine["cookieHttponly"];
+                self::$cookiesMap->put($cookieHttponly, $cookieID, Map::httponly);
+            }
+        }
+    }
+
+    /**
+     * To get Visitor's cookies
+     * @param string $userID Visitor's id
+     * @return Map Visitor's cookies
+     */
+    protected function getUsersCookiesMap($userID)
+    {
+        (!isset(self::$usersCookiesMap)) ? self::setUsersCookiesMap($userID) : null;
+        return self::$usersCookiesMap;
+    }
+
+    /**
+     * To set cookiesMap
+     * @param string $userID Visitor's id
+     */
+    private static function setUsersCookiesMap($userID)
+    {
+        self::$usersCookiesMap = new Map();
         $sql = "SELECT * FROM `Users-Cookies` WHERE `userId` = '$userID'";
         $tab = self::select($sql);
-        if(count($tab) > 0){
-            foreach($tab as $tabLine){
-                self::$cookiesMap->put($tabLine["cookieId"], Map::cookieID);
-                self::$cookiesMap->put($tabLine["cookieValue"], Map::cookieValue);
-                self::$cookiesMap->put($tabLine["setDate"], Map::setDate);
-                self::$cookiesMap->put($tabLine["settedPeriod"], Map::settedPeriod);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                $cookieID = $tabLine["cookieId"];
+                // self::$usersCookiesMap->put($tabLine["cookieId"], Map::cookieID);
+                self::$usersCookiesMap->put($tabLine["cookieValue"], $cookieID, Map::value);
+                self::$usersCookiesMap->put($tabLine["setDate"], $cookieID, Map::setDate);
+                self::$usersCookiesMap->put($tabLine["settedPeriod"], $cookieID, Map::settedPeriod);
             }
         }
     }
@@ -1092,7 +1136,7 @@ abstract class ModelFunctionality extends Model
      * + NOTE: the time zone is set in ControllerSecured's secureSession function.
      * @return string today's date into format ["YYYY-MM-DD HH-MM-SS"]
      */
-    protected function getDateTime()
+    protected static function getDateTime()
     {
         return date('Y-m-d H:i:s');
     }
@@ -1102,9 +1146,12 @@ abstract class ModelFunctionality extends Model
      * @param int $length
      * @return string alpha numerique sequence in specified length
      */
-    protected static function generateCode($length)
+    protected static function generateCode($length, string $set = '0123456789abcdefghijklmnopqrstuvwxyz')
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        if(empty($set)){
+            throw new Exception("Charset can't be empty");
+        }
+        $characters = $set;
         $sequence = '';
         $nbChar = strlen($characters) - 1;
         for ($i = 0; $i < $length; $i++) {

@@ -26,14 +26,31 @@ class Client extends User
 
     /**
      * Constructor
-     * @param int $userID
+     * @param string $CLT_VAL value of the user's Client  cookie (Cookie::COOKIE_CLT)
      */
-    function __construct($userID)
+    // function __construct($CLT_VAL)
+    function __construct()
     {
-        parent::__construct($userID);
+        $CLT_VAL = Cookie::getCookie(Cookie::COOKIE_CLT);
+        if (empty($CLT_VAL)) {
+            throw new Exception("Client cookie don't exist");
+        }
+        parent::__construct($CLT_VAL);
         $this->newsletter = (bool) $this->userLine["newsletter"];
         $this->setMeasure();
+        $this->manageCookie(Cookie::COOKIE_CLT);
     }
+
+    // /**
+    //  * To update Client's cookies
+    //  */
+    // private function updateCookies()
+    // {
+    //     $holdsCookie = $this->getCookie(Cookie::COOKIE_CLT);
+    //     $cookieValue = $holdsCookie->getValue();
+    //     $newCookie = Cookie::generateCookie($this->userID, Cookie::COOKIE_CLT, $cookieValue);
+    //     $this->cookies->put($newCookie, Cookie::COOKIE_CLT);
+    // }
 
     /**
      * Create an order once the Client has paid
