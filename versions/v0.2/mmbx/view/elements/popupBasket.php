@@ -11,7 +11,7 @@ $datas = [];
 $datas["title"] = "shopping bag";
 $datas["closeButtonId"] = "basket_pop_close_button";
 // $datas["laodingId"] = "basket_pop_loading";
-$datas["laodingClass"] = "basket_pop_loading";
+// $datas["laodingClass"] = "basket_pop_loading";
 
 $contentDatas = [
     "basket" => $basket,

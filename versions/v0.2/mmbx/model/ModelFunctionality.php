@@ -130,6 +130,12 @@ abstract class ModelFunctionality extends Model
     private static $cookiesMap;
 
     /**
+     * Holds cookies datas need to config cookies
+     * @var string[]
+     */
+    private static $sexesMap;
+
+    /**
      * PDOStatement success code
      * @var string
      */
@@ -650,6 +656,11 @@ abstract class ModelFunctionality extends Model
                 (!isset(self::$productIDList)) ? self::$productIDList = self::getTable("SELECT `prodID` FROM `Products` ORDER BY `Products`.`prodID` ASC")
                     : null;
                 $table = self::$productIDList;
+                break;
+            case "Sexes":
+                (!isset(self::$sexesMap)) ? self::$sexesMap = self::getTable("SELECT * FROM `Sexes`")
+                    : null;
+                $table = self::$sexesMap;
                 break;
             default:
                 throw new Exception("This table don't exist");

@@ -122,9 +122,17 @@
 
     }
 
-    animateCheckbox = function (selector) {
-        var wrapper = goToParentNode(selector, 4);
-        $(wrapper).find(".checkbox_error-div .comment").slideUp(TS, function () {
+    // animateCheckbox = function (selector) {
+    //     var wrapper = goToParentNode(selector, 4);
+    //     $(wrapper).find(".checkbox_error-div .comment").slideUp(TS, function () {
+    //         $.text("");
+    //     })
+    // }
+    animateCheckbox = (inpx) => {
+        // var wrapper = goToParentNode(selector, 4);
+        var erx = $(inpx).attr(dataerrorx);
+        // var erType = $(inpx).attr(dataerrortype);
+        $(erx).slideUp(TS, () => {
             $.text("");
         })
     }

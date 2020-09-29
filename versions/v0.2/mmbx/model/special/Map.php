@@ -69,6 +69,18 @@ class Map
     public const secure = "secure";
     public const httponly = "httponly";
 
+    /**
+     * Key for sign forrm
+     */
+    public const sex = "sex";
+    public const condition = "condition";
+    public const newsletter = "newsletter";
+    public const firstname = "firstname";
+    public const lastname = "lastname";
+    public const email = "email";
+    public const password = "password";
+    public const confirmPassword = "confirmPassword";
+
     public function __construct()
     {
         $this->map = [];

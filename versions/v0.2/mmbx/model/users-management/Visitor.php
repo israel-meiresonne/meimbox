@@ -93,6 +93,18 @@ class Visitor extends ModelFunctionality
     protected static $MAX_MEASURE;
 
     /**
+     * Holds name of input
+     */
+    public const INPUT_SEX = "sex";
+    public const INPUT_FIRSTNAME = "firstname";
+    public const INPUT_LASTNAME = "lastname";
+    public const INPUT_EMAIL = "email";
+    public const INPUT_PASSWORD = "password";
+    public const INPUT_CONFIRM_PASSWORD = "confirm_password";
+    public const INPUT_CONDITION = "condition";
+    public const INPUT_NEWSLETTER = "newsletter";
+
+    /**
      * @parram string $childCaller class of the caller (usualy User.php)
      */
     public function __construct($childCaller = null)
@@ -165,7 +177,6 @@ class Visitor extends ModelFunctionality
                 $cookieValue = $holdCookie->getValue();
                 $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
                 $cookies->put($newCookie, $cookieID);
-                // $this->cookies->put($newCookie, $cookieID);
                 break;
             default:
                 throw new Exception("Unkwo cookie state, cookieState:'$cookieState");
@@ -516,6 +527,78 @@ class Visitor extends ModelFunctionality
 
     /*———————————————————————————— GET DB TABLE UP ——————————————————————————*/
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
+
+    /**
+     * To sign up a user
+     * @param Response $response to push in result or accured error
+     * @param Map $upMap map that contain datas submited for a sign up
+     * + $upMap[Map::sex] holds sex submited
+     * + $upMap[Map::condition] holds if condition has been checked
+     * + $upMap[Map::newsletter] holdsif newsletter has been checked
+     * + $upMap[Map::firstname] holds firstname submited
+     * + $upMap[Map::lastname] holds lastname submited
+     * + $upMap[Map::email] holds email submited
+     * + $upMap[Map::password] holds password submited
+     * + $upMap[Map::confirmPassword] holds confirm password submited
+     */
+    public function signUp($response, Map $upMap)
+    {
+        $sexes = $this->getTableValues("Sexes");
+        $sex = $upMap->get(Map::sex);
+        if (!in_array($sex, $sexes)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $condition = $upMap->get(Map::condition);
+            (!$condition) ? $response->addErrorStation("ER22", self::INPUT_CONDITION) : null;
+            // if (!$condition) {
+            // } else {
+            $email = $upMap->get(Map::email);
+            ($this->emailExist($email)) ? $response->addErrorStation("ER23", self::INPUT_EMAIL) : null;
+            $password = $upMap->get(Map::password);
+            $confirmPassword = $upMap->get(Map::confirmPassword);
+            ($password != $confirmPassword) ? $response->addErrorStation("ER24", self::INPUT_CONFIRM_PASSWORD) : null;
+            if (!$response->containError()) {
+                $this->updateVisitor($response, $upMap);
+                if (!$response->containError()) {
+                    $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
+                }
+            }
+            // }
+        }
+    }
+
+    /**
+     * Check if an email exist in the db
+     * @param string $email the email to check
+     * @return boolean true if email exist in db else false
+     */
+    private function emailExist($email)
+    {
+        $sql = "SELECT * FROM `Users` WHERE `mail` = '$email'";
+        $tab = $this->select($sql);
+        return (count($tab) == 1);
+    }
+
+    /** 
+     * Crypt the password passed in parm
+     * @param string $password password to crypt
+     * @return string password's hashcode
+     */
+    private function encrypt($password)
+    {
+        return password_hash(sha1($password), PASSWORD_BCRYPT);
+    }
+
+    /** 
+     * Check if the hashcode of password passed match the hashcode given in param
+     * @param string $password the password to check
+     * @param string $hashcode the hashcode to match
+     * @return boolean true if the password match the hashcode given in param else false
+     */
+    private function passMatchHash($password, $hashcode)
+    {
+        return password_verify(sha1($password), $hashcode);
+    }
 
     /**
      * Add a new measure to Visitor
@@ -1172,5 +1255,43 @@ class Visitor extends ModelFunctionality
         array_push($values, $this->getLanguage()->getIsoLang());
         array_push($values, $this->getSetDate());
         $this->insert($response, $sql, $values);
+    }
+
+    /**
+     * To update sign up Vistor to become a Client
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     * @param Map $upMap map that contain datas submited for a sign up
+     * + $upMap[Map::sex] holds sex submited
+     * + $upMap[Map::condition] holds if condition has been checked
+     * + $upMap[Map::newsletter] holdsif newsletter has been checked
+     * + $upMap[Map::firstname] holds firstname submited
+     * + $upMap[Map::lastname] holds lastname submited
+     * + $upMap[Map::email] holds email submited
+     * + $upMap[Map::password] holds password submited
+     * + $upMap[Map::confirmPassword] holds confirm password submited
+     */
+    private function updateVisitor(Response $response, Map $upMap) // regex \[value-[0-9]*\]
+    {
+        $userID = $this->getUserID();
+        $hashedPassword = $this->encrypt($upMap->get(Map::password));
+        $newsletter = ($upMap->get(Map::newsletter)) ? 1 : 0;
+        $sql =
+            "UPDATE `Users` SET
+            `mail`=?,
+            `password`=?,
+            `firstname`=?,
+            `lastname`=?,
+            `newsletter`=?,
+            `sexe_`=?
+            WHERE `userID`='$userID'";
+        $values = [];
+        array_push($values, $upMap->get(Map::email));
+        array_push($values, $hashedPassword);
+        array_push($values, $upMap->get(Map::firstname));
+        array_push($values, $upMap->get(Map::lastname));
+        array_push($values, $newsletter);
+        array_push($values, $upMap->get(Map::sex));
+        $this->update($response, $sql, $values);
     }
 }

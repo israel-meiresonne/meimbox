@@ -788,6 +788,13 @@ class ControllerItem extends ControllerSecure
     public function test()
     {
         // setcookie("CLT", "my client cookie2", (time() + 60*30), "/", "localhost");
-        // var_dump($_COOKIE);
+        foreach($_SERVER as $key => $data){
+            echo "key: ";
+            echo($key);
+            echo "<br>";
+            echo "data: ";
+            var_dump($data);
+            echo "<hr>";
+        }
     }
 }

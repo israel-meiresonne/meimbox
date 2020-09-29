@@ -1,6 +1,6 @@
 <?php
-$this->title = "checkout";
-$this->description = "checkout";
+$this->title = "sign";
+$this->description = "sign";
 
 /**
  * @var Translator
@@ -32,14 +32,13 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                 <div class="address_connection-block">
                     <div class="sign-container">
                         <div class="sign-container-inner">
-
                             <?php
-                            echo $this->generateFile('view/elements/forms/fromSign.php', []);
+                            echo $this->generateFile('view/elements/forms/fromSign.php', ["redirLink" => ControllerCheckout::ACTION_INDEX]);
                             ?>
                         </div>
-                        <div  class="sign_form-loading loading-img-wrap">
+                        <!-- <div  class="sign_form-loading loading-img-wrap">
                             <img src="content/brain/permanent/loading.gif">
-                        </div>
+                        </div> -->
                         <!-- <div class="sign-containerinner">
                             <?php
                             $upHeadId = ModelFunctionality::generateDateCode(25);

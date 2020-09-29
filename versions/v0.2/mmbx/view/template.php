@@ -1,5 +1,6 @@
 <?php
 require_once 'controller/ControllerSecure.php';
+require_once 'controller/ControllerHome.php';
 require_once 'controller/ControllerGrid.php';
 require_once 'controller/ControllerItem.php';
 require_once 'model/special/Search.php';
@@ -132,6 +133,8 @@ $language = $person->getLanguage();
 
     <script>
         const WR = "<?= $webRoot ?>";
+        const A_SIGN_UP = "<?= ControllerHome::A_SIGN_UP ?>";
+
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
         const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
         const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
@@ -193,6 +196,8 @@ $language = $person->getLanguage();
         const JXF = "content/qr/qr.php";
         const LANG = "lang=" + $("html").attr("lang");
         const FCID = "#full_screen_div";
+        const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
+        const ER_TYPE_COMMENT = "<?= self::ER_TYPE_COMMENT ?>";
         var miniPopIsOpen = false;
 
         /**

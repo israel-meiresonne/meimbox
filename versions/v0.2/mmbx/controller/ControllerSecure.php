@@ -23,6 +23,12 @@ abstract class ControllerSecure extends Controller
     public const AJX = "/qr/";
 
     /**
+     * Holds input name that contain redirect link
+     * @var string
+     */
+    public const INPUT_REDIRECT = "redirect";
+
+    /**
      * Holds key to store response
      * @var string
      */
@@ -51,11 +57,12 @@ abstract class ControllerSecure extends Controller
     protected const PHONE_NUMBER = "phone";
     protected const PASSWORD = "psw";
     protected const SIZE = "size";
-    protected const BOOLEAN_TYPE = "boolean";
+    protected const TYPE_BOOLEAN = "boolean";
     protected const STRING_TYPE = "string";
     protected const NUMBER_FLOAT = "float";
     protected const NUMBER_INT = "int";
     protected const ALPHA_NUMERIC = "alpha_numeric";
+    // protected const TYPE_LINK = "type_link";
 
     /**
      * Holds the REGEX
@@ -66,6 +73,9 @@ abstract class ControllerSecure extends Controller
     private const STRING_REGEX = "#^[a-zA-Z]+$#";
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
     private const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+    private const REGEX_EMAIL = "#^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$#";
+    private const REGEX_NAME = "#[A-Za-zÀ-ÖØ-öø-ÿ\- ]+$#";
+    private const REGEX_PASSWORD = "#^[\w0-9\-]{8,}$#";
 
     /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
 
@@ -115,7 +125,7 @@ abstract class ControllerSecure extends Controller
     public function checkInput(Response $response, $input, $data, array $dataTypes, $length = null, $required = true)
     {
         if ($required && empty($data)) {
-            $errorStation = ($dataTypes[0] == self::CHECKBOX) ? "ER5"
+            $errorStation = (!empty($dataTypes) && $dataTypes[0] == self::CHECKBOX) ? "ER5"
                 : "ER2";
             $response->addErrorStation($errorStation, $input);
             // return $response->isSuccess();
@@ -133,70 +143,99 @@ abstract class ControllerSecure extends Controller
             return null;
         }
         $value = null;
-        switch ($dataTypes[0]) {
-            case self::NUMBER_FLOAT:
-                if (preg_match(self::FLOAT_REGEX, $data) != 1) {
-                    $errStation = "ER3";
-                    $response->addErrorStation($errStation, $input);
-                } else {
-                    $value = $this->convertParam(self::NUMBER_FLOAT, $data);
-                }
-                break;
-
-            case self::NUMBER_INT:
-                if (preg_match(self::INT_REGEX, $data) != 1) {
-                    $errStation = "ER7";
-                    $response->addErrorStation($errStation, $input);
-                } else {
-                    $value = $this->convertParam(self::NUMBER_INT, $data);
-                }
-                break;
-
-            case self::PSEUDO:
-                if (preg_match(self::PSEUDO_REGEX, $data) != 1) {
-                    $errStation = "ER4";
-                    $response->addErrorStation($errStation, $input);
-                } else {
-                    $value = $this->convertParam(self::PSEUDO, $data);
-                }
-                break;
-
-            case self::ALPHA_NUMERIC:
-                if (preg_match(self::PALPHA_NUMERIC_REGEX, $data) != 1) {
-                    $errStation = "ER1";
-                    $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                } else {
-                    $value = $this->convertParam(self::ALPHA_NUMERIC, $data);
-                }
-                break;
-
-            case self::CHECKBOX:
-                $cbxType = $dataTypes[1];
-                switch ($cbxType) {
-                    case self::STRING_TYPE:
-                        if (preg_match(self::STRING_REGEX, $data) != 1) {
-                            $errStation = "ER1";
-                            $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                        } else {
-                            $value = $this->convertParam(self::STRING_TYPE, $data);
+        if (count($dataTypes) > 0) {
+            switch ($dataTypes[0]) {
+                case self::NUMBER_FLOAT:
+                    if (preg_match(self::FLOAT_REGEX, $data) != 1) {
+                        $errStation = "ER3";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $this->convertParam(self::NUMBER_FLOAT, $data);
+                    }
+                    break;
+                case self::NUMBER_INT:
+                    if (preg_match(self::INT_REGEX, $data) != 1) {
+                        $errStation = "ER7";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $this->convertParam(self::NUMBER_INT, $data);
+                    }
+                    break;
+                case self::PSEUDO:
+                    if (preg_match(self::PSEUDO_REGEX, $data) != 1) {
+                        $errStation = "ER4";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $this->convertParam(self::PSEUDO, $data);
+                    }
+                    break;
+                case self::ALPHA_NUMERIC:
+                    if (preg_match(self::PALPHA_NUMERIC_REGEX, $data) != 1) {
+                        $errStation = "ER1";
+                        $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+                    } else {
+                        $value = $this->convertParam(self::ALPHA_NUMERIC, $data);
+                    }
+                    break;
+                case self::NAME:
+                    if (preg_match(self::REGEX_NAME, $data) != 1) {
+                        $errStation = "ER20";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $this->convertParam(self::NAME, $data);
+                    }
+                    break;
+                case self::EMAIL:
+                    if (preg_match(self::REGEX_EMAIL, $data) != 1) {
+                        $errStation = "ER19";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $data;
+                    }
+                    break;
+                case self::PASSWORD:
+                    if (preg_match(self::REGEX_PASSWORD, $data) != 1) {
+                        $errStation = "ER21";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $data;
+                    }
+                    break;
+                case self::CHECKBOX:
+                    if (!empty($dataTypes[1])) {
+                        $cbxType = $dataTypes[1];
+                        switch ($cbxType) {
+                            case self::TYPE_BOOLEAN:
+                                $value = $this->convertParam(self::TYPE_BOOLEAN, $data);
+                                break;
+                            case self::STRING_TYPE:
+                                if (preg_match(self::STRING_REGEX, $data) != 1) {
+                                    $errStation = "ER1";
+                                    $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+                                } else {
+                                    $value = $this->convertParam(self::STRING_TYPE, $data);
+                                }
+                                break;
+                            case self::SIZE:
+                                if ((preg_match(self::SIZE_REGEX, $data) != 1) || (preg_match(self::INT_REGEX, $data) != 1)) {
+                                    $errStation = "ER1";
+                                    $response->addErrorStation($errStation, MyError::FATAL_ERROR);
+                                } else {
+                                    $value = $this->convertParam(self::STRING_TYPE, $data);
+                                }
+                                break;
+                            default:
+                                throw new Exception("This data type ('$cbxType') don't exist, file: " . __FILE__ . " line: " . __LINE__);
+                                break;
                         }
-                        break;
-                    case self::SIZE:
-                        if ((preg_match(self::SIZE_REGEX, $data) != 1) || (preg_match(self::INT_REGEX, $data) != 1)) {
-                            $errStation = "ER1";
-                            $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                        } else {
-                            $value = $this->convertParam(self::STRING_TYPE, $data);
-                        }
-                        break;
-                    default:
-                        throw new Exception("This data type ('$cbxType') don't exist, file: " . __FILE__ . " line: " . __LINE__);
-                        break;
-                }
-                break;
-            default:
-                throw new Exception("This data type ('$dataTypes[0]') don't exist, file: " . __FILE__ . " line: " . __LINE__);
-                break;
+                    }
+                    break;
+                default:
+                    throw new Exception("This data type ('$dataTypes[0]') don't exist, file: " . __FILE__ . " line: " . __LINE__);
+                    break;
+            }
+        } else {
+            $value = $data;
         }
         return $value;
     }
@@ -217,8 +256,14 @@ abstract class ControllerSecure extends Controller
             case self::NUMBER_INT:
                 $value = (int) $data;
                 break;
-            case self::PSEUDO || self::ALPHA_NUMERIC || self::STRING_TYPE:
+            case self::PSEUDO:
+            case self::ALPHA_NUMERIC:
+            case self::STRING_TYPE:
+            case self::NAME:
                 $value = strtolower($data);
+                break;
+            case self::TYPE_BOOLEAN:
+                $value = (!empty($data));
                 break;
             default:
                 throw new Exception("This data type ('$dataType') don't exist, file: " . __FILE__ . " line: " . __LINE__);

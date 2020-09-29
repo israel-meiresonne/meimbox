@@ -261,8 +261,9 @@
     font-family: var(--main-font-family);
 }
 
-.input-wrap .comment {
-    /* display: none; */
+/* .input-wrap .comment { */
+.comment {
+    display: none;
     margin: 5px 0 10px;
     color: var(--color-red);
     font-size: var(--little-font-size);
@@ -270,7 +271,8 @@
     -moz-transition: var(--transition-time); */
 }
 
-.input-wrap .comment::first-letter {
+/* .input-wrap .comment::first-letter { */
+.comment::first-letter {
     text-transform: capitalize;
 }
 
@@ -1849,6 +1851,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 /*———————————————————————————————— SIGN DOWN ————————————————————————————————*/
 
 .sign-container, .form_sign_file {
+    /* position: relative; */
     border: var(--border-float);
     border-radius: var(--border-float-radius);
     box-shadow: var(--box-shadow);
@@ -1899,7 +1902,22 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .sign-bodies {
+    position: relative;
     padding: 10px;
+}
+
+.sign-bodies .sign_form-loading {
+    width: auto;
+}
+
+.sign-button-div {
+    display: flex;
+}
+
+.sign-button-div button {
+    width: 50%;
+    margin: 0 auto 10px;
+    box-shadow: none;
 }
 
 /*———————————————————————————————— SIGN UP ——————————————————————————————————*/

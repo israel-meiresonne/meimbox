@@ -2,6 +2,12 @@
 require_once 'ControllerSecure.php';
 class ControllerCheckout extends ControllerSecure
 {
+
+    /**
+     * Holds index action
+     */
+    public const ACTION_INDEX = "checkout";
+
     /**
      * Holds name of a action file
      */

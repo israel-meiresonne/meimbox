@@ -98,7 +98,17 @@ class View
      */
     private $head;
 
+    /**
+     * Directory for permanant files
+     * @var string
+     */
     private const DIR_STATIC_FILES = "content/brain/permanent/";
+
+    /**
+     * Error type
+     */
+    private const ER_TYPE_MINIPOP = "minipop";
+    private const ER_TYPE_COMMENT = "comment";
 
     /**
      * Constructeur
