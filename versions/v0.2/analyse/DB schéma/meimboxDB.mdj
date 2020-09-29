@@ -16750,7 +16750,8 @@
 									"name": "mail",
 									"type": "VARCHAR",
 									"length": "100",
-									"nullable": true
+									"nullable": true,
+									"unique": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -16760,7 +16761,7 @@
 									},
 									"name": "password",
 									"type": "VARCHAR",
-									"length": "50",
+									"length": "512",
 									"nullable": true
 								},
 								{

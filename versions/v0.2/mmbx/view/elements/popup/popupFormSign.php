@@ -13,6 +13,6 @@ $popDatas["submitClass"] = null;
 $popDatas["submitButtonFunc"] = null;
 
 $popDatas["content"] = '<div class="form_sign_file">';
-$popDatas["content"] .= $this->generateFile('view/elements/forms/fromSign.php', []);
+$popDatas["content"] .= $this->generateFile('view/elements/forms/fromSign.php', ["redirLink" => null]);
 $popDatas["content"] .= '</div>';
 echo $this->generateFile('view/elements/popup.php', $popDatas);

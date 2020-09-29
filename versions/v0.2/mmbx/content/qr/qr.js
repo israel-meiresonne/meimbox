@@ -10,19 +10,6 @@
             var btnCls = "standard-button-desabled";
             enable(selector, btnCls);
         });
-
-        // var enable = function (selector, btnCls) {
-        //     $(selector).removeClass(btnCls);
-        //     $(selector).attr("disabled", false);
-        // }
-
-        // var disable = function (selector, btnCls) {
-        //     $(selector).addClass(btnCls);
-        //     $(selector).attr("disabled", true);
-        // }
-        // $("#add_measure_form input").keydown(function (e) {
-        //     ctrEtr(e, frmSND, saveMsrDts);
-        // });
     }
     //———————————————————————————— REACTIVATE UP ——————————————————————————————————————————————————
     //———————————————————————————— SHORTCUT DOWN ——————————————————————————————————————————————————
@@ -60,7 +47,6 @@
             console.log("error: ", r);
         }
     }
-
     removeSticker = function (stickerVal) {
         var stickerSpan = $('.sticker-wrap .sticker-content-div[value="' + stickerVal + '"]')[0];
         var wrapperParent = stickerSpan != null ? stickerSpan.parentNode.parentNode.parentNode.parentNode : null;
@@ -116,7 +102,43 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
+    /*—————————————————— SIZE EDITOR DOWN ———————————————————————————————————*/
+    signUp = (formx, sbtnx) => {
+        var frm = $(formx).find("input");
+        var d = {
+            "frm": frm,
+            "frmCbk": () => { },
+            "a": A_SIGN_UP,
+            "r": signUpRSP,
+            "l": ".sign_form-loading",
+            "x": { "sbtnx": sbtnx, "formx": formx },
+            "sc": () => {
+                displayFlexOn(d.l, TS / 10);
+                disable(sbtnx);
+            },
+            "rc": () => {
+                displayFlexOff(d.l, TS);
+                enable(sbtnx);
+            }
+        };
+        frmSND(d);
+    }
+    const signUpRSP = (r, x) => {
+        if (r.isSuccess) {
+            window.location.assign(window.location.href);
+        } else {
+            displayErr(r, x.formx);
+        }
+    }
 
+    signIn = (formx, sbtnx) => {
+        console.log("formx", $(formx));
+        console.log("sbtnx", $(sbtnx));
+    }
+    const signInRSP = (r, x) => {
+
+    }
+    /*—————————————————— SIZE EDITOR UP —————————————————————————————————————*/
     $(document).ready(function () {
         /*———————————————————————— FILTER POST DOWN —————————————————————————*/
         $("#grid_filter .checkbox-label input").click(function () {

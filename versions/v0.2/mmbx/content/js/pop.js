@@ -34,7 +34,8 @@
     dataheadid = "data-headid";
     const datavase = "data-vase";
     dataarrow = "data-arrow";
-
+    dataerrorx = "data-errorx";
+    dataerrortype = "data-errortype";
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
         return (v == null || v == "");
@@ -107,6 +108,28 @@
     }
     displayFadeOut = (x, t = TS) => {
         $(x).fadeOut(t);
+    }
+    displayErr = (r, formx) => {
+        var k = Object.keys(r.errors);
+        k.forEach(n => {
+            var inpx = $(formx).find("input[name='" + n + "']");
+            var erx = $(inpx).attr(dataerrorx);
+            var erType = $(inpx).attr(dataerrortype);
+            switch (erType) {
+                case ER_TYPE_COMMENT:
+                    addErr(erx, r.errors[n].message);
+                    break;
+                case ER_TYPE_MINIPOP:
+
+                    break;
+
+                default:
+                    break;
+            }
+        });
+        if (!empty(r.errors[FAT_ERR])) {
+            popAlert(r.errors[FAT_ERR].message);
+        }
     }
     replaceFade = function (x, y, t = TS) {
         $(y).css("display", "none");
@@ -410,10 +433,6 @@
         var vx = $("#save_measure_button").attr(datavase);
         $("#measure_select_button").attr(datavase, vx);
     }
-    // setAddMsrItemPage = () => {
-    //     $("#add_measurement_button").attr(onclickattr, "addMsr('#')")
-    // }
-    // setAddMsrSizeEditor
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
     addMsr = () => {
         var d = {
@@ -648,7 +667,7 @@
             var vatx = $("[" + basketdata + "='" + basketvat + "']");
             var vatv = r.results[KEY_VAT];
             fadeValue(vatx, vatv);
-            
+
             var shipx = $("[" + basketdata + "='" + basketshipping + "']");
             var shipv = r.results[KEY_SHIPPING];
             fadeValue(shipx, shipv);
@@ -795,7 +814,6 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    // updateBoxProduct = (bxid, pid, seq) => {
     updateBoxProduct = () => {
         var inps = $("#form_edit_prod_size input");
         // var map = {

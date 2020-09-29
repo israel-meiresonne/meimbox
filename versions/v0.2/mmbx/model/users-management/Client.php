@@ -41,17 +41,6 @@ class Client extends User
         $this->manageCookie(Cookie::COOKIE_CLT);
     }
 
-    // /**
-    //  * To update Client's cookies
-    //  */
-    // private function updateCookies()
-    // {
-    //     $holdsCookie = $this->getCookie(Cookie::COOKIE_CLT);
-    //     $cookieValue = $holdsCookie->getValue();
-    //     $newCookie = Cookie::generateCookie($this->userID, Cookie::COOKIE_CLT, $cookieValue);
-    //     $this->cookies->put($newCookie, Cookie::COOKIE_CLT);
-    // }
-
     /**
      * Create an order once the Client has paid
      * @var array $dbMap of Database's tables
@@ -64,10 +53,4 @@ class Client extends User
         $this->orders[$key] = $order;
         ksort($this->orders);
     }
-
-    // public function __toString()
-    // {
-    //     parent::__toString();
-    //     Helper::printLabelValue("newsletter", $this->newsletter);
-    // }
 }
