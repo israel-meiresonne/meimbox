@@ -9,6 +9,7 @@ require_once 'model/tools-management/Measure.php';
 require_once 'model/boxes-management/Basket.php';
 // require_once 'model/special/Map.php';
 require_once 'model/tools-management/Cookie.php';
+require_once 'model/users-management/Visitor.php';
 
 class Visitor extends ModelFunctionality
 {
@@ -22,6 +23,12 @@ class Visitor extends ModelFunctionality
      * @var string
      */
     protected $userID;
+
+    /**
+     * Holds Visitor's hashed password
+     * @var string
+     */
+    protected $hashcode;
 
     /**
      * Holds the Visitor's set date
@@ -107,18 +114,19 @@ class Visitor extends ModelFunctionality
     /**
      * @parram string $childCaller class of the caller (usualy User.php)
      */
-    public function __construct($childCaller = null)
+    // public function __construct($childCaller = null)
+    public function __construct($VIS_VAL = null)
     {
-        $isVisitor = empty($childCaller);
-        $VIS = Cookie::getCookie(Cookie::COOKIE_VIS);
+        $isVisitor = empty($VIS_VAL);
+        $VIS_VAL = ($isVisitor) ? Cookie::getCookie(Cookie::COOKIE_VIS) : $VIS_VAL;
         // $VIS_isValid = false;
         $tabLine = null;
-        if ($isVisitor && (!empty($VIS))) { // if empty its mean that the current user is a Visittor
+        if ($isVisitor && (!empty($VIS_VAL))) { // if empty its mean that the current user is a Visittor
             $sql = "SELECT u.* 
                 FROM `Users-Cookies` uc
                 JOIN `Users` u ON uc.`userId` = u.`userID`
                 WHERE uc.`cookieId` = '" . Cookie::COOKIE_VIS . "'
-                AND uc.`cookieValue` = '$VIS'";
+                AND uc.`cookieValue` = '$VIS_VAL'";
             $tab = $this->select($sql);
             $tabLine = (count($tab) > 0) ? $tab[0] : null;
         }
@@ -134,14 +142,17 @@ class Visitor extends ModelFunctionality
         }
         $this->setMeasure();
         ($isVisitor && (empty($tabLine))) ? $this->insertVisitor() : null;
-        $this->manageCookie(Cookie::COOKIE_VIS);
+        $this->manageCookie(Cookie::COOKIE_VIS, false);
     }
 
     /**
      * Generate of update cookie with the id given in param
      * @param string $cookieID id of the cookie to managee
+     * @param boolean $isSecure set true if it's a secued cookie else false
+     * + a secued cookie is a cookie that will not be generated when it exist 
+     * on Visitorr but not in db
      */
-    protected function manageCookie($cookieID)
+    protected function manageCookie($cookieID, $isSecure)
     {
         $cookieState = null;
         $userID = $this->getUserID();
@@ -154,9 +165,12 @@ class Visitor extends ModelFunctionality
             $cookieState = Cookie::STATE_UPDATE;
         } else if ($inDb && (!$onUser)) {
             // --- cookie expired
-            $cookieState = Cookie::STATE_GENERATE;
+            $cookieState = Cookie::STATE_GIVE;
         } else if ((!$inDb) && $onUser) {
             // --- cookie invalid
+            if ($isSecure) {
+                throw new Exception("Can't generate a secured cookie that exist on user but not in db");
+            }
             $cookieState = Cookie::STATE_GENERATE;
         } else if ((!$inDb) && (!$onUser)) {
             // --- cookie don't exist
@@ -168,20 +182,39 @@ class Visitor extends ModelFunctionality
         $cookies = $this->getCookies();
         switch ($cookieState) {
             case Cookie::STATE_GENERATE:
-                $cookieValue = $this->generateCode(25);
-                $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
+                $cookieValue = $this->generateDateCode(25);
+                // $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
+                $newCookie = $this->generateCookie($cookieID, $cookieValue);
                 $cookies->put($newCookie, $cookieID);
                 break;
             case Cookie::STATE_UPDATE:
                 $holdCookie = $this->getCookie($cookieID);
                 $cookieValue = $holdCookie->getValue();
-                $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
+                $newCookie = $this->generateCookie($cookieID, $cookieValue);
+                $cookies->put($newCookie, $cookieID);
+                break;
+            case Cookie::STATE_GIVE:
+                $holdCookie = $this->getCookie($cookieID);
+                $cookieValue = $holdCookie->getValue();
+                $newCookie = $this->generateCookie($cookieID, $cookieValue);
                 $cookies->put($newCookie, $cookieID);
                 break;
             default:
                 throw new Exception("Unkwo cookie state, cookieState:'$cookieState");
                 break;
         }
+    }
+
+    /**
+     * Constructor used to create and give a new cookie
+     * @param string $userID Visitor's id
+     * @param string $cookieID id of the cookie     
+     * @param mixed $value value of the cookie
+     */
+    private function generateCookie($cookieID, $value)
+    {
+        $userID = $this->getUserID();
+        return Cookie::generateCookie($userID, $cookieID, $value);
     }
 
     /**
@@ -234,25 +267,43 @@ class Visitor extends ModelFunctionality
         }
     }
 
+    // /**
+    //  * Setter for Visitor's cookies
+    //  * + check if cookie exist in db and $_COOKIE
+    //  * + check if value of the cookie from $_COOKIE match the value in db
+    //  */
     /**
      * Setter for Visitor's cookies
-     * + check if cookie exist in db and $_COOKIE
-     * + check if value of the cookie from $_COOKIE match the value in db
+     * + get Visitor's cookies from db
      */
     protected function setCookies()
     {
         $this->cookies = new Map();
-        if (!empty($_COOKIE)) {
-            $userID = $this->getUserID();
-            $usersCookiesMap = $this->getUsersCookiesMap($userID);
-            $cookieIDs = $usersCookiesMap->getKeys();
-            foreach ($_COOKIE as $cookieID => $value) {
-                if (in_array($cookieID, $cookieIDs) && ($value == $usersCookiesMap->get($cookieID, Map::value))) {
-                    $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
-                    $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
-                    $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
-                    $this->cookies->put($cookie, $cookieID);
-                }
+        // if (!empty($_COOKIE)) {
+        //     $userID = $this->getUserID();
+        //     $usersCookiesMap = $this->getUsersCookiesMap($userID);
+        //     $cookieIDs = $usersCookiesMap->getKeys();
+        //     foreach ($_COOKIE as $cookieID => $value) {
+        //         if (in_array($cookieID, $cookieIDs) && ($value == $usersCookiesMap->get($cookieID, Map::value))) {
+        //             $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
+        //             $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
+        //             $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
+        //             $this->cookies->put($cookie, $cookieID);
+        //         }
+        //     }
+        // }
+        $userID = $this->getUserID();
+        $usersCookiesMap = $this->getUsersCookiesMap($userID);
+        $cookieIDs = $usersCookiesMap->getKeys();
+        if (!empty($cookieIDs)) {
+            foreach ($cookieIDs as $cookieID) {
+                // if (in_array($cookieID, $cookieIDs) && ($value == $usersCookiesMap->get($cookieID, Map::value))) {
+                $value = $usersCookiesMap->get($cookieID, Map::value);
+                $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
+                $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
+                $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
+                $this->cookies->put($cookie, $cookieID);
+                // }
             }
         }
     }
@@ -264,6 +315,40 @@ class Visitor extends ModelFunctionality
     public function getUserID()
     {
         return $this->userID;
+    }
+
+    /**
+     * Check if an email exist in the db
+     * + if email exist the hashcode is saved in attribut Visitor::hashcode
+     * @param string $email the email to check
+     * @return boolean true if email exist in db else false
+     */
+    private function emailExist($email)
+    {
+        $exist = false;
+        $sql = "SELECT * FROM `Users` WHERE `mail` = '$email'";
+        $tab = $this->select($sql);
+        if (count($tab) == 1) {
+            $this->hashcode = $tab[0]["password"];
+            $exist = true;
+        }
+        return $exist;
+    }
+
+    /**
+     * To get Visitor's hashcode
+     * @param string $email the email to check
+     * @return string|null Visitor's hashcode
+     */
+    protected function getHashcode($email)
+    {
+        $hashcode = null;
+        if ((!isset($this->hashcode)) && $this->emailExist($email)) {
+            $hashcode = $this->hashcode;
+        } else {
+            $hashcode = $this->hashcode;
+        }
+        return $hashcode;
     }
 
     /**
@@ -473,7 +558,7 @@ class Visitor extends ModelFunctionality
             $response->addErrorStation($errStation, MyError::FATAL_ERROR);
         } else {
             $measure->deleteMeasure($response, $this->userID);
-            if ($response->isSuccess()) {
+            if (!$response->containError()) {
                 $this->unsetMeasure($measureID);
             }
         }
@@ -534,14 +619,14 @@ class Visitor extends ModelFunctionality
      * @param Map $upMap map that contain datas submited for a sign up
      * + $upMap[Map::sex] holds sex submited
      * + $upMap[Map::condition] holds if condition has been checked
-     * + $upMap[Map::newsletter] holdsif newsletter has been checked
+     * + $upMap[Map::newsletter] holds if newsletter has been checked
      * + $upMap[Map::firstname] holds firstname submited
      * + $upMap[Map::lastname] holds lastname submited
      * + $upMap[Map::email] holds email submited
      * + $upMap[Map::password] holds password submited
      * + $upMap[Map::confirmPassword] holds confirm password submited
      */
-    public function signUp($response, Map $upMap)
+    public function signUp(Response $response, Map $upMap)
     {
         $sexes = $this->getTableValues("Sexes");
         $sex = $upMap->get(Map::sex);
@@ -550,8 +635,6 @@ class Visitor extends ModelFunctionality
         } else {
             $condition = $upMap->get(Map::condition);
             (!$condition) ? $response->addErrorStation("ER22", self::INPUT_CONDITION) : null;
-            // if (!$condition) {
-            // } else {
             $email = $upMap->get(Map::email);
             ($this->emailExist($email)) ? $response->addErrorStation("ER23", self::INPUT_EMAIL) : null;
             $password = $upMap->get(Map::password);
@@ -560,23 +643,87 @@ class Visitor extends ModelFunctionality
             if (!$response->containError()) {
                 $this->updateVisitor($response, $upMap);
                 if (!$response->containError()) {
-                    $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
+                    $this->manageCookie(Cookie::COOKIE_CLT, true); // Allure_homme97
                 }
             }
-            // }
         }
     }
 
     /**
-     * Check if an email exist in the db
-     * @param string $email the email to check
-     * @return boolean true if email exist in db else false
+     * To sign in a user
+     * @param Response $response to push in result or accured error
+     * @param Map $upMap map that contain datas submited for a sign up
+     * + $inMap[Map::email] holds email submited
+     * + $inMap[Map::password] holds password submited
+     * + $inMap[Map::newsletter] holds if remember has been checked
      */
-    private function emailExist($email)
+    public function signIn(Response $response, Map $inMap)
     {
-        $sql = "SELECT * FROM `Users` WHERE `mail` = '$email'";
+        try {
+            //code...
+            /**
+             * @var string */
+            $email = $inMap->get(Map::email);
+            if (!$this->emailExist($email)) {
+                $response->addErrorStation("ER25", self::INPUT_EMAIL);
+            } else {
+                $password = $inMap->get(Map::password);
+                $hashcode = $this->getHashcode($email);
+                if (!$this->passMatchHash($password, $hashcode)) {
+                    $response->addErrorStation("ER26", self::INPUT_PASSWORD);
+                } else {
+                    // $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
+                    $client = $this->getClient($response, $email);
+                    $this->visitorToClient($response, $client);
+                    if ($response->containError()) {
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+    }
+
+    /**
+     * To Clientt with the email given
+     * @param string $email email a Client account
+     * @return  Client a Client account
+     */
+    private function getClient(Response $response, $email)
+    {
+        $sql = "SELECT * 
+        FROM `Users` u
+        JOIN `Users-Cookies` uc ON u.`userID` = uc.`userId`
+        WHERE u.`mail` = '$email' AND uc.`cookieId` = '" . Cookie::COOKIE_CLT . "'";
         $tab = $this->select($sql);
-        return (count($tab) == 1);
+        if (count($tab) != 1) {
+            throw new Exception("There any Client token for this email, email: $email");
+        }
+        $tabLine = $tab[0];
+        $CLT_VAL = $tabLine["cookieValue"];
+        $client = new Client($CLT_VAL);
+        return $client;
+    }
+
+    /**
+     * To addition Visitor's datas with datas from his Client account
+     * @param Response $response to push in result or accured error
+     * @param Client $client Visitor's Client account
+     */
+    private function visitorToClient(Response $response, Client $client)
+    {
+        $userID_VIS = $this->getUserID();
+        $userID_CLT = $client->getUserID();
+        $this->updateVisitorToClient($response, $userID_VIS, $userID_CLT);
+        if (!$response->containError()) {
+            $this->deleteVisitorToClient($response, $userID_VIS);
+            if (!$response->containError()) {
+                (count($this->getMeasures()) > 0) ? $this->mergeMeasures($response, $client) : null;
+                // if(!$response->containError()){ put this method in basket
+                //     (count($this->getBasket()->getBasketProducts()) > 0) ? $this->getBasket()->mergeBasket($response, $client) : null;
+                // }
+            }
+        }
     }
 
     /** 
@@ -667,8 +814,11 @@ class Visitor extends ModelFunctionality
         $userID = $this->getUserID();
 
         $oldMeasure = $this->getMeasure($measureID);
+
+        // var_dump("newMeasure", $newMeasure);
+        // var_dump("oldMeasure", $oldMeasure);
         $oldMeasure->updateMeasure($response, $userID, $newMeasure);
-        if ($response->isSuccess()) {
+        if (!$response->containError()) {
             $key = $this->getMeasureKey($measureID);
             $this->unsetMeasure($measureID);
             $this->measures[$key] = $newMeasure;
@@ -693,7 +843,8 @@ class Visitor extends ModelFunctionality
             $measure = $this->getMeasure($measureID);
             if (!empty($measure)) {
                 $this->destroyMeasure($response, $measureID);
-                if ((!$response->isSuccess()) && (!$response->existErrorKey(MyError::FATAL_ERROR))) {
+                // if ((!$response->isSuccess()) && (!$response->existErrorKey(MyError::FATAL_ERROR))) {
+                if ($response->containError() && (!$response->existErrorKey(MyError::FATAL_ERROR))) {
                     $errorMsg = "ER1";
                     $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
                 }
@@ -1293,5 +1444,136 @@ class Visitor extends ModelFunctionality
         array_push($values, $newsletter);
         array_push($values, $upMap->get(Map::sex));
         $this->update($response, $sql, $values);
+    }
+
+    /**
+     * To transfer Visitor's datas to his Client account
+     * @param Response $response to push in result or accured error
+     * @param string $userID_VIS Visitor's id
+     * @param string $userID_CLT Client's id
+     */
+    private function updateVisitorToClient(Response $response, $userID_VIS, $userID_CLT)
+    {
+        $sql =
+            "UPDATE `Devices` SET `userId`= ? WHERE `userId`= ?;
+            UPDATE `Pages` SET `userId`= ? WHERE `userId`= ?;
+            UPDATE `Baskets-Box` SET `userId`= ? WHERE `userId`= ?;
+            UPDATE `Basket-DiscountCodes` SET `userId`= ? WHERE `userId`= ?;";
+        // UPDATE `Users-Cookies` SET `userId`= ? WHERE `userId`= ?;
+        $values = [];
+        // Devices
+        array_push($values, $userID_CLT);
+        array_push($values, $userID_VIS);
+        // Pages
+        array_push($values, $userID_CLT);
+        array_push($values, $userID_VIS);
+        // Users-Cookies
+        // array_push($values, $userID_CLT);
+        // array_push($values, $userID_VIS);
+        // Baskets-Box
+        array_push($values, $userID_CLT);
+        array_push($values, $userID_VIS);
+        // Basket-DiscountCodes
+        array_push($values, $userID_CLT);
+        array_push($values, $userID_VIS);
+        $this->update($response, $sql, $values);
+    }
+
+    /**
+     * To delete Visitor's datas
+     * + used when datas are ttransfered to a Client account
+     * @param Response $response to push in result or accured error
+     * @param string $userID_VIS Visitor's id
+     */
+    private function deleteVisitorToClient(Response $response, $userID_VIS)
+    {
+        $sql =
+            "DELETE FROM `Devices` WHERE `userId`= '$userID_VIS';
+            DELETE FROM  `Pages` WHERE `userId`= '$userID_VIS';
+            DELETE FROM `Box-Products` WHERE `boxId` IN (SELECT `boxId` FROM `Baskets-Box` WHERE `userId` = '$userID_VIS');
+            DELETE FROM `Baskets-Box` WHERE `userId`= '$userID_VIS';
+            DELETE FROM `Basket-DiscountCodes` WHERE `userId`= '$userID_VIS';
+            DELETE FROM `Users-Cookies` WHERE `userId`= '$userID_VIS' AND `cookieId` = '" . Cookie::COOKIE_VIS . "';
+            DELETE FROM `Users` WHERE `userID` = '$userID_VIS';";
+        $this->delete($response, $sql, []);
+    }
+
+    /**
+     * To merge Visitor's measures with measure holds by his Client account
+     * + if number of measure exceeds the max measure authorized it will 
+     * delete that exceed from olders to newest
+     * @param Response $response to push in result or accured error
+     * @param Client $client Visitor's Client account
+     */
+    private function mergeMeasures(Response $response, Client $client)
+    {
+        $measures_VIS = $this->getMeasures();
+        $measures_CLT = $client->getMeasures();
+        $userID_VIS = $this->getUserID();
+        $userID_CLT = $client->getUserID();
+        /**
+         * @var Measure[] */
+        $keys = array_merge(array_keys($measures_VIS), array_keys($measures_CLT));
+        $mergedMeasures = array_merge($measures_VIS, $measures_CLT);
+        $measures = array_combine($keys, $mergedMeasures);
+        krsort($measures); // order from newest to older
+        $surplus = count($measures) - $this->getMAX_MEASURE();
+        if ($surplus > 0) {
+            $measures = $this->deleteExcessMeasures($response, $measures, $surplus, $client);
+        }
+        if (!$response->containError()) {
+            foreach ($measures as $key => $measure) {
+                if (key_exists($key, $measures_VIS)) {
+                    $measure->insertMeasure($response, $userID_CLT);
+                    if ($response->containError()) {
+                        break;
+                    } else {
+                        $measure->deleteMeasure($response, $userID_VIS);
+                        if ($response->containError()) {
+                            break;
+                        } else {
+                            $measures[$key] = null;
+                            unset($measures[$key]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Delete measure that exceed the max measure authorized from older to newest
+     * @param Measure[] $measures measure from Visitor and his Client account
+     * @param string $userID_CLT Client's id
+     * @return Measure[] measure stilling
+     */
+    private function deleteExcessMeasures(Response $response, $measures, $surplus, Client $client)
+    {
+        $measures_CLT = $client->getMeasures();
+        $userID_CLT = $client->getUserID();
+
+        ksort($measures); // order from older to newest
+        $deleted = 0;
+        $userID_VIS = $this->getUserID();
+        foreach ($measures as $key => $measure) {
+            if ($surplus <= $deleted) {
+                break;
+            } else {
+                if (key_exists($key, $measures_CLT)) {
+                    $measure->deleteMeasure($response, $userID_CLT);
+                } else {
+                    $measure->deleteMeasure($response, $userID_VIS);
+                }
+                if ($response->containError()) {
+                    break;
+                } else {
+                    $measures[$key] = null;
+                    unset($measures[$key]);
+                }
+            }
+            $deleted++;
+        }
+        krsort($measures); // order from newest to older
+        return $measures;
     }
 }

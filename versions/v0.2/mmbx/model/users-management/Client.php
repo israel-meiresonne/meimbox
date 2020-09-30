@@ -28,17 +28,16 @@ class Client extends User
      * Constructor
      * @param string $CLT_VAL value of the user's Client  cookie (Cookie::COOKIE_CLT)
      */
-    // function __construct($CLT_VAL)
-    function __construct()
+    function __construct($CLT_VAL = null)
     {
-        $CLT_VAL = Cookie::getCookie(Cookie::COOKIE_CLT);
+        $CLT_VAL = (empty($CLT_VAL)) ? Cookie::getCookie(Cookie::COOKIE_CLT) : $CLT_VAL;
         if (empty($CLT_VAL)) {
             throw new Exception("Client cookie don't exist");
         }
         parent::__construct($CLT_VAL);
         $this->newsletter = (bool) $this->userLine["newsletter"];
         $this->setMeasure();
-        $this->manageCookie(Cookie::COOKIE_CLT);
+        $this->manageCookie(Cookie::COOKIE_CLT, true);
     }
 
     /**

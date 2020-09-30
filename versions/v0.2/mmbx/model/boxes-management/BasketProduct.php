@@ -243,4 +243,18 @@ class BasketProduct extends Product
     {
         return true;
     }
+
+    /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/
+
+    /**
+     * Update product's quantity in db
+     * + this function also update product's set date
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     * @param string $userID Visitor's id
+     */
+    public function updateProduct(Response $response, $userID, Size $holdSize = null) // regex \[value-[0-9]*\]
+    {
+        $response->addError("not Implemented", MyError::ADMIN_ERROR);
+    }
 }

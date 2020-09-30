@@ -307,7 +307,8 @@ class BoxProduct extends Product
         }
     }
 
-    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
+    /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/
+
     /**
      * Insert product in db
      * @param Response $response if its success Response.isSuccess = true else Response
@@ -339,6 +340,7 @@ class BoxProduct extends Product
      * @param Response $response if its success Response.isSuccess = true else Response
      *  contain the error thrown
      * @param string $boxID id of box that holds the product
+     * @param Size $holdSize product's holds Size
      */
     public function updateProduct(Response $response, $boxID, Size $holdSize = null) // regex \[value-[0-9]*\]
     {

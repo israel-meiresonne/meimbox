@@ -49,7 +49,7 @@ class MeasureUnit extends ModelFunctionality
      */
     public function __construct($value, $unitName)
     {
-        $this->setConstants();
+        self::setConstants();
         if (!in_array($unitName, self::$SUPPORTED_UNIT)) {
             throw new Exception("This unit measure is not supported: unitName=$unitName");
         }
@@ -65,11 +65,11 @@ class MeasureUnit extends ModelFunctionality
     /**
      * Initialize MeasureUnit's constants
      */
-    private function setConstants()
+    private static function setConstants()
     {
         if (!isset(self::$SUPPORTED_UNIT)) {
             self::$SUPPORTED_UNIT = "SUPPORTED_UNIT";
-            $SUPPORTED_UNIT_json = $this->getConstantLine(self::$SUPPORTED_UNIT)["jsonValue"];
+            $SUPPORTED_UNIT_json = parent::getConstantLine(self::$SUPPORTED_UNIT)["jsonValue"];
             self::$SUPPORTED_UNIT = json_decode($SUPPORTED_UNIT_json);
         }
     }
@@ -107,6 +107,7 @@ class MeasureUnit extends ModelFunctionality
      */
     public static function getSUPPORTED_UNIT()
     {
+        (!isset(self::$SUPPORTED_UNIT)) ? self::setConstants() : null;
         return self::$SUPPORTED_UNIT;
     }
 

@@ -17237,9 +17237,11 @@
 										"$ref": "AAAAAAFwOsMWs8rYFzg="
 									},
 									"name": "setDate",
+									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
 									"type": "DATETIME",
 									"length": 0,
-									"primaryKey": true
+									"primaryKey": true,
+									"foreignKey": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -17407,7 +17409,7 @@
 										"$ref": "AAAAAAFwOur3vsuRrPM="
 									},
 									"name": "setDate_",
-									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
+									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
 									"type": "DATETIME",
 									"length": 0,
 									"primaryKey": true,

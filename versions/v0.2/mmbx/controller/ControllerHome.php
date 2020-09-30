@@ -5,6 +5,7 @@ require_once 'ControllerSecure.php';
 class ControllerHome extends ControllerSecure
 {
     public const A_SIGN_UP = "home/signUp";
+    public const A_SIGN_IN = "home/signIn";
 
     /**
      * The index layout
@@ -105,6 +106,51 @@ class ControllerHome extends ControllerSecure
             $this->person->signUp($response, $upMap);
             if (!$response->containError()) {
                 $response->addResult(self::A_SIGN_UP, true);
+            }
+        }
+        $this->generateJsonView($datasView, $response, $this->person);
+    }
+
+    /**
+     * To sign in a user
+     */
+    public function signIn()
+    {
+        $response = new Response();
+        $datasView = [];
+        $remember = $this->checkInput(
+            $response,
+            Visitor::INPUT_NEWSLETTER,
+            Query::getParam(Visitor::INPUT_NEWSLETTER),
+            [self::CHECKBOX, self::TYPE_BOOLEAN],
+            null,
+            false
+        );
+        $email = $this->checkInput(
+            $response,
+            Visitor::INPUT_EMAIL,
+            Query::getParam(Visitor::INPUT_EMAIL),
+            [],
+            null
+        );
+        $password = $this->checkInput(
+            $response,
+            Visitor::INPUT_PASSWORD,
+            Query::getParam(Visitor::INPUT_PASSWORD),
+            [],
+            null
+        );
+ 
+        if (!$response->containError()) {
+            $email = Query::getParam(Visitor::INPUT_EMAIL);
+            $password = Query::getParam(Visitor::INPUT_PASSWORD);
+            $inMap = new Map();
+            $inMap->put($email, Map::email);
+            $inMap->put($password, Map::password);
+            $inMap->put($remember, Map::remember);
+            $this->person->signIn($response, $inMap);
+            if (!$response->containError()) {
+                $response->addResult(self::A_SIGN_IN, true);
             }
         }
         $this->generateJsonView($datasView, $response, $this->person);
