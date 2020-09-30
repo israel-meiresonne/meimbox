@@ -80,6 +80,7 @@ class Map
     public const email = "email";
     public const password = "password";
     public const confirmPassword = "confirmPassword";
+    public const remember = "remember";
 
     public function __construct()
     {

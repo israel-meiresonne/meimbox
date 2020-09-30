@@ -69,7 +69,9 @@ abstract class User extends  Visitor
         }
         $this->userLine = $tab[0];
         $this->userID = $this->userLine["userID"];
-        parent::__construct(User::class);
+        $this->setCookies();
+        $VIS_VAL = $this->getCookie(Cookie::COOKIE_VIS)->getValue();
+        parent::__construct($VIS_VAL);
 
         $this->setDate = $this->userLine["setDate"];
         $this->lang = new Language($this->userLine["lang_"]);

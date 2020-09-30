@@ -186,21 +186,29 @@ $inSbtnx = "#$inSbtnid";
                     <div class="login-mail-password-div login-input-block">
                         <div class="connection-input-container">
                             <div class="input-wrap">
+                                <?php
+                                $errorid = ModelFunctionality::generateDateCode(25);
+                                $errorx = "#$errorid";
+                                ?>
                                 <label class="input-label" for="login_email">email</label>
-                                <input id="login_email" class="input-tag" type="email" name="<?= Visitor::INPUT_EMAIL ?>" placeholder="email" value="">
-                                <p class="comment"></p>
+                                <input id="login_email" class="input-tag" type="email" name="<?= Visitor::INPUT_EMAIL ?>" placeholder="email" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                <p id="<?= $errorid ?>" class="comment"></p>
                             </div>
                         </div>
                         <div class="connection-input-container">
                             <div class="input-wrap">
+                                <?php
+                                $errorid = ModelFunctionality::generateDateCode(25);
+                                $errorx = "#$errorid";
+                                ?>
                                 <label class="input-label" for="login_password">password</label>
-                                <input id="login_password" class="input-tag" type="password" name="<?= Visitor::INPUT_PASSWORD ?>" placeholder="password" value="">
-                                <p class="comment"></p>
+                                <input id="login_password" class="input-tag" type="password" name="<?= Visitor::INPUT_PASSWORD ?>" placeholder="password" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                <p id="<?= $errorid ?>" class="comment"></p>
                             </div>
                         </div>
                     </div>
                     <!-- <div class="login-password-div  login-input-block">
-                    </div>
+                    </div> -->
                     <div class="login-remember-forgot-div login-input-block">
                         <div class="connection-input-container login-remember-block">
                             <div class="connection-chcekbox-div">
@@ -214,7 +222,7 @@ $inSbtnx = "#$inSbtnid";
                         <div class="connection-input-container login-forgot-block">
                             <a href="" target="_blank">forgot password</a>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="sign-button-div">
                         <button id="<?= $inSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signIn('<?= $inFormx ?>','<?= $inSbtnx ?>')">sign in</button>
                     </div>

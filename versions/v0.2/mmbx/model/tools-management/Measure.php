@@ -117,16 +117,6 @@ class Measure extends ModelFunctionality
      */
     public function __construct(Map $measureMap)
     {
-        // $this->measureID = (!empty($datas["measureID"])) ? $datas["measureID"] : $this->generateDateCode(self::ID_LENGTH);
-        // $this->measureName = (!empty($datas["measure_name"])) ? $datas["measure_name"] : $this->generateDateCode(self::ID_LENGTH);;
-        // $unitName = $datas["unit_name"];
-        // $this->bust = (!empty($datas["bust"])) ? new MeasureUnit($datas["bust"], $unitName) : null;
-        // $this->arm = (!empty($datas["arm"])) ? new MeasureUnit($datas["arm"], $unitName) : null;
-        // $this->waist = (!empty($datas["waist"])) ? new MeasureUnit($datas["waist"], $unitName) : null;
-        // $this->hip = (!empty($datas["hip"])) ? new MeasureUnit($datas["hip"], $unitName) : null;
-        // $this->inseam = (!empty($datas["inseam"])) ? new MeasureUnit($datas["inseam"], $unitName) : null;
-        // $this->setDate = !empty($datas["setDate"]) ? $datas["setDate"] : $this->getDateTime();
-
         $unitName = $measureMap->get(Map::unitName);
         $this->measureID = (!empty($measureMap->get(Map::measureID))) ? $measureMap->get(Map::measureID) : $this->generateDateCode(self::ID_LENGTH);
         $this->measureName = (!empty($measureMap->get(Map::measureName))) ? $measureMap->get(Map::measureName) : $this->generateDateCode(self::ID_LENGTH);;
@@ -317,18 +307,6 @@ class Measure extends ModelFunctionality
     }
 
     /**
-     * Delete the measure from database
-     * @param string $userID Visitor's id
-     * @param Response $response if its success Response.isSuccess = true else Response
-     *  contain the error thrown
-     */
-    public function deleteMeasure(Response $response, $userID)
-    {
-        $query = "DELETE FROM `UsersMeasures` WHERE `userId` = '$userID' AND `measureID` = '$this->measureID'";
-        $response = $this->delete($response, $query);
-    }
-
-    /**
      * Update the measure on database
      * @param Measure $newMeasure contain the new values for this measure
      * @param string $userID Visitor's id
@@ -357,4 +335,17 @@ class Measure extends ModelFunctionality
         array_push($values, $newMeasure->inseam->getUnitName());
         $this->update($response, $sql, $values);
     }
+
+    /**
+     * Delete the measure from database
+     * @param string $userID Visitor's id
+     * @param Response $response if its success Response.isSuccess = true else Response
+     *  contain the error thrown
+     */
+    public function deleteMeasure(Response $response, $userID)
+    {
+        $query = "DELETE FROM `UsersMeasures` WHERE `userId` = '$userID' AND `measureID` = '$this->measureID'";
+        $response = $this->delete($response, $query);
+    }
+
 }

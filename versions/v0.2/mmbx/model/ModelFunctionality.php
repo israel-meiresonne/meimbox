@@ -184,8 +184,10 @@ abstract class ModelFunctionality extends Model
             $pdo = parent::executeRequest($sql, $params);
             $pdoStatus = $pdo->errorInfo()[0];
 
-            ($pdoStatus == self::PDO_SUCCEESS) ? $response->addResult(self::CRUD_STATUS, $pdoStatus)
-                : $response->addError($pdoStatus->errorInfo()[2], self::CRUD_STATUS);
+            // ($pdoStatus == self::PDO_SUCCEESS) ? $response->addResult(self::CRUD_STATUS, $pdoStatus)
+            //     : $response->addError($pdoStatus->errorInfo()[2], self::CRUD_STATUS);
+            ($pdoStatus != self::PDO_SUCCEESS) ? $response->addError($pdoStatus->errorInfo()[2], self::CRUD_STATUS)
+                : null;
         } catch (\Throwable $e) {
             $response->addError($e->errorInfo, MyError::ADMIN_ERROR);
         }
@@ -254,9 +256,9 @@ abstract class ModelFunctionality extends Model
      * To get db line with constante values
      * @return string[] table with constante values
      */
-    protected function getConstantLine($key)
+    protected static function getConstantLine($key)
     {
-        !isset(self::$constants) ? $this->setConstantsMap() : null;
+        !isset(self::$constants) ? self::setConstantsMap() : null;
         if (!key_exists($key, self::$constants)) {
             throw new Exception("This constante don't exist!");
         }
@@ -266,11 +268,11 @@ abstract class ModelFunctionality extends Model
     /**
      * Set constante map with db
      */
-    private function setConstantsMap()
+    private static function setConstantsMap()
     {
         self::$constants = [];
         $sql = "SELECT * FROM `Constants`";
-        $tab = $this->select($sql);
+        $tab = self::select($sql);
         foreach ($tab as $tabLine) {
             self::$constants[$tabLine["constName"]]["stringValue"] = $tabLine["stringValue"];
             self::$constants[$tabLine["constName"]]["jsonValue"] = $tabLine["jsonValue"];
@@ -785,7 +787,8 @@ abstract class ModelFunctionality extends Model
      */
     protected function getUsersCookiesMap($userID)
     {
-        (!isset(self::$usersCookiesMap)) ? self::setUsersCookiesMap($userID) : null;
+        // (!isset(self::$usersCookiesMap)) ? self::setUsersCookiesMap($userID) : null;
+        self::setUsersCookiesMap($userID);
         return self::$usersCookiesMap;
     }
 
@@ -1192,16 +1195,6 @@ abstract class ModelFunctionality extends Model
             throw new Exception('$length must be strictly over 14');
         }
         $nbCharToAdd = $length - $nbChar;
-        // switch ($nbCharToAdd % 2) {
-        //     case 0:
-        //         $nbCharLeft = $nbCharRight = ($nbCharToAdd / 2);
-        //         break;
-        //     case 1:
-        //         $nbCharLeft = ($nbCharToAdd - 1) / 2;
-        //         $nbCharRight = $nbCharLeft + 1;
-        //         break;
-        // }
-        // $sequence = self::generateCode($nbCharLeft) . $sequence . self::generateCode($nbCharRight);
         $sequence = ($nbCharToAdd > 0) ? $sequence . self::generateCode($nbCharToAdd) : substr($sequence, 0, $length);
         $sequence = strtolower($sequence);
         return str_shuffle($sequence);

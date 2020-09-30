@@ -366,7 +366,6 @@ class ControllerItem extends ControllerSecure
             [Query::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userInseam")
         );
-
         if (!$response->containError()) {
             if (empty($measureID)) {
                 $response->addErrorStation("ER1", MyError::FATAL_ERROR);
@@ -622,7 +621,7 @@ class ControllerItem extends ControllerSecure
             $sizeMap->put($measureID, Map::measureID);
             $sizeMap->put($cut, Map::cut);
             $this->person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
-            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, $response->isSuccess()) : null;
+            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, true) : null;
         }
         $this->generateJsonView($datasView, $response, $this->person);
     }
@@ -683,7 +682,7 @@ class ControllerItem extends ControllerSecure
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $this->person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
-            (!$response->containError()) ? $response->addResult(self::A_MV_BXPROD, $response->isSuccess()) : null;
+            (!$response->containError()) ? $response->addResult(self::A_MV_BXPROD, true) : null;
         }
         $this->generateJsonView($datasView, $response, $this->person);
     }

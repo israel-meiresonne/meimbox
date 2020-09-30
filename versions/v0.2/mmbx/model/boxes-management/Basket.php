@@ -195,8 +195,8 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * Getter for basket's basketproduct
-     * @return BasketProduct[] basket's basketproduct
+     * Getter for basket's basketProducts
+     * @return BasketProduct[] basket's basketProducts
      */
     public function getBasketProducts()
     {
@@ -441,6 +441,23 @@ class Basket extends ModelFunctionality
         }
         // $product->selecteSize($newSize);
         $box->updateProduct($response, $prodID, $holdSize, $newSize);
+    }
+
+    /**
+     * To update a box product
+     * @param Response $response where to strore results
+     * @param string $prodID id of the product to add in box
+     * @param Size $holdsSize product's holds Size
+     * @param Size $newSize product's new Size
+     */
+    public function updateBasketProduct(Response $response, $prodID, Size $holdSize, Size $newSize)
+    {
+        $product = $this->getBasketProduct($prodID, $holdSize);
+        if (empty($product)) {
+            throw new Exception("This basketProduct don't exist in basket, prodID:'$prodID'");
+        }
+        // $product->selecteSize($newSize);
+        $product->updateProduct($response, $prodID, $holdSize, $newSize);
     }
 
     /**

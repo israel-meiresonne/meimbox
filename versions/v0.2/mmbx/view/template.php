@@ -134,6 +134,7 @@ $language = $person->getLanguage();
     <script>
         const WR = "<?= $webRoot ?>";
         const A_SIGN_UP = "<?= ControllerHome::A_SIGN_UP ?>";
+        const A_SIGN_IN = "<?= ControllerHome::A_SIGN_IN ?>";
 
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
         const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";

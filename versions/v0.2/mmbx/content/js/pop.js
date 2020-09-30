@@ -27,6 +27,7 @@
     const basketdata = "data-basket";
     const databefore = "data-before";
     const dataafter = "data-after";
+    const datasuccess = "data-success";
     const dataprodid = "data-" + KEY_PROD_ID;
     const databoxid = "data-" + KEY_BOX_ID;
     const dataonclick = "data-onclick";
@@ -413,6 +414,16 @@
     /*—————————————————— MEASURE MANAGER UP —————————————————————————————————*/
     /*—————————————————— MEASURE ADDER DOWN —————————————————————————————————*/
     // ++++ shortcut down ++++
+    // setAddMsrSuccData = () => {
+    //     $("#save_measure_button").attr(datasuccess, 'setCbtnAdderMsr');
+    // }
+    setCbtnAdderMsr = () => {datasuccess
+        var cbtnx = getCloseButton("#measure_adder");
+        var fromx = "#measure_adder";
+        var tox = "#measure_manager";
+        $(cbtnx).attr(onclickattr, "switchCloseNext('" + fromx + "','" + tox + "')");
+        console.log(cbtnx);
+    }
     setAddMsr = () => {
         var measureInput = $("#add_measure_form input[type='text'], #add_measure_form input[type='hidden']");
         $(measureInput).val("");
@@ -434,14 +445,14 @@
         $("#measure_select_button").attr(datavase, vx);
     }
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
-    addMsr = () => {
+    addMsr = (succFunc = ()=>{}) => {
         var d = {
             "a": A_ADD_MEASURE,
             "frm": "#add_measure_form input",
             "frmCbk": function () { return ""; },
             "r": addMeasureRSP,
             "l": "#add_measurePopUp_loading",
-            // "x": popFunc,
+            "x": succFunc,
             "sc": function () {
                 $(d.lds).css("display", "flex");
             },
@@ -449,7 +460,7 @@
         };
         frmSND(d);
     }
-    var addMeasureRSP = (r) => {
+    var addMeasureRSP = (r, succFunc) => {
         if (r.isSuccess) {
             $("#add_measurement_button").fadeOut(TS, function () {
                 $("#manage_measurement_button").fadeIn(TS);
@@ -457,6 +468,7 @@
             $("#measure_manager").html(r.results[QR_MEASURE_CONTENT]);
             vaseTransferBack();
             $("#save_measure_button").removeAttr(onclickattr);
+            (!empty(succFunc)) ? eval(succFunc)() : null;
             var cbtn = getCloseButton($("#measure_adder"));
             $(cbtn).click();
         } else {

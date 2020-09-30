@@ -132,11 +132,33 @@
     }
 
     signIn = (formx, sbtnx) => {
-        console.log("formx", $(formx));
-        console.log("sbtnx", $(sbtnx));
+        var frm = $(formx).find("input");
+        var d = {
+            "frm": frm,
+            "frmCbk": () => { },
+            "a": A_SIGN_IN,
+            "r": signInRSP,
+            "l": ".sign_form-loading",
+            "x": { "sbtnx": sbtnx, "formx": formx },
+            "sc": () => {
+                displayFlexOn(d.l, TS / 10);
+                disable(sbtnx);
+            },
+            "rc": () => {
+                displayFlexOff(d.l, TS);
+                enable(sbtnx);
+            }
+        };
+        frmSND(d);
     }
     const signInRSP = (r, x) => {
-
+        if (r.isSuccess) {
+            // console.log("success");
+            window.location.assign(window.location.href);
+        } else {
+            // console.log("error");
+            displayErr(r, x.formx);
+        }
     }
     /*—————————————————— SIZE EDITOR UP —————————————————————————————————————*/
     $(document).ready(function () {

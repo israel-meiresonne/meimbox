@@ -89,6 +89,7 @@ class Cookie extends ModelFunctionality
      */
     public const STATE_GENERATE = "cookie_state_generate";
     public const STATE_UPDATE = "cookie_state_update";
+    public const STATE_GIVE = "cookie_state_give";
 
     /**
      * Constructor
@@ -130,6 +131,28 @@ class Cookie extends ModelFunctionality
         return $cookie;
     }
 
+    // /**
+    //  * To remove cookie from a Visitor
+    //  * @param string $cookieID id of the cookie     
+    //  */
+    // public static function removeCookie($cookieID)
+    // {
+    //     $cookiesMap  = parent::getCookiesMap();
+    //     $cookieIDs = $cookiesMap->getKeys();
+    //     if (!in_array($cookieID, $cookieIDs)) {
+    //         throw new Exception("This cookie is not supported, cookieID: '$cookieID'");
+    //     }
+    //     $setDate = parent::getDateTime();
+    //     $settedPeriod = $cookiesMap->get($cookieID, Map::period);
+    //     $cookie = new Cookie($cookieID, null, $setDate, $settedPeriod);
+    //     $cookie->period = $cookiesMap->get($cookieID, Map::period);
+    //     $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
+    //     $cookie->path = $cookiesMap->get($cookieID, Map::path);
+    //     $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
+    //     $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);
+    //     $cookie->takeBackCookie($cookieID);
+    // }
+
     /**
      * To create a cookie on Visitor's session and save it in db
      * @param string $userID Visitor's id
@@ -147,6 +170,22 @@ class Cookie extends ModelFunctionality
         );
         $this->saveCookie($userID);
     }
+
+    // /**
+    //  * To create a cookie on Visitor's session and save it in db
+    //  */
+    // private function takeBackCookie()
+    // {
+    //     setcookie(
+    //         $this->cookieID,
+    //         $this->value,
+    //         (time() - $this->period),
+    //         $this->path,
+    //         $this->domain,
+    //         $this->secure,
+    //         $this->httponly
+    //     );
+    // }
 
     /**
      * To get cookie from $_COOKIE
