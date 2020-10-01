@@ -138,10 +138,10 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 
                                                 <div class="connection-input-container signup-input-container">
                                                     <div class="connection-chcekbox-div">
-                                                        <label for="signup_terme" class="checkbox-label">I confirm that I have read and I agree to
+                                                        <label  class="checkbox-label">I confirm that I have read and I agree to
                                                             I&Meim's terms and conditions including
                                                             its privacy notice.
-                                                            <input id="signup_terme" type="checkbox" name="terme">
+                                                            <input  type="checkbox" name="terme">
                                                             <span class="checkbox-checkmark"></span>
                                                             <p class="comment"></p>
                                                         </label>
@@ -149,8 +149,8 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 </div>
                                                 <div class="connection-input-container signup-input-container">
                                                     <div class="connection-chcekbox-div">
-                                                        <label for="signup_newsletter" class="checkbox-label">Sign up for newsletter
-                                                            <input id="signup_newsletter" class="newletter-input" type="checkbox" name="newsletter">
+                                                        <label class="checkbox-label">Sign up for newsletter
+                                                            <input class="newletter-input" type="checkbox" name="newsletter">
                                                             <span class="checkbox-checkmark"></span>
                                                             <div class="connection-checkbox-text-div">
                                                                 By subscribing to I&Meim’s newsletter, I understand

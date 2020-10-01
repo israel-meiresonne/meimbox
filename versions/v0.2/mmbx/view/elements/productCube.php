@@ -37,7 +37,7 @@ foreach ($products as $product) :
                     <!-- <a href="/inside/item/?prodID=<?= $product->getProdID() ?>"> -->
                     <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
                         <div class="cube-item-color cube-more_color">
-                            <img src="content/brain/permanent/icons8-plus-math-96.png">
+                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-plus-math-96.png">
                         </div>
                     </a>
                 </div>

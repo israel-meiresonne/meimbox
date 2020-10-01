@@ -262,6 +262,7 @@
 }
 
 /* .input-wrap .comment { */
+
 .comment {
     display: none;
     margin: 5px 0 10px;
@@ -272,6 +273,7 @@
 }
 
 /* .input-wrap .comment::first-letter { */
+
 .comment::first-letter {
     text-transform: capitalize;
 }
@@ -1904,6 +1906,14 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .sign-bodies {
     position: relative;
     padding: 10px;
+}
+
+/* .signup-block{
+    display: none;
+} */
+
+.login-block {
+    display: none;
 }
 
 .sign-bodies .sign_form-loading {

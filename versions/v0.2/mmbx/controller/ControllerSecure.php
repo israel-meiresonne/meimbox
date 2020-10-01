@@ -92,20 +92,15 @@ abstract class ControllerSecure extends Controller
     private function setPerson()
     {
         $ctr = get_class($this);
-        try {
-            switch ($ctr) {
-                default:
-                    $CLT = Cookie::getCookie(Cookie::COOKIE_CLT);
-                    if (!empty($CLT)) {
-                        $this->person = new Client();
-                    } else {
-                        $this->person = new Visitor();
-                    }
-                    break;
-            }
-        } catch (\Throwable $th) {
-            echo $th;
-            echo "<hr>";
+        switch ($ctr) {
+            default:
+                $CLT = Cookie::getCookie(Cookie::COOKIE_CLT);
+                if (!empty($CLT)) {
+                    $this->person = new Client();
+                } else {
+                    $this->person = new Visitor();
+                }
+                break;
         }
     }
 
