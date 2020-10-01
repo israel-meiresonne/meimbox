@@ -1,5 +1,6 @@
 <?php
 
+require_once 'controller/ControllerCheckout.php';
 require_once 'model/users-management/Visitor.php';
 require_once 'model/users-management/Client.php';
 require_once 'model/users-management/Administrator.php';
@@ -79,11 +80,16 @@ abstract class ControllerSecure extends Controller
 
     /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
 
-    public function __construct()
+    /**
+     * Constuctor
+     * @param string $action the controller's action to perform
+     */
+    public function __construct($action)
     {
         date_default_timezone_set('Europe/Paris');
+        $this->setAction($action);
         $this->setPerson();
-        // $this->person = new Client(651853948);
+        $this->root();
     }
 
     /**
@@ -91,8 +97,8 @@ abstract class ControllerSecure extends Controller
      */
     private function setPerson()
     {
-        $ctr = get_class($this);
-        switch ($ctr) {
+        $ctrClass = get_class($this);
+        switch ($ctrClass) {
             default:
                 $CLT = Cookie::getCookie(Cookie::COOKIE_CLT);
                 if (!empty($CLT)) {
@@ -102,6 +108,49 @@ abstract class ControllerSecure extends Controller
                 }
                 break;
         }
+    }
+
+    /**
+     * To root controllers
+     */
+    private function root()
+    {
+        $ctrClass = get_class($this);
+        switch ($ctrClass) {
+            case ControllerCheckout::class:
+                $action = $this->getAction();
+                switch ($action) {
+                    case ControllerCheckout::ACTION_INDEX:
+                        if (!$this->person->hasPrivilege(Visitor::PRIV_CLT)) {
+                            $ctr = $this->extractController($ctrClass);
+                            $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
+                        }
+                        break;
+                    case ControllerCheckout::ACTION_SIGN:
+                        if ($this->person->hasPrivilege(Visitor::PRIV_CLT)) {
+                            $ctr = $this->extractController($ctrClass);
+                            $this->redirect($ctr);
+                        }
+                        break;
+                    default:
+                        throw new Exception("Unknow controller action, ctrClass: $ctrClass, action:$action");
+                        break;
+                }
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+
+    /**
+     * To extract name of a controller from his class name
+     * + i.e: ControllerMyAss => myass
+     * @return string name of a controller get from his class name
+     */
+    protected function extractController($ctrClass)
+    {
+        return strtolower(str_replace("Controller", "", $ctrClass));
     }
 
     /**

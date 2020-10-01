@@ -4,14 +4,15 @@ class ControllerCheckout extends ControllerSecure
 {
 
     /**
-     * Holds index action
+     * Holds actions function
      */
-    public const ACTION_INDEX = "checkout";
+    public const CTR_NAME = "checkout";
 
     /**
-     * Holds name of a action file
+     * Holds actions function
      */
-    private const ACTION_FILE_SIGN = "sign";
+    public const ACTION_INDEX = "index";
+    public const ACTION_SIGN = "sign";
 
     /**
      * The layout for the checkout page

@@ -30,361 +30,198 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
         <div class="address_summary_cart-container">
             <div class="address_summary_cart-inner">
                 <div class="address_connection-block">
-                    <div class="sign-container">
-                        <div class="sign-container-inner">
-                            <?php
-                            echo $this->generateFile('view/elements/forms/fromSign.php', ["redirLink" => ControllerCheckout::ACTION_INDEX]);
-                            ?>
+                    <?php
+                    if (!$person->hasPrivilege(Visitor::PRIV_CLT)) :
+                    ?>
+                        <div class="sign-container">
+                            <div class="sign-container-inner">
+                                <?php
+                                echo $this->generateFile('view/elements/forms/fromSign.php', ["redirLink" => ControllerCheckout::CTR_NAME]);
+                                ?>
+                            </div>
                         </div>
-                        <!-- <div  class="sign_form-loading loading-img-wrap">
-                            <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
-                        </div> -->
-                        <!-- <div class="sign-containerinner">
-                            <?php
-                            $upHeadId = ModelFunctionality::generateDateCode(25);
-                            $upHeadx = "#" . $upHeadId;
-                            $upBodyId = ModelFunctionality::generateDateCode(25);
-                            $upBodyx = "#" . $upBodyId;
-
-                            $inHeadId = ModelFunctionality::generateDateCode(25);
-                            $inHeadx = "#" . $inHeadId;
-                            $inBodyId = ModelFunctionality::generateDateCode(25);
-                            $inBodyx = "#" . $inBodyId;
-                            ?>
-                            <div class="sign-head">
-                                <div id="<?= $upHeadId ?>" class="sign-head-button-div sign-head-button-selected">
-                                    <button class="sign-up-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $upHeadx ?>' , '<?= $upBodyx ?>')">new member</button>
-                                </div>
-                                <div id="<?= $inHeadId ?>" class="sign-head-button-div">
-                                    <button class="sign-in-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $inHeadx ?>' , '<?= $inBodyx ?>')">sign in</button>
+                        <div class="payement-div">
+                            <div class="summary-detail-button-div">
+                                <div class="summary-detail-button-inner">
+                                    <button class="green-button standard-button remove-button-default-att">checkout</button>
                                 </div>
                             </div>
-                            <div class="sign-bodies">
-                                <div id="<?= $upBodyId ?>" class="sign-body signup-block">
-                                    <div class="signup-wrap">
-                                        <div class="connection-wrap-inner signup-wrap-inner">
-                                            <form class="signup-form-tag">
-                                                <div class="signup-sexe-div signup-input-block">
-                                                    <div class="signup-sexe-inner">
-                                                        <div class="connection-input-container signup-input-container">
-                                                            <label for="signup_lady" class="checkbox-label">lady
-                                                                <input id="signup_lady" type="radio" name="sexe">
-                                                                <span class="checkbox-checkmark"></span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="connection-input-container signup-input-container">
-                                                            <label for="signup_sir" class="checkbox-label">sir
-                                                                <input id="signup_sir" type="radio" name="sexe">
-                                                                <span class="checkbox-checkmark"></span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="connection-input-container signup-input-container">
-                                                            <label for="signup_other" class="checkbox-label">other
-                                                                <input id="signup_other" type="radio" name="sexe">
-                                                                <span class="checkbox-checkmark"></span>
-                                                            </label>
+                            <div class="summary-detail-safe_info-div">
+                                <div class="summary-detail-safe_info-inner">
+                                    <div class="safe_info-wrap">
+                                        <ul class="safe_info-ul remove-ul-default-att">
+                                            <li class="safe_info-li remove-li-default-att">
+                                                <div class="img_text_down-wrap">
+                                                    <div class="img_text_down-img-div">
+                                                        <div class="img_text_down-img-inner">
+                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-card-security-150.png">
                                                         </div>
                                                     </div>
-                                                    <div class="signup-sexe-error-div">
-                                                        <p class="comment"></p>
+                                                    <div class="img_text_down-text-div">
+                                                        <span>3D secure & <br>SSL encrypted payement</span>
                                                     </div>
                                                 </div>
-                                                <div class="signup-name-div signup-50-block  signup-input-block">
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="signup_firstname">first name</label>
-                                                            <input id="signup_firstname" class="input-error input-tag" type="text" name="firstname" placeholder="first name" value="">
-                                                            <p class="comment"></p>
+                                            </li>
+                                            <li class="safe_info-li remove-li-default-att">
+                                                <div class="img_text_down-wrap">
+                                                    <div class="img_text_down-img-div">
+                                                        <div class="img_text_down-img-inner">
+                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-headset-96.png">
                                                         </div>
                                                     </div>
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="signup_lastname">last name</label>
-                                                            <input id="signup_lastname" class="input-tag" type="text" name="lastname" placeholder="last name" value="">
-                                                            <p class="comment"></p>
-                                                        </div>
+                                                    <div class="img_text_down-text-div">
+                                                        <span>customer service 24h/7 <br> response in 1h</span>
                                                     </div>
                                                 </div>
-                                                <div class="signup-mail-div signup-input-block">
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="signup_email">email</label>
-                                                            <input id="signup_email" class="input-tag" type="email" name="email" placeholder="email" value="">
-                                                            <p class="comment"></p>
+                                            </li>
+                                            <li class="safe_info-li remove-li-default-att">
+                                                <div class="img_text_down-wrap">
+                                                    <div class="img_text_down-img-div">
+                                                        <div class="img_text_down-img-inner">
+                                                            <img src="<?= self::DIR_STATIC_FILES ?>return-box.png">
                                                         </div>
+                                                    </div>
+                                                    <div class="img_text_down-text-div">
+                                                        <span>free & <br>easy return</span>
                                                     </div>
                                                 </div>
-                                                <div class="signup-password-div signup-50-block  signup-input-block">
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="signup_password">password</label>
-                                                            <input id="signup_password" class="input-tag" type="password" name="password" placeholder="password" value="">
-                                                            <p class="comment"></p>
+                                            </li>
+                                            <li class="safe_info-li remove-li-default-att">
+                                                <div class="img_text_down-wrap">
+                                                    <div class="img_text_down-img-div">
+                                                        <div class="img_text_down-img-inner">
+                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-van-96.png">
                                                         </div>
                                                     </div>
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="signup_password_confirmation">password confirmation</label>
-                                                            <input id="signup_password_confirmation" class="input-tag" type="password" name="password_confirmation" placeholder="password confirmation" value="">
-                                                            <p class="comment"></p>
-                                                        </div>
+                                                    <div class="img_text_down-text-div">
+                                                        <span>Track your<br> orders online</span>
                                                     </div>
                                                 </div>
-                                                <div class="signup-paperwork-div signup-50-block  signup-input-block">
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="connection-chcekbox-div">
-                                                            <label  class="checkbox-label">I confirm that I have read and I agree to
-                                                                I&Meim's terms and conditions including
-                                                                its privacy notice.
-                                                                <input  type="checkbox" name="terme">
-                                                                <span class="checkbox-checkmark"></span>
-                                                                <p class="comment"></p>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <div class="connection-chcekbox-div">
-                                                            <label class="checkbox-label">Sign up for newsletter
-                                                                <input class="newletter-input" type="checkbox" name="newsletter">
-                                                                <span class="checkbox-checkmark"></span>
-                                                                <div class="connection-checkbox-text-div">
-                                                                    By subscribing to I&Meim’s newsletter, I understand
-                                                                    and accept to receive emails from I&Meim’s with the
-                                                                    latest deals, sales, and updates by multiple form of
-                                                                    communication like email, phone and/or post.
-                                                                </div>
-                                                                <p class="comment"></p>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="<?= $inBodyId ?>" class="sign-body login-block">
-                                    <div class="login-wrap">
-                                        <div class="connection-wrap-inner login-wrap-inner">
-                                            <form class="login-form-tag">
-                                                <div class="login-mail-password-div login-input-block">
-                                                    <div class="connection-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="login_email">email</label>
-                                                            <input id="login_email" class="input-tag" type="email" name="email" placeholder="email" value="">
-                                                            <p class="comment"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="connection-input-container">
-                                                        <div class="input-wrap">
-                                                            <label class="input-label" for="login_password">password</label>
-                                                            <input id="login_password" class="input-tag" type="password" name="password" placeholder="password" value="">
-                                                            <p class="comment"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="login-password-div  login-input-block">
-                                                </div>
-                                                <div class="login-remember-forgot-div login-input-block">
-                                                    <div class="connection-input-container login-remember-block">
-                                                        <div class="connection-chcekbox-div">
-                                                            <label for="login_remember" class="checkbox-label">remember me
-                                                                <input id="login_remember" type="checkbox" name="remember">
-                                                                <span class="checkbox-checkmark"></span>
-                                                                <p class="comment"></p>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="connection-input-container login-forgot-block">
-                                                        <a href="" target="_blank">forgot password</a>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
-                    </div>
-                    <div class="payement-div">
-                        <div class="summary-detail-button-div">
-                            <div class="summary-detail-button-inner">
-                                <button class="green-button standard-button remove-button-default-att">checkout</button>
-                            </div>
-                        </div>
-                        <div class="summary-detail-safe_info-div">
-                            <div class="summary-detail-safe_info-inner">
-                                <div class="safe_info-wrap">
-                                    <ul class="safe_info-ul remove-ul-default-att">
-                                        <li class="safe_info-li remove-li-default-att">
-                                            <div class="img_text_down-wrap">
-                                                <div class="img_text_down-img-div">
-                                                    <div class="img_text_down-img-inner">
-                                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-card-security-150.png">
-                                                    </div>
-                                                </div>
-                                                <div class="img_text_down-text-div">
-                                                    <span>3D secure & <br>SSL encrypted payement</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="safe_info-li remove-li-default-att">
-                                            <div class="img_text_down-wrap">
-                                                <div class="img_text_down-img-div">
-                                                    <div class="img_text_down-img-inner">
-                                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-headset-96.png">
-                                                    </div>
-                                                </div>
-                                                <div class="img_text_down-text-div">
-                                                    <span>customer service 24h/7 <br> response in 1h</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="safe_info-li remove-li-default-att">
-                                            <div class="img_text_down-wrap">
-                                                <div class="img_text_down-img-div">
-                                                    <div class="img_text_down-img-inner">
-                                                        <img src="<?= self::DIR_STATIC_FILES ?>return-box.png">
-                                                    </div>
-                                                </div>
-                                                <div class="img_text_down-text-div">
-                                                    <span>free & <br>easy return</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="safe_info-li remove-li-default-att">
-                                            <div class="img_text_down-wrap">
-                                                <div class="img_text_down-img-div">
-                                                    <div class="img_text_down-img-inner">
-                                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-van-96.png">
-                                                    </div>
-                                                </div>
-                                                <div class="img_text_down-text-div">
-                                                    <span>Track your<br> orders online</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="summary-detail-collapse-div">
-                            <div class="summary-detail-collapse-inner">
-                                <div class="collapse-wrap">
-                                    <ul class="remove-ul-default-att">
-                                        <li class="remove-li-default-att">
-                                            <div class="collapse-div">
-                                                <div class="collapse-title-div">
-                                                    <div class="collapse-title">contact us</div>
-                                                    <div class="collapse-symbol">
-                                                        <div class="plus_symbol-container">
-                                                            <div class="plus_symbol-wrap">
-                                                                <span class="plus_symbol-vertical"></span>
-                                                                <span class="plus_symbol-horizontal"></span>
+                            <div class="summary-detail-collapse-div">
+                                <div class="summary-detail-collapse-inner">
+                                    <div class="collapse-wrap">
+                                        <ul class="remove-ul-default-att">
+                                            <li class="remove-li-default-att">
+                                                <div class="collapse-div">
+                                                    <div class="collapse-title-div">
+                                                        <div class="collapse-title">contact us</div>
+                                                        <div class="collapse-symbol">
+                                                            <div class="plus_symbol-container">
+                                                                <div class="plus_symbol-wrap">
+                                                                    <span class="plus_symbol-vertical"></span>
+                                                                    <span class="plus_symbol-horizontal"></span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="collapse-text-div collapse-text-hidded">
-                                                    <div class="collapse-text-inner">
-                                                        <ul class="contact-ul remove-ul-default-att">
-                                                            <li class="contact-li remove-li-default-att">
+                                                    <div class="collapse-text-div collapse-text-hidded">
+                                                        <div class="collapse-text-inner">
+                                                            <ul class="contact-ul remove-ul-default-att">
+                                                                <li class="contact-li remove-li-default-att">
 
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-phone-100.png">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-phone-100.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">+472 13 13 24</span>
                                                                     </div>
-                                                                    <span class="img-text-span">+472 13 13 24</span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="contact-li remove-li-default-att">
+                                                                </li>
+                                                                <li class="contact-li remove-li-default-att">
 
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-secured-letter-100.png">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-secured-letter-100.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">email@monsite.com</span>
                                                                     </div>
-                                                                    <span class="img-text-span">email@monsite.com</span>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="remove-li-default-att">
-                                            <div class="collapse-div">
-                                                <div class="collapse-title-div">
-                                                    <div class="collapse-title">payement options</div>
-                                                    <div class="collapse-symbol">
-                                                        <div class="plus_symbol-container">
-                                                            <div class="plus_symbol-wrap">
-                                                                <span class="plus_symbol-vertical"></span>
-                                                                <span class="plus_symbol-horizontal"></span>
-                                                            </div>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="collapse-text-div collapse-text-hidded">
-                                                    <div class="collapse-text-inner">
-                                                        <ul class="payement-ul remove-ul-default-att">
-                                                            <li class="payement-li remove-li-default-att">
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
-                                                                    </div>
-                                                                    <span class="img-text-span">visa</span>
+                                            </li>
+                                            <li class="remove-li-default-att">
+                                                <div class="collapse-div">
+                                                    <div class="collapse-title-div">
+                                                        <div class="collapse-title">payement options</div>
+                                                        <div class="collapse-symbol">
+                                                            <div class="plus_symbol-container">
+                                                                <div class="plus_symbol-wrap">
+                                                                    <span class="plus_symbol-vertical"></span>
+                                                                    <span class="plus_symbol-horizontal"></span>
                                                                 </div>
-                                                            </li>
-                                                            <li class="payement-li remove-li-default-att">
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="collapse-text-div collapse-text-hidded">
+                                                        <div class="collapse-text-inner">
+                                                            <ul class="payement-ul remove-ul-default-att">
+                                                                <li class="payement-li remove-li-default-att">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">visa</span>
                                                                     </div>
-                                                                    <span class="img-text-span">pay</span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="payement-li remove-li-default-att">
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
+                                                                </li>
+                                                                <li class="payement-li remove-li-default-att">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">pay</span>
                                                                     </div>
-                                                                    <span class="img-text-span">paypal</span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="payement-li remove-li-default-att">
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
+                                                                </li>
+                                                                <li class="payement-li remove-li-default-att">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">paypal</span>
                                                                     </div>
-                                                                    <span class="img-text-span">masterCard</span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="payement-li remove-li-default-att">
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
+                                                                </li>
+                                                                <li class="payement-li remove-li-default-att">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">masterCard</span>
                                                                     </div>
-                                                                    <span class="img-text-span">maestro</span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="payement-li remove-li-default-att">
-                                                                <div class="img-text-wrap">
-                                                                    <div class="img-text-img">
-                                                                        <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
+                                                                </li>
+                                                                <li class="payement-li remove-li-default-att">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">maestro</span>
                                                                     </div>
-                                                                    <span class="img-text-span">american express</span>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
+                                                                </li>
+                                                                <li class="payement-li remove-li-default-att">
+                                                                    <div class="img-text-wrap">
+                                                                        <div class="img-text-img">
+                                                                            <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
+                                                                        </div>
+                                                                        <span class="img-text-span">american express</span>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php
+                    endif;
+                    ?>
                 </div>
                 <div class="summary_cart-block">
                     <div class="summary_cart-inner">
@@ -772,7 +609,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>

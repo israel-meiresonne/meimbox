@@ -23,6 +23,14 @@ abstract class Controller {
     protected $request;
 
     /**
+     * To set controller's action
+     */
+    protected function setAction($action)
+    {
+        $this->action = $action;
+    }
+
+    /**
      * Définit la requête entrante
      * 
      * rnvs : utilisé uniquement dans Router::createController()
@@ -205,7 +213,19 @@ abstract class Controller {
         // rnvs : $webroot termine par '/'
         // rnvs : .htaccess, va remplacer $controller/$action par
         //        index.php?controller=$controller&action=$action&id=
-        header("Location:" . $webRoot . $controller . "/" . $action);
+        $link = $webRoot . $controller;
+        $link .= (!empty($action)) ? "/" . $action : null;
+        header("Location:" . $link);
+        // header("Location:" . $webRoot . $controller . "/" . $action);
+    }
+
+    /**
+     * To gett controller's action
+     * @return string controller's action
+     */
+    protected function getAction()
+    {
+        return $this->action;
     }
 
 }

@@ -33,7 +33,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 
                 <div class="address_connection-block">
                     <div class="address_connection-inner">
-                        <div class="connection-container">
+                        <!-- <div class="connection-container">
                             <div class="sign-head">
                                 <div class="sign-head-button-div">
                                     <button class="sign-up-head-button sign-head-button remove-button-default-att">new member</button>
@@ -44,17 +44,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                             </div>
                             <div class="signup-block">
                                 <div class="signup-wrap">
-                                    <!-- <div class="connection-title-block signup-title-block">
-                                        <div class="connection-title-div">
-                                            <span class="connection-title">new member</span>
-                                            <div class="connection-title-button-div">
-                                                <div class="connection-title-button-div">
-                                                    <button class="connection-title-button remove-button-default-att">already registered?</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr class="hr-summary"> -->
                                     <div class="connection-wrap-inner signup-wrap-inner">
                                         <form class="signup-form-tag">
                                             <div class="signup-sexe-div signup-input-block">
@@ -170,17 +159,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                             </div>
                             <div class="login-block">
                                 <div class="login-wrap">
-                                    <!-- <div class="connection-title-block signup-title-block">
-                                        <div class="connection-title-div">
-                                            <span class="connection-title">log in</span>
-                                            <div class="connection-title-button-div">
-                                                <div class="connection-title-button-div">
-                                                    <button class="connection-title-button remove-button-default-att">new member?</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr class="hr-summary"> -->
                                     <div class="connection-wrap-inner login-wrap-inner">
                                         <form class="login-form-tag">
                                             <div class="login-mail-password-div login-input-block">
@@ -219,7 +197,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="address-container">
                             <div class="form-wrap">
                                 <div class="form-title-block address-title-block">

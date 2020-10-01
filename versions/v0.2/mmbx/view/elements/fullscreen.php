@@ -71,9 +71,15 @@ $language = $person->getLanguage();
     </div>
     <div id="size_editor_pop" class="pop_up-container">
     </div>
-    <div id="sign_form_pop" class="pop_up-container">
-        <?php
-        echo $this->generateFile('view/elements/popup/popupFormSign.php', []);
-        ?>
-    </div>
+    <?php
+    if (!$person->hasPrivilege(Visitor::PRIV_CLT)) :
+    ?>
+        <div id="sign_form_pop" class="pop_up-container">
+            <?php
+            echo $this->generateFile('view/elements/popup/popupFormSign.php', []);
+            ?>
+        </div>
+    <?php
+    endif;
+    ?>
 </div>

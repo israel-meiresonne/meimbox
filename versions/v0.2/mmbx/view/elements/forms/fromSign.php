@@ -2,7 +2,6 @@
 require_once 'controller/ControllerCheckout.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $redirLink redirect link when success
  */
 $upHeadId = ModelFunctionality::generateDateCode(25);
 $upHeadx = "#" . $upHeadId;
@@ -42,7 +41,6 @@ $inSbtnx = "#$inSbtnid";
         <div class="signup-wrap">
             <div class="connection-wrap-inner signup-wrap-inner">
                 <div id="<?= $upFormid ?>" class="signup-form-tag">
-                    <input type="hidden" name="<?= ControllerSecure::INPUT_REDIRECT ?>" value="<?= $redirLink ?>">
                     <div class="signup-sexe-div signup-input-block">
                         <?php
                         $errorid = ModelFunctionality::generateDateCode(25);
@@ -182,7 +180,6 @@ $inSbtnx = "#$inSbtnid";
         <div class="login-wrap">
             <div class="connection-wrap-inner login-wrap-inner">
                 <div id="<?= $inFormid ?>" class="login-form-tag">
-                    <input type="hidden" name="<?= ControllerSecure::INPUT_REDIRECT ?>" value="<?= $redirLink ?>">
                     <div class="login-mail-password-div login-input-block">
                         <div class="connection-input-container">
                             <div class="input-wrap">

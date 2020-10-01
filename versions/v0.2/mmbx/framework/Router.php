@@ -67,12 +67,13 @@ class Router {
             }
             // rnvs : stop
 
+            $action = self::createAction($request);    // rnvs : ajout (static)
             // rnvs : $controller est une instance du contrôleur effectif 
             //        c'est via l'élément de clé 'controller' du tableau
             //        $request que le type effectif du contrôleur est déterminé
             //        sinon, par défaut, c'est ControllerHome
             // $controller = $this->createController($request); // rnvs : comm (static)
-            $controller = self::createController($request); // rnvs : ajout (static)
+            $controller = self::createController($request, $action); // rnvs : ajout (static)
             
             // rnvs : $action est une chaîne de caractères
             //        c'est via l'élément de clé 'action' du tableau
@@ -80,7 +81,7 @@ class Router {
             //        déterminée
             //        il s'agit d'"index", par défaut
             // $action = $this->createAction($request); // rnvs : comm (static)
-            $action = self::createAction($request);    // rnvs : ajout (static)
+            // $action = self::createAction($request);    // rnvs : ajout (static)
 
             // rnvs : executeAction sert à setter l'action... et à l'exécuter
             //        c.-à-d. à invoquer la méthode du $controller dont le
@@ -129,11 +130,12 @@ class Router {
      *        pas d'élément de clé 'controller' dans ce tableau
      * 
      * @param Request $request Requête reçue
+     * @param string $action the controller's action to perform
      * @return Instance d'un contrôleur
      * @throws Exception Si la création du contrôleur échoue
      */
     // private function createController(Request $request) {    // rnvs : comm (static)
-    private static function createController(Request $request) {    // rnvs : ajout (static)
+    private static function createController(Request $request, $action) {    // rnvs : ajout (static)
         // Grâce à la redirection, toutes les URL entrantes sont du type :
         // index.php?controller=XXX&action=YYY&id=ZZZ
         // rnvs : redirection : voir webRoot/.htaccess
@@ -179,7 +181,7 @@ class Router {
             //        dont le nom a été construit dynamiquement sur base
             //        de la requête GET ou POST
             // rnvs : rappel $classController vaut "ControllerHome" par défaut
-            $controller = new $classController();
+            $controller = new $classController($action);
             
             $controller->setRequest($request);
             
