@@ -141,10 +141,10 @@ $inSbtnx = "#$inSbtnid";
                                 $errorid = ModelFunctionality::generateDateCode(25);
                                 $errorx = "#$errorid";
                                 ?>
-                                <label for="signup_terme" class="checkbox-label">I confirm that I have read and I agree to
+                                <label  class="checkbox-label">I confirm that I have read and I agree to
                                     I&Meim's terms and conditions including
                                     its privacy notice.
-                                    <input id="signup_terme" type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input  type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <p id="<?= $errorid ?>" class="comment"></p>
                                 </label>
@@ -156,8 +156,8 @@ $inSbtnx = "#$inSbtnid";
                                 $errorid = ModelFunctionality::generateDateCode(25);
                                 $errorx = "#$errorid";
                                 ?>
-                                <label for="signup_newsletter" class="checkbox-label">Sign up for newsletter
-                                    <input id="signup_newsletter" class="newletter-input" type="checkbox" name="<?= Visitor::INPUT_NEWSLETTER ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                <label class="checkbox-label">Sign up for newsletter
+                                    <input class="newletter-input" type="checkbox" name="<?= Visitor::INPUT_NEWSLETTER ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <div class="connection-checkbox-text-div">
                                         By subscribing to I&Meim’s newsletter, I understand
@@ -231,6 +231,6 @@ $inSbtnx = "#$inSbtnid";
         </div>
     </div>
     <div class="sign_form-loading loading-img-wrap">
-        <img src="content/brain/permanent/loading.gif">
+        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
     </div>
 </div>

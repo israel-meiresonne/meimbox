@@ -25,7 +25,6 @@ require_once 'model/special/MyError.php';
  */
 $person = $person;
 $language = $person->getLanguage();
-// var_dump($language);
 ?>
 <!DOCTYPE html>
 <html lang="<?= $language->getIsoLang() ?>">
@@ -288,7 +287,7 @@ $language = $person->getLanguage();
                             <div class="grey-tag-button standard-tag-button img-text-block">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
-                                        <img src="content/brain/permanent/icons8-pill-yellow-red.png" alt="">
+                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
                                     </div>
                                     <span class="img-text-span">new drop</span>
                                 </div>
@@ -299,7 +298,7 @@ $language = $person->getLanguage();
                             <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
-                                        <img src="content/brain/permanent/icons8-plus-math-96.png" alt="">
+                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
                                     </div>
                                     <span class="img-text-span">add box</span>
                                 </div>
@@ -339,23 +338,42 @@ $language = $person->getLanguage();
                                 </div>
                             </div>
                         </li> -->
-                        <li class="navbar-li remove-li-default-att">
-                            <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
-                                <div class="img-text-wrap">
-                                    <div class="img-text-img">
-                                        <img src="content/brain/permanent/icons8-contacts-96.png">
+                        <?php
+                        if ($person->hasPrivilege(Visitor::PRIV_CLT)) :
+                        ?>
+                            <li class="navbar-li remove-li-default-att">
+                                <div class="grey-tag-button standard-tag-button img-text-block" onclick="console.log('open client menu')">
+                                    <div class="img-text-wrap">
+                                        <div class="img-text-img">
+                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                                        </div>
+                                        <span class="img-text-span"></span>
                                     </div>
-                                    <span class="img-text-span"></span>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        <?php
+                        else :
+                        ?>
+                            <li class="navbar-li remove-li-default-att">
+                                <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
+                                    <div class="img-text-wrap">
+                                        <div class="img-text-img">
+                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-contacts-96.png">
+                                        </div>
+                                        <span class="img-text-span"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php
+                        endif;
+                        ?>
                         <li class="navbar-li remove-li-default-att">
                             <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
-                            <!-- <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="getBasketPop(()=>{openPopUp('#basket_pop')})"> -->
+                                <!-- <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="getBasketPop(()=>{openPopUp('#basket_pop')})"> -->
                                 <div class="img-text-block  navbar-basket-wrap">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
-                                            <img src="content/brain/permanent/icons8-shopping-cart-96.png" alt="">
+                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
                                         </div>
                                         <span class="img-text-span basket-logo-span">(<span data-basket="quantity">3</span>)</span>
                                     </div>
@@ -394,7 +412,7 @@ $language = $person->getLanguage();
                     <div class="grey-tag-button standard-tag-button img-text-block">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="content/brain/permanent/icons8-pill-yellow-red.png" alt="">
+                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
                             </div>
                             <span class="img-text-span">new drop</span>
                         </div>
@@ -403,7 +421,7 @@ $language = $person->getLanguage();
                     <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="content/brain/permanent/icons8-plus-math-96.png" alt="">
+                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
                             </div>
                             <span class="img-text-span">add box</span>
                         </div>
@@ -412,11 +430,11 @@ $language = $person->getLanguage();
 
                 <div class="navbar-basket-block navbar-right-block flex-row">
                     <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
-                    <!-- <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="getBasketPop(()=>{openPopUp('#basket_pop')})"> -->
+                        <!-- <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="getBasketPop(()=>{openPopUp('#basket_pop')})"> -->
                         <div class="img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
-                                    <img src="content/brain/permanent/icons8-shopping-cart-96.png" alt="">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
                                 </div>
                                 <span class="img-text-span basket-logo-span"><span data-basket="quantity">3</span></span>
                             </div>

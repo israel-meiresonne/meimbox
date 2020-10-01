@@ -261,7 +261,7 @@ switch ($conf) {
                 <div class="add-button-container product-data-line">
                     <button id="select_size_for_box" class="green-button standard-button remove-button-default-att" onclick="checkBoxProductStock('#form_check_prod_stock')"><?= $buttonTxt ?></button>
                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
-                        <img src="content/brain/permanent/mini-loading.gif">
+                        <img src="<?= self::DIR_STATIC_FILES ?>mini-loading.gif">
                     </div>
                 </div>
             <?php
@@ -272,7 +272,7 @@ switch ($conf) {
                 <div class="add-button-container product-data-line">
                     <button id="select_size_for_cart" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
                     <div id="add_prod_loading" class="btn-loading loading-img-wrap">
-                        <img src="content/brain/permanent/mini-loading.gif">
+                        <img src="<?= self::DIR_STATIC_FILES ?>mini-loading.gif">
                     </div>
                 </div>
     <?php

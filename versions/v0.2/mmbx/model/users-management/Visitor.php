@@ -112,6 +112,13 @@ class Visitor extends ModelFunctionality
     public const INPUT_NEWSLETTER = "newsletter";
 
     /**
+     * Holds privilege id
+     * @var string
+     */
+    public const PRIV_CLT = Cookie::COOKIE_CLT;
+    public const PRIV_ADM = Cookie::COOKIE_ADM;
+
+    /**
      * @parram string $childCaller class of the caller (usualy User.php)
      */
     // public function __construct($childCaller = null)
@@ -159,7 +166,7 @@ class Visitor extends ModelFunctionality
         $usersCookiesMap = $this->getUsersCookiesMap($userID);
         $cookieIDs = $usersCookiesMap->getKeys();
         $inDb = in_array($cookieID, $cookieIDs);
-        $onUser = (!empty(Cookie::getCookie($cookieID)));
+        $onUser = $this->existCookie($cookieID);
         if ($inDb && $onUser) {
             // --- cookie exist
             $cookieState = Cookie::STATE_UPDATE;
@@ -279,31 +286,16 @@ class Visitor extends ModelFunctionality
     protected function setCookies()
     {
         $this->cookies = new Map();
-        // if (!empty($_COOKIE)) {
-        //     $userID = $this->getUserID();
-        //     $usersCookiesMap = $this->getUsersCookiesMap($userID);
-        //     $cookieIDs = $usersCookiesMap->getKeys();
-        //     foreach ($_COOKIE as $cookieID => $value) {
-        //         if (in_array($cookieID, $cookieIDs) && ($value == $usersCookiesMap->get($cookieID, Map::value))) {
-        //             $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
-        //             $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
-        //             $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
-        //             $this->cookies->put($cookie, $cookieID);
-        //         }
-        //     }
-        // }
         $userID = $this->getUserID();
         $usersCookiesMap = $this->getUsersCookiesMap($userID);
         $cookieIDs = $usersCookiesMap->getKeys();
         if (!empty($cookieIDs)) {
             foreach ($cookieIDs as $cookieID) {
-                // if (in_array($cookieID, $cookieIDs) && ($value == $usersCookiesMap->get($cookieID, Map::value))) {
                 $value = $usersCookiesMap->get($cookieID, Map::value);
                 $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
                 $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
                 $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
                 $this->cookies->put($cookie, $cookieID);
-                // }
             }
         }
     }
@@ -460,6 +452,16 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * To check if Visitor holds a cookie in his session with the given id
+     * @param string $cookieID id of the cookie to look for
+     * @return boolean true if Visitor holds a cookie in his session else false
+     */
+    private function existCookie($cookieID)
+    {
+        return (!empty(Cookie::getCookie($cookieID)));
+    }
+
+    /**
      * To get the measure with the id given in param
      * @param string $measureID id of the measure to look for
      * @return Measure|null Measure if it's found else return null
@@ -543,10 +545,7 @@ class Visitor extends ModelFunctionality
         $measure = $this->getMeasure($measureID);
         if (empty($measure)) {
             throw new Exception("Impossible to unset measure cause it don't exist:");
-            // $errorMsg = "ER1";
-            // $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
         }
-        // if (!$response->containError()) {
         $sql = "SELECT * 
         FROM `UsersMeasures` um
         JOIN `Box-Products` bp ON um.measureID = bp.measureId
@@ -562,13 +561,6 @@ class Visitor extends ModelFunctionality
                 $this->unsetMeasure($measureID);
             }
         }
-        // }
-        // if (!$response->containError()) {
-        //     $measure->deleteMeasure($response, $this->userID);
-        //     if ($response->isSuccess()) {
-        //         $this->unsetMeasure($measureID);
-        //     }
-        // }
     }
 
     /**
@@ -588,6 +580,25 @@ class Visitor extends ModelFunctionality
         return null;
     }
 
+    /**
+     * Check if Visitor has a privilege
+     * @param string $privilege privilege  to check
+     * @return boolean true if has privilege else false
+     */
+    public function hasPrivilege($privilege)
+    {
+        // $privileges = $this->getPrivileges();
+        $hasPrivilege = false;
+        switch ($privilege) {
+            case self::PRIV_CLT:
+                $hasPrivilege = $this->existCookie(Cookie::COOKIE_CLT);
+                break;
+            case self::PRIV_ADM:
+                $hasPrivilege = $this->existCookie(Cookie::COOKIE_ADM);
+                break;
+        }
+        return $hasPrivilege;
+    }
 
     /*———————————————————————————— MANAGE CLASS UP ——————————————————————————*/
     /*———————————————————————————— GET DB TABLEDOWN —————————————————————————*/
@@ -659,28 +670,23 @@ class Visitor extends ModelFunctionality
      */
     public function signIn(Response $response, Map $inMap)
     {
-        try {
-            //code...
-            /**
-             * @var string */
-            $email = $inMap->get(Map::email);
-            if (!$this->emailExist($email)) {
-                $response->addErrorStation("ER25", self::INPUT_EMAIL);
+        /**
+         * @var string */
+        $email = $inMap->get(Map::email);
+        if (!$this->emailExist($email)) {
+            $response->addErrorStation("ER25", self::INPUT_EMAIL);
+        } else {
+            $password = $inMap->get(Map::password);
+            $hashcode = $this->getHashcode($email);
+            if (!$this->passMatchHash($password, $hashcode)) {
+                $response->addErrorStation("ER26", self::INPUT_PASSWORD);
             } else {
-                $password = $inMap->get(Map::password);
-                $hashcode = $this->getHashcode($email);
-                if (!$this->passMatchHash($password, $hashcode)) {
-                    $response->addErrorStation("ER26", self::INPUT_PASSWORD);
-                } else {
-                    // $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
-                    $client = $this->getClient($response, $email);
-                    $this->visitorToClient($response, $client);
-                    if ($response->containError()) {
-                    }
+                // $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
+                $client = $this->getClient($response, $email);
+                $this->visitorToClient($response, $client);
+                if ($response->containError()) {
                 }
             }
-        } catch (\Throwable $th) {
-            echo $th;
         }
     }
 

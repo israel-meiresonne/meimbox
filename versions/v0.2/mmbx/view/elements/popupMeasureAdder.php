@@ -59,7 +59,7 @@
             </div>
             <div class="customize_measure-input-block">
                 <div class="measure_body-img-container">
-                    <img src="content/brain/permanent/body-measure-women.png">
+                    <img src="<?= self::DIR_STATIC_FILES ?>body-measure-women.png">
                 </div>
                 <div class="measure_input-container">
                     <div class="measure_input-container-inner">
