@@ -1,5 +1,6 @@
 <?php
 require_once 'controller/ControllerCheckout.php';
+require_once 'model/special/Map.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  */
@@ -72,64 +73,68 @@ $inSbtnx = "#$inSbtnid";
                     </div>
                     <div class="signup-name-div signup-50-block  signup-input-block">
                         <div class="connection-input-container signup-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="signup_firstname">first name</label>
-                                <input id="signup_firstname" class="input-error input-tag" type="text" name="<?= Visitor::INPUT_FIRSTNAME ?>" placeholder="first name" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::text,
+                                "inpName" => Visitor::INPUT_FIRSTNAME,
+                                "inpTxt" => "first name",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
                         <div class="connection-input-container signup-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="signup_lastname">last name</label>
-                                <input id="signup_lastname" class="input-tag" type="text" name="<?= Visitor::INPUT_LASTNAME ?>" placeholder="last name" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::text,
+                                "inpName" => Visitor::INPUT_LASTNAME,
+                                "inpTxt" => "last name",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
                     </div>
                     <div class="signup-mail-div signup-input-block">
                         <div class="connection-input-container signup-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="signup_email">email</label>
-                                <input id="signup_email" class="input-tag" type="email" name="<?= Visitor::INPUT_EMAIL ?>" placeholder="email" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::email,
+                                "inpName" => Visitor::INPUT_EMAIL,
+                                "inpTxt" => "email",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
-
                     </div>
                     <div class="signup-password-div signup-50-block  signup-input-block">
                         <div class="connection-input-container signup-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="signup_password">password</label>
-                                <input id="signup_password" class="input-tag" type="password" name="<?= Visitor::INPUT_PASSWORD ?>" placeholder="password" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::password,
+                                "inpName" => Visitor::INPUT_PASSWORD,
+                                "inpTxt" => "password",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
                         <div class="connection-input-container signup-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="signup_password_confirmation">password confirmation</label>
-                                <input id="signup_password_confirmation" class="input-tag" type="password" name="<?= Visitor::INPUT_CONFIRM_PASSWORD ?>" placeholder="password confirmation" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::password,
+                                "inpName" => Visitor::INPUT_CONFIRM_PASSWORD,
+                                "inpTxt" => "password confirmation",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
                     </div>
                     <div class="signup-paperwork-div signup-50-block  signup-input-block">
@@ -139,10 +144,10 @@ $inSbtnx = "#$inSbtnid";
                                 $errorid = ModelFunctionality::generateDateCode(25);
                                 $errorx = "#$errorid";
                                 ?>
-                                <label  class="checkbox-label">I confirm that I have read and I agree to
+                                <label class="checkbox-label">I confirm that I have read and I agree to
                                     I&Meim's terms and conditions including
                                     its privacy notice.
-                                    <input  type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <p id="<?= $errorid ?>" class="comment"></p>
                                 </label>
@@ -182,26 +187,28 @@ $inSbtnx = "#$inSbtnid";
                 <div id="<?= $inFormid ?>" class="login-form-tag">
                     <div class="login-mail-password-div login-input-block">
                         <div class="connection-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="login_email">email</label>
-                                <input id="login_email" class="input-tag" type="email" name="<?= Visitor::INPUT_EMAIL ?>" placeholder="email" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::email,
+                                "inpName" => Visitor::INPUT_EMAIL,
+                                "inpTxt" => "email",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
                         <div class="connection-input-container">
-                            <div class="input-wrap">
-                                <?php
-                                $errorid = ModelFunctionality::generateDateCode(25);
-                                $errorx = "#$errorid";
-                                ?>
-                                <label class="input-label" for="login_password">password</label>
-                                <input id="login_password" class="input-tag" type="password" name="<?= Visitor::INPUT_PASSWORD ?>" placeholder="password" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
-                                <p id="<?= $errorid ?>" class="comment"></p>
-                            </div>
+                            <?php
+                            $datas = [
+                                "inpId" => ModelFunctionality::generateDateCode(25),
+                                "inpType" => Map::password,
+                                "inpName" => Visitor::INPUT_PASSWORD,
+                                "inpTxt" => "password",
+                                "errortype" => self::ER_TYPE_COMMENT,
+                            ];
+                            echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                            ?>
                         </div>
                     </div>
                     <!-- <div class="login-password-div  login-input-block">
