@@ -82,6 +82,27 @@ class Map
     public const confirmPassword = "confirmPassword";
     public const remember = "remember";
 
+    /**
+     * Keys for input type
+     */
+    public const color = "color";
+    public const date = "date";
+    // public const email = "email";
+    public const file = "file";
+    public const image = "image";
+    public const month = "month";
+    public const number = "number";
+    // public const password = "password";
+    public const range = "range";
+    public const reset = "reset";
+    public const search = "search";
+    public const submit = "submit";
+    public const tel = "tel";
+    public const text = "text";
+    public const time = "time";
+    public const url = "url";
+    public const week = "week";
+
     public function __construct()
     {
         $this->map = [];
