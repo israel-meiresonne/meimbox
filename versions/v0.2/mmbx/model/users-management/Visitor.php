@@ -1502,6 +1502,7 @@ class Visitor extends ModelFunctionality
             DELETE FROM `Users-Cookies` WHERE `userId`= '$userID_VIS' AND `cookieId` = '" . Cookie::COOKIE_VIS . "';
             DELETE FROM `Users` WHERE `userID` = '$userID_VIS';";
         $this->delete($response, $sql, []);
+        // DELETE FROM `Boxes` WHERE `boxID` NOT IN (SELECT bb.`boxId` FROM `Baskets-Box` bb JOIN `Boxes` b ON bb.`boxId` = b.`boxID`);
     }
 
     /**
