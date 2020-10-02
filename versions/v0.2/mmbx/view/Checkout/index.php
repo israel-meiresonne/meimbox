@@ -33,171 +33,9 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 
                 <div class="address_connection-block">
                     <div class="address_connection-inner">
-                        <!-- <div class="connection-container">
-                            <div class="sign-head">
-                                <div class="sign-head-button-div">
-                                    <button class="sign-up-head-button sign-head-button remove-button-default-att">new member</button>
-                                </div>
-                                <div class="sign-head-button-div">
-                                    <button class="sign-in-head-button sign-head-button remove-button-default-att">sign in</button>
-                                </div>
-                            </div>
-                            <div class="signup-block">
-                                <div class="signup-wrap">
-                                    <div class="connection-wrap-inner signup-wrap-inner">
-                                        <form class="signup-form-tag">
-                                            <div class="signup-sexe-div signup-input-block">
-                                                <div class="signup-sexe-inner">
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <label for="signup_lady" class="checkbox-label">lady
-                                                            <input id="signup_lady" type="radio" name="sexe">
-                                                            <span class="checkbox-checkmark"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <label for="signup_sir" class="checkbox-label">sir
-                                                            <input id="signup_sir" type="radio" name="sexe">
-                                                            <span class="checkbox-checkmark"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="connection-input-container signup-input-container">
-                                                        <label for="signup_other" class="checkbox-label">other
-                                                            <input id="signup_other" type="radio" name="sexe">
-                                                            <span class="checkbox-checkmark"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="signup-sexe-error-div">
-                                                    <p class="comment"></p>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="signup-name-div signup-50-block  signup-input-block">
-
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="signup_firstname">first name</label>
-                                                        <input id="signup_firstname" class="input-error input-tag" type="text" name="firstname" placeholder="first name" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="signup_lastname">last name</label>
-                                                        <input id="signup_lastname" class="input-tag" type="text" name="lastname" placeholder="last name" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="signup-mail-div signup-input-block">
-
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="signup_email">email</label>
-                                                        <input id="signup_email" class="input-tag" type="email" name="email" placeholder="email" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="signup-password-div signup-50-block  signup-input-block">
-
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="signup_password">password</label>
-                                                        <input id="signup_password" class="input-tag" type="password" name="password" placeholder="password" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="signup_password_confirmation">password confirmation</label>
-                                                        <input id="signup_password_confirmation" class="input-tag" type="password" name="password_confirmation" placeholder="password confirmation" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="signup-paperwork-div signup-50-block  signup-input-block">
-
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="connection-chcekbox-div">
-                                                        <label  class="checkbox-label">I confirm that I have read and I agree to
-                                                            I&Meim's terms and conditions including
-                                                            its privacy notice.
-                                                            <input  type="checkbox" name="terme">
-                                                            <span class="checkbox-checkmark"></span>
-                                                            <p class="comment"></p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="connection-input-container signup-input-container">
-                                                    <div class="connection-chcekbox-div">
-                                                        <label class="checkbox-label">Sign up for newsletter
-                                                            <input class="newletter-input" type="checkbox" name="newsletter">
-                                                            <span class="checkbox-checkmark"></span>
-                                                            <div class="connection-checkbox-text-div">
-                                                                By subscribing to I&Meim’s newsletter, I understand
-                                                                and accept to receive emails from I&Meim’s with the
-                                                                latest deals, sales, and updates by multiple form of
-                                                                communication like email, phone and/or post.
-                                                            </div>
-                                                            <p class="comment"></p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="login-block">
-                                <div class="login-wrap">
-                                    <div class="connection-wrap-inner login-wrap-inner">
-                                        <form class="login-form-tag">
-                                            <div class="login-mail-password-div login-input-block">
-                                                <div class="connection-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="login_email">email</label>
-                                                        <input id="login_email" class="input-tag" type="email" name="email" placeholder="email" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-                                                <div class="connection-input-container">
-                                                    <div class="input-wrap">
-                                                        <label class="input-label" for="login_password">password</label>
-                                                        <input id="login_password" class="input-tag" type="password" name="password" placeholder="password" value="">
-                                                        <p class="comment"></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="login-password-div  login-input-block">
-                                            </div>
-                                            <div class="login-remember-forgot-div login-input-block">
-                                                <div class="connection-input-container login-remember-block">
-                                                    <div class="connection-chcekbox-div">
-                                                        <label for="login_remember" class="checkbox-label">remember me
-                                                            <input id="login_remember" type="checkbox" name="remember">
-                                                            <span class="checkbox-checkmark"></span>
-                                                            <p class="comment"></p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="connection-input-container login-forgot-block">
-                                                    <a href="" target="_blank">forgot password</a>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                        <div id="addresses_set" class="address-set">
+                            
+                        </div>
                         <div class="address-container">
                             <div class="form-wrap">
                                 <div class="form-title-block address-title-block">
@@ -207,43 +45,112 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                 </div>
                                 <hr class="hr-summary">
                                 <div class="form-wrap-inner address-wrap-inner">
-                                    <form class="address-form-tag">
+                                    <?php
+                                    $formid  = ModelFunctionality::generateDateCode(25);
+                                    $formx  = "#$formid";
+                                    $sbtnid = ModelFunctionality::generateDateCode(25);
+                                    $sbtnx = "#$sbtnid";
+                                    ?>
+                                    <div id="<?= $formid ?>" class="address-form-tag">
                                         <div class="form-input-block form-double-input-block">
                                             <div class="form-input-container">
-                                                <div class="input-wrap">
+                                                <?php
+                                                $datas = [
+                                                    "inpId" => ModelFunctionality::generateDateCode(25),
+                                                    "inpType" => Map::text,
+                                                    "inpName" => Address::INPUT_ADDRESS,
+                                                    "inpTxt" => "address",
+                                                    "errortype" => self::ER_TYPE_COMMENT,
+                                                ];
+                                                echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                                                ?>
+                                                <!-- <div class="input-wrap">
                                                     <label class="input-label" for="address_address">address</label>
                                                     <input id="address_address" class="input-error input-tag" type="text" name="address" placeholder="address" value="">
                                                     <p class="comment"></p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="form-input-container">
-                                                <div class="input-wrap">
+                                                <?php
+                                                $datas = [
+                                                    "inpId" => ModelFunctionality::generateDateCode(25),
+                                                    "inpType" => Map::text,
+                                                    "inpName" => Address::INPUT_APPARTEMENT,
+                                                    "inpTxt" => "apartment, suite, etc. (optional)",
+                                                    "errortype" => self::ER_TYPE_COMMENT,
+                                                ];
+                                                echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                                                ?>
+                                                <!-- <div class="input-wrap">
                                                     <label class="input-label" for="address_appartement">apartment, suite, etc. (optional)</label>
                                                     <input id="address_appartement" class="input-tag" type="text" name="appartement" placeholder="apartment, suite, etc. (optional)" value="">
                                                     <p class="comment"></p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-input-block form-double-input-block">
                                             <div class="form-input-container">
-                                                <div class="input-wrap">
+                                                <?php
+                                                $datas = [
+                                                    "inpId" => ModelFunctionality::generateDateCode(25),
+                                                    "inpType" => Map::text,
+                                                    "inpName" => Address::INPUT_PROVINCE,
+                                                    "inpTxt" => "state, province, region etc...",
+                                                    "errortype" => self::ER_TYPE_COMMENT,
+                                                ];
+                                                echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                                                ?>
+                                                <!-- <div class="input-wrap">
                                                     <label class="input-label" for="address_province">state, province, region etc...</label>
                                                     <input id="address_province" class="input-error input-tag" type="text" name="province" placeholder="state, province, region etc..." value="">
                                                     <p class="comment"></p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="form-input-container">
-                                                <div class="input-wrap">
+                                                <?php
+                                                $datas = [
+                                                    "inpId" => ModelFunctionality::generateDateCode(25),
+                                                    "inpType" => Map::text,
+                                                    "inpName" => Address::INPUT_CITY,
+                                                    "inpTxt" => "city",
+                                                    "errortype" => self::ER_TYPE_COMMENT,
+                                                ];
+                                                echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                                                ?>
+                                                <!-- <div class="input-wrap">
                                                     <label class="input-label" for="address_city">city</label>
                                                     <input id="address_city" class="input-tag" type="text" name="city" placeholder="city" value="">
                                                     <p class="comment"></p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-input-block form-double-input-block">
                                             <div class="form-input-container">
                                                 <div class="form-input-dropdown-container">
-                                                    <div class="dropdown-wrap">
+                                                    <?php
+                                                    $countriesMap = Country::getCountries();
+                                                    $isoCountries = $countriesMap->getKeys();
+                                                    $inputMap = new Map();
+                                                    foreach ($isoCountries as $isoCountry) {
+                                                        $label = $countriesMap->get($isoCountry, Map::countryName);
+                                                        if ($label != $country->getCountryNameDefault()) {
+                                                            $isChecked = ($country->getIsoCountry() == $isoCountry);
+                                                            $inputMap->put(Country::INPUT_ISO_COUNTRY, $label, Map::inputName);
+                                                            $inputMap->put($isoCountry, $label, Map::inputValue);
+                                                            $inputMap->put($isChecked, $label, Map::isChecked);
+                                                            $inputMap->put(null, $label, Map::inputFunc);
+                                                        }
+                                                    }
+                                                    $datas = [
+                                                        "title" => $translator->translateStation("US65"),
+                                                        "inputMap" => $inputMap,
+                                                        "func" => null,
+                                                        "isRadio" => true,
+                                                        "isDisplayed" => false
+                                                    ];
+                                                    echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
+                                                    ?>
+                                                    <!-- <div class="dropdown-wrap">
                                                         <div class="dropdown-inner">
                                                             <div class="dropdown-head dropdown-arrow-close">
                                                                 <span class="dropdown-title">country</span>
@@ -269,32 +176,58 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <p class="comment"></p>
                                                 </div>
                                             </div>
                                             <div class="form-input-container">
-                                                <div class="input-wrap">
+                                                <?php
+                                                $datas = [
+                                                    "inpId" => ModelFunctionality::generateDateCode(25),
+                                                    "inpType" => Map::text,
+                                                    "inpName" => Address::INPUT_ZIPCODE,
+                                                    "inpTxt" => "postal code",
+                                                    "errortype" => self::ER_TYPE_COMMENT,
+                                                ];
+                                                echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                                                ?>
+                                                <!-- <div class="input-wrap">
                                                     <label class="input-label" for="address_zipcode">postal code</label>
                                                     <input id="address_zipcode" class="input-tag" type="text" name="zipcode" placeholder="postal code" value="">
                                                     <p class="comment"></p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-input-block form-simple-input-block">
                                             <div class="form-input-container">
-                                                <div class="input-wrap">
+                                                <?php
+                                                $datas = [
+                                                    "inpId" => ModelFunctionality::generateDateCode(25),
+                                                    "inpType" => Map::tel,
+                                                    "inpName" => Address::INPUT_PHONE,
+                                                    "inpTxt" => "phone",
+                                                    "errortype" => self::ER_TYPE_COMMENT,
+                                                ];
+                                                echo $this->generateFile('view/elements/inputs/input.php', $datas);
+                                                ?>
+                                                <!-- <div class="input-wrap">
                                                     <label class="input-label" for="address_phone">phone</label>
                                                     <input id="address_phone" class="input-tag" type="tel" name="phone" placeholder="phone" value="">
                                                     <p class="comment"></p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
-                                    </form>
+                                        <div class="form-submit-button-div">
+                                            <button id="<?= $sbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="addAddress('<?= $formx ?>','<?= $sbtnx ?>')"><?= $translator->translateStation("US37") ?></button>
+                                        </div>
+                                    </div>
+                                    <div id="address_form_loading" class="loading-img-wrap">
+                                        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="payement-div">
+                        <!-- <div class="payement-div">
                             <div class="summary-detail-button-div">
                                 <div class="summary-detail-button-inner">
                                     <button class="green-button standard-button remove-button-default-att">checkout</button>
@@ -472,7 +405,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

@@ -9,6 +9,13 @@
     box-shadow: var(--box-shadow);
 }
 
+.address-wrap-inner{
+    position: relative;
+}
+#address_form_loading{
+    width: auto;
+}
+
 /* .connection-container{
     margin-bottom: 50px;
 } */

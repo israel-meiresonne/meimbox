@@ -1920,11 +1920,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     width: auto;
 }
 
-.sign-button-div {
+.form-submit-button-div {
     display: flex;
 }
 
-.sign-button-div button {
+.form-submit-button-div button {
     width: 50%;
     margin: 0 auto 10px;
     box-shadow: none;

@@ -43,7 +43,7 @@ abstract class ControllerSecure extends Controller
 
     /**
      * Can be a Visitor, a Client or a Administrator
-     * @var Visitor|Client|Administrator
+     * @var Visitor|User|Client|Administrator
      */
     protected $person;
 
@@ -63,6 +63,8 @@ abstract class ControllerSecure extends Controller
     protected const NUMBER_FLOAT = "float";
     protected const NUMBER_INT = "int";
     protected const ALPHA_NUMERIC = "alpha_numeric";
+    protected const TYPE_ALPHANUM_SPACE_HYPHEN_UNDER = "type_alphanum_space_hyphen_under";
+    protected const TYPE_STRING_SPACE_HYPHEN_UNSER = "TYPE_STRING_SPACE_HYPHEN_UNSER";
     // protected const TYPE_LINK = "type_link";
 
     /**
@@ -76,7 +78,9 @@ abstract class ControllerSecure extends Controller
     private const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
     private const REGEX_EMAIL = "#^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$#";
     private const REGEX_NAME = "#[A-Za-zÀ-ÖØ-öø-ÿ\- ]+$#";
-    private const REGEX_PASSWORD = "#^[\w0-9\-]{8,}$#";
+    private const REGEX_PASSWORD = "#^[\w\-]{8,}$#";
+    private const REGEX_ALPHANUM_SPACE_HYPHEN_UNDER = "#^[\w\- ]+$#";
+    private const REGEX_STRING_SPACE_HYPHEN_UNSER = "#^[A-z\- ]+$#";
 
     /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
 
@@ -213,14 +217,7 @@ abstract class ControllerSecure extends Controller
                         $value = $this->convertParam(self::PSEUDO, $data);
                     }
                     break;
-                case self::ALPHA_NUMERIC:
-                    if (preg_match(self::PALPHA_NUMERIC_REGEX, $data) != 1) {
-                        $errStation = "ER1";
-                        $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-                    } else {
-                        $value = $this->convertParam(self::ALPHA_NUMERIC, $data);
-                    }
-                    break;
+
                 case self::NAME:
                     if (preg_match(self::REGEX_NAME, $data) != 1) {
                         $errStation = "ER20";
@@ -243,6 +240,22 @@ abstract class ControllerSecure extends Controller
                         $response->addErrorStation($errStation, $input);
                     } else {
                         $value = $data;
+                    }
+                    break;
+                case self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER:
+                    if (preg_match(self::REGEX_ALPHANUM_SPACE_HYPHEN_UNDER, $data) != 1) {
+                        $errStation = "ER27";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $this->convertParam(self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER, $data);
+                    }
+                    break;
+                case self::TYPE_STRING_SPACE_HYPHEN_UNSER:
+                    if (preg_match(self::REGEX_STRING_SPACE_HYPHEN_UNSER, $data) != 1) {
+                        $errStation = "ER28";
+                        $response->addErrorStation($errStation, $input);
+                    } else {
+                        $value = $this->convertParam(self::TYPE_STRING_SPACE_HYPHEN_UNSER, $data);
                     }
                     break;
                 case self::CHECKBOX:
@@ -304,6 +317,8 @@ abstract class ControllerSecure extends Controller
             case self::ALPHA_NUMERIC:
             case self::STRING_TYPE:
             case self::NAME:
+            case self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER:
+            case self::TYPE_STRING_SPACE_HYPHEN_UNSER:
                 $value = strtolower($data);
                 break;
             case self::TYPE_BOOLEAN:
