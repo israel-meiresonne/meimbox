@@ -3,7 +3,7 @@
 require_once 'framework/Model.php';
 require_once 'model/special/Query.php';
 require_once 'model/special/MyError.php';
-require_once 'model/special/Map.php';
+// require_once 'model/special/Map.php';
 
 /**
  * This class provide to model's classes common function

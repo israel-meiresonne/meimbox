@@ -102,7 +102,7 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    /*—————————————————— SIZE EDITOR DOWN ———————————————————————————————————*/
+    /*———————————————————————————— SIGN DOWN ————————————————————————————————*/
     signUp = (formx, sbtnx) => {
         var frm = $(formx).find("input");
         var d = {
@@ -152,15 +152,45 @@
         frmSND(d);
     }
     const signInRSP = (r, x) => {
+        signUpRSP(r, x);
+        // if (r.isSuccess) {
+        //     window.location.assign(window.location.href);
+        // } else {
+        //     displayErr(r, x.formx);
+        // }
+    }
+    /*———————————————————————————— SIGN UP ——————————————————————————————————*/
+    /*———————————————————————————— ADDRESS DOWN —————————————————————————————*/
+    addAddress = (formx, sbtnx) => {
+        var frm = $(formx).find("input");
+        var d = {
+            "frm": frm,
+            "frmCbk": () => { },
+            "a": QR_ADD_ADDRESS,
+            "r": addAddressRSP,
+            "l": "#address_form_loading",
+            "x": { "sbtnx": sbtnx, "formx": formx },
+            "sc": () => {
+                displayFlexOn(d.l, TS / 10);
+                disable(sbtnx);
+            },
+            "rc": () => {
+                displayFlexOff(d.l, TS);
+                enable(sbtnx);
+            }
+        };
+        frmSND(d);
+    }
+    const addAddressRSP = (r, x) => {
         if (r.isSuccess) {
-            // console.log("success");
-            window.location.assign(window.location.href);
+            console.log("success");
+            // window.location.assign(window.location.href);
         } else {
-            // console.log("error");
+            console.log("error");
             displayErr(r, x.formx);
         }
     }
-    /*—————————————————— SIZE EDITOR UP —————————————————————————————————————*/
+    /*———————————————————————————— ADDRESS UP ———————————————————————————————*/
     $(document).ready(function () {
         /*———————————————————————— FILTER POST DOWN —————————————————————————*/
         $("#grid_filter .checkbox-label input").click(function () {

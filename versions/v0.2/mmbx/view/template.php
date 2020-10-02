@@ -3,6 +3,7 @@ require_once 'controller/ControllerSecure.php';
 require_once 'controller/ControllerHome.php';
 require_once 'controller/ControllerGrid.php';
 require_once 'controller/ControllerItem.php';
+require_once 'controller/ControllerDashboard.php';
 require_once 'model/special/Search.php';
 require_once 'model/boxes-management/Product.php';
 require_once 'model/boxes-management/Size.php';
@@ -165,6 +166,8 @@ $language = $person->getLanguage();
         const A_DLT_BXPROD = "<?= ControllerItem::A_DLT_BXPROD ?>";
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
         const A_GET_EDT_POP = "<?= ControllerItem::A_GET_EDT_POP ?>";
+
+        const QR_ADD_ADDRESS = "<?= ControllerDashboard::QR_ADD_ADDRESS ?>";
 
         const KEY_CART_FILE = "<?= Basket::KEY_CART_FILE ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";

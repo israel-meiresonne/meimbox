@@ -43,6 +43,11 @@ class Country extends ModelFunctionality
      */
     public const KEY_ISO_CODE = "iso_country";
 
+    /**
+     * Holds input name
+     */
+    public const INPUT_ISO_COUNTRY = "iso_country";
+
     public function __construct($countryName)
     {
         $this->setConstants();
@@ -127,8 +132,8 @@ class Country extends ModelFunctionality
     /**
      * To get countries supported and their datas
      * @return Map countries supported and their datas
-     * $countriesMap[countryName] => [
-     *      Map::isoCountry => string
+     * $countriesMap[isoCountry] => [
+     *      Map::countryName => string
      *      Map::isoCurrency => string 
      *      Map::isUE => boolean
      *      Map::vat => float
@@ -139,10 +144,15 @@ class Country extends ModelFunctionality
         $coutries = parent::getCountriesDb();
         $countriesMap = new Map();
         foreach($coutries as $countryName => $datas){
-            $countriesMap->put($datas["isoCountry"], $countryName, Map::isoCountry);
-            $countriesMap->put($datas["iso_currency"], $countryName, Map::isoCurrency);
-            $countriesMap->put($datas["isUE"], $countryName, Map::isUE);
-            $countriesMap->put($datas["vat"], $countryName, Map::vat);
+            // $countriesMap->put($datas["isoCountry"], $countryName, Map::isoCountry);
+            // $countriesMap->put($datas["iso_currency"], $countryName, Map::isoCurrency);
+            // $countriesMap->put($datas["isUE"], $countryName, Map::isUE);
+            // $countriesMap->put($datas["vat"], $countryName, Map::vat);
+            $isoCountry = $datas["isoCountry"];
+            $countriesMap->put($countryName, $isoCountry,  Map::countryName);
+            $countriesMap->put($datas["iso_currency"], $isoCountry, Map::isoCurrency);
+            $countriesMap->put($datas["isUE"], $isoCountry, Map::isUE);
+            $countriesMap->put($datas["vat"], $isoCountry, Map::vat);
         }
         return $countriesMap;
     }

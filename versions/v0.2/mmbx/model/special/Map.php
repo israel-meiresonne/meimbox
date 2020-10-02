@@ -103,6 +103,17 @@ class Map
     public const url = "url";
     public const week = "week";
 
+    /**
+     * Keys for Address
+     */
+    public const address = "address";
+    public const appartement = "appartement";
+    public const province = "province";
+    public const city = "city";
+    public const zipcode = "zipcode";
+    public const countryName = "countryName";
+    public const phone = "phone";
+
     public function __construct()
     {
         $this->map = [];

@@ -84,14 +84,6 @@ if (!empty($dadx)) {
                         echo $miniPopEdit;
                     }
                     ?>
-                    <!-- <div class="minipop-wrap minipop-down">
-                        <div class="minipop-content">
-                            <ul class="remove-ul-default-att">
-                                <li class="grey-tag-button standard-tag-button remove-li-default-att">empty the box</li>
-                                <li class="grey-tag-button standard-tag-button remove-li-default-att">move to</li>
-                            </ul>
-                        </div>
-                    </div> -->
                 </div>
             <?php
             endif; ?>

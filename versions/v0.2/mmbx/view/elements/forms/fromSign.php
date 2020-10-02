@@ -1,6 +1,6 @@
 <?php
 require_once 'controller/ControllerCheckout.php';
-require_once 'model/special/Map.php';
+// require_once 'model/special/Map.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  */
@@ -174,7 +174,7 @@ $inSbtnx = "#$inSbtnid";
                         </div>
 
                     </div>
-                    <div class="sign-button-div">
+                    <div class="form-submit-button-div">
                         <button id="<?= $upSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signUp('<?= $upFormx ?>','<?= $upSbtnx ?>')">sign up</button>
                     </div>
                 </div>
@@ -211,8 +211,6 @@ $inSbtnx = "#$inSbtnid";
                             ?>
                         </div>
                     </div>
-                    <!-- <div class="login-password-div  login-input-block">
-                    </div> -->
                     <div class="login-remember-forgot-div login-input-block">
                         <div class="connection-input-container login-remember-block">
                             <div class="connection-chcekbox-div">
@@ -227,7 +225,7 @@ $inSbtnx = "#$inSbtnid";
                             <a href="" target="_blank">forgot password</a>
                         </div>
                     </div>
-                    <div class="sign-button-div">
+                    <div class="form-submit-button-div">
                         <button id="<?= $inSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signIn('<?= $inFormx ?>','<?= $inSbtnx ?>')">sign in</button>
                     </div>
                 </div>

@@ -46,14 +46,15 @@
                                 <div class="dropdown-container">
                                     <?php
                                     $countriesMap = Country::getCountries();
-                                    $labels = $countriesMap->getKeys();
+                                    // $labels = $countriesMap->getKeys();
+                                    $isoCountries = $countriesMap->getKeys();
                                     $inputMap = new Map();
-                                    // var_dump($countriesMap);
-                                    foreach ($labels as $label) {
+                                    foreach ($isoCountries as $isoCountry) {
+                                        $label = $countriesMap->get($isoCountry, Map::countryName);
                                         if ($label != $country->getCountryNameDefault()) {
-                                            $isoCountry = $countriesMap->get($label, Map::isoCountry);
+                                            // $isoCountry = $countriesMap->get($label, Map::isoCountry);
                                             $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                            $inputMap->put(Country::KEY_ISO_CODE, $label, Map::inputName);
+                                            $inputMap->put(Country::INPUT_ISO_COUNTRY, $label, Map::inputName);
                                             $inputMap->put($isoCountry, $label, Map::inputValue);
                                             $inputMap->put($isChecked, $label, Map::isChecked);
                                             $inputMap->put(null, $label, Map::inputFunc);
