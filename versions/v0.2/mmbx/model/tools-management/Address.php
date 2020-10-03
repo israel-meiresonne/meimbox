@@ -52,6 +52,11 @@ class Address extends ModelFunctionality
     /**
      * Holds input name
      */
+    public const KEY_ADRS_SEQUENCE = "key_adrs_sequence";
+
+    /**
+     * Holds input name
+     */
     public const INPUT_ADDRESS =  "address";
     public const INPUT_APPARTEMENT =  "appartement";
     public const INPUT_PROVINCE =  "province";

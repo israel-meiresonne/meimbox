@@ -90,10 +90,16 @@ abstract class ControllerSecure extends Controller
      */
     public function __construct($action)
     {
-        date_default_timezone_set('Europe/Paris');
-        $this->setAction($action);
-        $this->setPerson();
-        $this->root();
+        try {
+            //code...
+
+            date_default_timezone_set('Europe/Paris');
+            $this->setAction($action);
+            $this->setPerson();
+            $this->root();
+        } catch (\Throwable $th) {
+            echo $th;
+        }
     }
 
     /**
@@ -128,7 +134,7 @@ abstract class ControllerSecure extends Controller
                         if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
                             $ctr = $this->extractController($ctrClass);
                             $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
-                        } else if(!$this->person->hasCookie(Cookie::COOKIE_ADRS)){
+                        } else if (!$this->person->hasCookie(Cookie::COOKIE_ADRS)) {
                             $ctr = $this->extractController($ctrClass);
                             $this->redirect($ctr, ControllerCheckout::ACTION_ADDRESS);
                         }
@@ -146,7 +152,9 @@ abstract class ControllerSecure extends Controller
                         }
                         break;
                     default:
-                        throw new Exception("Unknow controller action, ctrClass: $ctrClass, action:$action");
+                        if(!method_exists($this, $action)){
+                            throw new Exception("Unknow controller's action, controller: $ctrClass, action:$action");
+                        }
                         break;
                 }
                 break;

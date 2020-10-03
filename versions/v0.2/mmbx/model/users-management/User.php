@@ -120,6 +120,25 @@ abstract class User extends  Visitor
         return $this->addresses;
     }
 
+    /**
+     * To get the address with the given sequence
+     * @param string $sequence identifiant of an address
+     * + sequence = "address|zipcode|country"
+     * @return Address|null User's addresses
+     */
+    public function getAddress($sequence)
+    {
+        $address = null;
+        $addresses  = $this->getAddresses();
+        $keys = $addresses->getKeys();
+        foreach ($keys as $key) {
+            if ($key == $sequence) {
+                $address = $addresses->get($key);
+            }
+        }
+        return $address;
+    }
+
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
     /**
      * To add new address
@@ -135,33 +154,46 @@ abstract class User extends  Visitor
      */
     public function addAddress(Response $response, Map $addressMap)
     {
-        try {
-            //code...
-            $countries = Country::getCountries();
-            $isoCountries = $countries->getKeys();
-            $isoCountry = $addressMap->get(Map::isoCountry);
-            if (!in_array($isoCountry, $isoCountries)) {
-                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        $countries = Country::getCountries();
+        $isoCountries = $countries->getKeys();
+        $isoCountry = $addressMap->get(Map::isoCountry);
+        if (!in_array($isoCountry, $isoCountries)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $countryName = $countries->get($isoCountry, Map::countryName);
+            // $addresses = $this->getAddresses();
+            $address = $addressMap->get(Map::address);
+            $zipcode = $addressMap->get(Map::zipcode);
+            $sequence = Address::buildSequence($address, $zipcode, $countryName);
+            // $sequences = $addresses->getKeys();
+            // if (in_array($sequence, $sequences)) {
+            if (!empty($this->getAddress($sequence))) {
+                $response->addErrorStation("ER29", Address::INPUT_ADDRESS);
             } else {
-                $countryName = $countries->get($isoCountry, Map::countryName);
-                $addresses = $this->getAddresses();
-                $address = $addressMap->get(Map::address);
-                $zipcode = $addressMap->get(Map::zipcode);
-                $sequence = Address::buildSequence($address, $zipcode, $countryName);
-                $sequences = $addresses->getKeys();
-                if (in_array($sequence, $sequences)) {
-                    $response->addErrorStation("ER29", Address::INPUT_ADDRESS);
-                } else {
-                    $addressMap->put($countryName, Map::countryName);
-                    $addressObj = new Address($addressMap);
-                    $userID = $this->getUserID();
-                    $addressObj->insertAddress($response, $userID);
-                }
+                $addressMap->put($countryName, Map::countryName);
+                $addressObj = new Address($addressMap);
+                $userID = $this->getUserID();
+                $addressObj->insertAddress($response, $userID);
             }
-        } catch (\Throwable $th) {
-            // $response->addError(get_object_vars($th), "Throw");
-            echo $th;
         }
     }
+
+    /**
+     * To select an address holds by the User
+     * + if the address exist this function generate a cookie
+     * @param Response $response to push in result or accured error
+     * @param string $sequence address's id
+     */
+    public function selectAddress(Response $response, $sequence)
+    {
+        if (empty($this->getAddress($sequence))) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $sequence_json  = [Address::KEY_ADRS_SEQUENCE => $sequence];
+            $value = json_encode($sequence_json);
+            $this->generateCookie(Cookie::COOKIE_ADRS, $value);
+        }
+    }
+
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
 }

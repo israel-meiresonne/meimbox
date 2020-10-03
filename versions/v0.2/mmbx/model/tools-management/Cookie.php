@@ -1,5 +1,6 @@
 <?php
 // require_once 'model/special/Map.php';
+// require_once 'framework/Configuration.php';
 require_once 'model/ModelFunctionality.php';
 require_once 'model/special/Response.php';
 
@@ -125,7 +126,7 @@ class Cookie extends ModelFunctionality
         $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
         $cookie->period = $cookiesMap->get($cookieID, Map::period);
         $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
-        $cookie->path = $cookiesMap->get($cookieID, Map::path);
+        $cookie->path = Configuration::getWebRoot() . $cookiesMap->get($cookieID, Map::path);
         $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
         $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);
         $cookie->createCookie($userID);
@@ -221,6 +222,24 @@ class Cookie extends ModelFunctionality
     }
 
     /**
+     * To get cookie's available domain
+     * @return string cookie's value
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * To get cookie's available path
+     * @return string cookie's available path
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * To get cookie's setDate
      * @return string cookie's setDate
      */
@@ -267,12 +286,14 @@ class Cookie extends ModelFunctionality
     private function insertCookie(Response $response, $userID)
     {
         $bracket = "(?,?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Users-Cookies`(`userId`, `cookieId`, `cookieValue`, `setDate`, `settedPeriod`) 
+        $sql = "INSERT INTO `Users-Cookies`(`userId`, `cookieId`, `cookieValue`, `domain`, `path`, `setDate`, `settedPeriod`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
         array_push($values, $userID);
         array_push($values, $this->getCookieID());
         array_push($values, $this->getValue());
+        array_push($values, $this->getDomain());
+        array_push($values, $this->getPath());
         array_push($values, $this->getSetDate());
         array_push($values, $this->getSettedPeriod());
         $this->insert($response, $sql, $values);
@@ -288,12 +309,16 @@ class Cookie extends ModelFunctionality
         $cookieID = $this->getCookieID();
         $sql = "UPDATE `Users-Cookies` SET 
         `cookieValue`=?,
+        `domain` =?, 
+        `path` =?,
         `setDate`=?,
         `settedPeriod`=? 
         WHERE `Users-Cookies`.`userId` = '$userID' 
         AND `Users-Cookies`.`cookieId` = '$cookieID'";
         $values = [];
         array_push($values, $this->getValue());
+        array_push($values, $this->getDomain());
+        array_push($values, $this->getPath());
         array_push($values, $this->getSetDate());
         array_push($values, $this->getSettedPeriod());
         $this->update($response, $sql, $values);

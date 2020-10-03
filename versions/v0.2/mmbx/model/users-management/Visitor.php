@@ -215,12 +215,11 @@ class Visitor extends ModelFunctionality
 
     /**
      * Constructor used to create and give a new cookie
-     * + this function can be called only by the function Visitor::manageCookie()
      * @param string $userID Visitor's id
      * @param string $cookieID id of the cookie     
      * @param mixed $value value of the cookie
      */
-    private function generateCookie($cookieID, $value)
+    protected function generateCookie($cookieID, $value)
     {
         $userID = $this->getUserID();
         return Cookie::generateCookie($userID, $cookieID, $value);

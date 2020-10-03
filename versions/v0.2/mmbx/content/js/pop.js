@@ -21,8 +21,8 @@
     const brotherx = "data-brotherx";
     const flagx = "data-flagx";
     const submitbtnx = "data-sbtnx";
-    const datatarget = "data-datatarget";
-    const submitdata = "data-submitdata";
+    datatarget = "data-datatarget";
+    submitdata = "data-submitdata";
     popstack = "data-switchstack";
     const basketdata = "data-basket";
     const databefore = "data-before";

@@ -220,7 +220,31 @@
                     break;
             }
         } else {
-            console.log("error");
+            handleErr(r, x.formx);
+        }
+    }
+    selectAddress = (sbtnx) => {
+        var x = $(sbtnx).attr(datatarget);
+        var val = $(x).attr(submitdata);
+        var map = {[KEY_ADRS_SEQUENCE]:val}
+        var params = mapToParam(map);
+        var d = {
+            "a": QR_SELECT_ADRS,
+            "d": params,
+            "r": selectAddressRSP,
+            "l": "#address_set_recipient_loading",
+            // "x": cbtnx,
+            "sc": () => { displayFlexOn(d.l) },
+            "rc": () => { displayFlexOff(d.l) }
+        };
+        SND(d);
+    }
+    const selectAddressRSP = (r) => {
+        if (r.isSuccess) {
+            // console.log("success");
+            window.location.assign(r.results[QR_SELECT_ADRS]);
+        } else {
+            // console.log("error");
             handleErr(r, x.formx);
         }
     }
