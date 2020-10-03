@@ -13,6 +13,7 @@ class ControllerCheckout extends ControllerSecure
      */
     public const ACTION_INDEX = "index";
     public const ACTION_SIGN = "sign";
+    public const ACTION_ADDRESS = "address";
 
     /**
      * The layout for the checkout page
@@ -27,6 +28,15 @@ class ControllerCheckout extends ControllerSecure
      * The layout for the checkout page
      */
     public function sign()
+    {
+        $datasView = [];
+        $this->generateView($datasView, $this->person);
+    }
+
+    /**
+     * The layout for the checkout page
+     */
+    public function address()
     {
         $datasView = [];
         $this->generateView($datasView, $this->person);

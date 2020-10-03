@@ -206,7 +206,6 @@
             getAddressesSet();
             var inpx = $(x.formx).find("input[type!=radio]");
             cleanInput(inpx);
-            console.log(inpx);
             switch (x.conf) {
                 case CONF_ADRS_FEED:
                     $(".address-form-container").fadeOut(TS, () => {

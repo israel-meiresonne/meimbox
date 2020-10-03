@@ -72,7 +72,7 @@ $language = $person->getLanguage();
     <div id="size_editor_pop" class="pop_up-container">
     </div>
     <?php
-    if (!$person->hasPrivilege(Visitor::PRIV_CLT)) :
+    if (!$person->hasCookie(Cookie::COOKIE_CLT)) :
     ?>
         <div id="sign_form_pop" class="pop_up-container">
             <?php
@@ -83,7 +83,7 @@ $language = $person->getLanguage();
     endif;
     ?>
     <?php
-    if ($person->hasPrivilege(Visitor::PRIV_CLT)) :
+    if ($person->hasCookie(Cookie::COOKIE_CLT)) :
     ?>
         <div id="address_adder_pop" class="pop_up-container">
             <?php

@@ -346,7 +346,7 @@ $language = $person->getLanguage();
                             </div>
                         </li> -->
                         <?php
-                        if ($person->hasPrivilege(Visitor::PRIV_CLT)) :
+                        if ($person->hasCookie(Cookie::COOKIE_CLT)) :
                         ?>
                             <li class="navbar-li remove-li-default-att">
                                 <div class="grey-tag-button standard-tag-button img-text-block" onclick="console.log('open client menu')">

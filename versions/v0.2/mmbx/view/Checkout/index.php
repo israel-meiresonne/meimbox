@@ -35,7 +35,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                     <div class="address_connection-inner">
                         <div class="address-set-container">
                             <?php
-                            $displaySet = ($person->hasPrivilege(Visitor::PRIV_CLT) && (!empty($addressMap->getKeys())));
+                            $displaySet = ($person->hasCookie(Cookie::COOKIE_CLT) && (!empty($addressMap->getKeys())));
                             $Tagstyle = (!$displaySet) ? 'style="display: none;' : null;
                             ?>
                             <div class="address-set-recipient" <?= $Tagstyle ?> >
@@ -51,7 +51,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                         </div>
                         <div class="address-form-container">
                             <?php
-                            if ($person->hasPrivilege(Visitor::PRIV_CLT) && empty($addressMap->getKeys())) :
+                            if ($person->hasCookie(Cookie::COOKIE_CLT) && empty($addressMap->getKeys())) :
                                 $datas = [
                                     "country" => $country,
                                     "conf" => Address::CONF_ADRS_FEED,
