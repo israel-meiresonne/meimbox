@@ -1,7 +1,7 @@
 RewriteEngine on
 # Home
-RewriteRule ^home/qr/+([A-z]+)/*$	                            index.php?controller=home&action=$1 [QSA,NC,L]
-RewriteRule ^home/*$	                                        index.php?controller=home&action=index [QSA,NC,L]
+RewriteRule ^home/qr/+([A-z]+)/*$	                index.php?controller=home&action=$1 [QSA,NC,L]
+RewriteRule ^home/*$	                            index.php?controller=home&action=index [QSA,NC,L]
 
 # Grid
 RewriteRule ^grid/qr/+([A-z]+)/*$                   index.php?controller=grid&action=$1 [QSA,NC,L]
@@ -20,6 +20,7 @@ RewriteRule ^dashboard/*$	                        index.php?controller=dashboard
 # Checkout
 RewriteRule ^checkout/qr/+([A-z]+)/*$               index.php?controller=checkout&action=$1 [QSA,NC,L]
 RewriteRule ^checkout/sign/*$	                    index.php?controller=checkout&action=sign [QSA,NC,L]
+RewriteRule ^checkout/address/*$	                index.php?controller=checkout&action=address [QSA,NC,L]
 RewriteRule ^checkout/*$	                        index.php?controller=checkout&action=index [QSA,NC,L]
 
 # default

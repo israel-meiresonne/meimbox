@@ -1300,6 +1300,14 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     width: 100%;
 }
 
+.cart-ul {
+    overflow: auto;
+    max-height: 60vh;
+    padding: 10px;
+    border: var(--border-float);
+    border-radius: var(--border-float-radius);
+}
+
 /*————————————————————— CART UP ———————————————————————*/
 
 /*————————————————————— CART_ELEMENT DOWN —————————————*/
@@ -2488,8 +2496,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     right: 3px;
 }
 
-
-.pop_form_border{
+.pop_form_border {
     padding: 10px;
     border: var(--border-float);
     border-radius: var(--border-float-radius);

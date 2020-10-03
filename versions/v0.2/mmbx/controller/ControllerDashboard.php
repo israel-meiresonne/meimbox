@@ -120,7 +120,7 @@ class ControllerDashboard extends ControllerSecure
     {
         $response = new Response();
         $datasView = [];
-        if (!$this->person->hasPrivilege(Visitor::PRIV_CLT)) {
+        if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $addressMap = $this->person->getAddresses();

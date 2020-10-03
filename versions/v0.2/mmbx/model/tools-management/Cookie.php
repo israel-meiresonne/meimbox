@@ -82,6 +82,7 @@ class Cookie extends ModelFunctionality
     public const COOKIE_VIS = "VIS";
     public const COOKIE_CLT = "CLT";
     public const COOKIE_ADM = "ADM";
+    public const COOKIE_ADRS = "ADRS";
 
     /**
      * Holds cookies state

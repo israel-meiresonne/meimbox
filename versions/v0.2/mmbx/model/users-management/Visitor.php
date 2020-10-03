@@ -116,8 +116,8 @@ class Visitor extends ModelFunctionality
      * Holds privilege id
      * @var string
      */
-    public const PRIV_CLT = Cookie::COOKIE_CLT;
-    public const PRIV_ADM = Cookie::COOKIE_ADM;
+    // public const PRIV_CLT = Cookie::COOKIE_CLT;
+    // public const PRIV_ADM = Cookie::COOKIE_ADM;
 
     /**
      * @parram string $childCaller class of the caller (usualy User.php)
@@ -215,6 +215,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * Constructor used to create and give a new cookie
+     * + this function can be called only by the function Visitor::manageCookie()
      * @param string $userID Visitor's id
      * @param string $cookieID id of the cookie     
      * @param mixed $value value of the cookie
@@ -582,23 +583,38 @@ class Visitor extends ModelFunctionality
     }
 
     /**
-     * Check if Visitor has a privilege
-     * @param string $privilege privilege  to check
+     * Check if Visitor has a cookie
+     * @param string $cookieID cookie  to check
      * @return boolean true if has privilege else false
      */
-    public function hasPrivilege($privilege)
+    public function hasCookie($cookieID)
     {
-        // $privileges = $this->getPrivileges();
-        $hasPrivilege = false;
-        switch ($privilege) {
-            case self::PRIV_CLT:
-                $hasPrivilege = $this->existCookie(Cookie::COOKIE_CLT);
+        $hasCookie = false;
+        switch ($cookieID) {
+            case Cookie::COOKIE_CLT:
+                $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
                 break;
-            case self::PRIV_ADM:
-                $hasPrivilege = $this->existCookie(Cookie::COOKIE_ADM);
+            case Cookie::COOKIE_ADM:
+                $hasCookie = $this->existCookie(Cookie::COOKIE_ADM);
+                break;
+            case Cookie::COOKIE_ADRS:
+                $hasCookie = $this->existCookie(Cookie::COOKIE_ADRS);
+                break;
+            default:
+                throw new Exception("This id of cookie don't exist, cookieID:$cookieID");
                 break;
         }
-        return $hasPrivilege;
+        return $hasCookie;
+    }
+
+    /**
+     * Check if Visitor has a privilege
+     * @param string $privilege privilege to look for
+     * @return boolean true if has privilege else false
+     */
+    private function hasPrivilege($privilege)
+    {
+        // $privileges = $this->getPrivileges();
     }
 
     /*———————————————————————————— MANAGE CLASS UP ——————————————————————————*/

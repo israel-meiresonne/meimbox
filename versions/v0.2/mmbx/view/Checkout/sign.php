@@ -31,7 +31,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
             <div class="address_summary_cart-inner">
                 <div class="address_connection-block">
                     <?php
-                    if (!$person->hasPrivilege(Visitor::PRIV_CLT)) :
+                    if (!$person->hasCookie(Cookie::COOKIE_CLT)) :
                     ?>
                         <div class="sign-container">
                             <div class="sign-container-inner">
