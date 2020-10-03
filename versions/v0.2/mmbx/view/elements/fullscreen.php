@@ -2,7 +2,7 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @var Visitor|Client|Administrator $person the current user
+ * @var Visitor|User|Client|Administrator $person the current user
  */
 $person = $person;
 $brandsMeasures = $person->getBrandMeasures();
@@ -77,6 +77,17 @@ $language = $person->getLanguage();
         <div id="sign_form_pop" class="pop_up-container">
             <?php
             echo $this->generateFile('view/elements/popup/popupFormSign.php', []);
+            ?>
+        </div>
+    <?php
+    endif;
+    ?>
+    <?php
+    if ($person->hasPrivilege(Visitor::PRIV_CLT)) :
+    ?>
+        <div id="address_adder_pop" class="pop_up-container">
+            <?php
+            echo $this->generateFile('view/elements/popup/popupFormAddAddress.php', ["country" => $country]);
             ?>
         </div>
     <?php

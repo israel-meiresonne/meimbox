@@ -106,7 +106,7 @@ if (!empty($dadx)) {
                     ?>
                         <div class="cart-element-property-div">
                             <span class="cart-element-property"><?= "phone" ?>: </span>
-                            <span class="cart-element-value"><?= $phone ?></span>
+                            <span class="cart-element-value"><?= number_format($phone, 0, "", " ") ?></span>
                         </div>
                     <?php
                     endif;

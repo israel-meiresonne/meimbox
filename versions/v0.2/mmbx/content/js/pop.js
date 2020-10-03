@@ -110,7 +110,7 @@
     displayFadeOut = (x, t = TS) => {
         $(x).fadeOut(t);
     }
-    displayErr = (r, formx) => {
+    handleErr = (r, formx) => {
         var k = Object.keys(r.errors);
         k.forEach(n => {
             var inpx = $(formx).find("input[name='" + n + "']");
@@ -145,10 +145,14 @@
             $(x).fadeIn(t);
         });
     }
-    createNone = function (x) {
+    createNone = (x) => {
         var y = $.parseHTML(x);
         $(y).css("display", "none");
         return y;
+    }
+    cleanInput = (inpx) => {
+        $(inpx).val("");
+        $(inpx).keyup();
     }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/

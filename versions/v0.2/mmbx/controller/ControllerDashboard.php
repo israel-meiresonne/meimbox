@@ -14,8 +14,9 @@ class ControllerDashboard extends ControllerSecure
      * Holds link (href)
      * + also used for ajax request
      */
-    public const QR_ADD_ADDRESS = "dashboard/addAddress";
+    public const QR_ADD_ADRS = "dashboard/addAddress";
     public const QR_SHOPBAG = "dashboard/shopbag";
+    public const QR_GET_ADRS_SET = "dashboard/getAddressesSet";
 
     /**
      * The default layout: the dashboard
@@ -107,7 +108,30 @@ class ControllerDashboard extends ControllerSecure
             $addressMap->put($country, Map::isoCountry);
             $addressMap->put($phone, Map::phone);
             $this->person->addAddress($response, $addressMap);
-            (!$response->containError()) ? $response->addResult(self::QR_ADD_ADDRESS, true) : null;
+            (!$response->containError()) ? $response->addResult(self::QR_ADD_ADRS, true) : null;
+        }
+        $this->generateJsonView($datasView, $response, $this->person);
+    }
+
+    /**
+     * To get address set element
+     */
+    public function getAddressesSet()
+    {
+        $response = new Response();
+        $datasView = [];
+        if (!$this->person->hasPrivilege(Visitor::PRIV_CLT)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $addressMap = $this->person->getAddresses();
+            if (empty($addressMap->getKeys())) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            } else {
+                $datasView = [
+                    "addressMap" => $addressMap
+                ];
+                $response->addFiles(self::QR_GET_ADRS_SET, 'view/Dashboard/files/addressSet.php');
+            }
         }
         $this->generateJsonView($datasView, $response, $this->person);
     }

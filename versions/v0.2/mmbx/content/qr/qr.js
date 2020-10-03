@@ -127,7 +127,7 @@
         if (r.isSuccess) {
             window.location.assign(window.location.href);
         } else {
-            displayErr(r, x.formx);
+            handleErr(r, x.formx);
         }
     }
 
@@ -156,20 +156,40 @@
         // if (r.isSuccess) {
         //     window.location.assign(window.location.href);
         // } else {
-        //     displayErr(r, x.formx);
+        //     handleErr(r, x.formx);
         // }
     }
     /*———————————————————————————— SIGN UP ——————————————————————————————————*/
     /*———————————————————————————— ADDRESS DOWN —————————————————————————————*/
-    addAddress = (formx, sbtnx) => {
+    getAddressesSet = () => {
+        var d = {
+            "a": QR_GET_ADRS_SET,
+            "d": null,
+            "r": getAddressesSetRSP,
+            "l": "#address_set_recipient_loading",
+            // "x": cbtnx,
+            "sc": () => { displayFlexOn(d.l) },
+            "rc": () => { displayFlexOff(d.l) }
+        };
+        SND(d);
+    }
+    const getAddressesSetRSP = (r) => {
+        if (r.isSuccess) {
+            // $(".address-set-recipient").css("display", "none");
+            $(".address-set-recipient").html(r.results[QR_GET_ADRS_SET]);
+        } else {
+            handleErr(r, x.formx);
+        }
+    }
+    addAddress = (formx, sbtnx, conf) => {
         var frm = $(formx).find("input");
         var d = {
             "frm": frm,
             "frmCbk": () => { },
-            "a": QR_ADD_ADDRESS,
+            "a": QR_ADD_ADRS,
             "r": addAddressRSP,
             "l": "#address_form_loading",
-            "x": { "sbtnx": sbtnx, "formx": formx },
+            "x": { "formx": formx, "conf": conf },
             "sc": () => {
                 displayFlexOn(d.l, TS / 10);
                 disable(sbtnx);
@@ -183,11 +203,26 @@
     }
     const addAddressRSP = (r, x) => {
         if (r.isSuccess) {
-            console.log("success");
-            // window.location.assign(window.location.href);
+            getAddressesSet();
+            var inpx = $(x.formx).find("input[type!=radio]");
+            cleanInput(inpx);
+            console.log(inpx);
+            switch (x.conf) {
+                case CONF_ADRS_FEED:
+                    $(".address-form-container").fadeOut(TS, () => {
+                        $(".address-set-recipient").fadeIn(TS, () => {
+                            $(".address-form-container").remove();
+                        });
+                    });
+                    break;
+                case CONF_ADRS_POP:
+                    $(".address-set-recipient").fadeIn(TS);
+                    $("#addaddress_form_close_pop").click();
+                    break;
+            }
         } else {
             console.log("error");
-            displayErr(r, x.formx);
+            handleErr(r, x.formx);
         }
     }
     /*———————————————————————————— ADDRESS UP ———————————————————————————————*/

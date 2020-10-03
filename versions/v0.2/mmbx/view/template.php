@@ -167,7 +167,8 @@ $language = $person->getLanguage();
         const A_DELETE_BOX = "<?= ControllerItem::A_DELETE_BOX ?>";
         const A_GET_EDT_POP = "<?= ControllerItem::A_GET_EDT_POP ?>";
 
-        const QR_ADD_ADDRESS = "<?= ControllerDashboard::QR_ADD_ADDRESS ?>";
+        const QR_ADD_ADRS = "<?= ControllerDashboard::QR_ADD_ADRS ?>";
+        const QR_GET_ADRS_SET = "<?= ControllerDashboard::QR_GET_ADRS_SET ?>";
 
         const KEY_CART_FILE = "<?= Basket::KEY_CART_FILE ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
@@ -187,6 +188,9 @@ $language = $person->getLanguage();
         const KEY_PROD_ID = "<?= Product::KEY_PROD_ID ?>"
 
         const KEY_SEQUENCE = "<?= Size::KEY_SEQUENCE ?>"
+        
+        const CONF_ADRS_FEED = "<?= Address::CONF_ADRS_FEED ?>"
+        const CONF_ADRS_POP = "<?= Address::CONF_ADRS_POP ?>"
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";

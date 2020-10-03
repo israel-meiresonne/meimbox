@@ -60,6 +60,12 @@ class Address extends ModelFunctionality
     public const INPUT_PHONE =  "phone";
 
     private const  SEQUENCE_SEPARATOR = "|";
+    
+    /**
+     * Holds Configuration of address adder
+     */
+    public const CONF_ADRS_POP = "conf_adrs_pop";
+    public const CONF_ADRS_FEED = "conf_adrs_feed";
 
 
     /**

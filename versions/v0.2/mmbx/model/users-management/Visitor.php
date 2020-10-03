@@ -9,6 +9,7 @@ require_once 'model/tools-management/Measure.php';
 require_once 'model/boxes-management/Basket.php';
 // require_once 'model/special/Map.php';
 require_once 'model/tools-management/Cookie.php';
+require_once 'model/tools-management/Address.php';
 require_once 'model/users-management/Visitor.php';
 
 class Visitor extends ModelFunctionality
