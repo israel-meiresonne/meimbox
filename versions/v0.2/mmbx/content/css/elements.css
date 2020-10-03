@@ -2488,6 +2488,15 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     right: 3px;
 }
 
+
+.pop_form_border{
+    padding: 10px;
+    border: var(--border-float);
+    border-radius: var(--border-float-radius);
+    /* box-shadow: var(--box-shadow); */
+    /* border-top: none; */
+}
+
 /*++++ SELECT DOWN +++*/
 
 .popup-selected {
@@ -2805,8 +2814,21 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*—————————————————————————————— SIZE_EDITOR_POP_UP UP ——————————————————————*/
+
 /*———————————————————————————————— ADDRESS-SET DOWN —————————————————————————*/
-.address-set .edit-block-external{
+
+.address-set .edit-block-external {
     margin-left: auto;
 }
+
+.center-btn-div {
+    max-width: 300px;
+    margin: 10px auto;
+    width: 60%;
+}
+
+.center-btn-div button {
+    box-shadow: none;
+}
+
 /*———————————————————————————————— ADDRESS-SET UP ———————————————————————————*/

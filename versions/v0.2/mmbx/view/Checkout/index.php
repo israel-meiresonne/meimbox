@@ -33,45 +33,33 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 
                 <div class="address_connection-block">
                     <div class="address_connection-inner">
-                        <div class="address-set">
-                            <div class="address-set-head">
-                                <div class="form-title-block address-title-block">
-                                    <div class="form-title-div">
-                                        <span class="form-title">select a shipping address</span>
-                                    </div>
-                                </div>
+                        <div class="address-set-container">
+                            <?php
+                            $displaySet = ($person->hasPrivilege(Visitor::PRIV_CLT) && (!empty($addressMap->getKeys())));
+                            $Tagstyle = (!$displaySet) ? 'style="display: none;' : null;
+                            ?>
+                            <div class="address-set-recipient" <?= $Tagstyle ?> >
+                                <?php
+                                if ($displaySet) :
+                                    echo $this->generateFile('view/Dashboard/files/addressSet.php', ["addressMap" => $addressMap]);
+                                endif;
+                                ?>
                             </div>
-                            <hr class="hr-summary">
-                            <div class="address-set-body">
-                                <div id="addresses_set_dynamic" class="address-set-dynamic">
-                                    <?php
-                                    $dad = ModelFunctionality::generateDateCode(25);
-                                    $brother = ModelFunctionality::generateDateCode(25);
-                                    $brotherx = "#$brother";
-                                    $sbtnid = ModelFunctionality::generateDateCode(25);;
-                                    $sbtnx = "#$sbtnid";
-                                    $datas = [
-                                        "containerId" => "addresses_set_dynamic",
-                                        "addressMap" => $addressMap,
-                                        "dad" => $dad,
-                                        "brotherx" => $brotherx,
-                                        "sbtnx" => $sbtnx
-                                    ];
-                                    echo $this->generateFile('view/elements/cart/address/cartAddresses.php', $datas);
-                                    ?>
-                                </div>
-                                <div class="address-set-static">
-                                    <div class="loading-img-wrap">
-                                        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
-                                    </div>
-                                    <div class="pop_up-validate_button-div">
-                                        <button id="<?= $sbtnid ?>" disabled=true class="green-arrow standard-button-desabled remove-button-default-att">select address</button>
-                                    </div>
-                                </div>
+                            <div id="address_set_recipient_loading" class="loading-img-wrap">
+                                <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
                             </div>
                         </div>
-                        <div class="address-container" style="display: none;">
-                            <div class="form-wrap">
+                        <div class="address-form-container">
+                            <?php
+                            if ($person->hasPrivilege(Visitor::PRIV_CLT) && empty($addressMap->getKeys())) :
+                                $datas = [
+                                    "country" => $country,
+                                    "conf" => Address::CONF_ADRS_FEED,
+                                ];
+                                echo $this->generateFile('view/elements/forms/formAddAddress.php', $datas);
+                            endif;
+                            ?>
+                            <!-- <div class="form-wrap">
                                 <div class="form-title-block address-title-block">
                                     <div class="form-title-div">
                                         <span class="form-title">shipping address</span>
@@ -98,11 +86,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 ];
                                                 echo $this->generateFile('view/elements/inputs/input.php', $datas);
                                                 ?>
-                                                <!-- <div class="input-wrap">
-                                                    <label class="input-label" for="address_address">address</label>
-                                                    <input id="address_address" class="input-error input-tag" type="text" name="address" placeholder="address" value="">
-                                                    <p class="comment"></p>
-                                                </div> -->
                                             </div>
                                             <div class="form-input-container">
                                                 <?php
@@ -115,11 +98,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 ];
                                                 echo $this->generateFile('view/elements/inputs/input.php', $datas);
                                                 ?>
-                                                <!-- <div class="input-wrap">
-                                                    <label class="input-label" for="address_appartement">apartment, suite, etc. (optional)</label>
-                                                    <input id="address_appartement" class="input-tag" type="text" name="appartement" placeholder="apartment, suite, etc. (optional)" value="">
-                                                    <p class="comment"></p>
-                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-input-block form-double-input-block">
@@ -134,11 +112,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 ];
                                                 echo $this->generateFile('view/elements/inputs/input.php', $datas);
                                                 ?>
-                                                <!-- <div class="input-wrap">
-                                                    <label class="input-label" for="address_province">state, province, region etc...</label>
-                                                    <input id="address_province" class="input-error input-tag" type="text" name="province" placeholder="state, province, region etc..." value="">
-                                                    <p class="comment"></p>
-                                                </div> -->
                                             </div>
                                             <div class="form-input-container">
                                                 <?php
@@ -151,11 +124,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 ];
                                                 echo $this->generateFile('view/elements/inputs/input.php', $datas);
                                                 ?>
-                                                <!-- <div class="input-wrap">
-                                                    <label class="input-label" for="address_city">city</label>
-                                                    <input id="address_city" class="input-tag" type="text" name="city" placeholder="city" value="">
-                                                    <p class="comment"></p>
-                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-input-block form-double-input-block">
@@ -184,33 +152,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                     ];
                                                     echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
                                                     ?>
-                                                    <!-- <div class="dropdown-wrap">
-                                                        <div class="dropdown-inner">
-                                                            <div class="dropdown-head dropdown-arrow-close">
-                                                                <span class="dropdown-title">country</span>
-                                                            </div>
-                                                            <div class="dropdown-checkbox-list">
-                                                                <div class="dropdown-checkbox-block">
-                                                                    <label class="checkbox-label">belgium
-                                                                        <input type="radio" name="country">
-                                                                        <span class="checkbox-checkmark"></span>
-                                                                    </label>
-                                                                </div>
-                                                                <div class="dropdown-checkbox-block">
-                                                                    <label class="checkbox-label">france
-                                                                        <input type="radio" name="country">
-                                                                        <span class="checkbox-checkmark"></span>
-                                                                    </label>
-                                                                </div>
-                                                                <div class="dropdown-checkbox-block">
-                                                                    <label class="checkbox-label">switzerland
-                                                                        <input type="radio" name="country">
-                                                                        <span class="checkbox-checkmark"></span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                     <p class="comment"></p>
                                                 </div>
                                             </div>
@@ -225,11 +166,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 ];
                                                 echo $this->generateFile('view/elements/inputs/input.php', $datas);
                                                 ?>
-                                                <!-- <div class="input-wrap">
-                                                    <label class="input-label" for="address_zipcode">postal code</label>
-                                                    <input id="address_zipcode" class="input-tag" type="text" name="zipcode" placeholder="postal code" value="">
-                                                    <p class="comment"></p>
-                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-input-block form-simple-input-block">
@@ -244,11 +180,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                                 ];
                                                 echo $this->generateFile('view/elements/inputs/input.php', $datas);
                                                 ?>
-                                                <!-- <div class="input-wrap">
-                                                    <label class="input-label" for="address_phone">phone</label>
-                                                    <input id="address_phone" class="input-tag" type="tel" name="phone" placeholder="phone" value="">
-                                                    <p class="comment"></p>
-                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="form-submit-button-div">
@@ -259,7 +190,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                         <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="payement-div">
                             <div class="summary-detail-button-div">

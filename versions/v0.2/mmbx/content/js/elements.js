@@ -121,17 +121,8 @@
         $(x).attr(valueattr, strToFloat(val));
 
     }
-
-    // animateCheckbox = function (selector) {
-    //     var wrapper = goToParentNode(selector, 4);
-    //     $(wrapper).find(".checkbox_error-div .comment").slideUp(TS, function () {
-    //         $.text("");
-    //     })
-    // }
     animateCheckbox = (inpx) => {
-        // var wrapper = goToParentNode(selector, 4);
         var erx = $(inpx).attr(dataerrorx);
-        // var erType = $(inpx).attr(dataerrortype);
         $(erx).slideUp(TS, () => {
             $.text("");
         })
@@ -454,18 +445,6 @@
             slideSliderRight(this);
         });
         //——————————————————— SLIDER UP ————————————————————————
-
-        //—————————————————— BOX DOWN ————————————————
-        // $(".cart-element-arrow-button").click(function () {
-        //     animateBox(this);
-        // });
-        //—————————————————— BOX UP ————————————————————————
-
-        //—————————————————— CART_SUMMARY DOWN ————————————————
-        // $(".summary-detail-title-block").click(function () {
-        //     animateCartSummary(this);
-        // });
-        //—————————————————— CART_SUMMARY UP ————————————————————————
 
         //—————————————————— NEWLETTER DOWN ————————————————
         $(".newletter-input").click(function () {
