@@ -6,7 +6,8 @@
  * (https://github.com/fguillot/simpleFramework)
  *
  */
-class Configuration {
+class Configuration
+{
 
     /** Tableau des paramètres de configuration */
     // rnvs : tableau associatif : clé == clé dans fichier ini, 
@@ -20,7 +21,8 @@ class Configuration {
      * @param string $defaultValue Valeur à renvoyer par défaut
      * @return string Valeur du paramètre
      */
-    public static function get($name, $defaultValue = null) {
+    public static function get($name, $defaultValue = null)
+    {
         $parameters = self::getParameters();
         if (isset($parameters[$name])) {
             $value = $parameters[$name];
@@ -37,7 +39,8 @@ class Configuration {
      * @return array Tableau des paramètres
      * @throws Exception Si aucun fichier de configuration n'est trouvé
      */
-    private static function getParameters() {
+    private static function getParameters()
+    {
         if (self::$parameters == null) {
             $filePath = "config/dev.ini";
             // rnvs : https://www.php.net/manual/en/function.file-exists.php
@@ -54,4 +57,12 @@ class Configuration {
         return self::$parameters;
     }
 
+    /**
+     * To get webRoot
+     * @return string the webRoot
+     */
+    public static function getWebRoot()
+    {
+        return self::get("webRoot", "/");
+    }
 }

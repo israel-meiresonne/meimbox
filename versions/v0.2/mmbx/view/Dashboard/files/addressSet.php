@@ -42,7 +42,7 @@
                 <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
             </div>
             <div class="pop_up-validate_button-div">
-                <button id="<?= $sbtnid ?>" disabled=true class="green-arrow standard-button-desabled remove-button-default-att">select address</button>
+                <button id="<?= $sbtnid ?>" disabled=true class="green-arrow standard-button-desabled remove-button-default-att" onclick="selectAddress('<?= $sbtnx ?>')">select address</button>
             </div>
         </div>
     </div>

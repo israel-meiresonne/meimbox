@@ -4,6 +4,7 @@ require_once 'controller/ControllerHome.php';
 require_once 'controller/ControllerGrid.php';
 require_once 'controller/ControllerItem.php';
 require_once 'controller/ControllerDashboard.php';
+require_once 'controller/ControllerCheckout.php';
 require_once 'model/special/Search.php';
 require_once 'model/boxes-management/Product.php';
 require_once 'model/boxes-management/Size.php';
@@ -170,6 +171,8 @@ $language = $person->getLanguage();
         const QR_ADD_ADRS = "<?= ControllerDashboard::QR_ADD_ADRS ?>";
         const QR_GET_ADRS_SET = "<?= ControllerDashboard::QR_GET_ADRS_SET ?>";
 
+        const QR_SELECT_ADRS = "<?= ControllerCheckout::QR_SELECT_ADRS ?>";
+
         const KEY_CART_FILE = "<?= Basket::KEY_CART_FILE ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
@@ -191,6 +194,7 @@ $language = $person->getLanguage();
         
         const CONF_ADRS_FEED = "<?= Address::CONF_ADRS_FEED ?>"
         const CONF_ADRS_POP = "<?= Address::CONF_ADRS_POP ?>"
+        const KEY_ADRS_SEQUENCE = "<?= Address::KEY_ADRS_SEQUENCE ?>"
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";

@@ -181,7 +181,6 @@ abstract class Controller {
      * @param Response $response contain results ready and/or prepared or errors
      * @param Visitor|Client|Administrator $person the current user
      */
-    // protected function generateJsonView($datasView = array(), Response $response, Language $language) {
     protected function generateJsonView($datasView = array(), Response $response, Visitor $person) {
         $classController = get_class($this);
         $controllerView = str_replace("Controller", "", $classController);
@@ -227,5 +226,4 @@ abstract class Controller {
     {
         return $this->action;
     }
-
 }

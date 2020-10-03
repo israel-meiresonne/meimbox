@@ -16173,6 +16173,36 @@
 												},
 												{
 													"_type": "ERDColumnView",
+													"_id": "AAAAAAF0743NMhXyDgc=",
+													"_parent": {
+														"$ref": "AAAAAAF0xO3dgZ6T3FU="
+													},
+													"model": {
+														"$ref": "AAAAAAF0743M7RXvYhc="
+													},
+													"font": "Arial;13;0",
+													"left": 1397,
+													"top": 3785,
+													"width": 232.1259765625,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF07448mxX+DuQ=",
+													"_parent": {
+														"$ref": "AAAAAAF0xO3dgZ6T3FU="
+													},
+													"model": {
+														"$ref": "AAAAAAF07448aRX73BU="
+													},
+													"font": "Arial;13;0",
+													"left": 1397,
+													"top": 3800,
+													"width": 232.1259765625,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
 													"_id": "AAAAAAF0xQC+0J7S18g=",
 													"_parent": {
 														"$ref": "AAAAAAF0xO3dgZ6T3FU="
@@ -16182,7 +16212,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1397,
-													"top": 3785,
+													"top": 3815,
 													"width": 232.1259765625,
 													"height": 13
 												},
@@ -16197,7 +16227,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1397,
-													"top": 3800,
+													"top": 3830,
 													"width": 232.1259765625,
 													"height": 13
 												}
@@ -16206,14 +16236,14 @@
 											"left": 1392,
 											"top": 3735,
 											"width": 242.1259765625,
-											"height": 83
+											"height": 113
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1392,
 									"top": 3712,
 									"width": 242.1259765625,
-									"height": 106,
+									"height": 136,
 									"nameLabel": {
 										"$ref": "AAAAAAF0xO3dgZ6SS4Q="
 									},
@@ -23662,6 +23692,26 @@
 									"name": "cookieValue",
 									"type": "VARCHAR",
 									"length": "512"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF0743M7RXvYhc=",
+									"_parent": {
+										"$ref": "AAAAAAF0xO3dgJ6P7hg="
+									},
+									"name": "domain",
+									"type": "VARCHAR",
+									"length": "50"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF07448aRX73BU=",
+									"_parent": {
+										"$ref": "AAAAAAF0xO3dgJ6P7hg="
+									},
+									"name": "path",
+									"type": "VARCHAR",
+									"length": "50"
 								},
 								{
 									"_type": "ERDColumn",

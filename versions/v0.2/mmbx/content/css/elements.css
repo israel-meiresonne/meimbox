@@ -2824,6 +2824,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*———————————————————————————————— ADDRESS-SET DOWN —————————————————————————*/
 
+.address-set-container {
+    position: relative;
+}
+
 .address-set .edit-block-external {
     margin-left: auto;
 }
