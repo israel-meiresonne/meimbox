@@ -8,7 +8,7 @@ $this->description = "checkout";
 $translator = $translator;
 
 /**
- * @var Visitor|Client|Administrator
+ * @var User|Client|Administrator
  */
 $person = $this->person;
 $language = $person->getLanguage();
@@ -16,7 +16,7 @@ $country = $person->getCountry();
 $currency = $person->getCurrency();
 $measures = $person->getMeasures();
 $basket = $person->getBasket();
-
+$addressMap = $person->getAddresses();
 $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 ?>
 
@@ -33,10 +33,44 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
 
                 <div class="address_connection-block">
                     <div class="address_connection-inner">
-                        <div id="addresses_set" class="address-set">
-                            
+                        <div class="address-set">
+                            <div class="address-set-head">
+                                <div class="form-title-block address-title-block">
+                                    <div class="form-title-div">
+                                        <span class="form-title">select a shipping address</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-summary">
+                            <div class="address-set-body">
+                                <div id="addresses_set_dynamic" class="address-set-dynamic">
+                                    <?php
+                                    $dad = ModelFunctionality::generateDateCode(25);
+                                    $brother = ModelFunctionality::generateDateCode(25);
+                                    $brotherx = "#$brother";
+                                    $sbtnid = ModelFunctionality::generateDateCode(25);;
+                                    $sbtnx = "#$sbtnid";
+                                    $datas = [
+                                        "containerId" => "addresses_set_dynamic",
+                                        "addressMap" => $addressMap,
+                                        "dad" => $dad,
+                                        "brotherx" => $brotherx,
+                                        "sbtnx" => $sbtnx
+                                    ];
+                                    echo $this->generateFile('view/elements/cart/address/cartAddresses.php', $datas);
+                                    ?>
+                                </div>
+                                <div class="address-set-static">
+                                    <div class="loading-img-wrap">
+                                        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+                                    </div>
+                                    <div class="pop_up-validate_button-div">
+                                        <button id="<?= $sbtnid ?>" disabled=true class="green-arrow standard-button-desabled remove-button-default-att">select address</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="address-container">
+                        <div class="address-container" style="display: none;">
                             <div class="form-wrap">
                                 <div class="form-title-block address-title-block">
                                     <div class="form-title-div">

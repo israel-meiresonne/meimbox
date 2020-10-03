@@ -2805,3 +2805,8 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*—————————————————————————————— SIZE_EDITOR_POP_UP UP ——————————————————————*/
+/*———————————————————————————————— ADDRESS-SET DOWN —————————————————————————*/
+.address-set .edit-block-external{
+    margin-left: auto;
+}
+/*———————————————————————————————— ADDRESS-SET UP ———————————————————————————*/

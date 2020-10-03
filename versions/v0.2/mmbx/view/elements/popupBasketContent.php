@@ -31,7 +31,7 @@ echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
         </div>
         <ul class="basketpop-resume-buttons remove-ul-default-att">
             <li class="remove-li-default-att">
-                <a href="<?= ControllerDashboard::HREF_SHOPBAG ?>">
+                <a href="<?= ControllerDashboard::QR_SHOPBAG ?>">
                     <button class="blue-button standard-button remove-button-default-att">view bag details</button>
                 </a>
             </li>
