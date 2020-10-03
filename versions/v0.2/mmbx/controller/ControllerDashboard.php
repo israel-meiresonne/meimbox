@@ -9,12 +9,13 @@ class ControllerDashboard extends ControllerSecure
      */
     private const ACTION_SHOPBAG = "shopbag";
 
-    public const QR_ADD_ADDRESS = "dashboard/addAddress";
 
     /**
-     * Holds page link (href)
+     * Holds link (href)
+     * + also used for ajax request
      */
-    public const HREF_SHOPBAG = "dashboard/shopbag";
+    public const QR_ADD_ADDRESS = "dashboard/addAddress";
+    public const QR_SHOPBAG = "dashboard/shopbag";
 
     /**
      * The default layout: the dashboard
