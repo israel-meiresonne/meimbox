@@ -787,7 +787,9 @@ abstract class ModelFunctionality extends Model
      */
     protected function getUsersCookiesMap($userID)
     {
-        // (!isset(self::$usersCookiesMap)) ? self::setUsersCookiesMap($userID) : null;
+        (isset(self::$usersCookiesMap) && (self::$usersCookiesMap->get(Map::userID) == $userID))
+            ?  null
+            : self::setUsersCookiesMap($userID);
         self::setUsersCookiesMap($userID);
         return self::$usersCookiesMap;
     }
@@ -805,6 +807,7 @@ abstract class ModelFunctionality extends Model
             foreach ($tab as $tabLine) {
                 $cookieID = $tabLine["cookieId"];
                 // self::$usersCookiesMap->put($tabLine["cookieId"], Map::cookieID);
+                self::$usersCookiesMap->put($userID, Map::userID);
                 self::$usersCookiesMap->put($tabLine["cookieValue"], $cookieID, Map::value);
                 self::$usersCookiesMap->put($tabLine["setDate"], $cookieID, Map::setDate);
                 self::$usersCookiesMap->put($tabLine["settedPeriod"], $cookieID, Map::settedPeriod);
@@ -1162,7 +1165,7 @@ abstract class ModelFunctionality extends Model
      */
     protected static function generateCode($length, string $set = '0123456789abcdefghijklmnopqrstuvwxyz')
     {
-        if(empty($set)){
+        if (empty($set)) {
             throw new Exception("Charset can't be empty");
         }
         $characters = $set;

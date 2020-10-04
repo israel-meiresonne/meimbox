@@ -48,8 +48,10 @@ $this->head = $this->generateFile('view/Dashboard/files/head.php', []);
                 <div class="cart_summary-div-container">
                     <?php
                     $datas = [
+                        "conf" => self::CONF_SOMMARY_SHOPBAG,
                         "basket" => $basket,
                         "country" => $country,
+                        "showArrow" => true
                     ];
                     echo $this->generateFile('view/Checkout/files/orderSummary.php', $datas);
                     ?>

@@ -23781,9 +23781,10 @@
 										"$ref": "AAAAAAF0xPxPBp6uhLo="
 									},
 									"name": "cookiePath",
-									"documentation": "# Description\nthe directory where the cookie will be available\n• ex: /my/directory",
+									"documentation": "# Description\nthe directory where the cookie will be available\n• ex: my/directory",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",

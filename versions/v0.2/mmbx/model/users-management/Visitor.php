@@ -126,7 +126,7 @@ class Visitor extends ModelFunctionality
     public function __construct($VIS_VAL = null)
     {
         $isVisitor = empty($VIS_VAL);
-        $VIS_VAL = ($isVisitor) ? Cookie::getCookie(Cookie::COOKIE_VIS) : $VIS_VAL;
+        $VIS_VAL = ($isVisitor) ? Cookie::getCookieValue(Cookie::COOKIE_VIS) : $VIS_VAL;
         // $VIS_isValid = false;
         $tabLine = null;
         if ($isVisitor && (!empty($VIS_VAL))) { // if empty its mean that the current user is a Visittor
@@ -167,7 +167,8 @@ class Visitor extends ModelFunctionality
         $usersCookiesMap = $this->getUsersCookiesMap($userID);
         $cookieIDs = $usersCookiesMap->getKeys();
         $inDb = in_array($cookieID, $cookieIDs);
-        $onUser = $this->existCookie($cookieID);
+        // $onUser = $this->existCookie($cookieID);
+        $onUser = (!empty($this->getCookie($cookieID)));
         if ($inDb && $onUser) {
             // --- cookie exist
             $cookieState = Cookie::STATE_UPDATE;
@@ -202,8 +203,9 @@ class Visitor extends ModelFunctionality
                 $cookies->put($newCookie, $cookieID);
                 break;
             case Cookie::STATE_GIVE:
-                $holdCookie = $this->getCookie($cookieID);
-                $cookieValue = $holdCookie->getValue();
+                // $holdCookie = $this->getCookie($cookieID);
+                // $cookieValue = $holdCookie->getValue();
+                $cookieValue = $usersCookiesMap->get($cookieID, Map::value);
                 $newCookie = $this->generateCookie($cookieID, $cookieValue);
                 $cookies->put($newCookie, $cookieID);
                 break;
@@ -292,11 +294,14 @@ class Visitor extends ModelFunctionality
         $cookieIDs = $usersCookiesMap->getKeys();
         if (!empty($cookieIDs)) {
             foreach ($cookieIDs as $cookieID) {
+                $holdsCookieValue = Cookie::getCookieValue($cookieID);
                 $value = $usersCookiesMap->get($cookieID, Map::value);
-                $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
-                $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
-                $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
-                $this->cookies->put($cookie, $cookieID);
+                if((!empty($holdsCookieValue)) && ($holdsCookieValue == $value)){
+                    $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
+                    $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
+                    $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
+                    $this->cookies->put($cookie, $cookieID);
+                }
             }
         }
     }
@@ -452,16 +457,44 @@ class Visitor extends ModelFunctionality
         return $cookies->get($cookieID);
     }
 
-    /**
-     * To check if Visitor holds a cookie in his session with the given id
-     * @param string $cookieID id of the cookie to look for
-     * @return boolean true if Visitor holds a cookie in his session else false
-     */
-    private function existCookie($cookieID)
-    {
-        return (!empty(Cookie::getCookie($cookieID)));
-    }
+    // /**
+    //  * To check if Visitor holds a cookie in his session with the given id
+    //  * @param string $cookieID id of the cookie to look for
+    //  * @return boolean true if Visitor holds a cookie in his session else false
+    //  */
+    // private function existCookie($cookieID)
+    // {
+    //     return (!empty(Cookie::getCookieValue($cookieID)));
+    // }
 
+    /**
+     * Check if Visitor has a cookie
+     * @param string $cookieID cookie  to check
+     * @return boolean true if has privilege else false
+     */
+    public function hasCookie($cookieID)
+    {
+        $hasCookie = false;
+        switch ($cookieID) {
+            case Cookie::COOKIE_CLT:
+                // $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
+                $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_CLT)));
+                break;
+            case Cookie::COOKIE_ADM:
+                // $hasCookie = $this->existCookie(Cookie::COOKIE_ADM);
+                $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADM)));
+                break;
+            case Cookie::COOKIE_ADRS:
+                // $hasCookie = $this->existCookie(Cookie::COOKIE_ADRS);
+                $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADRS)));
+                break;
+            default:
+                throw new Exception("This id of cookie don't exist, cookieID:$cookieID");
+                break;
+        }
+        return $hasCookie;
+    }
+    
     /**
      * To get the measure with the id given in param
      * @param string $measureID id of the measure to look for
@@ -579,31 +612,6 @@ class Visitor extends ModelFunctionality
             }
         }
         return null;
-    }
-
-    /**
-     * Check if Visitor has a cookie
-     * @param string $cookieID cookie  to check
-     * @return boolean true if has privilege else false
-     */
-    public function hasCookie($cookieID)
-    {
-        $hasCookie = false;
-        switch ($cookieID) {
-            case Cookie::COOKIE_CLT:
-                $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
-                break;
-            case Cookie::COOKIE_ADM:
-                $hasCookie = $this->existCookie(Cookie::COOKIE_ADM);
-                break;
-            case Cookie::COOKIE_ADRS:
-                $hasCookie = $this->existCookie(Cookie::COOKIE_ADRS);
-                break;
-            default:
-                throw new Exception("This id of cookie don't exist, cookieID:$cookieID");
-                break;
-        }
-        return $hasCookie;
     }
 
     /**

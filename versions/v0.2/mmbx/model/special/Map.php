@@ -10,6 +10,12 @@ class Map
     public const value = "value";
     
     /**
+     * key for User
+     * @var string
+     */
+    public const userID = "userID";
+
+    /**
      * key for Country
      * @var string
      */

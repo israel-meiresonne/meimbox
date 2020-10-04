@@ -30,7 +30,7 @@ class Client extends User
      */
     function __construct($CLT_VAL = null)
     {
-        $CLT_VAL = (empty($CLT_VAL)) ? Cookie::getCookie(Cookie::COOKIE_CLT) : $CLT_VAL;
+        $CLT_VAL = (empty($CLT_VAL)) ? Cookie::getCookieValue(Cookie::COOKIE_CLT) : $CLT_VAL;
         if (empty($CLT_VAL)) {
             throw new Exception("Client cookie don't exist");
         }

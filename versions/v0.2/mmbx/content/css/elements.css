@@ -2828,6 +2828,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: relative;
 }
 
+.address-set-dynamic .cart-ul {
+    max-height: 50vh;
+}
+
 .address-set .edit-block-external {
     margin-left: auto;
 }
@@ -2843,3 +2847,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*———————————————————————————————— ADDRESS-SET UP ———————————————————————————*/
+
+/*———————————————————————————————— ORDER_SUMMARY DOWN ———————————————————————*/
+
+#order_summary_address .cart-element-wrap {
+    cursor: initial;
+}
+
+/*———————————————————————————————— ORDER_SUMMARY UP —————————————————————————*/
