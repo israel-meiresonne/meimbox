@@ -71,7 +71,9 @@ abstract class User extends  Visitor
         $this->userLine = $tab[0];
         $this->userID = $this->userLine["userID"];
         $this->setCookies();
-        $VIS_VAL = $this->getCookie(Cookie::COOKIE_VIS)->getValue();
+        // $VIS_VAL = $this->getCookie(Cookie::COOKIE_VIS)->getValue();
+        $usersCookiesMap = $this->getUsersCookiesMap($this->userID);
+        $VIS_VAL = $usersCookiesMap->get(Cookie::COOKIE_VIS, Map::value);
         parent::__construct($VIS_VAL);
 
         $this->setDate = $this->userLine["setDate"];
