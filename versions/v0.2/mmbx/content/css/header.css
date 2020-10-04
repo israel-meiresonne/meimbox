@@ -120,6 +120,13 @@
     font-family: var(--italic-font-family);
     font-style: italic;
 }
+.title-first_letter {
+    font-family: var(--main-font-family);
+    color: var(--color-text);
+}
+.title-first_letter::first-letter{
+    text-transform: capitalize;
+}
 
 header {
     position: fixed;

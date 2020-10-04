@@ -189,10 +189,29 @@ abstract class User extends  Visitor
         if (empty($this->getAddress($sequence))) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $sequence_json  = [Address::KEY_ADRS_SEQUENCE => $sequence];
-            $value = json_encode($sequence_json);
+            // $sequence_json  = [Address::KEY_ADRS_SEQUENCE => $sequence];
+            $value = json_encode($sequence);
             $this->generateCookie(Cookie::COOKIE_ADRS, $value);
         }
+    }
+
+    /**
+     * To get the selected shipping address from session's datas ($_COOKIE)
+     * @return Address|null the selected shipping address
+     */
+    public function getSelectedAddress()
+    {
+        $address = null;
+        $cookie = $this->getCookie(Cookie::COOKIE_ADRS);
+        if (!empty($cookie)) {
+            $sequence_json = $cookie->getValue();
+            $sequence = json_decode($sequence_json);
+            // if (!empty($sequenceMap->{Address::KEY_ADRS_SEQUENCE})) {
+            if (!empty($sequence)) {
+                $address = $this->getAddress($sequence);
+            }
+        }
+        return $address;
     }
 
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/

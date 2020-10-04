@@ -35,6 +35,7 @@ if (!empty($dad)) {
                     "containerId" => $containerId,
                     "elementId" => $elementId,
                     "address" => $address,
+                    "showButon" => true,
                     "dadx" => $dadx,
                     "brotherx" => $brotherx,
                     "submitdata" => $sequence

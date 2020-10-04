@@ -111,6 +111,12 @@ class View
     private const ER_TYPE_COMMENT = "comment";
 
     /**
+     * Holds configurat for the file orderSummary
+     */
+    private const CONF_SOMMARY_CHECKOUT = "CONF_SOMMARY_CHECKOUT";
+    private const CONF_SOMMARY_SHOPBAG = "CONF_SOMMARY_SHOPBAG";
+
+    /**
      * Constructeur
      * 
      * rnvs : les 2 arguments sont des chaînes de caractères qui servent à

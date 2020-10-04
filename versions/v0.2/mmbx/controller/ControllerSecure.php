@@ -110,8 +110,8 @@ abstract class ControllerSecure extends Controller
         $ctrClass = get_class($this);
         switch ($ctrClass) {
             default:
-                $CLT = Cookie::getCookie(Cookie::COOKIE_CLT);
-                if (!empty($CLT)) {
+                $CLT_VAL = Cookie::getCookieValue(Cookie::COOKIE_CLT);
+                if (!empty($CLT_VAL)) {
                     $this->person = new Client();
                 } else {
                     $this->person = new Visitor();

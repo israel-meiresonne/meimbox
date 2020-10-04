@@ -102,6 +102,9 @@ class Cookie extends ModelFunctionality
      */
     public function __construct($cookieID, $value, $setDate, $settedPeriod)
     {
+        if(empty($value)){
+            throw new Exception("Can't Instantiate a Cookie with a empty value");
+        }
         $this->cookieID = $cookieID;
         $this->value = $value;
         $this->setDate = $setDate;
@@ -194,7 +197,7 @@ class Cookie extends ModelFunctionality
      * @param string $cookieID id of a cookie
      * @return string|null a cookie
      */
-    public static function getCookie($cookieID)
+    public static function getCookieValue($cookieID)
     {
         $cookie = null;
         if (key_exists($cookieID, $_COOKIE)) {
@@ -277,6 +280,7 @@ class Cookie extends ModelFunctionality
         } else {
             $this->updateCookie($response, $userID);
         }
+        // var_dump($response->getAttributs());
     }
 
     /**
@@ -285,7 +289,7 @@ class Cookie extends ModelFunctionality
      */
     private function insertCookie(Response $response, $userID)
     {
-        $bracket = "(?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $bracket = "(?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
         $sql = "INSERT INTO `Users-Cookies`(`userId`, `cookieId`, `cookieValue`, `domain`, `path`, `setDate`, `settedPeriod`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];

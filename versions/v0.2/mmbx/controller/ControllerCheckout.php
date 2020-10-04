@@ -26,7 +26,13 @@ class ControllerCheckout extends ControllerSecure
      */
     public function index()
     {
-        $datasView = [];
+        $address = $this->person->getSelectedAddress();
+        if(empty($address)){
+            $this->redirect($this->extractController(get_class($this)), self::ACTION_ADDRESS);
+        }
+        $datasView = [
+            "address" => $address
+        ];
         $this->generateView($datasView, $this->person);
     }
 

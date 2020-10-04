@@ -2,8 +2,12 @@
 // require_once 'model/special/Map.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param string $conf sommary's configuration
+ * + View::CONF_SOMMARY_CHECKOUT,...
  * @param Basket $basket Visitor's basket
  * @param Country $country Visitor's current Country
+ * @param boolean $showArrow set true to show the arrow and animate sommary else false
+ * @param Address $address User's shipping addresses  (only for conf = CONF_SOMMARY_CHECKOUT)
  */
 ?>
 
@@ -11,65 +15,73 @@
     <div class="summary-detail-block">
         <div class="summary-detail-title-block">
             <?php
-            $bodyid = ModelFunctionality::generateDateCode(25);
-            $bodyx = "#" . $bodyid;
-            $arraowid = ModelFunctionality::generateDateCode(25);
-            $arraowx = "#" . $arraowid;
-            // arrow-element-wrap-rotated
+            if ($showArrow) {
+                $bodyid = ModelFunctionality::generateDateCode(25);
+                $bodyx = "#$bodyid";
+                $Tagbodyid = "id='$bodyid'";
+                $arraowid = ModelFunctionality::generateDateCode(25);
+                $arraowx = "#$arraowid";
+                $Tagarraowid = "id='$arraowid'";
+                $TAGtoggleShutter =  "toggleShutter('$bodyx','$arraowx')";
+            } else {
+                $Tagbodyid =  null;
+                $Tagarraowid =  null;
+                $TAGtoggleShutter = null;
+            }
             ?>
-            <div class="summary-detail-title-div" onclick="toggleShutter('<?= $bodyx ?>','<?= $arraowx ?>')">
+            <div class="summary-detail-title-div" <?= $TAGtoggleShutter ?>>
                 <span class="summary-title">Order Summary</span>
             </div>
-            <div class="summary-detail-arrow-button-div">
-                <div class="arrow-element-container">
-                    <div id="<?= $arraowid ?>" class="arrow-element-wrap">
-                        <span class="arrow-span"></span>
+            <?php
+            if ($showArrow) :
+            ?>
+                <div class="summary-detail-arrow-button-div">
+                    <div class="arrow-element-container">
+                        <div <?= $Tagarraowid ?> class="arrow-element-wrap">
+                            <span class="arrow-span"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php
+            endif;
+            ?>
         </div>
-
-        <div id="<?= $bodyid ?>" class="summary-detail-inner">
+        <div <?= $Tagbodyid ?> class="summary-detail-inner">
             <hr class="hr-summary">
             <div class="summary-detail-property-div">
                 <ul class="summary-detail-property-lu remove-ul-default-att">
                     <li class="summary-detail-property-li remove-li-default-att">
-                        <div class="data-key_value-opposite-wrap">
-                            <span class="data-key_value-key">total: </span>
-                            <span class="data-key_value-value" data-basket="total"><?= $basket->getTotal()->getFormated(); ?></span>
-                        </div>
-                    </li>
-                    <li class="summary-detail-property-li remove-li-default-att">
                         <div class="summary-detail-property-shipping-div">
-
-                            <div class="summary-detail-property-country">
-                                <div class="dropdown-container">
-                                    <?php
-                                    $countriesMap = Country::getCountries();
-                                    // $labels = $countriesMap->getKeys();
-                                    $isoCountries = $countriesMap->getKeys();
-                                    $inputMap = new Map();
-                                    foreach ($isoCountries as $isoCountry) {
-                                        $label = $countriesMap->get($isoCountry, Map::countryName);
-                                        if ($label != $country->getCountryNameDefault()) {
-                                            // $isoCountry = $countriesMap->get($label, Map::isoCountry);
-                                            $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                            $inputMap->put(Country::INPUT_ISO_COUNTRY, $label, Map::inputName);
-                                            $inputMap->put($isoCountry, $label, Map::inputValue);
-                                            $inputMap->put($isChecked, $label, Map::isChecked);
-                                            $inputMap->put(null, $label, Map::inputFunc);
+                            <?php
+                            switch ($conf):
+                                case self::CONF_SOMMARY_SHOPBAG
+                            ?>
+                                <div class="summary-detail-property-country">
+                                    <div class="dropdown-container">
+                                        <?php
+                                        $countriesMap = Country::getCountries();
+                                        $isoCountries = $countriesMap->getKeys();
+                                        $inputMap = new Map();
+                                        foreach ($isoCountries as $isoCountry) {
+                                            $label = $countriesMap->get($isoCountry, Map::countryName);
+                                            if ($label != $country->getCountryNameDefault()) {
+                                                $isChecked = ($country->getIsoCountry() == $isoCountry);
+                                                $inputMap->put(Country::INPUT_ISO_COUNTRY, $label, Map::inputName);
+                                                $inputMap->put($isoCountry, $label, Map::inputValue);
+                                                $inputMap->put($isChecked, $label, Map::isChecked);
+                                                $inputMap->put(null, $label, Map::inputFunc);
+                                            }
                                         }
-                                    }
-                                    $datas = [
-                                        "title" => $translator->translateStation("US65"),
-                                        "inputMap" => $inputMap,
-                                        "func" => null,
-                                        "isRadio" => true,
-                                        "isDisplayed" => false
-                                    ];
-                                    echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
-                                    ?>
-                                    <!-- <div class="dropdown-wrap">
+                                        $datas = [
+                                            "title" => $translator->translateStation("US65"),
+                                            "inputMap" => $inputMap,
+                                            "func" => null,
+                                            "isRadio" => true,
+                                            "isDisplayed" => false
+                                        ];
+                                        echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
+                                        ?>
+                                        <!-- <div class="dropdown-wrap">
                                                             <div class="dropdown-inner">
                                                                 <div class="dropdown-head dropdown-arrow-close">
                                                                     <span class="dropdown-title">country</span>
@@ -96,16 +108,44 @@
                                                                 </div>
                                                             </div>
                                                         </div> -->
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="summary-detail-property-shipping-div">
-                                <div class="data-key_value-opposite-wrap">
-                                    <span class="data-key_value-key">shipping: </span>
-                                    <!-- <span class="info-style data-key_value-value">(Select a country)</span> -->
-                                    <span class="data-key_value-value" data-basket="shipping"><?= $basket->getShipping()->getFormated() ?></span>
+                            <?php
+                                    break;
+                                case self::CONF_SOMMARY_CHECKOUT:
+                            ?>
+                            <!-- <div class="summary-title">
+                                <p class="title-first_letter">your shipping address:</p>
+                            </div> -->
+                                <div id="order_summary_address" class="summary-detail-address">
+                                    <?php
+                                    $title = "your shipping address:";
+                                    $datas = [
+                                        "containerId" => "order_summary_address",
+                                        "elementId" => ModelFunctionality::generateDateCode(25),
+                                        "title" => $title,
+                                        "address" => $address,
+                                        "showButon" => false,
+                                        "dadx" => null,
+                                        "brotherx" => null,
+                                        "submitdata" => null
+                                    ];
+                                    echo $this->generateFile('view/elements/cart/address/cartElementAddress.php', $datas);
+                                    ?>
                                 </div>
+                        <?php
+                                    break;
+                                default:
+                                    break;
+                            endswitch;
+                        ?>
+                        <div class="summary-detail-property-shipping-div">
+                            <div class="data-key_value-opposite-wrap">
+                                <span class="data-key_value-key">shipping: </span>
+                                <!-- <span class="info-style data-key_value-value">(Select a country)</span> -->
+                                <span class="data-key_value-value" data-basket="shipping"><?= $basket->getShipping()->getFormated() ?></span>
                             </div>
+                        </div>
                         </div>
                     </li>
                     <li class="summary-detail-property-li remove-li-default-att">
@@ -122,6 +162,13 @@
                         <div class="data-key_value-opposite-wrap">
                             <span class="data-key_value-key">subtotal: </span>
                             <span class="data-key_value-value" data-basket="subtotal"><?= $basket->getSubTotal()->getFormated(); ?></span>
+                        </div>
+                    </li>
+                    <hr class="hr-summary">
+                    <li class="summary-detail-property-li remove-li-default-att">
+                        <div class="data-key_value-opposite-wrap">
+                            <span class="data-key_value-key">total: </span>
+                            <span class="data-key_value-value" data-basket="total"><?= $basket->getTotal()->getFormated(); ?></span>
                         </div>
                     </li>
                 </ul>
