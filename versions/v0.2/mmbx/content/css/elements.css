@@ -2842,6 +2842,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     width: 60%;
 }
 
+/* display: inline-block;
+width: 49%; */
+
 .center-btn-div button {
     box-shadow: none;
 }
@@ -2850,8 +2853,36 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*———————————————————————————————— ORDER_SUMMARY DOWN ———————————————————————*/
 
+/* .summary-wrap */
+
 #order_summary_address .cart-element-wrap {
     cursor: initial;
+}
+
+.summary-payement {
+    font-family: var(--main-font-family);
+    color: var(--color-text);
+}
+
+.summary-wrap .payement-li {
+    height: 22px;
+    margin-bottom: 10px;
+    display: inline-block;
+    width: 49%;
+}
+
+.summary-wrap .payement-ul {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.summary-wrap .payement-li .img-text-wrap {
+    height: 100%;
+}
+
+.summary-wrap .payement-li .img-text-wrap .img-text-img {
+    width: 25px;
+    margin-right: 5px;
 }
 
 /*———————————————————————————————— ORDER_SUMMARY UP —————————————————————————*/

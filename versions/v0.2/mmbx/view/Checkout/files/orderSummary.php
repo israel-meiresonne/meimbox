@@ -114,7 +114,7 @@
                                     break;
                                 case self::CONF_SOMMARY_CHECKOUT:
                             ?>
-                            <!-- <div class="summary-title">
+                                <!-- <div class="summary-title">
                                 <p class="title-first_letter">your shipping address:</p>
                             </div> -->
                                 <div id="order_summary_address" class="summary-detail-address">
@@ -178,6 +178,58 @@
                     <button class="green-button standard-button remove-button-default-att">checkout</button>
                 </div>
             </div>
+            <div class="summary-payement">
+                    <ul class="payement-ul remove-ul-default-att">
+                        <li class="payement-li remove-li-default-att">
+                            <div class="img-text-wrap">
+                                <div class="img-text-img">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
+                                </div>
+                                <span class="img-text-span">visa</span>
+                            </div>
+                        </li>
+                        <li class="payement-li remove-li-default-att">
+                            <div class="img-text-wrap">
+                                <div class="img-text-img">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
+                                </div>
+                                <span class="img-text-span">pay</span>
+                            </div>
+                        </li>
+                        <li class="payement-li remove-li-default-att">
+                            <div class="img-text-wrap">
+                                <div class="img-text-img">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
+                                </div>
+                                <span class="img-text-span">paypal</span>
+                            </div>
+                        </li>
+                        <li class="payement-li remove-li-default-att">
+                            <div class="img-text-wrap">
+                                <div class="img-text-img">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
+                                </div>
+                                <span class="img-text-span">masterCard</span>
+                            </div>
+                        </li>
+                        <li class="payement-li remove-li-default-att">
+                            <div class="img-text-wrap">
+                                <div class="img-text-img">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
+                                </div>
+                                <span class="img-text-span">maestro</span>
+                            </div>
+                        </li>
+                        <li class="payement-li remove-li-default-att">
+                            <div class="img-text-wrap">
+                                <div class="img-text-img">
+                                    <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
+                                </div>
+                                <span class="img-text-span">american express</span>
+                            </div>
+                        </li>
+                    </ul>
+            </div>
 
             <div class="summary-detail-safe_info-div">
                 <div class="summary-detail-safe_info-inner">
@@ -195,15 +247,28 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="safe_info-li remove-li-default-att">
+                            <!-- <li class="safe_info-li remove-li-default-att">
                                 <div class="img_text_down-wrap">
                                     <div class="img_text_down-img-div">
                                         <div class="img_text_down-img-inner">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-headset-96.png">
+                                            <img src="<?= "" //self::DIR_STATIC_FILES 
+                                                        ?>icons8-headset-96.png">
                                         </div>
                                     </div>
                                     <div class="img_text_down-text-div">
                                         <span>customer service 24h/7 <br> response in 1h</span>
+                                    </div>
+                                </div>
+                            </li> -->
+                            <li class="safe_info-li remove-li-default-att">
+                                <div class="img_text_down-wrap">
+                                    <div class="img_text_down-img-div">
+                                        <div class="img_text_down-img-inner">
+                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-van-96.png">
+                                        </div>
+                                    </div>
+                                    <div class="img_text_down-text-div">
+                                        <span>Track your<br> orders online</span>
                                     </div>
                                 </div>
                             </li>
@@ -219,18 +284,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="safe_info-li remove-li-default-att">
-                                <div class="img_text_down-wrap">
-                                    <div class="img_text_down-img-div">
-                                        <div class="img_text_down-img-inner">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-van-96.png">
-                                        </div>
-                                    </div>
-                                    <div class="img_text_down-text-div">
-                                        <span>Track your<br> orders online</span>
-                                    </div>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -238,11 +291,9 @@
 
             <div class="summary-detail-collapse-div">
                 <div class="summary-detail-collapse-inner">
-
                     <div class="collapse-wrap">
                         <ul class="remove-ul-default-att">
                             <li class="remove-li-default-att">
-
                                 <div class="collapse-div">
                                     <div class="collapse-title-div">
                                         <div class="collapse-title">contact us</div>
@@ -255,39 +306,31 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="collapse-text-div collapse-text-hidded">
                                         <div class="collapse-text-inner">
-
                                             <ul class="contact-ul remove-ul-default-att">
                                                 <li class="contact-li remove-li-default-att">
-
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
                                                             <img src="<?= self::DIR_STATIC_FILES ?>icons8-phone-100.png">
                                                         </div>
                                                         <span class="img-text-span">+472 13 13 24</span>
                                                     </div>
-
                                                 </li>
                                                 <li class="contact-li remove-li-default-att">
-
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
                                                             <img src="<?= self::DIR_STATIC_FILES ?>icons8-secured-letter-100.png">
                                                         </div>
                                                         <span class="img-text-span">email@monsite.com</span>
                                                     </div>
-
                                                 </li>
                                             </ul>
-
                                         </div>
                                     </div>
                                 </div>
-
                             </li>
-                            <li class="remove-li-default-att">
+                            <!-- <li class="remove-li-default-att">
                                 <div class="collapse-div">
                                     <div class="collapse-title-div">
                                         <div class="collapse-title">payement options</div>
@@ -300,7 +343,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="collapse-text-div collapse-text-hidded">
                                         <div class="collapse-text-inner">
 
@@ -358,7 +400,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
 
@@ -366,5 +408,4 @@
             </div>
         </div>
     </div>
-
 </div>
