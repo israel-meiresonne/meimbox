@@ -180,6 +180,7 @@ class BasketProduct extends Product
     /**
      * Getter for product's prrice
      * @return Price product's prrice
+     * + for boxProduct will return Price with a zero as value
      */
     public function getPrice()
     {

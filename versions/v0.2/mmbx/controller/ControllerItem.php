@@ -786,8 +786,10 @@ class ControllerItem extends ControllerSecure
 
     public function test()
     {
-        $a = null;
-        $b = json_encode($a);
-       var_dump(json_decode($b));
+       foreach($_SERVER as $key => $data){
+           echo "$key => ";
+           var_dump($data);
+           echo "<hr>";
+       }
     }
 }

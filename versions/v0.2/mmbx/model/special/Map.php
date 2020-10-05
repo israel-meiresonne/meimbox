@@ -120,6 +120,23 @@ class Map
     public const countryName = "countryName";
     public const phone = "phone";
 
+    /**
+     * Keys for Payements
+     */
+    public const payMethod = "payMethod";
+    public const company = "company";
+    public const cancelPath = "cancelPath";
+    public const successPath = "successPath";
+
+    /**
+     * Keys for StripeProduct
+     */
+    public  const name = "name";
+    public  const currency = "currency";
+    public  const unit_amount = "unit_amount";
+    public  const description = "description";
+    public  const images = "images";
+
     public function __construct()
     {
         $this->map = [];
