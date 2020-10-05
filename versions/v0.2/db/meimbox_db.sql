@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  ven. 25 sep. 2020 à 14:14
+-- Généré le :  lun. 05 oct. 2020 à 14:09
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -40,8 +40,7 @@ CREATE TABLE `Addresses` (
   `appartement` varchar(100) DEFAULT NULL,
   `province` varchar(100) NOT NULL,
   `city` varchar(100) NOT NULL,
-  `phoneNumber` varchar(50) NOT NULL,
-  `isActive` tinyint(1) NOT NULL,
+  `phoneNumber` varchar(50) DEFAULT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -49,9 +48,13 @@ CREATE TABLE `Addresses` (
 -- Déchargement des données de la table `Addresses`
 --
 
-INSERT INTO `Addresses` (`userId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `isActive`, `setDate`) VALUES
-(651853948, 'place royele 4', '1640', 'belgium', NULL, 'Brabant-flamand', 'rhode-saint-genese', '+32 472 27 42 10', 1, '2020-02-28 00:00:00'),
-(651853948, 'rue des bargeo 4', '4780', 'canada', 'boites 17', 'ma province perdu', 'ma ville perdu', '+ 428 28 48 90', 0, '2020-02-27 00:00:00');
+INSERT INTO `Addresses` (`userId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `setDate`) VALUES
+(3330090, 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38'),
+(651853948, 'place royale 4', '1640', 'belgium', NULL, 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
+(651853948, 'place royale 4', '1640', 'canada', 'app', 'state', 'rhode-saint-genese', '472174210', '2020-10-03 16:06:58'),
+(651853948, 'place royele 4', '1640', 'belgium', NULL, 'Brabant-flamand', 'rhode-saint-genese', '32472274210', '2020-02-28 00:00:00'),
+(651853948, 'rue des bargeo 4', '4780', 'canada', 'boite 17', 'ma province perdu', 'ma ville perdu', '428284890', '2020-02-27 00:00:00'),
+(651853948, 'rue royale 67', '1000', 'canada', NULL, 'bruxelles', 'bruxelles', '472174210', '2020-10-03 16:09:44');
 
 -- --------------------------------------------------------
 
@@ -97,7 +100,7 @@ CREATE TABLE `Basket-DiscountCodes` (
 INSERT INTO `Basket-DiscountCodes` (`userId`, `discount_code`, `setDate`) VALUES
 (651853948, 'blackfriday25', '2020-03-02 00:00:00'),
 (651853948, 'gmk10', '2020-02-11 00:00:00'),
-(651853948, 'shera10', '2020-02-01 00:00:00');
+(651853948, 'summer20', '2020-02-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -115,8 +118,11 @@ CREATE TABLE `Baskets-Box` (
 --
 
 INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
+('131u45w04001h52945214200j', 3330090),
 ('0860g1009tn0i31s2s6b24112', 651853948),
-('70r904v2240t0292ko1514055', 651853948);
+('120p222c5150ym3wt2308y193', 651853948),
+('70r904v2240t0292ko1514055', 651853948),
+('mf1550920290g92f0261m60i2', 651853948);
 
 -- --------------------------------------------------------
 
@@ -137,7 +143,7 @@ CREATE TABLE `Baskets-Products` (
 --
 
 INSERT INTO `Baskets-Products` (`userId`, `prodId`, `size_name`, `quantity`, `setDate`) VALUES
-(651853948, 6, 's', 1, '2018-06-01 00:00:00');
+(651853948, 6, 's', 2, '2018-06-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -183,7 +189,9 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20');
+('131u45w04001h52945214200j', 1, 'l-asos-null-null', 'l', 'asos', NULL, NULL, 1, '2020-10-03 08:57:16'),
+('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20'),
+('mf1550920290g92f0261m60i2', 3, 's-the north face-null-null', 's', 'the north face', NULL, NULL, 1, '2020-09-25 19:06:42');
 
 -- --------------------------------------------------------
 
@@ -355,58 +363,32 @@ CREATE TABLE `Boxes` (
 --
 
 INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
-('00222q11091224s4kcr791a5k', 'gold', '2020-09-14 12:27:25'),
-('0231001pkp23117y4y19354k0', 'regular', '2020-09-15 13:14:33'),
-('052e000e182151b1lg9b7009y', 'silver', '2020-09-17 09:50:10'),
 ('0860g1009tn0i31s2s6b24112', 'gold', '2020-09-16 21:40:10'),
 ('0gi1031159y53i7209g2o2r40', 'gold', '2020-09-15 13:20:53'),
 ('0n57q1k1902082n05n9ug5280', 'silver', '2020-09-17 09:50:58'),
-('0q511122812h0z24093t61yy9', 'gold', '2020-09-13 19:48:25'),
-('0v31e9b3la122152n6cz00027', 'silver', '2020-09-13 13:25:20'),
 ('102901079c41fcg2mtw96t40d', 'regular', '2020-09-17 09:49:41'),
+('120p222c5150ym3wt2308y193', 'gold', '2020-09-25 22:31:35'),
 ('1232v21310hu04d2j0w9f3b2e', 'gold', '2020-09-23 14:23:23'),
-('15921f520in5202sq5004dc01', 'gold', '2020-09-14 12:05:02'),
-('1iq120000m126cyu63d91z083', 'gold', '2020-09-13 18:13:06'),
-('1q00171922c021uf2sa2dn222', 'gold', '2020-09-12 21:17:22'),
-('1qd923a09g0201k626202bkp4', 'regular', '2020-09-13 20:46:29'),
+('131u45w04001h52945214200j', 'gold', '2020-10-01 14:25:40'),
+('182269c17d0972rf2q0012ot1', 'regular', '2020-09-27 12:18:12'),
 ('200e2001142d00916f4kjecbs', 'regular', '2020-09-16 21:40:04'),
-('20w2d0a3p202o19313nbu512o', 'gold', '2020-09-13 13:25:23'),
-('21219t010s01bc057e7141273', 'gold', '2020-09-14 11:30:15'),
-('21i510x5812l3o1918029t8q0', 'regular', '2020-09-13 18:12:59'),
-('21mq24b3509d130z302121101', 'regular', '2020-09-13 13:01:51'),
-('2o9157103h1030xd21yqmz087', 'gold', '2020-09-13 13:01:57'),
 ('2x8gb01iw9130u22210422450', 'gold', '2020-09-14 12:45:08'),
 ('30owo260119100q2f9cl25im1', 'silver', '2020-09-15 13:21:09'),
-('415i1w13002744032n2lv3192', 'silver', '2020-09-13 13:34:24'),
-('422qn10619331ybhv1003028f', 'gold', '2020-09-13 13:34:26'),
-('4304q104330x2300491240j2a', 'regular', '2020-09-13 20:40:43'),
-('4vv402921y2t1p021071xgj1z', 'regular', '2020-09-14 12:14:27'),
+('310m035013939e0523112udmk', 'gold', '2020-09-30 11:53:33'),
 ('70r904v2240t0292ko1514055', 'silver', '2020-09-24 17:55:02'),
-('71c239410g8tam01510507k2x', 'regular', '2020-09-14 11:57:57'),
-('72t30890c950p116isi21209d', 'gold', '2020-09-13 18:27:09'),
 ('8z441320demj9320011641962', 'silver', '2020-09-14 12:46:18'),
-('9040b4n501t002013759f26ts', 'regular', '2020-09-14 09:57:05'),
 ('9283q00b42f10224e1e14520o', 'regular', '2020-09-21 20:24:34'),
-('99590021466q23w2yg71230x0', 'silver', '2020-09-13 20:46:32'),
-('9v164210q2200h69cf021idx1', 'regular', '2020-09-12 21:16:04'),
-('a36201z2119v2yrkpx00v1809', 'regular', '2020-09-13 16:19:28'),
-('c68nq053120w4051l9a122032', 'gold', '2020-09-13 20:46:35'),
-('f059329l31019108dwhz270l2', 'silver', '2020-09-13 18:27:05'),
-('j03qi3iy0921n80021181343w', 'silver', '2020-09-13 18:13:03'),
+('di9220591ht9210ji3s1805s0', 'silver', '2020-09-30 12:55:19'),
 ('k23h21r10j70793907150552g', 'gold', '2020-09-15 21:59:03'),
 ('kj140a2122c292v33v0g30901', 'gold', '2020-09-14 12:23:33'),
 ('l1791ozl00700uca0222y0943', 'regular', '2020-09-17 09:04:23'),
-('p3mp21193471s2hu30l00k150', 'silver', '2020-09-13 13:01:54'),
+('mf1550920290g92f0261m60i2', 'gold', '2020-09-25 19:06:05'),
 ('p971041s0m130742t104sw212', 'gold', '2020-09-14 21:03:14'),
 ('tc4h4aqo1120d160500z22915', 'gold', '2020-09-14 12:46:10'),
-('ttq68851h28111903a02324a0', 'gold', '2020-09-13 18:35:48'),
 ('v04102j401krzp90015292223', 'gold', '2020-09-23 14:21:05'),
-('v224i0v9o1004y3020l3111a2', 'regular', '2020-09-14 12:10:02'),
 ('vg2nu9x12160091342714u204', 'silver', '2020-09-16 22:14:49'),
-('w9001042m2x4h2132b1y11000', 'silver', '2020-09-14 11:30:00'),
-('x2k38219095h1204147147091', 'regular', '2020-09-13 19:49:47'),
-('y0g00v9212r49ip12v3132k56', 'silver', '2020-09-14 12:25:39'),
-('y7312jdrg09u61334200p7112', 'regular', '2020-09-13 13:34:21');
+('vl08q977s031k1g2002ejy275', 'regular', '2020-09-27 18:37:57'),
+('y0g00v9212r49ip12v3132k56', 'silver', '2020-09-14 12:25:39');
 
 -- --------------------------------------------------------
 
@@ -1238,6 +1220,16 @@ INSERT INTO `Collections` (`collectionName`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Companies`
+--
+
+CREATE TABLE `Companies` (
+  `company` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Constants`
 --
 
@@ -1281,12 +1273,22 @@ INSERT INTO `Constants` (`constName`, `stringValue`, `jsonValue`, `setDate`, `de
 
 CREATE TABLE `Cookies` (
   `cookieID` varchar(50) NOT NULL,
-  `cookieExpire` datetime NOT NULL,
+  `cookiePeriod` int(11) NOT NULL,
   `cookieDomain` varchar(50) NOT NULL,
-  `cookiePath` int(50) NOT NULL,
+  `cookiePath` varchar(50) DEFAULT NULL,
   `cookieSecure` tinyint(1) NOT NULL,
   `cookieHttponly` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Cookies`
+--
+
+INSERT INTO `Cookies` (`cookieID`, `cookiePeriod`, `cookieDomain`, `cookiePath`, `cookieSecure`, `cookieHttponly`) VALUES
+('ADM', 10800, 'localhost', NULL, 0, 1),
+('ADRS', 86400, 'localhost', 'checkout', 0, 1),
+('CLT', 31536000, 'localhost', NULL, 0, 1),
+('VIS', 94608000, 'localhost', NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1718,6 +1720,30 @@ CREATE TABLE `PagesParameters` (
   `page_` varchar(100) NOT NULL,
   `param_key` varchar(100) NOT NULL,
   `param_data` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Payements`
+--
+
+CREATE TABLE `Payements` (
+  `payMethod` varchar(50) NOT NULL,
+  `company_` varchar(50) NOT NULL,
+  `cancelPath` varchar(100) NOT NULL,
+  `successPath` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Privileges`
+--
+
+CREATE TABLE `Privileges` (
+  `privID` varchar(50) NOT NULL,
+  `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2778,9 +2804,9 @@ CREATE TABLE `Sexes` (
 --
 
 INSERT INTO `Sexes` (`sexe`) VALUES
-('man'),
+('lady'),
 ('other'),
-('woman');
+('sir');
 
 -- --------------------------------------------------------
 
@@ -2831,6 +2857,21 @@ INSERT INTO `Sizes` (`sizeName`) VALUES
 ('xs'),
 ('xxl'),
 ('xxs');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `StripeCheckoutSessions`
+--
+
+CREATE TABLE `StripeCheckoutSessions` (
+  `sessionID` varchar(50) NOT NULL,
+  `pay_method` varchar(50) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `custoID` varchar(50) NOT NULL,
+  `payStatus` varchar(50) NOT NULL,
+  `setDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2894,8 +2935,30 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER17', 'fr', 'la quantité doit être de minimum 1'),
 ('ER18', 'en', 'sorry, the quantity indicated exceeds the space available in the box'),
 ('ER18', 'fr', 'désolé, la quantité indiquée dépasse l\'espace disponible dans la box'),
+('ER19', 'en', 'this email is invalid'),
+('ER19', 'fr', 'cet email est invalide'),
 ('ER2', 'en', 'this field can not be empty'),
 ('ER2', 'fr', 'ce champ ne peut pas être vide'),
+('ER20', 'en', 'this field can only contain letters (A-Z), dashes (-) and spaces'),
+('ER20', 'fr', 'ce champ ne peut contenir que des lettres (A-Z), des tirets (-) et des espaces'),
+('ER21', 'en', 'this field must contain at least 8 characters among the following: 0-9, a-z, -, _'),
+('ER21', 'fr', 'ce champ doit contenir au moins 8 caractères parmi les suivants: 0-9, a-z, -, _'),
+('ER22', 'en', 'you must accept the terms and conditions'),
+('ER22', 'fr', 'vous devez accepter les termes et conditions'),
+('ER23', 'en', 'this address already exists'),
+('ER23', 'fr', 'cette adresse existe déjà'),
+('ER24', 'en', 'the password confirmation is not correct'),
+('ER24', 'fr', 'la confirmation du mot de passe n\'est pas correct'),
+('ER25', 'en', 'this address does not exist'),
+('ER25', 'fr', 'cette adresse n\'existe pas'),
+('ER26', 'en', 'the password is not correct'),
+('ER26', 'fr', 'le mot de passe est incorrect'),
+('ER27', 'en', 'this field can only contain spaces as well as the following characters: a-z, 0-9, -, _'),
+('ER27', 'fr', 'ce champ ne peut contenir que des espaces ainsi que les caractères suivant: a-z, 0-9, -, _'),
+('ER28', 'en', 'this field can only contain spaces as well as the following characters: a-z, -, _'),
+('ER28', 'fr', 'ce champ ne peut contenir que des espaces ainsi que les caractères suivant: a-z, -, _'),
+('ER29', 'en', 'you have already registered this address'),
+('ER29', 'fr', 'vous avez déjà enregistré cette adresse'),
 ('ER3', 'en', 'this field cannot contain numbers of the form 1997 | 297.829 or 0.321, etc ...'),
 ('ER3', 'fr', 'ce champ ne peut contenir des nombres de la forme 1997 | 297,829 ou 0,321, etc...'),
 ('ER4', 'en', 'this field can only contain letters, numbers, spaces and the special characters `-` and ` _`'),
@@ -2904,8 +2967,8 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER5', 'fr', 'vous devez cocher un choix'),
 ('ER6', 'en', 'the maximum number of characters for this field is'),
 ('ER6', 'fr', 'le nombre de caractère maximum pour ce champ est de'),
-('ER7', 'en', 'this field can only contain integer ex: 0,1, 2, 3, ...'),
-('ER7', 'fr', 'ce champ ne peut contenir que des nombres entiers ex: 0,1, 2, 3,...'),
+('ER7', 'en', 'this field can only contain numbers (0-9)'),
+('ER7', 'fr', 'ce champ ne peut contenir que des chiffres (0-9)'),
 ('ER8', 'en', 'Sorry, You have reached the maximum number of measurements:'),
 ('ER8', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure:'),
 ('ER9', 'en', 'please choose \'Size\' or \'Custom size\' option'),
@@ -3049,7 +3112,7 @@ CREATE TABLE `Users` (
   `userID` int(11) NOT NULL,
   `lang_` varchar(10) NOT NULL,
   `mail` varchar(100) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
+  `password` varchar(512) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
@@ -3063,11 +3126,12 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`userID`, `lang_`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
-(651853948, 'fr', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'man', '2020-01-06 15:00:05'),
+(3330090, 'fr', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
+(651853948, 'fr', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
 (666200808, 'en', 'rukefiwoh-5422@yopmail.com', 'qffrzrrfzfzfqcrzvrv', 'bob', 'makinson', '1995-02-27', 0, 'other', '2020-01-05 15:00:05'),
-(846470517, 'fr', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'woman', '2020-01-08 15:00:05'),
-(934967739, 'en', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'man', '2020-02-27 18:02:20'),
-(997763060, 'es', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'woman', '2020-01-07 15:00:05');
+(846470517, 'fr', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'lady', '2020-01-08 15:00:05'),
+(934967739, 'en', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'sir', '2020-02-27 18:02:20'),
+(997763060, 'es', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'lady', '2020-01-07 15:00:05');
 
 -- --------------------------------------------------------
 
@@ -3079,7 +3143,33 @@ CREATE TABLE `Users-Cookies` (
   `userId` int(11) NOT NULL,
   `cookieId` varchar(50) NOT NULL,
   `cookieValue` varchar(512) NOT NULL,
-  `setDate` datetime NOT NULL
+  `domain` varchar(50) NOT NULL,
+  `path` varchar(50) NOT NULL,
+  `setDate` datetime NOT NULL,
+  `settedPeriod` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Users-Cookies`
+--
+
+INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `path`, `setDate`, `settedPeriod`) VALUES
+(3330090, 'ADRS', '\"my address|my zip0192|belgium\"', 'localhost', '/versions/v0.2/mmbx/checkout', '2020-10-04 20:53:05', 86400),
+(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', 'localhost', '/versions/v0.2/mmbx/', '2020-10-05 09:10:36', 31536000),
+(3330090, 'VIS', '100d1sq639120hby303243a50', 'localhost', '/versions/v0.2/mmbx/', '2020-10-05 09:10:36', 94608000),
+(651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Users-Privileges`
+--
+
+CREATE TABLE `Users-Privileges` (
+  `userId` int(11) NOT NULL,
+  `privId` varchar(50) NOT NULL,
+  `beginDate` datetime NOT NULL,
+  `endDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -3110,7 +3200,10 @@ INSERT INTO `UsersMeasures` (`userId`, `measureID`, `measureName`, `userBust`, `
 (651853948, '1001nq54od2c002o903219929', 'its work motherfuck', 11, 11, 11, 11, 11, 'inch', '2020-09-21 10:49:25'),
 (651853948, '2191802te91kv3ee27a280h02', 'motherfucking pane', 23, 11, 11, 11, 11, 'inch', '2020-09-12 19:27:23'),
 (651853948, '651853948740', 'many dim auto test', 11.11, 22.22, 33.33, 44.44, 55.555, 'inch', '2018-01-18 00:00:00'),
-(997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00');
+(3330090, '803g420892212029wn05e10cq', 'vis 1', 11, 11, 11, 11, 11, 'inch', '2020-09-30 21:05:28'),
+(997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00'),
+(3330090, 'a5rn30s0gtn2x2998j3000221', 'clt 3', 11, 11, 11, 11, 11, 'centimeter', '2020-09-30 20:58:23'),
+(3330090, 'c39521az182vv0012250220n0', 'vis 0', 11, 11, 11, 11, 11, 'inch', '2020-09-30 21:05:12');
 
 --
 -- Index pour les tables déchargées
@@ -3276,6 +3369,12 @@ ALTER TABLE `Collections`
   ADD PRIMARY KEY (`collectionName`);
 
 --
+-- Index pour la table `Companies`
+--
+ALTER TABLE `Companies`
+  ADD PRIMARY KEY (`company`);
+
+--
 -- Index pour la table `Constants`
 --
 ALTER TABLE `Constants`
@@ -3432,6 +3531,20 @@ ALTER TABLE `PagesParameters`
   ADD KEY `fk_userId.setDate_.page_.PagesParameters-FROM-Pages` (`userId`,`setDate_`,`page_`);
 
 --
+-- Index pour la table `Payements`
+--
+ALTER TABLE `Payements`
+  ADD PRIMARY KEY (`payMethod`,`company_`),
+  ADD KEY `fk_company_.Payements-FROM-Companies` (`company_`),
+  ADD KEY `payMethod` (`payMethod`);
+
+--
+-- Index pour la table `Privileges`
+--
+ALTER TABLE `Privileges`
+  ADD PRIMARY KEY (`privID`);
+
+--
 -- Index pour la table `ProductBuyPrice`
 --
 ALTER TABLE `ProductBuyPrice`
@@ -3544,6 +3657,14 @@ ALTER TABLE `Sizes`
   ADD PRIMARY KEY (`sizeName`);
 
 --
+-- Index pour la table `StripeCheckoutSessions`
+--
+ALTER TABLE `StripeCheckoutSessions`
+  ADD PRIMARY KEY (`sessionID`),
+  ADD KEY `fk_pay_method.StripeCheckoutSessions-FROM-Payemsnts` (`pay_method`),
+  ADD KEY `fk_userId.StripeCheckoutSessions-FROM-Users` (`userId`);
+
+--
 -- Index pour la table `Translations`
 --
 ALTER TABLE `Translations`
@@ -3562,6 +3683,7 @@ ALTER TABLE `TranslationStations`
 --
 ALTER TABLE `Users`
   ADD PRIMARY KEY (`userID`),
+  ADD UNIQUE KEY `mail` (`mail`),
   ADD KEY `fk_lang_FROM-Languages` (`lang_`),
   ADD KEY `fk_sexe_FROM-Sexes` (`sexe_`);
 
@@ -3571,6 +3693,13 @@ ALTER TABLE `Users`
 ALTER TABLE `Users-Cookies`
   ADD PRIMARY KEY (`userId`,`cookieId`),
   ADD KEY `FK_cookieId.Users-Cookies-FROM-Cookies` (`cookieId`);
+
+--
+-- Index pour la table `Users-Privileges`
+--
+ALTER TABLE `Users-Privileges`
+  ADD PRIMARY KEY (`userId`,`privId`),
+  ADD KEY `fk_privId.Users-Privileges-FROM-Users` (`privId`);
 
 --
 -- Index pour la table `UsersMeasures`
@@ -3605,7 +3734,7 @@ ALTER TABLE `Translations`
 --
 ALTER TABLE `Addresses`
   ADD CONSTRAINT `fk_country_.Addresses-FROM-Countries` FOREIGN KEY (`country_`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Addresses-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Addresses-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Administrators`
@@ -3816,13 +3945,19 @@ ALTER TABLE `Pages`
 --
 ALTER TABLE `Pages-Actions`
   ADD CONSTRAINT `fk_action_.Pages-Actions-FROM-Actions` FOREIGN KEY (`action_`) REFERENCES `Actions` (`action`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.page_.Pages-Actions-FROM-Pages` FOREIGN KEY (`userId`,`page_`) REFERENCES `Pages` (`userId`, `page`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.page_.Pages-Actions-FROM-Pages` FOREIGN KEY (`userId`,`page_`) REFERENCES `Pages` (`userId`, `page`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `PagesParameters`
 --
 ALTER TABLE `PagesParameters`
-  ADD CONSTRAINT `fk_userId.setDate_.page_.PagesParameters-FROM-Pages` FOREIGN KEY (`userId`,`setDate_`,`page_`) REFERENCES `Pages` (`userId`, `setDate`, `page`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.setDate_.page_.PagesParameters-FROM-Pages` FOREIGN KEY (`userId`,`setDate_`,`page_`) REFERENCES `Pages` (`userId`, `setDate`, `page`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Payements`
+--
+ALTER TABLE `Payements`
+  ADD CONSTRAINT `fk_company_.Payements-FROM-Companies` FOREIGN KEY (`company_`) REFERENCES `Companies` (`company`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `ProductBuyPrice`
@@ -3912,6 +4047,13 @@ ALTER TABLE `ProductsShippings`
   ADD CONSTRAINT `fk_prodId.ProductsShipping-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `StripeCheckoutSessions`
+--
+ALTER TABLE `StripeCheckoutSessions`
+  ADD CONSTRAINT `fk_pay_method.StripeCheckoutSessions-FROM-Payemsnts` FOREIGN KEY (`pay_method`) REFERENCES `Payements` (`payMethod`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_userId.StripeCheckoutSessions-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `Translations`
 --
 ALTER TABLE `Translations`
@@ -3936,6 +4078,13 @@ ALTER TABLE `Users`
 ALTER TABLE `Users-Cookies`
   ADD CONSTRAINT `FK_cookieId.Users-Cookies-FROM-Cookies` FOREIGN KEY (`cookieId`) REFERENCES `Cookies` (`cookieID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_userId.Users-Cookies-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Users-Privileges`
+--
+ALTER TABLE `Users-Privileges`
+  ADD CONSTRAINT `fk_privId.Users-Privileges-FROM-Users` FOREIGN KEY (`privId`) REFERENCES `Privileges` (`privID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_userId.Users-Privileges-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `UsersMeasures`
