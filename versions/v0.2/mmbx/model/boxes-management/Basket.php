@@ -325,6 +325,20 @@ class Basket extends ModelFunctionality
         // return (new Price(rand(4, 30) / rand(3, 5), $currency));
     }
 
+    // public function isEmpty()
+    // {
+    //     $isEmpty = true;
+    //     $isEmpty = (empty($this->getBasketProducts()));
+    //     if($isEmpty){
+    //         $boxes = $this->getBoxes();
+    //         if(!empty($boxes)){
+    //             foreach($boxes as $box){
+
+    //             }
+    //         }
+    //     }
+    // }
+
     /**
      * Check if still enough place in box to add one product
      * @param string $boxID id of the box to look for

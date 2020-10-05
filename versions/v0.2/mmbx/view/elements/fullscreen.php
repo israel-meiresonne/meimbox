@@ -83,7 +83,7 @@ $language = $person->getLanguage();
     endif;
     ?>
     <?php
-    if ($person->hasCookie(Cookie::COOKIE_CLT) && (!empty($person->getAddresses))) :
+    if ($person->hasCookie(Cookie::COOKIE_CLT) && (!empty($person->getAddresses()))) :
     ?>
         <div id="address_adder_pop" class="pop_up-container">
             <?php

@@ -242,6 +242,18 @@ class BoxProduct extends Product
     }
 
     /**
+     * Getter for product's prrice
+     * @return Price product's prrice
+     * + for boxProduct will return Price with a zero as value
+     */
+    public function getPrice()
+    {
+        $currency = $this->getCurrency();
+        $price = new Price(0, $currency);
+        return $price;
+    }
+
+    /**
      * Build a HTML displayable price
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency

@@ -136,6 +136,18 @@ abstract class ModelFunctionality extends Model
     private static $sexesMap;
 
     /**
+     * Holds supported payement methods
+     * @var Map
+     * + payementMap[Map::payID] => [
+     * + + Map::payMethod
+     * + + Map::company
+     * + + Map::cancelPath
+     * + + Map::successPath
+     * + ]
+     */
+    private static $payementMap;
+
+    /**
      * PDOStatement success code
      * @var string
      */
@@ -812,6 +824,39 @@ abstract class ModelFunctionality extends Model
                 self::$usersCookiesMap->put($tabLine["setDate"], $cookieID, Map::setDate);
                 self::$usersCookiesMap->put($tabLine["settedPeriod"], $cookieID, Map::settedPeriod);
             }
+        }
+    }
+
+    /**
+     * To get from db supported payement methods and their datas
+     * @return Map supported payement methods and their datas
+     * + payementMap[Map::payID] => [
+     * + + Map::payMethod
+     * + + Map::company
+     * + + Map::cancelPath
+     * + + Map::successPath
+     * + ]
+     */
+    protected static function getPayementMap()
+    {
+        (!isset(self::$payementMap)) ? self::setPayementMap() : null;
+        return self::$payementMap;
+    }
+
+    /**
+     * To initialize the payementMap
+     */
+    private static function setPayementMap()
+    {
+        self::$payementMap = new Map();
+        $sql = "SELECT * FROM `Payements`";
+        $tab = self::select($sql);
+        if (!empty($tab)) {
+            $payID = $tab["payID"];
+            self::$payementMap->put($tab["payMethod"], $payID, Map::payMethod);
+            self::$payementMap->put($tab["company_"], $payID, Map::company);
+            self::$payementMap->put($tab["cancelPath"], $payID, Map::cancelPath);
+            self::$payementMap->put($tab["successPath"], $payID, Map::successPath);
         }
     }
 

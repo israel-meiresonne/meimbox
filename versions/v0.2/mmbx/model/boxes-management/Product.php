@@ -533,7 +533,7 @@ abstract class Product extends ModelFunctionality
                 $categories = $this->getCategories();
                 $datas = array_merge($datas, $collections, $functions, $categories);
                 $info = (count($datas) > 0) ? "/" . implode(self::GLUE, $datas) : "";
-                $url .= str_replace(["0","1","2","3","4","5","6","7","8","9"], "", $info);
+                $url .= str_replace(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "", $info);
                 break;
             default:
                 throw new Exception("This url page don't exist, page:$page");
@@ -634,6 +634,13 @@ abstract class Product extends ModelFunctionality
         }
         return $selectedSize->getQuantity();
     }
+
+    /**
+     * Getter for product's prrice
+     * @return Price product's prrice
+     * + for boxProduct will return Price with a zero as value
+     */
+    public abstract function getPrice();
 
     /**
      * To get cuts available

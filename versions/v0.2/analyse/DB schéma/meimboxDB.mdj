@@ -16933,7 +16933,7 @@
 											"font": "Arial;13;1",
 											"left": 2680,
 											"top": 277,
-											"width": 242.875,
+											"width": 245.0205078125,
 											"height": 13,
 											"text": "Payements"
 										},
@@ -16959,7 +16959,22 @@
 													"font": "Arial;13;0",
 													"left": 2685,
 													"top": 300,
-													"width": 232.875,
+													"width": 235.0205078125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF0+OLh4p1QIFo=",
+													"_parent": {
+														"$ref": "AAAAAAF0+Hfpay6X2CA="
+													},
+													"model": {
+														"$ref": "AAAAAAF0+OLhop1NuuA="
+													},
+													"font": "Arial;13;0",
+													"left": 2685,
+													"top": 315,
+													"width": 235.0205078125,
 													"height": 13
 												},
 												{
@@ -16973,8 +16988,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2685,
-													"top": 315,
-													"width": 232.875,
+													"top": 330,
+													"width": 235.0205078125,
 													"height": 13
 												},
 												{
@@ -16988,8 +17003,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2685,
-													"top": 330,
-													"width": 232.875,
+													"top": 345,
+													"width": 235.0205078125,
 													"height": 13
 												},
 												{
@@ -17003,23 +17018,23 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2685,
-													"top": 345,
-													"width": 232.875,
+													"top": 360,
+													"width": 235.0205078125,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 2680,
 											"top": 295,
-											"width": 242.875,
-											"height": 68
+											"width": 245.0205078125,
+											"height": 83
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2680,
 									"top": 272,
-									"width": 242.875,
-									"height": 91,
+									"width": 245.0205078125,
+									"height": 106,
 									"nameLabel": {
 										"$ref": "AAAAAAF0+Hfpay6Whqk="
 									},
@@ -17354,7 +17369,7 @@
 												"$ref": "AAAAAAF0+InmoC8ueP4="
 											},
 											"font": "Arial;13;0",
-											"left": 2947,
+											"left": 2949,
 											"top": 283,
 											"height": 13,
 											"alpha": 0.5235987755982988,
@@ -17389,7 +17404,7 @@
 										"$ref": "AAAAAAF0+Hfpay6V18Y="
 									},
 									"lineStyle": 2,
-									"points": "2922:304;3024:304;3024:640;2920:640",
+									"points": "2924:304;3024:304;3024:640;2920:640",
 									"nameLabel": {
 										"$ref": "AAAAAAF0+InmoC8vtrw="
 									},
@@ -24541,7 +24556,20 @@
 									"_parent": {
 										"$ref": "AAAAAAF0+Hfpai6T23Y="
 									},
+									"name": "payID",
+									"documentation": "# Definition\n\nHolds the name given to the payement method",
+									"type": "VARCHAR",
+									"length": "50",
+									"primaryKey": true
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF0+OLhop1NuuA=",
+									"_parent": {
+										"$ref": "AAAAAAF0+Hfpai6T23Y="
+									},
 									"name": "payMethod",
+									"documentation": "# Definition \n\nHolds the value to used to configure the payement",
 									"type": "VARCHAR",
 									"length": "50",
 									"primaryKey": true
@@ -24556,7 +24584,6 @@
 									"documentation": "# Definition\n\nHolds the name of the company that provide a payement method\n\n# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE\n",
 									"type": "VARCHAR",
 									"length": "50",
-									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAF0+IRmuS7ZbNA="
@@ -24692,7 +24719,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF0+Ibxly78CfY="
 									},
-									"name": "pay_method",
+									"name": "payId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
 									"type": "VARCHAR",
 									"length": "50",

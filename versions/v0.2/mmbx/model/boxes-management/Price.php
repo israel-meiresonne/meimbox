@@ -67,6 +67,17 @@ class Price
     }
 
     /**
+     * Getter of the price
+     * @return float the price
+     */
+    public function getPriceRounded()
+    {
+        $price = $this->getPrice();
+        // return (float) ;
+        return number_format($price, 2, ".", "");
+    }
+
+    /**
      * Getter for price's currency
      * @return Currency price's currency
      */

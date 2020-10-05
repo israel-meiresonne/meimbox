@@ -9,10 +9,16 @@ abstract class User extends  Visitor
     // protected $password;
 
     /**
-     * Holds the mail of the user
+     * Holds the email of the user
      * @var string
      */
-    protected $mail;
+    protected $email;
+
+    /**
+     * Holds User's id in Stripe's system
+     * @var string
+     */
+    protected $custoID;
 
     /**
      * Holds the firstname of the user
@@ -78,7 +84,7 @@ abstract class User extends  Visitor
 
         $this->setDate = $this->userLine["setDate"];
         $this->lang = new Language($this->userLine["lang_"]);
-        $this->mail = $this->userLine["mail"];
+        $this->email = $this->userLine["mail"];
         $this->firstname = $this->userLine["firstname"];
         $this->lastname = $this->userLine["lastname"];
         $this->birthday = $this->userLine["birthday"];
@@ -111,6 +117,77 @@ abstract class User extends  Visitor
             }
         }
     }
+
+    /**
+     * To set User's id in Stripe's system
+     */
+    private function setCustoID()
+    {
+        $userID = $this->getUserID();
+        $sql = "SELECT * FROM `StripeCheckoutSessions` WHERE `userId` = '$userID' ORDER BY `setDate` DESC";
+        $tab = $this->select($sql);
+        if(!empty($tab)){
+            $this->custoID = $tab[0]["custoID"];
+        } else {
+            $this->custoID = "";
+        }
+    }
+
+    /**
+     * To get User's email
+     * @return string User's email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    /**
+     * To get User's id in Stripe's system
+     * @return string|null User's id in Stripe's system
+     */
+    public function getCustoIDStripe()
+    {
+        (!isset($this->custoID)) ? $this->setCustoID() : null;
+        return (!empty($this->custoID)) ? $this->custoID : null;
+    }
+
+    /**
+     * To get User's firstname
+     * @return string User's firstname
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * To get User's lastname
+     * @return string User's lastname
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * To get User's birthday
+     * @return string User's birthday
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
+     * To get User's sexe
+     * @return string User's sexe
+     */
+    public function getSexe()
+    {
+        return $this->sexe;
+    }
+
 
     /**
      * Getter for User's addresses

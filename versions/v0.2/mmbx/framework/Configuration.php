@@ -15,6 +15,13 @@ class Configuration
     private static $parameters;
 
     /**
+     * Keys to acces datas
+     */
+    public const DOMAIN = "domain";
+    public const STRIPE_PK = "stripePK";
+    public const STRIPE_SK = "stripeSK";
+
+    /**
      * Renvoie la valeur d'un paramètre de configuration
      * 
      * @param string $name Nom du paramètre
