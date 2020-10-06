@@ -1,7 +1,7 @@
 <?php
 require_once 'model/library/payement/stripe-php/init.php';
 require_once 'model/ModelFunctionality.php';
-require_once 'framework/Configuration.phpversions/v0.2/mmbx/framework/Configuration.php';
+require_once 'framework/Configuration.php';
 require_once 'model/boxes-management/Basket.php';
 require_once 'model/boxes-management/Box.php';
 require_once 'model/boxes-management/BasketProduct.php';
@@ -18,7 +18,7 @@ class MyStripe extends ModelFunctionality
 
     /**
      * Holds holds Stripe's checkout session
-     * @var string
+     * @var \Stripe\Checkout\Session
      */
     private $checkoutSession;
 
@@ -73,6 +73,11 @@ class MyStripe extends ModelFunctionality
      */
     private const STRP_PROD_MAX_IMG = 8;
 
+      /**
+     * Key for attribut
+     */
+    public const KEY_STRP_MTD = "key_strp_mtd";
+
     /**
      * Constructor
      * @param string $payMethod payement method like [card, bancontact, ideal, etc...]
@@ -92,15 +97,15 @@ class MyStripe extends ModelFunctionality
         if (empty($payID)) {
             throw new Exception("This payement method ('$payMethod') is not supported");
         }
-        $basket = $client->getBasket();
+        $this->client = $client;
+        $basket = $this->client->getBasket();
         if ($basket->getQuantity() <= 0) {
             throw new Exception("Basket can't be empty");
         }
-        $this->client = $client;
         $this->payMethod = $payementMap->get($payID, Map::payMethod);
         $this->cancelPath = $payementMap->get($payID, Map::cancelPath);
         $this->successPath = $payementMap->get($payID, Map::successPath);
-        $this->domain = Configuration::get(Configuration::DOMAIN);
+        $this->domain = Configuration::get(Configuration::URL_PROTOCOL);
         $this->setCheckoutSession();
     }
 
@@ -127,7 +132,7 @@ class MyStripe extends ModelFunctionality
          */
         $stripe = $this->getStripe();
         $client = $this->getClient();
-        $basket = $this->$client->getBasket();
+        $basket = $client->getBasket();
         $webRoot = Configuration::getWebRoot();
         $domain = $this->getDomain();
         $success_url = $domain . $webRoot . $this->getsuccessPath();
@@ -140,7 +145,7 @@ class MyStripe extends ModelFunctionality
             //   'payment_method_types' => ['card'],
             'payment_method_types' => [$this->getPayMethod()],
             'client_reference_id' => $client->getUserID(),
-            'customer' => $client->getCustoIDStripe(),
+            // 'customer' => $client->getCustoIDStripe(),
             'customer_email' => $client->getEmail(),
             'line_items' => $line_items,
             // 'metadata' => $metadata,
@@ -159,6 +164,15 @@ class MyStripe extends ModelFunctionality
     {
         (!isset(self::$stripe)) ? $this->setApiKey() : null;
         return self::$stripe;
+    }
+
+    /**
+     * To get CheckoutSession's id
+     * @return string CheckoutSession's id
+     */
+    public  function getSessionId()
+    {
+        return $this->checkoutSession->id;
     }
 
     /**
@@ -203,7 +217,7 @@ class MyStripe extends ModelFunctionality
      */
     private function getClient()
     {
-        return $this->currency;
+        return $this->client;
     }
 
     // /**
@@ -240,7 +254,7 @@ class MyStripe extends ModelFunctionality
                     array_push($line_items, $stripeProduct);
                     break;
                 case Box::class:
-                    $this->extractBox($element, $line_items);
+                    $line_items = $this->extractBox($element, $line_items);
                     // array_push($line_items, $stripeProduct);
                     break;
                 default:
@@ -265,11 +279,17 @@ class MyStripe extends ModelFunctionality
         $payementIntent["shipping"]["address"]["line1"] = $address->getAddress();
         $payementIntent["shipping"]["address"]["city"] = $address->getCity();
         $payementIntent["shipping"]["address"]["country"] = $address->getCountry()->getIsoCountry();       // isoCountry
-        $payementIntent["shipping"]["address"]["line2"] = $address->getAppartement();     // apartment, suite, unit, or building
+        $apartment = $address->getAppartement();
+        if(!empty($apartment)){
+            $payementIntent["shipping"]["address"]["line2"] = $apartment;     // apartment, suite, unit, or building
+        }
         $payementIntent["shipping"]["address"]["postal_code"] = $address->getZipcode();
         $payementIntent["shipping"]["address"]["state"] = $address->getProvince();
         $payementIntent["shipping"]["name"] = $client->getLastname();     // user's lastname
-        $payementIntent["shipping"]["phone"] = $address->getPhone();
+        $phone = $address->getPhone();
+        if(!empty($phone)){
+            $payementIntent["shipping"]["phone"] = $phone;
+        }
         // $payementIntent["shipping"]["carrier"] = ;  // Fedex, UPS, USPS, etc.
         // $payementIntent["shipping"]["tracking_number"] = ;  // If multiple tracking numbers were generated for this purchase, please separate them with commas.
         return $payementIntent;
@@ -300,7 +320,7 @@ class MyStripe extends ModelFunctionality
         $prodDatas = new Map();
         $client = $this->getClient();
         $prodDatas->put($product->getProdName(), Map::name);
-        $prodDatas->put($this->$client->getCurrency(), Map::currency);
+        $prodDatas->put($client->getCurrency(), Map::currency);
         $prodDatas->put($product->getPrice(), Map::unit_amount);
         $prodDatas->put($product->getDescription(), Map::description);
         $prodDatas->put($product->getPictureSources(), Map::images);
@@ -321,7 +341,7 @@ class MyStripe extends ModelFunctionality
             $boxDatas = new Map();
             $client = $this->getClient();
             $boxDatas->put($box->getColor(), Map::name);
-            $boxDatas->put($this->$client->getCurrency(), Map::currency);
+            $boxDatas->put($client->getCurrency(), Map::currency);
             $boxDatas->put($box->getPrice(), Map::unit_amount);
             $boxDatas->put(null, Map::description);
             $boxDatas->put([$box->getPictureSource()], Map::images);
@@ -333,6 +353,7 @@ class MyStripe extends ModelFunctionality
                 array_push($line_items, $stripeProduct);
             }
         }
+        return $line_items;
     }
 
     /**
@@ -364,11 +385,14 @@ class MyStripe extends ModelFunctionality
         $stripProduct["price_data"]["currency"] = $datas->get(Map::currency)->getIsoCurrency();
         $stripProduct["price_data"]["unit_amount"] = $datas->get(Map::unit_amount)->getPriceRounded() * 100;
         $stripProduct["price_data"]["product_data"]["name"] = $datas->get(Map::name);
-        $stripProduct["price_data"]["product_data"]["description"] = $datas->get(Map::description);
+        $description = $datas->get(Map::description);
+        if(!empty($description)){
+            $stripProduct["price_data"]["product_data"]["description"] = $description;
+            $stripProduct["description"] = $description;
+        }
         $stripProduct["price_data"]["product_data"]["images"] = $imgLinks;           // max 8 url
         // $stripProduct["price_data"]["product_data"]["metadata"] = ;
         $stripProduct["quantity"] = $datas->get(Map::quantity);
-        $stripProduct["description"] = $datas->get(Map::description);
         return $stripProduct;
     }
 }

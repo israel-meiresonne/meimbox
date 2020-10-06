@@ -81,42 +81,12 @@
                                         ];
                                         echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
                                         ?>
-                                        <!-- <div class="dropdown-wrap">
-                                                            <div class="dropdown-inner">
-                                                                <div class="dropdown-head dropdown-arrow-close">
-                                                                    <span class="dropdown-title">country</span>
-                                                                </div>
-                                                                <div class="dropdown-checkbox-list">
-                                                                    <div class="dropdown-checkbox-block">
-                                                                        <label class="checkbox-label">belgium
-                                                                            <input type="radio" name="country">
-                                                                            <span class="checkbox-checkmark"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="dropdown-checkbox-block">
-                                                                        <label class="checkbox-label">france
-                                                                            <input type="radio" name="country">
-                                                                            <span class="checkbox-checkmark"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="dropdown-checkbox-block">
-                                                                        <label class="checkbox-label">switzerland
-                                                                            <input type="radio" name="country">
-                                                                            <span class="checkbox-checkmark"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> -->
                                     </div>
                                 </div>
                             <?php
                                     break;
                                 case self::CONF_SOMMARY_CHECKOUT:
                             ?>
-                                <!-- <div class="summary-title">
-                                <p class="title-first_letter">your shipping address:</p>
-                            </div> -->
                                 <div id="order_summary_address" class="summary-detail-address">
                                     <?php
                                     $title = "your shipping address:";
@@ -174,61 +144,96 @@
                 </ul>
             </div>
             <div class="summary-detail-button-div">
-                <div class="summary-detail-button-inner">
-                    <button class="green-button standard-button remove-button-default-att">checkout</button>
-                </div>
+                <?php
+
+                switch ($conf) {
+                    case self::CONF_SOMMARY_CHECKOUT:
+                        $sbtnid = ModelFunctionality::generateDateCode(25);
+                        $sbtnx = "#$sbtnid";
+                        $brotCls = ModelFunctionality::generateDateCode(25);
+                        $brotx = ".$brotCls";
+                        $lid = ModelFunctionality::generateDateCode(25);
+                        $lx = "#$lid";
+                ?>
+                        <div class="summary-detail-button-inner">
+                            <button id="<?= $sbtnid ?>" class="green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx ="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
+                            <div id="<?= $lid ?>" class="<?= $brotCls ?> btn-loading loading-img-wrap">
+                                <img src="content/brain/permanent/mini-loading.gif">
+                            </div>
+                        </div>
+                    <?php
+                        break;
+
+                    case self::CONF_SOMMARY_SHOPBAG:
+                    ?>
+                        <div class="summary-detail-button-inner">
+                            <button class="green-button standard-button remove-button-default-att">checkout</button>
+                            <div class="btn-loading loading-img-wrap">
+                                <img src="content/brain/permanent/mini-loading.gif">
+                            </div>
+                        </div>
+                <?php
+                        # code...
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
+                ?>
+
             </div>
             <div class="summary-payement">
-                    <ul class="payement-ul remove-ul-default-att">
-                        <li class="payement-li remove-li-default-att">
-                            <div class="img-text-wrap">
-                                <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
-                                </div>
-                                <span class="img-text-span">visa</span>
+                <ul class="payement-ul remove-ul-default-att">
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
+                                <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
                             </div>
-                        </li>
-                        <li class="payement-li remove-li-default-att">
-                            <div class="img-text-wrap">
-                                <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
-                                </div>
-                                <span class="img-text-span">pay</span>
+                            <span class="img-text-span">visa</span>
+                        </div>
+                    </li>
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
+                                <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
                             </div>
-                        </li>
-                        <li class="payement-li remove-li-default-att">
-                            <div class="img-text-wrap">
-                                <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
-                                </div>
-                                <span class="img-text-span">paypal</span>
+                            <span class="img-text-span">pay</span>
+                        </div>
+                    </li>
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
+                                <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
                             </div>
-                        </li>
-                        <li class="payement-li remove-li-default-att">
-                            <div class="img-text-wrap">
-                                <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
-                                </div>
-                                <span class="img-text-span">masterCard</span>
+                            <span class="img-text-span">paypal</span>
+                        </div>
+                    </li>
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
+                                <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
                             </div>
-                        </li>
-                        <li class="payement-li remove-li-default-att">
-                            <div class="img-text-wrap">
-                                <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
-                                </div>
-                                <span class="img-text-span">maestro</span>
+                            <span class="img-text-span">masterCard</span>
+                        </div>
+                    </li>
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
+                                <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
                             </div>
-                        </li>
-                        <li class="payement-li remove-li-default-att">
-                            <div class="img-text-wrap">
-                                <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
-                                </div>
-                                <span class="img-text-span">american express</span>
+                            <span class="img-text-span">maestro</span>
+                        </div>
+                    </li>
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
+                                <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
                             </div>
-                        </li>
-                    </ul>
+                            <span class="img-text-span">american express</span>
+                        </div>
+                    </li>
+                </ul>
             </div>
 
             <div class="summary-detail-safe_info-div">

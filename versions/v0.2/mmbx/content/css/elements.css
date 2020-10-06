@@ -1738,6 +1738,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .summary-detail-button-inner {
+    position: relative;
     width: 100%;
     max-width: 500px;
     margin: 0 auto;

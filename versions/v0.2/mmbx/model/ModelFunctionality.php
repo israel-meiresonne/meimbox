@@ -852,11 +852,14 @@ abstract class ModelFunctionality extends Model
         $sql = "SELECT * FROM `Payements`";
         $tab = self::select($sql);
         if (!empty($tab)) {
-            $payID = $tab["payID"];
-            self::$payementMap->put($tab["payMethod"], $payID, Map::payMethod);
-            self::$payementMap->put($tab["company_"], $payID, Map::company);
-            self::$payementMap->put($tab["cancelPath"], $payID, Map::cancelPath);
-            self::$payementMap->put($tab["successPath"], $payID, Map::successPath);
+            foreach ($tab as $tabLine) {
+                //  = $tab[0];
+                $payID = $tabLine["payID"];
+                self::$payementMap->put($tabLine["payMethod"], $payID, Map::payMethod);
+                self::$payementMap->put($tabLine["company_"], $payID, Map::company);
+                self::$payementMap->put($tabLine["cancelPath"], $payID, Map::cancelPath);
+                self::$payementMap->put($tabLine["successPath"], $payID, Map::successPath);
+            }
         }
     }
 

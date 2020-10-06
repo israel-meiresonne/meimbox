@@ -18,7 +18,7 @@
     valueattr = "value";
     // ++++ data- down ++++
     const dadx = "data-dadx";
-    const brotherx = "data-brotherx";
+    databrotherx = "data-brotherx";
     const flagx = "data-flagx";
     const submitbtnx = "data-sbtnx";
     datatarget = "data-datatarget";
@@ -37,6 +37,7 @@
     dataarrow = "data-arrow";
     dataerrorx = "data-errorx";
     dataerrortype = "data-errortype";
+    datalx = "data-loadingx"
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
         return (v == null || v == "");
@@ -110,7 +111,7 @@
     displayFadeOut = (x, t = TS) => {
         $(x).fadeOut(t);
     }
-    handleErr = (r, formx) => {
+    handleErr = (r, formx  = null) => {
         var k = Object.keys(r.errors);
         k.forEach(n => {
             var inpx = $(formx).find("input[name='" + n + "']");
@@ -184,11 +185,11 @@
         before(launchx);
         var d = $(launchx).attr(dadx);
         var f = $(launchx).attr(flagx);
-        var a = $(f).attr(brotherx);
+        var a = $(f).attr(databrotherx);
         var sbtnx = $(d).attr(submitbtnx);
         var ftag = getTag(f);
 
-        var bs = $(d).find(ftag + "[" + brotherx + "='" + a + "']");
+        var bs = $(d).find(ftag + "[" + databrotherx + "='" + a + "']");
         console.log(bs);
         $(bs).removeClass(selected);
         $(f).addClass(selected);
