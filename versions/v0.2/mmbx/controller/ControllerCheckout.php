@@ -1,5 +1,6 @@
 <?php
 require_once 'ControllerSecure.php';
+require_once 'model/orders-management/payement/stripe/MyStripe.php';
 class ControllerCheckout extends ControllerSecure
 {
 
@@ -20,6 +21,7 @@ class ControllerCheckout extends ControllerSecure
      * + also used for ajax request
      */
     public const QR_SELECT_ADRS = "checkout/selectAddress";
+    public const QR_NW_CHCKT_SS = "checkout/getSessionId";
 
     /**
      * The layout for the checkout page
@@ -69,6 +71,28 @@ class ControllerCheckout extends ControllerSecure
             if(!$response->containError()){
                 $response->addResult(self::QR_SELECT_ADRS, self::CTR_NAME);
             }
+        }
+        $this->generateJsonView($datasView, $response, $this->person);
+    }
+
+    public function getSessionId()
+    {
+        $response = new Response();
+        $datasView = [];
+        if(!Query::existParam(MyStripe::KEY_STRP_MTD)){
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $payMethod = Query::getParam(MyStripe::KEY_STRP_MTD);
+            try {
+                $myStripe= new MyStripe($payMethod, $this->person);
+            } catch (\Throwable $th) {
+                $response->addError($th->getMessage(), MyStripe::KEY_STRP_MTD);
+            }
+            if(!$response->containError()){
+                $sessionId = $myStripe->getSessionId();
+             $response->addResult(MyStripe::KEY_STRP_MTD, $sessionId); 
+            }
+            
         }
         $this->generateJsonView($datasView, $response, $this->person);
     }

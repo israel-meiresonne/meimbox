@@ -128,7 +128,9 @@ class Cookie extends ModelFunctionality
         $settedPeriod = $cookiesMap->get($cookieID, Map::period);
         $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
         $cookie->period = $cookiesMap->get($cookieID, Map::period);
-        $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
+        // $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
+        $domainDb = $cookiesMap->get($cookieID, Map::domain);
+        $cookie->domain = (!empty($domainDb)) ? $domainDb : Configuration::get(Configuration::DOMAIN);
         $cookie->path = Configuration::getWebRoot() . $cookiesMap->get($cookieID, Map::path);
         $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
         $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);

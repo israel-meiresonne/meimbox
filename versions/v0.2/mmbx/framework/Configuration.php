@@ -18,6 +18,7 @@ class Configuration
      * Keys to acces datas
      */
     public const DOMAIN = "domain";
+    public const URL_PROTOCOL = "urlProtocol";
     public const STRIPE_PK = "stripePK";
     public const STRIPE_SK = "stripeSK";
 
