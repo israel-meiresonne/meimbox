@@ -3,6 +3,7 @@
 require_once 'framework/Model.php';
 require_once 'model/special/Query.php';
 require_once 'model/special/MyError.php';
+require_once 'model/special/Response.php';
 // require_once 'model/special/Map.php';
 
 /**

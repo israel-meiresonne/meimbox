@@ -1,12 +1,13 @@
 <?php
+require_once 'framework/Configuration.php';
 require_once 'model/library/payement/stripe-php/init.php';
 require_once 'model/ModelFunctionality.php';
-require_once 'framework/Configuration.php';
 require_once 'model/boxes-management/Basket.php';
 require_once 'model/boxes-management/Box.php';
 require_once 'model/boxes-management/BasketProduct.php';
 require_once 'model/boxes-management/BoxProduct.php';
 require_once 'model/special/Map.php';
+require_once 'model/orders-management/payement/stripe/CheckoutSession.php';
 
 class MyStripe extends ModelFunctionality
 {
@@ -18,7 +19,7 @@ class MyStripe extends ModelFunctionality
 
     /**
      * Holds holds Stripe's checkout session
-     * @var \Stripe\Checkout\Session
+     * @var CheckoutSession
      */
     private $checkoutSession;
 
@@ -73,17 +74,60 @@ class MyStripe extends ModelFunctionality
      */
     private const STRP_PROD_MAX_IMG = 8;
 
-      /**
+    /**
      * Key for attribut
      */
     public const KEY_STRP_MTD = "key_strp_mtd";
 
     /**
      * Constructor
+     */
+    public function __construct()
+    {
+        $sk = Configuration::get(Configuration::STRIPE_SK);
+        self::$stripe = new \Stripe\StripeClient($sk);
+
+        // $payementMap = $this->getPayementMap();
+        // $payIDs = $payementMap->getKeys();
+        // $payID = null;
+        // foreach ($payIDs as $mapPayID) {
+        //     if (in_array($payMethod, $payementMap->get($mapPayID))) {
+        //         $payID = $mapPayID;
+        //         break;
+        //     }
+        // }
+        // if (empty($payID)) {
+        //     throw new Exception("This payement method ('$payMethod') is not supported");
+        // }
+        // $this->client = $client;
+        // $basket = $this->client->getBasket();
+        // if ($basket->getQuantity() <= 0) {
+        //     throw new Exception("Basket can't be empty");
+        // }
+        // $this->payMethod = $payementMap->get($payID, Map::payMethod);
+        // $this->cancelPath = $payementMap->get($payID, Map::cancelPath);
+        // $this->successPath = $payementMap->get($payID, Map::successPath);
+        // $this->domain = Configuration::get(Configuration::URL_PROTOCOL);
+        // $this->setCheckoutSession();
+    }
+
+    // /**
+    //  * To set acces to Stripe's API
+    //  */
+    // private  function setApiKey()
+    // {
+    //     $sk = Configuration::get(Configuration::STRIPE_SK);
+    //     // \Stripe\Stripe::setApiKey('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+    //     // \Stripe\Stripe::setApiKey($sk);
+    //     self::$stripe = new \Stripe\StripeClient($sk);
+    // }
+
+    /**
+     * To initialize the CheckoutSession
      * @param string $payMethod payement method like [card, bancontact, ideal, etc...]
      * @param Client $client Client that holds the CheckoutSession
      */
-    public function __construct(string $payMethod, Client $client)
+    public function initializeNewCheckout(string $payMethod, Client $client)
     {
         $payementMap = $this->getPayementMap();
         $payIDs = $payementMap->getKeys();
@@ -110,16 +154,6 @@ class MyStripe extends ModelFunctionality
     }
 
     /**
-     * To set acces to Stripe's API
-     */
-    private  function setApiKey()
-    {
-        $sk = Configuration::get(Configuration::STRIPE_SK);
-        // \Stripe\Stripe::setApiKey('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
-        // \Stripe\Stripe::setApiKey($sk);
-        self::$stripe = new \Stripe\StripeClient($sk);
-    }
-    /**
      * To set the Stripe Checkout Session
      * @param Basket $basket Client's basket to checkout
      */
@@ -140,20 +174,39 @@ class MyStripe extends ModelFunctionality
         // $payment_method_types = $this->getPayMethod();
         $line_items = $this->extractLineItems($basket);
         $payementIntent = $this->extractPayementIntent();
-        // $this->checkoutSession = \Stripe\Checkout\Session::create([
-        $this->checkoutSession = $stripe->checkout->sessions->create([
-            //   'payment_method_types' => ['card'],
-            'payment_method_types' => [$this->getPayMethod()],
-            'client_reference_id' => $client->getUserID(),
-            // 'customer' => $client->getCustoIDStripe(),
-            'customer_email' => $client->getEmail(),
-            'line_items' => $line_items,
-            // 'metadata' => $metadata,
-            'payment_intent_data' => $payementIntent,
-            'mode' => self::CHECKOUT_MODE_PAYEMENT,
-            'success_url' => $success_url,
-            'cancel_url' => $cancel_url
-        ]);
+
+        $datas["payment_method_types"] = [$this->getPayMethod()]; // 'payment_method_types' => ['card']
+        $datas["client_reference_id"] = $client->getUserID();
+        $custoID = $client->getCustoIDStripe();
+        if(!empty($custoID)){
+            $datas["customer"] = $custoID;
+        } else {
+            $datas["customer_email"] = $client->getEmail();
+        }
+        $datas["line_items"] = $line_items;
+        // $datas["metadata"] = $metadata;
+        $datas["payment_intent_data"] = $payementIntent;
+        $datas["mode"] = self::CHECKOUT_MODE_PAYEMENT;
+        $datas["success_url"] = $success_url;
+        $datas["cancel_url"] = $cancel_url;
+
+        $stripeSession = $stripe->checkout->sessions->create($datas);
+        $userID = $client->getUserID();
+        // $payMethod = $this->getPayMethod();
+        $this->checkoutSession = new CheckoutSession($stripeSession, $userID);
+        // $this->checkoutSession = $stripe->checkout->sessions->create([
+        //     //   'payment_method_types' => ['card'],
+        //     'payment_method_types' => [$this->getPayMethod()],
+        //     'client_reference_id' => $client->getUserID(),
+        //     // 'customer' => $client->getCustoIDStripe(),
+        //     'customer_email' => $client->getEmail(),
+        //     'line_items' => $line_items,
+        //     // 'metadata' => $metadata,
+        //     'payment_intent_data' => $payementIntent,
+        //     'mode' => self::CHECKOUT_MODE_PAYEMENT,
+        //     'success_url' => $success_url,
+        //     'cancel_url' => $cancel_url
+        // ]);
     }
 
     /**
@@ -162,7 +215,7 @@ class MyStripe extends ModelFunctionality
      */
     private function getStripe()
     {
-        (!isset(self::$stripe)) ? $this->setApiKey() : null;
+        // (!isset(self::$stripe)) ? $this->setApiKey() : null;
         return self::$stripe;
     }
 
@@ -170,16 +223,16 @@ class MyStripe extends ModelFunctionality
      * To get CheckoutSession's id
      * @return string CheckoutSession's id
      */
-    public  function getSessionId()
+    public  function getCheckoutSessionId()
     {
-        return $this->checkoutSession->id;
+        return $this->checkoutSession->getId();
     }
 
     /**
      * To get CheckoutSession's payement method
      * @return string CheckoutSession's payement method
      */
-    public function getPayMethod()
+    private function getPayMethod()
     {
         return $this->payMethod;
     }
@@ -188,7 +241,7 @@ class MyStripe extends ModelFunctionality
      * To get the domain
      * @return string the domain
      */
-    public function getDomain()
+    private function getDomain()
     {
         return $this->domain;
     }
@@ -197,7 +250,7 @@ class MyStripe extends ModelFunctionality
      * To get CheckoutSession's cancel path
      * @return string CheckoutSession's cancel path
      */
-    public function getcancelPath()
+    private function getcancelPath()
     {
         return $this->cancelPath;
     }
@@ -206,7 +259,7 @@ class MyStripe extends ModelFunctionality
      * To get CheckoutSession's success path
      * @return string CheckoutSession's success path
      */
-    public function getsuccessPath()
+    private function getsuccessPath()
     {
         return $this->successPath;
     }
@@ -280,14 +333,14 @@ class MyStripe extends ModelFunctionality
         $payementIntent["shipping"]["address"]["city"] = $address->getCity();
         $payementIntent["shipping"]["address"]["country"] = $address->getCountry()->getIsoCountry();       // isoCountry
         $apartment = $address->getAppartement();
-        if(!empty($apartment)){
+        if (!empty($apartment)) {
             $payementIntent["shipping"]["address"]["line2"] = $apartment;     // apartment, suite, unit, or building
         }
         $payementIntent["shipping"]["address"]["postal_code"] = $address->getZipcode();
         $payementIntent["shipping"]["address"]["state"] = $address->getProvince();
         $payementIntent["shipping"]["name"] = $client->getLastname();     // user's lastname
         $phone = $address->getPhone();
-        if(!empty($phone)){
+        if (!empty($phone)) {
             $payementIntent["shipping"]["phone"] = $phone;
         }
         // $payementIntent["shipping"]["carrier"] = ;  // Fedex, UPS, USPS, etc.
@@ -386,7 +439,7 @@ class MyStripe extends ModelFunctionality
         $stripProduct["price_data"]["unit_amount"] = $datas->get(Map::unit_amount)->getPriceRounded() * 100;
         $stripProduct["price_data"]["product_data"]["name"] = $datas->get(Map::name);
         $description = $datas->get(Map::description);
-        if(!empty($description)){
+        if (!empty($description)) {
             $stripProduct["price_data"]["product_data"]["description"] = $description;
             $stripProduct["description"] = $description;
         }

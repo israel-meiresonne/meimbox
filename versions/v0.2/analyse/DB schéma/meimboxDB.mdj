@@ -24352,9 +24352,10 @@
 										"$ref": "AAAAAAF0xPxPBp6uhLo="
 									},
 									"name": "cookieDomain",
-									"documentation": "# Description\nthe domain where the cookie will be available\n• ex: iadnmeim.com",
+									"documentation": "# Description\nthe domain where the cookie will be available\n• ex: iadnmeim.com\n\n# Contraint\n\nIf null the default domain is the one spefied in the files [dev|prod].ini",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -24363,7 +24364,7 @@
 										"$ref": "AAAAAAF0xPxPBp6uhLo="
 									},
 									"name": "cookiePath",
-									"documentation": "# Description\nthe directory where the cookie will be available\n• ex: my/directory",
+									"documentation": "# Description\nthe directory where the cookie will be available\n• ex: my/directory\n\n# Contraint\n\nIf null the default path is \"/\" (get from webRoot in .ini file)",
 									"type": "VARCHAR",
 									"length": "50",
 									"nullable": true
@@ -24571,8 +24572,7 @@
 									"name": "payMethod",
 									"documentation": "# Definition \n\nHolds the value to used to configure the payement",
 									"type": "VARCHAR",
-									"length": "50",
-									"primaryKey": true
+									"length": "50"
 								},
 								{
 									"_type": "ERDColumn",
@@ -24710,7 +24710,7 @@
 									"name": "sessionID",
 									"documentation": "# Definition\n\nHolds the id of a Stripe session",
 									"type": "VARCHAR",
-									"length": "50",
+									"length": "100",
 									"primaryKey": true
 								},
 								{
@@ -24752,7 +24752,8 @@
 									"name": "custoID",
 									"documentation": "# Definition\n\nHolds id of the user in Stripe's system",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -24761,7 +24762,7 @@
 										"$ref": "AAAAAAF0+Ibxly78CfY="
 									},
 									"name": "payStatus",
-									"documentation": "# Definition\n\nHolds payement status of the session",
+									"documentation": "# Definition\n\nHolds payement status of the session  [paid, unpaid, no_payment_required]",
 									"type": "VARCHAR",
 									"length": "50"
 								},
