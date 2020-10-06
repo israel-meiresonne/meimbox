@@ -84,12 +84,13 @@ class ControllerCheckout extends ControllerSecure
         } else {
             $payMethod = Query::getParam(MyStripe::KEY_STRP_MTD);
             try {
-                $myStripe= new MyStripe($payMethod, $this->person);
+                $myStripe= new MyStripe();
+                $myStripe->initializeNewCheckout($payMethod, $this->person);
             } catch (\Throwable $th) {
                 $response->addError($th->getMessage(), MyStripe::KEY_STRP_MTD);
             }
             if(!$response->containError()){
-                $sessionId = $myStripe->getSessionId();
+                $sessionId = $myStripe->getCheckoutSessionId();
              $response->addResult(MyStripe::KEY_STRP_MTD, $sessionId); 
             }
             

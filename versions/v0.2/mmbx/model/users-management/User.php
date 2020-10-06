@@ -124,7 +124,9 @@ abstract class User extends  Visitor
     private function setCustoID()
     {
         $userID = $this->getUserID();
-        $sql = "SELECT * FROM `StripeCheckoutSessions` WHERE `userId` = '$userID' ORDER BY `setDate` DESC";
+        $sql = "SELECT * FROM `StripeCheckoutSessions` WHERE `userId` = '$userID' 
+                AND `custoID` IS NOT NULL 
+                ORDER BY `setDate` DESC";
         $tab = $this->select($sql);
         if(!empty($tab)){
             $this->custoID = $tab[0]["custoID"];
@@ -149,7 +151,9 @@ abstract class User extends  Visitor
     public function getCustoIDStripe()
     {
         (!isset($this->custoID)) ? $this->setCustoID() : null;
-        return (!empty($this->custoID)) ? $this->custoID : null;
+        /* check test custoID with empty() instead of isset() 
+        because it has a empty string as default value so isset() will alway return true */
+        return (!empty($this->custoID)) ? $this->custoID : null; 
     }
 
     /**
