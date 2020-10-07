@@ -1,5 +1,5 @@
 <?php
-require_once 'model/orders-management/payement/stripe/MyStripe.php';
+require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 $this->title = "checkout";
 $this->description = "checkout";
 $pk = Configuration::get(Configuration::STRIPE_PK);
@@ -96,7 +96,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
     // var stripe = Stripe('pk_test_8HwJewfvv4FN1hQJwhcaHaJy00N1xbUFjD');
     var stripe = Stripe('<?= $pk ?>');
     // var checkoutButton = document.getElementById('checkout-button');
-    const KEY_STRP_MTD = '<?= MyStripe::KEY_STRP_MTD ?>';
+    const KEY_STRP_MTD = '<?= CheckoutSession::KEY_STRP_MTD ?>';
     const QR_NW_CHCKT_SS = '<?= ControllerCheckout::QR_NW_CHCKT_SS ?>';
     checkout = (mtd, sbtnx) => {
         var brotx = $(sbtnx).attr(databrotherx);

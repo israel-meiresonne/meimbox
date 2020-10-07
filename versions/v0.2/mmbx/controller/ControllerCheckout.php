@@ -1,6 +1,6 @@
 <?php
 require_once 'ControllerSecure.php';
-require_once 'model/orders-management/payement/stripe/MyStripe.php';
+require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 class ControllerCheckout extends ControllerSecure
 {
 
@@ -29,7 +29,7 @@ class ControllerCheckout extends ControllerSecure
     public function index()
     {
         $address = $this->person->getSelectedAddress();
-        if(empty($address)){
+        if (empty($address)) {
             $this->redirect($this->extractController(get_class($this)), self::ACTION_ADDRESS);
         }
         $datasView = [
@@ -63,38 +63,78 @@ class ControllerCheckout extends ControllerSecure
     {
         $response = new Response();
         $datasView = [];
-        if(!Query::existParam(Address::KEY_ADRS_SEQUENCE)){
+        if (!Query::existParam(Address::KEY_ADRS_SEQUENCE)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $sequence =  Query::getParam(Address::KEY_ADRS_SEQUENCE);
             $this->person->selectAddress($response, $sequence);
-            if(!$response->containError()){
+            if (!$response->containError()) {
                 $response->addResult(self::QR_SELECT_ADRS, self::CTR_NAME);
             }
         }
         $this->generateJsonView($datasView, $response, $this->person);
     }
 
+    /**
+     * To create a new checkoutSession and get its id
+     */
     public function getSessionId()
     {
         $response = new Response();
         $datasView = [];
-        if(!Query::existParam(MyStripe::KEY_STRP_MTD)){
+        if (!Query::existParam(CheckoutSession::KEY_STRP_MTD)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $payMethod = Query::getParam(MyStripe::KEY_STRP_MTD);
+            $payMethod = Query::getParam(CheckoutSession::KEY_STRP_MTD);
             try {
-                $myStripe= new MyStripe();
-                $myStripe->initializeNewCheckout($payMethod, $this->person);
+                $stripeAPI = new StripeAPI();
+                $stripeAPI->initializeNewCheckout($payMethod, $this->person);
             } catch (\Throwable $th) {
-                $response->addError($th->getMessage(), MyStripe::KEY_STRP_MTD);
+                $response->addError($th->getMessage(), CheckoutSession::KEY_STRP_MTD);
             }
-            if(!$response->containError()){
-                $sessionId = $myStripe->getCheckoutSessionId();
-             $response->addResult(MyStripe::KEY_STRP_MTD, $sessionId); 
+            if (!$response->containError()) {
+                $sessionId = $stripeAPI->getCheckoutSessionId();
+                $response->addResult(CheckoutSession::KEY_STRP_MTD, $sessionId);
             }
-            
         }
         $this->generateJsonView($datasView, $response, $this->person);
+    }
+
+    /**
+     * 
+     */
+    public function stripeWebhook()
+    {
+        $payload = @file_get_contents('php://input');
+        $event = null;
+
+        try {
+            $event = \Stripe\Event::constructFrom(
+                json_decode($payload, true)
+            );
+        } catch (\UnexpectedValueException $e) {
+            // Invalid payload
+            http_response_code(400);
+            exit();
+        }
+
+        // Handle the event
+        switch ($event->type) {
+            case 'payment_intent.succeeded':
+                $paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
+                // Then define and call a method to handle the successful payment intent.
+                // handlePaymentIntentSucceeded($paymentIntent);
+                break;
+            case 'payment_method.attached':
+                $paymentMethod = $event->data->object; // contains a \Stripe\PaymentMethod
+                // Then define and call a method to handle the successful attachment of a PaymentMethod.
+                // handlePaymentMethodAttached($paymentMethod);
+                break;
+                // ... handle other event types
+            default:
+                echo 'Received unknown event type ' . $event->type;
+        }
+
+        http_response_code(200);
     }
 }
