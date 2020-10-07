@@ -1,7 +1,10 @@
 <?php
 
+use Stripe\Stripe;
+
 require_once 'model/users-management/Visitor.php';
 require_once 'model/tools-management/Address.php';
+require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 
 abstract class User extends  Visitor
 {
@@ -57,6 +60,12 @@ abstract class User extends  Visitor
      * @var string[]
      */
     protected $userLine;
+
+    /**
+     * Holds access to Stripe's API
+     * @var StripeAPI
+     */
+    protected $stripeAPI;
 
     /**
      * Constructor
@@ -128,7 +137,7 @@ abstract class User extends  Visitor
                 AND `custoID` IS NOT NULL 
                 ORDER BY `setDate` DESC";
         $tab = $this->select($sql);
-        if(!empty($tab)){
+        if (!empty($tab)) {
             $this->custoID = $tab[0]["custoID"];
         } else {
             $this->custoID = "";
@@ -143,7 +152,7 @@ abstract class User extends  Visitor
     {
         return $this->email;
     }
-    
+
     /**
      * To get User's id in Stripe's system
      * @return string|null User's id in Stripe's system
@@ -153,7 +162,7 @@ abstract class User extends  Visitor
         (!isset($this->custoID)) ? $this->setCustoID() : null;
         /* check test custoID with empty() instead of isset() 
         because it has a empty string as default value so isset() will alway return true */
-        return (!empty($this->custoID)) ? $this->custoID : null; 
+        return (!empty($this->custoID)) ? $this->custoID : null;
     }
 
     /**
@@ -220,6 +229,18 @@ abstract class User extends  Visitor
             }
         }
         return $address;
+    }
+
+    /**
+     * To get access to the Stripe's API
+     * @return StripeAPI access to the Stripe's API
+     */
+    private function getStripeAPI()
+    {
+        if (!isset($this->stripeAPI)) {
+            $this->stripeAPI = new StripeAPI();
+        }
+        return $this->stripeAPI;
     }
 
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
@@ -298,4 +319,23 @@ abstract class User extends  Visitor
     }
 
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
+    /*———————————————————————————— PAYEMENT DOWN ————————————————————————————*/
+    /**
+     * To create a new CheckoutSession
+     * @param Response $response to push in result or accured error
+     * @param string $payMethod payement method like [card, bancontact, ideal, etc...]
+     * @return string id of the CheckoutSession created
+     */
+    public function createNewCheckout(Response $response, string $payMethod)
+    {
+        try {
+            $stripeAPI = $this->getStripeAPI();
+            $stripeAPI->initializeNewCheckout($payMethod, $this);
+            return $stripeAPI->getCheckoutSessionId();
+        } catch (\Throwable $th) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+            $response->addError($th->getMessage(), MyError::ADMIN_ERROR);
+        }
+    }
+    /*———————————————————————————— PAYEMENT UP ——————————————————————————————*/
 }

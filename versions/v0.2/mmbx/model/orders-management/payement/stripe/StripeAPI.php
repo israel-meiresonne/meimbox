@@ -9,6 +9,9 @@ require_once 'model/boxes-management/BoxProduct.php';
 require_once 'model/special/Map.php';
 require_once 'model/orders-management/payement/stripe/CheckoutSession.php';
 
+/**
+ * This class provide an access to the Stripe's API
+ */
 class StripeAPI extends ModelFunctionality
 {
     /**
