@@ -42,7 +42,7 @@ $this->head = $this->generateFile('view/Dashboard/files/head.php', []);
                         ?>
                     </div>
                     <div class="basket_pop_loading loading-img-wrap">
-                        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>loading.gif">
                     </div>
                 </div>
                 <div class="cart_summary-div-container">

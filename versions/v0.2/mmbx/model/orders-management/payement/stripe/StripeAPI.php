@@ -18,7 +18,7 @@ class StripeAPI extends ModelFunctionality
      * Holds contact with Stripe's api
      * @var \Stripe\StripeClient
      */
-    private static $stripe;
+    private static $stripeAPI;
 
     /**
      * Holds Client that holds the checkoutSession
@@ -30,15 +30,17 @@ class StripeAPI extends ModelFunctionality
      * Holds holds Stripe's checkout session
      * @var CheckoutSession
      */
-    private $checkoutSession;
+    private static $checkoutSession;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $sk = Configuration::get(Configuration::STRIPE_SK);
-        self::$stripe = new \Stripe\StripeClient($sk);
+        if (!isset(self::$stripeAPI)) {
+            $sk = Configuration::get(Configuration::STRIPE_SK);
+            self::$stripeAPI = new \Stripe\StripeClient($sk);
+        }
     }
 
     /**
@@ -58,20 +60,20 @@ class StripeAPI extends ModelFunctionality
      */
     private function createCheckoutSession(string $payMethod)
     {
-        $stripe = $this->getStripe();
+        $stripeAPI = $this->getStripeAPI();
         $client = $this->getClient();
-        $this->checkoutSession = new CheckoutSession();
-        $this->checkoutSession->create($stripe, $client, $payMethod);
+        self::$checkoutSession = new CheckoutSession();
+        self::$checkoutSession->create($stripeAPI, $client, $payMethod);
     }
 
     /**
      * To get the access to Stripe's API
      * @return \Stripe\StripeClient access to Stripe's API
      */
-    private function getStripe()
+    private function getStripeAPI()
     {
-        // (!isset(self::$stripe)) ? $this->setApiKey() : null;
-        return self::$stripe;
+        // (!isset(self::$stripeAPI)) ? $this->setApiKey() : null;
+        return self::$stripeAPI;
     }
 
     /**
@@ -80,7 +82,19 @@ class StripeAPI extends ModelFunctionality
      */
     public  function getCheckoutSessionId()
     {
-        return $this->checkoutSession->getId();
+        return self::$checkoutSession->getSessionID();
+    }
+
+    /**
+     * To get CheckoutSession's attribut metadatas
+     * @return string[] CheckoutSession's attribut metadatas
+     */
+    public function getCheckoutSessionMetaDatas()
+    {
+        if (!isset(self::$checkoutSession)) {
+            throw new Exception("Can't get CheckoutSession's metadats because CheckoutSession is not setted");
+        }
+        return self::$checkoutSession->getMetaDatas();
     }
 
     /**
@@ -90,5 +104,49 @@ class StripeAPI extends ModelFunctionality
     private function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * To handle Stripe's events
+     */
+    public function handleEvents()
+    {
+        // $stripeAPI = $this->getStripeAPI();
+
+        // If you are testing your webhook locally with the Stripe CLI you
+        // can find the endpoint's secret by running `stripe listen`
+        // Otherwise, find your endpoint's secret in your webhook settings in the Developer Dashboard
+        $endpoint_secret = Configuration::get(Configuration::STRIPE_WEBHOOK);
+
+        $payload = @file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        $event = null;
+        try {
+            // $stripeAPI->webhook->constructEvent(
+            $event = \Stripe\Webhook::constructEvent(
+                $payload,
+                $sig_header,
+                $endpoint_secret
+            );
+        } catch (\UnexpectedValueException $e) {
+            // Invalid payload
+            http_response_code(400);
+            exit();
+        } catch (\Stripe\Exception\SignatureVerificationException $e) {
+            // Invalid signature
+            http_response_code(400);
+            exit();
+        }
+
+        // Handle the event
+        switch ($event->type) {
+            case 'checkout.session.completed':
+                self::$checkoutSession = new CheckoutSession();
+                self::$checkoutSession->retreive($event);
+                break;
+            default:
+                echo 'Received unknown event type ' . $event->type;
+        }
+        http_response_code(200);
     }
 }

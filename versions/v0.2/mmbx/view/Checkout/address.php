@@ -44,7 +44,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                                 ?>
                             </div>
                             <div id="address_set_recipient_loading" class="loading-img-wrap">
-                                <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>loading.gif">
                             </div>
                         </div>
                         <div class="address-form-container">

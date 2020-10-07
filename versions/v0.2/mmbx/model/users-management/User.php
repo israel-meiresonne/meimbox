@@ -65,7 +65,7 @@ abstract class User extends  Visitor
      * Holds access to Stripe's API
      * @var StripeAPI
      */
-    protected $stripeAPI;
+    protected static  $stripeAPI;
 
     /**
      * Constructor
@@ -237,10 +237,10 @@ abstract class User extends  Visitor
      */
     private function getStripeAPI()
     {
-        if (!isset($this->stripeAPI)) {
-            $this->stripeAPI = new StripeAPI();
+        if (!isset(self::$stripeAPI)) {
+            self::$stripeAPI = new StripeAPI();
         }
-        return $this->stripeAPI;
+        return self::$stripeAPI;
     }
 
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
@@ -336,6 +336,15 @@ abstract class User extends  Visitor
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
             $response->addError($th->getMessage(), MyError::ADMIN_ERROR);
         }
+    }
+
+    /**
+     * To handle all Stripe's events
+     */
+    public function handleStripeEvents()
+    {
+        $stripeAPI = $this->getStripeAPI();
+        // $stripeAPI->handleEvents(); // already handled in controllerSecure
     }
     /*———————————————————————————— PAYEMENT UP ——————————————————————————————*/
 }

@@ -90,16 +90,10 @@ abstract class ControllerSecure extends Controller
      */
     public function __construct($action)
     {
-        try {
-            //code...
-
-            date_default_timezone_set('Europe/Paris');
-            $this->setAction($action);
-            $this->setPerson();
-            $this->root();
-        } catch (\Throwable $th) {
-            echo $th;
-        }
+        date_default_timezone_set('Europe/Paris');
+        $this->setAction($action);
+        $this->setPerson();
+        $this->root();
     }
 
     /**
@@ -109,6 +103,17 @@ abstract class ControllerSecure extends Controller
     {
         $ctrClass = get_class($this);
         switch ($ctrClass) {
+            case ControllerCheckout::class:
+                $action = $this->getAction();
+                if ($action == ControllerCheckout::ACTION_STRIPEWEBHOOK) {
+                    require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+                    $stripeAPI = new StripeAPI();
+                    $stripeAPI->handleEvents();
+                    $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
+                    $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
+                    $this->person = new Client($CLT_VAL);
+                    break;
+                }
             default:
                 $CLT_VAL = Cookie::getCookieValue(Cookie::COOKIE_CLT);
                 if (!empty($CLT_VAL)) {
@@ -152,7 +157,7 @@ abstract class ControllerSecure extends Controller
                         }
                         break;
                     default:
-                        if(!method_exists($this, $action)){
+                        if (!method_exists($this, $action)) {
                             throw new Exception("Unknow controller's action, controller: $ctrClass, action:$action");
                         }
                         break;

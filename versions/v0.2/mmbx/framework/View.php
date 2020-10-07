@@ -102,7 +102,8 @@ class View
      * Directory for permanant files
      * @var string
      */
-    private const DIR_STATIC_FILES = "content/brain/permanent/";
+    // private const DIR_STATIC_FILES = "content/brain/permanent/";
+    private static $DIR_STATIC_FILES;
 
     /**
      * Error type
@@ -140,6 +141,9 @@ class View
     // public function __construct($action, $controller = "", Language $language = null)
     public function __construct($action, $controller = "", Visitor $person = null)
     {
+        self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES))
+            ? Configuration::get(Configuration::DIR_STATIC_FILES)
+            : self::$DIR_STATIC_FILES;
         $this->person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
         $this->translator = isset($language) ? new Translator($language) : new Translator();

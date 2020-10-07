@@ -233,6 +233,6 @@ $inSbtnx = "#$inSbtnid";
         </div>
     </div>
     <div class="sign_form-loading loading-img-wrap">
-        <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+        <img src="<?= self::$DIR_STATIC_FILES ?>loading.gif">
     </div>
 </div>

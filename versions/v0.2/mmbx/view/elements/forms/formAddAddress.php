@@ -136,7 +136,7 @@
             </div>
         </div>
         <div id="address_form_loading" class="loading-img-wrap">
-            <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+            <img src="<?= self::$DIR_STATIC_FILES ?>loading.gif">
         </div>
     </div>
 </div>

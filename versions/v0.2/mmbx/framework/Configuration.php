@@ -19,8 +19,15 @@ class Configuration
      */
     public const DOMAIN = "domain";
     public const URL_PROTOCOL = "urlProtocol";
-    public const STRIPE_PK = "stripePK";
-    public const STRIPE_SK = "stripeSK";
+
+    /**
+     * Keys for Stripe datas
+     */
+    public const STRIPE_PK = "stripe_pk";
+    public const STRIPE_SK = "stripe_sk";
+    public const STRIPE_WEBHOOK = "stripe_webhook";
+
+    public const DIR_STATIC_FILES = "dir_static_files";
 
     /**
      * Renvoie la valeur d'un paramètre de configuration

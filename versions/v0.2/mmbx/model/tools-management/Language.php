@@ -89,7 +89,8 @@ class Language extends ModelFunctionality
         }
 
         if (!$found) {
-            $driverLang = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
+            $key = "HTTP_ACCEPT_LANGUAGE";
+            $driverLang = (key_exists($key, $_SERVER)) ? $_SERVER[$key] : null;
             $found = $found ? $found : $this->setLanguage($driverLang);
         }
 
