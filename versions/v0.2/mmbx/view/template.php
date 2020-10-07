@@ -298,7 +298,7 @@ $language = $person->getLanguage();
                             <div class="grey-tag-button standard-tag-button img-text-block">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
-                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
+                                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
                                     </div>
                                     <span class="img-text-span">new drop</span>
                                 </div>
@@ -309,7 +309,7 @@ $language = $person->getLanguage();
                             <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
-                                        <img src="<?= self::DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
+                                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
                                     </div>
                                     <span class="img-text-span">add box</span>
                                 </div>
@@ -356,7 +356,7 @@ $language = $person->getLanguage();
                                 <div class="grey-tag-button standard-tag-button img-text-block" onclick="console.log('open client menu')">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
                                         </div>
                                         <span class="img-text-span"></span>
                                     </div>
@@ -369,7 +369,7 @@ $language = $person->getLanguage();
                                 <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-contacts-96.png">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-contacts-96.png">
                                         </div>
                                         <span class="img-text-span"></span>
                                     </div>
@@ -384,7 +384,7 @@ $language = $person->getLanguage();
                                 <div class="img-text-block  navbar-basket-wrap">
                                     <div class="img-text-wrap">
                                         <div class="img-text-img">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
                                         </div>
                                         <span class="img-text-span basket-logo-span">(<span data-basket="quantity">3</span>)</span>
                                     </div>
@@ -423,7 +423,7 @@ $language = $person->getLanguage();
                     <div class="grey-tag-button standard-tag-button img-text-block">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
                             </div>
                             <span class="img-text-span">new drop</span>
                         </div>
@@ -432,7 +432,7 @@ $language = $person->getLanguage();
                     <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
                             </div>
                             <span class="img-text-span">add box</span>
                         </div>
@@ -445,7 +445,7 @@ $language = $person->getLanguage();
                         <div class="img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
-                                    <img src="<?= self::DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
+                                    <img src="<?= self::$DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
                                 </div>
                                 <span class="img-text-span basket-logo-span"><span data-basket="quantity">3</span></span>
                             </div>

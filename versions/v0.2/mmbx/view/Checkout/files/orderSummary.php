@@ -188,7 +188,7 @@
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>visa-logo.png">
                             </div>
                             <span class="img-text-span">visa</span>
                         </div>
@@ -196,7 +196,7 @@
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>apple-pay-logo.png">
                             </div>
                             <span class="img-text-span">pay</span>
                         </div>
@@ -204,7 +204,7 @@
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>paypal.png">
                             </div>
                             <span class="img-text-span">paypal</span>
                         </div>
@@ -212,7 +212,7 @@
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>master-card.png">
                             </div>
                             <span class="img-text-span">masterCard</span>
                         </div>
@@ -220,7 +220,7 @@
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>maestro.png">
                             </div>
                             <span class="img-text-span">maestro</span>
                         </div>
@@ -228,7 +228,7 @@
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
-                                <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>amex.png">
                             </div>
                             <span class="img-text-span">american express</span>
                         </div>
@@ -244,7 +244,7 @@
                                 <div class="img_text_down-wrap">
                                     <div class="img_text_down-img-div">
                                         <div class="img_text_down-img-inner">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-card-security-150.png">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-card-security-150.png">
                                         </div>
                                     </div>
                                     <div class="img_text_down-text-div">
@@ -256,7 +256,7 @@
                                 <div class="img_text_down-wrap">
                                     <div class="img_text_down-img-div">
                                         <div class="img_text_down-img-inner">
-                                            <img src="<?= "" //self::DIR_STATIC_FILES 
+                                            <img src="<?= "" //self::$DIR_STATIC_FILES 
                                                         ?>icons8-headset-96.png">
                                         </div>
                                     </div>
@@ -269,7 +269,7 @@
                                 <div class="img_text_down-wrap">
                                     <div class="img_text_down-img-div">
                                         <div class="img_text_down-img-inner">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-van-96.png">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-van-96.png">
                                         </div>
                                     </div>
                                     <div class="img_text_down-text-div">
@@ -281,7 +281,7 @@
                                 <div class="img_text_down-wrap">
                                     <div class="img_text_down-img-div">
                                         <div class="img_text_down-img-inner">
-                                            <img src="<?= self::DIR_STATIC_FILES ?>return-box.png">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>return-box.png">
                                         </div>
                                     </div>
                                     <div class="img_text_down-text-div">
@@ -317,7 +317,7 @@
                                                 <li class="contact-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-phone-100.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-phone-100.png">
                                                         </div>
                                                         <span class="img-text-span">+472 13 13 24</span>
                                                     </div>
@@ -325,7 +325,7 @@
                                                 <li class="contact-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>icons8-secured-letter-100.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-secured-letter-100.png">
                                                         </div>
                                                         <span class="img-text-span">email@monsite.com</span>
                                                     </div>
@@ -355,7 +355,7 @@
                                                 <li class="payement-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>visa-logo.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>visa-logo.png">
                                                         </div>
                                                         <span class="img-text-span">visa</span>
                                                     </div>
@@ -363,7 +363,7 @@
                                                 <li class="payement-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>apple-pay-logo.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>apple-pay-logo.png">
                                                         </div>
                                                         <span class="img-text-span">pay</span>
                                                     </div>
@@ -371,7 +371,7 @@
                                                 <li class="payement-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>paypal.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>paypal.png">
                                                         </div>
                                                         <span class="img-text-span">paypal</span>
                                                     </div>
@@ -379,7 +379,7 @@
                                                 <li class="payement-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>master-card.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>master-card.png">
                                                         </div>
                                                         <span class="img-text-span">masterCard</span>
                                                     </div>
@@ -387,7 +387,7 @@
                                                 <li class="payement-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>maestro.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>maestro.png">
                                                         </div>
                                                         <span class="img-text-span">maestro</span>
                                                     </div>
@@ -395,7 +395,7 @@
                                                 <li class="payement-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
-                                                            <img src="<?= self::DIR_STATIC_FILES ?>amex.png">
+                                                            <img src="<?= self::$DIR_STATIC_FILES ?>amex.png">
                                                         </div>
                                                         <span class="img-text-span">american express</span>
                                                     </div>

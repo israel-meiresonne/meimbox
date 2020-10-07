@@ -142,7 +142,7 @@ class Basket extends ModelFunctionality
      * + the same instance that Visitor
      * @return Language box's Language
      */
-    private function getLanguage()
+    public function getLanguage()
     {
         return $this->language;
     }
@@ -322,7 +322,7 @@ class Basket extends ModelFunctionality
         $currency = $this->getCurrency();
         $bag = $this->getMerge();
         return (!empty($bag)) ? (new Price(7.97, $currency)) : (new Price(0, $currency));
-        // return (new Price(rand(4, 30) / rand(3, 5), $currency));
+        // return (new Price(0, $currency));
     }
 
     // public function isEmpty()

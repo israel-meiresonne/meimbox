@@ -38,7 +38,7 @@ class Translator extends ModelFunctionality
      */
     private $language;
 
-    private static $nbInstance;
+    // private static $nbInstance;
 
     // /**
     //  * Holds the default lagnuage's iso code 2
@@ -55,7 +55,7 @@ class Translator extends ModelFunctionality
         // if(isset(self::$nbInstance)){
         //     throw new Exception("Traduction class can be instanciated one time only!");
         // }
-        self::$nbInstance++;
+        // self::$nbInstance++;
         $this->language = isset($language) ? $language : new Language();
         (!isset(self::$stationMap)) ? $this->setStationMap() : null;
         (!isset(self::$translateMap)) ? $this->setTranslateMap() : null;

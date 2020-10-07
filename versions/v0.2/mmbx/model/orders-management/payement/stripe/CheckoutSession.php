@@ -1,5 +1,7 @@
 <?php
-// require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+require_once 'model/special/Response.php';
+require_once 'model/tools-management/Cookie.php';
+require_once 'model/view-management/Translator.php';
 
 class CheckoutSession extends ModelFunctionality
 {
@@ -51,6 +53,11 @@ class CheckoutSession extends ModelFunctionality
     public const KEY_STRP_MTD = "key_strp_mtd";
 
     /**
+     * Holds image for shipping cost
+     */
+    private const SHIPPING_IMG = "delivery.png";
+
+    /**
      * Holds max images for StripeProduct
      * @var int
      */
@@ -63,8 +70,6 @@ class CheckoutSession extends ModelFunctionality
     //  */
     /**
      * Constructor
-     * @param \Stripe\StripeClient $stripe access to the stripe API
-     * @param Client $client Client that holds the CheckoutSession
      */
     public function __construct()
     {
@@ -119,6 +124,19 @@ class CheckoutSession extends ModelFunctionality
         $this->insertCheckoutSession($response, $userID);
     }
 
+    /**
+     * To retreive CheckoutSession from Stripe's event
+     * @param Stripe\Event $event event send by Stripee to the webhook
+     */
+    public function retreive(Stripe\Event $event)
+    {
+        if ($event->type != 'checkout.session.completed') {
+            throw new Exception("The Stripe Event to retreive is not of type 'checkout.session.completed', event->type:$event->type");
+        }
+        $this->checkoutSession = $event->data->object;
+        $response = new Response();
+        $this->updateCheckoutSession($response);
+    }
 
     /**
      * To create a new CheckoutSession
@@ -131,15 +149,13 @@ class CheckoutSession extends ModelFunctionality
          * - max 50 keys
          * - key max 40 characters 
          * - value max 500 characters 
+         * - must be in format [key => string]
          */
-        // $stripe = $this->getStripe();
-        // $client = $this->getClient();
         $basket = $client->getBasket();
         $webRoot = Configuration::getWebRoot();
         $domain = $this->getDomain();
         $success_url = $domain . $webRoot . $this->getsuccessPath();
         $cancel_url = $domain  . $webRoot . $this->getcancelPath();
-        // $payment_method_types = $this->getPayMethod();
         $line_items = $this->extractLineItems($basket, $client->getCurrency());
         $payementIntent = $this->extractPayementIntent($client->getSelectedAddress(), $client->getLastname());
 
@@ -152,7 +168,7 @@ class CheckoutSession extends ModelFunctionality
             $datas["customer_email"] = $client->getEmail();
         }
         $datas["line_items"] = $line_items;
-        // $datas["metadata"] = $metadata;
+        $datas["metadata"][Cookie::COOKIE_CLT] = $client->getCookie(Cookie::COOKIE_CLT)->getValue();
         $datas["payment_intent_data"] = $payementIntent;
         $datas["mode"] = self::CHECKOUT_MODE_PAYEMENT;
         $datas["success_url"] = $success_url;
@@ -165,14 +181,14 @@ class CheckoutSession extends ModelFunctionality
      * To get CheckoutSession's id
      * @return string CheckoutSession's id
      */
-    public  function getId()
+    public  function getSessionID()
     {
         return $this->checkoutSession->id;
     }
 
     /**
      * To get CheckoutSession's customer id
-     * @return string CheckoutSession's id
+     * @return string|null CheckoutSession's id
      */
     public  function getCustomerID()
     {
@@ -195,6 +211,15 @@ class CheckoutSession extends ModelFunctionality
     public  function getPaymentStatus()
     {
         return $this->checkoutSession->payment_status;
+    }
+
+    /**
+     * To get CheckoutSession's attribut metadatas
+     * @return string[] CheckoutSession's attribut metadatas
+     */
+    public  function getMetaDatas()
+    {
+        return $this->checkoutSession->metadata;
     }
 
     /**
@@ -251,25 +276,27 @@ class CheckoutSession extends ModelFunctionality
         return self::$STRIPE_MAX_PROD_IMG;
     }
 
-
     /**
      * To builds CheckoutSession's attribut line_items
      * @param Basket $basket Client's basket to checkout
      * @param Currency $currency Client's currency
      * @return string[] CheckoutSession's attribut line_items
      */
-    private function extractLineItems(Basket $basket, Currency $currency)
+    private function extractLineItems(Basket $basket)
     {
         $line_items = [];
+        $shipping = $this->extractShipping($basket->getShipping(), $basket->getLanguage());
+        // var_dump($shipping);
+        array_push($line_items, $shipping);
         $merged = $basket->getMerge();
         foreach ($merged as $element) {
             switch (get_class($element)) {
                 case BasketProduct::class:
-                    $stripeProduct = $this->extractProduct($element, $currency);
+                    $stripeProduct = $this->extractProduct($element);
                     array_push($line_items, $stripeProduct);
                     break;
                 case Box::class:
-                    $line_items = $this->extractBox($element, $line_items, $currency);
+                    $line_items = $this->extractBox($element, $line_items);
                     // array_push($line_items, $stripeProduct);
                     break;
                 default:
@@ -314,18 +341,39 @@ class CheckoutSession extends ModelFunctionality
     }
 
     /**
+     * To convert shipping cost into a StripeProduct
+     * @param Price $price total shipping cost
+     * @param Currency $language Client's language
+     * @return string[] Stripe product
+     */
+    private function extractShipping(Price $price, Language $language)
+    {
+        $shipMap = new Map();
+        $translator  = new Translator($language);
+        $description = ($price->getPrice() == 0) ? $translator->translateStation("US67") : null;
+        $images = [Configuration::get(Configuration::DIR_STATIC_FILES) . self::SHIPPING_IMG];
+        $shipMap->put($translator->translateStation("US66"), Map::name);
+        $shipMap->put($price->getCurrency(), Map::currency);
+        $shipMap->put($price, Map::unit_amount);
+        $shipMap->put($description, Map::description);
+        $shipMap->put($images, Map::images);
+        $shipMap->put(1, Map::quantity);
+        return $this->buildStripeProduct($shipMap);
+    }
+
+    /**
      * Convert Product to a StripeProduct
      * @param BasketProduct|BoxProduct $product product to convert into StripeProduct
      * @param Currency $currency Client's currency
      * @return string[] Stripe product
      */
-    private function extractProduct(Product $product, Currency $currency)
+    private function extractProduct(Product $product)
     {
         $prodDatas = new Map();
-        // $client = $this->getClient();
+        $price = $product->getPrice();
         $prodDatas->put($product->getProdName(), Map::name);
-        $prodDatas->put($currency, Map::currency);
-        $prodDatas->put($product->getPrice(), Map::unit_amount);
+        $prodDatas->put($price->getCurrency(), Map::currency);
+        $prodDatas->put($price, Map::unit_amount);
         $prodDatas->put($product->getDescription(), Map::description);
         $prodDatas->put($product->getPictureSources(), Map::images);
         $prodDatas->put($product->getQuantity(), Map::quantity);
@@ -339,22 +387,22 @@ class CheckoutSession extends ModelFunctionality
      * @param Currency $currency Client's currency
      * @return string[] $line_items
      */
-    private function extractBox(Box $box, array $line_items, Currency $currency)
+    private function extractBox(Box $box, array $line_items)
     {
         $products = $box->getBoxProducts();
         if (!empty($products)) {
             $boxDatas = new Map();
-            // $client = $this->getClient();
+            $price = $box->getPrice();
             $boxDatas->put($box->getColor(), Map::name);
-            $boxDatas->put($currency, Map::currency);
-            $boxDatas->put($box->getPrice(), Map::unit_amount);
+            $boxDatas->put($price->getCurrency(), Map::currency);
+            $boxDatas->put($price, Map::unit_amount);
             $boxDatas->put(null, Map::description);
             $boxDatas->put([$box->getPictureSource()], Map::images);
             $boxDatas->put(1, Map::quantity);
             $stripeProduct = $this->buildStripeProduct($boxDatas);
             array_push($line_items, $stripeProduct);
             foreach ($products as $product) {
-                $stripeProduct = $this->extractProduct($product, $currency);
+                $stripeProduct = $this->extractProduct($product);
                 array_push($line_items, $stripeProduct);
             }
         }
@@ -410,19 +458,32 @@ class CheckoutSession extends ModelFunctionality
      * @param string $userID id of the Client Attempting to pay
      * @param string $payMethod payement method like [card, bancontact, ideal, etc...]
      */
-    private function insertCheckoutSession($response, $userID)
+    private function insertCheckoutSession(Response $response, $userID)
     {
         // $client = $this->getClient();
         $bracket = "(?,?,?,?,?,?)";
         $sql = "INSERT INTO `StripeCheckoutSessions`(`sessionID`, `payId`, `userId`, `custoID`, `payStatus`, `setDate`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
-        array_push($values, $this->getId());
+        array_push($values, $this->getSessionID());
         array_push($values, $this->getPaymentMethod());     // with Stripe the payId = payMethod
         array_push($values, $userID);
         array_push($values, $this->getCustomerID());
         array_push($values, $this->getPaymentStatus());
         array_push($values, $this->getSetDate());
         $this->insert($response, $sql, $values);
+    }
+
+    private function updateCheckoutSession(Response $response) // regex \[value-[0-9]*\]
+    {
+        $sessionID = $this->getSessionID();
+        $sql = "UPDATE `StripeCheckoutSessions` SET 
+                `custoID`=?,
+                `payStatus`=?
+                WHERE `sessionID` = '$sessionID'";
+        $values = [];
+        array_push($values, $this->getCustomerID());
+        array_push($values, $this->getPaymentStatus());
+        $this->update($response, $sql, $values);
     }
 }

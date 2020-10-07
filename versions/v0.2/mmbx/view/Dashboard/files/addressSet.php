@@ -39,7 +39,7 @@
                 <button class="green-button standard-button remove-button-default-att" onclick="openPopUp('#address_adder_pop')">add new address</button>
             </div>
             <div class="loading-img-wrap">
-                <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+                <img src="<?= self::$DIR_STATIC_FILES ?>loading.gif">
             </div>
             <div class="pop_up-validate_button-div">
                 <button id="<?= $sbtnid ?>" disabled=true class="green-arrow standard-button-desabled remove-button-default-att" onclick="selectAddress('<?= $sbtnx ?>')">select address</button>

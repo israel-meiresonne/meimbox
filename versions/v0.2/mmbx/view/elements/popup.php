@@ -57,7 +57,7 @@
                     <?= $datas["content"] ?>
                 </div>
                 <div <?= $laodingId ?> class="<?= $laodingClass ?> loading-img-wrap">
-                    <img src="<?= self::DIR_STATIC_FILES ?>loading.gif">
+                    <img src="<?= self::$DIR_STATIC_FILES ?>loading.gif">
                 </div>
                 <?php
                 if (!empty($datas["submitButtonId"])) : ?>

@@ -135,7 +135,7 @@ $brandsMeasures = $brandsMeasures;
                                     <div class="img_text_down-wrap">
                                         <div class="img_text_down-img-div">
                                             <div class="img_text_down-img-inner">
-                                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-card-security-150.png">
+                                                <img src="<?= self::$DIR_STATIC_FILES ?>icons8-card-security-150.png">
                                             </div>
                                         </div>
                                         <div class="img_text_down-text-div">
@@ -152,7 +152,7 @@ $brandsMeasures = $brandsMeasures;
                                     <div class="img_text_down-wrap">
                                         <div class="img_text_down-img-div">
                                             <div class="img_text_down-img-inner">
-                                                <img src="<?= self::DIR_STATIC_FILES ?>icons8-headset-96.png">
+                                                <img src="<?= self::$DIR_STATIC_FILES ?>icons8-headset-96.png">
                                             </div>
                                         </div>
                                         <div class="img_text_down-text-div">
@@ -164,7 +164,7 @@ $brandsMeasures = $brandsMeasures;
                                     <div class="img_text_down-wrap">
                                         <div class="img_text_down-img-div">
                                             <div class="img_text_down-img-inner">
-                                                <img src="<?= self::DIR_STATIC_FILES ?>return-box.png">
+                                                <img src="<?= self::$DIR_STATIC_FILES ?>return-box.png">
                                             </div>
                                         </div>
                                         <div class="img_text_down-text-div">
