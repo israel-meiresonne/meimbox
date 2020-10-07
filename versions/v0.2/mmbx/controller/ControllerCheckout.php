@@ -1,6 +1,5 @@
 <?php
 require_once 'ControllerSecure.php';
-require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 class ControllerCheckout extends ControllerSecure
 {
 
@@ -86,15 +85,9 @@ class ControllerCheckout extends ControllerSecure
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $payMethod = Query::getParam(CheckoutSession::KEY_STRP_MTD);
-            try {
-                $stripeAPI = new StripeAPI();
-                $stripeAPI->initializeNewCheckout($payMethod, $this->person);
-            } catch (\Throwable $th) {
-                $response->addError($th->getMessage(), CheckoutSession::KEY_STRP_MTD);
-            }
+            $sessionId = $this->person->createNewCheckout($response, $payMethod);
             if (!$response->containError()) {
-                $sessionId = $stripeAPI->getCheckoutSessionId();
-                $response->addResult(CheckoutSession::KEY_STRP_MTD, $sessionId);
+                $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
             }
         }
         $this->generateJsonView($datasView, $response, $this->person);
