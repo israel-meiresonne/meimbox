@@ -156,8 +156,8 @@
                         $lx = "#$lid";
                 ?>
                         <div class="summary-detail-button-inner">
-                            <button id="<?= $sbtnid ?>" class="green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx ="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
-                            <div id="<?= $lid ?>" class="<?= $brotCls ?> btn-loading loading-img-wrap">
+                            <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx ="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
+                            <div id="<?= $lid ?>" class="btn-loading loading-img-wrap">
                                 <img src="content/brain/permanent/mini-loading.gif">
                             </div>
                         </div>
