@@ -345,6 +345,15 @@ abstract class User extends  Visitor
     {
         $stripeAPI = $this->getStripeAPI();
         // $stripeAPI->handleEvents(); // already handled in controllerSecure
+        // $basket = $this->getBasket();
+        $this->createOrder();
+    }
+
+    /**
+     * To convert User's basket into a order
+     */
+    private  function createOrder()
+    {
     }
     /*———————————————————————————— PAYEMENT UP ——————————————————————————————*/
 }
