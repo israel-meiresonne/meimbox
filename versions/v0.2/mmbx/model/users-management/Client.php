@@ -15,13 +15,13 @@ class Client extends User
      */
     private $newsletter;
 
-    /**
-     * List of orders passed by the Client.
-     * Use the order's setDate in Unix time format (secondes) as access key 
-     * like $orders[setDateUnix => Order]
-     * @var Order[]
-     */
-    private $orders;
+    // /**
+    //  * List of orders passed by the Client.
+    //  * Use the order's setDate in Unix time format (secondes) as access key 
+    //  * like $orders[setDateUnix => Order]
+    //  * @var Order[]
+    //  */
+    // private $orders;
 
 
     /**

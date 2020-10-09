@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  jeu. 08 oct. 2020 à 20:06
+-- Généré le :  ven. 09 oct. 2020 à 19:32
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -165,8 +165,9 @@ CREATE TABLE `Box-Products` (
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
 ('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20'),
-('7248u731q010sj978202110nk', 2, 'm-tommy hilfiger-null-null', 'm', 'tommy hilfiger', NULL, NULL, 1, '2020-10-07 18:29:38'),
-('7248u731q010sj978202110nk', 2, 'xs-tommy hilfiger-null-null', 'xs', 'tommy hilfiger', NULL, NULL, 3, '2020-10-07 18:28:28'),
+('7248u731q010sj978202110nk', 2, 'null-null-803g420892212029wn05e10cq-fit', NULL, NULL, '803g420892212029wn05e10cq', 'fit', 1, '2020-10-09 19:19:11'),
+('7248u731q010sj978202110nk', 2, 'xs-tommy hilfiger-null-null', 'xs', 'tommy hilfiger', NULL, NULL, 2, '2020-10-09 17:17:44'),
+('7248u731q010sj978202110nk', 2, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-10-09 17:18:08'),
 ('mf1550920290g92f0261m60i2', 3, 's-the north face-null-null', 's', 'the north face', NULL, NULL, 1, '2020-09-25 19:06:42');
 
 -- --------------------------------------------------------
@@ -1574,13 +1575,20 @@ INSERT INTO `MeasureUnits` (`unitName`, `measureUnit`, `toSystUnit`) VALUES
 CREATE TABLE `Orders` (
   `orderID` varchar(100) NOT NULL,
   `userId` int(11) NOT NULL,
-  `setDate` datetime NOT NULL,
+  `stripeCheckoutId` varchar(100) NOT NULL,
   `vat` double NOT NULL,
   `paidAmount` double NOT NULL,
   `shippingCost` double NOT NULL,
   `iso_currency` varchar(10) NOT NULL,
-  `stripeSessionId` varchar(100) NOT NULL
+  `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Orders`
+--
+
+INSERT INTO `Orders` (`orderID`, `userId`, `stripeCheckoutId`, `vat`, `paidAmount`, `shippingCost`, `iso_currency`, `setDate`) VALUES
+('l1032120h919k14a0121j200w', 3330090, 'cs_test_ZpDGLbqFNAQqyJtMWIPHvMDCYFaN9IhZiaqhw1CuLsPqF1WsoORAEygy', 0.21, 57.55, 7.97, 'eur', '2020-10-09 19:21:10');
 
 -- --------------------------------------------------------
 
@@ -1593,11 +1601,19 @@ CREATE TABLE `Orders-Addresses` (
   `address` varchar(100) NOT NULL,
   `zipcode` varchar(50) NOT NULL,
   `country_` varchar(100) NOT NULL,
-  `appartement` varchar(100) NOT NULL,
+  `appartement` varchar(100) DEFAULT NULL,
   `province` varchar(100) NOT NULL,
   `city` varchar(100) NOT NULL,
-  `phoneNumber` varchar(50) NOT NULL
+  `phoneNumber` varchar(50) DEFAULT NULL,
+  `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Orders-Addresses`
+--
+
+INSERT INTO `Orders-Addresses` (`orderId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `setDate`) VALUES
+('l1032120h919k14a0121j200w', 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38');
 
 -- --------------------------------------------------------
 
@@ -1612,12 +1628,18 @@ CREATE TABLE `Orders-Boxes` (
   `sizeMax` int(11) NOT NULL,
   `weight` double NOT NULL,
   `boxPicture` varchar(100) NOT NULL,
-  `buy_price` double NOT NULL,
   `sellPrice` double NOT NULL,
   `shipping` double NOT NULL,
-  `discount_value` double NOT NULL,
+  `discount_value` double DEFAULT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Orders-Boxes`
+--
+
+INSERT INTO `Orders-Boxes` (`orderId`, `boxId`, `box_color`, `sizeMax`, `weight`, `boxPicture`, `sellPrice`, `shipping`, `discount_value`, `setDate`) VALUES
+('l1032120h919k14a0121j200w', '7248u731q010sj978202110nk', 'regular', 4, 0.05, 'box-regular-128.png', 49.58, 6.24, NULL, '2020-10-07 18:27:43');
 
 -- --------------------------------------------------------
 
@@ -1638,6 +1660,15 @@ CREATE TABLE `Orders-BoxProducts` (
   `quantity` int(11) NOT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Orders-BoxProducts`
+--
+
+INSERT INTO `Orders-BoxProducts` (`boxId`, `prodId`, `sequenceID`, `product_type`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
+('7248u731q010sj978202110nk', 2, 'null-null-803g420892212029wn05e10cq-fit', 'boxproduct', 0.98, NULL, NULL, '803g420892212029wn05e10cq', 'fit', 1, '2020-10-09 19:19:11'),
+('7248u731q010sj978202110nk', 2, 'xs-tommy hilfiger-null-null', 'boxproduct', 0.98, 'xs', 'tommy hilfiger', NULL, NULL, 2, '2020-10-09 17:17:44'),
+('7248u731q010sj978202110nk', 2, 'xxs-null-null-null', 'boxproduct', 0.98, 'xxs', NULL, NULL, NULL, 1, '2020-10-09 17:18:08');
 
 -- --------------------------------------------------------
 
@@ -1676,6 +1707,13 @@ CREATE TABLE `Orders-UsersMeasures` (
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `Orders-UsersMeasures`
+--
+
+INSERT INTO `Orders-UsersMeasures` (`orderId`, `measureID`, `measureName`, `bust`, `arm`, `waist`, `hip`, `inseam`, `unit_name`, `setDate`) VALUES
+('l1032120h919k14a0121j200w', '803g420892212029wn05e10cq', 'vis 1', 11, 11, 11, 11, 11, 'inch', '2020-09-30 21:05:28');
+
 -- --------------------------------------------------------
 
 --
@@ -1684,13 +1722,20 @@ CREATE TABLE `Orders-UsersMeasures` (
 
 CREATE TABLE `OrdersStatus` (
   `orderId` varchar(100) NOT NULL,
-  `trackingNumber` varchar(255) NOT NULL,
   `status` varchar(50) NOT NULL,
-  `setDate` datetime NOT NULL,
+  `trackingNumber` varchar(100) DEFAULT NULL,
   `adminId` int(11) NOT NULL,
-  `deliveryMin` date NOT NULL,
-  `deliveryMax` date NOT NULL
+  `deliveryMin` date DEFAULT NULL,
+  `deliveryMax` date DEFAULT NULL,
+  `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `OrdersStatus`
+--
+
+INSERT INTO `OrdersStatus` (`orderId`, `status`, `trackingNumber`, `adminId`, `deliveryMin`, `deliveryMax`, `setDate`) VALUES
+('l1032120h919k14a0121j200w', 'processing', NULL, 1, NULL, NULL, '2020-10-09 19:21:10');
 
 -- --------------------------------------------------------
 
@@ -1770,6 +1815,13 @@ CREATE TABLE `Privileges` (
   `privID` varchar(50) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Privileges`
+--
+
+INSERT INTO `Privileges` (`privID`, `description`) VALUES
+('system', 'access to cron task');
 
 -- --------------------------------------------------------
 
@@ -2903,13 +2955,10 @@ CREATE TABLE `StripeCheckoutSessions` (
 --
 
 INSERT INTO `StripeCheckoutSessions` (`sessionID`, `payId`, `userId`, `custoID`, `payStatus`, `setDate`) VALUES
-('cs_test_0wP68mFBXoGqkX9FtwUNu5uKIxYERsHtxH71ANm8JVkABi8itzUekjmc', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-10-07 21:06:09'),
+('cs_test_0reyhQRw4ymeuTwxKugUkSI2Dvcow8KWUy6vxC7Dz8uQNAcGF3I9PkAT', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-09 17:42:52'),
 ('cs_test_3ypf1Mc20EZHhEEvUy0gv3uYfB7wR5gDnILNr8bgTF0egkVewLp7uDvH', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-07 18:08:46'),
 ('cs_test_8ZUN7qF2LqfEEERjeyT1KCLitZHfD9oZvqCbkvGBRG5Oe4B1KMiUeKFY', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-07 18:30:50'),
-('cs_test_DMKL2xOfcFLFAvTxHVFCaX8RVUAX7dAOvqtBJS2M3Sqv7h0Kxb12TCXQ', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-10-07 21:11:55'),
-('cs_test_DR9eEhne30FP33JkcXno49c3Dtu5Pa4GaWmQMdZyrggRDrveeNg8gyLZ', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-10-07 21:15:13'),
-('cs_test_fXkx3xKjhz04Lw9Nxnp2toBj1sxxTsmuu7Hn5Z45SxK5HM3J0rnFcnhs', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-10-07 21:10:05'),
-('cs_test_gugknOSL23PmZJ46FQJlMGcLwe5p8yzBr2Yro7ekQAKKXrH86bty7TYH', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-10-07 21:12:28');
+('cs_test_ZpDGLbqFNAQqyJtMWIPHvMDCYFaN9IhZiaqhw1CuLsPqF1WsoORAEygy', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-09 19:19:42');
 
 -- --------------------------------------------------------
 
@@ -3168,6 +3217,7 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`userID`, `lang_`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
+(1, 'en', 'system@mail.domain', 'fuck that shit', 'system', 'system', '2019-09-01', NULL, 'other', '2020-10-09 18:42:45'),
 (3330090, 'fr', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
 (651853948, 'fr', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
 (666200808, 'en', 'rukefiwoh-5422@yopmail.com', 'qffrzrrfzfzfqcrzvrv', 'bob', 'makinson', '1995-02-27', 0, 'other', '2020-01-05 15:00:05'),
@@ -3196,9 +3246,9 @@ CREATE TABLE `Users-Cookies` (
 --
 
 INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `path`, `setDate`, `settedPeriod`) VALUES
-(3330090, 'ADRS', '\"my address|my zip0192|belgium\"', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/checkout', '2020-10-07 13:27:35', 86400),
-(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-08 13:04:21', 31536000),
-(3330090, 'VIS', '100d1sq639120hby303243a50', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-08 13:04:21', 94608000),
+(3330090, 'ADRS', '\"my address|my zip0192|belgium\"', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/checkout', '2020-10-09 19:21:10', 86400),
+(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-09 19:23:14', 31536000),
+(3330090, 'VIS', '100d1sq639120hby303243a50', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-09 19:23:14', 94608000),
 (651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
 
 -- --------------------------------------------------------
@@ -3210,9 +3260,16 @@ INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `pat
 CREATE TABLE `Users-Privileges` (
   `userId` int(11) NOT NULL,
   `privId` varchar(50) NOT NULL,
-  `beginDate` datetime NOT NULL,
-  `endDate` datetime NOT NULL
+  `beginDate` datetime DEFAULT NULL,
+  `endDate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Users-Privileges`
+--
+
+INSERT INTO `Users-Privileges` (`userId`, `privId`, `beginDate`, `endDate`) VALUES
+(1, 'system', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3502,9 +3559,9 @@ ALTER TABLE `MeasureUnits`
 --
 ALTER TABLE `Orders`
   ADD PRIMARY KEY (`orderID`),
-  ADD UNIQUE KEY `stripeSessionId` (`stripeSessionId`),
+  ADD UNIQUE KEY `stripeSessionId` (`stripeCheckoutId`),
   ADD KEY `fk_userId.Orders-FROM-Users` (`userId`),
-  ADD KEY `fk_iso_currency.Orders-FROM-CurrenciesIsoCodes` (`iso_currency`);
+  ADD KEY `fk_iso_currency.Orders-FROM-Currencies` (`iso_currency`);
 
 --
 -- Index pour la table `Orders-Addresses`
@@ -3518,8 +3575,8 @@ ALTER TABLE `Orders-Addresses`
 --
 ALTER TABLE `Orders-Boxes`
   ADD PRIMARY KEY (`orderId`,`boxId`),
-  ADD KEY `fk_boxId.Orders-Box-FROM-Box` (`boxId`),
-  ADD KEY `orderId` (`orderId`);
+  ADD KEY `orderId` (`orderId`),
+  ADD KEY `boxId` (`boxId`);
 
 --
 -- Index pour la table `Orders-BoxProducts`
@@ -3550,8 +3607,7 @@ ALTER TABLE `Orders-UsersMeasures`
 -- Index pour la table `OrdersStatus`
 --
 ALTER TABLE `OrdersStatus`
-  ADD PRIMARY KEY (`status`,`orderId`,`trackingNumber`) USING BTREE,
-  ADD KEY `fk_orderId.OrdersStatus-FROM-Orders` (`orderId`),
+  ADD PRIMARY KEY (`orderId`,`status`) USING BTREE,
   ADD KEY `fk_adminId.OrdersStatus-FROM-Users` (`adminId`);
 
 --
@@ -3936,8 +3992,8 @@ ALTER TABLE `DiscountCodes-Countries`
 -- Contraintes pour la table `Orders`
 --
 ALTER TABLE `Orders`
-  ADD CONSTRAINT `fk_iso_currency.Orders-FROM-CurrenciesIsoCodes` FOREIGN KEY (`iso_currency`) REFERENCES `CurrenciesIsoCodes` (`isoCurrency`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_stripeSessionId.Orders-FROM-StripeCheckoutSessions` FOREIGN KEY (`stripeSessionId`) REFERENCES `StripeCheckoutSessions` (`sessionID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_iso_currency.Orders-FROM-Currencies` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stripeSessionId.Orders-FROM-StripeCheckoutSessions` FOREIGN KEY (`stripeCheckoutId`) REFERENCES `StripeCheckoutSessions` (`sessionID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_userId.Orders-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
@@ -3957,7 +4013,7 @@ ALTER TABLE `Orders-Boxes`
 -- Contraintes pour la table `Orders-BoxProducts`
 --
 ALTER TABLE `Orders-BoxProducts`
-  ADD CONSTRAINT `fk_boxId.Orders-BoxProducts-FROM-Orders-Box` FOREIGN KEY (`boxId`) REFERENCES `Orders-Box` (`orderId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_boxId.Orders-BoxProducts-FROM-Orders-Box` FOREIGN KEY (`boxId`) REFERENCES `Orders-Boxes` (`boxId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_brand_name.Orders-BoxProducts-FROM-BrandsMeasures` FOREIGN KEY (`brand_name`) REFERENCES `BrandsMeasures` (`brandName`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_cut_name.Orders-BoxProducts-FROM-Cuts` FOREIGN KEY (`cut_name`) REFERENCES `Cuts` (`cutName`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_measureId.Orders-BoxProducts-FROM-Orders-UsersMeasures` FOREIGN KEY (`measureId`) REFERENCES `Orders-UsersMeasures` (`measureID`),

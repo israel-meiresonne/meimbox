@@ -454,7 +454,7 @@ class CheckoutSession extends ModelFunctionality
 
     /**
      * To insert in db a CheckoutSession
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      * @param string $userID id of the Client Attempting to pay
      * @param string $payMethod payement method like [card, bancontact, ideal, etc...]
      */

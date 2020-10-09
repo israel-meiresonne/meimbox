@@ -6,6 +6,7 @@ require_once 'model/boxes-management/BasketProduct.php';
 require_once 'model/boxes-management/BoxProduct.php';
 require_once 'model/boxes-management/DiscountCode.php';
 require_once 'model/boxes-management/Size.php';
+require_once 'model/special/Response.php';
 
 class Basket extends ModelFunctionality
 {
@@ -34,7 +35,7 @@ class Basket extends ModelFunctionality
      * + ordered from newest to holder
      * @var Box[]
      */
-    private $boxes;
+    protected $boxes;
 
     /**
      * Holds basketproduct
@@ -43,14 +44,14 @@ class Basket extends ModelFunctionality
      * + ordered from newest to holder
      * @var BasketProduct[]
      */
-    private $basketProducts;
+    protected $basketProducts;
 
     /**
      * Liste of discount code of the basket.
      * Use the code as access key like $discountCodes[code => DiscountCode]
      * @var DiscountCode[] $discountCodes
      */
-    private $discountCodes;
+    protected $discountCodes;
 
     public const KEY_TOTAL = "basket_total";
     public const KEY_SUBTOTAL = "basket_subtotal";
@@ -152,7 +153,7 @@ class Basket extends ModelFunctionality
      * + the same instance that Visitor
      * @return Country box's Country
      */
-    private function getCountry()
+    public function getCountry()
     {
         return $this->country;
     }
@@ -162,7 +163,7 @@ class Basket extends ModelFunctionality
      * + the same instance that Visitor
      * @return Currency box's Currency
      */
-    private function getCurrency()
+    public function getCurrency()
     {
         return $this->currency;
     }
@@ -257,6 +258,15 @@ class Basket extends ModelFunctionality
             }
         }
         return $quantity;
+    }
+
+    /**
+     * To get discount codes  applied on basket
+     * @return DiscountCode[] discount codes  applied on basket
+     */
+    public function getDiscountCodes()
+    {
+        return $this->discountCodes;
     }
 
     /**

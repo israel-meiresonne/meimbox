@@ -190,7 +190,7 @@ abstract class ModelFunctionality extends Model
      * @return Response if its success Response.results[INSERT_STATUS_KEY] contain the success code else it
      *  contain the error thrown
      */
-    protected function insert(Response $response, $sql, $params)
+    protected static function insert(Response $response, $sql, $params)
     {
         // $response = new Response();
         try {

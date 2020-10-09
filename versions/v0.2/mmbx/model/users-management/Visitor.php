@@ -1440,7 +1440,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * To update sign up Vistor to become a Client
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param Map $upMap map that contain datas submited for a sign up
      * + $upMap[Map::sex] holds sex submited

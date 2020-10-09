@@ -138,7 +138,10 @@ class Response
             $this->isSuccess = false;
         }
         $error = new MyError($errorMsg);
-        if (!empty($key)) {
+        if($key == MyError::ADMIN_ERROR){
+            (!key_exists($key, $this->errors)) ? $this->errors[MyError::ADMIN_ERROR] = [] : null;
+            array_push($this->errors[MyError::ADMIN_ERROR], $error);
+        } else if (!empty($key)) {
             $this->errors[$key] = $error;
         } else {
             array_push($this->errors, $error);

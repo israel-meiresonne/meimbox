@@ -21,6 +21,7 @@ RewriteRule ^dashboard/*$	                        index.php?controller=dashboard
 RewriteRule ^checkout/qr/+([A-z]+)/*$               index.php?controller=checkout&action=$1 [QSA,NC,L]
 RewriteRule ^checkout/sign/*$	                    index.php?controller=checkout&action=sign [QSA,NC,L]
 RewriteRule ^checkout/address/*$	                index.php?controller=checkout&action=address [QSA,NC,L]
+RewriteRule ^checkout/success/*$	                index.php?controller=checkout&action=success [QSA,NC,L]
 RewriteRule ^checkout/*$	                        index.php?controller=checkout&action=index [QSA,NC,L]
 
 # default

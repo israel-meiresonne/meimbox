@@ -287,7 +287,7 @@ class Cookie extends ModelFunctionality
 
     /**
      * To insert cookie in db
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      */
     private function insertCookie(Response $response, $userID)
     {
@@ -307,7 +307,7 @@ class Cookie extends ModelFunctionality
 
     /**
      * To update cookie in db
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      */
     private function updateCookie(Response $response, $userID)
     {
