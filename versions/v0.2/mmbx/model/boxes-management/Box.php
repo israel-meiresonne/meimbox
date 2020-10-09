@@ -79,17 +79,17 @@ class Box extends ModelFunctionality
      */
     private $drawbacks;
 
+    /**
+     * Set of BoxProduct inside the box ordered from newest to oldest
+     * @var BoxProduct[] Use Unix time of the as key
+     */
+    private $boxProducts;
+
     /** 
      * Sell price for a given country and currency
      * @var Price
      */
     private $price;
-
-    /**
-     * Liste of BoxProduct inside the box ordered from newest to oldest
-     * @var BoxProduct[] Use Unix time of the as key
-     */
-    private $boxProducts;
 
     /**
      * Shipping cost for a given country and currency
@@ -201,21 +201,6 @@ class Box extends ModelFunctionality
         if (empty($boxColor)) {
             throw new Exception("Box's color can't be empty");
         }
-        // switch ($boxColor) {
-        //     case self::GOLD:
-        //         $this->color = self::GOLD;
-        //         break;
-        //     case self::SILVER:
-        //         $this->color = self::SILVER;
-        //         break;
-        //     case self::REGULAR:
-        //         $this->color = self::REGULAR;
-        //         break;
-
-        //     default:
-        //         throw new Exception("This box color ('$boxColor') is not supported");
-        //         break;
-        // }
         $boxMap = $this->getBoxMap($country, $currency);
         if (!key_exists($boxColor, $boxMap)) {
             throw new Exception("The box color '$boxColor' is not supported");
@@ -418,6 +403,15 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * Getter for box's weight
+     * @return float box's weight
+     */
+    private function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
      * To get space available in the box
      * @return int space available in the box
      */
@@ -431,8 +425,18 @@ class Box extends ModelFunctionality
     }
 
     /**
-     * Getter for box's max amount of product he can contain
-     * @return int box's max amount of product he can contain
+     * Getter box's picture
+     * @return string box's picture
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * Getter picture plus folder where it's stored
+     * + my/file/dir/ + $this->picture
+     * @return string box's max amount of product he can contain
      */
     public function getPictureSource()
     {
@@ -441,7 +445,7 @@ class Box extends ModelFunctionality
 
     /**
      * Getter for box's set date
-     * @return int box's set date
+     * @return string box's set date
      */
     public function getSetDate()
     {
@@ -475,36 +479,6 @@ class Box extends ModelFunctionality
     {
         (!isset($this->drawbacks)) ? $this->setArguments() : null;
         return $this->drawbacks;
-    }
-
-    /**
-     * Getter for box's price
-     * @return Price box's price
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * Getter for box's price in displayable format
-     * @return string box's price in displayable format
-     */
-    public function getPriceFormated()
-    {
-        return $this->price->getFormated();
-    }
-
-    /**
-     * To calculate the price per ittem
-     * @return string the price per ittem
-     */
-    public function getPricePerItem()
-    {
-        $price = $this->getPrice();
-        $perItemVal = ($price->getPrice() / $this->getSizeMax());
-        $perItem = new Price($perItemVal, $price->getCurrency());
-        return $perItem->getFormated();
     }
 
     /**
@@ -552,6 +526,46 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * Getter for box's price
+     * @return Price box's price
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Getter for box's price in displayable format
+     * @return string box's price in displayable format
+     */
+    public function getPriceFormated()
+    {
+        return $this->price->getFormated();
+    }
+
+    /**
+     * To calculate the price per ittem
+     * @return string the price per ittem
+     */
+    public function getPricePerItem()
+    {
+        $price = $this->getPrice();
+        $perItemVal = ($price->getPrice() / $this->getSizeMax());
+        $perItem = new Price($perItemVal, $price->getCurrency());
+        return $perItem->getFormated();
+    }
+
+
+    /**
+     * Getter for box's shipping cost
+     * @return Price box's shipping cost
+     */
+    public function getShipping()
+    {
+        return $this->shipping;
+    }
+
+    /**
      * To get one box in each color supported ordered by price 
      * from lower to highest
      * @param Language $language Visitor's language
@@ -580,7 +594,7 @@ class Box extends ModelFunctionality
      * @param Size $selectedSize submited size for product
      * @param int $quantity quantity of product to add
      */
-    public function addProduct($response, $prodID, Size $selectedSize)//, int $quantity = null)
+    public function addProduct($response, $prodID, Size $selectedSize) //, int $quantity = null)
     {
         $boxID = $this->getBoxID();
         $product = $this->getProduct($prodID, $selectedSize);
@@ -628,12 +642,12 @@ class Box extends ModelFunctionality
     public function deleteBoxProduct(Response $response, $prodID, Size $selectedSize)
     {
         $product = $this->getProduct($prodID, $selectedSize);
-        if(empty($product)){
+        if (empty($product)) {
             throw new Exception("This product don't exist");
         }
         $boxID = $this->getBoxID();
         $product->deleteProduct($response, $boxID);
-        if(!$response->containError()){
+        if (!$response->containError()) {
             $key = $product->getDateInSec();
             $this->boxProducts[$key] = null;
             unset($this->boxProducts[$key]);
@@ -643,7 +657,7 @@ class Box extends ModelFunctionality
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
     /**
      * Insert box in the db like a new box
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param string $userID Visitor's id
      */
@@ -670,7 +684,7 @@ class Box extends ModelFunctionality
 
     /**
      * To delete all product inside the box
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      */
     public function emptyBox(Response $response)
@@ -685,7 +699,7 @@ class Box extends ModelFunctionality
 
     /**
      * To delete box from db
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      */
     public function deleteBox(Response $response)
@@ -693,5 +707,42 @@ class Box extends ModelFunctionality
         $boxID = $this->getBoxID();
         $sql = "DELETE FROM `Baskets-Box` WHERE `Baskets-Box`.`boxId` = '$boxID';";
         $this->delete($response, $sql);
+    }
+
+    /**
+     * To insert boxes ordred and their content
+     * @param Response $response to push in results or accured errors
+     * @param Box[] $boxes set of boxes ordered
+     * @param string $orderID id of an order
+     */
+    public static function orderBoxes(Response $response, $boxes, $orderID) // regex \[value-[0-9]*\]
+    {
+        $nbBox = count($boxes);
+        $bracket = "(?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO `Orders-Boxes`(`orderId`, `boxId`, `box_color`, `sizeMax`, `weight`, `boxPicture`, `sellPrice`, `shipping`, `discount_value`, `setDate`)
+            VALUES " . self::buildBracketInsert($nbBox, $bracket);
+        $values = [];
+        foreach ($boxes as $box) {
+            array_push(
+                $values,
+                $orderID,
+                $box->getBoxID(),
+                $box->getColor(),
+                $box->getSizeMax(),
+                $box->getWeight(),
+                $box->getPicture(),
+                $box->getPrice()->getPrice(),
+                $box->getShipping()->getPrice(),
+                null,
+                $box->getSetDate()
+            );
+        }
+        self::insert($response, $sql, $values);
+
+        if (!$response->containError()) {
+            BoxProduct::orderProducts($response, $boxes, $orderID);
+            // insert measure
+            // insert boxProducts
+        }
     }
 }

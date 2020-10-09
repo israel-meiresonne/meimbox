@@ -27,7 +27,7 @@ class Language extends ModelFunctionality
     private static $DEFAULT_LANGUAGE;
 
 
-    function __construct()
+    public function __construct()
     {
         $args = func_get_args();
         $this->setConstants();

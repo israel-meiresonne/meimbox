@@ -250,7 +250,7 @@ class BasketProduct extends Product
     /**
      * Update product's quantity in db
      * + this function also update product's set date
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param string $userID Visitor's id
      */

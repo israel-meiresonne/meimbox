@@ -192,6 +192,15 @@ class Measure extends ModelFunctionality
     }
 
     /**
+     * Getter for Measure's creation date
+     * @return string Measure's creation date
+     */
+    public function getSetDate()
+    {
+        return $this->setDate;
+    }
+
+    /**
      * Convert setDate to seconde from UNIX.
      * @return int seconde from UNIX
      */
@@ -284,7 +293,7 @@ class Measure extends ModelFunctionality
     /**
      * Save the measure by INSERT it in database
      * @param string $userID Visitor's id
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      */
     public function insertMeasure($response, $userID)
@@ -303,14 +312,14 @@ class Measure extends ModelFunctionality
         array_push($values, $this->inseam->getValue());
         array_push($values, $this->inseam->getUnitName());
         array_push($values, $this->setDate);
-        $response = $this->insert($response, $sql, $values);
+        $this->insert($response, $sql, $values);
     }
 
     /**
      * Update the measure on database
      * @param Measure $newMeasure contain the new values for this measure
      * @param string $userID Visitor's id
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      */
     public function updateMeasure(Response $response, $userID, Measure $newMeasure)
@@ -339,7 +348,7 @@ class Measure extends ModelFunctionality
     /**
      * Delete the measure from database
      * @param string $userID Visitor's id
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      */
     public function deleteMeasure(Response $response, $userID)
@@ -348,4 +357,35 @@ class Measure extends ModelFunctionality
         $response = $this->delete($response, $query);
     }
 
+    /**
+     * To insert measures used in boxProduct ordered
+     * @param Response $response to push in results or accured errors
+     * @param Measure[] $measures measures used in boxProduct
+     * + use measureID as access key
+     * @param string $orderID id of an order
+     */
+    public static function insertOrderMeasures(Response $response, $measures, $orderID) // \[value-[0-9]*\]
+    {
+        $bracket = "(?,?,?,?,?,?,?,?,?,?)";
+        $nb = count($measures);
+        $sql = "INSERT INTO `Orders-UsersMeasures`(`orderId`, `measureID`, `measureName`, `bust`, `arm`, `waist`, `hip`, `inseam`, `unit_name`, `setDate`)
+                VALUES " . self::buildBracketInsert($nb, $bracket);
+        $values = [];
+        foreach($measures as $measure){
+            array_push(
+                $values,
+                $orderID,
+                $measure->getMeasureID(),
+                $measure->getMeasureName(),
+                $measure->getbust()->getValue(),
+                $measure->getarm()->getValue(),
+                $measure->getwaist()->getValue(),
+                $measure->gethip()->getValue(),
+                $measure->getInseam()->getValue(),
+                $measure->getbust()->getUnitName(),
+                $measure->getSetDate()
+            );
+        }
+       self::insert($response, $sql, $values);
+    }
 }

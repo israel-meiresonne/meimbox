@@ -5,6 +5,7 @@ use Stripe\Stripe;
 require_once 'model/users-management/Visitor.php';
 require_once 'model/tools-management/Address.php';
 require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+require_once 'model/orders-management/Order.php';
 
 abstract class User extends  Visitor
 {
@@ -53,6 +54,13 @@ abstract class User extends  Visitor
      * @var Map
      */
     protected $addresses;
+
+    /**
+     * Holds User's orders
+     * + use creation date as access key
+     * @var Order[]
+     */
+    protected $orders;
 
     /**
      * Holds user's db line
@@ -201,7 +209,6 @@ abstract class User extends  Visitor
         return $this->sexe;
     }
 
-
     /**
      * Getter for User's addresses
      * @return Map User's addresses
@@ -340,20 +347,33 @@ abstract class User extends  Visitor
 
     /**
      * To handle all Stripe's events
+     * @param Response $response to push in result or accured error
      */
-    public function handleStripeEvents()
+    public function handleStripeEvents(Response $response)
     {
         $stripeAPI = $this->getStripeAPI();
+        $stripeCheckoutID = $stripeAPI->getCheckoutSessionId();
         // $stripeAPI->handleEvents(); // already handled in controllerSecure
         // $basket = $this->getBasket();
-        $this->createOrder();
+        $this->createOrder($response, $stripeCheckoutID);
     }
 
     /**
      * To convert User's basket into a order
+     * @param Response $response to push in result or accured error
+     * @param string $stripeCheckoutID id of Stripe's session used to paid the order
      */
-    private  function createOrder()
+    private  function createOrder(Response $response, $stripeCheckoutID)
     {
+        $userID = $this->getUserID();
+        $basket = $this->getBasket();
+        $this->manageCookie(Cookie::COOKIE_ADRS, false);
+        $address = $this->getSelectedAddress();
+        $order = new Order();
+        $order->create($response, $userID, $stripeCheckoutID, $address, $basket);
+        $key = $order->getDateInSec();
+        $this->orders[$key] = $order;
+        krsort($this->orders);
     }
     /*———————————————————————————— PAYEMENT UP ——————————————————————————————*/
 }

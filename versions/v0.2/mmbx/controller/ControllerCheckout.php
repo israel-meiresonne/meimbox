@@ -111,6 +111,8 @@ class ControllerCheckout extends ControllerSecure
      */
     public function stripeWebhook()
     {
-        $this->person->handleStripeEvents();
+        $response = new Response();
+        $this->person->handleStripeEvents($response);
+        $this->generateJsonView([], $response, $this->person);
     }
 }

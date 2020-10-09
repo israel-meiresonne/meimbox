@@ -64,7 +64,7 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Holds the weight of the product
-     * @var double
+     * @var float
      */
     protected $weight;
 
@@ -477,6 +477,15 @@ abstract class Product extends ModelFunctionality
     {
         $colorRGB = $this->getColorRGB();
         return ($colorRGB != self::WHITE_RGB) ? $colorRGB : self::$COLOR_TEXT_05;
+    }
+
+    /**
+     * Getter for box's weight
+     * @return float box's weight
+     */
+    protected function getWeight()
+    {
+        return $this->weight;
     }
 
     /**

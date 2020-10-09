@@ -323,7 +323,7 @@ class BoxProduct extends Product
 
     /**
      * Insert product in db
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param string $boxID id of box that holds the product
      */
@@ -349,7 +349,7 @@ class BoxProduct extends Product
     /**
      * Update product's quantity in db
      * + this function also update product's set date
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param string $boxID id of box that holds the product
      * @param Size $holdSize product's holds Size
@@ -385,7 +385,7 @@ class BoxProduct extends Product
 
     /**
      * Delete from a box
-     * @param Response $response if its success Response.isSuccess = true else Response
+     * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param string $boxID id of box that holds the product
      */
@@ -398,5 +398,56 @@ class BoxProduct extends Product
             AND `Box-Products`.`prodId` = '$prodID' 
             AND `Box-Products`.`sequenceID` = '$sequence';";
         $this->delete($response, $sql);
+    }
+
+    /**
+     * To insert boxProduct ordred
+     * @param Response $response to push in results or accured errors
+     * @param Box[] $boxes set of boxes ordered
+     * @param string $orderID id of an order
+     */
+    public static function orderProducts(Response $response, $boxes, $orderID)
+    {
+        $measures = [];
+        // $measureValues = [];
+        $values = [];
+        $nbProd = 0;
+        foreach ($boxes as $box) {
+            $products = $box->getBoxProducts();
+            $nbProd += count($products);
+            if (!empty($products)) {
+                foreach ($products as $product) {
+                    $size = $product->getSelectedSize();
+                    if ($size->getSizeType() == Size::SIZE_TYPE_MEASURE) {
+                        $measure = $size->getMeasure();
+                        $measureID = $measure->getMeasureID();
+                        if (!key_exists($measureID, $measures)) {
+                            $measures[$measureID] = $measure;
+                        }
+                    }
+                    array_push(
+                        $values,
+                        $box->getBoxID(),
+                        $product->getProdID(),
+                        $size->getSequence(),
+                        $product->getType(),
+                        $product->getWeight(),
+                        $size->getsize(),
+                        $size->getbrandName(),
+                        $size->getmeasureID(),
+                        $size->getCut(),
+                        $size->getQuantity(),
+                        $size->getSetDate()
+                    );
+                }
+            }
+        }
+        $bracket = "(?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Orders-BoxProducts`(`boxId`, `prodId`, `sequenceID`, `product_type`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`)
+                VALUES " . self::buildBracketInsert($nbProd, $bracket);
+        (!empty($measures)) ?  Measure::insertOrderMeasures($response, $measures, $orderID) : null;
+        if (!$response->containError()) {
+            self::insert($response, $sql, $values);
+        }
     }
 }

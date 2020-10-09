@@ -1,131 +1,195 @@
 <?php
+require_once 'model/ModelFunctionality.php';
+require_once 'model/boxes-management/Basket.php';
+require_once 'model/orders-management/Status.php';
+require_once 'model/tools-management/Address.php';
+require_once 'model/orders-management/Status.php';
+require_once 'model/orders-management/BasketOrdered.php';
+require_once 'model/special/Response.php';
+require_once 'model/tools-management/AddressDelivery.php';
 
 /**
  * This class représente a order paid.
  * This can be created ONLY when you receive the paiement confirmation.
  */
-class Order {
+class Order extends ModelFunctionality
+{
     /**
-     * Holds a sequence of letter and number as the id of the order.
-     * Two order can't have a same $orderID
+     * Holds order's id
      * @var string
      */
     private $orderID;
+
+    /**
+     * Holds the id of Stripe's session used to paid the order
+     * @var string
+     */
+    private $stripeCheckoutID;
+
+    /**
+     * The status of the order.
+     * + By default it set at "processing" with author set at "Systeme"
+     * @var Status
+     */
+    private $status;
+
+    /**
+     * Holds order's delivery address
+     * @var AddressDelivery
+     */
+    private $delivery;
+
+    /**
+     * Holds a basket that contain item ordered
+     * @var BasketOrdered
+     */
+    private $basketOrdered;
+
     /**
      * Holds the DATETIME of the order into format "YYYY-MM-DD HH:MM:SS"
      * @var string
      */
     private $setDate;
-    
-    /**
-     * The status of the order.
-     * By default it set at "processing" with author set at "Systeme"
-     * @var Status
-     */
-    private $status;
-    
-    /**
-     * The price of the order get from the basket's subtotal
-     * @var Price
-     */
-    private $subtotal;
+
+    // /**
+    //  * Holds Boxes from basket ordered
+    //  * @var BoxOrdered[]
+    //  */
+    // private $boxesOrdered;
+
+    // /**
+    //  * Holds basketProduct from basket ordered
+    //  * @var BasketProductOrdered[]
+    //  */
+    // private $basketProductsOrdered;
+
+    // /**
+    //  * Liste of discount code of the basket.
+    //  * Use the code as access key like $discountCodes[code => DiscountCode]
+    //  * @var DiscountCode[] $discountCodes
+    //  */
+    // private $discountCodes;
 
     /**
-     * The shipping cost of the order get from the basket's total shipping costs
-     * @var Shipping
+     * Constructor
      */
-    private $shipping;
-
-    /**
-     * Holds Boxes from basket ordered
-     * @var BoxOrdered[]
-     */
-    private $boxesOrdered;
-
-    /**
-     * Holds basketProduct from basket ordered
-     * @var BasketProductOrdered[]
-     */
-    private $basketProductsOrdered;
-
-    /**
-     * Liste of discount code of the basket.
-     * Use the code as access key like $discountCodes[code => DiscountCode]
-     * @var DiscountCode[] $discountCodes
-     */
-    private $discountCodes;
-
-    /**
-     * The default value take by a new order.
-     * This default value ("ORDER_DEFAULT_STATUS") is used to get the real value 
-     * stored in Constante table with the keyword "ORDER_DEFAULT_STATUS". In this way we can change the 
-     * $STATUS value without touch the code.
-     * @var string
-     */
-    private $STATUS = "ORDER_DEFAULT_STATUS";
-
-
-    function __construct($basket, $dbMap)
+    public function __construct()
     {
-        $this->STATUS = $dbMap["constantMap"][$this->STATUS]["stringValue"];
-        $this->orderID = self::genarateOrderID();
-        $this->setDate =  GeneralCode::getDateTime();
-        $this->status = new Status($dbMap["SYSTEM_ID"], $this->STATUS, $this->setDate);
-        // $this->subtotal = 
-        // $this->shipping = 
-
-        $this->boxesOrdered = self::initBoxOrdered($basket);
-        $this->basketProductsOrdered = self::initBasketProductOrdered($basket);
-        $this->discountCodes = self::initDiscountCodes($basket);
     }
 
     /**
-     * Generate a new order ID
+     * To create a new Order
+     * @param Response $response to push in result or accured error
+     * @param string $userID id of the Client that own this Order
+     * @param string $stripeCheckoutID id of Stripe's session used to paid the order
+     * @param Address $address Client's delivery address for this order
+     * @param Basket $basket Client's basket
      */
-    private function genarateOrderID(){
-        return "orderID";
+    public function create(Response $response, $userID, $stripeCheckoutID, Address $address, Basket  $basket)
+    {
+        $this->orderID = $this->generateDateCode(25);
+        $this->stripeCheckoutID = $stripeCheckoutID;
+        $this->setDate =  $this->getDateTime();
+        $country =  $address->getCountry();
+        $this->insertOrder($response, $userID, $basket, $country);
+
+        $this->delivery = new AddressDelivery();
+        $this->delivery->create($response, $address, $this->orderID);
+
+        $this->status = new Status();
+        $this->status->create($response, $this->orderID);
+
+        $this->basketOrdered = new BasketOrdered();
+        $this->basketOrdered->create($response, $basket, $this->orderID);
     }
 
-        /**
+    /**
+     * To get order's id
+     * @return string 
+     */
+    private function getOrderID()
+    {
+        return $this->orderID;
+    }
+
+    /**
+     * To get Order's stripeCheckoutID
+     * @return string Order's stripeCheckoutID
+     */
+    private function getStripeCheckoutID()
+    {
+        return $this->stripeCheckoutID;
+    }
+
+    /**
+     * To get Order's Status
+     * @return Status Order's Status
+     */
+    private function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * To get Order's address
+     * @return AddressDelivery Order's address
+     */
+    private function getDelivery()
+    {
+        return $this->delivery;
+    }
+
+    /**
+     * To get Order's basketOrdered
+     * @return BasketOrdered Order's basketOrdered
+     */
+    private function getBasketOrdered()
+    {
+        return $this->basketOrdered;
+    }
+
+    /**
+     * To get Order's setDate
+     * @return string Order's setDate
+     */
+    private function getSetDate()
+    {
+        return $this->setDate;
+    }
+
+    /**
      * Convert setDate to seconde from UNIX.
      * @return int seconde from UNIX
      */
-    public function getDateInSec(){
+    public function getDateInSec()
+    {
         return strtotime($this->setDate);
     }
 
+    /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
+
     /**
-     * Convert all Box inside the basket to BoxOrdered instance
-     * @param Basket $basket user's Basket
-     * @return BoxOrdered[]
+     * To insert a new order in db
+     * @param Response $response to push in results or accured errors
+     * @param string $userID id of the Client that own this Order
+     * @param Basket $basket Client's paid basket
+     * @param Country $country the delivery country
      */
-    private function initBoxOrdered($basket){
-        $boxesOrdered = [];
-        $boxes = $basket->getCopyBoxes();
-        foreach($boxes as $setDateUnix => $box){
-            $boxesOrdered[$setDateUnix] = new BoxOrdered($box);
-        }
-        return $boxesOrdered;
-    }
-    
-    /**
-     * @param Basket $basket user's Basket
-     * @return BasketProductOrdered[]
-     */
-    private function initBasketProductOrdered($basket){
-        $basketProductOrdered = [];
-        $basketProducts = $basket->getCopyBasketProducts();
-        foreach($basketProducts as $setDateUnix => $basketProduct){
-            $basketProductOrdered[$setDateUnix] = new BasketProductOrdered($basketProduct);
-        }
-        return $basketProductOrdered;
-    }
-    
-    /**
-     * @param Basket $basket user's Basket
-     * @return DiscountCode[]
-     */
-    private function initDiscountCodes($basket){
-        return $basket->getCopyDiscountCodes();
+    private function insertOrder(Response $response, $userID, Basket  $basket, Country $country) // \[value-[0-9]*\]
+    {
+        $bracket = "(?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO `Orders`(`orderID`, `userId`, `stripeCheckoutId`, `vat`, `paidAmount`, `shippingCost`, `iso_currency`, `setDate`) 
+                VALUES " . $this->buildBracketInsert(1, $bracket);
+        $values = [
+            $this->getOrderID(),
+            $userID,
+            $this->getStripeCheckoutId(),
+            $country->getVat(),
+            $basket->getTotal()->getPrice(),
+            $basket->getShipping()->getPrice(),
+            $basket->getCurrency()->getIsoCurrency(),
+            $this->getSetDate()
+        ];
+        $this->insert($response, $sql, $values);
     }
 }

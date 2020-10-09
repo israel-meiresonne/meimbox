@@ -1,41 +1,42 @@
 <?php
 require_once 'model/ModelFunctionality.php';
+require_once 'model/special/Response.php';
 class Address extends ModelFunctionality
 {
     /**
      * @var string
      */
-    private $address;
+    protected $address;
 
     /**
      * @var string
      */
-    private $appartement;
+    protected $appartement;
 
     /**
      * @var string
      */
-    private $province;
+    protected $province;
 
     /**
      * @var string
      */
-    private $zipcode;
+    protected $zipcode;
 
     /**
      * @var string
      */
-    private $city;
+    protected $city;
 
     /**
      * @var Country
      */
-    private $country;
+    protected $country;
 
     /**
      * @var string
      */
-    private $phone;
+    protected $phone;
 
     // /**
     //  * Show if this address is the current one
@@ -47,7 +48,7 @@ class Address extends ModelFunctionality
      * Holds de date of the registration of this addresse
      * @var string DATETIME into format "YYYY-MM-DD HH:MM:SS"
      */
-    private $setDate;
+    protected $setDate;
 
     /**
      * Holds input name
@@ -201,7 +202,7 @@ class Address extends ModelFunctionality
     /**
      * To insert a new address
      * @param Response $response to push in result or accured error
-     * @param Response $userID User's id
+     * @param string $userID User's id
      */
     public function insertAddress(Response $response, $userID)
     {
