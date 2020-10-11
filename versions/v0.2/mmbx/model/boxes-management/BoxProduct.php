@@ -7,6 +7,12 @@ class BoxProduct extends Product
 {
 
     /**
+     * Holds the sizesStock attribut extended
+     * @var int[]
+     */
+    private $virtualSizeStock;
+
+    /**
      * Holds the BoxProduct's measures
      * @var Measure
      */
@@ -67,12 +73,12 @@ class BoxProduct extends Product
     }
 
     /**
-     * Setter for product's size and stock
+     * Setter for product's virtual size and stock
      */
-    protected function setSizesStock()
+    protected function setSizeStock()
     {
-        parent::setSizesStock();
-        $this->sizesStock = $this->decupleSizeStock($this->sizesStock);
+        parent::setSizeStock();
+        $this->virtualSizeStock = $this->setVirtualSizeStock($this->sizesStock);
     }
 
     /**
@@ -82,10 +88,8 @@ class BoxProduct extends Product
      * + size => stock
      * @return int[] list of size => stock decupled
      */
-    private function decupleSizeStock($sizesStock)
+    private function setVirtualSizeStock($sizesStock)
     {
-        // $this->setSizesStock();
-        // $sizesStock = $this->getSizeStock();
         $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
         $dbSizes = json_decode($json);
         $sizeSample = array_keys($sizesStock)[0];
@@ -95,14 +99,12 @@ class BoxProduct extends Product
         $supportedSizes = $dbSizes->$sizeType;
         $newSizesStock = array_fill_keys($supportedSizes, 0);
         $sizesPos = array_flip($supportedSizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
-        // foreach ($this->sizesStock as $size => $stock) {
         foreach ($sizesStock as $size => $stock) {
             $pos = $sizesPos[$size];
             $keys = array_keys(array_slice($newSizesStock, $pos));
             $newSizesStock = $this->increaseStock($newSizesStock, $keys, $stock);
         }
         foreach ($newSizesStock as $size => $stock) {
-            // if (($stock == 0) && (!key_exists($size, $this->sizesStock))) {
             if (($stock == 0) && (!key_exists($size, $sizesStock))) {
                 $newSizesStock[$size] = null;
                 unset($newSizesStock[$size]);
@@ -115,7 +117,6 @@ class BoxProduct extends Product
             }
         }
         $ordSizeStock = array_reverse($ordSizeStock);
-        // $this->sizesStock = $ordSizeStock;
         return $ordSizeStock;
     }
 
@@ -134,6 +135,9 @@ class BoxProduct extends Product
             if (in_array($sizeSample, $dbSizes->$type)) {
                 break;
             }
+        }
+        if(empty($sizeType)){
+            throw new Exception("This type of size is not supported, size:$sizeSample");
         }
         return $sizeType;
     }
@@ -216,13 +220,13 @@ class BoxProduct extends Product
     }
 
     /**
-     * Getter for product's stock for each size
-     * @return int[] product's stock for each size
+     * To get virtual stock
+     * @return int[] product's virtual stock
      */
     protected function getSizeStock()
     {
-        (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
-        return $this->sizesStock;
+        (!isset($this->virtualSizeStock)) ? $this->setSizeStock() : null;
+        return $this->virtualSizeStock;
     }
 
     /**
@@ -235,6 +239,10 @@ class BoxProduct extends Product
         return $this->sameProducts;
     }
 
+    /**
+     * To get the biggest  measure available for this product
+     * @return Measure the biggest  measure available for this product
+     */
     private function getMeasure()
     {
         (!isset($this->measure)) ? $this->setMeasure() : null;
@@ -302,21 +310,23 @@ class BoxProduct extends Product
         if (empty($size) && empty($measure)) {
             throw new Exception("Size and measurement can't both be NULL");
         }
+        if (isset($size) && isset($measure)) {
+            throw new Exception("Size and measurement can't both be setted");
+        }
+        $stillStock = false;
         if (!empty($size)) {
-            // (!isset($this->sizesStock)) ? $this->decupleSizeStock() : null;
             $sizesStock = $this->getSizeStock();
-            // if (!key_exists($size, $this->sizesStock)) {
             if (!key_exists($size, $sizesStock)) {
                 throw new Exception("This size '$size' don't exist in sizesStock");
             }
-            // return ($this->sizesStock[$size] > 0);
-            return ($sizesStock[$size] > 0);
+            $stillStock = ($sizesStock[$size] > 0);
         }
         if (!empty($measure)) {
             $prodMeasure = $this->getMeasure();
             $cut = $sizeObj->getCut();
-            return Measure::compare($measure, $prodMeasure, $cut);
+            $stillStock = Measure::compare($measure, $prodMeasure, $cut);
         }
+        return $stillStock;
     }
 
     /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/

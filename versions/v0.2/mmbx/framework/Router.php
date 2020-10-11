@@ -234,11 +234,14 @@ class Router {
         // rnvs : on a ici une vue non attachée à un contrôleur effectif
         //        comme l'action est 'error', le fichier associé à cette
         //        action de cette vue est : view/error.php
-        $view = new View('error');
+        // $view = new View('error');
         
         // rnvs : c'est dans View::generate que la page réponse à la requête
         //        est construite et envoyée au client
-        $view->generate(array('msgError' => $exception->getMessage()));
+        // $view->generate(array('msgError' => $exception->getMessage()));
+
+        throw $exception;
+        
         
         // rnvs : View::generate termine par la « fonction » echo qui envoie
         //        la réponse au client => on n'a plus rien à faire que retourner 

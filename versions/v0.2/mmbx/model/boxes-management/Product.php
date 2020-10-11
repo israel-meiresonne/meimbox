@@ -76,12 +76,11 @@ abstract class Product extends ModelFunctionality
     protected $pictures;
 
     /**
-     * List of size available for the product and the quantity available for purchase the product
-     * Use the size name as access key and return a bolean value witch indicate if the size is selected
-     * like 
-     * sizesStock = [
-     *      size_name => stock
-     *  ]
+     * List of size physically available for the product and return the quantity for each size
+     * + use the name of the size as access key and return the quantity of strok  available
+     * + sizesStock = [
+     * + +     size_name{string} => stock{int}
+     * + ]
      * @var int[]
      */
     protected $sizesStock;
@@ -309,10 +308,7 @@ abstract class Product extends ModelFunctionality
         }
     }
 
-    /**
-     * Setter for product's size and stock
-     */
-    protected function setSizesStock()
+    protected function setSizeStock()
     {
         $this->sizesStock  = [];
         $sql = "SELECT * 
@@ -326,10 +322,6 @@ abstract class Product extends ModelFunctionality
             $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
         }
     }
-    // /**
-    //  * Setter for product's size and stock
-    //  */
-    // protected abstract function setSizesStock();
 
     /**
      * Setter for product's collections
@@ -551,24 +543,27 @@ abstract class Product extends ModelFunctionality
         return $url;
     }
 
-    /**
-     * Getter for product's stock for each size
-     * @return int[] product's stock for each size
-     */
-    protected function getSizeStock()
-    {
-        (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
-        return $this->sizesStock;
-    }
+    protected abstract function getSizeStock();
+
+
+    // /**
+    //  * Getter for product's stock for each size
+    //  * @return int[] product's stock for each size
+    //  */
+    // protected function getSizeStock()
+    // {
+    //     (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
+    //     return $this->sizesStock;
+    // }
 
     /**
      * Getter for the product's sizes
      * @return string[] product's sizes [index => size]
      */
-    private function getSizesStockKeys()
+    private function getSizeStockKeys()
     {
         $sizesStock = $this->getSizeStock();
-        return array_keys($this->sizesStock);
+        return array_keys($sizesStock);
     }
 
     /**
@@ -587,7 +582,7 @@ abstract class Product extends ModelFunctionality
      */
     public function getSizeValueToValue()
     {
-        $sizes = $this->getSizesStockKeys();
+        $sizes = $this->getSizeStockKeys();
         return $this->arrayToMap($sizes);
     }
 

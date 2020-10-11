@@ -26,10 +26,10 @@ require_once 'model/special/MyError.php';
  * @var Visitor|Client|Administrator
  */
 $person = $person;
-$language = $person->getLanguage();
+$isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 ?>
 <!DOCTYPE html>
-<html lang="<?= $language->getIsoLang() ?>">
+<html lang="<?= $isoLang ?>">
 
 <head>
     <meta charset="UTF-8">
