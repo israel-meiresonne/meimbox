@@ -52,7 +52,7 @@ class BasketOrdered extends Basket
         // insert boxes
         $boxes = $this->getBoxes();
         Box::orderBoxes($response, $boxes, $orderID);
-        // insert basketProducts
+        // insert basketProducts + decrease sttock
     }
 
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/

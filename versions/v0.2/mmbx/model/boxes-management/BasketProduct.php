@@ -156,14 +156,24 @@ class BasketProduct extends Product
         return $this->sameProducts;
     }
 
+    // /**
+    //  * Getter for product's stock for each size
+    //  * @return int[] product's stock for each size
+    //  */
+    // protected function getSizeStock()
+    // {
+    //     (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
+    //     return $this->sizesStock;
+    // }
+
     /**
-     * Getter for product's stock for each size
-     * @return int[] product's stock for each size
+     * Getter for product's sizes
+     * @return string[] product's stock for each size
      */
-    protected function getSizeStock()
+    public function getSizes()
     {
-        (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
-        return $this->sizesStock;
+        $sizesStock = $this->getSizeStock();
+        return array_keys($sizesStock);
     }
 
     /**
@@ -211,7 +221,6 @@ class BasketProduct extends Product
      * @param Measure $measure never set for basket product
      * @return boolean true if the stock is available
      */
-    // public function stillStock($size, $brand = null, Measure $measure = null)
     public function stillStock(Size $sizeObj)
     {
         $sizesStock = $this->getSizeStock();

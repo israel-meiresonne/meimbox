@@ -360,7 +360,7 @@ class Size  extends ModelFunctionality
      * + SIZE_TYPE_MEASURE
      * @return string size's type
      */
-    public function getSizeType()
+    public function getType()
     {
         $size = $this->getsize();
         if (!empty($size)) {

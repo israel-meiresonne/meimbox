@@ -36,7 +36,7 @@ switch ($conf) {
     case Size::CONF_SIZE_EDITOR:
         $selectedSize = $product->getSelectedSize();
         // $selectedSize = new Size("null-null-0jj2g3rj131923p1560b90d01-fit", "2020-09-17 20:57:22");
-        $sizeType = $selectedSize->getSizeType();
+        $sizeType = $selectedSize->getType();
         $brandName = $selectedSize->getbrandName();
         $measure = $selectedSize->getmeasure();
         switch ($sizeType) {
@@ -95,7 +95,8 @@ switch ($conf) {
                     <?php
                     $brandCtnId = ModelFunctionality::generateDateCode(25);
                     $title = $translator->translateStation("US9");
-                    $labels = $product->getSizeValueToValue();
+                    $sizes = $product->getSizes();
+                    $labels = array_combine($sizes, $sizes);
                     $datas = [
                         "title" => $title,
                         // "checkedLabels" => [],

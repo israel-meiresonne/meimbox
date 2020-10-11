@@ -229,9 +229,9 @@ abstract class ModelFunctionality extends Model
      * @return Response if its success Response.results[UPDATE_STATUS_KEY] contain the success code else it
      *  contain the error thrown
      */
-    protected function update(Response $response, $sql, $params)
+    protected static function update(Response $response, $sql, $params)
     {
-        return $this->insert($response, $sql, $params);
+        return self::insert($response, $sql, $params);
     }
 
     /**

@@ -791,10 +791,46 @@ class ControllerItem extends ControllerSecure
         //        var_dump($data);
         //        echo "<hr>";
         //    }
-        $a = false;
-        var_dump($a);
-        echo "<hr>";
-        $b = (int) $a;
-        var_dump($b);
+        // $a = false;
+        // var_dump($a);
+        // echo "<hr>";
+        // $b = (int) $a;
+        // var_dump($b);
+        // $product = new BoxProduct("1", $this->person->getLanguage(), $this->person->getCountry(), $this->person->getCurrency());
+        // // $sizes = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
+        // $sizes = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
+        // foreach($sizes as $size){
+        //     // var_dump();
+        //     // echo "<br>";
+        //     $sizeObj = new Size(Size::buildSequence($size, null, null, null));
+        //     $sizeObj->setQuantity(3);
+        //     $product->selecteSize($sizeObj);
+        //     var_dump("To convert: ", $sizeObj->getsize());
+        //     echo "<br>";
+        //     var_dump("Converted: ", $product->SelectedToRealSize()->getsize());
+        //     echo "<br>";
+        //     var_dump("quantity: ", $product->SelectedToRealSize()->getQuantity());
+        //     echo "<hr>";
+        // }
+        // $sizes = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
+        // $measureIDs = [
+        //     '803g420892212029wn05e10cq',
+        //     // 'c39521az182vv0012250220n0',
+        //     // 'a5rn30s0gtn2x2998j3000221', 
+        //     '1001nq54od2c002o903219929', 
+        //     '0jj2g3rj131923p1560b90d01', 
+        //     '2191802te91kv3ee27a280h02', 
+        //     '651853948740'
+        // ];
+        // foreach ($measureIDs as $measureID) {
+        //     // var_dump();
+        //     // echo "<br>";
+        //     $sizeObj = new Size(Size::buildSequence(null, null, $measureID, "wide"));
+        //     $product->selecteSize($sizeObj);
+        //     var_dump("To convert: ", $sizeObj->getmeasure()->getMeasureName());
+        //     echo "<br>";
+        //     var_dump("Converted: ", $product->SelectedToRealSize()->getsize());
+        //     echo "<hr>";
+        // }
     }
 }
