@@ -113,6 +113,7 @@ class ControllerCheckout extends ControllerSecure
     {
         $response = new Response();
         $this->person->handleStripeEvents($response);
+        (!$response->containError()) ? $response->addResult(self::ACTION_STRIPEWEBHOOK, true): null;
         $this->generateJsonView([], $response, $this->person);
     }
 }

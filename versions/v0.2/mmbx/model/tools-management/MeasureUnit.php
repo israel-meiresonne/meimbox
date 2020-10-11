@@ -124,19 +124,21 @@ class MeasureUnit extends ModelFunctionality
     /**
      * Check if first measure is bellow seconde measure
      * + all measure not null from second is compared to first
-     * + formula: (first + cut) <= second
-     * @param Measure $firstM
-     * @param Measure $secondM 
-     * @param string $cut used to get error margin
+     * + formula: (first + margin) <= second
+     * @param MeasureUnit $firstM
+     * @param MeasureUnit $secondM 
+     * @param MeasureUnit $margin the error margin
+     * + error margin is added to the first measure before to compare  the 
+     * first and the second measure
      * @return boolean true if first measure is bellow all measure of second else false
      */
-    public static function compare(MeasureUnit $first, MeasureUnit $second, MeasureUnit $cut)
+    public static function compare(MeasureUnit $first, MeasureUnit $second, MeasureUnit $margin)
     {
-        $leftVal = (($first->value * $first->toSystUnit) + ($cut->value * $cut->toSystUnit));
-        $rightVal = $second->value * $second->toSystUnit;
+        $firstVal = (($first->value * $first->toSystUnit) + ($margin->value * $margin->toSystUnit));
+        $secondVal = $second->value * $second->toSystUnit;
         // var_dump("user", $leftVal);
         // var_dump("product", $rightVal);
         // echo "\n—————————";
-        return ($leftVal <= $rightVal);
+        return ($firstVal <= $secondVal);
     }
 }

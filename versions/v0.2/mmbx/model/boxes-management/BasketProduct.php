@@ -44,28 +44,7 @@ class BasketProduct extends Product
     public function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
         parent::__construct($prodID, $language, $country, $currency);
-        // $this->setPrice($country, $currency);
-        // $this->setShipping($country, $currency);
-        // $this->setDiscount($country);
     }
-
-    // /**
-    //  * Setter for product's size and stock
-    //  */
-    // protected function setSizesStock()
-    // {
-    //     $this->sizesStock  = [];
-    //     $sql = "SELECT * 
-    //     FROM `Products-Sizes`
-    //     WHERE `prodId` = '$this->prodID'";
-    //     $tab = $this->select($sql); // add error if there is no size
-    //     if (count($tab) < 1) {
-    //         throw new Exception("There no size for this product");
-    //     }
-    //     foreach ($tab as $tabLine) {
-    //         $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
-    //     }
-    // }
 
     /**
      * Setter for Basketproduct's price
@@ -178,6 +157,16 @@ class BasketProduct extends Product
     }
 
     /**
+     * Getter for product's stock for each size
+     * @return int[] product's stock for each size
+     */
+    protected function getSizeStock()
+    {
+        (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
+        return $this->sizesStock;
+    }
+
+    /**
      * Getter for product's prrice
      * @return Price product's prrice
      * + for boxProduct will return Price with a zero as value
@@ -225,14 +214,11 @@ class BasketProduct extends Product
     // public function stillStock($size, $brand = null, Measure $measure = null)
     public function stillStock(Size $sizeObj)
     {
-        // (!isset($this->sizesStock)) ? $this->setSizesStock() : null;
         $sizesStock = $this->getSizeStock();
         $size = $sizeObj->getSize();
-        // if (!key_exists($size, $this->sizesStock)) {
         if (!key_exists($size, $sizesStock)) {
             throw new Exception("This size '$size' don't exist in sizesStock");
         }
-        // return ($this->sizesStock[$size] > 0);
         return ($sizesStock[$size] > 0);
     }
 
