@@ -102,6 +102,15 @@ class MeasureUnit extends ModelFunctionality
     }
 
     /**
+     * Getter unit's convert Coefficient intto the systtem's unit
+     * @return string unit's convert Coefficient intto the systtem's unit
+     */
+    public function getToSystUnit()
+    {
+        return $this->toSystUnit;
+    }
+
+    /**
      * Gettert of measure unit's supported unit list
      * @return string[] measure unit's supported unit list
      */

@@ -319,7 +319,7 @@ abstract class Product extends ModelFunctionality
             throw new Exception("There no size for this product");
         }
         foreach ($tab as $tabLine) {
-            $this->sizesStock[$tabLine["size_name"]] = $tabLine["stock"];
+            $this->sizesStock[$tabLine["size_name"]] = (int) $tabLine["stock"];
         }
     }
 
@@ -543,28 +543,36 @@ abstract class Product extends ModelFunctionality
         return $url;
     }
 
-    protected abstract function getSizeStock();
-
-
     // /**
     //  * Getter for product's stock for each size
     //  * @return int[] product's stock for each size
     //  */
-    // protected function getSizeStock()
-    // {
-    //     (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
-    //     return $this->sizesStock;
-    // }
+    // protected abstract function getSizeStock();
+    /**
+     * Getter for product's stock for each size
+     * @return int[] product's stock for each size
+     */
+    protected function getSizeStock()
+    {
+        (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
+        return $this->sizesStock;
+    }
 
     /**
-     * Getter for the product's sizes
-     * @return string[] product's sizes [index => size]
+     * Getter for product's sizes
+     * @return string[] product's stock for each size
      */
-    private function getSizeStockKeys()
-    {
-        $sizesStock = $this->getSizeStock();
-        return array_keys($sizesStock);
-    }
+    public abstract function getSizes();
+
+    // /**
+    //  * Getter for the product's sizes
+    //  * @return string[] product's sizes [index => size]
+    //  */
+    // private function getSizeStockKeys()
+    // {
+    //     $sizesStock = $this->getSizeStock();
+    //     return array_keys($sizesStock);
+    // }
 
     /**
      * Getter for the product's selected size
@@ -575,16 +583,17 @@ abstract class Product extends ModelFunctionality
         return $this->selectedSize;
     }
 
-    /**
-     * Builds a map that use size name as key and value
-     * + [size => size]
-     * @return string[] map that use size name as key and value
-     */
-    public function getSizeValueToValue()
-    {
-        $sizes = $this->getSizeStockKeys();
-        return $this->arrayToMap($sizes);
-    }
+    // /**
+    //  * Builds a map that use size name as key and value
+    //  * + [size => size]
+    //  * @return string[] map that use size name as key and value
+    //  */
+    // public abstract function getSizeValueToValue();
+    // public function getSizeValueToValue()
+    // {
+    //     $sizes = $this->getSizeStockKeys();
+    //     return $this->arrayToMap($sizes);
+    // }
 
     /**
      * Getter of product's collection name

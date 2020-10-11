@@ -64,19 +64,14 @@ class Measure extends ModelFunctionality
     const INPUT_MEASURE_NAME = "measure_name";
 
     /**
-     * Input name for bust
-     */
-    const INPUT_BUST = "bust";
-
-    /**
      * Input name for arm
      */
     const INPUT_ARM = "arm";
 
     /**
-     * Input name for waist
+     * Input name for bust
      */
-    const INPUT_WAIST = "waist";
+    const INPUT_BUST = "bust";
 
     /**
      * Input name for hip
@@ -87,6 +82,11 @@ class Measure extends ModelFunctionality
      * Input name for inseam
      */
     const INPUT_INSEAM = "inseam";
+
+    /**
+     * Input name for waist
+     */
+    const INPUT_WAIST = "waist";
 
     /**
      * Holds the access key for measure name in Query
@@ -147,15 +147,6 @@ class Measure extends ModelFunctionality
     }
 
     /**
-     * Getter of measure's bust
-     * @return MeasureUnit a protected copy of measure's bust
-     */
-    public function getbust()
-    {
-        return (isset($this->bust)) ? $this->bust : null;
-    }
-
-    /**
      * Getter of measure's arm
      * @return MeasureUnit a protected copy of measure's arm
      */
@@ -165,12 +156,12 @@ class Measure extends ModelFunctionality
     }
 
     /**
-     * Getter of measure's waist
-     * @return MeasureUnit a protected copy of measure's waist
+     * Getter of measure's bust
+     * @return MeasureUnit a protected copy of measure's bust
      */
-    public function getwaist()
+    public function getbust()
     {
-        return (isset($this->waist)) ? $this->waist : null;
+        return (isset($this->bust)) ? $this->bust : null;
     }
 
     /**
@@ -189,6 +180,15 @@ class Measure extends ModelFunctionality
     public function getInseam()
     {
         return (isset($this->inseam)) ? $this->inseam : null;
+    }
+
+    /**
+     * Getter of measure's waist
+     * @return MeasureUnit a protected copy of measure's waist
+     */
+    public function getwaist()
+    {
+        return (isset($this->waist)) ? $this->waist : null;
     }
 
     /**
@@ -371,7 +371,7 @@ class Measure extends ModelFunctionality
         $sql = "INSERT INTO `Orders-UsersMeasures`(`orderId`, `measureID`, `measureName`, `bust`, `arm`, `waist`, `hip`, `inseam`, `unit_name`, `setDate`)
                 VALUES " . self::buildBracketInsert($nb, $bracket);
         $values = [];
-        foreach($measures as $measure){
+        foreach ($measures as $measure) {
             array_push(
                 $values,
                 $orderID,
@@ -386,6 +386,6 @@ class Measure extends ModelFunctionality
                 $measure->getSetDate()
             );
         }
-       self::insert($response, $sql, $values);
+        self::insert($response, $sql, $values);
     }
 }
