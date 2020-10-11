@@ -136,7 +136,7 @@ class BoxProduct extends Product
                 break;
             }
         }
-        if(empty($sizeType)){
+        if (empty($sizeType)) {
             throw new Exception("This type of size is not supported, size:$sizeSample");
         }
         return $sizeType;
@@ -296,13 +296,9 @@ class BoxProduct extends Product
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
-     * @param Size $sizeObj
-     * @param string|null $size to check if stock is available
-     * @param string|null $brand never set for basket product
-     * @param Measure|null $measure never set for basket product
+     * @param Size $sizeObj thee selected size to check if still stock for it
      * @return boolean true if the stock is available
      */
-    // public function stillStock($size = null, $brand = null, Measure $measure = null)
     public function stillStock(Size $sizeObj)
     {
         $size = $sizeObj->getsize();
@@ -422,6 +418,7 @@ class BoxProduct extends Product
         // $measureValues = [];
         $values = [];
         $nbProd = 0;
+        $stockResponse = new Response();
         foreach ($boxes as $box) {
             $products = $box->getBoxProducts();
             $nbProd += count($products);
@@ -435,6 +432,10 @@ class BoxProduct extends Product
                             $measures[$measureID] = $measure;
                         }
                     }
+                    $stillStock = $product->stillStock($size);
+                    ((!$stillStock) && (!$stockResponse->existErrorKey(MyError::ERROR_STILL_STOCK)))
+                        ? $stockResponse->addError($stillStock, MyError::ERROR_STILL_STOCK)
+                        : null;
                     array_push(
                         $values,
                         $box->getBoxID(),
@@ -447,17 +448,22 @@ class BoxProduct extends Product
                         $size->getmeasureID(),
                         $size->getCut(),
                         $size->getQuantity(),
-                        $size->getSetDate()
+                        $size->getSetDate(),
+                        ((int) $stillStock)
                     );
                 }
             }
         }
-        $bracket = "(?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Orders-BoxProducts`(`boxId`, `prodId`, `sequenceID`, `product_type`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`)
+        $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Orders-BoxProducts`(`boxId`, `prodId`, `sequenceID`, `product_type`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`, `stillStock`)
                 VALUES " . self::buildBracketInsert($nbProd, $bracket);
         (!empty($measures)) ?  Measure::insertOrderMeasures($response, $measures, $orderID) : null;
         if (!$response->containError()) {
             self::insert($response, $sql, $values);
+        }
+        if($stockResponse->existErrorKey(MyError::ERROR_STILL_STOCK)){
+            $stillStock = $stockResponse->getError(MyError::ERROR_STILL_STOCK)->getMeassage();
+            $response->addError($stillStock, MyError::ERROR_STILL_STOCK);
         }
     }
 }

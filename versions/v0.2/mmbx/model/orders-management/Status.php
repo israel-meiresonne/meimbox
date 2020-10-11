@@ -55,6 +55,12 @@ class Status extends ModelFunctionality
      * Holds the id of the Aministrator System
      * @var string
      */
+    private static $ORDER_STATUS_STOCK_ERROR;
+
+    /**
+     * Holds the id of the Aministrator System
+     * @var string
+     */
     private static $SYSTEM_ID;
 
     /**
@@ -73,12 +79,18 @@ class Status extends ModelFunctionality
      * @param Response $response to push in result or accured error
      * @param string $orderID the id of the order for with the Status is for
      */
-    public function create(Response $response, $orderID)
+    public function create(Response $response, $orderID, $status = null)
     {
         $this->adminID = self::$SYSTEM_ID;
-        $this->status = self::$ORDER_DEFAULT_STATUS;
+        switch ($status) {
+            case MyError::ERROR_STILL_STOCK:
+                $this->status = self::$ORDER_STATUS_STOCK_ERROR;
+                break;
+            default:
+                $this->status = self::$ORDER_DEFAULT_STATUS;
+                break;
+        }
         $this->setDate = $this->getDateTime();
-        // $response = new Response();
         $this->insertStatus($response, $orderID);
     }
 
@@ -94,6 +106,10 @@ class Status extends ModelFunctionality
         if (!isset(self::$SYSTEM_ID)) {
             self::$SYSTEM_ID = "SYSTEM_ID";
             self::$SYSTEM_ID = $this->getConstantLine(self::$SYSTEM_ID)["stringValue"];
+        }
+        if (!isset(self::$ORDER_STATUS_STOCK_ERROR)) {
+            self::$ORDER_STATUS_STOCK_ERROR = "ORDER_STATUS_STOCK_ERROR";
+            self::$ORDER_STATUS_STOCK_ERROR = $this->getConstantLine(self::$ORDER_STATUS_STOCK_ERROR)["stringValue"];
         }
     }
 

@@ -786,10 +786,15 @@ class ControllerItem extends ControllerSecure
 
     public function test()
     {
-       foreach($_SERVER as $key => $data){
-           echo "$key => ";
-           var_dump($data);
-           echo "<hr>";
-       }
+        //    foreach($_SERVER as $key => $data){
+        //        echo "$key => ";
+        //        var_dump($data);
+        //        echo "<hr>";
+        //    }
+        $a = false;
+        var_dump($a);
+        echo "<hr>";
+        $b = (int) $a;
+        var_dump($b);
     }
 }
