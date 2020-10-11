@@ -7,6 +7,7 @@ require_once 'model/orders-management/Status.php';
 require_once 'model/orders-management/BasketOrdered.php';
 require_once 'model/special/Response.php';
 require_once 'model/tools-management/AddressDelivery.php';
+require_once 'model/special/MyError.php';
 
 /**
  * This class représente a order paid.
@@ -96,11 +97,16 @@ class Order extends ModelFunctionality
         $this->delivery = new AddressDelivery();
         $this->delivery->create($response, $address, $this->orderID);
 
-        $this->status = new Status();
-        $this->status->create($response, $this->orderID);
-
         $this->basketOrdered = new BasketOrdered();
         $this->basketOrdered->create($response, $basket, $this->orderID);
+
+        $this->status = new Status();
+        // if(!$response->existErrorKey(MyError::ERROR_STILL_STOCK)){
+        $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
+        // if($response->existErrorKey(MyError::ERROR_STILL_STOCK)){
+        //     $status = MyError::ERROR_STILL_STOCK;
+        // }
+        $this->status->create($response, $this->orderID, $status);
     }
 
     /**

@@ -232,7 +232,7 @@ class Response
     /**
      * To get a error stored at the key given in param
      * @param string $key access key to error stored
-     * @return string error stored at the key given in param
+     * @return MyError error stored at the key given in param
      */
     public function getError($key)
     {

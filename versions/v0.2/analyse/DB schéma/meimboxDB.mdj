@@ -9185,13 +9185,28 @@
 													"top": 1530,
 													"width": 235.72509765625,
 													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF1Fv6qHQeGc/8=",
+													"_parent": {
+														"$ref": "AAAAAAFwSqRJQ6s9+rc="
+													},
+													"model": {
+														"$ref": "AAAAAAF1Fv6p4AeDJgg="
+													},
+													"font": "Arial;13;0",
+													"left": 2408,
+													"top": 1545,
+													"width": 235.72509765625,
+													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 2403,
 											"top": 1375,
 											"width": 245.72509765625,
-											"height": 173
+											"height": 188
 										}
 									],
 									"font": "Arial;13;0",
@@ -9631,20 +9646,35 @@
 													"top": 1323,
 													"width": 248.0205078125,
 													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF1FwDltweRJKo=",
+													"_parent": {
+														"$ref": "AAAAAAFwSrMNo6u8Okg="
+													},
+													"model": {
+														"$ref": "AAAAAAF1FwDlgQeOXpo="
+													},
+													"font": "Arial;13;0",
+													"left": 2421,
+													"top": 1338,
+													"width": 248.0205078125,
+													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 2416,
 											"top": 1183,
 											"width": 258.0205078125,
-											"height": 158
+											"height": 173
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2416,
 									"top": 1160,
 									"width": 258.0205078125,
-									"height": 181,
+									"height": 196,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSrMNo6u7A5g="
 									},
@@ -22592,6 +22622,16 @@
 									"documentation": "# Definition\n\nHolds the add date of a product in the bag",
 									"type": "DATETIME",
 									"length": 0
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF1Fv6p4AeDJgg=",
+									"_parent": {
+										"$ref": "AAAAAAFwSqOaSasoplg="
+									},
+									"name": "stillStock",
+									"documentation": "# Definition\n\nSet true(=1) if still stock of the product when order is created else false(=0)",
+									"type": "BOOLEAN"
 								}
 							]
 						},
@@ -22721,6 +22761,16 @@
 									"name": "quantity",
 									"type": "INTEGER",
 									"length": "11"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF1FwDlgQeOXpo=",
+									"_parent": {
+										"$ref": "AAAAAAFwSrMNoau49GI="
+									},
+									"name": "stillStock",
+									"documentation": "# Definition\n\nSet true(=1) if still stock of the product when order is created else false(=0)",
+									"type": "BOOLEAN"
 								}
 							]
 						},

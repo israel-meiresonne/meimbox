@@ -904,7 +904,6 @@ class Visitor extends ModelFunctionality
     public function stillStock(Response $response, $prodID, $sizeType, Map $sizeMap)
     {
         $stillStock = false;
-        // $isCorrect = $this->checkData($prodID, ModelFunctionality::ALPHA_NUMERIC, $this->getDataLength(Product::TABLE_PRODUCTS, Product::INPUT_PROD_ID));
         $tabLine = $this->getProductLine($prodID);
         if (!empty($tabLine)) {
             switch ($tabLine["product_type"]) {
