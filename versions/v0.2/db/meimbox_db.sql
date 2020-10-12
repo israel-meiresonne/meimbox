@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  ven. 09 oct. 2020 à 19:32
+-- Généré le :  lun. 12 oct. 2020 à 11:07
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -50,7 +50,7 @@ CREATE TABLE `Addresses` (
 
 INSERT INTO `Addresses` (`userId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `setDate`) VALUES
 (3330090, 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38'),
-(651853948, 'place royale 4', '1640', 'belgium', NULL, 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
+(3330090, 'place royale 4', '1640', 'belgium', NULL, 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
 (651853948, 'place royale 4', '1640', 'canada', 'app', 'state', 'rhode-saint-genese', '472174210', '2020-10-03 16:06:58'),
 (651853948, 'place royele 4', '1640', 'belgium', NULL, 'Brabant-flamand', 'rhode-saint-genese', '32472274210', '2020-02-28 00:00:00'),
 (651853948, 'rue des bargeo 4', '4780', 'canada', 'boite 17', 'ma province perdu', 'ma ville perdu', '428284890', '2020-02-27 00:00:00'),
@@ -93,7 +93,8 @@ CREATE TABLE `Baskets-Box` (
 --
 
 INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
-('7248u731q010sj978202110nk', 3330090),
+('22062fl1210dddu0101lj0243', 3330090),
+('28p24122nv001l11m1u051122', 3330090),
 ('0860g1009tn0i31s2s6b24112', 651853948),
 ('120p222c5150ym3wt2308y193', 651853948),
 ('70r904v2240t0292ko1514055', 651853948),
@@ -108,7 +109,7 @@ INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
 CREATE TABLE `Baskets-Products` (
   `userId` int(11) NOT NULL,
   `prodId` int(11) NOT NULL,
-  `size_name` varchar(100) DEFAULT NULL,
+  `size_name` varchar(100) NOT NULL,
   `quantity` int(11) NOT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -118,6 +119,7 @@ CREATE TABLE `Baskets-Products` (
 --
 
 INSERT INTO `Baskets-Products` (`userId`, `prodId`, `size_name`, `quantity`, `setDate`) VALUES
+(651853948, 6, 'l', 2, '2020-10-12 09:46:52'),
 (651853948, 6, 's', 2, '2018-06-01 00:00:00');
 
 -- --------------------------------------------------------
@@ -164,10 +166,15 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
+('22062fl1210dddu0101lj0243', 1, 'l-tommy hilfiger-null-null', 'l', 'tommy hilfiger', NULL, NULL, 3, '2020-10-11 22:09:06'),
+('22062fl1210dddu0101lj0243', 1, 'm-asos-null-null', 'm', 'asos', NULL, NULL, 1, '2020-10-11 22:08:10'),
+('22062fl1210dddu0101lj0243', 1, 's-the north face-null-null', 's', 'the north face', NULL, NULL, 2, '2020-10-11 22:07:45'),
+('22062fl1210dddu0101lj0243', 1, 'xl-null-null-null', 'xl', NULL, NULL, NULL, 2, '2020-10-11 22:09:43'),
+('22062fl1210dddu0101lj0243', 1, 'xs-tommy hilfiger-null-null', 'xs', 'tommy hilfiger', NULL, NULL, 1, '2020-10-11 22:03:31'),
+('22062fl1210dddu0101lj0243', 1, 'xxs-lacoste-null-null', 'xxs', 'lacoste', NULL, NULL, 1, '2020-10-11 21:44:38'),
+('28p24122nv001l11m1u051122', 2, 'null-null-decrease_m_6-fit', NULL, NULL, 'decrease_m_6', 'fit', 6, '2020-10-11 22:16:05'),
+('28p24122nv001l11m1u051122', 2, 'null-null-decrease_s_2-fit', NULL, NULL, 'decrease_s_2', 'fit', 2, '2020-10-11 22:15:17'),
 ('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20'),
-('7248u731q010sj978202110nk', 2, 'null-null-803g420892212029wn05e10cq-fit', NULL, NULL, '803g420892212029wn05e10cq', 'fit', 1, '2020-10-09 19:19:11'),
-('7248u731q010sj978202110nk', 2, 'xs-tommy hilfiger-null-null', 'xs', 'tommy hilfiger', NULL, NULL, 2, '2020-10-09 17:17:44'),
-('7248u731q010sj978202110nk', 2, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-10-09 17:18:08'),
 ('mf1550920290g92f0261m60i2', 3, 's-the north face-null-null', 's', 'the north face', NULL, NULL, 1, '2020-09-25 19:06:42');
 
 -- --------------------------------------------------------
@@ -344,15 +351,21 @@ INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('0860g1009tn0i31s2s6b24112', 'gold', '2020-09-16 21:40:10'),
 ('0gi1031159y53i7209g2o2r40', 'gold', '2020-09-15 13:20:53'),
 ('0n57q1k1902082n05n9ug5280', 'silver', '2020-09-17 09:50:58'),
+('1015q398el203w025f0012211', 'gold', '2020-10-10 18:20:35'),
 ('102901079c41fcg2mtw96t40d', 'regular', '2020-09-17 09:49:41'),
 ('120p222c5150ym3wt2308y193', 'gold', '2020-09-25 22:31:35'),
+('122l41wz1m49o1i31352a00f0', 'regular', '2020-10-11 21:44:35'),
 ('1232v21310hu04d2j0w9f3b2e', 'gold', '2020-09-23 14:23:23'),
 ('131u45w04001h52945214200j', 'gold', '2020-10-01 14:25:40'),
 ('182269c17d0972rf2q0012ot1', 'regular', '2020-09-27 12:18:12'),
 ('200e2001142d00916f4kjecbs', 'regular', '2020-09-16 21:40:04'),
+('22062fl1210dddu0101lj0243', 'gold', '2020-10-11 22:03:42'),
+('28p24122nv001l11m1u051122', 'gold', '2020-10-11 22:14:22'),
+('2a1ta22010112sqsiz250z331', 'gold', '2020-10-11 22:13:53'),
 ('2x8gb01iw9130u22210422450', 'gold', '2020-09-14 12:45:08'),
 ('30owo260119100q2f9cl25im1', 'silver', '2020-09-15 13:21:09'),
 ('310m035013939e0523112udmk', 'gold', '2020-09-30 11:53:33'),
+('607029oh2y1x0j1zj41101x05', 'silver', '2020-10-11 15:40:07'),
 ('611026076001h2su60044z19i', 'regular', '2020-10-06 17:19:04'),
 ('70r904v2240t0292ko1514055', 'silver', '2020-09-24 17:55:02'),
 ('7248u731q010sj978202110nk', 'regular', '2020-10-07 18:27:43'),
@@ -1245,7 +1258,8 @@ INSERT INTO `Constants` (`constName`, `stringValue`, `jsonValue`, `setDate`, `de
 ('MAX_MEASURE', '4', NULL, '2020-04-23 00:00:00', 'Indicate how much measure can be holded by a user.'),
 ('MAX_PRODUCT_CUBE_DISPLAYABLE', '3', NULL, '2020-04-02 00:00:00', 'The maximum of product\'s cubes displayable before to display the plus symbol including the plus symbole in the count of cube to display.\r\nex: MAX_PRODUCT_CUBE_DISPLAYABLE = 4\r\nwill display: 3 color cube + 1 symbole cube = 4 cubes\r\n\r\nThis number of cube must avoid to display cubes in multiple ligne and disturbe the grid arrangement.\r\nNOTE: the number of cube displayed exactly MAX_PRODUCT_CUBE_DISPLAYABLE cause this constante include already the plus symbole'),
 ('NB_DAYS_BEFORE', '15', NULL, '2020-02-21 21:28:28', 'The number of days to go back in navigation history.'),
-('ORDER_DEFAULT_STATUS', 'processing', NULL, '2020-02-26 21:37:00', 'The default value given to a new order\'s status.'),
+('ORDER_DEFAULT_STATUS', 'US68', NULL, '2020-02-26 21:37:00', 'The default value given to a new order\'s status.'),
+('ORDER_STATUS_STOCK_ERROR', 'US69', NULL, '2020-10-11 12:30:54', 'Holds the status of an order when the order has an product out of stock.'),
 ('PRICE_MESSAGE', 'free with meimbox', NULL, '2020-04-01 00:00:00', 'message to display instead of boxproduct\'s price because a boxProduct hasn\'t any price'),
 ('STRIPE_MAX_PROD_IMG', '8', NULL, '2020-10-07 13:15:57', 'Holds max images allowed in Stripe product'),
 ('SUPPORTED_SIZES', NULL, '{\"alpha\": [\"4xl\", \"3xl\", \"xxl\", \"xl\", \"l\", \"m\", \"s\", \"xs\", \"xxs\"], \"numeric\": [56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32]}', '2020-07-18 21:17:12', 'List of system\'s supported sizes.'),
@@ -1276,6 +1290,7 @@ INSERT INTO `Cookies` (`cookieID`, `cookiePeriod`, `cookieDomain`, `cookiePath`,
 ('ADM', 10800, NULL, NULL, 0, 1),
 ('ADRS', 86400, NULL, 'checkout', 0, 1),
 ('CLT', 31536000, NULL, NULL, 0, 1),
+('LCK', 120, NULL, NULL, 0, 1),
 ('VIS', 94608000, NULL, NULL, 0, 1);
 
 -- --------------------------------------------------------
@@ -1367,7 +1382,8 @@ CREATE TABLE `Details` (
   `sellPrice` double NOT NULL,
   `discount_value` double NOT NULL,
   `shipping` double NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL,
+  `stillStock` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1588,7 +1604,8 @@ CREATE TABLE `Orders` (
 --
 
 INSERT INTO `Orders` (`orderID`, `userId`, `stripeCheckoutId`, `vat`, `paidAmount`, `shippingCost`, `iso_currency`, `setDate`) VALUES
-('l1032120h919k14a0121j200w', 3330090, 'cs_test_ZpDGLbqFNAQqyJtMWIPHvMDCYFaN9IhZiaqhw1CuLsPqF1WsoORAEygy', 0.21, 57.55, 7.97, 'eur', '2020-10-09 19:21:10');
+('002112gr2k21y2001qvp01xa1', 3330090, 'cs_test_TA5VDfNHhOQZ79WpG9zCt6wAxGx8JiTncXito3SV5WpsPzCzP0VYKoXT', 0.21, 142.49, 7.97, 'eur', '2020-10-11 22:21:10'),
+('1k0g1221o0244e1a10lj03631', 3330090, 'cs_test_ZpDGLbqFNAQqyJtMWIPHvMDCYFaN9IhZiaqhw1CuLsPqF1WsoORAEygy', 0.21, 0, 0, 'eur', '2020-10-11 21:41:04');
 
 -- --------------------------------------------------------
 
@@ -1613,7 +1630,8 @@ CREATE TABLE `Orders-Addresses` (
 --
 
 INSERT INTO `Orders-Addresses` (`orderId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `setDate`) VALUES
-('l1032120h919k14a0121j200w', 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38');
+('002112gr2k21y2001qvp01xa1', 'place royale 4', '1640', 'belgium', NULL, 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
+('1k0g1221o0244e1a10lj03631', 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38');
 
 -- --------------------------------------------------------
 
@@ -1639,7 +1657,8 @@ CREATE TABLE `Orders-Boxes` (
 --
 
 INSERT INTO `Orders-Boxes` (`orderId`, `boxId`, `box_color`, `sizeMax`, `weight`, `boxPicture`, `sellPrice`, `shipping`, `discount_value`, `setDate`) VALUES
-('l1032120h919k14a0121j200w', '7248u731q010sj978202110nk', 'regular', 4, 0.05, 'box-regular-128.png', 49.58, 6.24, NULL, '2020-10-07 18:27:43');
+('002112gr2k21y2001qvp01xa1', '22062fl1210dddu0101lj0243', 'gold', 10, 0.125, 'box-gold-128.png', 67.26, 5.11, NULL, '2020-10-11 22:03:42'),
+('002112gr2k21y2001qvp01xa1', '28p24122nv001l11m1u051122', 'gold', 10, 0.125, 'box-gold-128.png', 67.26, 5.11, NULL, '2020-10-11 22:14:22');
 
 -- --------------------------------------------------------
 
@@ -1652,23 +1671,30 @@ CREATE TABLE `Orders-BoxProducts` (
   `prodId` int(11) NOT NULL,
   `sequenceID` varchar(100) NOT NULL,
   `product_type` varchar(50) NOT NULL,
+  `realSize` varchar(100) NOT NULL,
   `weight` double NOT NULL,
   `size_name` varchar(100) DEFAULT NULL,
   `brand_name` varchar(100) DEFAULT NULL,
   `measureId` varchar(100) DEFAULT NULL,
   `cut_name` varchar(30) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
-  `setDate` datetime NOT NULL
+  `setDate` datetime NOT NULL,
+  `stillStock` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `Orders-BoxProducts`
 --
 
-INSERT INTO `Orders-BoxProducts` (`boxId`, `prodId`, `sequenceID`, `product_type`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('7248u731q010sj978202110nk', 2, 'null-null-803g420892212029wn05e10cq-fit', 'boxproduct', 0.98, NULL, NULL, '803g420892212029wn05e10cq', 'fit', 1, '2020-10-09 19:19:11'),
-('7248u731q010sj978202110nk', 2, 'xs-tommy hilfiger-null-null', 'boxproduct', 0.98, 'xs', 'tommy hilfiger', NULL, NULL, 2, '2020-10-09 17:17:44'),
-('7248u731q010sj978202110nk', 2, 'xxs-null-null-null', 'boxproduct', 0.98, 'xxs', NULL, NULL, NULL, 1, '2020-10-09 17:18:08');
+INSERT INTO `Orders-BoxProducts` (`boxId`, `prodId`, `sequenceID`, `product_type`, `realSize`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`, `stillStock`) VALUES
+('22062fl1210dddu0101lj0243', 1, 'l-tommy hilfiger-null-null', 'boxproduct', 'xl', 0.54, 'l', 'tommy hilfiger', NULL, NULL, 3, '2020-10-11 22:09:06', 1),
+('22062fl1210dddu0101lj0243', 1, 'm-asos-null-null', 'boxproduct', 'm', 0.54, 'm', 'asos', NULL, NULL, 1, '2020-10-11 22:08:10', 1),
+('22062fl1210dddu0101lj0243', 1, 's-the north face-null-null', 'boxproduct', 'm', 0.54, 's', 'the north face', NULL, NULL, 2, '2020-10-11 22:07:45', 1),
+('22062fl1210dddu0101lj0243', 1, 'xl-null-null-null', 'boxproduct', 'xl', 0.54, 'xl', NULL, NULL, NULL, 2, '2020-10-11 22:09:43', 1),
+('22062fl1210dddu0101lj0243', 1, 'xs-tommy hilfiger-null-null', 'boxproduct', 'xs', 0.54, 'xs', 'tommy hilfiger', NULL, NULL, 1, '2020-10-11 22:03:31', 1),
+('22062fl1210dddu0101lj0243', 1, 'xxs-lacoste-null-null', 'boxproduct', 'xs', 0.54, 'xxs', 'lacoste', NULL, NULL, 1, '2020-10-11 21:44:38', 1),
+('28p24122nv001l11m1u051122', 2, 'null-null-decrease_m_6-fit', 'boxproduct', 'm', 0.98, NULL, NULL, 'decrease_m_6', 'fit', 6, '2020-10-11 22:16:05', 1),
+('28p24122nv001l11m1u051122', 2, 'null-null-decrease_s_2-fit', 'boxproduct', 's', 0.98, NULL, NULL, 'decrease_s_2', 'fit', 2, '2020-10-11 22:15:17', 1);
 
 -- --------------------------------------------------------
 
@@ -1712,7 +1738,8 @@ CREATE TABLE `Orders-UsersMeasures` (
 --
 
 INSERT INTO `Orders-UsersMeasures` (`orderId`, `measureID`, `measureName`, `bust`, `arm`, `waist`, `hip`, `inseam`, `unit_name`, `setDate`) VALUES
-('l1032120h919k14a0121j200w', '803g420892212029wn05e10cq', 'vis 1', 11, 11, 11, 11, 11, 'inch', '2020-09-30 21:05:28');
+('002112gr2k21y2001qvp01xa1', 'decrease_m_6', 'decrease_m_6', 65.12, 65.12, 65.12, 65.12, 65.12, 'centimeter', '2020-09-30 21:05:12'),
+('002112gr2k21y2001qvp01xa1', 'decrease_s_2', 'decrease_s_2', 11, 11, 11, 11, 11, 'centimeter', '2020-09-30 21:05:28');
 
 -- --------------------------------------------------------
 
@@ -1735,7 +1762,8 @@ CREATE TABLE `OrdersStatus` (
 --
 
 INSERT INTO `OrdersStatus` (`orderId`, `status`, `trackingNumber`, `adminId`, `deliveryMin`, `deliveryMax`, `setDate`) VALUES
-('l1032120h919k14a0121j200w', 'processing', NULL, 1, NULL, NULL, '2020-10-09 19:21:10');
+('002112gr2k21y2001qvp01xa1', 'US68', NULL, 1, NULL, NULL, '2020-10-11 22:21:10'),
+('1k0g1221o0244e1a10lj03631', 'US68', NULL, 1, NULL, NULL, '2020-10-11 21:41:04');
 
 -- --------------------------------------------------------
 
@@ -2052,12 +2080,12 @@ CREATE TABLE `Products-Sizes` (
 --
 
 INSERT INTO `Products-Sizes` (`prodId`, `size_name`, `stock`) VALUES
-(1, 'l', 6),
-(1, 'm', 10),
-(1, 's', 3),
+(1, 'm', 7),
+(1, 'xl', 0),
+(1, 'xs', 1),
 (2, 'l', 3),
-(2, 'm', 6),
-(2, 's', 10),
+(2, 'm', 0),
+(2, 's', 8),
 (3, 'l', 9),
 (3, 'm', 1),
 (3, 's', 1),
@@ -2190,36 +2218,36 @@ CREATE TABLE `ProductsMeasures` (
 --
 
 INSERT INTO `ProductsMeasures` (`prodId`, `size_name`, `body_part`, `unit_name`, `value`) VALUES
-(1, 'l', 'arm', 'centimeter', 77.05),
-(1, 'l', 'bust', 'centimeter', 88.87),
-(1, 'l', 'hip', 'centimeter', 59.64),
-(1, 'l', 'inseam', 'centimeter', 112.71),
-(1, 'l', 'waist', 'centimeter', 57.65),
-(1, 'm', 'arm', 'centimeter', 116.78),
-(1, 'm', 'bust', 'centimeter', 64.88),
-(1, 'm', 'hip', 'centimeter', 78.87),
-(1, 'm', 'inseam', 'centimeter', 87.02),
-(1, 'm', 'waist', 'centimeter', 113.13),
-(1, 's', 'arm', 'centimeter', 94.74),
-(1, 's', 'bust', 'centimeter', 113.34),
-(1, 's', 'hip', 'centimeter', 91.14),
-(1, 's', 'inseam', 'centimeter', 106.23),
-(1, 's', 'waist', 'centimeter', 108.91),
-(2, 'l', 'arm', 'centimeter', 97.63),
-(2, 'l', 'bust', 'centimeter', 56.8),
-(2, 'l', 'hip', 'centimeter', 98.02),
-(2, 'l', 'inseam', 'centimeter', 98.88),
-(2, 'l', 'waist', 'centimeter', 109.76),
-(2, 'm', 'arm', 'centimeter', 106.4),
-(2, 'm', 'bust', 'centimeter', 74.83),
-(2, 'm', 'hip', 'centimeter', 100.36),
-(2, 'm', 'inseam', 'centimeter', 94.72),
-(2, 'm', 'waist', 'centimeter', 120.15),
-(2, 's', 'arm', 'centimeter', 120.68),
-(2, 's', 'bust', 'centimeter', 62.38),
-(2, 's', 'hip', 'centimeter', 117.95),
-(2, 's', 'inseam', 'centimeter', 107.93),
-(2, 's', 'waist', 'centimeter', 65.45),
+(1, 'm', 'arm', 'centimeter', 80.12),
+(1, 'm', 'bust', 'centimeter', 80.12),
+(1, 'm', 'hip', 'centimeter', 80.12),
+(1, 'm', 'inseam', 'centimeter', 80.12),
+(1, 'm', 'waist', 'centimeter', 80.12),
+(1, 'xl', 'arm', 'centimeter', 100.12),
+(1, 'xl', 'bust', 'centimeter', 100.12),
+(1, 'xl', 'hip', 'centimeter', 100.12),
+(1, 'xl', 'inseam', 'centimeter', 100.12),
+(1, 'xl', 'waist', 'centimeter', 100.12),
+(1, 'xs', 'arm', 'centimeter', 60.12),
+(1, 'xs', 'bust', 'centimeter', 60.12),
+(1, 'xs', 'hip', 'centimeter', 60.12),
+(1, 'xs', 'inseam', 'centimeter', 60.12),
+(1, 'xs', 'waist', 'centimeter', 60.12),
+(2, 'l', 'arm', 'centimeter', 100.12),
+(2, 'l', 'bust', 'centimeter', 100.12),
+(2, 'l', 'hip', 'centimeter', 100.12),
+(2, 'l', 'inseam', 'centimeter', 100.12),
+(2, 'l', 'waist', 'centimeter', 100.12),
+(2, 'm', 'arm', 'centimeter', 80.12),
+(2, 'm', 'bust', 'centimeter', 80.12),
+(2, 'm', 'hip', 'centimeter', 80.12),
+(2, 'm', 'inseam', 'centimeter', 80.12),
+(2, 'm', 'waist', 'centimeter', 80.12),
+(2, 's', 'arm', 'centimeter', 60.12),
+(2, 's', 'bust', 'centimeter', 60.12),
+(2, 's', 'hip', 'centimeter', 60.12),
+(2, 's', 'inseam', 'centimeter', 60.12),
+(2, 's', 'waist', 'centimeter', 60.12),
 (3, 'l', 'arm', 'centimeter', 54.09),
 (3, 'l', 'bust', 'centimeter', 54.75),
 (3, 'l', 'hip', 'centimeter', 84.47),
@@ -2888,6 +2916,21 @@ INSERT INTO `Sexes` (`sexe`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `SizeLocks`
+--
+
+CREATE TABLE `SizeLocks` (
+  `userId` int(11) NOT NULL,
+  `prodId` int(11) NOT NULL,
+  `size_name` varchar(100) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `lockTime` int(11) NOT NULL,
+  `setDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Sizes`
 --
 
@@ -2958,6 +3001,7 @@ INSERT INTO `StripeCheckoutSessions` (`sessionID`, `payId`, `userId`, `custoID`,
 ('cs_test_0reyhQRw4ymeuTwxKugUkSI2Dvcow8KWUy6vxC7Dz8uQNAcGF3I9PkAT', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-09 17:42:52'),
 ('cs_test_3ypf1Mc20EZHhEEvUy0gv3uYfB7wR5gDnILNr8bgTF0egkVewLp7uDvH', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-07 18:08:46'),
 ('cs_test_8ZUN7qF2LqfEEERjeyT1KCLitZHfD9oZvqCbkvGBRG5Oe4B1KMiUeKFY', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-07 18:30:50'),
+('cs_test_TA5VDfNHhOQZ79WpG9zCt6wAxGx8JiTncXito3SV5WpsPzCzP0VYKoXT', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-11 22:18:35'),
 ('cs_test_ZpDGLbqFNAQqyJtMWIPHvMDCYFaN9IhZiaqhw1CuLsPqF1WsoORAEygy', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-09 19:19:42');
 
 -- --------------------------------------------------------
@@ -3186,6 +3230,10 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('US66', 'fr', 'frais de livraison'),
 ('US67', 'en', 'delivery costs are free'),
 ('US67', 'fr', 'les frais de livraison sont offerts'),
+('US68', 'en', 'processing'),
+('US68', 'fr', 'en traitement'),
+('US69', 'en', 'stock error occurred'),
+('US69', 'fr', 'une erreur de stock s\'est produite'),
 ('US7', 'en', 'type'),
 ('US7', 'fr', 'type'),
 ('US8', 'en', 'category'),
@@ -3246,9 +3294,9 @@ CREATE TABLE `Users-Cookies` (
 --
 
 INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `path`, `setDate`, `settedPeriod`) VALUES
-(3330090, 'ADRS', '\"my address|my zip0192|belgium\"', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/checkout', '2020-10-09 19:21:10', 86400),
-(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-09 19:23:14', 31536000),
-(3330090, 'VIS', '100d1sq639120hby303243a50', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-09 19:23:14', 94608000),
+(3330090, 'ADRS', '\"place royale 4|1640|belgium\"', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/checkout', '2020-10-11 22:21:10', 86400),
+(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-11 22:21:12', 31536000),
+(3330090, 'VIS', '100d1sq639120hby303243a50', '5f49eeb082cc.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-11 22:21:12', 94608000),
 (651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
 
 -- --------------------------------------------------------
@@ -3295,14 +3343,14 @@ CREATE TABLE `UsersMeasures` (
 --
 
 INSERT INTO `UsersMeasures` (`userId`, `measureID`, `measureName`, `userBust`, `userArm`, `userWaist`, `userHip`, `userInseam`, `unit_name`, `setDate`) VALUES
-(651853948, '0jj2g3rj131923p1560b90d01', 'hello', 11, 22, 22, 22, 22, 'centimeter', '2020-09-16 13:50:31'),
-(651853948, '1001nq54od2c002o903219929', 'its work motherfuck', 11, 11, 11, 11, 11, 'inch', '2020-09-21 10:49:25'),
-(651853948, '2191802te91kv3ee27a280h02', 'motherfucking pane', 23, 11, 11, 11, 11, 'inch', '2020-09-12 19:27:23'),
-(651853948, '651853948740', 'many dim auto test', 11.11, 22.22, 33.33, 44.44, 55.555, 'inch', '2018-01-18 00:00:00'),
-(3330090, '803g420892212029wn05e10cq', 'vis 1', 11, 11, 11, 11, 11, 'inch', '2020-09-30 21:05:28'),
+(651853948, '0jj2g3rj131923p1560b90d01', 'equals m', 80.12, 80.12, 80.12, 80.12, 80.12, 'centimeter', '2020-09-16 13:50:31'),
+(651853948, '1001nq54od2c002o903219929', 'bellow m', 65.12, 65.12, 65.12, 65.12, 65.12, 'centimeter', '2020-09-21 10:49:25'),
+(651853948, '2191802te91kv3ee27a280h02', 'bellow l', 85.12, 85.12, 85.12, 85.12, 85.12, 'centimeter', '2020-09-12 19:27:23'),
+(651853948, '651853948740', 'equal l', 100.12, 100.12, 100.12, 100.12, 100.12, 'inch', '2018-01-18 00:00:00'),
 (997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00'),
-(3330090, 'a5rn30s0gtn2x2998j3000221', 'clt 3', 11, 11, 11, 11, 11, 'centimeter', '2020-09-30 20:58:23'),
-(3330090, 'c39521az182vv0012250220n0', 'vis 0', 11, 11, 11, 11, 11, 'inch', '2020-09-30 21:05:12');
+(3330090, 'a5rn30s0gtn2x2998j3000221', 'equals s inch to cm', 152.71, 152.71, 152.71, 152.71, 152.71, 'centimeter', '2020-09-30 20:58:23'),
+(3330090, 'decrease_m_6', 'decrease_m_6', 65.12, 65.12, 65.12, 65.12, 65.12, 'centimeter', '2020-09-30 21:05:12'),
+(3330090, 'decrease_s_2', 'decrease_s_2', 11, 11, 11, 11, 11, 'centimeter', '2020-09-30 21:05:28');
 
 --
 -- Index pour les tables déchargées
@@ -3339,7 +3387,7 @@ ALTER TABLE `Baskets-Box`
 -- Index pour la table `Baskets-Products`
 --
 ALTER TABLE `Baskets-Products`
-  ADD PRIMARY KEY (`userId`,`prodId`) USING BTREE,
+  ADD PRIMARY KEY (`userId`,`prodId`,`size_name`) USING BTREE,
   ADD KEY `fk_basketProdId.Baskets-Products-FROM-Products` (`prodId`),
   ADD KEY `fk_size_name.Baskets-Products-FROM-Sizes` (`size_name`);
 
@@ -3586,7 +3634,8 @@ ALTER TABLE `Orders-BoxProducts`
   ADD KEY `fk_prodId.Orders-BoxProducts-FROM-Products` (`prodId`),
   ADD KEY `fk_brand_name.Orders-BoxProducts-FROM-BrandsMeasures` (`brand_name`),
   ADD KEY `fk_cut_name.Orders-BoxProducts-FROM-Cuts` (`cut_name`),
-  ADD KEY `fk_measureId.Orders-BoxProducts-FROM-Orders-UsersMeasures` (`measureId`);
+  ADD KEY `fk_measureId.Orders-BoxProducts-FROM-Orders-UsersMeasures` (`measureId`),
+  ADD KEY `fl_realSize.Orders-BoxProducts-FROM-Sizes` (`realSize`);
 
 --
 -- Index pour la table `Orders-DiscountCodes`
@@ -3751,6 +3800,13 @@ ALTER TABLE `ProductsTypes`
 --
 ALTER TABLE `Sexes`
   ADD PRIMARY KEY (`sexe`);
+
+--
+-- Index pour la table `SizeLocks`
+--
+ALTER TABLE `SizeLocks`
+  ADD PRIMARY KEY (`userId`,`prodId`,`size_name`),
+  ADD KEY `fk_prodId.size_name.SizeLocks-FROM-Products-Sizes` (`prodId`,`size_name`);
 
 --
 -- Index pour la table `Sizes`
@@ -4017,7 +4073,8 @@ ALTER TABLE `Orders-BoxProducts`
   ADD CONSTRAINT `fk_brand_name.Orders-BoxProducts-FROM-BrandsMeasures` FOREIGN KEY (`brand_name`) REFERENCES `BrandsMeasures` (`brandName`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_cut_name.Orders-BoxProducts-FROM-Cuts` FOREIGN KEY (`cut_name`) REFERENCES `Cuts` (`cutName`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_measureId.Orders-BoxProducts-FROM-Orders-UsersMeasures` FOREIGN KEY (`measureId`) REFERENCES `Orders-UsersMeasures` (`measureID`),
-  ADD CONSTRAINT `fk_prodId.Orders-BoxProducts-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_prodId.Orders-BoxProducts-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fl_realSize.Orders-BoxProducts-FROM-Sizes` FOREIGN KEY (`realSize`) REFERENCES `Sizes` (`sizeName`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Orders-DiscountCodes`
@@ -4151,6 +4208,13 @@ ALTER TABLE `ProductsShippings`
   ADD CONSTRAINT `fk_country_.ProductsShipping-FROM-Countries` FOREIGN KEY (`country_`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_iso_currency.ProductsShipping-FROM-CurrenciesIsoCodes` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_prodId.ProductsShipping-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `SizeLocks`
+--
+ALTER TABLE `SizeLocks`
+  ADD CONSTRAINT `fk_prodId.size_name.SizeLocks-FROM-Products-Sizes` FOREIGN KEY (`prodId`,`size_name`) REFERENCES `Products-Sizes` (`prodId`, `size_name`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_userId.SizeLocks-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `StripeCheckoutSessions`
