@@ -218,13 +218,24 @@ class Visitor extends ModelFunctionality
     /**
      * Constructor used to create and give a new cookie
      * @param string $userID Visitor's id
-     * @param string $cookieID id of the cookie     
+     * @param string $cookieID id of the cookie
      * @param mixed $value value of the cookie
      */
     protected function generateCookie($cookieID, $value)
     {
         $userID = $this->getUserID();
         return Cookie::generateCookie($userID, $cookieID, $value);
+    }
+
+    /**
+     * To destroy a cookie from Visitor and from db(optional)
+     * @param string $userID Visitor's id
+     * @param boolean $deleteDb set true to delete cookie from db else false or nothing
+     */
+    protected function destroyCookie($cookieID, $deleteDb = false)
+    {
+        $userID = $this->getUserID();
+        return Cookie::destroyCookie($userID, $cookieID, $deleteDb);
     }
 
     /**
@@ -296,7 +307,7 @@ class Visitor extends ModelFunctionality
             foreach ($cookieIDs as $cookieID) {
                 $holdsCookieValue = Cookie::getCookieValue($cookieID);
                 $value = $usersCookiesMap->get($cookieID, Map::value);
-                if((!empty($holdsCookieValue)) && ($holdsCookieValue == $value)){
+                if ((!empty($holdsCookieValue)) && ($holdsCookieValue == $value)) {
                     $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
                     $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
                     $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
@@ -494,7 +505,7 @@ class Visitor extends ModelFunctionality
         }
         return $hasCookie;
     }
-    
+
     /**
      * To get the measure with the id given in param
      * @param string $measureID id of the measure to look for

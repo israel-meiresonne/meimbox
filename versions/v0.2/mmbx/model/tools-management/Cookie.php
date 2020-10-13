@@ -103,7 +103,7 @@ class Cookie extends ModelFunctionality
      */
     public function __construct($cookieID, $value, $setDate, $settedPeriod)
     {
-        if(empty($value)){
+        if (empty($value)) {
             throw new Exception("Can't Instantiate a Cookie with a empty value");
         }
         $this->cookieID = $cookieID;
@@ -115,10 +115,49 @@ class Cookie extends ModelFunctionality
     /**
      * Constructor used to create and give a new cookie
      * @param string $userID Visitor's id
-     * @param string $cookieID id of the cookie     
+     * @param string $cookieID id of the cookie
      * @param mixed $value value of the cookie
      */
     public static function generateCookie($userID, $cookieID, $value)
+    {
+        // $cookiesMap  = parent::getCookiesMap();
+        // $cookieIDs = $cookiesMap->getKeys();
+        // if (!in_array($cookieID, $cookieIDs)) {
+        //     throw new Exception("This cookie is not supported, cookieID: '$cookieID'");
+        // }
+        // $setDate = parent::getDateTime();
+        // $settedPeriod = $cookiesMap->get($cookieID, Map::period);
+        // $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
+        // $cookie->period = $cookiesMap->get($cookieID, Map::period);
+        // // $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
+        // $domainDb = $cookiesMap->get($cookieID, Map::domain);
+        // $cookie->domain = (!empty($domainDb)) ? $domainDb : Configuration::get(Configuration::DOMAIN);
+        // $cookie->path = Configuration::getWebRoot() . $cookiesMap->get($cookieID, Map::path);
+        // $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
+        // $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);
+        $cookie = self::buildCompleteCookie($cookieID, $value);
+        $cookie->createCookie($userID);
+        return $cookie;
+    }
+
+    /**
+     * To destroy a cookie from Visitor and from db(optional)
+     * @param string $userID Visitor's id
+     * @param string $cookieID id of the cookie
+     * @param boolean $deleteDb set true to delete cookie from db else false or nothing
+     */
+    public static function destroyCookie($userID, $cookieID, $deleteDb = false)
+    {
+        $cookie = self::buildCompleteCookie($cookieID, "deleted");
+        // $cookie->createCookie($userID);
+        ($deleteDb) ? $cookie->removeCookie($userID) : null;
+    }
+
+    /**
+     * To instanciate a cookie with all its attibut setted
+     * @return Cookie a cookie with all its attibut setted
+     */
+    private static function buildCompleteCookie($cookieID, $value)
     {
         $cookiesMap  = parent::getCookiesMap();
         $cookieIDs = $cookiesMap->getKeys();
@@ -135,31 +174,8 @@ class Cookie extends ModelFunctionality
         $cookie->path = Configuration::getWebRoot() . $cookiesMap->get($cookieID, Map::path);
         $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
         $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);
-        $cookie->createCookie($userID);
         return $cookie;
     }
-
-    // /**
-    //  * To remove cookie from a Visitor
-    //  * @param string $cookieID id of the cookie     
-    //  */
-    // public static function removeCookie($cookieID)
-    // {
-    //     $cookiesMap  = parent::getCookiesMap();
-    //     $cookieIDs = $cookiesMap->getKeys();
-    //     if (!in_array($cookieID, $cookieIDs)) {
-    //         throw new Exception("This cookie is not supported, cookieID: '$cookieID'");
-    //     }
-    //     $setDate = parent::getDateTime();
-    //     $settedPeriod = $cookiesMap->get($cookieID, Map::period);
-    //     $cookie = new Cookie($cookieID, null, $setDate, $settedPeriod);
-    //     $cookie->period = $cookiesMap->get($cookieID, Map::period);
-    //     $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
-    //     $cookie->path = $cookiesMap->get($cookieID, Map::path);
-    //     $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
-    //     $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);
-    //     $cookie->takeBackCookie($cookieID);
-    // }
 
     /**
      * To create a cookie on Visitor's session and save it in db
@@ -179,21 +195,24 @@ class Cookie extends ModelFunctionality
         $this->saveCookie($userID);
     }
 
-    // /**
-    //  * To create a cookie on Visitor's session and save it in db
-    //  */
-    // private function takeBackCookie()
-    // {
-    //     setcookie(
-    //         $this->cookieID,
-    //         $this->value,
-    //         (time() - $this->period),
-    //         $this->path,
-    //         $this->domain,
-    //         $this->secure,
-    //         $this->httponly
-    //     );
-    // }
+    /**
+     * To create a cookie on Visitor's session and save it in db
+     * @param string $userID Visitor's id
+     */
+    private function removeCookie($userID)
+    {
+        setcookie(
+            $this->cookieID,
+            $this->value,
+            (time()-$this->period),
+            $this->path,
+            $this->domain,
+            $this->secure,
+            $this->httponly
+        );
+        $response = new Response();
+        $this->deleteCookie($response, $userID);
+    }
 
     /**
      * To get cookie from $_COOKIE
@@ -289,6 +308,7 @@ class Cookie extends ModelFunctionality
     /**
      * To insert cookie in db
      * @param Response $response to push in results or accured errors
+     * @param string $userID Visitor's id
      */
     private function insertCookie(Response $response, $userID)
     {
@@ -309,6 +329,7 @@ class Cookie extends ModelFunctionality
     /**
      * To update cookie in db
      * @param Response $response to push in results or accured errors
+     * @param string $userID Visitor's id
      */
     private function updateCookie(Response $response, $userID)
     {
@@ -329,5 +350,17 @@ class Cookie extends ModelFunctionality
         array_push($values, $this->getSetDate());
         array_push($values, $this->getSettedPeriod());
         $this->update($response, $sql, $values);
+    }
+
+    /**
+     * To delete Visitor's cookie from db
+     * @param Response $response to push in results or accured errors
+     * @param string $userID Visitor's id
+     */
+    private function deleteCookie(Response $response, $userID)
+    {
+        $cookieID = $this->getCookieID();
+        $sql = "DELETE FROM `Users-Cookies` WHERE `userId` = '$userID' AND  `cookieId` = '$cookieID'";
+        $this->delete($response, $sql);
     }
 }

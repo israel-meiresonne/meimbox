@@ -911,11 +911,14 @@ class ControllerItem extends ControllerSecure
         // }
         // echo "<hr>";
 
-        $response = new Response();
-        // $this->person->getBasket()->unlock($response, $this->person->getUserID());
-        // $this->person->getBasket()->lock($response, $this->person->getUserID());
-        var_dump($response->getAttributs());
-        echo "<hr>";
+        // $response = new Response();
+        // // $this->person->getBasket()->unlock($response, $this->person->getUserID());
+        // // $this->person->getBasket()->lock($response, $this->person->getUserID());
         // var_dump($response->getAttributs());
+        // echo "<hr>";
+        // var_dump($response->getAttributs());
+
+        // $this->person->generateCookie(Cookie::COOKIE_LCK, "test");
+        // $this->person->destroyCookie(Cookie::COOKIE_LCK, true);
     }
 }

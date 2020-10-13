@@ -399,6 +399,7 @@ abstract class User extends  Visitor
         $address = $this->getSelectedAddress();
         $order = new Order();
         $order->create($response, $userID, $stripeCheckoutID, $address, $basket);
+        $this->destroyCookie(Cookie::COOKIE_LCK, true);
         $key = $order->getDateInSec();
         $this->orders[$key] = $order;
         krsort($this->orders);
