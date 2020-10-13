@@ -920,5 +920,10 @@ class ControllerItem extends ControllerSecure
 
         // $this->person->generateCookie(Cookie::COOKIE_LCK, "test");
         // $this->person->destroyCookie(Cookie::COOKIE_LCK, true);
+
+        $response = new Response();
+        $this->person->getBasket()->empty($response);
+        var_dump($response->getAttributs());
+        echo "<hr>";
     }
 }
