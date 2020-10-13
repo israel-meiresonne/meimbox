@@ -105,6 +105,7 @@ class Order extends ModelFunctionality
         $this->status->create($response, $this->orderID, $status);
         
         $this->basketOrdered->unlock($response, $userID);
+        $this->basketOrdered->empty($response);
     }
 
     /**

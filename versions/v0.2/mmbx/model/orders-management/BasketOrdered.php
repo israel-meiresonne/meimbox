@@ -55,6 +55,22 @@ class BasketOrdered extends Basket
         // insert basketProducts + decrease sttock
     }
 
+    /**
+     * To empty the basket by deleting basketProducts, boxproducts and boxes
+     * @param Response $response to push in result or accured error
+     */
+    public function empty(Response $response)
+    {
+        $boxes = $this->getBoxes();
+        if(!empty($boxes)){
+            foreach($boxes as $box){
+                $boxID = $box->getBoxID();
+                $this->deleteBox($response, $boxID);
+            }
+        }
+        /** delete basketproduct */
+    }
+
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
 
 }
