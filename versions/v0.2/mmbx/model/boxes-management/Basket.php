@@ -663,6 +663,6 @@ class Basket extends ModelFunctionality
     public function unlock(Response $response, $userID)
     {
         $sql = "DELETE FROM `StockLocks` WHERE `userId` = '$userID'";
-        $this->delete($response, $sql);        
+        $this->delete($response, $sql);
     }
 }
