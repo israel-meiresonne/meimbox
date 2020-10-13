@@ -103,6 +103,8 @@ class Order extends ModelFunctionality
         $this->status = new Status();
         $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
         $this->status->create($response, $this->orderID, $status);
+        
+        $this->basketOrdered->unlock($response, $userID);
     }
 
     /**
