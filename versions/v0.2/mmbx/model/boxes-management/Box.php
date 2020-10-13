@@ -417,7 +417,7 @@ class Box extends ModelFunctionality
      */
     public function getSpace()
     {
-        $space = ($this->getSizeMax() - $this->getNbProduct());
+        $space = ($this->getSizeMax() - $this->getQuantity());
         if ($space < 0) {
             throw new Exception("Stilling place in box can't be negative");
         }
@@ -485,7 +485,7 @@ class Box extends ModelFunctionality
      * Getter for box's products
      * @return BoxProduct[] box's products
      */
-    public function getBoxProducts()
+    public function getProducts()
     {
         (!isset($this->boxProducts)) ? $this->setBoxProducts() : null;
         return $this->boxProducts;
@@ -497,7 +497,7 @@ class Box extends ModelFunctionality
      */
     public function getProduct($prodID, Size $selectedSize)
     {
-        $products = $this->getBoxProducts();
+        $products = $this->getProducts();
         foreach ($products as $key => $product) {
             $selectedSize2 = $product->getSelectedSize();
             $exist = (($product->getProdID() == $prodID)
@@ -513,9 +513,9 @@ class Box extends ModelFunctionality
      * To get the amount of product in the box
      * @return int amount of product in the box
      */
-    public function getNbProduct()
+    public function getQuantity()
     {
-        $products = $this->getBoxProducts();
+        $products = $this->getProducts();
         $nb = 0;
         if (count($products) > 0) {
             foreach ($products as $product) {
@@ -555,7 +555,6 @@ class Box extends ModelFunctionality
         return $perItem->getFormated();
     }
 
-
     /**
      * Getter for box's shipping cost
      * @return Price box's shipping cost
@@ -585,6 +584,53 @@ class Box extends ModelFunctionality
         ksort($boxes);
         return $boxes;
     }
+
+    /**
+     * To check if stock still available for product in the box
+     * + the stock checked don't include locked products
+     * @return Map map of product out of stock
+     */
+    public function stillStock()
+    {
+        $lockedProd = new Map();
+        $products = $this->getProducts();
+        if (!empty($products)) {
+            foreach ($products as $product) {
+                $selectedSize = $product->getSelectedSize();
+                if (!$product->stillStock($selectedSize)) {
+                    $key = $product->getDateInSec();
+                    $lockedProd->put($product, $key);
+                }
+            }
+        }
+        // (!empty($lockedProd)) ? krsort($lockedProd) : null;
+        $lockedProd->sortKeyDesc();
+        return $lockedProd;
+    }
+
+    // /**
+    //  * To check if still stock for product in the box including locked stock
+    //  * + this function combine stock available and stock locked to deduct the 
+    //  * stilling stock
+    //  * @return Map map of product out of stock
+    //  */
+    // public function stillUnlockedStock()
+    // {
+    //     $lockedProd = new Map();
+    //     $products = $this->getProducts();
+    //     if (!empty($products)) {
+    //         foreach ($products as $product) {
+    //             if (!$product->stillUnlockedStock()) {
+    //                 $key = $product->getDateInSec();
+    //                 // $lockedProd[$key] = $product;
+    //                 $lockedProd->put($product, $key);
+    //             }
+    //         }
+    //     }
+    //     // (!empty($lockedProd)) ? krsort($lockedProd) : null;
+    //     $lockedProd->sortKeyDesc();
+    //     return $lockedProd;
+    // }
 
     /**
      * To add new product in box
@@ -651,6 +697,21 @@ class Box extends ModelFunctionality
             $key = $product->getDateInSec();
             $this->boxProducts[$key] = null;
             unset($this->boxProducts[$key]);
+        }
+    }
+
+    /**
+     * To reserve ,for a duration, the stock of all products in the box
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    public function lock(Response $response, $userID)
+    {
+        $products = $this->getProducts();
+        if(!empty($products)){
+            foreach($products as $product){
+                $product->lock($response, $userID);
+            }
         }
     }
 

@@ -193,6 +193,13 @@ abstract class Product extends ModelFunctionality
     public const KEY_PROD_ID = "prodid";
 
     /**
+     * Access to get products
+     * @var string
+     */
+    public const KEY_PROD_SOLD_OUT = "key_prod_sold_out";
+    public const KEY_PROD_LOCKED = "key_prod_locked";
+
+    /**
      * Constructor 
      * @param int $prodID product's id
      * @param Language $language Visitor's language
@@ -333,7 +340,6 @@ abstract class Product extends ModelFunctionality
         FROM `Products-Collections`
         WHERE `prodId` = '$this->prodID'";
         $tab = $this->select($sql);
-        // var_dump($tab);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
                 $this->collections[$tabLine["collection_name"]]["beginDate"] = $tabLine["beginDate"];
@@ -418,10 +424,7 @@ abstract class Product extends ModelFunctionality
      * Set product's selected size
      * @param Size $size 
      */
-    public function selecteSize(Size $size)
-    {
-        $this->selectedSize = $size;
-    }
+    public abstract function selecteSize(Size $size);
 
     /**
      * Getter for the product's id
@@ -564,16 +567,6 @@ abstract class Product extends ModelFunctionality
      */
     public abstract function getSizes();
 
-    // /**
-    //  * Getter for the product's sizes
-    //  * @return string[] product's sizes [index => size]
-    //  */
-    // private function getSizeStockKeys()
-    // {
-    //     $sizesStock = $this->getSizeStock();
-    //     return array_keys($sizesStock);
-    // }
-
     /**
      * Getter for the product's selected size
      * @return Size product's selected size
@@ -582,18 +575,6 @@ abstract class Product extends ModelFunctionality
     {
         return $this->selectedSize;
     }
-
-    // /**
-    //  * Builds a map that use size name as key and value
-    //  * + [size => size]
-    //  * @return string[] map that use size name as key and value
-    //  */
-    // public abstract function getSizeValueToValue();
-    // public function getSizeValueToValue()
-    // {
-    //     $sizes = $this->getSizeStockKeys();
-    //     return $this->arrayToMap($sizes);
-    // }
 
     /**
      * Getter of product's collection name
@@ -700,6 +681,14 @@ abstract class Product extends ModelFunctionality
     public abstract function stillStock(Size $sizeObj);
 
     /**
+     * To check if still stock for product including product locked
+     * + this function combine stock available and stock locked to deduct the 
+     * stilling stock
+     * @return boolean set true if still stock else false
+     */
+    public abstract function stillUnlockedStock();
+
+    /**
      * Convert setDate to seconde from UNIX.
      * @return int seconde from UNIX
      */
@@ -755,4 +744,10 @@ abstract class Product extends ModelFunctionality
         $sizesStock = $this->getSizeStock();
         return array_key_exists($value, $sizesStock);
     }
+
+    /**
+     * To get A copy of the currrent instance
+     * @return Product
+     */
+    public abstract function getCopy();
 }

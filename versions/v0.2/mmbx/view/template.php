@@ -12,6 +12,7 @@ require_once 'model/tools-management/Measure.php';
 require_once 'model/tools-management/MeasureUnit.php';
 require_once 'model/view-management/PageContent.php';
 require_once 'model/special/MyError.php';
+require_once 'model/special/Response.php';
 /**
  *  ——————————————————————————————— NEED —————————————————————————————————————
  * @param Visitor|Client|Administrator $person the current user
@@ -195,6 +196,8 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const CONF_ADRS_FEED = "<?= Address::CONF_ADRS_FEED ?>"
         const CONF_ADRS_POP = "<?= Address::CONF_ADRS_POP ?>"
         const KEY_ADRS_SEQUENCE = "<?= Address::KEY_ADRS_SEQUENCE ?>"
+
+        const RSP_NOTIFICATION = "<?= Response::RSP_NOTIFICATION ?>"
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";

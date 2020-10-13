@@ -389,7 +389,7 @@ class CheckoutSession extends ModelFunctionality
      */
     private function extractBox(Box $box, array $line_items)
     {
-        $products = $box->getBoxProducts();
+        $products = $box->getProducts();
         if (!empty($products)) {
             $boxDatas = new Map();
             $price = $box->getPrice();

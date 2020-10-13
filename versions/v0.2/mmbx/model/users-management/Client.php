@@ -40,16 +40,16 @@ class Client extends User
         $this->manageCookie(Cookie::COOKIE_CLT, true);
     }
 
-    /**
-     * Create an order once the Client has paid
-     * @var array $dbMap of Database's tables
-     * @var Basket $basket of the Client
-     */
-    public function order($basket, $dbMap)
-    {
-        $order = new Order($dbMap, $basket);
-        $key =  $order->getDateInSec();
-        $this->orders[$key] = $order;
-        ksort($this->orders);
-    }
+    // /**
+    //  * Create an order once the Client has paid
+    //  * @var array $dbMap of Database's tables
+    //  * @var Basket $basket of the Client
+    //  */
+    // public function order($basket, $dbMap)
+    // {
+    //     $order = new Order($dbMap, $basket);
+    //     $key =  $order->getDateInSec();
+    //     $this->orders[$key] = $order;
+    //     ksort($this->orders);
+    // }
 }

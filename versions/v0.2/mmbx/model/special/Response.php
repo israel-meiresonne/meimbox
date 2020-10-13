@@ -47,6 +47,8 @@ class Response
      */
     private $errorStations;
 
+    public const RSP_NOTIFICATION = "rsp_notif";
+
     /**
      * Constuctor
      */

@@ -51,10 +51,10 @@ abstract class ModelFunctionality extends Model
      * One column table of values from db
      * @var string[]
      */
-    private static $collections;
+    private static $collectionsMap;
     private static $product_types;
     private static $functions;
-    private static $categories;
+    private static $categoriesMap;
     private static $sizes;
     private static $supoortedSizes;
     private static $cuts;
@@ -629,9 +629,9 @@ abstract class ModelFunctionality extends Model
         $table = [];
         switch ($tableName) {
             case "collections":
-                (!isset(self::$collections)) ? self::$collections = self::getTable("SELECT DISTINCT `collection_name` FROM `Products-Collections`")
+                (!isset(self::$collectionsMap)) ? self::$collectionsMap = self::getTable("SELECT DISTINCT `collection_name` FROM `Products-Collections`")
                     : null;
-                $table = self::$collections;
+                $table = self::$collectionsMap;
                 break;
             case "product_types":
                 (!isset(self::$product_types)) ? self::$product_types = self::getTable("SELECT DISTINCT `product_type` FROM `Products`")
@@ -644,9 +644,9 @@ abstract class ModelFunctionality extends Model
                 $table = self::$functions;
                 break;
             case "categories":
-                (!isset(self::$categories)) ? self::$categories = self::getTable("SELECT DISTINCT `category_name` FROM `Products-Categories`")
+                (!isset(self::$categoriesMap)) ? self::$categoriesMap = self::getTable("SELECT DISTINCT `category_name` FROM `Products-Categories`")
                     : null;
-                $table = self::$categories;
+                $table = self::$categoriesMap;
                 break;
             case "sizes":
                 (!isset(self::$sizes)) ? self::$sizes = self::getTable("SELECT DISTINCT `size_name` FROM `Products-Sizes`")
@@ -780,7 +780,8 @@ abstract class ModelFunctionality extends Model
             foreach ($tab as $tabLine) {
                 // self::$cookiesMap->put($tabLine["cookieID"], Map::cookieID);
                 $cookieID = $tabLine["cookieID"];
-                self::$cookiesMap->put($tabLine["cookiePeriod"], $cookieID, Map::period);
+                $period = (int)$tabLine["cookiePeriod"];
+                self::$cookiesMap->put($period, $cookieID, Map::period);
                 self::$cookiesMap->put($tabLine["cookieDomain"], $cookieID, Map::domain);
                 self::$cookiesMap->put($tabLine["cookiePath"], $cookieID, Map::path);
 
@@ -1338,32 +1339,61 @@ abstract class ModelFunctionality extends Model
         return get_object_vars($this);
     }
 
-    /**
-     * To get a protected copy of a instance
-     * @return object copy of the Country instance
-     */
-    protected function getCopy()
-    {
-        // $map = get_object_vars($this);
-        $copy = clone $this;
-        // foreach ($map as $attr => $value) {
-        //     // var_dump(gettype($this->{$attr}));
-        //     // echo "<br>";
-        //     switch (gettype($this->{$attr})) {
-        //         case "array":
-        //             $copy->{$attr} = $this->cloneMap($this->{$attr});
-        //             break;
-        //         case "object":
-        //             $copy->{$attr} = $value->getCopy();
-        //             break;
-        //         default:
-        //             $copy->{$attr} = $value;
-        //             break;
-        //     }
-        // }
-        // $this->copyDebug($this, $copy);
-        return $copy;
-    }
+    // /**
+    //  * To get a protected copy of a instance
+    //  * @return object copy of the Country instance
+    //  */
+    // protected function getCopy()
+    // {
+    //     // $map = get_object_vars($this);
+    //     $copy = clone $this;
+    //     // foreach ($map as $attr => $value) {
+    //     //     // var_dump(gettype($this->{$attr}));
+    //     //     // echo "<br>";
+    //     //     switch (gettype($this->{$attr})) {
+    //     //         case "array":
+    //     //             $copy->{$attr} = $this->cloneMap($this->{$attr});
+    //     //             break;
+    //     //         case "object":
+    //     //             $copy->{$attr} = $value->getCopy();
+    //     //             break;
+    //     //         default:
+    //     //             $copy->{$attr} = $value;
+    //     //             break;
+    //     //     }
+    //     // }
+    //     // $this->copyDebug($this, $copy);
+    //     return $copy;
+    // }
+
+    // /**
+    //  * To get A copy of the currrent instance
+    //  * @return Instance
+    //  */
+    // public function getCopy()
+    // {
+    //     $map = get_object_vars($this);
+    //     $attributs = array_keys($map);
+    //     $class = get_class($this);
+    //     $copy = new $class();
+    //     if($class == Size::class){
+    //     var_dump($this->size);
+    //     echo "<br>";
+    //     var_dump($attributs);
+    //     echo "<hr>";
+    // }
+    //     foreach ($attributs as $attribut) {
+    //         switch (gettype($this->{$attribut})) {
+    //                 // case 'object':
+    //                 //     $copy->{$attribut} = $this->{$attribut}->getCopy();
+    //                 //     break;
+    //             default:
+    //                 $copy->{$attribut} = $this->{$attribut};
+    //                 break;
+    //         }
+    //     }
+    //     return $copy;
+    // }
 
     private function copyDebug($obj, $copy)
     {

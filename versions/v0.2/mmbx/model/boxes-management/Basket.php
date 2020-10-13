@@ -7,6 +7,7 @@ require_once 'model/boxes-management/BoxProduct.php';
 require_once 'model/boxes-management/DiscountCode.php';
 require_once 'model/boxes-management/Size.php';
 require_once 'model/special/Response.php';
+require_once 'model/special/Map.php';
 
 class Basket extends ModelFunctionality
 {
@@ -254,7 +255,7 @@ class Basket extends ModelFunctionality
         }
         if (!empty($boxes)) {
             foreach ($boxes as $box) {
-                $quantity += $box->getNbProduct();
+                $quantity += $box->getQuantity();
             }
         }
         return $quantity;
@@ -335,20 +336,6 @@ class Basket extends ModelFunctionality
         // return (new Price(0, $currency));
     }
 
-    // public function isEmpty()
-    // {
-    //     $isEmpty = true;
-    //     $isEmpty = (empty($this->getBasketProducts()));
-    //     if($isEmpty){
-    //         $boxes = $this->getBoxes();
-    //         if(!empty($boxes)){
-    //             foreach($boxes as $box){
-
-    //             }
-    //         }
-    //     }
-    // }
-
     /**
      * Check if still enough place in box to add one product
      * @param string $boxID id of the box to look for
@@ -361,6 +348,103 @@ class Basket extends ModelFunctionality
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
         return ($box->getSpace() >= $quantity);
+    }
+
+    /**
+     * To check if stock still available for product in the basket without 
+     * Including locked products
+     * + the stock checked don't include locked products
+     * @return Map map of product out of stock
+     */
+    public function stillStock()
+    {
+        $lockedProd = new Map();
+        $sameBoxProducts = $this->extractSameSize();
+        $keys = $sameBoxProducts->getKeys();
+        if (!empty($keys)) {
+            foreach ($keys as $key) {
+                /**
+                 * @var BoxProduct */
+                $boxProducts = $sameBoxProducts->get($key);
+                $selectedSize = $boxProducts->getSelectedSize();
+                if (!$boxProducts->stillStock($selectedSize)) {
+                    $dateKey = $boxProducts->getDateInSec();
+                    $lockedProd->put($boxProducts, $dateKey);
+                }
+            }
+        }
+
+        /** check unlock stock for basketproduct */
+
+        $lockedProd->sortKeyDesc();
+        return $lockedProd;
+    }
+
+    /**
+     * To check if still stock for product in the basket including locked stock
+     * + this function combine stock available and stock locked to deduct the 
+     * stilling stock
+     * @return Map map of product out of stock
+     */
+    public function stillUnlockedStock()
+    {
+        $lockedProd = new Map();
+        $sameBoxProducts = $this->extractSameSize();
+        $keys = $sameBoxProducts->getKeys();
+        if (!empty($keys)) {
+            foreach ($keys as $key) {
+                /**
+                 * @var BoxProduct */
+                $boxProducts = $sameBoxProducts->get($key);
+                if (!$boxProducts->stillUnlockedStock()) {
+                    $dateKey = $boxProducts->getDateInSec();
+                    $lockedProd->put($boxProducts, $dateKey);
+                }
+            }
+        }
+
+        /** check unlock stock for basketproduct */
+
+        $lockedProd->sortKeyDesc();
+        return $lockedProd;
+    }
+
+    /**
+     * To extract from all boxes products with the same id and size
+     * + generate a copy product for each different Size
+     * + the quantity of each copy product is the sum of quantity of all product with the same sizee
+     * @return Map of boxproducts using Size sequence
+     */
+    private function extractSameSize()
+    {
+        $sameSizes = new Map();
+        $boxes = $this->getBoxes();
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                $products = $box->getProducts();
+                if (!empty($products)) {
+                    foreach ($products as $product) {
+                        $prodID = $product->getProdID();
+                        $selectedSize = $product->getSelectedSize();
+                        $prodSequence = $prodID . Size::SEQUENCE_SEPARATOR . $selectedSize->getSequence();
+                        $keys = $sameSizes->getKeys();
+                        if (!in_array($prodSequence, $keys)) {
+                            $copyProduct = $product->getCopy();
+                            $copySize = $selectedSize->getCopy();
+                            $copyProduct->selecteSize($copySize);
+                            $sameSizes->put($copyProduct, $prodSequence);
+                        } else {
+                            /**
+                             * @var Size*/
+                            $copySize = $sameSizes->get($prodSequence)->getSelectedSize();
+                            $quantity = $selectedSize->getQuantity();
+                            $copySize->addQuantity($quantity);
+                        }
+                    }
+                }
+            }
+        }
+        return $sameSizes;
     }
 
     /**
@@ -403,6 +487,25 @@ class Basket extends ModelFunctionality
                 $this->unsetBox($boxID);
             }
         }
+    }
+
+    /**
+     * To deleted empty boxes
+     * @return boolean true if at less one box have been deleted else false
+     */
+    public function deleteEmptyBoxes(Response $response)
+    {
+        $haveDelete = false;
+        $boxes = $this->getBoxes();
+        if(!empty($boxes)){
+            foreach($boxes as $box){
+                if($box->getQuantity() <= 0){
+                    $box->deleteBox($response);
+                    $haveDelete = (!$haveDelete) ? true : $haveDelete;
+                }
+            }
+        }
+        return $haveDelete;
     }
 
     /**
@@ -532,5 +635,20 @@ class Basket extends ModelFunctionality
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
         $box->deleteBoxProduct($response, $prodID, $size);
+    }
+
+    /**
+     * To reserve ,for a duration, the stock of all products in the basket and in boxes
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    public function lock(Response $response, $userID)
+    {
+        $boxes = $this->getBoxes();
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                ($box->getQuantity() > 0) ? $box->lock($response, $userID) : null;
+            }
+        }
     }
 }

@@ -1266,7 +1266,7 @@ class Visitor extends ModelFunctionality
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             if (!$basket->stillSpace($boxID)) {
-                $fullRate = "(" . $box->getNbProduct() . "/" . $box->getSizeMax() . ")";
+                $fullRate = "(" . $box->getQuantity() . "/" . $box->getSizeMax() . ")";
                 $errStation = "ER14" . $fullRate;
                 $response->addErrorStation($errStation, ControllerItem::A_ADD_BXPROD);
             } else {

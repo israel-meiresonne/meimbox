@@ -182,37 +182,38 @@ class DiscountCode
         $this->countries = $countries;
     }
 
-    /**
-     * @return BasketProduct[] a protected copy of the $basketProduct attribute
-     */
-    public function getCopyCountries()
-    {
-        $copy = [];
-        foreach ($this->countries as $iso_country => $country) {
-            $copy[$iso_country] = $country->getCopy();
-        }
-        return $copy;
-    }
+    // /**
+    //  * @return BasketProduct[] a protected copy of the $basketProduct attribute
+    //  */
+    // public function getCopyCountries()
+    // {
+    //     $copy = [];
+    //     foreach ($this->countries as $iso_country => $country) {
+    //         // $copy[$iso_country] = $country->getCopy();
+    //         $copy[$iso_country] = $country;
+    //     }
+    //     return $copy;
+    // }
 
 
-    /**
-     * To get a protected copy of a DiscountCode instance
-     * @return DiscountCode a protected copy of the DiscountCode instance
-     */
-    public function getCopy()
-    {
-        $copy = new DiscountCode();
-        $copy->discountCode = $this->discountCode;
-        $copy->setDate = $this->setDate;
-        $copy->discountType = $this->discountType;
-        $copy->value = $this->value;
-        $copy->minAmount = $this->minAmount;
-        $copy->nbUse = $this->nbUse;
-        $copy->isCombinable = $this->isCombinable;
-        $copy->dates = $this->dates;
-        $copy->countries = $this->getCopyCountries();
-        return $copy;
-    }
+    // /**
+    //  * To get a protected copy of a DiscountCode instance
+    //  * @return DiscountCode a protected copy of the DiscountCode instance
+    //  */
+    // public function getCopy()
+    // {
+    //     $copy = new DiscountCode();
+    //     $copy->discountCode = $this->discountCode;
+    //     $copy->setDate = $this->setDate;
+    //     $copy->discountType = $this->discountType;
+    //     $copy->value = $this->value;
+    //     $copy->minAmount = $this->minAmount;
+    //     $copy->nbUse = $this->nbUse;
+    //     $copy->isCombinable = $this->isCombinable;
+    //     $copy->dates = $this->dates;
+    //     $copy->countries = $this->getCopyCountries();
+    //     return $copy;
+    // }
 
 
     public function __toString()
