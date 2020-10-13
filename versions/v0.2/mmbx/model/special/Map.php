@@ -1,5 +1,7 @@
 <?php
 
+use function PHPSTORM_META\type;
+
 /**
  * This class is a map for holds datas
  */
@@ -8,7 +10,7 @@ class Map
     private $map;
     public const setDate = "setDate";
     public const value = "value";
-    
+
     /**
      * key for User
      * @var string
@@ -23,7 +25,7 @@ class Map
     public const isoCurrency = "iso_currency";
     public const isUE = "isUE";
     public const vat = "vat";
-    
+
     /**
      * key for Size
      * @var string
@@ -35,7 +37,7 @@ class Map
     // public const measureID = "measureID";
     public const cut = "cut";
     public const quantity = "quantity";
-    
+
     /**
      * key for Measure
      * @var string
@@ -62,7 +64,7 @@ class Map
     public const inputValue = "inputValue";
     public const isChecked = "isChecked";
     public const inputFunc = "inputFunc";
-  
+
     /**
      * key for Cookie
      * @var string
@@ -158,7 +160,7 @@ class Map
             $this->map[$key] = $data;
         } else {
             $key = $keys[0];
-            if(key_exists($key, $this->map)){
+            if (key_exists($key, $this->map)) {
                 $this->map[$key] = $this->putRec($this->map[$key], $data, $keys, 1);
             } else {
                 $this->map[$key] = $this->putRec([], $data, $keys, 1);
@@ -170,7 +172,7 @@ class Map
     {
         if ($i < count($keys)) {
             $key = $keys[$i];
-            if(key_exists($key, $recMap)){
+            if (key_exists($key, $recMap)) {
                 $recMap[$key] = $this->putRec($recMap[$key], $data, $keys, ++$i);
             } else {
                 $recMap[$key] = $this->putRec([], $data, $keys, ++$i);
@@ -221,5 +223,37 @@ class Map
     public function getKeys()
     {
         return array_keys($this->map);
+    }
+
+    /**
+     * To merge this Map with the Map|array given
+     * @param array|Map $map 
+     */
+    public function merge($map)
+    {
+        $type = gettype($map);
+        switch ($type) {
+            case 'array':
+                $this->map = array_merge($this->map, $map);
+                break;
+            case 'object':
+                if (get_class($map) != Map::class) {
+                    throw new Exception("Can merge Map only with an array or a Map");
+                }
+                $this->map = array_merge($this->map, $map->map);
+                break;
+
+            default:
+                throw new Exception("Try to merge a unsupported type, type:'$type'");
+                break;
+        }
+    }
+
+    /**
+     * to sort key from the hight value to the lower
+     */
+    public function sortKeyDesc()
+    {
+        krsort($this->map);
     }
 }

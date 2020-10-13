@@ -17813,7 +17813,7 @@
 											"top": 3277,
 											"width": 229.14501953125,
 											"height": 13,
-											"text": "SizeLocks"
+											"text": "StockLocks"
 										},
 										{
 											"_type": "ERDColumnCompartmentView",
@@ -25579,7 +25579,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFwMOVQBW50mmo="
 							},
-							"name": "SizeLocks",
+							"name": "StockLocks",
 							"ownedElements": [
 								{
 									"_type": "ERDRelationship",

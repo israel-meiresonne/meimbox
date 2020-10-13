@@ -706,7 +706,7 @@ class ControllerItem extends ControllerSecure
                 $basket = $this->person->getBasket();
                 $quantity = $basket->getQuantity();
                 $box = $basket->getBoxe($boxID);
-                $boxRate = $box->getNbProduct() . "/" . $box->getSizeMax();
+                $boxRate = $box->getQuantity() . "/" . $box->getSizeMax();
                 $response->addResult(Box::KEY_BOX_ID, $boxRate);
                 $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
             }
@@ -747,9 +747,11 @@ class ControllerItem extends ControllerSecure
             $subtotal = $basket->getSubTotal()->getFormated();
             $vat = $basket->getVatAmount()->getFormated();
             $quantity = $basket->getQuantity();
+            $shipping = $basket->getShipping()->getFormated();
             $response->addResult(Basket::KEY_TOTAL, $total);
             $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
             $response->addResult(Basket::KEY_VAT, $vat);
+            $response->addResult(Basket::KEY_SHIPPING, $shipping);
             $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
         }
         $this->generateJsonView($datasView, $response, $this->person);
@@ -812,6 +814,7 @@ class ControllerItem extends ControllerSecure
         //     var_dump("quantity: ", $product->SelectedToRealSize()->getQuantity());
         //     echo "<hr>";
         // }
+
         // $sizes = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
         // $measureIDs = [
         //     '803g420892212029wn05e10cq',
@@ -832,5 +835,86 @@ class ControllerItem extends ControllerSecure
         //     var_dump("Converted: ", $product->SelectedToRealSize()->getsize());
         //     echo "<hr>";
         // }
+
+        // $a = strtotime("2020-10-12 12:00:00");
+        // $a = strtotime(null);
+        // $setDate = strtotime("2020-10-12 15:00:45");
+        // // $setDate = time();
+        // $lockLimit = 60;
+        // // var_dump(time() > ($setDate + $lockLimit));
+        // var_dump((int)strtotime("1971-10-12 15:00:45"));
+
+        // $product = new BoxProduct("1", $this->person->getLanguage(), $this->person->getCountry(), $this->person->getCurrency());
+        // // $sizes = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
+        // // $sizes = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
+        // $sizes = ['xxs'];
+        // foreach ($sizes as $size) {
+        //     $sizeObj = new Size(Size::buildSequence($size, null, null, null));
+        //     $sizeObj->setQuantity(17);
+        //     // $product->selecteSize($sizeObj);
+        //     var_dump("still stock: ", $product->stillStock($sizeObj));
+        //     echo "<br>";
+        //     echo "<hr>";
+        // }
+
+        // $product = new BoxProduct("1", $this->person->getLanguage(), $this->person->getCountry(), $this->person->getCurrency());
+        // // $sizes = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
+        // // $sizes = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
+        // $measureIDs = [
+        //     'decrease_s_2',
+        //     // 'c39521az182vv0012250220n0',
+        //     // 'a5rn30s0gtn2x2998j3000221', 
+        //     // '1001nq54od2c002o903219929', 
+        //     // '0jj2g3rj131923p1560b90d01', 
+        //     // '2191802te91kv3ee27a280h02', 
+        //     // '651853948740'
+        // ];
+        // foreach ($measureIDs as $measureID) {
+        //     $sizeObj = new Size(Size::buildSequence(null, null, $measureID, "fit"));
+        //     $sizeObj->setQuantity(15);
+        //     // $product->selecteSize($sizeObj);
+        //     var_dump("still stock: ", $product->stillStock($sizeObj));
+        //     echo "<br>";
+        //     echo "<hr>";
+        // }
+
+        // $product = new BoxProduct("1", $this->person->getLanguage(), $this->person->getCountry(), $this->person->getCurrency());
+        // // $sizes = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
+        // // $sizes = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
+        // $sizes = ['xxs'];
+        // $response = new Response();
+        // foreach ($sizes as $size) {
+        //     $sizeObj = new Size(Size::buildSequence($size, null, null, null));
+        //     $sizeObj->setQuantity(3);
+        //     $product->selecteSize($sizeObj);
+        //     $product->lock($response, $this->person->getUserID());
+        //     var_dump("response: ", $response->getAttributs());
+        //     echo "<br>";
+        //     echo "<hr>";
+        // }
+
+        // $product = new BoxProduct("1", $this->person->getLanguage(), $this->person->getCountry(), $this->person->getCurrency());
+        // var_dump($product);
+        // echo "<hr>";
+        // echo "<hr>";
+        // $copy = $product->getCopy();
+        // var_dump($copy);
+        // $response = new Response();
+        // $this->person->getBasket()->lock($response, $this->person->getUserID());
+        // $soldOut = $this->person->getBasket()->stillStock();
+        // $keys = $soldOut->getKeys();
+        // // var_dump($soldOut);
+        // // echo "<hr>";
+        // foreach($keys as $key){
+        //     var_dump($soldOut->get($key));
+        //     echo "<hr>";
+        // }
+        // echo "<hr>";
+
+        $response = new Response();
+        $haveDelete = $this->person->getBasket()->deleteEmptyBoxes($response);
+        var_dump($haveDelete);
+        echo "<hr>";
+        var_dump($response->getAttributs());
     }
 }

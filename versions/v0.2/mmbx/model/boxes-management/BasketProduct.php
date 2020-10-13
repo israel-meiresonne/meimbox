@@ -65,7 +65,8 @@ class BasketProduct extends Product
         }
         $tabLine = $tab[0];
         $price = (float) $tabLine["price"];
-        $this->price = new Price($price, $currency->getCopy());
+        // $this->price = new Price($price, $currency->getCopy());
+        $this->price = new Price($price, $currency);
     }
 
     /**
@@ -88,7 +89,8 @@ class BasketProduct extends Product
         $tabLine = $tab[0];
         $price = (float) $tabLine["price"];
         $time = (int) $tabLine["time"];
-        $this->shipping = new Shipping($price, $currency->getCopy(), $time);
+        // $this->shipping = new Shipping($price, $currency->getCopy(), $time);
+        $this->shipping = new Shipping($price, $currency, $time);
     }
 
     /**
@@ -156,16 +158,6 @@ class BasketProduct extends Product
         return $this->sameProducts;
     }
 
-    // /**
-    //  * Getter for product's stock for each size
-    //  * @return int[] product's stock for each size
-    //  */
-    // protected function getSizeStock()
-    // {
-    //     (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
-    //     return $this->sizesStock;
-    // }
-
     /**
      * Getter for product's sizes
      * @return string[] product's stock for each size
@@ -174,6 +166,15 @@ class BasketProduct extends Product
     {
         $sizesStock = $this->getSizeStock();
         return array_keys($sizesStock);
+    }
+
+    /**
+     * Set product's selected size
+     * @param Size $size 
+     */
+    public function selecteSize(Size $size)
+    {
+        $this->selectedSize = $size;
     }
 
     /**
@@ -232,12 +233,46 @@ class BasketProduct extends Product
     }
 
     /**
+     * To check if still stock for product including product locked
+     * + this function combine stock available and stock locked to deduct the 
+     * stilling stock
+     * @return boolean set true if still stock else false
+     */
+    public function stillUnlockedStock()
+    {
+        throw new Exception("Function 'stillUnlockedStock' declared but not implemented in class BasketProduct");
+    }
+
+    /**
      * Check if the product is a basket product
      * @return boolean true if the product is a basket product else false
      */
     public function isBasketProduct()
     {
         return true;
+    }
+
+    /**
+     * To get A copy of the currrent instance
+     * @return BasketProduct
+     */
+    public function getCopy()
+    {
+        $map = get_object_vars($this);
+        $attributs = array_keys($map);
+        $class = get_class($this);
+        $copy = new $class();
+        foreach ($attributs as $attribut) {
+            switch (gettype($this->{$attribut})) {
+                    // case 'object':
+                    //     $copy->{$attribut} = $this->{$attribut}->getCopy();
+                    //     break;
+                default:
+                    $copy->{$attribut} = $this->{$attribut};
+                    break;
+            }
+        }
+        return $copy;
     }
 
     /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/

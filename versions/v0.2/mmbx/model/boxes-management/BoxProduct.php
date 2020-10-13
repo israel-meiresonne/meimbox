@@ -5,12 +5,17 @@ require_once 'model/boxes-management/Product.php';
 
 class BoxProduct extends Product
 {
-
     /**
      * Holds the sizesStock attribut extended
      * @var int[]
      */
     private $virtualSizeStock;
+
+    /**
+     * Holds the selected size converted into a real stock size
+     * @var Size
+     */
+    private $realSelectedSize;
 
     /**
      * Holds the BoxProduct's measures
@@ -32,10 +37,34 @@ class BoxProduct extends Product
      * @param Country $country the Visitor's country
      * @param Currency $currency the Visitor's current Currency
      */
-    public function __construct($prodID, Language $language, Country $country, Currency $currency)
+    // public function __construct($prodID, Language $language, Country $country, Currency $currency)
+    public function __construct()
+    {
+        $args = func_get_args();
+        $nb = func_num_args();
+        switch ($nb) {
+            case 4:
+                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
+                break;
+            case 0:
+                $this->__construct0();
+                break;
+
+            default:
+                throw new Exception("The number of param is incorrect, number:$nb");
+                break;
+        }
+        // parent::__construct($prodID, $language, $country, $currency);
+        // $this->setMeasure();
+    }
+
+    private function __construct0()
+    {
+    }
+
+    private function __construct4($prodID, Language $language, Country $country, Currency $currency)
     {
         parent::__construct($prodID, $language, $country, $currency);
-        // $this->setMeasure();
     }
 
     /**
@@ -138,7 +167,6 @@ class BoxProduct extends Product
     /**
      * To determinate the type of size holds by the current product
      * + Use a exemple of product's size to determinate the size type of the product
-    //  * @param StdClass $dbSizes liste of size supported ordered by size type (access key)
      * @param string $sizeSample sample of size holds by the current prroduct
      * @return string the type of size holds by the current product
      */
@@ -258,11 +286,20 @@ class BoxProduct extends Product
     }
 
     /**
+     * Set product's selected size
+     * @param Size $size 
+     */
+    public function selecteSize(Size $size)
+    {
+        $this->realSelectedSize = null;
+        $this->selectedSize = $size;
+    }
+
+    /**
      * To convert the selected size to a real size (existing in tthe db)
-     * @return Size a new Size containing a real size
      */
     // private function SelectedToRealSize()
-    public function SelectedToRealSize()
+    public function setRealSelectedSize()
     {
         $selectedSize = $this->getSelectedSize();
         $size = null;
@@ -294,7 +331,7 @@ class BoxProduct extends Product
         $newSizeObj = new Size($sequence);
         $quantity = $selectedSize->getQuantity();
         $newSizeObj->setQuantity($quantity);
-        return $newSizeObj;
+        $this->realSelectedSize =  $newSizeObj;
     }
 
     /**
@@ -334,48 +371,53 @@ class BoxProduct extends Product
      * To convert a measure size to a real size
      * @param Measure $measure the measure to convert
      * @param string $cut used to get the margin error
-     * @return string the lower real size
+     * @return string|null the lower real size with dimension over those of the measure given
      */
     private function measureToRealSize(Measure $measure, $cut)
     {
         $convertedSize = null;
-        $comonSizes = [];
+        // $comonSizes = [];
         $bodyPartSizes = [];
         $cutMap = parent::getTableValues("cuts");
         $value = $cutMap[$cut]["cutMeasure"];
         $unitName = $cutMap[$cut]["unit_name"];
         $cutObj = new MeasureUnit($value, $unitName);
-        if (!empty($measure->getarm())) {
+        $prodMeasure = $this->getMeasure();
+        if (!empty($prodMeasure->getarm())) { // only compare if product has a measure for a body part
             $bodyPart = $measure->getarm();
             $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
             $bodyPartSizes = $this->getSizesOver(Measure::INPUT_ARM, $value);
             $comonSizes = $bodyPartSizes;
         }
-        if (!empty($measure->getbust())) {
+        if (!empty($prodMeasure->getbust())) {
             $bodyPart = $measure->getbust();
             $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
             $bodyPartSizes = $this->getSizesOver(Measure::INPUT_BUST, $value);
-            $comonSizes = $this->keepComon($comonSizes, $bodyPartSizes);
+            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
         }
-        if (!empty($measure->gethip())) {
+        if (!empty($prodMeasure->gethip())) {
             $bodyPart = $measure->gethip();
             $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
             $bodyPartSizes = $this->getSizesOver(Measure::INPUT_HIP, $value);
-            $comonSizes = $this->keepComon($comonSizes, $bodyPartSizes);
+            // $comonSizes = $this->keepCommon($comonSizes, $bodyPartSizes);
+            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
         }
-        if (!empty($measure->getInseam())) {
+        if (!empty($prodMeasure->getInseam())) {
             $bodyPart = $measure->getInseam();
             $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
             $bodyPartSizes = $this->getSizesOver(Measure::INPUT_INSEAM, $value);
-            $comonSizes = $this->keepComon($comonSizes, $bodyPartSizes);
+            // $comonSizes = $this->keepCommon($comonSizes, $bodyPartSizes);
+            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
         }
-        if (!empty($measure->getwaist())) {
+        if (!empty($prodMeasure->getwaist())) {
             $bodyPart = $measure->getwaist();
             $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
             $bodyPartSizes = $this->getSizesOver(Measure::INPUT_WAIST, $value);
-            $comonSizes = $this->keepComon($comonSizes, $bodyPartSizes);
+            // $comonSizes = $this->keepCommon($comonSizes, $bodyPartSizes);
+            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
         }
-        if(!empty($comonSizes)){
+
+        if (!empty($comonSizes)) {
             $minIndex = min(array_keys($comonSizes));
             $convertedSize = $comonSizes[$minIndex];
         }
@@ -386,7 +428,7 @@ class BoxProduct extends Product
      * To merge two map by keeping line whith the same value
      * @return string[]
      */
-    private function keepComon($map1, $map2)
+    private function keepCommon($map1, $map2)
     {
         $newMap = [];
         if ($map1) {
@@ -403,7 +445,7 @@ class BoxProduct extends Product
      * To get size name where dimension value is overt than the give dimension
      * @param string $bodyPart 
      * @param string $value 
-     * @return string set of size where dimension value is overt than the give dimension
+     * @return string[] set of size where dimension value is overt than the give dimension
      */
     private function getSizesOver($bodyPart, $value)
     {
@@ -421,6 +463,16 @@ class BoxProduct extends Product
             }
         }
         return $sizesOver;
+    }
+
+    /**
+     * To get the selected size converted into a real size present in stock
+     * @return Size the selected size converted into a real size present in stock
+     */
+    public function getRealSelectedSize()
+    {
+        (!isset($this->realSelectedSize)) ? $this->setRealSelectedSize() : null;
+        return $this->realSelectedSize;
     }
 
     /**
@@ -504,19 +556,113 @@ class BoxProduct extends Product
             throw new Exception("Size and measurement can't both be setted");
         }
         $stillStock = false;
+        $virtualSizesStock = $this->getVirtualSizeStock();
+        $quantity = $sizeObj->getQuantity();
         if (!empty($size)) {
-            $virtualSizesStock = $this->getVirtualSizeStock();
             if (!key_exists($size, $virtualSizesStock)) {
                 throw new Exception("This size '$size' don't exist in virtualSizesStock");
             }
-            $stillStock = ($virtualSizesStock[$size] > 0);
+            $stillStock = ($virtualSizesStock[$size] >= $quantity);
         }
         if (!empty($measure)) {
-            $prodMeasure = $this->getMeasure();
             $cut = $sizeObj->getCut();
-            $stillStock = Measure::compare($measure, $prodMeasure, $cut);
+            $realSize = $this->measureToRealSize($measure, $cut);
+            if (!empty($realSize) && key_exists($realSize, $virtualSizesStock)) {
+                $stillStock = ($virtualSizesStock[$realSize] >= $quantity);
+            }
         }
+        $s = $this->getVirtualSizeStock();
         return $stillStock;
+    }
+
+    /**
+     * To check if still stock for product including product locked
+     * + this function combine stock available and stock locked to deduct the 
+     * stilling stock
+     * + NOTE: this function only check if there is stock stilling when locks 
+     * are active so if there's any active locks it will return true without 
+     * check if still stock
+     * + use this function only after you have checked that still real stock 
+     * (in table Products-Sizes)
+     * @return boolean true if still stock else false
+     */
+    public function stillUnlockedStock()
+    {
+        $stillUnlockedStock = false;
+        $realSelectedSize = $this->getRealSelectedSize();
+        $size = $realSelectedSize->getSize();
+        $prodID = $this->getProdID();
+        $sql =
+            "SELECT ps.`prodId`, ps.`size_name`, IFNULL(SUM(sl.`quantity`), 0) AS 'TotLocked', MAX(ps.`stock`) AS 'MaxStock',
+            (MAX(ps.`stock`)-IFNULL(SUM(sl.`quantity`), 0)) AS 'stillingStock', MAX(sl.`setDate`) AS 'MaxSetDate'
+            FROM `Products-Sizes` ps
+            LEFT JOIN `StockLocks` sl ON ps.`prodId` = sl.`prodId` AND ps.`size_name` = sl.`size_name`
+            WHERE ps.`prodId`='$prodID' AND ps.`size_name`='$size'
+            GROUP BY ps.`prodId`, ps.`size_name`";
+        $tab = $this->select($sql);
+        if (empty($tab)) {
+            throw new Exception("Table StockLocked returned can't be empty. Error happen Probably beacause size  '$size' don't appear in table Products-Size");
+        } else {
+            $tabLine = $tab[0];
+            $setDate = (int) strtotime($tabLine["MaxSetDate"]);
+            $lockLimit = $this->getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+            $expiration = $setDate + $lockLimit;
+            $lockIsActive = ($expiration > time());
+            if ($lockIsActive) {
+                $virtualSizesStock = $this->getVirtualSizeStock();
+                if (!key_exists($size, $virtualSizesStock)) {
+                    throw new Exception("This size '$size' don't exist in virtual stock");
+                }
+                $lockedStock = $tabLine["TotLocked"];
+                $stock = $virtualSizesStock[$size];
+                $stillingStock = $stock - $lockedStock;
+                $quantity = $realSelectedSize->getQuantity();
+                $stillUnlockedStock = ($quantity <= $stillingStock);
+            } else {
+                $stillUnlockedStock = true;
+            }
+        }
+        return $stillUnlockedStock;
+    }
+
+    /**
+     * To reserve ,for a duration, the selected stock of the product
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    public function lock(Response $response, $userID)
+    {
+        $realSelectedSize = $this->getRealSelectedSize();
+        $prodID = $this->getProdID();
+        $size = $realSelectedSize->getSize();
+        $sql = "SELECT * 
+                FROM `StockLocks`
+                WHERE `userId`='$userID' AND `prodId`='$prodID' AND `size_name`='$size'";
+        $tab = $this->select($sql);
+        (empty($tab)) ? $this->insertLock($response, $userID) : $this->updateLock($response, $userID);
+    }
+
+    /**
+     * To get A copy of the currrent instance
+     * @return BasketProduct
+     */
+    public function getCopy()
+    {
+        $map = get_object_vars($this);
+        $attributs = array_keys($map);
+        $class = get_class($this);
+        $copy = new $class();
+        foreach ($attributs as $attribut) {
+            switch (gettype($this->{$attribut})) {
+                    // case 'object':
+                    //     $copy->{$attribut} = $this->{$attribut}->getCopy();
+                    //     break;
+                default:
+                    $copy->{$attribut} = $this->{$attribut};
+                    break;
+            }
+        }
+        return $copy;
     }
 
     /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/
@@ -609,13 +755,12 @@ class BoxProduct extends Product
     public static function orderProducts(Response $response, $boxes, $orderID)
     {
         $measures = [];
-        // $measureValues = [];
         $values = [];
         $nbProd = 0;
         $stockResponse = new Response();
         $toDecreaseProds = [];
         foreach ($boxes as $box) {
-            $products = $box->getBoxProducts();
+            $products = $box->getProducts();
             $nbProd += count($products);
             if (!empty($products)) {
                 foreach ($products as $product) {
@@ -638,7 +783,7 @@ class BoxProduct extends Product
                         $product->getProdID(),
                         $size->getSequence(),
                         $product->getType(),
-                        $product->SelectedToRealSize()->getSize(),
+                        $product->getRealSelectedSize()->getSize(),
                         $product->getWeight(),
                         $size->getsize(),
                         $size->getbrandName(),
@@ -674,12 +819,58 @@ class BoxProduct extends Product
     {
         $sql = "";
         foreach ($products as $product) {
-            $sizeObj = $product->SelectedToRealSize();
+            // $sizeObj = $product->SelectedToRealSize();
+            $sizeObj = $product->getRealSelectedSize();
             $size = $sizeObj->getSize();
             $quantity = $sizeObj->getQuantity();
             $prodID = $product->getProdID();
             $sql .= "UPDATE `Products-Sizes` SET `stock`=`stock`-$quantity WHERE `prodId` = '$prodID' AND `size_name` = '$size';\n";
         }
         self::update($response, $sql, []);
+    }
+
+    /**
+     * To place lock on product's selected stock for a duration
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    private function insertLock(Response $response, $userID)
+    {
+        $realSelectedSize = $this->getRealSelectedSize();
+        $lockLimit = $this->getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        $bracket = "(?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `StockLocks`(`userId`, `prodId`, `size_name`, `quantity`, `lockTime`, `setDate`)
+            VALUES " . $this->buildBracketInsert(1, $bracket);
+        $values = [
+            $userID,
+            $this->getProdID(),
+            $realSelectedSize->getsize(),
+            $realSelectedSize->getQuantity(),
+            $lockLimit,
+            $this->getDateTime()
+        ];
+        $this->insert($response, $sql, $values);
+    }
+
+    /**
+     * To increamente the quantity of product locked
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    private function updateLock(Response $response, $userID)
+    {
+        $prodID = $this->getProdID();
+        $realSelectedSize = $this->getRealSelectedSize();
+        $size = $realSelectedSize->getsize();
+        $sql =
+            "UPDATE `StockLocks` SET
+            `quantity`=`quantity`+?,
+            `setDate`=?
+            WHERE `userId`='$userID' AND `prodId`='$prodID' AND `size_name`='$size'";
+        $values = [
+            $realSelectedSize->getQuantity(),
+            $this->getDateTime()
+        ];
+        $this->update($response, $sql, $values);
     }
 }

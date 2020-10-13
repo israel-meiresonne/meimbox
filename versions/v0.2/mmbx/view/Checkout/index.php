@@ -124,10 +124,10 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
     }
     const checkoutRSP = (r) => {
         if (r.isSuccess) {
-            console.log("success");
+            // console.log("success");
             lunchCheckout(r.results[QR_NW_CHCKT_SS]);
         } else {
-            console.log("error");
+            // console.log("error");
             handleErr(r);
         }
     }

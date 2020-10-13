@@ -40,7 +40,7 @@ $price = $box->getPriceFormated();
             "title" => $translator->translateString($box->getColor()),
             "color" => null,
             "colorRGB" => null,
-            "nbItem" => $box->getNbProduct(),
+            "nbItem" => $box->getQuantity(),
             "max" => $box->getSizeMax(),
             "price" => $price
         ];
@@ -69,7 +69,7 @@ $price = $box->getPriceFormated();
     <div id="<?= $boxBodyId ?>" class="box-product-set">
         <ul class="box-product-set-ul remove-ul-default-att">
             <?php
-            $products = $box->getBoxProducts();
+            $products = $box->getProducts();
             foreach ($products as $product) :
                 $boxElementId = $elementId;
                 $prodElementId  = ModelFunctionality::generateDateCode(25);

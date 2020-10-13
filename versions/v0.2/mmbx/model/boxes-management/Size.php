@@ -82,7 +82,7 @@ class Size  extends ModelFunctionality
      * Holds sequence separator
      * @var string
      */
-    private const SEQUENCE_SEPARATOR =  "-";
+    public const SEQUENCE_SEPARATOR =  "-";
 
     /**
      * Holds access key for supported sizes from db's Constante tale
@@ -146,6 +146,61 @@ class Size  extends ModelFunctionality
      */
     public const INPUT_QUANTITY =  "input_quantity";
 
+    /**
+     * Constructor
+     * @param string $sequence size sequence in format size-brand-measureID
+     * @param string $setDate date of add of this product to basket or box
+     * @param string $cut the cut value
+     */
+    public function __construct()
+    {
+        $args = func_get_args();
+        $nb = func_num_args();
+        switch ($nb) {
+            case 0:
+                $this->__construct0();
+                break;
+            case 1:
+                $this->__construct2($args[0]);
+                break;
+            case 2:
+                $this->__construct2($args[0], $args[1]);
+                break;
+
+            default:
+                throw new Exception("The number of param is incorrect, number:$nb");
+                break;
+        }
+
+        // $sizeDatas = $this->explodeSequence($sequence);
+        // $size = $sizeDatas[0];
+        // $brand = $sizeDatas[1];
+        // $measure = $sizeDatas[2];
+        // $cut = $sizeDatas[3];
+        // if (empty($measure) && empty($size)) {
+        //     throw new Exception("Param '\$measure' and '\$size' can't both be empty" . " in: " . __FILE__ . " line: " . __LINE__);
+        // }
+        // if (isset($measure) && isset($size)) {
+        //     throw new Exception("Param '\$measure' and '\$size' can't both be setted" . " in: " . __FILE__ . " line: " . __LINE__);
+        // }
+        // $this->setDate = (!empty($setDate)) ? $setDate : $this->getDateTime();
+        // if (!empty($measure)) {
+        //     if (empty($cut)) {
+        //         throw new Exception("Param 'cut' can't be empty for a measure");
+        //     }
+        //     $this->measure = $measure;
+        //     $this->cut = $cut;
+        // }
+        // if (!empty($size)) {
+        //     $this->size = $size;
+        //     $this->brandName = $brand;
+        // }
+        // $this->quantity = 1;
+    }
+
+    private function __construct0()
+    {
+    }
 
     /**
      * Constructor
@@ -153,8 +208,7 @@ class Size  extends ModelFunctionality
      * @param string $setDate date of add of this product to basket or box
      * @param string $cut the cut value
      */
-    // public function __construct($sequence, $setDate, $cut)
-    public function __construct($sequence, $setDate = null)
+    private function __construct2($sequence, $setDate = null)
     {
         $sizeDatas = $this->explodeSequence($sequence);
         $size = $sizeDatas[0];
@@ -398,5 +452,30 @@ class Size  extends ModelFunctionality
         $sequence1 = $size1->getSequence();
         $sequence2 = $size2->getSequence();
         return ($sequence1 == $sequence2);
+    }
+
+        /**
+     * To get A copy of the currrent instance
+     * @return Instance
+     */
+    public function getCopy()
+    {
+        $map = get_object_vars($this);
+        $attributs = array_keys($map);
+        $class = get_class($this);
+        $copy = new $class();
+        if($class == Size::class){
+    }
+        foreach ($attributs as $attribut) {
+            switch (gettype($this->{$attribut})) {
+                    // case 'object':
+                    //     $copy->{$attribut} = $this->{$attribut}->getCopy();
+                    //     break;
+                default:
+                    $copy->{$attribut} = $this->{$attribut};
+                    break;
+            }
+        }
+        return $copy;
     }
 }

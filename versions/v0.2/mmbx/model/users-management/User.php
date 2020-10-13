@@ -335,14 +335,42 @@ abstract class User extends  Visitor
      */
     public function createNewCheckout(Response $response, string $payMethod)
     {
-        try {
-            $stripeAPI = $this->getStripeAPI();
-            $stripeAPI->initializeNewCheckout($payMethod, $this);
-            return $stripeAPI->getCheckoutSessionId();
-        } catch (\Throwable $th) {
-            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-            $response->addError($th->getMessage(), MyError::ADMIN_ERROR);
+        $id = null;
+        $basket = $this->getBasket();
+        if ($basket->getQuantity() <= 0) {
+            $response->addErrorStation("ER31", MyError::FATAL_ERROR);
+        } else {
+            $soldOutProdMap = $basket->stillStock();
+            $soldOutKeys = $soldOutProdMap->getKeys();
+            if (!empty($soldOutKeys)) {
+                $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                $response->addError($soldOutProdMap, Product::KEY_PROD_SOLD_OUT);
+            } else {
+                $lockedProductMap = $basket->stillUnlockedStock();
+                $prodKeys = $lockedProductMap->getKeys();
+                // var_dump($lockedProductMap);
+                if (!empty($prodKeys)) {
+                    $response->addError("ER1", MyError::FATAL_ERROR);
+                    $response->addError($lockedProductMap, Product::KEY_PROD_LOCKED);
+                } else {
+                    $userID = $this->getUserID();
+                    $basket->lock($response, $userID);
+                    $haveDelete = $basket->deleteEmptyBoxes($response);
+                    (!empty($haveDelete)) ? $response->addResultStation(Response::RSP_NOTIFICATION, "US69") : null;
+                    $cookieValue = $this->generateDateCode(25);
+                    $this->generateCookie(Cookie::COOKIE_LCK, $cookieValue);
+                    try {
+                        $stripeAPI = $this->getStripeAPI();
+                        $stripeAPI->initializeNewCheckout($payMethod, $this);
+                        $id = $stripeAPI->getCheckoutSessionId();
+                    } catch (\Throwable $th) {
+                        $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                        $response->addError($th->getMessage(), MyError::ADMIN_ERROR);
+                    }
+                }
+            }
         }
+        return $id;
     }
 
     /**
