@@ -112,13 +112,28 @@ class BoxProduct extends Product
 
     /**
      * To get from db the supported sizes
-     * @return StdClass the supported sizes get from db
+     * + the type of size is automatically deducted with the type of size holds
+     * in the sizeStock attribut
+     * @return array a list of supported sizes get from db
      */
     private function getSupportedSizes()
     {
+        $sizesStock = $this->getSizeStock();
+        $sizeSample = array_keys($sizesStock)[0];
+
         $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
         $dbSizes = json_decode($json);
-        return $dbSizes;
+        $sizeType = null;
+        foreach ($dbSizes as $type => $supportedSizes) {
+            $sizeType = $type;
+            if (in_array($sizeSample, $dbSizes->$type)) {
+                break;
+            }
+        }
+        if (empty($sizeType)) {
+            throw new Exception("This type of size is not supported, size:$sizeSample");
+        }
+        return $dbSizes->$sizeType;
     }
 
     /**
@@ -134,12 +149,13 @@ class BoxProduct extends Product
         $sizesStock = $this->getSizeStock();
         // $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
         // $dbSizes = json_decode($json);
-        $dbSizes = $this->getSupportedSizes();
-        $sizeSample = array_keys($sizesStock)[0];
-        $sizeType = $this->extractSizeType($sizeSample);
-        $this->checkSizeIsSupported($dbSizes, $sizesStock, $sizeType);
+        // $dbSizes = $this->getSupportedSizes();
+        // $sizeSample = array_keys($sizesStock)[0];
+        // $sizeType = $this->extractSizeType($sizeSample);
+        // $this->checkSizeIsSupported($dbSizes, $sizesStock, $sizeType);
 
-        $supportedSizes = $dbSizes->$sizeType;
+        $supportedSizes = $this->getSupportedSizes();
+        // $supportedSizes = $dbSizes->$sizeType;
         $newSizesStock = array_fill_keys($supportedSizes, 0);
         $sizesPos = array_flip($supportedSizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
         foreach ($sizesStock as $size => $stock) {
@@ -164,29 +180,29 @@ class BoxProduct extends Product
         $this->virtualSizeStock = $ordSizeStock;
     }
 
-    /**
-     * To determinate the type of size holds by the current product
-     * + Use a exemple of product's size to determinate the size type of the product
-     * @param string $sizeSample sample of size holds by the current prroduct
-     * @return string the type of size holds by the current product
-     */
-    private  function extractSizeType($sizeSample)
-    {
-        $sizeType = null;
-        // $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
-        // $dbSizes = json_decode($json);
-        $dbSizes = $this->getSupportedSizes();
-        foreach ($dbSizes as $type => $supportedSizes) {
-            $sizeType = $type;
-            if (in_array($sizeSample, $dbSizes->$type)) {
-                break;
-            }
-        }
-        if (empty($sizeType)) {
-            throw new Exception("This type of size is not supported, size:$sizeSample");
-        }
-        return $sizeType;
-    }
+    // /**
+    //  * To determinate the type of size holds by the current product
+    //  * + Use a exemple of product's size to determinate the size type of the product
+    //  * @param string $sizeSample sample of size holds by the current prroduct
+    //  * @return string the type of size holds by the current product
+    //  */
+    // private  function extractSizeType($sizeSample)
+    // {
+    //     $sizeType = null;
+    //     // $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
+    //     // $dbSizes = json_decode($json);
+    //     $dbSizes = $this->getSupportedSizes();
+    //     foreach ($dbSizes as $type => $supportedSizes) {
+    //         $sizeType = $type;
+    //         if (in_array($sizeSample, $dbSizes->$type)) {
+    //             break;
+    //         }
+    //     }
+    //     if (empty($sizeType)) {
+    //         throw new Exception("This type of size is not supported, size:$sizeSample");
+    //     }
+    //     return $sizeType;
+    // }
 
     /**
      * To check if all sizes holds by the product is supported
@@ -342,8 +358,9 @@ class BoxProduct extends Product
     private function virtualToRealSize($size)
     {
         $convertedSize = null;
-        $sizeType = $this->extractSizeType($size);
-        $supported = $this->getSupportedSizes()->$sizeType;
+        // $sizeType = $this->extractSizeType($size);
+        // $supported = $this->getSupportedSizes()->$sizeType;
+        $supported = $this->getSupportedSizes();
         $supportedFliped = array_flip($supported);
 
         $sizesStock = $this->getSizeStock();
@@ -815,16 +832,47 @@ class BoxProduct extends Product
      * @param Response $response to push in results or accured errors
      * @param BoxProduct[] $products set of product to decrease
      */
-    private static function decreaseStock(Response $response, $products)
+    public static function decreaseStock(Response $response, $products)
+    // private static function decreaseStock(Response $response, $products)
     {
         $sql = "";
+        // foreach ($products as $product) {
+        //     // $sizeObj = $product->SelectedToRealSize();
+        //     $sizeObj = $product->getRealSelectedSize();
+        //     $size = $sizeObj->getSize();
+        //     $quantity = $sizeObj->getQuantity();
+        //     $prodID = $product->getProdID();
+        //     $sql .= "UPDATE `Products-Sizes` SET `stock`=`stock`-$quantity WHERE `prodId` = '$prodID' AND `size_name` = '$size';\n";
+        // }
         foreach ($products as $product) {
-            // $sizeObj = $product->SelectedToRealSize();
-            $sizeObj = $product->getRealSelectedSize();
-            $size = $sizeObj->getSize();
-            $quantity = $sizeObj->getQuantity();
             $prodID = $product->getProdID();
-            $sql .= "UPDATE `Products-Sizes` SET `stock`=`stock`-$quantity WHERE `prodId` = '$prodID' AND `size_name` = '$size';\n";
+            $sizeObj = $product->getRealSelectedSize();
+            $realSize = $sizeObj->getSize();
+            $quantity = $sizeObj->getQuantity();
+            $supported = $product->getSupportedSizes();
+            $index = array_search($realSize, $supported);
+            $sizesStock = $product->getSizeStock();
+            while ($index >=  0) { // &&  $quantity > 0
+                if (key_exists($realSize, $sizesStock)) {
+                    $stock = $sizesStock[$realSize];
+                    $delta = $quantity - $stock;
+                    if ($delta > 0) {
+                        $sql .= "UPDATE `Products-Sizes` SET `stock`=0 WHERE `prodId` = '$prodID' AND `size_name` = '$realSize';\n";
+                        $quantity = $delta;
+                    } else {
+                        $stillingStock = abs($delta);
+                        $sql .= "UPDATE `Products-Sizes` SET `stock`=$stillingStock WHERE `prodId` = '$prodID' AND `size_name` = '$realSize';\n";
+                        $quantity = 0;
+                        break;
+                    }
+                }
+                $index--;
+                $realSize = ($index >= 0) ? $supported[$index] : $realSize;
+            }
+            if($quantity > 0){
+                $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
+                $response->addError($erMsg, MyError::ADMIN_ERROR);
+            }
         }
         self::update($response, $sql, []);
     }
