@@ -912,9 +912,10 @@ class ControllerItem extends ControllerSecure
         // echo "<hr>";
 
         $response = new Response();
-        $haveDelete = $this->person->getBasket()->deleteEmptyBoxes($response);
-        var_dump($haveDelete);
-        echo "<hr>";
+        // $this->person->getBasket()->unlock($response, $this->person->getUserID());
+        // $this->person->getBasket()->lock($response, $this->person->getUserID());
         var_dump($response->getAttributs());
+        echo "<hr>";
+        // var_dump($response->getAttributs());
     }
 }

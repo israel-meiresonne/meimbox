@@ -650,5 +650,19 @@ class Basket extends ModelFunctionality
                 ($box->getQuantity() > 0) ? $box->lock($response, $userID) : null;
             }
         }
+        /** lock stock of basketproduct */
+    }
+
+    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
+
+    /**
+     * To unlock locked stock of prroducts
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    public function unlock(Response $response, $userID)
+    {
+        $sql = "DELETE FROM `StockLocks` WHERE `userId` = '$userID'";
+        $this->delete($response, $sql);        
     }
 }
