@@ -926,23 +926,27 @@ class ControllerItem extends ControllerSecure
         // var_dump($response->getAttributs());
         // echo "<hr>";
 
-        $boxes = $this->person->getBasket()->getBoxes();
-        $toDecreaseProds = [];
-        foreach ($boxes as $box) {
-            $products = $box->getProducts();
-            if (!empty($products)) {
-                foreach ($products as $product) {
-                    array_push($toDecreaseProds, $product);
-                }
-            }
-        }
+        // $boxes = $this->person->getBasket()->getBoxes();
+        // $toDecreaseProds = [];
+        // foreach ($boxes as $box) {
+        //     $products = $box->getProducts();
+        //     if (!empty($products)) {
+        //         foreach ($products as $product) {
+        //             array_push($toDecreaseProds, $product);
+        //         }
+        //     }
+        // }
         // foreach($toDecreaseProds as $x){
         //     var_dump($x);
         //     echo "<hr>";
         // }
-        $response = new Response();
-        BoxProduct::decreaseStock($response, $toDecreaseProds);
-        var_dump($response->getAttributs());
-        echo "<hr>";
+        // $response = new Response();
+        // BoxProduct::decreaseStock($response, $toDecreaseProds);
+        // var_dump($response->getAttributs());
+        // echo "<hr>";
+
+        require_once 'model/tools-management/SendinBlueAPI.php';
+        // $sendinBlueAPI = new SendinBlueAPI();
+        // echo __DIR__;
     }
 }
