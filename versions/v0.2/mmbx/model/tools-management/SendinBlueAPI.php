@@ -1,4 +1,5 @@
 <?php
+require_once('vendor/autoload.php');
 require_once 'framework/Configuration.php';
 require_once 'model/ModelFunctionality.php';
 

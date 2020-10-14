@@ -1,0 +1,12 @@
+{
+    "name": "iandmeim/meimbox",
+    "authors": [
+        {
+            "name": "Israel Meiresonne",
+            "email": "israelmeiresonne.iandmeim@gmail.com"
+        }
+    ],
+    "require": {
+        "sendinblue/api-v3-sdk": "7.x.x"
+    }
+}
