@@ -6,6 +6,7 @@ require_once 'model/users-management/Visitor.php';
 require_once 'model/tools-management/Address.php';
 require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 require_once 'model/orders-management/Order.php';
+require_once 'versions/v0.2/mmbx/model/tools-management/mailers/SendinBlueAPI.php';
 
 abstract class User extends  Visitor
 {
