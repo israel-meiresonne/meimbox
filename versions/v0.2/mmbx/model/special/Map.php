@@ -139,6 +139,23 @@ class Map
     public  const description = "description";
     public  const images = "images";
 
+    /**
+     * Keys for SendinBlue's mail sender
+     */
+    public const sender = "sender";
+    public const to = "to";
+    public const bcc = "bcc";
+    public const cc = "cc";
+    public const htmlContent = "htmlContent";
+    public const textContent = "textContent";
+    public const subject = "subject";
+    public const replyTo = "replyTo";
+    public const attachment = "attachment";
+    public const headers = "headers";
+    public const templateId = "templateId";
+    public const params = "params";
+    public const tags = "tags";
+
     public function __construct()
     {
         $this->map = [];
@@ -214,6 +231,15 @@ class Map
             $key = $keys[$i];
             return ((gettype($recMap) == "array") && key_exists($key, $recMap)) ? $this->getRec($recMap[$key], $keys, ++$i) : null;
         }
+    }
+
+    /**
+     * To get the content of the map
+     * @return mixed[] the content of the map
+     */
+    public function getMap()
+    {
+        return $this->map;
     }
 
     /**

@@ -30,6 +30,11 @@ class Configuration
     public const DIR_STATIC_FILES = "dir_static_files";
 
     /**
+     * Keys for SendinBlue datas
+     */
+    public const SENDINBLUE_APIK = "sendinblue_apik";
+
+    /**
      * Renvoie la valeur d'un paramètre de configuration
      * 
      * @param string $name Nom du paramètre
