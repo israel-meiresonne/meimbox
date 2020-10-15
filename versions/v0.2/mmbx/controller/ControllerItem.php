@@ -788,6 +788,8 @@ class ControllerItem extends ControllerSecure
 
     public function test()
     {
+        // header('content-type: application/json');
+
         //    foreach($_SERVER as $key => $data){
         //        echo "$key => ";
         //        var_dump($data);
@@ -945,8 +947,38 @@ class ControllerItem extends ControllerSecure
         // var_dump($response->getAttributs());
         // echo "<hr>";
 
-        require_once 'model/tools-management/SendinBlueAPI.php';
-        // $sendinBlueAPI = new SendinBlueAPI();
-        // echo __DIR__;
+        require_once 'model/tools-management/mailers/SendinBlueAPI.php';
+        $sendinBlueAPI = new SendinBlueAPI();
+        $sendinBlueAPI->sendOrderConfirmation($this->person);
+        // echo $sendinBlueAPI->getInfo();
+
+        // $a = "[{&quot;name&quot;:&quot;Jimmy&quot;, &quot;email&quot;:&quot;jimmy98@example.com&quot;}, {&quot;name&quot;:&quot;Joe&quot;, &quot;email&quot;:&quot;joe@example.com&quot;}]";
+        // $b = "[{&quot;url&quot;:&quot;https://attachment.domain.com/myAttachmentFromUrl.jpg&quot;, &quot;name&quot;:&quot;myAttachmentFromUrl.jpg&quot;}, {&quot;content&quot;:&quot;base64 example content&quot;, &quot;name&quot;:&quot;myAttachmentFromBase64.jpg&quot;}]";
+        // $b = "{&quot;code&quot;:&quot;invalid_parameter&quot;,&quot;message&quot;:&quot;valid htmlContent is required&quot;}";
+        // var_dump($a);
+        // echo "<hr>";
+        // var_dump($b);
+        // Vous voulez afficher un pdf
+        // header('Content-Type: application/pdf');
+        // $response = new Response();
+        // var_dump($response->getAttributs());
+
+        // Il sera nommé downloaded.pdf
+        // header('Content-Disposition: attachment; filename="downloaded.pdf"');
+
+        // ob_start();
+        // require 'model/view-management/emails/orderConfirmation.php';
+?>
+
+        <!-- <body style="padding: 0%; margin: 0; font-family: Helvetica, Arial , sans-serif">
+            <div style="background: #f7f7f7;
+                padding: 5% 5% 5% 5%">
+                hello spam
+            </div>
+        </body> -->
+<?php
+        // $htmlContent = (string) ob_clean();
+        // var_dump(ob_get_clean());
     }
 }
+?>
