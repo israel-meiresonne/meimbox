@@ -45,7 +45,7 @@ class SendinblueAPI extends ModelFunctionality
     /**
      * To send an order confirmation
      * @param Client $client the recipient
-     * @param Map $map datas neccessary to config the email
+     * @param Map $map holds datas config the email
      */
     public function sendOrderConfirmation(Client $client, Map $map)
     {
