@@ -1,15 +1,23 @@
 <?php
+
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  */
 /**
  * @var Translator */
 $translator = $translator;
+// $https_webroot = Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot();
 ?>
 
 <html>
-<head></head>
-<body style="padding: 0%; margin: 0; font-family: Helvetica, Arial , sans-serif">
+
+<head>
+    <?= self::FONT_FAM_SPARTAN ?>
+    <?= self::FONT_FAM_PT ?>
+    <link rel="stylesheet" href="<?= $https_webroot ?>/<?= self::CSS_HEADER ?>">
+</head>
+
+<body style="padding: 0%; margin: 0; font-family: var(--main-font-family)">
     <div style="background: #f7f7f7;
                 padding: 5% 5% 5% 5%">
         <div style="background: #1e8bc3; padding: 1%; border-radius: 10px 10px 0 0">
@@ -257,4 +265,5 @@ $translator = $translator;
         </div>
     </div>
 </body>
+
 </html>

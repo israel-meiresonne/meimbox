@@ -115,7 +115,7 @@ class CheckoutSession extends ModelFunctionality
         $this->payMethod = $payementMap->get($payID, Map::payMethod);
         $this->cancelPath = $payementMap->get($payID, Map::cancelPath);
         $this->successPath = $payementMap->get($payID, Map::successPath);
-        $this->domain = Configuration::get(Configuration::URL_PROTOCOL);
+        $this->domain = Configuration::get(Configuration::HTTPS_DOMAIN);
 
         $this->setCheckoutSession($stripe, $client);
         $this->setDate = $this->getDateTime();

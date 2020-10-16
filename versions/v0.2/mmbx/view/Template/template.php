@@ -44,8 +44,10 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
+    <?= ""//self::FONT_FAM_SPARTAN ?>
+    <?= ""//self::FONT_FAM_PT ?>
+    <!-- <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet"> -->
 
     <?= $head ?>
     <script>
@@ -271,7 +273,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         }
     </script>
 
-    <link rel="stylesheet" href="content/css/header.css">
+    <!-- <link rel="stylesheet" href="content/css/header.css"> -->
     <link rel="stylesheet" href="content/css/elements.css">
     <script src="content/js/elements.js"></script>
     <script src="content/js/pop.js"></script>
