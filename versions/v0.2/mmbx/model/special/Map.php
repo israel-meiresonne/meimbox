@@ -144,6 +144,7 @@ class Map
      */
     public const template = "template";
     public const templateFile = "templateFile";
+    public const https_webroot = "https_webroot";
 
     /**
      * Keys for SendinBlue's mail sender

@@ -133,7 +133,8 @@ class BlueMessage extends BlueAPI
             $this->getCONFIG()
         );
         $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail($this->getAttributs());
-        echo $apiInstance->sendTransacEmail($sendSmtpEmail);
+        $msgID = $apiInstance->sendTransacEmail($sendSmtpEmail);
+        echo $msgID;
     }
 
     /**

@@ -4,6 +4,7 @@ require_once 'model/view-management/Translator.php';
 require_once 'model/tools-management/Language.php';
 require_once 'model/special/Response.php';
 require_once 'model/special/Map.php';
+require_once 'framework/Configuration.php';
 
 /**
  * Classe modélisant une vue.
@@ -117,6 +118,10 @@ class View
     private const CONF_SOMMARY_CHECKOUT = "CONF_SOMMARY_CHECKOUT";
     private const CONF_SOMMARY_SHOPBAG = "CONF_SOMMARY_SHOPBAG";
 
+    protected const FONT_FAM_SPARTAN = '<link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">';
+    protected const FONT_FAM_PT = '<link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">';
+    protected const CSS_HEADER = 'content/css/header.css';
+
     /**
      * Constructeur
      * 
@@ -184,7 +189,7 @@ class View
 
         // Génération du gabarit commun utilisant la partie spécifique
         $view = $this->generateFile(
-            'view/template.php',
+            'view/Template/template.php',
             array(
                 'person' => $this->person,
                 'webRoot' => $webRoot,
