@@ -140,6 +140,12 @@ class Map
     public  const images = "images";
 
     /**
+     * Keys for ViewEmail
+     */
+    public const template = "template";
+    public const templateFile = "templateFile";
+
+    /**
      * Keys for SendinBlue's mail sender
      */
     public const sender = "sender";

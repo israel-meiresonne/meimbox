@@ -1,10 +1,11 @@
 <?php
 require_once('vendor/autoload.php');
-require_once 'model/tools-management/mailers/sendinblue/BlueMessage.php';
+// require_once 'model/tools-management/mailers/Mailer.php';
+require_once 'model/tools-management/mailers/BlueAPI/BlueMessage.php';
+
 require_once 'framework/Configuration.php';
 require_once 'model/ModelFunctionality.php';
 require_once 'model/special/Map.php';
-
 /**
  * This class manage access to Sendinblue's API
  */
@@ -15,6 +16,12 @@ class BlueAPI extends ModelFunctionality
      * @var SendinBlue\Client\Configuration
      */
     private static $CONFIG;
+
+    /**
+     * Holds function available
+     */
+    public const FUNC_ORDER_CONFIRM = "sendOrderConfirmation";
+
 
     public function __construct()
     {
@@ -48,51 +55,50 @@ class BlueAPI extends ModelFunctionality
 
     /**
      * To send an order confirmation
-     * @param Client $client the recipient
+     * @param Response $response used store results or errors occured
+     * @param Map $datasMap datas used to send a email confirmation
+     * + $datasMap[Map::name] => complete name of the recipient
+     * + $datasMap[Map::email] => email recipient
+     * + $datasMap[Map::template] => the html content of the email
      */
-    public function sendOrderConfirmation(Client $client)
+    // public function sendOrderConfirmation(Response $response, $toName, $toEmail, $htmlContent)
+    public function sendOrderConfirmation(Response $response, Map $datasMap)
+    // public function sendOrderConfirmation(Client $client)
     {
+        $toName = $datasMap->get(Map::name);
+        $toEmail = $datasMap->get(Map::email);
+        $htmlContent = $datasMap->get(Map::template);
+        if(empty($toName)){
+            throw new Exception("Recipient's name can't be empty");
+        }
+        if(empty($toEmail)){
+            throw new Exception("Email recipient can't be empty");
+        }
+        if(empty($htmlContent)){
+            throw new Exception("The html content of the email can't be empty");
+        }
         $dataMap = new Map();
         $sender = [
             "name" => "my sender name",
             "email" => "support@iandmeim.com"
         ];
         $to = [
-            ["name" => $client->getLastname(), "email" => $client->getEmail()]
+            ["name" => $toName, "email" => $toEmail]
         ];
-        // $bcc = 
-        // $cc = [
-        //     ["name" => "witness", "email" => "53298@etu.he2b.be"]
-        // ];
-        ob_start();
-        require 'model/view-management/emails/orderConfirmation.php';
-        $htmlContent = ob_get_clean();
-        // $textContent = 
         $subject = "My subject";
         $replyTo = [
             "name" => "my reply name",
             "email" => "support@iandmeim.com"
         ];
-        // $attachment = 
-        // $headers = 
-        // $templateId = 
-        // $params = 
         $tags = ["order"];
         $dataMap->put($sender, Map::sender);
         $dataMap->put($to, Map::to);
-        // $dataMap->put($bcc , Map::bcc);
-        // $dataMap->put($cc, Map::cc);
         $dataMap->put($htmlContent, Map::htmlContent);
-        // $dataMap->put($textContent , Map::textContent);
         $dataMap->put($subject, Map::subject);
         $dataMap->put($replyTo, Map::replyTo);
-        // $dataMap->put($attachment , Map::attachment);
-        // $dataMap->put($headers , Map::headers);
-        // $dataMap->put($templateId , Map::templateId);
-        // $dataMap->put($params , Map::params);
         $dataMap->put($tags, Map::tags);
         $blueMessage = new BlueMessage();
-        $blueMessage->sendEmail(BlueMessage::EMAIL_TYPE_TANSACTIONAL, $dataMap);
+        $blueMessage->sendEmail($response, BlueMessage::EMAIL_TYPE_TANSACTIONAL, $dataMap);
     }
 
 

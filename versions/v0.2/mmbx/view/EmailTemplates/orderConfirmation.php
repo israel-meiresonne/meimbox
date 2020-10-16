@@ -1,3 +1,12 @@
+<?php
+/**
+ * ——————————————————————————————— NEED —————————————————————————————————————
+ */
+/**
+ * @var Translator */
+$translator = $translator;
+?>
+
 <html>
 <head></head>
 <body style="padding: 0%; margin: 0; font-family: Helvetica, Arial , sans-serif">

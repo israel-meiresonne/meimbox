@@ -1,5 +1,5 @@
 <?php
-require_once 'model/tools-management/mailers/sendinblue/BlueAPI.php';
+require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
 /**
  * This class represente a message created with Sendinblue's API
@@ -138,6 +138,7 @@ class BlueMessage extends BlueAPI
 
     /**
      * To send an order confirmation
+     * @param Response $response used store results or errors occured
      * @param string $sendFunc holds function to execute to send email
      * @param Map $dataMap holds datas to config the email
      * + $datas[Map::sender]
@@ -154,7 +155,7 @@ class BlueMessage extends BlueAPI
      * + $datas[Map::params]
      * + $datas[Map::tags]
      */
-    public function sendEmail($sendFunc, Map $dataMap)
+    public function sendEmail(Response $response, $sendFunc, Map $dataMap)
     {
         $this->sender = $dataMap->get(Map::sender);
         $this->to = $dataMap->get(Map::to);
