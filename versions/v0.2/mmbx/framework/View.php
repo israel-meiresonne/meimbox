@@ -1,9 +1,9 @@
 <?php
-
 require_once 'Configuration.php';
 require_once 'model/view-management/Translator.php';
 require_once 'model/tools-management/Language.php';
 require_once 'model/special/Response.php';
+require_once 'model/special/Map.php';
 
 /**
  * Classe modélisant une vue.
@@ -64,11 +64,11 @@ class View
      * + NOTE: it's the only instance of this class in the whole system.
      * @var Translator
      */
-    private $translator;
+    protected $translator;
 
     /**
      *  the current user
-     * @var Visitor|Client|Administrator
+     * @var Visitor
      */
     private $person;
 
@@ -103,7 +103,7 @@ class View
      * @var string
      */
     // private const DIR_STATIC_FILES = "content/brain/permanent/";
-    private static $DIR_STATIC_FILES;
+    protected static $DIR_STATIC_FILES;
 
     /**
      * Error type
@@ -138,7 +138,6 @@ class View
      * @param string $controller Nom du contrôleur auquel la vue est associée
      * @param Visitor|Client|Administrator $person the current user
      */
-    // public function __construct($action, $controller = "", Language $language = null)
     public function __construct($action, $controller = "", Visitor $person = null)
     {
         self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES))
@@ -147,24 +146,11 @@ class View
         $this->person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
         $this->translator = isset($language) ? new Translator($language) : new Translator();
-        // Détermination du nom du fichier vue à partir de l'action et du constructeur
-        // La convention de nommage des fichiers vues est : view/<$controller>/<$action>.php
 
         $file = "view/";
         if ($controller != "") {
-            // rnvs : par exemple si la string $controller est "Home", 
-            //        $file devient "view/Home/"
             $file = $file . $controller . "/";
         }
-
-        // rnvs : on indique ici l'action attachée à la vue, cette action
-        //        peut-être l'action du contrôleur, soit une autre action
-        //        fournie explicitement par le contrôleur par l'appel
-        //        de la méthode Controller::generateView() par le contrôleur
-        //        effectif (dans la méthode associée à son action)
-        // rnvs : si l'action est celle du contrôleur et que l'action du
-        //        contrôleur est celle par défaut, à savoir "index", on a
-        //        $file et $this->file égaux à "view/Home/index.php"
         $this->file = $file . $action . ".php";
     }
 
@@ -259,7 +245,7 @@ class View
      * @return string Résultat de la génération de la vue
      * @throws Exception Si le fichier vue est introuvable
      */
-    private function generateFile($file, $datas)
+    protected function generateFile($file, $datas)
     {
         if (file_exists($file)) {
             $translator = $this->translator;

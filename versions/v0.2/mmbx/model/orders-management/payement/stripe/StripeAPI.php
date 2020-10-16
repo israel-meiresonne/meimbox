@@ -21,16 +21,29 @@ class StripeAPI extends ModelFunctionality
     private static $stripeAPI;
 
     /**
+     * Holds Stripe's checkout session
+     * @var CheckoutSession
+     */
+    private static $checkoutSession;
+
+    /**
+     * Holds Stripe's event accurd if there is one
+     * @var CheckoutSession
+     */
+    private static $event;
+
+    /**
      * Holds Client that holds the checkoutSession
      * @var Client
      */
     private $client;
 
     /**
-     * Holds holds Stripe's checkout session
-     * @var CheckoutSession
+     * Holds type of event
+     * @var string
      */
-    private static $checkoutSession;
+    public const EVENT_CHECKOUT_COMPLETED = "checkout.session.completed";
+
 
     /**
      * Constructor
@@ -74,6 +87,15 @@ class StripeAPI extends ModelFunctionality
     {
         // (!isset(self::$stripeAPI)) ? $this->setApiKey() : null;
         return self::$stripeAPI;
+    }
+
+    /**
+     * To get the Stripe event accured
+     * @return string|null the Stripe event accured
+     */
+    public function getEvent()
+    {
+        return self::$event;
     }
 
     /**
@@ -140,7 +162,9 @@ class StripeAPI extends ModelFunctionality
 
         // Handle the event
         switch ($event->type) {
-            case 'checkout.session.completed':
+            // case 'checkout.session.completed':
+            case self::EVENT_CHECKOUT_COMPLETED:
+                self::$event = $event->type;
                 self::$checkoutSession = new CheckoutSession();
                 self::$checkoutSession->retreive($event);
                 break;

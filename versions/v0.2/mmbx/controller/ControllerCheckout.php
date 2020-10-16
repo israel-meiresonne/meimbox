@@ -1,5 +1,7 @@
 <?php
 require_once 'ControllerSecure.php';
+require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
+
 class ControllerCheckout extends ControllerSecure
 {
 
@@ -112,8 +114,24 @@ class ControllerCheckout extends ControllerSecure
     public function stripeWebhook()
     {
         $response = new Response();
-        $this->person->handleStripeEvents($response);
-        (!$response->containError()) ? $response->addResult(self::ACTION_STRIPEWEBHOOK, true): null;
+        $event =  $this->person->handleStripeEvents($response);
+        switch ($event) {
+            case StripeAPI::EVENT_CHECKOUT_COMPLETED:
+                $toName = ($this->person->getFirstname()." ".$this->person->getLastname());
+                $toEmail = $this->person->getEmail();
+                $templateFile = 'view/EmailTemplates/orderConfirmation.php';
+                $datasViewMap = new Map();
+                $datasViewMap->put($toName, Map::name);
+                $datasViewMap->put($toEmail, Map::email);
+                $datasViewMap->put($templateFile, Map::templateFile);
+                try {
+                    $this->sendEmail($response, $this->person, BlueAPI::class, BlueAPI::FUNC_ORDER_CONFIRM, $datasViewMap);
+                } catch (\Throwable $th) {
+                    $response->addError($th->__toString(), MyError::ADMIN_ERROR);
+                }
+                break;
+        }
+        (!$response->containError()) ? $response->addResult(self::ACTION_STRIPEWEBHOOK, true) : null;
         $this->generateJsonView([], $response, $this->person);
     }
 }

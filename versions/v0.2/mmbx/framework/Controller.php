@@ -5,6 +5,8 @@ require_once 'Request.php';
 require_once 'View.php';
 require_once 'model/tools-management/Language.php';
 require_once 'model/special/Response.php';
+require_once 'model/special/Map.php';
+require_once 'model/view-management/ViewEmail.php';
 
 /**
  * Classe abstraite contrôleur. 
@@ -179,13 +181,28 @@ abstract class Controller {
      * Generate a json view with an object Response
      * @param array $datasView datas used to generate the view
      * @param Response $response contain results ready and/or prepared or errors
-     * @param Visitor|Client|Administrator $person the current user
+     * @param Visitor $person the current user
      */
     protected function generateJsonView($datasView = array(), Response $response, Visitor $person) {
         $classController = get_class($this);
         $controllerView = str_replace("Controller", "", $classController);
         $view = new View(null, $controllerView, $person);
         $view->generateJson($datasView, $response);
+    }
+
+    /**
+     * To send an email
+     * @param Response $response contain results ready and/or prepared or errors
+     * @param Visitor $person the current user
+     * @param string $mailerClass class of the mailer to use
+     * @param string $mailerFunc function to execute on the mailer to send email
+     * @param Map $datasViewMap datas used to generate the view
+     */
+    protected function sendEmail(Response $response, Visitor $person, string $mailerClass, string $mailerFunc, Map $datasViewMap = null)
+    {
+       $view = new ViewEmail($person->getLanguage());
+       $datasViewMap = (empty($datasViewMap)) ? (new Map()) : $datasViewMap;
+       $view->sendEmail($response, $mailerClass, $mailerFunc, $datasViewMap);
     }
 
     /**

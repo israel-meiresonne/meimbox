@@ -5,11 +5,9 @@ require_once 'model/users-management/Visitor.php';
 require_once 'model/users-management/Client.php';
 require_once 'model/users-management/Administrator.php';
 require_once 'model/special/Search.php';
-require_once 'model/special/Response.php';
 require_once 'model/special/MyError.php';
 require_once 'model/special/Query.php';
 require_once 'model/tools-management/Measure.php';
-require_once 'model/special/Map.php';
 require_once 'model/tools-management/Cookie.php';
 
 /**

@@ -130,8 +130,10 @@ class CheckoutSession extends ModelFunctionality
      */
     public function retreive(Stripe\Event $event)
     {
-        if ($event->type != 'checkout.session.completed') {
-            throw new Exception("The Stripe Event to retreive is not of type 'checkout.session.completed', event->type:$event->type");
+        // if ($event->type != 'checkout.session.completed') {
+        if ($event->type != StripeAPI::EVENT_CHECKOUT_COMPLETED) {
+            // throw new Exception("The Stripe Event to retreive is not of type 'checkout.session.completed', event->type:$event->type");
+            throw new Exception("The Stripe Event to retreive is not of type '". StripeAPI::EVENT_CHECKOUT_COMPLETED ."', event->type:".$event->type);
         }
         $this->checkoutSession = $event->data->object;
         $response = new Response();

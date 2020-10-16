@@ -6,7 +6,7 @@ require_once 'model/users-management/Visitor.php';
 require_once 'model/tools-management/Address.php';
 require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 require_once 'model/orders-management/Order.php';
-require_once 'model/tools-management/mailers/sendinblue/BlueAPI.php';
+require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
 abstract class User extends  Visitor
 {
@@ -75,12 +75,6 @@ abstract class User extends  Visitor
      * @var StripeAPI
      */
     protected static  $stripeAPI;
-
-    /**
-     * Holds access to Sendinblue's API
-     * @var SendinblueAPI
-     */
-    protected static  $sendinblueAPI;
 
     /**
      * Constructor
@@ -372,7 +366,7 @@ abstract class User extends  Visitor
                         $id = $stripeAPI->getCheckoutSessionId();
                     } catch (\Throwable $th) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);
-                        $response->addError($th->getMessage(), MyError::ADMIN_ERROR);
+                        $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                     }
                 }
             }
@@ -383,14 +377,14 @@ abstract class User extends  Visitor
     /**
      * To handle all Stripe's events
      * @param Response $response to push in result or accured error
+     * @return string|null the event occured
      */
     public function handleStripeEvents(Response $response)
     {
         $stripeAPI = $this->getStripeAPI();
         $stripeCheckoutID = $stripeAPI->getCheckoutSessionId();
-        // $stripeAPI->handleEvents(); // already handled in controllerSecure
-        // $basket = $this->getBasket();
-        $this->createOrder($response, $stripeCheckoutID);
+        // $this->createOrder($response, $stripeCheckoutID);
+        return $stripeAPI->getEvent();
     }
 
     /**
