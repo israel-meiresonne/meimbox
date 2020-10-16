@@ -1,10 +1,14 @@
 <?php
 require_once('vendor/autoload.php');
+require_once 'model/tools-management/mailers/sendinblue/BlueMessage.php';
 require_once 'framework/Configuration.php';
 require_once 'model/ModelFunctionality.php';
 require_once 'model/special/Map.php';
 
-class SendinblueAPI extends ModelFunctionality
+/**
+ * This class manage access to Sendinblue's API
+ */
+class BlueAPI extends ModelFunctionality
 {
     /**
      * Holds the api's configuration
@@ -24,7 +28,7 @@ class SendinblueAPI extends ModelFunctionality
      * To get the api's configuration
      * @return SendinBlue\Client\Configuration
      */
-    private function getCONFIG()
+    protected function getCONFIG()
     {
         return self::$CONFIG;
     }
@@ -37,7 +41,7 @@ class SendinblueAPI extends ModelFunctionality
     {
         $apiInstance = new SendinBlue\Client\Api\AccountApi(
             new GuzzleHttp\Client(),
-            self::$CONFIG
+            $this->getCONFIG()
         );
         return $apiInstance->getAccount();
     }
@@ -45,9 +49,8 @@ class SendinblueAPI extends ModelFunctionality
     /**
      * To send an order confirmation
      * @param Client $client the recipient
-     * @param Map $map holds datas config the email
      */
-    public function sendOrderConfirmation(Client $client, Map $map)
+    public function sendOrderConfirmation(Client $client)
     {
         $dataMap = new Map();
         $sender = [
@@ -88,46 +91,47 @@ class SendinblueAPI extends ModelFunctionality
         // $dataMap->put($templateId , Map::templateId);
         // $dataMap->put($params , Map::params);
         $dataMap->put($tags, Map::tags);
-        $this->sendEventEmail($dataMap);
+        $blueMessage = new BlueMessage();
+        $blueMessage->sendEmail(BlueMessage::EMAIL_TYPE_TANSACTIONAL, $dataMap);
     }
 
 
-    /**
-     * To send a email
-     * @param mixed[] $datas datas required to send an email
-     * + $datas[Map::sender] holds sender
-     * + + $emailMap[
-     * + +  "name" => {string}, (optional)
-     * + +  "email" => {string},
-     * + +  "id" => {string},   (optional)
-     * + + ]
-     * + $datas[Map::to] holds the name and email of recipients
-     * + + $emailMap[
-     * + +  index => ["name" => {string}, "email" => {string}],
-     * + + ]
-     * + $datas[Map::bcc] to send email blinding other recipient for all
-     * + $datas[Map::cc] to send email hidding 'cc' contacts from the 'to' contacts
-     * + + invisible for the recipient 'to' but visible for the recipient 'cc'
-     * + $datas[Map::htmlContent] holds HTML body of the message
-     * + + ignored if templateId given
-     * + $datas[Map::textContent] holds Plain Text body of the message
-     * + + ignored if templateId given
-     * + $datas[Map::subject] holds Subject of the message
-     * + + ignored if templateId given
-     * + $datas[Map::replyTo] email to send the reply from the recipient
-     * + $datas[Map::attachment] holds
-     * + $datas[Map::headers] holds
-     * + $datas[Map::templateId] holds
-     * + $datas[Map::params] holds
-     * + $datas[Map::tags] holds
-     */
-    private function sendEventEmail(Map $dataMap)
-    {
-        $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(
-            new GuzzleHttp\Client(),
-            $this->getCONFIG()
-        );
-        $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail($dataMap->getMap());
-        $apiInstance->sendTransacEmail($sendSmtpEmail);
-    }
+    // /**
+    //  * To send a email
+    //  * @param mixed[] $datas datas required to send an email
+    //  * + $datas[Map::sender] holds sender
+    //  * + + $emailMap[
+    //  * + +  "name" => {string}, (optional)
+    //  * + +  "email" => {string},
+    //  * + +  "id" => {string},   (optional)
+    //  * + + ]
+    //  * + $datas[Map::to] holds the name and email of recipients
+    //  * + + $emailMap[
+    //  * + +  index => ["name" => {string}, "email" => {string}],
+    //  * + + ]
+    //  * + $datas[Map::bcc] to send email blinding other recipient for all
+    //  * + $datas[Map::cc] to send email hidding 'cc' contacts from the 'to' contacts
+    //  * + + invisible for the recipient 'to' but visible for the recipient 'cc'
+    //  * + $datas[Map::htmlContent] holds HTML body of the message
+    //  * + + ignored if templateId given
+    //  * + $datas[Map::textContent] holds Plain Text body of the message
+    //  * + + ignored if templateId given
+    //  * + $datas[Map::subject] holds Subject of the message
+    //  * + + ignored if templateId given
+    //  * + $datas[Map::replyTo] email to send the reply from the recipient
+    //  * + $datas[Map::attachment] holds
+    //  * + $datas[Map::headers] holds
+    //  * + $datas[Map::templateId] holds
+    //  * + $datas[Map::params] holds
+    //  * + $datas[Map::tags] holds
+    //  */
+    // private function sendEventEmail(Map $dataMap)
+    // {
+    //     $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(
+    //         new GuzzleHttp\Client(),
+    //         $this->getCONFIG()
+    //     );
+    //     $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail($dataMap->getMap());
+    //     $apiInstance->sendTransacEmail($sendSmtpEmail);
+    // }
 }
