@@ -1330,14 +1330,6 @@ abstract class ModelFunctionality extends Model
     }
     /*———————————————————————————— SHORTCUT UP ——————————————————————————————*/
     /*———————————————————————————— COMMON DOWN ——————————————————————————————*/
-    /**
-     * To get Response's attributs
-     * @return string[] Response's attributs in a map format
-     */
-    public function getAttributs()
-    {
-        return get_object_vars($this);
-    }
 
     // /**
     //  * To get a protected copy of a instance

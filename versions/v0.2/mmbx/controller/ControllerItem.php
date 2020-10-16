@@ -947,9 +947,9 @@ class ControllerItem extends ControllerSecure
         // var_dump($response->getAttributs());
         // echo "<hr>";
 
-        // require_once 'model/tools-management/mailers/SendinBlueAPI.php';
-        // $sendinBlueAPI = new SendinBlueAPI();
-        // $sendinBlueAPI->sendOrderConfirmation($this->person);
+        require_once 'model/tools-management/mailers/sendinblue/BlueAPI.php';
+        $blueAPI = new BlueAPI();
+        $blueAPI->sendOrderConfirmation($this->person);
         // echo $sendinBlueAPI->getInfo();
 
         // $a = "[{&quot;name&quot;:&quot;Jimmy&quot;, &quot;email&quot;:&quot;jimmy98@example.com&quot;}, {&quot;name&quot;:&quot;Joe&quot;, &quot;email&quot;:&quot;joe@example.com&quot;}]";
@@ -972,10 +972,14 @@ class ControllerItem extends ControllerSecure
         // $htmlContent = (string) ob_clean();
         // var_dump(ob_get_clean());
         // 1598634509
-        
+
         // var_dump(date('Y-m-d H:i:s',15986345091));
         // echo "<hr>";
         // var_dump((string)time());
+
+// require_once 'model/tools-management/mailers/sendinblue/BlueMessage.php';
+//         $blueMeassage = new BlueMessage();
+//         var_dump($blueMeassage->getAttributs());
     }
 }
 ?>
