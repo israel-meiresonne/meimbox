@@ -173,6 +173,11 @@ class ControllerHome extends ControllerSecure
             "cssFile" => '<link rel="stylesheet" href="'.$https.'/content/css/header.css">',
             // "cssFile" => '<link rel="stylesheet" href="content/css/header.css">',
         ];
-        $this->generateView($datasView, $this->person);
+        $datasViewMap = new Map();
+        $templateFile = 'view/EmailTemplates/orderConfirmation.php';
+        // $templateFile = 'view/EmailTemplates/orderConfirmation2.php';
+        // $templateFile = 'view/EmailTemplates/orderConfirmation1.php';
+        $datasViewMap->put($templateFile, Map::templateFile);
+        $this->previewEmail($this->person, $datasViewMap);
     }
 }

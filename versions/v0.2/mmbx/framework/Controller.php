@@ -15,7 +15,8 @@ require_once 'model/view-management/ViewEmail.php';
  * rnvs : classe abstraite car méthode Controller::index() abstraite
  * 
  */
-abstract class Controller {
+abstract class Controller
+{
 
     /** Action à réaliser */
     // rnvs : setté dans executeAction()
@@ -39,7 +40,8 @@ abstract class Controller {
      * 
      * @param Request $request Request entrante
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
     }
 
@@ -49,38 +51,39 @@ abstract class Controller {
      * 
      * @throws Exception Si l'action n'existe pas dans la classe Controller courante
      */
-    public function executeAction($action) {
+    public function executeAction($action)
+    {
         // rnvs : c'est la méthode qui sert de point d'entrée au
         //        contrôleur effectif
         //        elle est appelée en fin de Router::routerRequest()
-        
-        
+
+
         // rnvs : vérification si l'objet courant possède une méthode dont le
         //        nom est stocké dans la variable $action
         // rnvs : https://www.php.net/manual/en/function.method-exists.php
         if (method_exists($this, $action)) {
             // rnvs : attribut $action setté
             $this->action = $action;
-            
+
             // rnvs : invocation de la méthode dont le nom est le contenu
             //        de l'attribut $action de l'objet courant !
             $this->{$this->action}();
-            
+
             // rnvs : arrivé ici, on retourne à Router::routerRequest()
             //        qui termine et retourne à index.php qui termine
             //        donc ici le script ne fait plus rien : la page (réponse)
             //        a été envoyée au client, le traitement de la requête
             //        du client est terminé 
-            
+
         } else {
             // rnvs : récupération du nom de la classe de $this c.-à-d. du
             //        Controller effectif (dans une classe dérivée de celle-ci)
             //        sous la forme d'une string
             // rnvs : https://www.php.net/manual/en/function.get-class.php
             $classController = get_class($this);
-            
+
             throw new Exception("Action '$action' non définie dans la classe $classController");
-            
+
             // rnvs : cette exception est catchée dans Router::routerRequest()
         }
     }
@@ -120,14 +123,15 @@ abstract class Controller {
      * @param string $action Action associée à la vue (permet à un contrôleur de générer une vue pour une action spécifique)
      */
     // protected function generateView($datasView = array(), Language $language, $action = null) {
-    protected function generateView($datasView = array(), Visitor $person, $action = null) {
+    protected function generateView($datasView = array(), Visitor $person, $action = null)
+    {
         // Utilisation de l'action actuelle par défaut
         // $actionView = $this->action;  // rnvs : comm
         // if ($action != null) {        // rnvs : comm
         // Utilisation de l'action passée en paramètre
         //      $actionView = $action;    // rnvs : comm
         // }
-        
+
         // rnvs : détermination de l'action associée à la vue 
         //        comme l'attribut $action est une string qui ne stocke
         //        qu'une valeur, on est parfois amené à ce qu'un contrôleur
@@ -136,12 +140,12 @@ abstract class Controller {
         //        l'utilisation de plusieurs vues ou de plusieurs actions 
         //        d'une même vue
         $actionView = $action == null ? $this->action : $action;    // rnvs : ajout
-        
+
         // Utilisation du nom du contrôleur actuel
         // rnvs : get_class retourne une string : 
         // le nom de la classe du contrôleur effectivement appelé
         $classController = get_class($this);
-        
+
         // rnvs : https://www.php.net/manual/en/function.str-replace.php
         //        on se débarrasse du mot Controller, 
         //        p. ex. si le nom du contrôleur est la string
@@ -157,14 +161,14 @@ abstract class Controller {
         //        de la View
         // rnvs : en particulier : il y a 1! classe vue (View)
         $view = new View($actionView, $controllerView, $person);
-        
+
         // rnvs : rappel : $dataview est un tableau associatif produit
         //        dans la méthode de l'action du contrôleur effectivement
         //        appelé
         // rnvs : c'est dans View::generate que la page réponse à la requête
         //        est construite et envoyée au client
         $view->generate($datasView);
-        
+
         // rnvs : quand on arrive ici, la réponse a été envoyée au client
         //        en effet, View::generate termine par un appel à la 
         //        « fonction » echo
@@ -174,7 +178,7 @@ abstract class Controller {
         //        la méthode de l'action du contrôleur effectif
         //        appelée par Controller::executeAction 
         //        appelée par Router::routerRequest
-        
+
     }
 
     /** generateJsonView($viewDatas, $language, $response)
@@ -183,7 +187,8 @@ abstract class Controller {
      * @param Response $response contain results ready and/or prepared or errors
      * @param Visitor $person the current user
      */
-    protected function generateJsonView($datasView = array(), Response $response, Visitor $person) {
+    protected function generateJsonView($datasView = array(), Response $response, Visitor $person)
+    {
         $classController = get_class($this);
         $controllerView = str_replace("Controller", "", $classController);
         $view = new View(null, $controllerView, $person);
@@ -200,9 +205,16 @@ abstract class Controller {
      */
     protected function sendEmail(Response $response, Visitor $person, string $mailerClass, string $mailerFunc, Map $datasViewMap = null)
     {
-       $view = new ViewEmail($person->getLanguage());
-       $datasViewMap = (empty($datasViewMap)) ? (new Map()) : $datasViewMap;
-       $view->sendEmail($response, $mailerClass, $mailerFunc, $datasViewMap);
+        $view = new ViewEmail($person->getLanguage());
+        $datasViewMap = (empty($datasViewMap)) ? (new Map()) : $datasViewMap;
+        $view->sendEmail($response, $mailerClass, $mailerFunc, $datasViewMap);
+    }
+
+    protected function previewEmail(Visitor $person, Map $datasViewMap = null)
+    {
+        $datasViewMap = (empty($datasViewMap)) ? (new Map()) : $datasViewMap;
+        $view = new ViewEmail($person->getLanguage());
+        $view->previewEmail($datasViewMap);
     }
 
     /**
@@ -215,7 +227,8 @@ abstract class Controller {
      * @param string $controller Contrôleur
      * @param type $action Action Action
      */
-    protected function redirect($controller, $action = null) {
+    protected function redirect($controller, $action = null)
+    {
         $webRoot = Configuration::get("webRoot", "/");
         // Redirection vers l'URL /racine_site/controller/action
         // rnvs : https://www.php.net/manual/en/function.header.php

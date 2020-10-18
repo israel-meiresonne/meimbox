@@ -5,6 +5,9 @@ require_once 'framework/View.php';
 class ViewEmail extends View
 {
     private $https_webroot;
+    private $dir_email_files;
+
+
 
     /**
      * Constructor
@@ -13,7 +16,8 @@ class ViewEmail extends View
     public function __construct(Language $language)
     {
         // $this->https_webroot = (empty($this->https_webroot)) ? Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot() : $this->https_webroot;
-        $this->https_webroot = Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot();
+        $this->https_webroot = Configuration::get(Configuration::HTTPS_DOMAIN) . Configuration::getWebRoot();
+        $this->dir_email_files = $this->https_webroot . Configuration::get(Configuration::DIR_EMAIL_FILES);
         $this->translator = isset($language) ? new Translator($language) : new Translator();
     }
 
@@ -37,6 +41,9 @@ class ViewEmail extends View
         if (!empty($emailDatasMap->get(Map::templateFile))) {
             $templateFile = $emailDatasMap->get(Map::templateFile);
             $emailDatasMap->put($this->https_webroot, Map::https_webroot);
+            $emailDatasMap->put($this->dir_email_files, Map::dir_email_files);
+            // $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
+            // $emailDatasMap->put($dir_prod_files, Map::dir_prod_files);
             $htmlContent = $this->generateFile($templateFile, $emailDatasMap->getMap());
             $emailDatasMap->put($htmlContent, Map::template);
         }
@@ -45,5 +52,21 @@ class ViewEmail extends View
             throw new Exception("This function '$mailerFunc' don't exist in class '$mailerClass'");
         }
         $mailerAPI->$mailerFunc($response, $emailDatasMap);
+    }
+
+    /**
+     * To preview email
+     */
+    public function previewEmail(Map $emailDatasMap)
+    {
+        if (!empty($emailDatasMap->get(Map::templateFile))) {
+            $templateFile = $emailDatasMap->get(Map::templateFile);
+            $emailDatasMap->put($this->https_webroot, Map::https_webroot);
+            $emailDatasMap->put($this->dir_email_files, Map::dir_email_files);
+            // $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
+            // $emailDatasMap->put($dir_prod_files, Map::dir_prod_files);
+            $htmlContent = $this->generateFile($templateFile, $emailDatasMap->getMap());
+            echo $htmlContent;
+        }
     }
 }

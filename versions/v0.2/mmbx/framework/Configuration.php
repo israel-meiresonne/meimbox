@@ -28,6 +28,8 @@ class Configuration
     public const STRIPE_WEBHOOK = "stripe_webhook";
 
     public const DIR_STATIC_FILES = "dir_static_files";
+    public const DIR_PROD_FILES = "dir_prod_files";
+    public const DIR_EMAIL_FILES = "dir_email_files";
 
     /**
      * Keys for SendinBlue datas

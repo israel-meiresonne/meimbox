@@ -725,6 +725,12 @@
     border: var(--color-green) 1px;
 }
 
+.green-button-reverse {
+    color: var(--color-white);
+    background-color: var(--color-green);
+    border: var(--color-green) 1px;
+}
+
 /*————————————————————— COLOR BUTTON UP —————————————————————————————————————*/
 
 /*————————————————————— STADARD-BUTTON DOWN —————————————————————————————————*/

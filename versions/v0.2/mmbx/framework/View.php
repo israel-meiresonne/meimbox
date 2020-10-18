@@ -118,9 +118,20 @@ class View
     private const CONF_SOMMARY_CHECKOUT = "CONF_SOMMARY_CHECKOUT";
     private const CONF_SOMMARY_SHOPBAG = "CONF_SOMMARY_SHOPBAG";
 
+    /**
+     * Holds font-family files
+     * @var string
+     */
     protected const FONT_FAM_SPARTAN = '<link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">';
     protected const FONT_FAM_PT = '<link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">';
-    protected const CSS_HEADER = 'content/css/header.css';
+
+    /**
+     * Holds css files
+     * @var string
+     */
+    protected const CSS_ROOT = 'content/css/root.css';
+    protected const CSS_ELEMENTS = 'content/css/elements.css';
+    // protected const CSS_HEADER = 'content/css/header.css';
 
     /**
      * Constructeur
@@ -145,9 +156,7 @@ class View
      */
     public function __construct($action, $controller = "", Visitor $person = null)
     {
-        self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES))
-            ? Configuration::get(Configuration::DIR_STATIC_FILES)
-            : self::$DIR_STATIC_FILES;
+
         $this->person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
         $this->translator = isset($language) ? new Translator($language) : new Translator();
@@ -252,7 +261,13 @@ class View
      */
     protected function generateFile($file, $datas)
     {
+        self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES))
+        ? Configuration::get(Configuration::DIR_STATIC_FILES)
+        : self::$DIR_STATIC_FILES;
+
+        
         if (file_exists($file)) {
+            $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
             $translator = $this->translator;
 
             // Rend les éléments du tableau $datas accessibles dans la vue
