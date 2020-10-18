@@ -144,7 +144,7 @@ abstract class Product extends ModelFunctionality
      * Holds the directory where product's picture are stored
      * @var string
      */
-    private const PICTURE_DIR = "content/brain/prod/";
+    private static $DIR_PROD_FILES;
 
     /**
      * Holds page's name
@@ -209,6 +209,9 @@ abstract class Product extends ModelFunctionality
     protected function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
         $this->setConstants();
+        self::$DIR_PROD_FILES = (!isset(self::$DIR_PROD_FILES))
+        ? Configuration::get(Configuration::DIR_PROD_FILES)
+        : self::$DIR_PROD_FILES;
         $this->prodID = $prodID;
         $this->language = $language;
         $this->country = $country;
@@ -503,7 +506,7 @@ abstract class Product extends ModelFunctionality
         $pictures = $this->getPictures();
         if (count($pictures) > 0) {
             foreach ($pictures as $key => $picture) {
-                $picSrc[$key] = self::PICTURE_DIR . $picture;
+                $picSrc[$key] = self::$DIR_PROD_FILES . $picture;
             }
         }
         return $picSrc;

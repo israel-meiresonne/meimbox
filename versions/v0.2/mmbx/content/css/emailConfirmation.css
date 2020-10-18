@@ -1,0 +1,194 @@
+body {
+    /* background: var(--color-blue); */
+    background: #4f4fef;
+    color: var(--color-white);
+    font-family: var(--main-font-family);
+}
+
+table {
+    width: 100%;
+    /* font-size: var(--middle-font-size); */
+    /* font-size: 1.17em; */
+}
+
+.nada_20 {
+    width: 20%;
+}
+
+.nada_33 {
+    width: 33%;
+}
+
+.nada_60 {
+    width: 60%;
+}
+
+/* .table_separator{
+} */
+
+.table_separator-td-barre {
+    border-bottom: var(--color-shadow) 1px solid;
+}
+
+.table_separator-td-space {
+    padding: 5px;
+}
+
+.standard-button {
+    box-shadow: none;
+    font-size: inherit;
+    max-width: 300px;
+    min-width: 250px;
+}
+
+.sentence {
+    text-transform: capitalize;
+}
+
+.line_height_low {
+    line-height: 1.5;
+}
+
+.mini_text {
+    font-size: var(--little-font-size);
+}
+
+.secondary_field_dark {
+    /* color: var(--color-label); */
+    color: var(--color-text-06);
+}
+
+.secondary_field_clear {
+    color: var(--color-label);
+}
+
+.bold_field {
+    font-weight: bold;
+}
+
+.unbold_field {
+    font-weight: inherit;
+}
+
+.price_field {
+    min-width: 150px;
+}
+
+.table_default {
+    width: auto;
+}
+
+.no_margin {
+    margin: 0;
+}
+
+/*———————————————————————————————— COMMON UP ————————————————————————————————*/
+
+.main_content {
+    width: 100%;
+    max-width: 780px;
+    margin: auto;
+}
+
+.head_content-brand {
+    width: 100%;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.head_content-brand a {
+    /* text-decoration: none; */
+    color: var(--color-white);
+}
+
+.head_content-picture-td img {
+    width: 100%;
+}
+
+.head_content-paragraph {
+    text-align: center;
+}
+
+.head_content-paragraph a {
+    /* color: var(--color-white); */
+    color: var(--color-yellow);
+}
+
+.main_content_secondary {
+    background-color: #3939ad;
+    border-radius: var(--big-border-radius) var(--big-border-radius) 0 0;
+}
+
+.body_content {
+    padding: 10px;
+    background-color: var(--color-white);
+    border-radius: var(--big-border-radius);
+}
+
+.body_content-child, .body_content table {
+    color: var(--color-text);
+}
+
+.body_content-info-td {
+    vertical-align: top;
+}
+
+.body_content-info-address {
+    width: 55%;
+}
+
+/* .body_content-info-delivery .delivery_label{
+    margin: 0;
+} */
+
+.body_content-body-number p {
+    margin-bottom: 0;
+}
+
+.number_square {
+    display: inline-block;
+    /* padding: 5px; */
+    /* background: var(--color-blue); */
+    /* border-radius: var(--border-float-radius); */
+    text-align: center;
+    /* color: var(--color-white); */
+    color: var(--color-blue);
+}
+
+.body_content-body-picture {
+    width: 15%;
+}
+
+.body_content-body-td {
+    vertical-align: top;
+}
+
+.body_content-body-picture img {
+    width: 100%;
+    border-radius: var(--border-float-radius);
+}
+
+.body_content-body-property .property-title {
+    font-weight: inherit;
+}
+
+.footer_content {
+    padding: 0 10px;
+}
+
+.footer_content-thanks {
+    text-align: center;
+}
+
+.footer_content-contact-media-logo img {
+    width: 32px;
+}
+
+.footer_content-contact-td {
+    vertical-align: top;
+    width: 50%;
+}
+
+.footer_content-contact-support .support_unsuscribe a {
+    color: var(--color-white);
+}
