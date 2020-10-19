@@ -4,7 +4,6 @@
     --color-shadow-08: rgba(229, 229, 231, .8);
     --color-shadow-05: rgba(229, 229, 231, .5);
     --color-text: #0E2439;
-    /* --color-text: red; */
     --color-text-08: rgba(14, 36, 57, 0.8);
     --color-text-06: rgba(14, 36, 57, 0.6);
     --color-text-05: rgba(14, 36, 57, 0.5);
@@ -145,10 +144,6 @@ header {
 .double-flex-50-parent {
     display: flex;
 }
-
-/* .double-flex-50-child {
-    width: 50%;
-} */
 
 .double-flex-50-child:first-child {
     width: 55%;

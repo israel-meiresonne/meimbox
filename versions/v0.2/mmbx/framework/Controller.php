@@ -198,22 +198,22 @@ abstract class Controller
     /**
      * To send an email
      * @param Response $response contain results ready and/or prepared or errors
-     * @param Visitor $person the current user
+     * @param Visitor $recipient the recipient of the email
      * @param string $mailerClass class of the mailer to use
      * @param string $mailerFunc function to execute on the mailer to send email
      * @param Map $datasViewMap datas used to generate the view
      */
-    protected function sendEmail(Response $response, Visitor $person, string $mailerClass, string $mailerFunc, Map $datasViewMap = null)
+    protected function sendEmail(Response $response, Visitor $recipient, string $mailerClass, string $mailerFunc, Map $datasViewMap = null)
     {
-        $view = new ViewEmail($person->getLanguage());
+        $view = new ViewEmail($recipient->getLanguage());
         $datasViewMap = (empty($datasViewMap)) ? (new Map()) : $datasViewMap;
         $view->sendEmail($response, $mailerClass, $mailerFunc, $datasViewMap);
     }
 
-    protected function previewEmail(Visitor $person, Map $datasViewMap = null)
+    protected function previewEmail(Visitor $recipient, Map $datasViewMap = null)
     {
         $datasViewMap = (empty($datasViewMap)) ? (new Map()) : $datasViewMap;
-        $view = new ViewEmail($person->getLanguage());
+        $view = new ViewEmail($recipient->getLanguage());
         $view->previewEmail($datasViewMap);
     }
 

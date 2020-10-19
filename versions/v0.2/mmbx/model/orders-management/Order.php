@@ -10,8 +10,8 @@ require_once 'model/tools-management/AddressDelivery.php';
 require_once 'model/special/MyError.php';
 
 /**
- * This class représente a order paid.
- * This can be created ONLY when you receive the paiement confirmation.
+ * This class represente a order paid.
+ * + This can be created ONLY when you receive the paiement confirmation.
  */
 class Order extends ModelFunctionality
 {
