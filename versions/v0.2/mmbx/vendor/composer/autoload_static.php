@@ -14,8 +14,13 @@ class ComposerStaticInita2b3f1029c4242a2a3c4571d35363704
     );
 
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'TijsVerkoyen\\CssToInlineStyles\\' => 31,
+        ),
         'S' => 
         array (
+            'Symfony\\Component\\CssSelector\\' => 30,
             'SendinBlue\\Client\\' => 18,
         ),
         'P' => 
@@ -32,6 +37,14 @@ class ComposerStaticInita2b3f1029c4242a2a3c4571d35363704
     );
 
     public static $prefixDirsPsr4 = array (
+        'TijsVerkoyen\\CssToInlineStyles\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
+        ),
+        'Symfony\\Component\\CssSelector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/css-selector',
+        ),
         'SendinBlue\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/sendinblue/api-v3-sdk/lib',
