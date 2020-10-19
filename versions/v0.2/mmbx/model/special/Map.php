@@ -123,6 +123,11 @@ class Map
     public const phone = "phone";
 
     /**
+     * Keys for Order
+     */
+    public const order = "order";
+
+    /**
      * Keys for Payements
      */
     public const payMethod = "payMethod";
@@ -165,9 +170,13 @@ class Map
     public const params = "params";
     public const tags = "tags";
 
-    public function __construct()
+    /**
+     * Constructor
+     * @param array $map if set this array will be used as initial map
+     */
+    public function __construct(array $map = null)
     {
-        $this->map = [];
+        $this->map = (!empty($map)) ? $map : [];
     }
 
     /**

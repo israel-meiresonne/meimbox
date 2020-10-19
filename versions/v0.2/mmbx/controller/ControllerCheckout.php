@@ -117,13 +117,23 @@ class ControllerCheckout extends ControllerSecure
         $event =  $this->person->handleStripeEvents($response);
         switch ($event) {
             case StripeAPI::EVENT_CHECKOUT_COMPLETED:
-                $toName = ($this->person->getFirstname()." ".$this->person->getLastname());
+                $firstname = $this->person->getFirstname();
+                $lastname = $this->person->getLastname();
+                $toName = ($firstname." ".$lastname);
                 $toEmail = $this->person->getEmail();
-                $templateFile = 'view/EmailTemplates/orderConfirmation.php';
+                $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
+                $company = $this->person->getCompanyInfos();
+                $order = $this->person->getLastOrder();
+                $address = $this->person->getSelectedAddress();
                 $datasViewMap = new Map();
                 $datasViewMap->put($toName, Map::name);
                 $datasViewMap->put($toEmail, Map::email);
                 $datasViewMap->put($templateFile, Map::templateFile);
+                $datasViewMap->put($company, Map::company);
+                $datasViewMap->put($firstname, Map::firstname);
+                $datasViewMap->put($lastname, Map::lastname);
+                $datasViewMap->put($order, Map::order);
+                $datasViewMap->put($address, Map::address);
                 try {
                     $this->sendEmail($response, $this->person, BlueAPI::class, BlueAPI::FUNC_ORDER_CONFIRM, $datasViewMap);
                 } catch (\Throwable $th) {

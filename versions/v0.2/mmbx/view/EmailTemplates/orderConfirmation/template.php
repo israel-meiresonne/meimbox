@@ -1,30 +1,48 @@
 <?php
+use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param $https_webroot https://mydomain.com + webroot
- * @param $dir_email_files https://mydomain.com + webroot + {dir to email files}
+ * @param string $https_webroot https://mydomain.com + webroot
+ * @param string $dir_email_files https://mydomain.com + webroot + {dir to email files}
+ * @param Map $company info about the company sending this email
+ * @param string $firstname the firstname of the recipient of this email
+ * @param string $lastname the lastname of the recipient of this email
+ * @param Order $order the oder of the recipient of this email
+ * @param Address $address delivery address for the given order
  */
+
 /**
  * @var Translator */
 $translator = $translator;
 // $https_webroot = Configuration::get(Configuration::HTTPS_DOMAIN) . Configuration::getWebRoot();
 // $dir_email_files = $this->dir_email_files;
 $prod_https_dir = $https_webroot . $dir_prod_files;
-$brand = "brand name";
+$brand = $company->get(Map::brand);
 ?>
 
 <html>
 
 <head>
-    <?= self::FONT_FAM_SPARTAN ?>
-    <?= self::FONT_FAM_PT ?>
-    <link rel="stylesheet" href="<?= $https_webroot . self::CSS_ELEMENTS ?>">
-    <link rel="stylesheet" href="<?= $https_webroot . self::CSS_ROOT ?>">
-    <link rel="stylesheet" href="<?= $https_webroot ?>content/css/emailConfirmation.css">
+    <?= ""//self::FONT_FAM_SPARTAN ?>
+    <?= ""//self::FONT_FAM_PT ?>
+    <!-- <link rel="stylesheet" href="<?= ""//$https_webroot . self::CSS_ELEMENTS ?>"> -->
+    <!-- <link rel="stylesheet" href="<?= ""//$https_webroot . self::CSS_ROOT ?>"> -->
+    <!-- <link rel="stylesheet" href="<?= ""//$https_webroot ?>content/css/emailConfirmation.css"> -->
 </head>
 
 <body>
+    <style>
+        <?php
+        $tags = [
+            self::FONT_FAM_SPARTAN
+        ];
+        foreach($tags as $tag){
+            $link = $this->extractLink($tag);
+            echo file_get_contents($link);
+        }
+        ?>
+    </style>
     <table class="main_content">
         <tr class="main_content-head main_content-child">
             <td>
@@ -61,14 +79,14 @@ $brand = "brand name";
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p class="line_height_low">
+                                        <h3 class="inter_line_low no_margin unbold_field">
                                             <span class="sentence">thank</span> you for your confidence.
                                             <span>your order is currently in preparation. </span>
                                             <br>
                                             <span><span class="sentence">you</span> will receive a new message as soon as your order has been shipped. </span>
                                             <br>
                                             <span><span class="sentence">follow</span> the progress of your order <a href="" target="_blank" rel="noopener noreferrer">here</a> at any time.</span>
-                                        </p>
+                                        </h3>
                                     </td>
                                 </tr>
                             </table>
@@ -326,11 +344,6 @@ $brand = "brand name";
                                                                 </address>
                                                             </td>
                                                         </tr>
-                                                        <!-- <tr>
-                                                            <td>
-                                                                <div class="table_separator-td-space"></div>
-                                                            </td>
-                                                        </tr> -->
                                                         <tr class="support_unsuscribe">
                                                             <td>
                                                                 <table class="table_default mini_text">
@@ -370,7 +383,7 @@ $brand = "brand name";
                                                         </tr>
                                                         <tr class="footer_content-contact-media-message mini_text">
                                                             <td>
-                                                                <p class="secondary_field_clear line_height_low">
+                                                                <p class="secondary_field_clear inter_line_low">
                                                                     <span class="sentence">stay</span>
                                                                     up-to-date with current activities and future events or share with us your experience
                                                                     by following us on your favorite social media channels.
@@ -424,5 +437,4 @@ $brand = "brand name";
         </tr>
     </table>
 </body>
-
 </html>

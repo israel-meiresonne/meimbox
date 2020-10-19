@@ -59,7 +59,7 @@ abstract class User extends  Visitor
     /**
      * Holds User's orders
      * + use creation date as access key
-     * @var Order[]
+     * @var Map
      */
     protected $orders;
 
@@ -134,6 +134,14 @@ abstract class User extends  Visitor
                 $this->addresses->put($address, $sequence);
             }
         }
+    }
+
+    /**
+     * Setter for orders
+     */
+    private function setOrders()
+    {
+        $this->orders = new Map();
     }
 
     /**
@@ -237,6 +245,52 @@ abstract class User extends  Visitor
             }
         }
         return $address;
+    }
+
+    /**
+     * To get User's orders
+     * @return Map User's orders
+     */
+    public function getOrders()
+    {
+        (!isset($this->orders)) ? $this->setOrders() : null;
+        return $this->orders;
+    }
+
+    /**
+     * To get User's order with the given id
+     * @param string $orderID id of a order
+     * + return the last order if id is empty
+     * @return Order|null order with the given id
+     */
+    public function getOrder($orderID)
+    {
+        // $order = null;
+        // $orders = $this->getOrders();
+        // $keys = $orders->getKeys();
+        // if (empty($orderID)) {
+
+        // } else if (!empty($keys)) {
+        //     foreach ($keys as $key) {
+        //         if ($orderID);
+        //     }
+        // }
+    }
+
+    /**
+     * To get User's last order
+     * @return Order|null last order passed by the User
+     */
+    public function getLastOrder()
+    {
+        $order = null;
+        $orders = $this->getOrders();
+        $keys = $orders->getKeys();
+        if (!empty($keys)) {
+            $key = $keys[0];
+            $order = $orders->get($key);
+        }
+        return $order;
     }
 
     /**
@@ -402,8 +456,11 @@ abstract class User extends  Visitor
         $order->create($response, $userID, $stripeCheckoutID, $address, $basket);
         $this->destroyCookie(Cookie::COOKIE_LCK, true);
         $key = $order->getDateInSec();
-        $this->orders[$key] = $order;
-        krsort($this->orders);
+        // $this->orders[$key] = $order;
+        $orders = $this->getOrders();
+        $orders->put($order, $key);
+        $orders->sortKeyDesc();
+        // krsort($this->orders);
     }
     /*———————————————————————————— PAYEMENT UP ——————————————————————————————*/
 }

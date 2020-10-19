@@ -156,6 +156,13 @@ class ControllerHome extends ControllerSecure
         $this->generateJsonView($datasView, $response, $this->person);
     }
 
+    public function testA()
+    {
+        header('content-type: application/json');
+        // var_dump($this->setCssMapRoot());
+    }
+
+
     public function test()
     {
         // header('content-type: application/json');
@@ -168,16 +175,34 @@ class ControllerHome extends ControllerSecure
         // $datasView = [
         //     "template" => $template
         // ];
-        $https = Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot();
-        $datasView = [
-            "cssFile" => '<link rel="stylesheet" href="'.$https.'/content/css/header.css">',
-            // "cssFile" => '<link rel="stylesheet" href="content/css/header.css">',
-        ];
+        // $https = Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot();
+        // $datasView = [
+        //     "cssFile" => '<link rel="stylesheet" href="'.$https.'/content/css/header.css">',
+        //     // "cssFile" => '<link rel="stylesheet" href="content/css/header.css">',
+        // ];
         $datasViewMap = new Map();
         $templateFile = 'view/EmailTemplates/orderConfirmation.php';
         // $templateFile = 'view/EmailTemplates/orderConfirmation2.php';
         // $templateFile = 'view/EmailTemplates/orderConfirmation1.php';
         $datasViewMap->put($templateFile, Map::templateFile);
+
+        $firstname = $this->person->getFirstname();
+        $lastname = $this->person->getLastname();
+        $toName = ($firstname . " " . $lastname);
+        $toEmail = $this->person->getEmail();
+        $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
+        $company = $this->person->getCompanyInfos();
+        $order = $this->person->getLastOrder();
+        $address = $this->person->getSelectedAddress();
+        $datasViewMap = new Map();
+        $datasViewMap->put($toName, Map::name);
+        $datasViewMap->put($toEmail, Map::email);
+        $datasViewMap->put($templateFile, Map::templateFile);
+        $datasViewMap->put($company, Map::company);
+        $datasViewMap->put($firstname, Map::firstname);
+        $datasViewMap->put($lastname, Map::lastname);
+        $datasViewMap->put($order, Map::order);
+        $datasViewMap->put($address, Map::address);
         $this->previewEmail($this->person, $datasViewMap);
     }
 }
