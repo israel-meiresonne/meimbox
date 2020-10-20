@@ -25,8 +25,8 @@ class BlueAPI extends ModelFunctionality
 
     public function __construct()
     {
-        header('content-type: application/json');
-        header('accept: application/json', true);
+        // header('content-type: application/json');
+        // header('accept: application/json', true);
         $apik = Configuration::get(Configuration::SENDINBLUE_APIK);
         self::$CONFIG = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apik);
     }

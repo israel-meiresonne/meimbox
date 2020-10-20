@@ -11,7 +11,7 @@ class ViewEmail extends View
     private $https_webroot;
     private $dir_email_files;
 
-    // private const CSS_ORDER_CONFIRMATION = "content/css/orderConfirmation.css";
+    private const CSS_ORDER_CONFIRMATION = "content/css/orderConfirmation.css";
 
     /**
      * Used to extract link from html's tag 'link'
@@ -162,6 +162,15 @@ class ViewEmail extends View
     {
         (!isset(self::$CSS_MAP_ROOT)) ? $this->setCssMapRoot() : null;
         return self::$CSS_MAP_ROOT;
+    }
+
+    /**
+     * To get $CSS_ORDER_CONFIRMATION
+     * @return string CSS_ORDER_CONFIRMATION
+     */
+    public function getCSS_ORDER_CONFIRMATION()
+    {
+        return self::CSS_ORDER_CONFIRMATION;
     }
 
     /**

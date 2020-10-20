@@ -437,7 +437,7 @@ abstract class User extends  Visitor
     {
         $stripeAPI = $this->getStripeAPI();
         $stripeCheckoutID = $stripeAPI->getCheckoutSessionId();
-        // $this->createOrder($response, $stripeCheckoutID);
+        $this->createOrder($response, $stripeCheckoutID);
         return $stripeAPI->getEvent();
     }
 

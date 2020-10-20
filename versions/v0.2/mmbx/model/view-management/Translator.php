@@ -38,13 +38,8 @@ class Translator extends ModelFunctionality
      */
     private $language;
 
-    // private static $nbInstance;
-
-    // /**
-    //  * Holds the default lagnuage's iso code 2
-    //  * @var string 
-    //  */
-    // private $defaultIsoLang = "DEFAULT_LANGUAGE";
+    private const PATTERN = "#{+}#";
+    private const PATTERN_SALT = "+";
 
     /**
      * Constuctor
@@ -83,7 +78,7 @@ class Translator extends ModelFunctionality
     {
         self::$translateMap = [];
         $tab = $this->select("SELECT * FROM `Translations`");
-        foreach($tab as $tabLine){
+        foreach ($tab as $tabLine) {
             self::$translateMap[$tabLine["en"]][$tabLine["iso_lang"]] = $tabLine["translation"];
         }
     }
@@ -94,16 +89,40 @@ class Translator extends ModelFunctionality
      * translation is returned in the default language of the 
      * Translator
      * @param string $station the id of the station where to get the translation
+     * @param Map $replacements used to replace {key} in translation
+     * + key => replacement
+     * + NOTE: the replacement have to be Understandable in all logage like number or brand name
      * @return string the translation at the station and into the language given in param
      */
-    public function translateStation($station)
+    public function translateStation($station, Map $replacements = null)
     {
         (!isset(self::$stationMap)) ? $this->setStationMap() : null;
-        // var_dump(self::$stationMap);
-        // echo "<hr>";
         $isoLang = $this->language->getIsoLang();
-        return !empty(self::$stationMap[$station][$isoLang]) ? self::$stationMap[$station][$isoLang]
+        $translation = !empty(self::$stationMap[$station][$isoLang]) ? self::$stationMap[$station][$isoLang]
             : self::$stationMap[$station][$this->language->getDEFAULT_LANGUAGE()];
+        if (!empty($replacements)) {
+            $translation = $this->replacePattern($translation, $replacements);
+        }
+
+        return $translation;
+    }
+
+    /**
+     * Replace pattern found in translation
+     * @param string $translation
+     * @param Map $replacements used to replace {key} in translation
+     * + key => replacement
+     * + NOTE: the replacement have to be Understandable in all logage like number or brand name
+     * @return string the translation given
+     */
+    private function replacePattern($translation, Map $replacements)
+    {
+        $patterns = $replacements->getKeys();
+        foreach ($patterns as $key => $search) {
+            $pattern = str_replace(self::PATTERN_SALT, $search, self::PATTERN);
+            $patterns[$key] = $pattern;
+        }
+        return preg_replace($patterns, $replacements->getMap(), $translation);
     }
 
     /**
@@ -117,7 +136,8 @@ class Translator extends ModelFunctionality
     {
         (!isset(self::$translateMap)) ? $this->setTranslateMap() : null;
         $isoLang = $this->language->getIsoLang();
-        return !empty(self::$translateMap[$text][$isoLang]) ? self::$translateMap[$text][$isoLang]
+        return (key_exists($text, self::$translateMap) && (!empty(self::$translateMap[$text][$isoLang])))
+            ? self::$translateMap[$text][$isoLang]
             : $text;
     }
 }

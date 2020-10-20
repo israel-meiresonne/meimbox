@@ -123,8 +123,11 @@ class ControllerCheckout extends ControllerSecure
                 $toEmail = $this->person->getEmail();
                 $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
                 $company = $this->person->getCompanyInfos();
+
+                /**
+                 * @var Order */
                 $order = $this->person->getLastOrder();
-                $address = $this->person->getSelectedAddress();
+                // $address = $this->person->getSelectedAddress();
                 $datasViewMap = new Map();
                 $datasViewMap->put($toName, Map::name);
                 $datasViewMap->put($toEmail, Map::email);
@@ -133,9 +136,10 @@ class ControllerCheckout extends ControllerSecure
                 $datasViewMap->put($firstname, Map::firstname);
                 $datasViewMap->put($lastname, Map::lastname);
                 $datasViewMap->put($order, Map::order);
-                $datasViewMap->put($address, Map::address);
+                // $datasViewMap->put($address, Map::address);
                 try {
                     $this->sendEmail($response, $this->person, BlueAPI::class, BlueAPI::FUNC_ORDER_CONFIRM, $datasViewMap);
+                    $order->getBasketOrdered()->empty($response);
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                 }

@@ -8,12 +8,10 @@
  * @param string $firstname the firstname of the recipient of this email
  * @param string $lastname the lastname of the recipient of this email
  * @param Order $order the oder of the recipient of this email
- * @param Address $address delivery address for the given order
  */
 
 $styles = [
-    // self::CSS_ORDER_CONFIRMATION
-    "content/css/orderConfirmation.css"
+    $this->getCSS_ORDER_CONFIRMATION()
 ];
 $templateDatas = [
     "https_webroot" => $https_webroot,
@@ -22,7 +20,7 @@ $templateDatas = [
     "firstname" => $firstname,
     "lastname" => $lastname,
     "order" => $order,
-    "address" => $address
+    // "address" => $address   //🚨to delete cause delivery addres is  already in order
 ];
 
 $html = $this->generateFile('view/EmailTemplates/orderConfirmation/template.php', $templateDatas);

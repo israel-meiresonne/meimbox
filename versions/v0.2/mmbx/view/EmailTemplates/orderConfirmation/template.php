@@ -1,4 +1,5 @@
 <?php
+
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
@@ -9,26 +10,49 @@ use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
  * @param string $firstname the firstname of the recipient of this email
  * @param string $lastname the lastname of the recipient of this email
  * @param Order $order the oder of the recipient of this email
- * @param Address $address delivery address for the given order
  */
+
+$prod_https_dir = $https_webroot . $dir_prod_files;
 
 /**
  * @var Translator */
 $translator = $translator;
-// $https_webroot = Configuration::get(Configuration::HTTPS_DOMAIN) . Configuration::getWebRoot();
-// $dir_email_files = $this->dir_email_files;
-$prod_https_dir = $https_webroot . $dir_prod_files;
-$brand = $company->get(Map::brand);
-?>
 
+/**
+ * @var Order */
+$order = $order;
+$basketOrdered = $order->getBasketOrdered();
+/**
+ * @var BasketOrdered*/
+// $basketOrdered = $order;        //🚨to delete cause delivery addres is  already in order
+
+/**
+ * @var AddressDelivery */
+$address = $order->getDelivery();
+// $address = $address;        //🚨to delete cause delivery addres is  already in order
+$appartement = (!empty($address->getAppartement())) ? " (" . $address->getAppartement() . ")" : null;
+$province = ", " . $address->getProvince();
+$zipcode = ", " . $address->getZipcode();
+$city = " " . $address->getCity();
+$adrsCountry = ", " . $address->getCountry()->getCountryName();
+$fullAddress = $address->getAddress() . $appartement . strtoupper($zipcode) . $city . $province . $adrsCountry;
+
+/**
+ * @var Map*/
+$company = $company;
+$brand = $company->get(Map::brand);
+
+$zipcode = $company->get(Map::address, Map::zipcode);
+$city = " " . $company->get(Map::address, Map::city);
+$state = ", " . $company->get(Map::address, Map::state);
+$CompanyCountry = " " . $company->get(Map::address, Map::country);
+$companyAddress = $zipcode . $city . $state . $CompanyCountry;
+
+$medias = $company->get(Map::media);
+?>
 <html>
 
 <head>
-    <?= ""//self::FONT_FAM_SPARTAN ?>
-    <?= ""//self::FONT_FAM_PT ?>
-    <!-- <link rel="stylesheet" href="<?= ""//$https_webroot . self::CSS_ELEMENTS ?>"> -->
-    <!-- <link rel="stylesheet" href="<?= ""//$https_webroot . self::CSS_ROOT ?>"> -->
-    <!-- <link rel="stylesheet" href="<?= ""//$https_webroot ?>content/css/emailConfirmation.css"> -->
 </head>
 
 <body>
@@ -37,7 +61,7 @@ $brand = $company->get(Map::brand);
         $tags = [
             self::FONT_FAM_SPARTAN
         ];
-        foreach($tags as $tag){
+        foreach ($tags as $tag) {
             $link = $this->extractLink($tag);
             echo file_get_contents($link);
         }
@@ -49,7 +73,7 @@ $brand = $company->get(Map::brand);
                 <table class="head_content">
                     <tr>
                         <td class="head_content-brand">
-                            <h1><a href="<?= $https_webroot ?>" class="remove-a-default-att" target="_blank"><?= $brand ?></a></h1>
+                            <h1><a href="<?= $https_webroot ?>" class="remove-a-default-att" target="_blank"><?=strtoupper($brand) ?></a></h1>
                         </td>
                     </tr>
                     <tr>
@@ -71,21 +95,21 @@ $brand = $company->get(Map::brand);
                                 <tr>
                                     <td>
                                         <h1>
-                                            <span class="sentence">hi james,</span>
+                                            <span class="sentence"><?= $translator->translateStation("US70") ?> <?= $firstname ?>,</span>
                                             <br>
-                                            <span class="sentence">your order is in preparation</span>
+                                            <span><?= ucfirst($translator->translateStation("US71")) ?></span>
                                         </h1>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <h3 class="inter_line_low no_margin unbold_field">
-                                            <span class="sentence">thank</span> you for your confidence.
-                                            <span>your order is currently in preparation. </span>
+                                            <span><?= ucfirst($translator->translateStation("US72")) ?></span>.
+                                            <span><?= ucfirst($translator->translateStation("US73")) ?>. </span>
                                             <br>
-                                            <span><span class="sentence">you</span> will receive a new message as soon as your order has been shipped. </span>
+                                            <span><?= ucfirst($translator->translateStation("US74")) ?>. </span>
                                             <br>
-                                            <span><span class="sentence">follow</span> the progress of your order <a href="" target="_blank" rel="noopener noreferrer">here</a> at any time.</span>
+                                            <span><?= ucfirst($translator->translateStation("US75")) ?> <a href="" target="_blank"><?= $translator->translateStation("US76") ?></a>.</span>
                                         </h3>
                                     </td>
                                 </tr>
@@ -113,9 +137,9 @@ $brand = $company->get(Map::brand);
                                         <table class="body_content-info body_content-child">
                                             <tr>
                                                 <td class="body_content-info-address body_content-info-td">
-                                                    <h2 class="sentence">john doe</h2>
-                                                    <p class="secondary_field_dark">
-                                                        2754 Lucy Lane, East Enterprise Indiana, United State 89898
+                                                    <h2 class="sentence"><?= $firstname . " " . $lastname ?></h2>
+                                                    <p class="secondary_field_dark sentence">
+                                                        <?= $fullAddress ?>
                                                     </p>
                                                 </td>
                                                 <td class="body_content-info-td">
@@ -123,7 +147,7 @@ $brand = $company->get(Map::brand);
                                                         <tr>
                                                             <td>
                                                                 <h2 class="delivery_label unbold_field">
-                                                                    <span class="sentence">delivery:</span>
+                                                                    <span class="sentence"><?= $translator->translateStation("US77") ?>:</span>
                                                                 </h2>
                                                             </td>
                                                         </tr>
@@ -159,10 +183,10 @@ $brand = $company->get(Map::brand);
                                                     <table class="table_default">
                                                         <tr>
                                                             <td>
-                                                                <p class="secondary_field_dark"><span class="sentence">number</span> of item:</p>
+                                                                <p class="secondary_field_dark"><?= ucfirst($translator->translateStation("US78")) ?>:</p>
                                                             </td>
                                                             <td>
-                                                                <span>1000</span>
+                                                                <span><?= $basketOrdered->getQuantity() ?></span>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -173,52 +197,36 @@ $brand = $company->get(Map::brand);
                                                     <div class="table_separator-td-space"></div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td class="body_content-body-picture body_content-body-td">
-                                                                <a href="<?= $https_webroot ?>item/3" target="_blank">
-                                                                    <img src="<?= $prod_https_dir ?>picture01.jpeg" alt="name of the product">
-                                                                </a>
-                                                            </td>
-                                                            <td class="body_content-body-td">
-                                                                <table class="body_content-body-property">
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h4 class="property-title sentence no_margin">name of the product</h4>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <table class="table_default">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="secondary_field_dark">property:</span>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <span>value</span>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                            <td class="body_content-body-price body_content-body-td">
-                                                                <span class="secondary_field_dark price_field">€ 99.90</span>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <?php
+                                            $boxes = $basketOrdered->getBoxes();
+                                            foreach ($boxes as $box) :
+                                                $boxDatas = [
+                                                    "https_webroot" => $https_webroot,
+                                                    "box" => $box,
+                                                ];
+                                                echo $this->generateFile('view/EmailTemplates/orderConfirmation/files/boxElement.php', $boxDatas);
+                                                $boxProducts = $box->getProducts();
+                                                foreach ($boxProducts as $boxProduct) {
+                                                    $boxProdDatas = [
+                                                        "https_webroot" => $https_webroot,
+                                                        "product" => $boxProduct,
+                                                    ];
+                                                    echo $this->generateFile('view/EmailTemplates/orderConfirmation/files/productElement.php', $boxProdDatas);
+                                                } ?>
+                                                <tr>
+                                                    <td>
+                                                        <div class="table_separator-td-space"></div>
+                                                        <div class="table_separator-td-space"></div>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            endforeach;
+                                            ?>
                                         </table>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div class="table_separator-td-space"></div>
-                                        <div class="table_separator-td-space"></div>
                                         <div class="table_separator-td-space"></div>
                                         <div class="table_separator-td-barre"></div>
                                         <div class="table_separator-td-space"></div>
@@ -230,9 +238,9 @@ $brand = $company->get(Map::brand);
                                     <td>
                                         <table class="body_content-summary body_content-child">
                                             <tr class="body_content-summary-price">
-                                                <td class="sentence secondary_field_dark">shipping</td>
+                                                <td class="sentence secondary_field_dark"><?= $translator->translateStation("US79") ?></td>
                                                 <td class="nada_60"></td>
-                                                <td class="secondary_field_dark price_field">€ 7.50</td>
+                                                <td class="secondary_field_dark price_field"><?= $basketOrdered->getShipping()->getFormated() ?></td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -240,9 +248,9 @@ $brand = $company->get(Map::brand);
                                                 </td>
                                             </tr>
                                             <tr class="body_content-summary-price">
-                                                <td class="sentence secondary_field_dark">vat</td>
+                                                <td class="sentence secondary_field_dark"><?= strtoupper($translator->translateStation("US80")) ?></td>
                                                 <td class="nada_60"></td>
-                                                <td class="secondary_field_dark price_field">€ 12.50</td>
+                                                <td class="secondary_field_dark price_field"><?= $basketOrdered->getVatAmount()->getFormated() ?></td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -250,9 +258,9 @@ $brand = $company->get(Map::brand);
                                                 </td>
                                             </tr>
                                             <tr class="body_content-summary-price">
-                                                <td class="sentence secondary_field_dark">subtotal</td>
+                                                <td class="sentence secondary_field_dark"><?= $translator->translateStation("US81") ?></td>
                                                 <td class="nada_60"></td>
-                                                <td class="secondary_field_dark price_field">€ 145.50</td>
+                                                <td class="secondary_field_dark price_field"><?= $basketOrdered->getSubTotal()->getFormated() ?></td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -260,9 +268,9 @@ $brand = $company->get(Map::brand);
                                                 </td>
                                             </tr>
                                             <tr class="body_content-summary-price">
-                                                <td class="sentence">total</td>
+                                                <td class="sentence"><?= $translator->translateStation("US82") ?></td>
                                                 <td class="nada_60"></td>
-                                                <td class="price_field">AUD 15000.50€</td>
+                                                <td class="price_field"><?= $basketOrdered->getTotal()->getFormated() ?></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -284,7 +292,9 @@ $brand = $company->get(Map::brand);
                                             <td class="nada_33"></td>
                                             <td>
                                                 <div>
-                                                    <button class="green-button-reverse standard-button">see my order</button>
+                                                    <a href="" target="_blank">
+                                                    <button class="green-button-reverse standard-button"><?= $translator->translateStation("US83") ?></button>
+                                                    </a>
                                                 </div>
                                             </td>
                                             <td class="nada_33"></td>
@@ -307,9 +317,14 @@ $brand = $company->get(Map::brand);
                                         <table class="footer_content-thanks">
                                             <tr>
                                                 <td>
-                                                    <span class="sentence">thanks,</span>❤️
+                                                    <?php
+                                                    $replacementsMap = new Map();
+                                                    $replacementsMap->put(strtoupper($brand), Map::brand);
+                                                    $translation = $translator->translateStation("US85", $replacementsMap);
+                                                    ?>
+                                                    <span class="sentence"><?= $translator->translateStation("US84") ?>❤️,</span>
                                                     <br>
-                                                    <span class="sentence"><?= $brand ?></span>'s team
+                                                    <span class="sentence"><?= $translation ?></span>
                                                 </td>
                                             </tr>
                                         </table>
@@ -334,13 +349,13 @@ $brand = $company->get(Map::brand);
                                                     <table class="footer_content-contact-support">
                                                         <tr class="footer_content-contact-support-title">
                                                             <td>
-                                                                <h3 class="sentence">contact us</h3>
+                                                                <h3 class="sentence"><?= $translator->translateStation("US86") ?></h3>
                                                             </td>
                                                         </tr>
                                                         <tr class="support_address mini_text">
                                                             <td>
                                                                 <address class="secondary_field_clear sentence">
-                                                                    <?= $brand ?> 1640, sint-genesius-rode, flemish brabant Belgium
+                                                                    <?= $brand . ", " . $companyAddress ?>
                                                                 </address>
                                                             </td>
                                                         </tr>
@@ -350,10 +365,10 @@ $brand = $company->get(Map::brand);
                                                                     <tr>
                                                                         <td>
                                                                             <span class="secondary_field_clear">
-                                                                                <span class="sentence">changed</span> your mind?:</span>
+                                                                                <span><?= ucfirst($translator->translateStation("US87")) ?>:</span>
                                                                         </td>
                                                                         <td>
-                                                                            <a href="" target="_blank">unsubscribe</a>
+                                                                            <a href="" target="_blank"><?= $translator->translateStation("US88") ?></a>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -378,15 +393,13 @@ $brand = $company->get(Map::brand);
                                                     <table class="footer_content-contact-media">
                                                         <tr class="footer_content-contact-media-title">
                                                             <td>
-                                                                <h3 class="sentence">social media</h3>
+                                                                <h3 class="sentence"><?= $translator->translateStation("US89") ?></h3>
                                                             </td>
                                                         </tr>
                                                         <tr class="footer_content-contact-media-message mini_text">
                                                             <td>
                                                                 <p class="secondary_field_clear inter_line_low">
-                                                                    <span class="sentence">stay</span>
-                                                                    up-to-date with current activities and future events or share with us your experience
-                                                                    by following us on your favorite social media channels.
+                                                                    <?= ucfirst($translator->translateStation("US90")) ?>
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -399,26 +412,38 @@ $brand = $company->get(Map::brand);
                                                             <td>
                                                                 <table class="footer_content-contact-media-logo">
                                                                     <tr>
-                                                                        <td>
+                                                                        <?php
+                                                                        foreach ($medias as $mediaName => $datas) : ?>
+                                                                            <td>
+                                                                                <a href="<?= $datas[Map::link] ?>" target="_blank">
+                                                                                    <img src="<?= $dir_email_files . $datas[Map::logo] ?>" alt="<?= $mediaName ?>">
+                                                                                </a>
+                                                                            </td>
+                                                                        <?php endforeach; ?>
+                                                                        <!-- <td>
                                                                             <a href="" target="_blank">
-                                                                                <img src="<?= $dir_email_files ?>facebook2x.png" alt="facebook">
+                                                                                <img src="<?= "" //$dir_email_files 
+                                                                                            ?>facebook2x.png" alt="facebook">
                                                                             </a>
                                                                         </td>
                                                                         <td>
                                                                             <a href="" target="_blank">
-                                                                                <img src="<?= $dir_email_files ?>instagram2x.png" alt="instagram">
+                                                                                <img src="<?= "" //$dir_email_files 
+                                                                                            ?>instagram2x.png" alt="instagram">
                                                                             </a>
                                                                         </td>
                                                                         <td>
                                                                             <a href="" target="_blank">
-                                                                                <img src="<?= $dir_email_files ?>googleplus2x.png" alt="googleplus">
+                                                                                <img src="<?= "" //$dir_email_files 
+                                                                                            ?>googleplus2x.png" alt="googleplus">
                                                                             </a>
                                                                         </td>
                                                                         <td>
                                                                             <a href="" target="_blank">
-                                                                                <img src="<?= $dir_email_files ?>twitter2x.png" alt="twitter">
+                                                                                <img src="<?= "" //$dir_email_files 
+                                                                                            ?>twitter2x.png" alt="twitter">
                                                                             </a>
-                                                                        </td>
+                                                                        </td> -->
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -437,4 +462,8 @@ $brand = $company->get(Map::brand);
         </tr>
     </table>
 </body>
+<script>
+
+</script>
+
 </html>
