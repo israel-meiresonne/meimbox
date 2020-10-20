@@ -159,7 +159,17 @@ class ControllerHome extends ControllerSecure
     public function testA()
     {
         header('content-type: application/json');
-        // var_dump($this->setCssMapRoot());
+        // $translator = new Translator($this->person->getLanguage());
+        $lang = new Language("en");
+        $translator = new Translator($lang);
+        $replacementsMap = new Map();
+        $replacementsMap->put("i&meim", Map::brand);
+        $replacementsMap->put("open", "fuck");
+        $replacementsMap->put("your", "you");
+        $replacementsMap->put("pussy", "self");
+        $trad = $translator->translateStation("US85", $replacementsMap);
+        var_dump($trad);
+        // var_dump($this->person->getCompanyInfos());
     }
 
 
@@ -193,7 +203,8 @@ class ControllerHome extends ControllerSecure
         $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
         $company = $this->person->getCompanyInfos();
         $order = $this->person->getLastOrder();
-        $address = $this->person->getSelectedAddress();
+        $order = $this->person->getBasket();
+        $address = $this->person->getSelectedAddress();     //🚨to delete cause delivery addres is  already in order
         $datasViewMap = new Map();
         $datasViewMap->put($toName, Map::name);
         $datasViewMap->put($toEmail, Map::email);
@@ -202,7 +213,7 @@ class ControllerHome extends ControllerSecure
         $datasViewMap->put($firstname, Map::firstname);
         $datasViewMap->put($lastname, Map::lastname);
         $datasViewMap->put($order, Map::order);
-        $datasViewMap->put($address, Map::address);
+        $datasViewMap->put($address, Map::address);     //🚨to delete cause delivery addres is  already in order
         $this->previewEmail($this->person, $datasViewMap);
     }
 }

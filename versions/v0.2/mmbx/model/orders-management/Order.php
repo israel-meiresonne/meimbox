@@ -52,25 +52,6 @@ class Order extends ModelFunctionality
      */
     private $setDate;
 
-    // /**
-    //  * Holds Boxes from basket ordered
-    //  * @var BoxOrdered[]
-    //  */
-    // private $boxesOrdered;
-
-    // /**
-    //  * Holds basketProduct from basket ordered
-    //  * @var BasketProductOrdered[]
-    //  */
-    // private $basketProductsOrdered;
-
-    // /**
-    //  * Liste of discount code of the basket.
-    //  * Use the code as access key like $discountCodes[code => DiscountCode]
-    //  * @var DiscountCode[] $discountCodes
-    //  */
-    // private $discountCodes;
-
     /**
      * Constructor
      */
@@ -105,7 +86,7 @@ class Order extends ModelFunctionality
         $this->status->create($response, $this->orderID, $status);
         
         $this->basketOrdered->unlock($response, $userID);
-        $this->basketOrdered->empty($response);
+        // $this->basketOrdered->empty($response);
     }
 
     /**
@@ -139,7 +120,7 @@ class Order extends ModelFunctionality
      * To get Order's address
      * @return AddressDelivery Order's address
      */
-    private function getDelivery()
+    public function getDelivery()
     {
         return $this->delivery;
     }
@@ -148,7 +129,7 @@ class Order extends ModelFunctionality
      * To get Order's basketOrdered
      * @return BasketOrdered Order's basketOrdered
      */
-    private function getBasketOrdered()
+    public function getBasketOrdered()
     {
         return $this->basketOrdered;
     }

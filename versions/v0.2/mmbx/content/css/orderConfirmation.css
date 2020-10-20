@@ -87,6 +87,7 @@ table {
     width: 100%;
     text-align: center;
     text-transform: capitalize;
+    letter-spacing: 5px;
 }
 
 .head_content-brand a {

@@ -11,16 +11,11 @@ array_push(
     self::CSS_ELEMENTS
 );
 $css = "";
-//  if(!empty($styles)){
 foreach ($styles as $file) {
     $content = $this->generateFile($file, []);
     $css .= $this->replaceCssVar($content);
     $css .= "\n";
 }
-//  }
-// $css .= $this->generateFile(self::CSS_ROOT, []);
-// $css .= "\n";
-// $css .= $this->generateFile(self::CSS_ELEMENTS, []);
 
 $email = $this->htmlToEmail($html, $css);
 echo $email;

@@ -10,12 +10,18 @@ class Map
     private $map;
     public const setDate = "setDate";
     public const value = "value";
+    public const properties = "properties";
+    public const price = "price";
+    public const picture = "picture";
+    public const link = "link";
 
     /**
      * key for User
      * @var string
      */
     public const userID = "userID";
+    public const max = "max";
+    public const nbItem = "nbItem";
 
     /**
      * key for Country
@@ -25,6 +31,7 @@ class Map
     public const isoCurrency = "iso_currency";
     public const isUE = "isUE";
     public const vat = "vat";
+    public const country = "country";
 
     /**
      * key for Size
@@ -121,6 +128,7 @@ class Map
     public const zipcode = "zipcode";
     public const countryName = "countryName";
     public const phone = "phone";
+    public const state = "state";
 
     /**
      * Keys for Order
@@ -169,6 +177,12 @@ class Map
     public const templateId = "templateId";
     public const params = "params";
     public const tags = "tags";
+
+    /**
+     * Keys for company datas
+     */
+    public const media = "media";
+    public const logo = "logo";
 
     /**
      * Constructor

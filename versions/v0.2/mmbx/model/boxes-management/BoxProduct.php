@@ -513,7 +513,7 @@ class BoxProduct extends Product
     }
 
     /**
-     * Getter for product's prrice
+     * Getter for product's price
      * @return Price product's prrice
      * + for boxProduct will return Price with a zero as value
      */
