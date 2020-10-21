@@ -1,0 +1,30 @@
+{
+    "company": {
+        "brand": "i&meim",
+        "media": {
+            "faceboock": {
+                "link": "https://www.facebook.com/iandmeimofficial/",
+                "logo": "facebook2x.png"
+            },
+            "instagram": {
+                "link": "https://www.instagram.com/iandmeim/",
+                "logo": "instagram2x.png"
+            }
+        },
+        "address": {
+            "city": "sint-genesius-rode",
+            "door": null,
+            "phone": "32",
+            "state": "flemish brabant",
+            "street": null,
+            "country": "belgium",
+            "zipcode": "1640"
+        },
+        "email": {
+            "support": {
+                "name": "i&meim",
+                "email": "support@iandmeim.com"
+            }
+        }
+    }
+}

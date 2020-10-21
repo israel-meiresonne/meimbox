@@ -149,6 +149,12 @@ abstract class ModelFunctionality extends Model
     private static $payementMap;
 
     /**
+     * Holds datas about company
+     * @var Map
+     */
+    protected static $INFOS_COMPANY;
+
+    /**
      * PDOStatement success code
      * @var string
      */
@@ -863,6 +869,26 @@ abstract class ModelFunctionality extends Model
                 self::$payementMap->put($tabLine["successPath"], $payID, Map::successPath);
             }
         }
+    }
+
+    /**
+     * 
+     */
+    protected static function getCompanyMap()
+    {
+        (!isset(self::$INFOS_COMPANY)) ? self::setCompanyMap() : null;
+        return self::$INFOS_COMPANY;
+    }
+
+    /**
+     * To set company datas
+     */
+    private static function setCompanyMap()
+    {
+            self::$INFOS_COMPANY = "INFOS_COMPANY";
+            $json = self::getConstantLine(self::$INFOS_COMPANY)["jsonValue"];
+            $companyMap = json_decode($json, true);
+            self::$INFOS_COMPANY = new Map($companyMap);
     }
 
     /*———————————————————————————— STATIC TABLES ACCESS UP ——————————————————*/
