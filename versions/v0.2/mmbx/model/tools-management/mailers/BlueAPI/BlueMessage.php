@@ -231,6 +231,15 @@ class BlueMessage extends BlueAPI
     }
 
     /**
+     * To get tags
+     * @return string[] message's tags
+     */
+    private function getTags()
+    {
+        return (!empty($this->tags)) ? $this->tags : [];
+    }
+
+    /**
      * To merge the to, cc and bcc field
      * @return array
      * + [
@@ -323,5 +332,30 @@ class BlueMessage extends BlueAPI
             );
         }
         $this->insert($response, $sql, $values);
+        $this->insertTags($response, $messageID);
+    }
+
+    /**
+     * To insert message's tags in db
+     * @param Response $response used store results or errors occured
+     * @param string $messageID id of the message
+     */
+    private function insertTags(Response $response, string $messageID)
+    {
+        $tags = $this->getTags();
+        if (!empty($tags)) {
+            $bracket = "(?,?)";   // regex \[value-[0-9]*\]
+            $sql = "INSERT INTO `EmailsTags`(`messageId`, `tag`)
+                    VALUES " . $this->buildBracketInsert(count($tags), $bracket);
+            $values = [];
+            foreach ($tags as $tag) {
+                array_push(
+                    $values,
+                    $messageID,
+                    $tag
+                );
+            }
+            $this->insert($response, $sql, $values);
+        }
     }
 }

@@ -14,6 +14,7 @@ class Map
     public const price = "price";
     public const picture = "picture";
     public const link = "link";
+    public const sql = "sql";
 
     /**
      * key for User
