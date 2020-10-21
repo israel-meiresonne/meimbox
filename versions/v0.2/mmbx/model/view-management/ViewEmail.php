@@ -133,7 +133,7 @@ class ViewEmail extends View
             $htmlContent = $this->generateFile($templateFile, $emailDatasMap->getMap());
             $emailDatasMap->put($htmlContent, Map::template);
         }
-        $mailerAPI = new $mailerClass();
+        $mailerAPI = new $mailerClass($this->translator);
         if (!method_exists($mailerAPI, $mailerFunc)) {
             throw new Exception("This function '$mailerFunc' don't exist in class '$mailerClass'");
         }

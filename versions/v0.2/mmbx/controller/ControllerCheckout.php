@@ -128,7 +128,6 @@ class ControllerCheckout extends ControllerSecure
                 /**
                  * @var Order */
                 $order = $this->person->getLastOrder();
-                // $address = $this->person->getSelectedAddress();
                 $datasViewMap = new Map();
                 $datasViewMap->put($toName, Map::name);
                 $datasViewMap->put($toEmail, Map::email);
@@ -137,10 +136,9 @@ class ControllerCheckout extends ControllerSecure
                 $datasViewMap->put($firstname, Map::firstname);
                 $datasViewMap->put($lastname, Map::lastname);
                 $datasViewMap->put($order, Map::order);
-                // $datasViewMap->put($address, Map::address);
                 try {
                     $this->sendEmail($response, $this->person, BlueAPI::class, BlueAPI::FUNC_ORDER_CONFIRM, $datasViewMap);
-                    $order->getBasketOrdered()->empty($response);
+                    $order->getBasketOrdered()->empty($response);        //🔋enable
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                 }

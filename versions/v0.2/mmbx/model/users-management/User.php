@@ -8,7 +8,7 @@ require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 require_once 'model/orders-management/Order.php';
 // require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
-abstract class User extends  Visitor
+abstract class User extends Visitor
 {
 
     // protected $password;

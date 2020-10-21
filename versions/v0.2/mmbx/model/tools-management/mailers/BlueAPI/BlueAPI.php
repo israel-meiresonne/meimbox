@@ -1,6 +1,6 @@
 <?php
 require_once('vendor/autoload.php');
-// require_once 'model/tools-management/mailers/Mailer.php';
+require_once 'model/tools-management/mailers/Mailer.php';
 require_once 'model/tools-management/mailers/BlueAPI/BlueMessage.php';
 
 require_once 'framework/Configuration.php';
@@ -9,6 +9,7 @@ require_once 'model/special/Map.php';
 /**
  * This class manage access to Sendinblue's API
  */
+// class BlueAPI extends Mailer
 class BlueAPI extends ModelFunctionality
 {
     /**
@@ -17,18 +18,24 @@ class BlueAPI extends ModelFunctionality
      */
     private static $CONFIG;
 
+    private static $translator;
+
     /**
      * Holds function available
      */
     public const FUNC_ORDER_CONFIRM = "sendOrderConfirmation";
 
-
-    public function __construct()
+    /**
+     * Consttructor
+     * @param Translator $translator translator from EmailView to translate email
+     */
+    public function __construct(Translator $translator)
     {
         // header('content-type: application/json');
         // header('accept: application/json', true);
         $apik = Configuration::get(Configuration::SENDINBLUE_APIK);
         self::$CONFIG = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apik);
+        self::$translator = $translator;
     }
 
     /**
@@ -61,36 +68,37 @@ class BlueAPI extends ModelFunctionality
      * + $datasMap[Map::email] => email recipient
      * + $datasMap[Map::template] => the html content of the email
      */
-    // public function sendOrderConfirmation(Response $response, $toName, $toEmail, $htmlContent)
     public function sendOrderConfirmation(Response $response, Map $datasMap)
-    // public function sendOrderConfirmation(Client $client)
     {
         $toName = $datasMap->get(Map::name);
         $toEmail = $datasMap->get(Map::email);
         $htmlContent = $datasMap->get(Map::template);
-        if(empty($toName)){
+        if (empty($toName)) {
             throw new Exception("Recipient's name can't be empty");
         }
-        if(empty($toEmail)){
+        if (empty($toEmail)) {
             throw new Exception("Email recipient can't be empty");
         }
-        if(empty($htmlContent)){
+        if (empty($htmlContent)) {
             throw new Exception("The html content of the email can't be empty");
         }
-        $dataMap = new Map();
+        $translator = $this->getTranslator();
+        $mailing = new Map(Configuration::getFromJson(Configuration::JSON_KEY_MAILING));
+        $order_confirmation = new Map($mailing->get(Map::order_confirmation));
         $sender = [
-            "name" => "my sender name",
-            "email" => "support@iandmeim.com"
+            "name" => strtoupper($order_confirmation->get(Map::sender, Map::name)),
+            "email" => $order_confirmation->get(Map::sender, Map::email)
         ];
         $to = [
-            ["name" => $toName, "email" => $toEmail]
+            ["name" => ucwords($toName), "email" => $toEmail]
         ];
-        $subject = "My subject";
+        $subject = ucfirst($translator->translateStation($order_confirmation->get(Map::subject)));
         $replyTo = [
-            "name" => "my reply name",
-            "email" => "support@iandmeim.com"
+            "name" => ucwords($translator->translateStation($order_confirmation->get(Map::replyTo, Map::name))),
+            "email" => $order_confirmation->get(Map::replyTo, Map::email)
         ];
-        $tags = ["order"];
+        $tags = $order_confirmation->get(Map::tags);
+        $dataMap = new Map();
         $dataMap->put($sender, Map::sender);
         $dataMap->put($to, Map::to);
         $dataMap->put($htmlContent, Map::htmlContent);
@@ -101,43 +109,12 @@ class BlueAPI extends ModelFunctionality
         $blueMessage->sendEmail($response, BlueMessage::EMAIL_TYPE_TANSACTIONAL, $dataMap);
     }
 
-
-    // /**
-    //  * To send a email
-    //  * @param mixed[] $datas datas required to send an email
-    //  * + $datas[Map::sender] holds sender
-    //  * + + $emailMap[
-    //  * + +  "name" => {string}, (optional)
-    //  * + +  "email" => {string},
-    //  * + +  "id" => {string},   (optional)
-    //  * + + ]
-    //  * + $datas[Map::to] holds the name and email of recipients
-    //  * + + $emailMap[
-    //  * + +  index => ["name" => {string}, "email" => {string}],
-    //  * + + ]
-    //  * + $datas[Map::bcc] to send email blinding other recipient for all
-    //  * + $datas[Map::cc] to send email hidding 'cc' contacts from the 'to' contacts
-    //  * + + invisible for the recipient 'to' but visible for the recipient 'cc'
-    //  * + $datas[Map::htmlContent] holds HTML body of the message
-    //  * + + ignored if templateId given
-    //  * + $datas[Map::textContent] holds Plain Text body of the message
-    //  * + + ignored if templateId given
-    //  * + $datas[Map::subject] holds Subject of the message
-    //  * + + ignored if templateId given
-    //  * + $datas[Map::replyTo] email to send the reply from the recipient
-    //  * + $datas[Map::attachment] holds
-    //  * + $datas[Map::headers] holds
-    //  * + $datas[Map::templateId] holds
-    //  * + $datas[Map::params] holds
-    //  * + $datas[Map::tags] holds
-    //  */
-    // private function sendEventEmail(Map $dataMap)
-    // {
-    //     $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(
-    //         new GuzzleHttp\Client(),
-    //         $this->getCONFIG()
-    //     );
-    //     $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail($dataMap->getMap());
-    //     $apiInstance->sendTransacEmail($sendSmtpEmail);
-    // }
+    /**
+     * To get translator
+     * @return Translator translator
+     */
+    private function getTranslator()
+    {
+        return self::$translator;
+    }
 }

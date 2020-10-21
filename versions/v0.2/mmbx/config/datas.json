@@ -26,5 +26,24 @@
                 "email": "support@iandmeim.com"
             }
         }
+    },
+    "mailing": {
+        "order_confirmation": {
+            "subject" : "US91",
+            "sender": {
+                "name": "i&meim",
+                "email": "support@iandmeim.com"
+            },
+            "replyTo":{
+                "name": "US92",
+                "email": "support@iandmeim.com"
+            },
+            "tags":[
+                "order",
+                "confirmation"
+            ]
+        },
+        "shipping_confirmation": {},
+        "signup_confirmation": {}
     }
 }

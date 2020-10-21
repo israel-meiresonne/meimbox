@@ -177,12 +177,20 @@ class Map
     public const templateId = "templateId";
     public const params = "params";
     public const tags = "tags";
+    public const messageId = "messageId";
+    public const code = "code";
+    public const message = "message";
 
     /**
      * Keys for company datas
      */
     public const media = "media";
     public const logo = "logo";
+
+    /**
+     * Keys for mailing from datas.json
+     */
+    public const order_confirmation = "order_confirmation";
 
     /**
      * Constructor

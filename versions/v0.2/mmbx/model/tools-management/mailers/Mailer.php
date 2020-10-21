@@ -8,5 +8,6 @@
 //  */
 // abstract class Mailer extends ModelFunctionality
 // {
+//     // protected const 
 
 // }

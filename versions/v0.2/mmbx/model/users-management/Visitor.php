@@ -656,17 +656,6 @@ class Visitor extends ModelFunctionality
         return $this->getUnitsTable();
     }
 
-    // /**
-    //  * Getter for datas  about the company
-    //  * @param Map datas  about the company
-    //  */
-    // public function  getCompanyInfos()
-    // {
-    //     // $this->manageCookie(Cookie::COOKIE_ADRS, false);
-    //     // return self::$INFOS_COMPANY
-    //     return $this->getCompanyMap();
-    // }
-
     /*———————————————————————————— GET DB TABLE UP ——————————————————————————*/
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
 

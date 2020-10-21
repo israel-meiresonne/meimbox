@@ -722,9 +722,9 @@ class Box extends ModelFunctionality
      *  contain the error thrown
      * @param string $userID Visitor's id
      */
-    public function insertBox(Response $response, $userID) // regex \[value-[0-9]*\]
+    public function insertBox(Response $response, $userID)
     {
-        $bracket = "(?,?,?)";
+        $bracket = "(?,?,?)";   // regex \[value-[0-9]*\]
         $sql = "INSERT INTO `Boxes`(`boxID`, `box_color`, `setDate`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
