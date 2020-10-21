@@ -159,9 +159,6 @@ class ControllerHome extends ControllerSecure
     public function testA()
     {
         header('content-type: application/json');
-        $datas = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
-        var_dump($datas);
-        // var_dump($this->person->getCompanyInfos());
     }
 
 
