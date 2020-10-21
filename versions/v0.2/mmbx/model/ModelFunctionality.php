@@ -4,7 +4,7 @@ require_once 'framework/Model.php';
 require_once 'model/special/Query.php';
 require_once 'model/special/MyError.php';
 require_once 'model/special/Response.php';
-// require_once 'model/special/Map.php';
+require_once 'model/special/Map.php';
 
 /**
  * This class provide to model's classes common function
@@ -208,7 +208,11 @@ abstract class ModelFunctionality extends Model
             ($pdoStatus != self::PDO_SUCCEESS) ? $response->addError($pdoStatus->errorInfo()[2], self::CRUD_STATUS)
                 : null;
         } catch (\Throwable $e) {
-            $response->addError($e->errorInfo, MyError::ADMIN_ERROR);
+            $map = new Map();
+            $map->put($e->errorInfo, Map::message);
+            $map->put($e->errorInfo, Map::sql);
+            $map->put($e->errorInfo, Map::params);
+            $response->addError($map->getMap(), MyError::ADMIN_ERROR);
         }
     }
 
