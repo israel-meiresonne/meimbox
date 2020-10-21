@@ -101,12 +101,6 @@ class Visitor extends ModelFunctionality
     protected static $MAX_MEASURE;
 
     /**
-     * Holds datas about company
-     * @var Map
-     */
-    protected static $INFOS_COMPANY;
-
-    /**
      * Holds name of input
      */
     public const INPUT_SEX = "sex";
@@ -252,12 +246,6 @@ class Visitor extends ModelFunctionality
         if (!isset(self::$MAX_MEASURE)) {
             self::$MAX_MEASURE = "MAX_MEASURE";
             self::$MAX_MEASURE = (int) $this->getConstantLine(self::$MAX_MEASURE)["stringValue"];
-        }
-        if (!isset(self::$INFOS_COMPANY)) {
-            self::$INFOS_COMPANY = "INFOS_COMPANY";
-            $json = $this->getConstantLine(self::$INFOS_COMPANY)["jsonValue"];
-            $companyMap = json_decode($json, true);
-            self::$INFOS_COMPANY = new Map($companyMap);
         }
     }
 
@@ -668,15 +656,16 @@ class Visitor extends ModelFunctionality
         return $this->getUnitsTable();
     }
 
-    /**
-     * Getter for datas  about the company
-     * @param Map datas  about the company
-     */
-    public function  getCompanyInfos()
-    {
-        // $this->manageCookie(Cookie::COOKIE_ADRS, false);
-        return self::$INFOS_COMPANY;
-    }
+    // /**
+    //  * Getter for datas  about the company
+    //  * @param Map datas  about the company
+    //  */
+    // public function  getCompanyInfos()
+    // {
+    //     // $this->manageCookie(Cookie::COOKIE_ADRS, false);
+    //     // return self::$INFOS_COMPANY
+    //     return $this->getCompanyMap();
+    // }
 
     /*———————————————————————————— GET DB TABLE UP ——————————————————————————*/
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/

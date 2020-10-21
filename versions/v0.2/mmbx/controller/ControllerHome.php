@@ -159,16 +159,8 @@ class ControllerHome extends ControllerSecure
     public function testA()
     {
         header('content-type: application/json');
-        // $translator = new Translator($this->person->getLanguage());
-        $lang = new Language("en");
-        $translator = new Translator($lang);
-        $replacementsMap = new Map();
-        $replacementsMap->put("i&meim", Map::brand);
-        $replacementsMap->put("open", "fuck");
-        $replacementsMap->put("your", "you");
-        $replacementsMap->put("pussy", "self");
-        $trad = $translator->translateStation("US85", $replacementsMap);
-        var_dump($trad);
+        $datas = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
+        var_dump($datas);
         // var_dump($this->person->getCompanyInfos());
     }
 
@@ -201,7 +193,8 @@ class ControllerHome extends ControllerSecure
         $toName = ($firstname . " " . $lastname);
         $toEmail = $this->person->getEmail();
         $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
-        $company = $this->person->getCompanyInfos();
+        // $company = $this->person->getCompanyInfos();
+        $company = new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY));
         $order = $this->person->getLastOrder();
         $order = $this->person->getBasket();
         $address = $this->person->getSelectedAddress();     //🚨to delete cause delivery addres is  already in order

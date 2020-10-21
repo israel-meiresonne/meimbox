@@ -21,15 +21,15 @@ $translator = $translator;
 /**
  * @var Order */
 $order = $order;
-$basketOrdered = $order->getBasketOrdered();
+$basketOrdered = $order->getBasketOrdered();    //🔋
 /**
  * @var BasketOrdered*/
-// $basketOrdered = $order;        //🚨to delete cause delivery addres is  already in order
+// $basketOrdered = $order;         //🚨to delete cause delivery addres is  already in order
 
 /**
  * @var AddressDelivery */
-$address = $order->getDelivery();
-// $address = $address;        //🚨to delete cause delivery addres is  already in order
+$address = $order->getDelivery();   //🔋
+// $address = $address;             //🚨to delete cause delivery addres is  already in order
 $appartement = (!empty($address->getAppartement())) ? " (" . $address->getAppartement() . ")" : null;
 $province = ", " . $address->getProvince();
 $zipcode = ", " . $address->getZipcode();
@@ -420,30 +420,6 @@ $medias = $company->get(Map::media);
                                                                                 </a>
                                                                             </td>
                                                                         <?php endforeach; ?>
-                                                                        <!-- <td>
-                                                                            <a href="" target="_blank">
-                                                                                <img src="<?= "" //$dir_email_files 
-                                                                                            ?>facebook2x.png" alt="facebook">
-                                                                            </a>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="" target="_blank">
-                                                                                <img src="<?= "" //$dir_email_files 
-                                                                                            ?>instagram2x.png" alt="instagram">
-                                                                            </a>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="" target="_blank">
-                                                                                <img src="<?= "" //$dir_email_files 
-                                                                                            ?>googleplus2x.png" alt="googleplus">
-                                                                            </a>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="" target="_blank">
-                                                                                <img src="<?= "" //$dir_email_files 
-                                                                                            ?>twitter2x.png" alt="twitter">
-                                                                            </a>
-                                                                        </td> -->
                                                                     </tr>
                                                                 </table>
                                                             </td>

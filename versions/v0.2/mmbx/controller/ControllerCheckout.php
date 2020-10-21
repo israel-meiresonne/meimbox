@@ -122,7 +122,8 @@ class ControllerCheckout extends ControllerSecure
                 $toName = ($firstname." ".$lastname);
                 $toEmail = $this->person->getEmail();
                 $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
-                $company = $this->person->getCompanyInfos();
+                // $company = $this->person->getCompanyInfos();
+                $company = new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY));
 
                 /**
                  * @var Order */

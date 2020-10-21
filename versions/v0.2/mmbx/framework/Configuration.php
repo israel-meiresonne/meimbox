@@ -15,6 +15,11 @@ class Configuration
     private static $parameters;
 
     /**
+     * Holds datas.json
+     */
+    private static $json;
+
+    /**
      * Keys to acces datas
      */
     public const DOMAIN = "domain";
@@ -35,6 +40,11 @@ class Configuration
      * Keys for SendinBlue datas
      */
     public const SENDINBLUE_APIK = "sendinblue_apik";
+
+    /**
+     * Keys for json datas
+     */
+    public const JSON_KEY_COMPANY = "company";
 
     /**
      * Renvoie la valeur d'un paramètre de configuration
@@ -86,5 +96,26 @@ class Configuration
     public static function getWebRoot()
     {
         return self::get("webRoot", "/");
+    }
+
+    /**
+     * To get datas from datas.json
+     * @param string $name the name of the key to get datas from
+     * @param boolean $inStd set true to convert json into stdClass else its will return an array
+     * @return array|stdClass datas from datas.json
+     */
+    public static function getFromJson($name, $inStd = false)
+    {
+        (!isset(self::$json)) ? self::$json = file_get_contents('config/datas.json') : null;
+        $inJson = !$inStd;
+        $parsed = json_decode(self::$json, $inJson);
+        if($inJson && (!key_exists($name, $parsed))){
+            throw new Exception("This key '$name' don't exist in datas.json");
+        }
+        if($inStd && (!property_exists($parsed, $name))){
+            throw new Exception("This propterty '$name' don't exist in datas.json");
+        }
+        $datas = ($inStd)  ? $parsed->$name : $parsed[$name];
+        return $datas;
     }
 }
