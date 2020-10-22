@@ -4,7 +4,7 @@ require_once('vendor/autoload.php');
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 require_once 'framework/View.php';
-
+require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
 class ViewEmail extends View
 {
