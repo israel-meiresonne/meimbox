@@ -9,6 +9,8 @@ require_once 'model/special/MyError.php';
 require_once 'model/special/Query.php';
 require_once 'model/tools-management/Measure.php';
 require_once 'model/tools-management/Cookie.php';
+require_once 'framework/Configuration.php';
+require_once 'model/special/Map.php';
 
 /**
  * This class manage security and holds elements common to several controllers
@@ -102,16 +104,8 @@ abstract class ControllerSecure extends Controller
         $ctrClass = get_class($this);
         switch ($ctrClass) {
             case ControllerWebhook::class:
-                $action = $this->getAction();
-                if ($action == ControllerWebhook::ACTION_STRIPEWEBHOOK) {
-                    require_once 'model/orders-management/payement/stripe/StripeAPI.php';
-                    $stripeAPI = new StripeAPI();
-                    $stripeAPI->handleEvents();
-                    $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
-                    $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
-                    $this->person = new Client($CLT_VAL);
-                    break;
-                }
+                $this->initController();
+            break;
             default:
                 $CLT_VAL = Cookie::getCookieValue(Cookie::COOKIE_CLT);
                 if (!empty($CLT_VAL)) {
@@ -146,6 +140,15 @@ abstract class ControllerSecure extends Controller
     {
         $ctrClass = get_class($this);
         throw new Exception("This controller '$ctrClass' define the function 'rootController' but don't implement its codes");
+    }
+
+    /**
+     * To init Controller
+     */
+    protected function initController()
+    {
+        $ctrClass = get_class($this);
+        throw new Exception("This controller '$ctrClass' define the function 'initController' but don't implement its codes");
     }
 
     /**
