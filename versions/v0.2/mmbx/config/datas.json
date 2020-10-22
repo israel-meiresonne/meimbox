@@ -29,21 +29,34 @@
     },
     "mailing": {
         "order_confirmation": {
-            "subject" : "US91",
+            "subject": "US91",
             "sender": {
                 "name": "i&meim",
                 "email": "support@iandmeim.com"
             },
-            "replyTo":{
+            "replyTo": {
                 "name": "US92",
                 "email": "support@iandmeim.com"
             },
-            "tags":[
+            "tags": [
                 "order",
                 "confirmation"
             ]
         },
         "shipping_confirmation": {},
         "signup_confirmation": {}
+    },
+    "system": {
+        "cookies": {
+            "ADM": {
+                "cookieValue": "0"
+            },
+            "VIS": {
+                "cookieValue": "0"
+            },
+            "CLT": {
+                "cookieValue": "0"
+            }
+        }
     }
 }

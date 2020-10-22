@@ -1,6 +1,6 @@
 <?php
 require_once 'ControllerSecure.php';
-require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
+// require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
 class ControllerCheckout extends ControllerSecure
 {
@@ -117,7 +117,7 @@ class ControllerCheckout extends ControllerSecure
     }
 
     /*———————————————————————————— REQUEST UP —————————————————————————————————*/
-    /*———————————————————————————— ROOT DOWN ——————————————————————————————————*/
+    /*———————————————————————————— CONTROLLER_SECURE DOWN —————————————————————*/
 
     /**
      * To root Controller

@@ -46,6 +46,7 @@ class Configuration
      */
     public const JSON_KEY_COMPANY = "company";
     public const JSON_KEY_MAILING = "mailing";
+    public const JSON_KEY_SYSTEM = "system";
 
     /**
      * Renvoie la valeur d'un paramètre de configuration

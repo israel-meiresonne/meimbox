@@ -1,5 +1,6 @@
 <?php
 require_once 'ControllerSecure.php';
+require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 
 class ControllerWebhook extends ControllerSecure
 {
@@ -7,6 +8,7 @@ class ControllerWebhook extends ControllerSecure
      * Holds actions function
      */
     public const ACTION_STRIPEWEBHOOK = "stripeWebhook";
+    public const ACTION_SENDINBLUEWEBHOOK = "sendinblueWebhook";
 
     public function index()
     {
@@ -53,5 +55,51 @@ class ControllerWebhook extends ControllerSecure
         }
         (!$response->containError()) ? $response->addResult(self::ACTION_STRIPEWEBHOOK, true) : null;
         $this->generateJsonView([], $response, $person);
+    }
+
+    /**
+     * To handle Sendinblue's events
+     */
+    public function sendinblueWebhook()
+    {
+        $response = new Response();
+        /**
+         * @var User */
+        $person = $this->person;
+        $this->generateJsonView([], $response, $person);
+    }
+
+    /*———————————————————————————— CONTROLLER_SECURE DOWN —————————————————————*/
+
+    /**
+     * To initialize the controller
+     */
+    public function initController()
+    {
+        $action = $this->getAction();
+        switch ($action) {
+            case ControllerWebhook::ACTION_STRIPEWEBHOOK:
+                $stripeAPI = new StripeAPI();
+                $stripeAPI->handleEvents();
+                $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
+                $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
+                $this->person = new Client($CLT_VAL);
+                break;
+            case ControllerWebhook::ACTION_SENDINBLUEWEBHOOK:
+                $system = new Map(Configuration::getFromJson(Configuration::JSON_KEY_SYSTEM));
+                $ADM_VAL = $system->get(Map::cookies, Cookie::COOKIE_ADM, Map::cookieValue);
+                $this->person = new Administrator($ADM_VAL);
+            break;
+            default:
+                # code...
+                break;
+        }
+        // if ($action == ControllerWebhook::ACTION_STRIPEWEBHOOK) {
+        //     $stripeAPI = new StripeAPI();
+        //     $stripeAPI->handleEvents();
+        //     $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
+        //     $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
+        //     $this->person = new Client($CLT_VAL);
+        // }
     }
 }

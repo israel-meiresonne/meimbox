@@ -78,12 +78,14 @@ class Map
      * @var string
      */
     public const cookieID = "cookieID";
+    public const cookieValue = "cookieValue";
     public const settedPeriod = "settedPeriod";
     public const period = "period";
     public const domain = "domain";
     public const path = "path";
     public const secure = "secure";
     public const httponly = "httponly";
+    public const cookies = "cookies";
 
     /**
      * Key for sign forrm
