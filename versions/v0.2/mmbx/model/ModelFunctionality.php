@@ -210,8 +210,8 @@ abstract class ModelFunctionality extends Model
         } catch (\Throwable $e) {
             $map = new Map();
             $map->put($e->errorInfo, Map::message);
-            $map->put($e->errorInfo, Map::sql);
-            $map->put($e->errorInfo, Map::params);
+            $map->put($sql, Map::sql);
+            $map->put($params, Map::params);
             $response->addError($map->getMap(), MyError::ADMIN_ERROR);
         }
     }
@@ -219,7 +219,7 @@ abstract class ModelFunctionality extends Model
     /**
      * Execute a SQL query on the  db and return the résulte in a array
      * @param string $sql the sql query like "SELECT * FROM ... WHERE ... etc..."
-     * @return string[] the résulte of the query
+     * @return array the résulte of the query
      */
     protected static function select($sql)
     {

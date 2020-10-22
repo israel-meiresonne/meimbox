@@ -49,13 +49,13 @@
     "system": {
         "cookies": {
             "ADM": {
-                "cookieValue": "0"
+                "cookieValue": "1"
             },
             "VIS": {
-                "cookieValue": "0"
+                "cookieValue": "1"
             },
             "CLT": {
-                "cookieValue": "0"
+                "cookieValue": "1"
             }
         }
     }

@@ -16,8 +16,11 @@ class BlueAPI extends ModelFunctionality
      * Holds the api's configuration
      * @var SendinBlue\Client\Configuration
      */
-    private static $CONFIG;
+    private static $blueAPI;
 
+    /**
+     * @var Translator $translator translator from EmailView to translate email
+     */
     private static $translator;
 
     /**
@@ -33,18 +36,32 @@ class BlueAPI extends ModelFunctionality
     {
         // header('content-type: application/json');
         // header('accept: application/json', true);
-        $apik = Configuration::get(Configuration::SENDINBLUE_APIK);
-        self::$CONFIG = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apik);
+        // $apik = Configuration::get(Configuration::SENDINBLUE_APIK);
+        // self::$blueAPI = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apik);
+        $this->setBlueAPI();
         self::$translator = $translator;
+    }
+
+    /**
+     * To set access to the API
+     */
+    protected function setBlueAPI()
+    {
+        // header('content-type: application/json');
+        // header('accept: application/json', true);
+        if(empty(self::$blueAPI)){
+            $apik = Configuration::get(Configuration::SENDINBLUE_APIK);
+            self::$blueAPI = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apik);
+        }
     }
 
     /**
      * To get the api's configuration
      * @return SendinBlue\Client\Configuration
      */
-    protected function getCONFIG()
+    protected function getBlueAPI()
     {
-        return self::$CONFIG;
+        return self::$blueAPI;
     }
 
     /**
@@ -55,7 +72,7 @@ class BlueAPI extends ModelFunctionality
     {
         $apiInstance = new SendinBlue\Client\Api\AccountApi(
             new GuzzleHttp\Client(),
-            $this->getCONFIG()
+            $this->getBlueAPI()
         );
         return $apiInstance->getAccount();
     }
