@@ -31,19 +31,19 @@ $sliderProducts = $sliderProducts;
  */
 $person = $person;
 switch (get_class($person)) {
-    case Visitor::CLASS_NAME:
+    case Visitor::class:
         /**
          * @var Measure[]
          */
         $measures = $person->getMeasures();
         break;
-    case Client::CLASS_NAME:
+    case Client::class:
         /**
          * @var Measure[]
          */
         $measures = $person->getMeasures();
         break;
-    case Administrator::CLASS_NAME:
+    case Administrator::class:
         /**
          * @var Measure[]
          */

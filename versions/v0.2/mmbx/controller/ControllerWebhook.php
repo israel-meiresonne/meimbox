@@ -8,7 +8,7 @@ class ControllerWebhook extends ControllerSecure
      * Holds actions function
      */
     public const ACTION_STRIPEWEBHOOK = "stripeWebhook";
-    public const ACTION_SENDINBLUEWEBHOOK = "sendinblueWebhook";
+    public const ACTION_BLUEWEBHOOK = "blueWebhook";
 
     public function index()
     {
@@ -31,9 +31,7 @@ class ControllerWebhook extends ControllerSecure
                 $toName = ($firstname . " " . $lastname);
                 $toEmail = $person->getEmail();
                 $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
-                // $company = $person->getCompanyInfos();
                 $company = new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY));
-
                 /**
                  * @var Order */
                 $order = $person->getLastOrder();
@@ -60,13 +58,30 @@ class ControllerWebhook extends ControllerSecure
     /**
      * To handle Sendinblue's events
      */
-    public function sendinblueWebhook()
+    public function blueWebhook()
     {
         $response = new Response();
         /**
-         * @var User */
-        $person = $this->person;
-        $this->generateJsonView([], $response, $person);
+         * @var Administrator */
+        $admin = $this->person;
+        $admin->handleBlueEvents($response);
+        $file = 'model/tools-management/mailers/BlueAPI/files/response.json';
+        (!$response->containError()) ? $response->addResult(self::ACTION_BLUEWEBHOOK, true) : null;
+        $this->saveResponseInFile($file, $response);
+    }
+    /**
+     * To save event in a file
+     * @param Response $response the response to save
+     */
+    private function saveResponseInFile($file, Response $response)
+    {
+        $array = json_decode(file_get_contents($file), true);
+        $arrayMap = new Map($array);
+        $saveDate = time();
+        $arrayMap->put($response->getAttributs(), $saveDate);
+        $arrayMap->sortKeyAsc();
+        $json = json_encode($arrayMap->getMap());
+        file_put_contents($file, $json);
     }
 
     /*———————————————————————————— CONTROLLER_SECURE DOWN —————————————————————*/
@@ -85,11 +100,11 @@ class ControllerWebhook extends ControllerSecure
                 $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
                 $this->person = new Client($CLT_VAL);
                 break;
-            case ControllerWebhook::ACTION_SENDINBLUEWEBHOOK:
+            case ControllerWebhook::ACTION_BLUEWEBHOOK:
                 $system = new Map(Configuration::getFromJson(Configuration::JSON_KEY_SYSTEM));
                 $ADM_VAL = $system->get(Map::cookies, Cookie::COOKIE_ADM, Map::cookieValue);
                 $this->person = new Administrator($ADM_VAL);
-            break;
+                break;
             default:
                 # code...
                 break;

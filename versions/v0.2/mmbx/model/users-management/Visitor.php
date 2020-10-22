@@ -15,11 +15,6 @@ require_once 'model/users-management/Visitor.php';
 class Visitor extends ModelFunctionality
 {
     /**
-     * Holds the class's name
-     */
-    public const CLASS_NAME = "Visitor";
-
-    /**
      * Holds Visitor's id
      * @var string
      */

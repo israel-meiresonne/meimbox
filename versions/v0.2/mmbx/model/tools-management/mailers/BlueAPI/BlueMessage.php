@@ -125,7 +125,7 @@ class BlueMessage extends BlueAPI
     {
         $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(
             new GuzzleHttp\Client(),
-            $this->getCONFIG()
+            $this->getBlueAPI()
         );
         $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail($this->getAttributs());
         try {

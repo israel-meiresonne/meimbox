@@ -5,11 +5,6 @@ require_once 'model/users-management/User.php';
 class Client extends User
 {
     /**
-     * Holds the class's name
-     */
-    public const CLASS_NAME = "Client";
-
-    /**
      * Show if the Client is subcribed to the newsletter
      * @var boolean true if user is subcribed to the newsletter else false
      */
@@ -32,7 +27,7 @@ class Client extends User
     {
         $CLT_VAL = (empty($CLT_VAL)) ? Cookie::getCookieValue(Cookie::COOKIE_CLT) : $CLT_VAL;
         if (empty($CLT_VAL)) {
-            throw new Exception("Client cookie don't exist");
+            throw new Exception("Client cookie can't be empty");
         }
         parent::__construct($CLT_VAL);
         $this->newsletter = (bool) $this->userLine["newsletter"];

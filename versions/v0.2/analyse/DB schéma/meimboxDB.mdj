@@ -25670,6 +25670,7 @@
 									}
 								}
 							],
+							"documentation": "# Contrainte\n\nValue of cookieId and cookieValue combined are unique in the whole table\n\nADD UNIQUE `cookieId` (`cookieId`, `cookieValue`) USING BTREE;",
 							"columns": [
 								{
 									"_type": "ERDColumn",
@@ -26845,7 +26846,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF1LGYtU2NiV5g="
 									},
-									"name": "sentIP",
+									"name": "sendingIP",
 									"documentation": "# Definition\n\nHolds the IP addrress used to send the email",
 									"type": "VARCHAR",
 									"length": "50",

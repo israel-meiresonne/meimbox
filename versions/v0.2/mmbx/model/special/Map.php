@@ -196,6 +196,17 @@ class Map
     public const order_confirmation = "order_confirmation";
 
     /**
+     * Keys for Sendinblue event
+     */
+    public const message_id = "message-id";
+    public const event = "event";
+    public const reason = "reason";
+    // public const link = "link";
+    public const sending_ip = "sending_ip";
+    public const ts_sent = "ts_sent";       // timestamp in seconds of when message was sent
+    public const ts_event = "ts_event";     // timestamp in seconds of when event occurred
+
+    /**
      * Constructor
      * @param array $map if set this array will be used as initial map
      */
@@ -324,5 +335,12 @@ class Map
     public function sortKeyDesc()
     {
         krsort($this->map);
+    }
+    /**
+     * to sort key from the lower value to the highest
+     */
+    public function sortKeyAsc()
+    {
+        ksort($this->map);
     }
 }
