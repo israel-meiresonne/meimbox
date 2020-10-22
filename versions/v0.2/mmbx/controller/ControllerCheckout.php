@@ -16,7 +16,6 @@ class ControllerCheckout extends ControllerSecure
     public const ACTION_INDEX = "index";
     public const ACTION_SIGN = "sign";
     public const ACTION_ADDRESS = "address";
-    public const ACTION_STRIPEWEBHOOK = "stripeWebhook";
 
     /**
      * Holds request
@@ -30,14 +29,17 @@ class ControllerCheckout extends ControllerSecure
      */
     public function index()
     {
-        $address = $this->person->getSelectedAddress();
+        /**
+         * @var User */
+        $person = $this->person;
+        $address = $person->getSelectedAddress();
         if (empty($address)) {
             $this->redirect($this->extractController(get_class($this)), self::ACTION_ADDRESS);
         }
         $datasView = [
             "address" => $address
         ];
-        $this->generateView($datasView, $this->person);
+        $this->generateView($datasView, $person);
     }
 
     /**
@@ -76,17 +78,20 @@ class ControllerCheckout extends ControllerSecure
     public function selectAddress()
     {
         $response = new Response();
+        /**
+         * @var User */
+        $person = $this->person;
         $datasView = [];
         if (!Query::existParam(Address::KEY_ADRS_SEQUENCE)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $sequence =  Query::getParam(Address::KEY_ADRS_SEQUENCE);
-            $this->person->selectAddress($response, $sequence);
+            $person->selectAddress($response, $sequence);
             if (!$response->containError()) {
                 $response->addResult(self::QR_SELECT_ADRS, self::CTR_NAME);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -95,56 +100,59 @@ class ControllerCheckout extends ControllerSecure
     public function getSessionId()
     {
         $response = new Response();
+        /**
+         * @var User */
+        $person = $this->person;
         $datasView = [];
         if (!Query::existParam(CheckoutSession::KEY_STRP_MTD)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $payMethod = Query::getParam(CheckoutSession::KEY_STRP_MTD);
-            $sessionId = $this->person->createNewCheckout($response, $payMethod);
+            $sessionId = $person->createNewCheckout($response, $payMethod);
             if (!$response->containError()) {
                 $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
-    /**
-     * To handle Stripe's events
-     */
-    public function stripeWebhook()
-    {
-        $response = new Response();
-        $event =  $this->person->handleStripeEvents($response);
-        switch ($event) {
-            case StripeAPI::EVENT_CHECKOUT_COMPLETED:
-                $firstname = $this->person->getFirstname();
-                $lastname = $this->person->getLastname();
-                $toName = ($firstname." ".$lastname);
-                $toEmail = $this->person->getEmail();
-                $templateFile = 'view/EmailTemplates/orderConfirmation/orderConfirmation.php';
-                // $company = $this->person->getCompanyInfos();
-                $company = new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY));
+    /*———————————————————————————— REQUEST UP —————————————————————————————————*/
+    /*———————————————————————————— ROOT DOWN ——————————————————————————————————*/
 
-                /**
-                 * @var Order */
-                $order = $this->person->getLastOrder();
-                $datasViewMap = new Map();
-                $datasViewMap->put($toName, Map::name);
-                $datasViewMap->put($toEmail, Map::email);
-                $datasViewMap->put($templateFile, Map::templateFile);
-                $datasViewMap->put($company, Map::company);
-                $datasViewMap->put($firstname, Map::firstname);
-                $datasViewMap->put($lastname, Map::lastname);
-                $datasViewMap->put($order, Map::order);
-                try {
-                    $this->sendEmail($response, $this->person, BlueAPI::class, BlueAPI::FUNC_ORDER_CONFIRM, $datasViewMap);
-                    $order->getBasketOrdered()->empty($response);        //🔋enable
-                } catch (\Throwable $th) {
-                    $response->addError($th->__toString(), MyError::ADMIN_ERROR);
+    /**
+     * To root Controller
+     */
+    public function rootController()
+    {
+        $ctrClass = get_class($this);
+        $action = $this->getAction();
+        switch ($action) {
+            case ControllerCheckout::ACTION_INDEX:
+                if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
+                    $ctr = $this->extractController($ctrClass);
+                    $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
+                } else if (!$this->person->hasCookie(Cookie::COOKIE_ADRS)) {
+                    $ctr = $this->extractController($ctrClass);
+                    $this->redirect($ctr, ControllerCheckout::ACTION_ADDRESS);
+                }
+                break;
+            case ControllerCheckout::ACTION_ADDRESS:
+                if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
+                    $ctr = $this->extractController($ctrClass);
+                    $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
+                }
+                break;
+            case ControllerCheckout::ACTION_SIGN:
+                if ($this->person->hasCookie(Cookie::COOKIE_CLT)) {
+                    $ctr = $this->extractController($ctrClass);
+                    $this->redirect($ctr);
+                }
+                break;
+            default:
+                if (!method_exists($this, $action)) {
+                    throw new Exception("Unknow action '$action' in controller '$ctrClass'");
                 }
                 break;
         }
-        (!$response->containError()) ? $response->addResult(self::ACTION_STRIPEWEBHOOK, true) : null;
-        $this->generateJsonView([], $response, $this->person);
     }
 }

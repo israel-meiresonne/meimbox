@@ -26,5 +26,7 @@ RewriteRule ^checkout/address/*$	                index.php?controller=checkout&a
 RewriteRule ^checkout/success/*$	                index.php?controller=checkout&action=success [QSA,NC,L]
 RewriteRule ^checkout/*$	                        index.php?controller=checkout&action=index [QSA,NC,L]
 
+RewriteRule ^webhook/qr/+([A-z]+)/*$	            index.php?controller=webhook&action=$1 [QSA,NC,L]
+
 # default
 # RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2 [QSA,NC]

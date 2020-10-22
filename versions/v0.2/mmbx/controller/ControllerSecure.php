@@ -101,9 +101,9 @@ abstract class ControllerSecure extends Controller
     {
         $ctrClass = get_class($this);
         switch ($ctrClass) {
-            case ControllerCheckout::class:
+            case ControllerWebhook::class:
                 $action = $this->getAction();
-                if ($action == ControllerCheckout::ACTION_STRIPEWEBHOOK) {
+                if ($action == ControllerWebhook::ACTION_STRIPEWEBHOOK) {
                     require_once 'model/orders-management/payement/stripe/StripeAPI.php';
                     $stripeAPI = new StripeAPI();
                     $stripeAPI->handleEvents();
@@ -131,40 +131,21 @@ abstract class ControllerSecure extends Controller
         $ctrClass = get_class($this);
         switch ($ctrClass) {
             case ControllerCheckout::class:
-                $action = $this->getAction();
-                switch ($action) {
-                    case ControllerCheckout::ACTION_INDEX:
-                        if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
-                            $ctr = $this->extractController($ctrClass);
-                            $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
-                        } else if (!$this->person->hasCookie(Cookie::COOKIE_ADRS)) {
-                            $ctr = $this->extractController($ctrClass);
-                            $this->redirect($ctr, ControllerCheckout::ACTION_ADDRESS);
-                        }
-                        break;
-                    case ControllerCheckout::ACTION_ADDRESS:
-                        if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
-                            $ctr = $this->extractController($ctrClass);
-                            $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
-                        }
-                        break;
-                    case ControllerCheckout::ACTION_SIGN:
-                        if ($this->person->hasCookie(Cookie::COOKIE_CLT)) {
-                            $ctr = $this->extractController($ctrClass);
-                            $this->redirect($ctr);
-                        }
-                        break;
-                    default:
-                        if (!method_exists($this, $action)) {
-                            throw new Exception("Unknow controller's action, controller: $ctrClass, action:$action");
-                        }
-                        break;
-                }
+                $this->rootController();
                 break;
             default:
                 # code...
                 break;
         }
+    }
+
+    /**
+     * To root Controller
+     */
+    protected function rootController()
+    {
+        $ctrClass = get_class($this);
+        throw new Exception("This controller '$ctrClass' define the function 'rootController' but don't implement its codes");
     }
 
     /**
