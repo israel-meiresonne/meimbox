@@ -158,7 +158,7 @@ class ControllerHome extends ControllerSecure
 
     public function testA()
     {
-        header('content-type: application/json');
+        // header('content-type: application/json');
         // $url = 'https://41f1e7c66ccc.eu.ngrok.io/versions/v0.2/mmbx/webhook/qr/blueWebhook';
         // $content = file_get_contents($url);
         // var_dump($content);

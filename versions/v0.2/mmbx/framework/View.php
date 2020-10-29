@@ -100,10 +100,23 @@ class View
     private $head;
 
     /**
+     * Holds the configuration used to determinate wicth header to use in template
+     * @var string
+     */
+    private $header = self::HEADER_CONF_COMMON;
+
+    /**
+     * Holds configuration for header
+     * @var string
+     */
+    private const HEADER_CONF_COMMON = "headerCommon.php";
+    private const HEADER_CONF_LANDING = "headerLanding.php";
+    private const HEADER_CONF_CHECKOUT = "headerCheckout.php";
+
+    /**
      * Directory for permanant files
      * @var string
      */
-    // private const DIR_STATIC_FILES = "content/brain/permanent/";
     protected static $DIR_STATIC_FILES;
 
     /**
@@ -134,22 +147,7 @@ class View
     // protected const CSS_HEADER = 'content/css/header.css';
 
     /**
-     * Constructeur
-     * 
-     * rnvs : les 2 arguments sont des chaînes de caractères qui servent à
-     *        produire le chemin vers le fichier de l'action de la vue effective
-     * 
-     * rnvs : $action est une string indiquant l'action de la vue effective  
-     * 
-     * rnvs : $controller est une string avec le nom du contrôleur appelant
-     *        sans le mot Controller
-     *        p. ex. si la View est construite par ControllerHome, la 
-     *        string $controller est "Home"
-     * 
-     * rnvs : il est possible de créer des vues qui ne sont pas attachées à un
-     *        contrôleur effectif, mais juste à une action.
-     *        on a alors le fichier view/$action.php      
-     * 
+     * Constructor
      * @param string $action Action à laquelle la vue est associée
      * @param string $controller Nom du contrôleur auquel la vue est associée
      * @param Visitor|Client|Administrator $person the current user
