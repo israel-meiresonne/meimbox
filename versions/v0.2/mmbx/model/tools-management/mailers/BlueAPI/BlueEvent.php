@@ -76,7 +76,7 @@ class BlueEvent extends BlueAPI
         $this->eventDate = date('Y-m-d H:i:s', $eventsMap->get(Map::ts_event));
         $this->insertStatus($response);
         http_response_code(200);
-        $this->saveEventInFile($event);
+        // $this->saveEventInFile($event);
     }
 
     /**

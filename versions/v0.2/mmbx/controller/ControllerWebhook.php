@@ -67,7 +67,7 @@ class ControllerWebhook extends ControllerSecure
         $admin->handleBlueEvents($response);
         $file = 'model/tools-management/mailers/BlueAPI/files/response.json';
         (!$response->containError()) ? $response->addResult(self::ACTION_BLUEWEBHOOK, true) : null;
-        $this->saveResponseInFile($file, $response);
+        // $this->saveResponseInFile($file, $response);
     }
     /**
      * To save event in a file
