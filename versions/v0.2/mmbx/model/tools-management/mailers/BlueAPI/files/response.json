@@ -1,1 +1,58 @@
-{}
+{
+    "1603372787": {
+        "isSuccess": false,
+        "results": [],
+        "resultStations": [],
+        "errors": {
+            "admin_error": [
+                {
+                    "message": {
+                        "message": [
+                            "23000",
+                            1062,
+                            "Duplicate entry '<202010221436.19323413303@smtp-relay.mailin.fr>-click-2020-10-22' for key 'PRIMARY'"
+                        ],
+                        "sql": "INSERT INTO `EmailsStatus`(`messageId`, `status`, `reason`, `url`, `sendingIP`, `sendDate`, `eventDate`)\n                VALUES  (?,?,?,?,?,?,?)",
+                        "params": [
+                            "<202010221436.19323413303@smtp-relay.mailin.fr>",
+                            "click",
+                            null,
+                            "https:\/\/www.instagram.com\/iandmeim\/",
+                            "185.41.28.109",
+                            "1970-01-01 01:00:00",
+                            "2020-10-22 15:09:41"
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "1603372915": {
+        "isSuccess": false,
+        "results": [],
+        "resultStations": [],
+        "errors": {
+            "admin_error": [
+                {
+                    "message": {
+                        "message": [
+                            "23000",
+                            1062,
+                            "Duplicate entry '<202010221436.19323413303@smtp-relay.mailin.fr>-opened-2020-10-2' for key 'PRIMARY'"
+                        ],
+                        "sql": "INSERT INTO `EmailsStatus`(`messageId`, `status`, `reason`, `url`, `sendingIP`, `sendDate`, `eventDate`)\n                VALUES  (?,?,?,?,?,?,?)",
+                        "params": [
+                            "<202010221436.19323413303@smtp-relay.mailin.fr>",
+                            "opened",
+                            null,
+                            null,
+                            "185.41.28.109",
+                            "1970-01-01 01:00:00",
+                            "2020-10-22 15:11:49"
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

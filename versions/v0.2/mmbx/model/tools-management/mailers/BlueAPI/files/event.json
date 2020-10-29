@@ -1,1 +1,41 @@
-{}
+{
+    "israelmeiresonne97@gmail.com": {
+        "<202010221436.19323413303@smtp-relay.mailin.fr>": {
+            "1603372181": {
+                "event": "click",
+                "email": "israelmeiresonne97@gmail.com",
+                "id": 282355,
+                "date": "2020-10-22 15:09:41",
+                "ts": 1603372181,
+                "message-id": "<202010221436.19323413303@smtp-relay.mailin.fr>",
+                "ts_event": 1603372181,
+                "subject": "Confirmation de votre commande",
+                "tag": "[\"order\",\"confirmation\"]",
+                "link": "https:\/\/www.instagram.com\/iandmeim\/",
+                "sending_ip": "185.41.28.109",
+                "ts_epoch": 1603372181808,
+                "tags": [
+                    "order",
+                    "confirmation"
+                ]
+            },
+            "1603372309": {
+                "event": "opened",
+                "email": "israelmeiresonne97@gmail.com",
+                "id": 282355,
+                "date": "2020-10-22 15:11:49",
+                "ts": 1603372309,
+                "message-id": "<202010221436.19323413303@smtp-relay.mailin.fr>",
+                "ts_event": 1603372309,
+                "subject": "Confirmation de votre commande",
+                "tag": "[\"order\",\"confirmation\"]",
+                "sending_ip": "185.41.28.109",
+                "ts_epoch": 1603372309454,
+                "tags": [
+                    "order",
+                    "confirmation"
+                ]
+            }
+        }
+    }
+}
