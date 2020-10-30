@@ -1,0 +1,122 @@
+.main_content {
+    font-family: var(--main-font-family);
+}
+
+/*———————————————————————————————— VP DOWN ——————————————————————————————————*/
+
+.main_content-vp {
+    background-color: var(--color-pink);
+    min-height: 110vh;
+}
+
+.vp_content {
+    position: relative;
+}
+
+.vp_content-vp-txt {
+    background-color: var(--color-white-075);
+    border-radius: var(--big-border-radius);
+}
+
+.vp_content-vp-txt-title {
+    margin-top: 0;
+    font-family: var(--main-font-family);
+}
+
+.vp_content-vp-txt-line::first-letter {
+    text-transform: capitalize;
+}
+
+.vp_content-img {
+    opacity: .85;
+}
+
+/*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
+
+@media (min-width: 992px) {
+    .main_content-vp {
+        padding: 25px 50px 40px;
+    }
+    .vp_content {
+        display: flex;
+    }
+    .vp_content-vp {
+        padding-top: 5%;
+    }
+    .vp_content-vp, .vp_content-img {
+        width: 54%;
+    }
+    .vp_content-vp-txt {
+        max-width: 800px;
+        min-width: 635px;
+        padding: 35px;
+    }
+    .vp_content-vp-txt-title {
+        font-size: var(--font-size-2_5em);
+    }
+    .vp_content-vp-txt-line {
+        font-size: var(--font-size-1_6em);
+    }
+    .vp_content-vp-cta {
+        margin-top: 50px;
+        max-width: 800px;
+        min-width: 635px;
+    }
+    .vp_content-img img {
+        width: 100%;
+    }
+}
+
+/*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
+
+@media (max-width: 991px) {
+    .main_content-vp {
+        padding: 0 15px;
+    }
+    .vp_content-vp {
+        position: absolute;
+        z-index: 1;
+        height: 100%;
+        padding: 10% 0;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .vp_content-vp-child {
+        max-width: 728px;
+    }
+    .vp_content-vp-txt {
+        margin: auto auto 0;
+        padding: 10px 20px 10px;
+        border-radius: var(--border-float-radius);
+    }
+    .vp_content-vp-txt-title {
+        font-size: var(--big-font-size);
+    }
+    .vp_content-vp-txt-line {
+        margin: 0 0 10px;
+    }
+    .vp_content-vp-cta {
+        width: 100%;
+        margin: 5vh auto auto;
+    }
+    .vp_content-vp-cta button {
+        font-size: 1em;
+    }
+    .cta-btn:hover {
+        color: var(--color-white);
+        background-color: var(--color-green-clear);
+        border: var(--color-green-clear) 1px solid;
+    }
+    .vp_content-img {
+        height: 90vh;
+        display: flex;
+    }
+    .vp_content-img img {
+        height: 100%;
+        margin: 0 auto;
+    }
+}
+
+/*———————————————————————————————— VP UP ————————————————————————————————————*/

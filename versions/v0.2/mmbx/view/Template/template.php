@@ -283,8 +283,14 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 
 <body>
     <?php
-    $file = 'view/Template/files/headers/'.$this->header;
-    echo $this->generateFile($file, ["person" => $person]);
+    $file = 'view/Template/files/headers/' . $this->header;
+    $company = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
+    $companyMap = new Map($company);
+    $headerDatas = [
+        "person" => $person,
+        "companyMap" => $companyMap
+    ];
+    echo $this->generateFile($file, $headerDatas);
     ?>
     <div class="template-content">
         <?= $content ?>

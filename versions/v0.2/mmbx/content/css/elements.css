@@ -731,9 +731,32 @@
     border: var(--color-green) 1px;
 }
 
+.cta-btn {
+    width: 100%;
+    height: 55px;
+    font-size: var(--font-size-1_6em);
+    text-transform: capitalize;
+    background-color: var(--color-green-clear);
+    color: var(--color-white);
+    border: var(--color-green-clear) 1px solid;
+}
+.cta-btn:hover{
+    color: var(--color-green-clear);
+    background-color: var(--color-white);
+    border: var(--color-green-clear) 1px solid;
+}
+
 /*————————————————————— COLOR BUTTON UP —————————————————————————————————————*/
 
 /*————————————————————— STADARD-BUTTON DOWN —————————————————————————————————*/
+
+.squared-standard-button {
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 5px;
+}
 
 .standard-tag-button {
     transition: var(--transition-time);
