@@ -1,5 +1,58 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--main-font-family);
+    font-weight: initial;
+    margin: initial;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.text {
+    line-height: 1.7;
+}
+
+@media (min-width: 992px) {
+    .title {
+        font-size: var(--font-size-2_5em);
+        font-weight: bold;
+    }
+    .subtitle {
+        font-size: var(--big-font-size);
+    }
+    .text {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 991px) {
+    .title {
+        font-size: var(--font-size-1_6em);
+        font-weight: bold;
+    }
+}
+
+/*———————————————————————————————— CONST UP —————————————————————————————————*/
+
 .main_content {
     font-family: var(--main-font-family);
+    color: var(--color-text);
+}
+
+@media (min-width: 992px) {
+    .main_content-vp, .main_content-tuto, .main_content-size, .main_content-quality {
+        padding: 25px 50px 40px;
+    }
+}
+
+@media (max-width: 991px) {
+    .main_content-vp, .main_content-tuto, .main_content-size, .main_content-quality {
+        padding: 0 15px;
+    }
+    .main_content-tuto, .main_content-size, .main_content-quality {
+        padding-top: 25px;
+        padding-bottom: 40px;
+    }
 }
 
 /*———————————————————————————————— VP DOWN ——————————————————————————————————*/
@@ -18,11 +71,6 @@
     border-radius: var(--big-border-radius);
 }
 
-.vp_content-vp-txt-title {
-    margin-top: 0;
-    font-family: var(--main-font-family);
-}
-
 .vp_content-vp-txt-line::first-letter {
     text-transform: capitalize;
 }
@@ -34,13 +82,12 @@
 /*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
 
 @media (min-width: 992px) {
-    .main_content-vp {
-        padding: 25px 50px 40px;
-    }
     .vp_content {
         display: flex;
     }
     .vp_content-vp {
+        display: flex;
+        flex-direction: column;
         padding-top: 5%;
     }
     .vp_content-vp, .vp_content-img {
@@ -50,17 +97,17 @@
         max-width: 800px;
         min-width: 635px;
         padding: 35px;
-    }
-    .vp_content-vp-txt-title {
-        font-size: var(--font-size-2_5em);
+        margin-left: auto;
+        margin-right: auto;
     }
     .vp_content-vp-txt-line {
         font-size: var(--font-size-1_6em);
     }
     .vp_content-vp-cta {
-        margin-top: 50px;
+        width: 100%;
         max-width: 800px;
         min-width: 635px;
+        margin: 50px auto 0;
     }
     .vp_content-img img {
         width: 100%;
@@ -70,9 +117,6 @@
 /*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
 
 @media (max-width: 991px) {
-    .main_content-vp {
-        padding: 0 15px;
-    }
     .vp_content-vp {
         position: absolute;
         z-index: 1;
@@ -91,11 +135,8 @@
         padding: 10px 20px 10px;
         border-radius: var(--border-float-radius);
     }
-    .vp_content-vp-txt-title {
-        font-size: var(--big-font-size);
-    }
     .vp_content-vp-txt-line {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
     }
     .vp_content-vp-cta {
         width: 100%;
@@ -120,3 +161,105 @@
 }
 
 /*———————————————————————————————— VP UP ————————————————————————————————————*/
+
+/*———————————————————————————————— TUTO DOWN ————————————————————————————————*/
+
+.tuto_content-title {
+    text-align: center;
+}
+
+.tuto_content-features {
+    position: relative;
+}
+
+.tuto_content-features-container {
+    display: flex;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-head-logo {
+    display: flex;
+}
+
+.feature-head-logo .rectangle {
+    width: 100%;
+}
+
+.feature-head-logo .square {
+    min-width: 70px;
+    height: 50px;
+    background-color: var(--color-white);
+}
+
+.feature-head-logo .circle {
+    display: flex;
+    height: 100%;
+    max-width: 50px;
+    margin: auto;
+    border-radius: 50%;
+    background-color: var(--color-shadow-08);
+}
+
+.feature-head-logo .circle span {
+    display: block;
+    margin: auto;
+    font-weight: bold;
+    color: var(--color-text-08);
+    font-size: var(--font-size-1_6em);
+    font-family: verdana;
+}
+
+.feature-head-title {
+    margin: 10px 0 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
+
+@media (min-width: 992px) {
+    .tuto_content-title {
+        margin-bottom: 50px;
+    }
+    .tuto_content-features-barre {
+        position: absolute;
+        width: 100%;
+        top: 25px;
+        z-index: 0;
+    }
+    .tuto_content-features-barre-barre {
+        border-bottom: var(--color-text-08) 1px solid;
+    }
+    .tuto_content-features-container .feature {
+        width: 30%;
+        max-width: 490px;
+    }
+    .tuto_content-features-container>.center {
+        margin: 0 auto;
+    }
+    .feature-head-logo .back_white {
+        background-color: var(--color-white);
+    }
+}
+
+/*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
+
+@media (max-width: 991px) {
+    .tuto_content-title {
+        padding: 3px;
+        background-color: var(--color-shadow-05);
+        margin-bottom: 30px;
+    }
+    .tuto_content-features-container {
+        flex-direction: column;
+    }
+    .tuto_content-features-container .feature {
+        margin-bottom: 15px;
+    }
+    .feature-body .text {
+        text-align: center;
+    }
+}
+
+/*———————————————————————————————— TUTO UP ——————————————————————————————————*/

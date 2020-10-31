@@ -9,18 +9,19 @@ $translator = $translator;
 $this->head = $this->generateFile('view/Landing/files/head.php', []);
 ?>
 <div class="main_content">
+    <!-- VP -->
     <div class="main_content-vp">
         <div class="vp_content">
             <div class="vp_content-vp">
                 <div class="vp_content-vp-txt vp_content-vp-child">
-                    <h1 class="vp_content-vp-txt-title"><span class="capitalize">profite</span> de la second main sans ses inconvénients</h1>
+                    <h1 class="vp_content-vp-txt-title title"><span class="capitalize">profite</span> de la second main sans ses inconvénients</h1>
                     <p class="vp_content-vp-txt-line">un grand catalogue</p>
                     <p class="vp_content-vp-txt-line">un large choix de taille</p>
                     <p class="vp_content-vp-txt-line">un service de retouche totalement gratuit</p>
-                    <p class="vp_content-vp-txt-line">le tout dans une boxe: la meimboxe</p>
+                    <p class="vp_content-vp-txt-line">le tout dans une boxe: la <span class="capitalize">meimboxe</span></p>
                 </div>
                 <div class="vp_content-vp-cta vp_content-vp-child">
-                    <button class="cta-btn squared-standard-button">acheter ta meimboxe</button>
+                    <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
                 </div>
             </div>
             <div class="vp_content-img">
@@ -28,8 +29,111 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             </div>
         </div>
     </div>
+    <!-- TUTO -->
+    <div class="main_content-tuto">
+        <div class="tuto_content">
+            <div class="tuto_content-title">
+                <h2 class="title">
+                    <span class="capitalize">mais</span> la
+                    <span class="capitalize">meimboxe</span> comment ça marche?
+                </h2>
+            </div>
+            <div class="tuto_content-features">
+                <div class="tuto_content-features-barre">
+                    <div class="tuto_content-features-barre-barre"></div>
+                </div>
+                <div class="tuto_content-features-container">
+                    <div class="feature">
+                        <div class="feature-head">
+                            <div class="feature-head-logo">
+                                <div class="back_white rectangle"></div>
+                                <div class="square">
+                                    <div class="circle">
+                                        <span>1</span>
+                                    </div>
+                                </div>
+                                <div class="rectangle"></div>
+                            </div>
+                            <div class="feature-head-title">
+                                <h3 class="bold subtitle">
+                                    <spa class="capitalize">choisis</spa> ta
+                                    <span class="capitalize">meimboxe</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="feature-body">
+                            <p class="text">
+                                <span class="capitalize">choisis</span> parmi les
+                                <span class="capitalize">meimboxes</span> disponible celle qui te convient le mieux.
+                                <br>
+                                <span class="capitalize">chaque meimboxe</span> peut contenir jusqu'à un certain nombre d'article.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="feature center">
+                        <div class="feature-head">
+                            <div class="feature-head-logo">
+                                <div class="rectangle"></div>
+                                <div class="square">
+                                    <div class="circle">
+                                        <span>2</span>
+                                    </div>
+                                </div>
+                                <div class="rectangle"></div>
+                            </div>
+                            <div class="feature-head-title">
+                                <h3 class="bold subtitle">
+                                    <spa class="capitalize">remplis</spa> ta
+                                    <span class="capitalize">meimboxe</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="feature-body">
+                            <p class="text">
+                                <span class="capitalize">parcourt</span> notre catalogue, ajoute les articles qui te plaisent dans ta
+                                <span class="capitalize">meimboxe</span>
+                                <br>
+                                <span class="capitalize">ajoute</span> les articles qui te plaisent dans ta
+                                <span class="capitalize">meimboxe.</span>
+                                <br>
+                                <span class="capitalize">et</span> passe ta commande!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-head">
+                            <div class="feature-head-logo">
+                                <div class="rectangle"></div>
+                                <div class="square">
+                                    <div class="circle">
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                                <div class="back_white rectangle"></div>
+                            </div>
+                            <div class="feature-head-title">
+                                <h3 class="bold subtitle">
+                                    <spa class="capitalize">reçois</spa> ta
+                                    <span class="capitalize">meimboxe</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="feature-body">
+                            <p class="text">
+                                <span class="capitalize">Une</span> fois ta commande passée, notre équipe
+                                s'occupe du reste pour une livraison en
+                                moins de 7 jours.
+                                <br>
+                            </p>
+                        </div>
+                    </div>
 
-    <div class="main_content-tuto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- SIZE -->
     <div class="main_content-size"></div>
+    <!-- QUALITY -->
     <div class="main_content-quality"></div>
 </div>
