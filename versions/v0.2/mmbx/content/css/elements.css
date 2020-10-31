@@ -740,7 +740,8 @@
     color: var(--color-white);
     border: var(--color-green-clear) 1px solid;
 }
-.cta-btn:hover{
+
+.cta-btn:hover {
     color: var(--color-green-clear);
     background-color: var(--color-white);
     border: var(--color-green-clear) 1px solid;
@@ -2916,3 +2917,50 @@ width: 49%; */
 }
 
 /*———————————————————————————————— ORDER_SUMMARY UP —————————————————————————*/
+
+/*———————————————————————————————— FEATURE DOWN —————————————————————————————*/
+
+.features {
+    display: flex;
+}
+
+.feature {
+    max-width: 490px;
+    padding: 10px;
+    border-radius: var(--border-radius-10);
+}
+
+.feature-head-logo {
+    display: flex;
+}
+
+.feature-head-logo .logo {
+    margin: 0 auto;
+    width: 70px;
+    padding: 5px;
+    background-color: var(--color-blue-05);
+    border-radius: var(--border-float-radius);
+}
+
+.feature-head-logo .logo img {
+    width: 100%;
+}
+
+.feature-head-title {
+    margin: 10px 0 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+@media (min-width: 992px) {}
+
+@media (max-width: 991px) {
+    .features {
+        flex-direction: column;
+    }
+    .feature {
+        margin: 0 auto 15px;
+    }
+}
+
+/*———————————————————————————————— FEATURE UP ———————————————————————————————*/
