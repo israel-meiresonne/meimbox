@@ -1,3 +1,7 @@
+:root{
+    --max_width: 490px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--main-font-family);
     font-weight: initial;
@@ -12,6 +16,10 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.7;
 }
 
+.text_center {
+    text-align: center;
+}
+
 @media (min-width: 992px) {
     .title {
         font-size: var(--font-size-2_5em);
@@ -23,12 +31,27 @@ h1, h2, h3, h4, h5, h6 {
     .text {
         font-size: 1.2em;
     }
+    .title_margin_bottom {
+        margin-bottom: 50px;
+    }
+    .cta {
+        max-width: 720px;
+        margin: 0 auto;
+    }
 }
 
 @media (max-width: 991px) {
     .title {
         font-size: var(--font-size-1_6em);
         font-weight: bold;
+    }
+    .title_margin_bottom {
+        margin-bottom: 30px;
+    }
+    .cta {
+        /* max-width: 490px; */
+        max-width: var(--max_width);
+        margin: 0 auto;
     }
 }
 
@@ -178,21 +201,23 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 
-.feature-head-logo {
-    display: flex;
+.tuto_content-features-container .feature {
+    /* max-width: 490px; */
+    max-width: var(--max_width);
+    padding: 0;
 }
 
-.feature-head-logo .rectangle {
+.tuto_content-features-container .feature-head-logo .rectangle {
     width: 100%;
 }
 
-.feature-head-logo .square {
+.tuto_content-features-container .feature-head-logo .square {
     min-width: 70px;
     height: 50px;
     background-color: var(--color-white);
 }
 
-.feature-head-logo .circle {
+.tuto_content-features-container .feature-head-logo .circle {
     display: flex;
     height: 100%;
     max-width: 50px;
@@ -201,7 +226,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--color-shadow-08);
 }
 
-.feature-head-logo .circle span {
+.tuto_content-features-container .feature-head-logo .circle span {
     display: block;
     margin: auto;
     font-weight: bold;
@@ -210,18 +235,9 @@ h1, h2, h3, h4, h5, h6 {
     font-family: verdana;
 }
 
-.feature-head-title {
-    margin: 10px 0 20px;
-    text-align: center;
-    font-weight: bold;
-}
-
 /*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
 
 @media (min-width: 992px) {
-    .tuto_content-title {
-        margin-bottom: 50px;
-    }
     .tuto_content-features-barre {
         position: absolute;
         width: 100%;
@@ -233,7 +249,6 @@ h1, h2, h3, h4, h5, h6 {
     }
     .tuto_content-features-container .feature {
         width: 30%;
-        max-width: 490px;
     }
     .tuto_content-features-container>.center {
         margin: 0 auto;
@@ -249,17 +264,63 @@ h1, h2, h3, h4, h5, h6 {
     .tuto_content-title {
         padding: 3px;
         background-color: var(--color-shadow-05);
-        margin-bottom: 30px;
+        max-width: 660px;
+        margin-top: 0;
+        margin-left: auto;
+        margin-right: auto;
     }
-    .tuto_content-features-container {
-        flex-direction: column;
-    }
-    .tuto_content-features-container .feature {
-        margin-bottom: 15px;
-    }
-    .feature-body .text {
+    .tuto_content-features-container .feature-body-child {
         text-align: center;
     }
 }
 
 /*———————————————————————————————— TUTO UP ——————————————————————————————————*/
+
+/*———————————————————————————————— SIZE DOWN ————————————————————————————————*/
+
+.main_content-size {
+    background-color: var(--color-blue-05);
+}
+
+.size_content-title {
+    background-color: var(--color-white);
+    /* max-width: 660px; */
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.size_content-features .feature {
+    background-color: var(--color-white);
+}
+
+/*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
+
+@media (min-width: 992px) {
+.size_content-title {
+    padding: 3px;
+    max-width: 790px;
+}
+    .size_content-features .feature {
+        margin: 0 auto;
+        width: 45%;
+    }
+    .size_content-cta {
+        margin-top: 50px;
+    }
+}
+
+/*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
+
+@media (max-width: 991px) {
+    .size_content-title {
+    padding: 10px 3px;
+    /* max-width: 490px; */
+    max-width: var(--max_width);
+    }
+    .size_content-cta {
+        margin-top: 40px;
+    }
+}
+
+/*———————————————————————————————— SIZE UP ——————————————————————————————————*/

@@ -18,6 +18,7 @@
     --color-yellow: #FFD300;
     --color-yellow-07: rgba(255, 211, 0, 0.7);
     --color-blue: #4DA3F5;
+    --color-blue-05: rgba(175, 213, 248, .5);
     --color-pink: #F0C7CB;
     /*———————————————————————————————— COLOR UP —————————————————————————————*/
     /*———————————————————————————————— FONT-FAMILY DOWN —————————————————————*/
@@ -51,6 +52,7 @@
     /*———————————————————————————————— BODER DOWN ———————————————————————————*/
     --border-float: var(--color-shadow) 1px solid;
     --border-float-radius: 5px;
+    --border-radius-10: 10px;
     --big-border-radius: 20px;
     /* --border-radius-35: 35px; */
     --border-radius-selcted-element: 10px;

@@ -32,7 +32,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
     <!-- TUTO -->
     <div class="main_content-tuto">
         <div class="tuto_content">
-            <div class="tuto_content-title">
+            <div class="tuto_content-title title_margin_bottom">
                 <h2 class="title">
                     <span class="capitalize">mais</span> la
                     <span class="capitalize">meimboxe</span> comment ça marche?
@@ -42,7 +42,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 <div class="tuto_content-features-barre">
                     <div class="tuto_content-features-barre-barre"></div>
                 </div>
-                <div class="tuto_content-features-container">
+                <div class="tuto_content-features-container features">
                     <div class="feature">
                         <div class="feature-head">
                             <div class="feature-head-logo">
@@ -62,7 +62,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             </div>
                         </div>
                         <div class="feature-body">
-                            <p class="text">
+                            <p class="feature-body-child text">
                                 <span class="capitalize">choisis</span> parmi les
                                 <span class="capitalize">meimboxes</span> disponible celle qui te convient le mieux.
                                 <br>
@@ -89,7 +89,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             </div>
                         </div>
                         <div class="feature-body">
-                            <p class="text">
+                            <p class="feature-body-child text">
                                 <span class="capitalize">parcourt</span> notre catalogue, ajoute les articles qui te plaisent dans ta
                                 <span class="capitalize">meimboxe</span>
                                 <br>
@@ -119,7 +119,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             </div>
                         </div>
                         <div class="feature-body">
-                            <p class="text">
+                            <p class="feature-body-child text">
                                 <span class="capitalize">Une</span> fois ta commande passée, notre équipe
                                 s'occupe du reste pour une livraison en
                                 moins de 7 jours.
@@ -133,7 +133,69 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
         </div>
     </div>
     <!-- SIZE -->
-    <div class="main_content-size"></div>
+    <div class="main_content-size">
+        <div class="size_content">
+            <div class="size_content-title title_margin_bottom">
+                <h2 class="title text_center">
+                    <span class="capitalize">plus</span> d'option pour plus de taille
+                </h2>
+            </div>
+            <div class="size_content-features features">
+                <!-- SIZE-SIZE -->
+                <div class="feature">
+                    <div class="feature-head">
+                        <div class="feature-head-logo">
+                            <div class="logo">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>multiple-size.png">
+                            </div>
+                        </div>
+                        <div class="feature-head-title">
+                            <h3 class="bold subtitle">
+                                <spa class="capitalize">un</spa> large choix de taille
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="feature-body">
+                        <p class="feature-body-child text">
+                            <span class="capitalize">découvre</span> sur chaque article le plus large
+                            choix de taille encore jamais vue sur un catalogue
+                            de seconde main.
+                        </p>
+                    </div>
+                </div>
+                <!-- SIZE-MEASURE -->
+                <div class="feature">
+                    <div class="feature-head">
+                        <div class="feature-head-logo">
+                            <div class="logo">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>tape-measure.png">
+                            </div>
+                        </div>
+                        <div class="feature-head-title">
+                            <h3 class="bold subtitle">
+                                <spa class="capitalize">des</spa> retouches sur mesure et gratuites
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="feature-body">
+                        <p class="feature-body-child text">
+                            <span class="capitalize">tu</span> ne trouve pas ta taille?
+                            <span class="capitalize">tu</span> désire un vêtement sur mesure?
+                            <br>
+                            <span class="capitalize">alors</span> enregistre ta taille avec ton article et nous nous occupons du reste.
+                            <br>
+                            <span class="capitalize">c'est</span> totalement gratuit!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="size_content-cta">
+                <div class="cta">
+                    <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- QUALITY -->
     <div class="main_content-quality"></div>
 </div>
