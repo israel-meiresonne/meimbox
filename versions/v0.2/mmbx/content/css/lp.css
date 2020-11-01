@@ -1,5 +1,7 @@
 :root {
     --max_width: 490px;
+    --max_width_title: 790px;
+    --rotate-wave: -5deg;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -34,6 +36,10 @@ h1, h2, h3, h4, h5, h6 {
     .title_margin_bottom {
         margin-bottom: 50px;
     }
+    .title_background {
+        padding: 3px;
+        max-width: var(--max_width_title);
+    }
     .cta {
         max-width: 720px;
         margin: 50px auto 0;
@@ -50,6 +56,10 @@ h1, h2, h3, h4, h5, h6 {
     }
     .title_margin_bottom {
         margin-bottom: 30px;
+    }
+    .title_background {
+        padding: 10px 3px;
+        max-width: var(--max_width);
     }
     .cta {
         max-width: var(--max_width);
@@ -68,16 +78,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 992px) {
-    .main_content-vp, .main_content-tuto, .main_content-size {
+    .main_content-vp, .main_content-tuto, .main_content-size, .feature_content-features-inner {
         padding: 25px 50px 40px;
     }
 }
 
 @media (max-width: 991px) {
-    .main_content-vp, .main_content-tuto, .main_content-size {
+    .main_content-vp, .main_content-tuto, .main_content-size, .feature_content-features-inner {
         padding: 0 15px;
     }
-    .main_content-tuto, .main_content-size, .main_content-quality {
+    .main_content-tuto, .main_content-size, .main_content-quality, .feature_content-features-inner {
         padding-top: 25px;
         padding-bottom: 40px;
     }
@@ -298,10 +308,10 @@ h1, h2, h3, h4, h5, h6 {
 /*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
 
 @media (min-width: 992px) {
-    .size_content-title {
+    /* .size_content-title {
         padding: 3px;
         max-width: 790px;
-    }
+    } */
     .size_content-features .feature {
         margin: 0 auto;
         width: 45%;
@@ -311,11 +321,11 @@ h1, h2, h3, h4, h5, h6 {
 /*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
 
 @media (max-width: 991px) {
-    .size_content-title {
+    /* .size_content-title {
         padding: 10px 3px;
-        /* max-width: 490px; */
+        max-width: 490px;
         max-width: var(--max_width);
-    }
+    } */
 }
 
 /*———————————————————————————————— SIZE UP ——————————————————————————————————*/
@@ -379,3 +389,80 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*———————————————————————————————— QUALITY UP ———————————————————————————————*/
+
+/*———————————————————————————————— FEATURE DOWN —————————————————————————————*/
+
+.feature_content-mosaic {
+    min-height: 500px;
+    background-color: yellowgreen;
+}
+
+.feature_content-features {
+    position: relative;
+}
+
+.feature_content-features-inner {
+    z-index: 1;
+    position: relative;
+    background-color: var(--color-blue-wave);
+}
+
+.feature_content-wave_top, .feature_content-wave_bottom {
+    /* --top: calc(-130px - 2px); */
+    position: absolute;
+    width: 100%;
+    /* height: 50%; */
+    height: 11%;
+}
+
+.feature_content-wave-mask {
+    --trans-origin: 0 100%;
+    position: relative;
+    height: 100%;
+    background-color: var(--color-blue-wave);
+    transform-origin: var(--trans-origin);
+    -moz-transform-origin: var(--trans-origin);
+    -webkit-transform-origin: var(--trans-origin);
+    transform: skewY(var(--rotate-wave));
+    -moz-transform: skewY(var(--rotate-wave));
+    -webkit-transform: skewY(var(--rotate-wave));
+}
+
+.feature_content-features-title {
+    color: var(--color-white);
+    background-color: var(--color-text);
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature_content-features-features .feature {
+    color: var(--color-white);
+    background-color: var(--color-text);
+}
+
+.feature_content-features-features .feature .logo {
+    background-color: var(--color-white);
+}
+
+/*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
+
+@media (min-width: 992px) {
+    .feature_content-features-features .feature {
+        width: 45%;
+        margin: auto;
+    }
+    .feature_content-features-features .feature_line{
+        margin-bottom: 5%;
+    }
+}
+
+/*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
+
+@media (max-width: 991px) {
+    .feature_content-features-features .feature{
+        margin-bottom: 25px;
+    }
+}
+
+/*———————————————————————————————— FEATURE UP ———————————————————————————————*/
