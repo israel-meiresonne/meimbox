@@ -135,7 +135,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
     <!-- SIZE -->
     <div class="main_content-size">
         <div class="size_content">
-            <div class="size_content-title title_margin_bottom">
+            <div class="size_content-title title_margin_bottom title_background">
                 <h2 class="title text_center">
                     <span class="capitalize">plus</span> d'option pour plus de taille
                 </h2>
@@ -273,6 +273,147 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                     <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- FEATURES -->
+    <div class="main_content-feature">
+        <div class="feature_content">
+            <!-- MOSAIC -->
+            <div class="feature_content-mosaic"></div>
+            <!-- FEATURES -->
+            <div class="feature_content-features">
+                <!-- WAVE_TOP -->
+                <div class="feature_content-wave_top">
+                    <div class="feature_content-wave-mask"></div>
+                </div>
+                <div class="feature_content-features-inner">
+                    <div class="feature_content-features-title title_margin_bottom title_background">
+                        <h2 class="title text_center">
+                            <span class="capitalize">mais</span> la <span class="capitalize">meimbox</span> c'est aussi...
+                        </h2>
+                    </div>
+                    <div class="feature_content-features-features">
+                        <div class="feature_line features">
+                            <div class="feature">
+                                <div class="feature-head">
+                                    <div class="feature-head-logo">
+                                        <div class="logo">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>no-trash.png">
+                                        </div>
+                                    </div>
+                                    <div class="feature-head-title">
+                                        <h3 class="bold subtitle">
+                                            <spa class="capitalize">zéro</spa> déchet
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="feature-body">
+                                    <p class="feature-body-child text">
+                                        <span class="capitalize">la meimboxe</span> c'est une boxe en carton solide avec fermeture magnétique.
+                                        <br>
+                                        <span class="capitalize">ce</span> détails te permet de la réutiliser comme rangement et éviter de remplir les poubelles.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="feature">
+                                <div class="feature-head">
+                                    <div class="feature-head-logo">
+                                        <div class="logo">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>no-plastic.png">
+                                        </div>
+                                    </div>
+                                    <div class="feature-head-title">
+                                        <h3 class="bold subtitle">
+                                            <spa class="capitalize">zéro</spa> plastique
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="feature-body">
+                                    <p class="feature-body-child text">
+                                        <span class="capitalize">grace</span> à l'usage massif de matériaux alternatif
+                                        nous sommes parvenue à vous proposer aujourd'hui une
+                                        <span class="capitalize">meimboxe</span> affichant zéro gramme de plastic...
+                                        <span class="capitalize">comme</span> quoi c'est possible!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature_line features">
+                            <div class="feature">
+                                <div class="feature-head">
+                                    <div class="feature-head-logo">
+                                        <div class="logo">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>flag-europe.png">
+                                        </div>
+                                    </div>
+                                    <div class="feature-head-title">
+                                        <h3 class="bold subtitle">
+                                            <span class="capitalize">made</span> in <span class="capitalize">europe</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="feature-body">
+                                    <p class="feature-body-child text">
+                                        <span class="capitalize">toutes</span> nos infrastructures, nos locaux et notre personnel sont localisés en 
+                                        <span class="capitalize">europe</span> à fin d'être au plus prêt de vous et ainsi vous assurer un service parfait et dans les temps.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="feature">
+                                <div class="feature-head">
+                                    <div class="feature-head-logo">
+                                        <div class="logo">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>icons8-headset-96.png">
+                                        </div>
+                                    </div>
+                                    <div class="feature-head-title">
+                                        <h3 class="bold subtitle">
+                                            <spa class="capitalize">service</spa> client dévoué
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="feature-body">
+                                    <p class="feature-body-child text">
+                                        <span class="capitalize">nous</span> restons à votre écoute pour vous répondre à toutes vos questions.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature_line features">
+                            <div class="feature">
+                                <div class="feature-head">
+                                    <div class="feature-head-logo">
+                                        <div class="logo">
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>track-order.png">
+                                        </div>
+                                    </div>
+                                    <div class="feature-head-title">
+                                        <h3 class="bold subtitle">
+                                            <spa class="capitalize">suivis</spa> de colis intégré
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="feature-body">
+                                    <p class="feature-body-child text">
+                                        <span class="capitalize">suis</span> l'état de ta commande à tout moment grâce 
+                                        à notre système de suivis de colis directement disponible sur notre plateforme.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature_content-features-cta">
+                        <div class="cta">
+                            <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- WAVE_BOTTOM -->
+                <div class="feature_content-wave_bottom">
+                    <div class="feature_content-wave-mask"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
