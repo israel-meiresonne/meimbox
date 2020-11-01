@@ -141,7 +141,6 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 </h2>
             </div>
             <div class="size_content-features features">
-                <!-- SIZE-SIZE -->
                 <div class="feature">
                     <div class="feature-head">
                         <div class="feature-head-logo">
@@ -163,7 +162,6 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                         </p>
                     </div>
                 </div>
-                <!-- SIZE-MEASURE -->
                 <div class="feature">
                     <div class="feature-head">
                         <div class="feature-head-logo">
@@ -197,5 +195,84 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
         </div>
     </div>
     <!-- QUALITY -->
-    <div class="main_content-quality"></div>
+    <div class="main_content-quality">
+        <div class="quality_content">
+            <div class="quality_content-lines">
+                <!-- LINE-QUALITY -->
+                <div class="quality_content-line">
+                    <div class="quality_content-line-img">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                    </div>
+                    <div class="quality_content-line-txt">
+                        <div class="quality_content-line-txt-inner">
+                            <div class="quality_content-line-txt-title">
+                                <h3 class="bold subtitle">
+                                    <spa class="capitalize">la</spa> meilleure qualité pour un meilleur confort
+                                </h3>
+                            </div>
+                            <div class="quality_content-line-txt-txt">
+                                <p class="text">
+                                    <span class="capitalize">nous</span> mettons à ta disposition que les articles dont nous jugeons la qualité irréprochable* pour toujours te
+                                    garantir le meilleur confort et ça sur toute notre gamme.
+                                    <br>
+                                    <br>
+                                    <span class="capitalize">*ceux</span> dont la qualité est jugé insuffisante sont détruits pour en faire des nouveaux produits.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- LINE-COLOR -->
+                <div class="quality_content-line flex_reverse">
+                    <div class="quality_content-line-img">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                    </div>
+                    <div class="quality_content-line-txt">
+                        <div class="quality_content-line-txt-inner">
+                            <div class="quality_content-line-txt-title">
+                                <h3 class="bold subtitle">
+                                    <spa class="capitalize">des</spa> couleurs ravivées
+                                </h3>
+                            </div>
+                            <div class="quality_content-line-txt-txt">
+                                <p class="text">
+                                    <span class="capitalize">finis</span> les couleurs fades et délavées,
+                                    grâce à notre programme de repigmentation des tissus, nous te proposons
+                                    des vêtements avec des couleurs plus éclatantes les unes que les autres.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- LINE-LIFE -->
+                <div class="quality_content-line">
+                    <div class="quality_content-line-img">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                    </div>
+                    <div class="quality_content-line-txt">
+                        <div class="quality_content-line-txt-inner">
+                            <div class="quality_content-line-txt-title">
+                                <h3 class="bold subtitle">
+                                    <spa class="capitalize">des</spa> vêtements qui durent
+                                </h3>
+                            </div>
+                            <div class="quality_content-line-txt-txt">
+                                <p class="text">
+                                    <span class="capitalize">pour</span> t'assure un vêtement qui tient
+                                    longtemps, nous renforçons les coutures de chaque article sur les
+                                    zones que nous avons identifiées comme pouvant se relâcher voir céder
+                                    dans le temps comme [zone 1, zone 2].
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="quality_content-cta">
+                <div class="cta">
+                    <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

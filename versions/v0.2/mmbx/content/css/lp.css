@@ -1,4 +1,4 @@
-:root{
+:root {
     --max_width: 490px;
 }
 
@@ -36,7 +36,10 @@ h1, h2, h3, h4, h5, h6 {
     }
     .cta {
         max-width: 720px;
-        margin: 0 auto;
+        margin: 50px auto 0;
+    }
+    .cta-btn {
+        font-size: var(--font-size-1_6em);
     }
 }
 
@@ -49,9 +52,11 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 30px;
     }
     .cta {
-        /* max-width: 490px; */
         max-width: var(--max_width);
-        margin: 0 auto;
+        margin: 40px auto 0;
+    }
+    .cta-btn {
+        font-size: var(--middle-font-size);
     }
 }
 
@@ -63,13 +68,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 992px) {
-    .main_content-vp, .main_content-tuto, .main_content-size, .main_content-quality {
+    .main_content-vp, .main_content-tuto, .main_content-size {
         padding: 25px 50px 40px;
     }
 }
 
 @media (max-width: 991px) {
-    .main_content-vp, .main_content-tuto, .main_content-size, .main_content-quality {
+    .main_content-vp, .main_content-tuto, .main_content-size {
         padding: 0 15px;
     }
     .main_content-tuto, .main_content-size, .main_content-quality {
@@ -164,9 +169,6 @@ h1, h2, h3, h4, h5, h6 {
     .vp_content-vp-cta {
         width: 100%;
         margin: 5vh auto auto;
-    }
-    .vp_content-vp-cta button {
-        font-size: 1em;
     }
     .cta-btn:hover {
         color: var(--color-white);
@@ -284,7 +286,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .size_content-title {
     background-color: var(--color-white);
-    /* max-width: 660px; */
     margin-top: 0;
     margin-left: auto;
     margin-right: auto;
@@ -297,16 +298,13 @@ h1, h2, h3, h4, h5, h6 {
 /*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
 
 @media (min-width: 992px) {
-.size_content-title {
-    padding: 3px;
-    max-width: 790px;
-}
+    .size_content-title {
+        padding: 3px;
+        max-width: 790px;
+    }
     .size_content-features .feature {
         margin: 0 auto;
         width: 45%;
-    }
-    .size_content-cta {
-        margin-top: 50px;
     }
 }
 
@@ -314,13 +312,70 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 991px) {
     .size_content-title {
-    padding: 10px 3px;
-    /* max-width: 490px; */
-    max-width: var(--max_width);
-    }
-    .size_content-cta {
-        margin-top: 40px;
+        padding: 10px 3px;
+        /* max-width: 490px; */
+        max-width: var(--max_width);
     }
 }
 
 /*———————————————————————————————— SIZE UP ——————————————————————————————————*/
+
+/*———————————————————————————————— QUALITY DOWN —————————————————————————————*/
+
+.quality_content-lines .flex_reverse {
+    background-color: var(--color-orange-clear);
+}
+
+.quality_content-line-img img {
+    width: 100%;
+}
+
+/*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
+
+@media (min-width: 992px) {
+    .main_content-quality {
+        padding: 25px 0 40px;
+    }
+    .quality_content-line {
+        display: flex;
+        min-height: 500px;
+        padding: 15px 50px 10px;
+    }
+    .quality_content-lines .flex_reverse {
+        flex-direction: row-reverse;
+    }
+    .quality_content-line-img, .quality_content-line-txt {
+        width: 50%;
+        margin: auto;
+    }
+    .quality_content-line-img {
+        max-width: 490px;
+    }
+    .quality_content-line-txt {
+        display: flex;
+    }
+    .quality_content-line-txt-inner {
+        margin: auto 0;
+    }
+}
+
+/*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
+
+@media (max-width: 991px) {
+    .quality_content-line {
+        margin: 0 auto;
+        padding: 10px 15px;
+    }
+    .quality_content-line-img, .quality_content-line-txt {
+        margin: 0 auto;
+    }
+    .quality_content-line-img {
+        max-width: 390px;
+    }
+    .quality_content-line-txt {
+        max-width: 490px;
+        text-align: center;
+    }
+}
+
+/*———————————————————————————————— QUALITY UP ———————————————————————————————*/
