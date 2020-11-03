@@ -392,11 +392,6 @@ h1, h2, h3, h4, h5, h6 {
 
 /*———————————————————————————————— FEATURE DOWN —————————————————————————————*/
 
-.feature_content-mosaic {
-    min-height: 500px;
-    background-color: yellowgreen;
-}
-
 .feature_content-features {
     position: relative;
 }
@@ -452,7 +447,7 @@ h1, h2, h3, h4, h5, h6 {
         width: 45%;
         margin: auto;
     }
-    .feature_content-features-features .feature_line{
+    .feature_content-features-features .feature_line {
         margin-bottom: 5%;
     }
 }
@@ -460,9 +455,46 @@ h1, h2, h3, h4, h5, h6 {
 /*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
 
 @media (max-width: 991px) {
-    .feature_content-features-features .feature{
+    .feature_content-features-features .feature {
         margin-bottom: 25px;
     }
 }
 
 /*———————————————————————————————— FEATURE UP ———————————————————————————————*/
+
+/*———————————————————————————————— MOSAIC DOWN ——————————————————————————————*/
+
+.feature_content-mosaic {
+    /* background-color: yellowgreen; */
+    overflow: hidden;
+}
+
+/* .grid-item { */
+
+/* .stone {
+    float: left;
+    padding: 5px;
+}
+
+.stone img {
+    .grid-item img {
+    width: 100%;
+} */
+
+/*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
+
+@media (min-width: 992px) {
+    .feature_content-mosaic {
+        max-height: 480px;
+    }
+}
+
+/*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
+
+@media (max-width: 991px) {
+    .feature_content-mosaic {
+        max-height: 280px;
+    }
+}
+
+/*———————————————————————————————— MOSAIC UP ————————————————————————————————*/

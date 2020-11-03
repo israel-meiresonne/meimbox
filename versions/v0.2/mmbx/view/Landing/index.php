@@ -1,4 +1,6 @@
 <?php
+require_once 'view/view/Mosaic/Mosaic.php';
+
 $this->title = "shipping address";
 $this->description = "select shipping address";
 $this->header = self::HEADER_CONF_LANDING;
@@ -25,7 +27,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 </div>
             </div>
             <div class="vp_content-img">
-                <img src="<?= self::$DIR_STATIC_FILES ?>IMG_2628.png" alt="">
+                <img src="<?= self::$DIR_STATIC_FILES ?>IMG_2628.png">
             </div>
         </div>
     </div>
@@ -278,8 +280,32 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
     <!-- FEATURES -->
     <div class="main_content-feature">
         <div class="feature_content">
+            <?php
+            $files = [];
+            $i = 0;
+            while ($i < 50) {
+                $rand = rand(1, 3);
+                // $file = $dir_prod_files . 'picture01.jpeg';
+                $file = $dir_prod_files . "picture0$rand.jpeg";
+                array_push($files, $file);
+                $i++;
+            }
+            $min = 10;
+            $max = 50;
+            $configMap = new Map();
+            $stoneClass = "instrument";
+            $configMap->put("mosar", Map::containerClass);
+            $configMap->put("room", Map::sizerClass);
+            $configMap->put($stoneClass, Map::stoneClass);
+            $css = ".$stoneClass {padding: 5px;}
+                    .$stoneClass img { width: 100%; }";
+            $configMap->put($css, Map::css);
+            $mosaic = new Mosaic($files, $configMap, $min, $max);
+            ?>
             <!-- MOSAIC -->
-            <div class="feature_content-mosaic"></div>
+            <div class="feature_content-mosaic">
+                <?= $mosaic ?>
+            </div>
             <!-- FEATURES -->
             <div class="feature_content-features">
                 <!-- WAVE_TOP -->
@@ -354,7 +380,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 </div>
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
-                                        <span class="capitalize">toutes</span> nos infrastructures, nos locaux et notre personnel sont localisés en 
+                                        <span class="capitalize">toutes</span> nos infrastructures, nos locaux et notre personnel sont localisés en
                                         <span class="capitalize">europe</span> à fin d'être au plus prêt de vous et ainsi vous assurer un service parfait et dans les temps.
                                     </p>
                                 </div>
@@ -395,7 +421,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 </div>
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
-                                        <span class="capitalize">suis</span> l'état de ta commande à tout moment grâce 
+                                        <span class="capitalize">suis</span> l'état de ta commande à tout moment grâce
                                         à notre système de suivis de colis directement disponible sur notre plateforme.
                                     </p>
                                 </div>
