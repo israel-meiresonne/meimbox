@@ -158,13 +158,43 @@ class ControllerHome extends ControllerSecure
 
     public function testA()
     {
+        require_once 'view/view/Mosaic/Mosaic.php';
         // header('content-type: application/json');
-        // $url = 'https://41f1e7c66ccc.eu.ngrok.io/versions/v0.2/mmbx/webhook/qr/blueWebhook';
-        // $content = file_get_contents($url);
-        // var_dump($content);
-        var_dump(date('Y-m-d H:i:s', 1603370177077));
+        $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
+        $files = [];
+        $i = 0;
+        while($i < 100){
+            // $file = $dir_prod_files . 'picture01.jpeg';
+            $rand  =  rand(1,3);
+            switch ($rand) {
+                case 1:
+                    $file = 'content/brain/permanent/multiple-size.png';
+                    break;
+                case 2:
+                    $file = 'content/brain/prod/picture02.jpeg';
+                    break;
+                case 3:
+                    $file = 'content/brain/permanent/flag-europe.png';
+                    break;
+            }
+            array_push($files, $file);
+            $i++;
+        }
+        $min = 5;
+        $max = 25;
+        $step = 5;
+        $mosaic = new Mosaic($files, $min, $max, $step);
+        $table = $mosaic->getDisplayableStoneMap($files, $min, $max, $step);
+        echo $table;
     }
 
+    // function random_color_part() {
+    //     return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+    // }
+    
+    // function random_color() {
+    //     return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
+    // }
 
     public function test()
     {

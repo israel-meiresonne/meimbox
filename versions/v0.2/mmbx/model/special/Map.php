@@ -17,6 +17,23 @@ class Map
     public const sql = "sql";
 
     /**
+     * Keys for Mosaic
+     */
+    public const width = "width";
+    public const height = "height";
+    public const isTreated = "isTreated";
+    public const col = "col";
+    public const row = "row";
+    public const rowStart = "rowStart";
+    public const colStart = "colStart";
+    public const rowEnd = "rowEnd";
+    public const colEnd = "colEnd";
+    public const containerClass = "containerClass";
+    public const sizerClass = "sizerClass";
+    public const stoneClass = "stoneClass";
+    public const css = "css";
+
+    /**
      * key for User
      * @var string
      */
