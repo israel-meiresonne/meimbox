@@ -63,7 +63,8 @@ h1, h2, h3, h4, h5, h6 {
     }
     .cta {
         max-width: var(--max_width);
-        margin: 40px auto 0;
+        margin-top: 40px;
+        padding: 0 20px;
     }
     .cta-btn {
         font-size: var(--middle-font-size);
@@ -214,7 +215,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tuto_content-features-container .feature {
-    /* max-width: 490px; */
     max-width: var(--max_width);
     padding: 0;
 }
@@ -308,10 +308,6 @@ h1, h2, h3, h4, h5, h6 {
 /*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
 
 @media (min-width: 992px) {
-    /* .size_content-title {
-        padding: 3px;
-        max-width: 790px;
-    } */
     .size_content-features .feature {
         margin: 0 auto;
         width: 45%;
@@ -320,13 +316,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
 
-@media (max-width: 991px) {
-    /* .size_content-title {
-        padding: 10px 3px;
-        max-width: 490px;
-        max-width: var(--max_width);
-    } */
-}
+@media (max-width: 991px) {}
 
 /*———————————————————————————————— SIZE UP ——————————————————————————————————*/
 
@@ -403,10 +393,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .feature_content-wave_top, .feature_content-wave_bottom {
-    /* --top: calc(-130px - 2px); */
     position: absolute;
     width: 100%;
-    /* height: 50%; */
     height: 11%;
 }
 
@@ -465,25 +453,34 @@ h1, h2, h3, h4, h5, h6 {
 /*———————————————————————————————— MOSAIC DOWN ——————————————————————————————*/
 
 .feature_content-mosaic {
-    /* background-color: yellowgreen; */
     overflow: hidden;
 }
 
-/* .grid-item { */
-
-/* .stone {
-    float: left;
-    padding: 5px;
+#id0 {
+    background-color: green;
 }
 
-.stone img {
-    .grid-item img {
+#id1 {
+    background-color: red;
+}
+
+#id2 {
+    background-color: blue;
+}
+
+.feature_content-mosaic-child {
+    display: flex;
+    flex-direction: row;
     width: 100%;
-} */
+    overflow: hidden;
+}
 
 /*++++++++++++++++++++++++++++++++ COMPUTER +++++++++++++++++++++++++++++++++*/
 
 @media (min-width: 992px) {
+    .feature_content-mosaic_mobile {
+        display: none;
+    }
     .feature_content-mosaic {
         max-height: 480px;
     }
@@ -492,6 +489,9 @@ h1, h2, h3, h4, h5, h6 {
 /*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
 
 @media (max-width: 991px) {
+    .feature_content-mosaic_computer {
+        display: none;
+    }
     .feature_content-mosaic {
         max-height: 280px;
     }
