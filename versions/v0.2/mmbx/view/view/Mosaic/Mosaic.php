@@ -97,8 +97,14 @@ class Mosaic extends View
      * Holds prefix for css class to place on stone tag
      * @var string
      */
+    private $widthClass;
+
+    /**
+     * Holds prefix for css class to place on stone tag
+     * @var string
+     */
     // private const CLASS_STONE_WIDTH = 'grid-item--width';
-    private const CLASS_STONE_WIDTH = 'stone_width';
+    // private const CLASS_STONE_WIDTH = 'stone_width';
 
     /**
      * Holds the max width of the screan to fit Mosaic on it
@@ -129,6 +135,7 @@ class Mosaic extends View
         $this->sizerClass = $configMap->get(Map::sizerClass);
         $this->stoneClass = $configMap->get(Map::stoneClass);
         $this->addtionalCss = $configMap->get(Map::css);
+        $this->widthClass = "prefix_" . ModelFunctionality::generateDateCode(16) . "_width";
         $this->setMosaicMap();
     }
 
@@ -336,7 +343,7 @@ class Mosaic extends View
         foreach ($keys as $key) :
             $width = $mosaicMap->get($key, Map::width);
             $file = $mosaicMap->get($key, Map::file);
-            $widthClass = self::CLASS_STONE_WIDTH . $width;
+            $widthClass = $this->getWidthClass() . $width;
             (!in_array($width, $this->classes->getKeys())) ? $this->classes->put($widthClass, $width) : null;
             $stoneDatas = [
                 "stoneClass" => $this->getStoneClass(),
@@ -527,6 +534,15 @@ class Mosaic extends View
     }
 
     /**
+     * To get prefix of the width class
+     * @return string prefix of the width class
+     */
+    private function getWidthClass()
+    {
+        return $this->widthClass;
+    }
+
+    /**
      * To get mosaic's sizerClass class
      * @return string mosaic's sizerClass class
      */
@@ -534,7 +550,6 @@ class Mosaic extends View
     {
         return $this->sizerClass;
     }
-
 
     public function getDisplayableStoneMap($files, $min, $max, $step)
     {
@@ -593,14 +608,6 @@ class Mosaic extends View
 
     public function __toString()
     {
-
-        // $mosaic = '<div class="grid">
-        //             <div class="grid-sizer"></div>';
-        // $mosaic .= $this->getMosaic();
-        // $mosaic .= $this->getStyle();
-        // $mosaic .= $this->getJs();
-        // $mosaic .= '</div>';
-
         $mosaicDatas = [
             "mosaic" => $this->getMosaic(),
             "style" => $this->getStyle(),
@@ -609,14 +616,6 @@ class Mosaic extends View
             "sizerClass" => $this->getSizerClass()
         ];
         $mosaic = $this->generateFile('view/view/Mosaic/files/mosaic.php', $mosaicDatas);
-
         return $mosaic;
-        // $mosaic = '<div class="grid">
-        //             <div class="grid-sizer"></div>';
-        // $mosaic .= $this->getMosaic();
-        // $mosaic .= $this->getStyle();
-        // $mosaic .= $this->getJs();
-        // $mosaic .= '</div>';
-        // return $mosaic;
     }
 }

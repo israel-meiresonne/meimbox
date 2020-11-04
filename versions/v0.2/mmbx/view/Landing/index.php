@@ -291,20 +291,49 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 $i++;
             }
             $min = 10;
-            $max = 50;
+            $max = 30;
             $configMap = new Map();
-            $stoneClass = "instrument";
-            $configMap->put("mosar", Map::containerClass);
-            $configMap->put("room", Map::sizerClass);
+            $containerClass = "computer_mosaic";
+            $sizerClass = "computer_mosaic-sizer";
+            $stoneClass = "computer_mosaic-stone";
+            $configMap->put($containerClass, Map::containerClass);
+            $configMap->put($sizerClass, Map::sizerClass);
             $configMap->put($stoneClass, Map::stoneClass);
-            $css = ".$stoneClass {padding: 5px;}
+            $css = "
+                    .$containerClass {min-width: 100%;}
+                    .$stoneClass {padding: 5px;}
                     .$stoneClass img { width: 100%; }";
             $configMap->put($css, Map::css);
-            $mosaic = new Mosaic($files, $configMap, $min, $max);
+            $mosaicComputer = new Mosaic($files, $configMap, $min, $max);
+
+            $min = 20;
+            $max = 60;
+            $configMap = new Map();
+            $containerClass = "mobile_mosaic";
+            $sizerClass = "mobile_mosaic-sizer";
+            $stoneClass = "mobile_mosaic-stone";
+            $configMap->put($containerClass, Map::containerClass);
+            $configMap->put($sizerClass, Map::sizerClass);
+            $configMap->put($stoneClass, Map::stoneClass);
+            $css = "
+                    .$containerClass {min-width: 100%;}
+                    .$stoneClass {padding: 2px;}
+                    .$stoneClass img { width: 100%; }";
+            $configMap->put($css, Map::css);
+            $mosaicMobile = new Mosaic($files, $configMap, $min, $max);
             ?>
             <!-- MOSAIC -->
             <div class="feature_content-mosaic">
-                <?= $mosaic ?>
+                <div class="feature_content-mosaic-child feature_content-mosaic_computer">
+                    <?= $mosaicComputer ?>
+                    <?= $mosaicComputer ?>
+                    <?= $mosaicComputer ?>
+                </div>
+                <div class="feature_content-mosaic-child feature_content-mosaic_mobile">
+                    <?= $mosaicMobile ?>
+                    <?= $mosaicMobile ?>
+                    <?= $mosaicMobile ?>
+                </div>
             </div>
             <!-- FEATURES -->
             <div class="feature_content-features">
