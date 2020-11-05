@@ -2,20 +2,23 @@
 require_once 'model/tools-management/Measure.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Translator $translator to translate
- * @param string|null $title title property
- * @param string|null $color name of the color
- * @param string|null $colorRGB color's RGB code
+ * @param string|null   $title       title property
+ * @param string|null   $color       name of the color
+ * @param string|null   $colorRGB    color's RGB code
  * + if $color is set this attribut must be setted to
- * @param string|null $size size proprty
- * @param string|null $brand size's brand reference
- * @param Measure|null $measure size's measure
- * @param string|null $cut measure's cut
- * @param int|null $nbItem number of different item property (used for boxes)
- * @param int|null $max max number of item in element (used for boxes)
- * @param int|null $quantity quantity of same item property (used for products)
- * @param string|null $price price property in a displayable format (with currency)
+ * @param string|null   $size        size proprty
+ * @param string|null   $brand       size's brand reference
+ * @param Measure|null  $measure     size's measure
+ * @param string|null   $cut         measure's cut
+ * @param int|null      $nbItem      number of different item property (used for boxes)
+ * @param int|null      $max         max number of item in element (used for boxes)
+ * @param int|null      $quantity    quantity of same item property (used for products)
+ * @param string|null   $price       price property in a displayable format (with currency)
+ * @param string|null $editFunc function for edit button
+ * @param string|null $miniPopEdit mini pop up for edit button
  */
+$TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : null;
+
 if (isset($title)) :
 ?>
     <div class="cart-element-property-div">
@@ -67,7 +70,7 @@ if (isset($nbItem) && isset($max)) :
 ?>
     <div class="cart-element-property-div">
         <span class="cart-element-property"><?= $translator->translateStation("US53") ?>: </span>
-        <span class="cart-element-value" data-basket="boxrate" ><?= $nbItem ?>/<?= $max ?></span>
+        <span class="cart-element-value" data-basket="boxrate"><?= $nbItem ?>/<?= $max ?></span>
     </div>
 <?php
 endif;
@@ -87,11 +90,17 @@ if (isset($price)) :
     </div>
 <?php
 endif;
+
+if (isset($TagEditFunc)) :
 ?>
-<div class="cart-element-property-div cart-element-property-edit-div">
-    <div class="cart-element-edit-block">
-        <div class="cart-element-edit-inner">
-            <button class="cart-element-edit-button remove-button-default-att"><?= $translator->translateStation("US49") ?></button>
+    <div class="cart-element-property-div cart-element-property-edit-div">
+        <div class="cart-element-edit-block">
+            <div class="cart-element-edit-inner">
+                <button class="cart-element-edit-button remove-button-default-att" <?= $TagEditFunc ?> ><?= $translator->translateStation("US49") ?></button>
+                <?= $miniPopEdit ?>
+            </div>
         </div>
     </div>
-</div>
+<?php
+endif;
+?>

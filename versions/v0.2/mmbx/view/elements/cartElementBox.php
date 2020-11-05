@@ -35,8 +35,9 @@ $price = $box->getPriceFormated();
 <div class="box-wrap">
     <div class="box-display-block">
         <?php
-        /*———————————————————————— GET PROPERTIES DWON ——————————————————————*/
+        /*———————————————————————— GET PROPERTIES DOWN ——————————————————————*/
         $datas = [
+            // "class" => get_class($box),
             "title" => $translator->translateString($box->getColor()),
             "color" => null,
             "colorRGB" => null,

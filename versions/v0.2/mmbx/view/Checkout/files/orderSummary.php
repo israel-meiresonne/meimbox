@@ -22,7 +22,7 @@
                 $arraowid = ModelFunctionality::generateDateCode(25);
                 $arraowx = "#$arraowid";
                 $Tagarraowid = "id='$arraowid'";
-                $TAGtoggleShutter =  "toggleShutter('$bodyx','$arraowx')";
+                $TAGtoggleShutter =  "onclick=\"toggleShutter('$bodyx','$arraowx')\"";
             } else {
                 $Tagbodyid =  null;
                 $Tagarraowid =  null;
