@@ -128,6 +128,7 @@ $size = $product->getSelectedSize();
     <?php
     $sizeObj = $product->getSelectedSize();
     $datas = [
+        // "class" => get_class($product),
         "title" => $product->getProdName(),
         "color" => $translator->translateString($product->getColorName()),
         "colorRGB" => $product->getColorRGB(),
@@ -136,7 +137,9 @@ $size = $product->getSelectedSize();
         "measure" => $sizeObj->getmeasure(),
         "cut" => $sizeObj->getcut(),
         "quantity" => $product->getQuantity(),
-        "price" => $price
+        "price" => $price,
+        "editFunc" => $editFunc,
+        "miniPopEdit" => $miniPopEdit
     ];
     $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);
     $pictureSrcs = $product->getPictureSources();

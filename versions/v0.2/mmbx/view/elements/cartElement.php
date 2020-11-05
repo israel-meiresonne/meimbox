@@ -28,7 +28,7 @@
 $showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
 $TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
 
-$TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : "";
+$TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : null;
 
 
 if (!empty($dadx)) {
@@ -80,9 +80,9 @@ if (!empty($dadx)) {
                 <div class="cart-element-edit-inner">
                     <button class="cart-element-edit-button remove-button-default-att" <?= $TagEditFunc ?>><?= $translator->translateStation("US49") ?></button>
                     <?php
-                    if (isset($miniPopEdit)) {
+                    // if (isset($miniPopEdit)) {
                         echo $miniPopEdit;
-                    }
+                    // }
                     ?>
                 </div>
             <?php
