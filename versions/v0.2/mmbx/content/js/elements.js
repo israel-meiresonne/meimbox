@@ -178,12 +178,12 @@
         bodyFunc(bodyx);
     }
 
-    toggleSign = (headx , bodyx, headsx, bodiesx) => {
-        if(!$(headx).hasClass("sign-head-button-selected")){
-            headFunc = (x) => {$(x).addClass("sign-head-button-selected");}
-            headsFunc = (x) => {$(x).removeClass("sign-head-button-selected");}
-            bodyFunc = (x) => {$(x).slideDown(TS)};
-            bodiesFunc =  (x) => {$(x).slideUp(TS)};
+    toggleSign = (headx, bodyx, headsx, bodiesx) => {
+        if (!$(headx).hasClass("sign-head-button-selected")) {
+            headFunc = (x) => { $(x).addClass("sign-head-button-selected"); }
+            headsFunc = (x) => { $(x).removeClass("sign-head-button-selected"); }
+            bodyFunc = (x) => { $(x).slideDown(TS) };
+            bodiesFunc = (x) => { $(x).slideUp(TS) };
             selectBody(headx, bodyx, headsx, bodiesx, headFunc, bodyFunc, headsFunc, bodiesFunc);
         }
     }
@@ -378,12 +378,14 @@
     $(document).ready(function () {
         /*—————————————————— ALL CLICK DOWN —————————————————————————————————*/
         $(document).click(() => {
-            console.log(miniPopIsOpen);
-            if (miniPopIsOpen) {
-                miniPopIsOpen = false;
-                displayFadeOut($(".minipop-wrap"));
+            if ($('.minipop-wrap[' + dataisdisplayed + '="true"]').length > 0) {
+                var xs = $('.minipop-wrap[' + dataisdisplayed + '="true"]');
+                console.log(xs);
+                // miniPopIsOpen = false;
+                displayFadeOut(xs, TS);
+                $(xs).attr(dataisdisplayed, false);
             }
-        })
+        });
         /*—————————————————— ALL CLICK UP ———————————————————————————————————*/
         //—————————————————— SELECT DOWN —————————————————
         $('select').change(function () {

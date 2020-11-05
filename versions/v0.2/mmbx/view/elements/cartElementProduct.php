@@ -85,7 +85,7 @@ switch ($product->getType()) {
                 $miniPopIdx = "#" . $miniPopId;
                 $datas = [
                     "id" => $miniPopId,
-                    "dir" => "down",
+                    "dir" => "left",
                     "content" => $miniPopContent
                 ];
                 $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
@@ -108,7 +108,7 @@ switch ($product->getType()) {
                 $miniPopIdx = "#" . $miniPopId;
                 $datas = [
                     "id" => $miniPopId,
-                    "dir" => "down",
+                    "dir" => "left",
                     "content" => $miniPopContent
                 ];
                 $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);

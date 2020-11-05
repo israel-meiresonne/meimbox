@@ -38,6 +38,7 @@
     dataerrorx = "data-errorx";
     dataerrortype = "data-errortype";
     datalx = "data-loadingx"
+    dataisdisplayed = "data-isdisplayed";
     /*—————————————————— SHORTCUT DOWN ——————————————————————————————————————*/
     empty = (v) => {
         return (v == null || v == "");
@@ -158,12 +159,15 @@
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/
     openMiniPop = (x, before = () => { }, after = () => { }) => {
-        before(x);
-        displayFadeIn(x);
-        after(x);
-        setTimeout(() => {
-            miniPopIsOpen = true;
-        }, TS)
+        var isd = $(x).attr(dataisdisplayed) == "true";
+        if(!isd){
+            before(x);
+            displayFadeIn(x, TS);
+            after(x);
+            setTimeout(() => {
+                $(x).attr(dataisdisplayed, true);
+            }, TS)
+        }
     }
     /*—————————————————— MINI_POPUP BEHAVIOR UP —————————————————————————————*/
     /*—————————————————— POPUP BEHAVIOR DOWN ————————————————————————————————*/
