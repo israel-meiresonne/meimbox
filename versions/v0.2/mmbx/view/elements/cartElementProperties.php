@@ -92,7 +92,7 @@ if (isset($price)) :
 endif;
 
 if (isset($TagEditFunc)) :
-?>
+    /*
     <div class="cart-element-property-div cart-element-property-edit-div">
         <div class="cart-element-edit-block">
             <div class="cart-element-edit-inner">
@@ -101,6 +101,8 @@ if (isset($TagEditFunc)) :
             </div>
         </div>
     </div>
+    */
+?>
 <?php
 endif;
 ?>

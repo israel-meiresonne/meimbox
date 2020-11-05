@@ -1,8 +1,8 @@
 <?php
 require_once 'view/view/Mosaic/Mosaic.php';
 
-$this->title = "shipping address";
-$this->description = "select shipping address";
+$this->title = "landing page";
+$this->description = "welcome";
 $this->header = self::HEADER_CONF_LANDING;
 /**
  * @var Translator

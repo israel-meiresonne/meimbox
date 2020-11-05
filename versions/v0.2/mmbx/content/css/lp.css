@@ -63,7 +63,8 @@ h1, h2, h3, h4, h5, h6 {
     }
     .cta {
         max-width: var(--max_width);
-        margin-top: 40px;
+        /* margin-top: 40px; */
+        margin: 40px auto 0;
         padding: 0 20px;
     }
     .cta-btn {
