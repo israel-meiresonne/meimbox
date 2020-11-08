@@ -224,6 +224,30 @@ class Map
     public const ts_event = "ts_event";     // timestamp in seconds of when event occurred
 
     /**
+     * Keys for Facebook's Pixel
+     */
+    public const json = "json";
+    public const func = "func";
+    public const content_ids = "content_ids";
+    public const content_name = "content_name";
+    public const content_type = "content_type";
+    public const contents = "contents";
+    // public const currency = "currency";
+    // public const value = "value";
+    public const product = "product";
+    public const product_group = "product_group";
+    public const id = "id";
+    public const type = "type";
+    public const basket = "basket";
+    public const num_items = "num_items";
+    public const content_category = "content_category";
+    public const datasMap = "datasMap";
+
+
+
+
+
+    /**
      * Constructor
      * @param array $map if set this array will be used as initial map
      */

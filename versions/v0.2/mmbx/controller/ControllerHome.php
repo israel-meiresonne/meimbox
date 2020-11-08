@@ -158,34 +158,15 @@ class ControllerHome extends ControllerSecure
 
     public function testA()
     {
-        require_once 'view/view/Mosaic/Mosaic.php';
         // header('content-type: application/json');
-        $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
-        $files = [];
-        $i = 0;
-        while($i < 100){
-            // $file = $dir_prod_files . 'picture01.jpeg';
-            $rand  =  rand(1,3);
-            switch ($rand) {
-                case 1:
-                    $file = 'content/brain/permanent/multiple-size.png';
-                    break;
-                case 2:
-                    $file = 'content/brain/prod/picture02.jpeg';
-                    break;
-                case 3:
-                    $file = 'content/brain/permanent/flag-europe.png';
-                    break;
-            }
-            array_push($files, $file);
-            $i++;
-        }
-        $min = 5;
-        $max = 25;
-        $step = 5;
-        $mosaic = new Mosaic($files, $min, $max, $step);
-        $table = $mosaic->getDisplayableStoneMap($files, $min, $max, $step);
-        echo $table;
+        $datasMap = new Map();
+        $person = $this->person;
+        $datasMap->put($person->getCookie(Cookie::COOKIE_VIS)->getValue(), Map::cookieValue);
+        $datasMap->put($person->getUserID(), Map::userID);
+        $datasView = [
+            "datasMap" => $datasMap
+        ];
+        $this->generateView($datasView, $person, "test");
     }
 
     // function random_color_part() {

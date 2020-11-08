@@ -5,6 +5,7 @@ require_once 'model/tools-management/Language.php';
 require_once 'model/special/Response.php';
 require_once 'model/special/Map.php';
 require_once 'framework/Configuration.php';
+require_once 'model/marketing/facebook/Facebook.php';
 
 /**
  * Classe modélisant une vue.
@@ -100,6 +101,15 @@ class View
     private $head;
 
     /**
+     * Holds pixels for Facebook
+     * @var Map
+     * + $fbPixelsMap[index{int}][Map::type]       {string}    pixel's type ['track' | 'trackCustom']
+     * + $fbPixelsMap[index{int}][Map::event]      {string}    pixel's event name
+     * + $fbPixelsMap[index{int}][Map::datasMap]   {Map|null}  pixel's datas
+     */
+    private $fbPixelsMap;
+
+    /**
      * Holds the configuration used to determinate wicth header to use in template
      * @var string
      */
@@ -154,7 +164,7 @@ class View
      */
     public function __construct($action, $controller = "", Visitor $person = null)
     {
-
+        $this->fbPixelsMap = new Map();
         $this->person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
         $this->translator = isset($language) ? new Translator($language) : new Translator();
@@ -260,10 +270,10 @@ class View
     protected function generateFile($file, $datas)
     {
         self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES))
-        ? Configuration::get(Configuration::DIR_STATIC_FILES)
-        : self::$DIR_STATIC_FILES;
+            ? Configuration::get(Configuration::DIR_STATIC_FILES)
+            : self::$DIR_STATIC_FILES;
 
-        
+
         if (file_exists($file)) {
             $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
             $translator = $this->translator;
@@ -341,5 +351,76 @@ class View
         // rnvs : https://www.php.net/manual/en/function.htmlspecialchars.php
         //        Convert special characters to HTML entities
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
+    }
+
+    /**
+     * To get fbPixelsMap
+     * @return Map fbPixelsMap
+     */
+    private function getFbPixelsMap()
+    {
+        return $this->fbPixelsMap;
+    }
+
+    /**
+     * To get Facebook's base code for pixel
+     * @return string|null Facebook's base code for pixel
+     */
+    private function getFbPixelBaseCode()
+    {
+        $fbPixelsMap = $this->getFbPixelsMap();
+        // $indexes = $fbPixelsMap->getKeys();
+        // $nb = count($indexes);
+        // return ($nb > 0) ? Facebook::getBaseCode() : null;
+        return Facebook::getBaseCode();
+    }
+
+    /**
+     * To add a Facebook pixel
+     * @param string    $type       type of the Pixel ['tracker' | 'trackerCustom']
+     * @param string    $event      the event accured
+     * @param string    $datasMap   pixel's datas
+     */
+    private function addFbPixel(string $type, string $event, Map $datasMap = null)
+    {
+        $fbPixelsMap = $this->getFbPixelsMap();
+        $indexes = $fbPixelsMap->getKeys();
+        $nb = count($indexes);
+        if($nb > 0){
+            foreach ($indexes as $index) {
+                $holdType = $fbPixelsMap->get($index, Map::type);
+                $holdEvent = $fbPixelsMap->get($index, Map::event);
+                if (($holdType == $type) && ($holdEvent == $event)) {
+                    throw new Exception("This pixel (type:'$type', event:'$event') already exist in fbPixelsMap");
+                }
+            }
+        }
+        $fbPixelsMap->put($type, $nb, Map::type);
+        $fbPixelsMap->put($event, $nb, Map::event);
+        $fbPixelsMap->put($datasMap, $nb, Map::datasMap);
+    }
+
+    /**
+     * To generate facebook's pixel stored in fbPixelsMap in script tag
+     * @return string|null pixel script
+     */
+    private function generateFbPixel()
+    {
+        $fbPixelsMap = $this->getFbPixelsMap();
+        $indexes = $fbPixelsMap->getKeys();
+        $script = null;
+        $nb = count($indexes);
+        if($nb > 0){
+            $script = "<script>\n";   
+            foreach($indexes as $index){
+                $type = $fbPixelsMap->get($index, Map::type);
+                $event = $fbPixelsMap->get($index, Map::event);
+                $datasMap = $fbPixelsMap->get($index, Map::datasMap);
+                $script .= (empty($datasMap)) ? Facebook::getPixel($type, $event) : Facebook::getPixel($type, $event, $datasMap);
+                $script .= "\n";
+            }
+            $script .= "</script>";
+        }
+        return $script;
     }
 }

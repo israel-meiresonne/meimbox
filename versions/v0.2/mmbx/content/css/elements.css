@@ -1433,8 +1433,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .cart-element-edit-block button {
     width: 100%;
     padding: 0;
-    color: var(--color-label);
-    text-transform: capitalize;
     border: 0;
     background-color: transparent;
     cursor: pointer;
@@ -1537,10 +1535,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     .cart-element-property-set .cart-element-property-price-div {
         display: block;
     }
-    .cart-element-edit-block {
-        /* width: 15%; */
+    /* .cart-element-edit-block {
+        width: 15%;
         font-size: 10px;
-    }
+    } */
     .cart-element-price-block {
         display: none;
     }

@@ -278,10 +278,12 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
     <script src="content/js/elements.js"></script>
     <script src="content/js/pop.js"></script>
     <script src="content/qr/qr.js"></script>
-
+    <?= $this->getFbPixelBaseCode() ?>
 </head>
 
 <body>
+    <?= $this->generateFbPixel() ?>
+
     <?php
     $file = 'view/Template/files/headers/' . $this->header;
     $company = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
