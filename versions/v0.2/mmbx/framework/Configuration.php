@@ -42,6 +42,12 @@ class Configuration
     public const SENDINBLUE_APIK = "sendinblue_apik";
 
     /**
+     * Keys for Facebook datas
+     * @var string
+     */
+    public const FB_PIXEL_ID = "facebook_pixel_id";
+
+    /**
      * Keys for json datas
      */
     public const JSON_KEY_COMPANY = "company";
