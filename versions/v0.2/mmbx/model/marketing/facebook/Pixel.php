@@ -30,10 +30,10 @@ class Pixel
      * Holds custom pixel event
      * @var string
      */
-    public const EVENT_THRIFT_STORES = "thrift_stores";
-    public const EVENT_USED_TO_THRIFT_STORES = "used_to_thrift_stores";
+    public const EVENT_FRIPPERY_STORES = "frippery_stores";
+    public const EVENT_USED_FRIPPERY = "used_frippery";
     public const EVENT_LP_TIME_UP = "lp_time_up";
-    public const EVENT_VIEW_PRODUCT_GRID = "view_product_grid";
+    // public const EVENT_VIEW_PRODUCT_GRID = "view_product_grid";
 
     /**
      * To set pixelsMap
@@ -60,17 +60,17 @@ class Pixel
 
         /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
 
-        /** thrift_stores */
-        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_THRIFT_STORES, Map::type);
+        /** frippery_stores */
+        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_FRIPPERY_STORES, Map::type);
 
-        /** used_to_thrift_stores */
-        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_USED_TO_THRIFT_STORES, Map::type);
+        /** used_frippery */
+        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_USED_FRIPPERY, Map::type);
 
         /** lp_time_up */
         self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_LP_TIME_UP, Map::type);
 
         /** view_product_grid */
-        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_LP_TIME_UP, Map::type);
+        // self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_LP_TIME_UP, Map::type);
     }
 
     /**
