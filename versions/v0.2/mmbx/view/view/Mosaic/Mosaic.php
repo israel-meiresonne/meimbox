@@ -127,6 +127,7 @@ class Mosaic extends View
     // public function __construct($files, $min = 5, $max = 25, $step = 5)
     public function __construct($files, Map $configMap, $min = 5, $max = 25)
     {
+        parent::__construct();
         $this->files = $files;
         $this->min = $min;
         $this->max = $max;

@@ -10,5 +10,5 @@ if(!empty($additionals)){
     }
 }
 ?>
-<script src="content/js/checkout.js"></script>
-<link rel="stylesheet" href="content/css/checkout.css">
+<script src="<?= self::$PATH_JS ?>checkout.js"></script>
+<link rel="stylesheet" href="<?= self::$PATH_CSS ?>checkout.css">

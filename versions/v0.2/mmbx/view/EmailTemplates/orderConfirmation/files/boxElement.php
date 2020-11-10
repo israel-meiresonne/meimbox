@@ -1,14 +1,13 @@
 <?php
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $https_webroot https://mydomain.com + webroot
  * @param Box $box the box to display
  */
 
 $boxPropMap = new Map();
 // $link = 
 $price = $box->getPrice()->getFormated();
-$picture = $https_webroot . $box->getPictureSource();
+$picture = self::$HTTPS_WEBROOT . $box->getPictureSource();
 $name = $translator->translateString($box->getColor());
 $propertiesMap = new Map();
 $nbItem = $box->getQuantity();

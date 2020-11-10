@@ -18,9 +18,9 @@ $person = $person;
 $this->title = "grid";
 $this->lang = $person->getLanguage()->getIsoLang();
 $this->description = "grid page";
-ob_start();
-require 'view/Grid/gridFiles/head.php';
-$this->head = ob_get_clean();
+// ob_start();
+// require 'view/Grid/gridFiles/head.php';
+$this->head = $this->generateFile('view/Grid/gridFiles/head.php', []);
 
 ?>
 <div class="grid-container">

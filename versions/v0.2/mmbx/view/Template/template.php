@@ -47,7 +47,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
     <?= self::FONT_FAM_SPARTAN ?>
     <?= self::FONT_FAM_PT ?>
 
-    <link rel="stylesheet" href="<?= self::CSS_ROOT ?>">
+    <link rel="stylesheet" href="<?= self::$PATH_CSS . 'root.css' ?>">
 
     <?= $head ?>
     <script>
@@ -209,7 +209,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const TS = 450;
         const BNR = 1000000;
         const AJX = "<?= ControllerSecure::AJX ?>";
-        const JXF = "content/qr/qr.php";
+        // const JXF = "<?= ""//self::$PATH_JS ?>qr.php";
         const LANG = "lang=" + $("html").attr("lang");
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
@@ -273,11 +273,11 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         }
     </script>
 
-    <link rel="stylesheet" href="content/css/header.css">
-    <link rel="stylesheet" href="<?= self::CSS_ELEMENTS ?>">
-    <script src="content/js/elements.js"></script>
-    <script src="content/js/pop.js"></script>
-    <script src="content/qr/qr.js"></script>
+    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>header.css">
+    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
+    <script src="<?= self::$PATH_JS ?>elements.js"></script>
+    <script src="<?= self::$PATH_JS ?>pop.js"></script>
+    <script src="<?= self::$PATH_JS ?>qr.js"></script>
     <?= $this->getFbPixelBaseCode() ?>
 </head>
 

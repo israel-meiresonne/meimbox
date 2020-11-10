@@ -1,15 +1,14 @@
 <?php
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $https_webroot https://mydomain.com + webroot
  * @param Box $product the box to display
  */
 
 $boxProdPropMap = new Map();
-$link = $https_webroot . $product->getUrlPath(Product::PAGE_ITEM);
+$link = self::$HTTPS_WEBROOT . $product->getUrlPath(Product::PAGE_ITEM);
 $price = $product->getPrice()->getFormated();
 $srcs = array_reverse($product->getPictureSources());
-$picture = $https_webroot . array_pop($srcs);
+$picture = self::$HTTPS_WEBROOT . array_pop($srcs);
 $name = $translator->translateString($product->getProdName());
 
 $propertiesMap = new Map();

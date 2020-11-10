@@ -31,7 +31,6 @@ $colorRGBText = $product->getColorRGBText();
                     case 0:
             ?>
                         <div class="product-img-wrap product-img-first">
-                            <!-- <img src="content/brain/prod/<?= $picture ?>"> -->
                             <img src="<?= $picture ?>">
                         </div>
                     <?php
@@ -40,7 +39,6 @@ $colorRGBText = $product->getColorRGBText();
                     case 1;
                     ?>
                         <div class="product-img-wrap product-img-second">
-                            <!-- <img src="content/brain/prod/<?= $picture ?>"> -->
                             <img src="<?= $picture ?>">
                         </div>
             <?php

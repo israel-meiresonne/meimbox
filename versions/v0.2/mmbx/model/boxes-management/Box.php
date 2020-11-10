@@ -125,7 +125,7 @@ class Box extends ModelFunctionality
      * Length of the box's id
      * @var string
      */
-    private const PICTURE_DIR = "content/brain/permanent/";
+    private static $PICTURE_DIR;
 
     /**
      * Holds box's colors
@@ -176,7 +176,7 @@ class Box extends ModelFunctionality
      */
     public function __construct()
     {
-        // $this->boxProducts;
+        $this->setConstant();
         $args = func_get_args();
         switch (func_num_args()) {
             case 4:
@@ -281,19 +281,14 @@ class Box extends ModelFunctionality
         }
         // $this->setBoxProducts($this->boxID);
     }
-    /*
-    SELECT * 
-        FROM `Boxes` b
-        JOIN `Baskets-Box` bb ON b.boxID = bb.boxId
-        JOIN `BoxColors` bc ON b.box_color = bc.boxColor
-        JOIN `BoxPrices` bp ON bc.boxColor  = bp.box_color
-        JOIN `BoxShipping` bs ON bc.boxColor  = bs.box_color
-        JOIN `BoxDiscounts` bd ON bc.boxColor  = bd.box_color
-        WHERE (b.boxID = 'bx0987654321' AND bb.userId = '651853948') 
-        AND (bp.country_ = 'belgium' AND bp.iso_currency = 'eur' 
-        AND bs.country_ = 'belgium' AND bs.iso_currency = 'eur'
-        AND bd.country_ = 'belgium')
-    */
+
+    /**
+     * To set Box's dynamic constants
+     */
+    private function setConstant()
+    {
+        self::$PICTURE_DIR = (!isset(self::$PICTURE_DIR)) ? Configuration::get(Configuration::DIR_STATIC_FILES) : self::$PICTURE_DIR;
+    }
 
     /**
      * Set box's boxproduct
@@ -440,7 +435,7 @@ class Box extends ModelFunctionality
      */
     public function getPictureSource()
     {
-        return self::PICTURE_DIR . $this->picture;
+        return self::$PICTURE_DIR . $this->picture;
     }
 
     /**

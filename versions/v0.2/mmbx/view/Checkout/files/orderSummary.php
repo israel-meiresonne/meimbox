@@ -1,5 +1,4 @@
 <?php
-// require_once 'model/special/Map.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string $conf sommary's configuration
@@ -158,7 +157,7 @@
                         <div class="summary-detail-button-inner">
                             <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx ="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
                             <div id="<?= $lid ?>" class="btn-loading loading-img-wrap">
-                                <img src="content/brain/permanent/mini-loading.gif">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
                             </div>
                         </div>
                     <?php
@@ -169,7 +168,7 @@
                         <div class="summary-detail-button-inner">
                             <button class="green-button standard-button remove-button-default-att">checkout</button>
                             <div class="btn-loading loading-img-wrap">
-                                <img src="content/brain/permanent/mini-loading.gif">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
                             </div>
                         </div>
                 <?php
