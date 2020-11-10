@@ -2,13 +2,14 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param BasketProduct|BoxProduct $products list of products with only the constructor properties set
+ * @param BasketProduct[]|BoxProduct[] $products list of products with only the constructor properties set
  * @param int $maxCube maximum number of cube displayable before to display a plus symbol
  * @param int $prodID the id of the selected cube
  */
 
-
-
+/**
+ * @var BasketProduct[]|BoxProduct[] */
+$products = $products;
 // $products = $product->getSameProducts();
 $i = 1;
 // $maxCube = Product::getMAX_PRODUCT_CUBE_DISPLAYABLE() - 1;
@@ -22,7 +23,7 @@ foreach ($products as $product) :
             <div class="cube-container">
                 <div class="cube-wrap <?= $selectedCube ?>">
                     <!-- <a href="/inside/item/?prodID=<?= $product->getProdID() ?>"> -->
-                    <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
+                    <a href="<?= $product->getUrlPath(Product::PAGE_ITEM) ?>">
                         <div class="cube-item-color <?= $sameCubeBorder ?>" style="background: <?= $sameColorRGB ?>;"></div>
                     </a>
                 </div>
@@ -35,7 +36,7 @@ foreach ($products as $product) :
             <div class="cube-container">
                 <div class="cube-wrap">
                     <!-- <a href="/inside/item/?prodID=<?= $product->getProdID() ?>"> -->
-                    <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
+                    <a href="<?= $product->getUrlPath(Product::PAGE_ITEM) ?>">
                         <div class="cube-item-color cube-more_color">
                             <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png">
                         </div>
