@@ -126,7 +126,7 @@ class View
     /**
      * Holds domain URL + webroot [https://domain.dom/web/root/]
      */
-    private static $HTTPS_WEBROOT;
+    private static $URL_DOMAIN_WEBROOT;
     /**
      * Holds path to permanant files
      * @var string
@@ -238,9 +238,9 @@ class View
         self::$PATH_CSS = (!isset(self::$PATH_CSS)) ? Configuration::get(Configuration::PATH_CSS) : self::$PATH_CSS;
         self::$PATH_JS = (!isset(self::$PATH_JS)) ? Configuration::get(Configuration::PATH_JS) : self::$PATH_JS;
         self::$PATH_BRAND = (!isset(self::$PATH_BRAND)) ? Configuration::get(Configuration::PATH_BRAND) : self::$PATH_BRAND;
-        self::$HTTPS_WEBROOT = (!isset(self::$HTTPS_WEBROOT)) ?  Configuration::get(Configuration::HTTPS_DOMAIN) . Configuration::getWebRoot() : self::$HTTPS_WEBROOT;
+        self::$URL_DOMAIN_WEBROOT = (!isset(self::$URL_DOMAIN_WEBROOT)) ?  Configuration::get(Configuration::URL_DOMAIN) . Configuration::getWebRoot() : self::$URL_DOMAIN_WEBROOT;
         self::$PATH_EMAIL = (!isset(self::$PATH_EMAIL))
-            ? self::$HTTPS_WEBROOT . Configuration::get(Configuration::DIR_EMAIL_FILES)
+            ? self::$URL_DOMAIN_WEBROOT . Configuration::get(Configuration::DIR_EMAIL_FILES)
             : self::$PATH_EMAIL;
     }
 

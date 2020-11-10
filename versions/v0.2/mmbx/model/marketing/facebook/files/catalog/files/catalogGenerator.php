@@ -2,9 +2,10 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string    $domainUrl  domain's url i.e: https://domain.dom
- * @param string    $fileUrl    domain's url i.e: https://domain.dom/my/file
- * @param Product   $products   products of the catalog
+ * @param string                        $domainUrl  domain's url i.e: https://domain.dom
+ * @param string                        $fileUrl    domain's url i.e: https://domain.dom/my/file
+ * @param string                        $webroot    the webroot
+ * @param BasketProduct[]|BoxProduct[]  $products   products of the catalog
  */
 ?>
 <?xml version="1.0" encoding="utf-8"?>
@@ -18,7 +19,7 @@
         <atom:link href="<?= $fileUrl ?>" rel="self" type="application/rss+xml" />
         <?php
         foreach($products as $product){
-            
+
         }
         ?>
 

@@ -1,10 +1,10 @@
 <?php
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $domainUrl domain's url i.e: https://domain.dom
- * @param string $fileUrl   domain's url i.e: https://domain.dom/my/file
+ * @param string                    $domainUrl  domain's url i.e: https://domain.dom
+ * @param string                    $webroot    the webroot
+ * @param BasketProduct|BoxProduct  $products   products of the catalog
  */
-?>
 ?>
 <item>
     <!-- Required fields down -->

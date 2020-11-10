@@ -23,7 +23,7 @@ class Configuration
      * Keys to acces datas
      */
     public const DOMAIN = "domain";
-    public const HTTPS_DOMAIN = "https_domain";
+    public const URL_DOMAIN = "url_domain";
 
     /**
      * Keys for Stripe datas

@@ -5,10 +5,10 @@
  */
 
 $boxProdPropMap = new Map();
-$link = self::$HTTPS_WEBROOT . $product->getUrlPath(Product::PAGE_ITEM);
+$link = self::$URL_DOMAIN_WEBROOT . $product->getUrlPath(Product::PAGE_ITEM);
 $price = $product->getPrice()->getFormated();
 $srcs = array_reverse($product->getPictureSources());
-$picture = self::$HTTPS_WEBROOT . array_pop($srcs);
+$picture = self::$URL_DOMAIN_WEBROOT . array_pop($srcs);
 $name = $translator->translateString($product->getProdName());
 
 $propertiesMap = new Map();
