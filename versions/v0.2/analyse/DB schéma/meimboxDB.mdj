@@ -4890,7 +4890,7 @@
 											"font": "Arial;13;1",
 											"left": 4296,
 											"top": 2125,
-											"width": 226.21875,
+											"width": 240.6787109375,
 											"height": 13,
 											"text": "ProductsDescriptions"
 										},
@@ -4916,7 +4916,7 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2148,
-													"width": 216.21875,
+													"width": 230.6787109375,
 													"height": 13
 												},
 												{
@@ -4931,7 +4931,7 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2163,
-													"width": 216.21875,
+													"width": 230.6787109375,
 													"height": 13
 												},
 												{
@@ -4946,21 +4946,21 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2178,
-													"width": 216.21875,
+													"width": 230.6787109375,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4296,
 											"top": 2143,
-											"width": 226.21875,
+											"width": 240.6787109375,
 											"height": 53
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4296,
 									"top": 2120,
-									"width": 226.21875,
+									"width": 240.6787109375,
 									"height": 76,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSTqQf6NPaXo="
@@ -20486,7 +20486,8 @@
 										"$ref": "AAAAAAFwSTqQfqNMjok="
 									},
 									"name": "description",
-									"type": "TEXT"
+									"type": "VARCHAR",
+									"length": "5000"
 								}
 							]
 						},

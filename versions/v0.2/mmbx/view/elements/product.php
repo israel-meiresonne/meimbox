@@ -23,7 +23,7 @@ $colorRGBText = $product->getColorRGBText();
 <article class="product-article-wrap">
     <div class="product-img-set">
         <!-- <a href="/inside/item/?prodID=<?= $prodID ?>"> -->
-        <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
+        <a href="<?= $product->getUrlPath(Product::PAGE_ITEM) ?>">
             <?php
             $i = 0;
             foreach ($pictures as $picture) :
@@ -65,7 +65,7 @@ $colorRGBText = $product->getColorRGBText();
                 <li class="remove-li-default-att">
                     <div class="cube-container">
                         <!-- <a href="/inside/item/?prodID=<?= $prodID ?>"> -->
-                        <a href="<?= $product->getUrl(Product::PAGE_ITEM) ?>">
+                        <a href="<?= $product->getUrlPath(Product::PAGE_ITEM) ?>">
                             <div class="cube-wrap cube-selected">
                                 <div class="cube-item-color" style="background: <?= $colorRGB ?>;"></div>
                             </div>

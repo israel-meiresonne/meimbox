@@ -6,7 +6,7 @@
  */
 
 $boxProdPropMap = new Map();
-$link = $https_webroot . $product->getUrl(Product::PAGE_ITEM);
+$link = $https_webroot . $product->getUrlPath(Product::PAGE_ITEM);
 $price = $product->getPrice()->getFormated();
 $srcs = array_reverse($product->getPictureSources());
 $picture = $https_webroot . array_pop($srcs);

@@ -512,19 +512,13 @@ abstract class Product extends ModelFunctionality
         return $picSrc;
     }
 
-    // /**
-    //  * To get a url whitch refer to page given in param
-    //  * @param $page page that url refer to
-    //  * @return string 
-    //  */
-    // public abstract function getUrl(string $page);
-
     /**
      * To get a url that display product on the page given in param
+     * NOTE: format
      * @param $page page that url refer to
      * @return string 
      */
-    public function getUrl(string $page)
+    public function getUrlPath(string $page)
     {
         $url = "";
         switch ($page) {
