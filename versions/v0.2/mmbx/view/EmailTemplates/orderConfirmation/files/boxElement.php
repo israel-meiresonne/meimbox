@@ -7,7 +7,7 @@
 $boxPropMap = new Map();
 // $link = 
 $price = $box->getPrice()->getFormated();
-$picture = self::$HTTPS_WEBROOT . $box->getPictureSource();
+$picture = self::$URL_DOMAIN_WEBROOT . $box->getPictureSource();
 $name = $translator->translateString($box->getColor());
 $propertiesMap = new Map();
 $nbItem = $box->getQuantity();

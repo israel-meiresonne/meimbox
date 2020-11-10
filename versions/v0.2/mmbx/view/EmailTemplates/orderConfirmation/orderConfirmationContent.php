@@ -70,7 +70,7 @@ $medias = $company->get(Map::media);
                 <table class="head_content">
                     <tr>
                         <td class="head_content-brand">
-                            <h1><a href="<?= self::$HTTPS_WEBROOT ?>" class="remove-a-default-att" target="_blank"><?= strtoupper($brand) ?></a></h1>
+                            <h1><a href="<?= self::$URL_DOMAIN_WEBROOT ?>" class="remove-a-default-att" target="_blank"><?= strtoupper($brand) ?></a></h1>
                         </td>
                     </tr>
                     <tr>
