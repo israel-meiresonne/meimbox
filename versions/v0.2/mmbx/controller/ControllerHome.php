@@ -158,42 +158,15 @@ class ControllerHome extends ControllerSecure
 
     public function testA()
     {
-        // header('content-type: application/json');
-        $datasMap = new Map();
-        $person = $this->person;
-        $datasMap->put($person->getCookie(Cookie::COOKIE_VIS)->getValue(), Map::cookieValue);
-        $datasMap->put($person->getUserID(), Map::userID);
-        $datasView = [
-            "datasMap" => $datasMap
-        ];
-        $this->generateView($datasView, $person, "test");
+        header('content-type: application/json');
+        var_dump($_COOKIE);
+        // ob_start();
+        // require 'model/marketing/facebook/files/meimboxCatalog.xml';
+        // echo ob_get_clean();
     }
-
-    // function random_color_part() {
-    //     return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
-    // }
-    
-    // function random_color() {
-    //     return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
-    // }
 
     public function test()
     {
-        // header('content-type: application/json');
-        // $response = new Response();
-        // $response->addFiles("file", 'view/EmailTemplates/orderConfirmation.php');
-
-        // ob_start();
-        // require 'view/EmailTemplates/orderConfirmation.php';
-        //  $template = ob_get_clean();
-        // $datasView = [
-        //     "template" => $template
-        // ];
-        // $https = Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot();
-        // $datasView = [
-        //     "cssFile" => '<link rel="stylesheet" href="'.$https.'/content/css/header.css">',
-        //     // "cssFile" => '<link rel="stylesheet" href="content/css/header.css">',
-        // ];
         $datasViewMap = new Map();
         $templateFile = 'view/EmailTemplates/orderConfirmation.php';
         // $templateFile = 'view/EmailTemplates/orderConfirmation2.php';

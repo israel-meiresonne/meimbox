@@ -124,10 +124,39 @@ class View
     private const HEADER_CONF_CHECKOUT = "headerCheckout.php";
 
     /**
-     * Directory for permanant files
+     * Holds domain URL + webroot [https://domain.dom/web/root/]
+     */
+    private static $HTTPS_WEBROOT;
+    /**
+     * Holds path to permanant files
      * @var string
      */
     protected static $DIR_STATIC_FILES;
+    /**
+     * Holds path to products files
+     * @var string
+     */
+    protected static $PATH_PRODUCT;
+    /**
+     * Holds path to css files
+     * @var string
+     */
+    protected static $PATH_CSS;
+    /**
+     * Holds path to css files
+     * @var string
+     */
+    protected static $PATH_JS;
+    /**
+     * Holds path to brand logos
+     * @var string
+     */
+    protected static $PATH_BRAND;
+    /**
+     * Holds path to email files
+     * @var string
+     */
+    private static $PATH_EMAIL;
 
     /**
      * Error type
@@ -149,12 +178,36 @@ class View
     protected const FONT_FAM_PT = '<link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">';
 
     /**
-     * Holds css files
-     * @var string
+     * Constructor
+     * @param string $action Action à laquelle la vue est associée
+     * @param string $controller Nom du contrôleur auquel la vue est associée
+     * @param Visitor|Client|Administrator $person the current user
      */
-    protected const CSS_ROOT = 'content/css/root.css';
-    protected const CSS_ELEMENTS = 'content/css/elements.css';
-    // protected const CSS_HEADER = 'content/css/header.css';
+    // public function __construct($action, $controller = "", Visitor $person = null)
+    public function __construct()
+    {
+        $this->setConstants();
+        $args = func_get_args();
+        switch (func_num_args()) {
+            case 1:
+                $this->__construct1_3($args[0]);
+            case 2:
+                $this->__construct1_3($args[0], $args[1]);
+            case 3:
+                $this->__construct1_3($args[0], $args[1], $args[2]);
+                break;
+        }
+        // $this->fbPixelsMap = new Map();
+        // $this->person = $person;
+        // $language = (!empty($person)) ? $person->getLanguage() : null;
+        // $this->translator = isset($language) ? new Translator($language) : new Translator();
+
+        // $file = "view/";
+        // if ($controller != "") {
+        //     $file = $file . $controller . "/";
+        // }
+        // $this->file = $file . $action . ".php";
+    }
 
     /**
      * Constructor
@@ -162,7 +215,7 @@ class View
      * @param string $controller Nom du contrôleur auquel la vue est associée
      * @param Visitor|Client|Administrator $person the current user
      */
-    public function __construct($action, $controller = "", Visitor $person = null)
+    private function __construct1_3($action, $controller = "", Visitor $person = null)
     {
         $this->fbPixelsMap = new Map();
         $this->person = $person;
@@ -174,6 +227,21 @@ class View
             $file = $file . $controller . "/";
         }
         $this->file = $file . $action . ".php";
+    }
+
+    /**
+     * To set all $PATH attribut
+     */
+    private function setConstants()
+    {
+        self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES)) ? Configuration::get(Configuration::DIR_STATIC_FILES) : self::$DIR_STATIC_FILES;
+        self::$PATH_CSS = (!isset(self::$PATH_CSS)) ? Configuration::get(Configuration::PATH_CSS) : self::$PATH_CSS;
+        self::$PATH_JS = (!isset(self::$PATH_JS)) ? Configuration::get(Configuration::PATH_JS) : self::$PATH_JS;
+        self::$PATH_BRAND = (!isset(self::$PATH_BRAND)) ? Configuration::get(Configuration::PATH_BRAND) : self::$PATH_BRAND;
+        self::$HTTPS_WEBROOT = (!isset(self::$HTTPS_WEBROOT)) ?  Configuration::get(Configuration::HTTPS_DOMAIN) . Configuration::getWebRoot() : self::$HTTPS_WEBROOT;
+        self::$PATH_EMAIL = (!isset(self::$PATH_EMAIL))
+            ? self::$HTTPS_WEBROOT . Configuration::get(Configuration::DIR_EMAIL_FILES)
+            : self::$PATH_EMAIL;
     }
 
     /**
@@ -269,13 +337,8 @@ class View
      */
     protected function generateFile($file, $datas)
     {
-        self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES))
-            ? Configuration::get(Configuration::DIR_STATIC_FILES)
-            : self::$DIR_STATIC_FILES;
-
-
         if (file_exists($file)) {
-            $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
+            // $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
             $translator = $this->translator;
 
             // Rend les éléments du tableau $datas accessibles dans la vue
@@ -353,6 +416,8 @@ class View
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
 
+
+
     /**
      * To get fbPixelsMap
      * @return Map fbPixelsMap
@@ -386,7 +451,7 @@ class View
         $fbPixelsMap = $this->getFbPixelsMap();
         $indexes = $fbPixelsMap->getKeys();
         $nb = count($indexes);
-        if($nb > 0){
+        if ($nb > 0) {
             foreach ($indexes as $index) {
                 $holdType = $fbPixelsMap->get($index, Map::type);
                 $holdEvent = $fbPixelsMap->get($index, Map::event);
@@ -410,9 +475,9 @@ class View
         $indexes = $fbPixelsMap->getKeys();
         $script = null;
         $nb = count($indexes);
-        if($nb > 0){
-            $script = "<script>\n";   
-            foreach($indexes as $index){
+        if ($nb > 0) {
+            $script = "<script>\n";
+            foreach ($indexes as $index) {
                 $type = $fbPixelsMap->get($index, Map::type);
                 $event = $fbPixelsMap->get($index, Map::event);
                 $datasMap = $fbPixelsMap->get($index, Map::datasMap);

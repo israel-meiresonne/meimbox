@@ -18,9 +18,9 @@ $contentTitle = $translator->translateStation("US35");
 $dadId = ModelFunctionality::generateDateCode(25);
 $dadx = "#" . $dadId;
 $brotherx = "#" . ModelFunctionality::generateDateCode(25);
-$sbtnx = "#". $popUpDatas["submitButtonId"];
+$sbtnx = "#" . $popUpDatas["submitButtonId"];
 
-$popUpDatas["submitButtonFunc"] = "selectBrand('". $sbtnx ."')";
+$popUpDatas["submitButtonFunc"] = "selectBrand('" . $sbtnx . "')";
 ob_start();
 ?>
 <div class="pop_up-content-block-inner">
@@ -39,10 +39,10 @@ ob_start();
         ?>
             <div id="<?= $launch ?>" class="brand_reference-grid-img-block" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $dataBrand_json ?>'>
                 <div class="first-img-div">
-                    <img src="content/brain/brand/<?= $brandDatas["brandPictures"][1] ?>">
+                    <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][1] ?>">
                 </div>
                 <div class="second-img-div">
-                    <img src="content/brain/brand/<?= $brandDatas["brandPictures"][2] ?>">
+                    <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][2] ?>">
                 </div>
             </div>
         <?php endforeach; ?>

@@ -95,7 +95,7 @@ class Pixel
     {
         ob_start();
         $pixelID = Configuration::get(Configuration::FB_PIXEL_ID);
-        require 'model/marketing/facebook/files/pixelBaseCode.php';
+        require 'model/marketing/facebook/files/content/pixelBaseCode.php';
         return ob_get_clean();
     }
 

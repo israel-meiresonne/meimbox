@@ -8,13 +8,8 @@ require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
 class ViewEmail extends View
 {
-    private $https_webroot;
-    private $dir_email_files;
-
-    private const CSS_ORDER_CONFIRMATION = "content/css/orderConfirmation.css";
-
     /**
-     * Used to extract link from html's tag 'link'
+     * Used to extract link from html's 'link' tag
      */
     private const RGX_URL = "#(https?:\/\/[\w\-\_\.\~\!\*\'\(\)\;\:\@\&\=\+\$\,\/\?\%\#\[\]]*)#";
 
@@ -28,9 +23,7 @@ class ViewEmail extends View
      */
     public function __construct(Language $language)
     {
-        // $this->https_webroot = (empty($this->https_webroot)) ? Configuration::get(Configuration::HTTPS_DOMAIN).Configuration::getWebRoot() : $this->https_webroot;
-        $this->https_webroot = Configuration::get(Configuration::HTTPS_DOMAIN) . Configuration::getWebRoot();
-        $this->dir_email_files = $this->https_webroot . Configuration::get(Configuration::DIR_EMAIL_FILES);
+        parent::__construct();
         $this->translator = isset($language) ? new Translator($language) : new Translator();
     }
 
@@ -120,16 +113,12 @@ class ViewEmail extends View
      */
     public function sendEmail(Response $response, string $mailerClass, string $mailerFunc, Map $emailDatasMap)
     {
-        // switch ($mailer) {
-        //     case BlueAPI::class:
         $classFile = "model/tools-management/mailers/" . $mailerClass . "/" . $mailerClass . ".php";
         if (!file_exists($classFile)) {
             throw new Exception("This class $mailerClass don't exist, classFile:'$classFile'");
         }
         if (!empty($emailDatasMap->get(Map::templateFile))) {
             $templateFile = $emailDatasMap->get(Map::templateFile);
-            $emailDatasMap->put($this->https_webroot, Map::https_webroot);
-            $emailDatasMap->put($this->dir_email_files, Map::dir_email_files);
             $htmlContent = $this->generateFile($templateFile, $emailDatasMap->getMap());
             $emailDatasMap->put($htmlContent, Map::template);
         }
@@ -147,8 +136,6 @@ class ViewEmail extends View
     {
         if (!empty($emailDatasMap->get(Map::templateFile))) {
             $templateFile = $emailDatasMap->get(Map::templateFile);
-            $emailDatasMap->put($this->https_webroot, Map::https_webroot);
-            $emailDatasMap->put($this->dir_email_files, Map::dir_email_files);
             $htmlContent = $this->generateFile($templateFile, $emailDatasMap->getMap());
             echo $htmlContent;
         }
@@ -162,15 +149,6 @@ class ViewEmail extends View
     {
         (!isset(self::$CSS_MAP_ROOT)) ? $this->setCssMapRoot() : null;
         return self::$CSS_MAP_ROOT;
-    }
-
-    /**
-     * To get $CSS_ORDER_CONFIRMATION
-     * @return string CSS_ORDER_CONFIRMATION
-     */
-    public function getCSS_ORDER_CONFIRMATION()
-    {
-        return self::CSS_ORDER_CONFIRMATION;
     }
 
     /**

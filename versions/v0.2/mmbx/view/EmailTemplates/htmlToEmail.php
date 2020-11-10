@@ -2,13 +2,13 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string[] $styles dirs to cess files
- * @param string $html confugured html content
+ * @param string[] $styles path to css files
+ * @param string $html configured html content
  */
 array_push(
     $styles,
-    self::CSS_ROOT,
-    self::CSS_ELEMENTS
+    self::$PATH_CSS . "root.css",
+    self::$PATH_CSS . "elements.css"
 );
 $css = "";
 foreach ($styles as $file) {

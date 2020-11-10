@@ -4,15 +4,11 @@ use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $https_webroot https://mydomain.com + webroot
- * @param string $dir_email_files https://mydomain.com + webroot + {dir to email files}
  * @param Map $company info about the company sending this email
  * @param string $firstname the firstname of the recipient of this email
  * @param string $lastname the lastname of the recipient of this email
  * @param Order $order the oder of the recipient of this email
  */
-
-$prod_https_dir = $https_webroot . $dir_prod_files;
 
 /**
  * @var Translator */
@@ -31,11 +27,12 @@ $basketOrdered = $order->getBasketOrdered();    //🔋
 $address = $order->getDelivery();   //🔋
 // $address = $address;             //🚨to delete cause delivery addres is  already in order
 $appartement = (!empty($address->getAppartement())) ? " (" . $address->getAppartement() . ")" : null;
-$province = ", " . $address->getProvince();
-$zipcode = ", " . $address->getZipcode();
-$city = " " . $address->getCity();
-$adrsCountry = ", " . $address->getCountry()->getCountryName();
-$fullAddress = $address->getAddress() . $appartement . strtoupper($zipcode) . $city . $province . $adrsCountry;
+$province = $address->getProvince();
+$zipcode = $address->getZipcode();
+$city = $address->getCity();
+$adrsCountry = $address->getCountry()->getCountryName();
+
+$fullAddress = $address->getAddress() . $appartement . ", " . strtoupper($zipcode) . " " . $city . ", " . $province . ", " . $adrsCountry;
 
 /**
  * @var Map*/
@@ -73,7 +70,7 @@ $medias = $company->get(Map::media);
                 <table class="head_content">
                     <tr>
                         <td class="head_content-brand">
-                            <h1><a href="<?= $https_webroot ?>" class="remove-a-default-att" target="_blank"><?=strtoupper($brand) ?></a></h1>
+                            <h1><a href="<?= self::$HTTPS_WEBROOT ?>" class="remove-a-default-att" target="_blank"><?= strtoupper($brand) ?></a></h1>
                         </td>
                     </tr>
                     <tr>
@@ -82,7 +79,7 @@ $medias = $company->get(Map::media);
                                 <tr>
                                     <td class="nada_20"></td>
                                     <td class="head_content-picture-td">
-                                        <img src="<?= $dir_email_files ?>Mama_Bakery.png" alt="order in preparation">
+                                        <img src="<?= self::$PATH_EMAIL ?>Mama_Bakery.png" alt="order in preparation">
                                     </td>
                                     <td class="nada_20"></td>
                                 </tr>
@@ -139,7 +136,11 @@ $medias = $company->get(Map::media);
                                                 <td class="body_content-info-address body_content-info-td">
                                                     <h2 class="sentence"><?= $firstname . " " . $lastname ?></h2>
                                                     <p class="secondary_field_dark sentence">
-                                                        <?= $fullAddress ?>
+                                                        <?= $address->getAddress() . $appartement . "<br>" ?>
+                                                        <?= strtoupper($zipcode) . "<br>" ?>
+                                                        <?= $city . "<br>" ?>
+                                                        <?= $province . "<br>" ?>
+                                                        <?= $adrsCountry ?>
                                                     </p>
                                                 </td>
                                                 <td class="body_content-info-td">
@@ -201,14 +202,14 @@ $medias = $company->get(Map::media);
                                             $boxes = $basketOrdered->getBoxes();
                                             foreach ($boxes as $box) :
                                                 $boxDatas = [
-                                                    "https_webroot" => $https_webroot,
+                                                    // "https_webroot" => $https_webroot,
                                                     "box" => $box,
                                                 ];
                                                 echo $this->generateFile('view/EmailTemplates/orderConfirmation/files/boxElement.php', $boxDatas);
                                                 $boxProducts = $box->getProducts();
                                                 foreach ($boxProducts as $boxProduct) {
                                                     $boxProdDatas = [
-                                                        "https_webroot" => $https_webroot,
+                                                        // "https_webroot" => $https_webroot,
                                                         "product" => $boxProduct,
                                                     ];
                                                     echo $this->generateFile('view/EmailTemplates/orderConfirmation/files/productElement.php', $boxProdDatas);
@@ -293,7 +294,7 @@ $medias = $company->get(Map::media);
                                             <td>
                                                 <div>
                                                     <a href="" target="_blank">
-                                                    <button class="green-button-reverse standard-button"><?= $translator->translateStation("US83") ?></button>
+                                                        <button class="green-button-reverse standard-button"><?= $translator->translateStation("US83") ?></button>
                                                     </a>
                                                 </div>
                                             </td>
@@ -416,7 +417,7 @@ $medias = $company->get(Map::media);
                                                                         foreach ($medias as $mediaName => $datas) : ?>
                                                                             <td>
                                                                                 <a href="<?= $datas[Map::link] ?>" target="_blank">
-                                                                                    <img src="<?= $dir_email_files . $datas[Map::logo] ?>" alt="<?= $mediaName ?>">
+                                                                                    <img src="<?= self::$PATH_EMAIL . $datas[Map::logo] ?>" alt="<?= $mediaName ?>">
                                                                                 </a>
                                                                             </td>
                                                                         <?php endforeach; ?>

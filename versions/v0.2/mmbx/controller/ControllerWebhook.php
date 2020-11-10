@@ -9,10 +9,41 @@ class ControllerWebhook extends ControllerSecure
      */
     public const ACTION_STRIPEWEBHOOK = "stripeWebhook";
     public const ACTION_BLUEWEBHOOK = "blueWebhook";
+    public const ACTION_FACEBOOKCATALOG = "facebookCatalog";
 
     public function index()
     {
     }
+
+    /*———————————————————————————— SECURE CONTROLLER DOWN ———————————————————*/
+
+    /**
+     * To initialize the controller
+     */
+    public function initController()
+    {
+        $action = $this->getAction();
+        switch ($action) {
+            case ControllerWebhook::ACTION_STRIPEWEBHOOK:
+                $stripeAPI = new StripeAPI();
+                $stripeAPI->handleEvents();
+                $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
+                $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
+                $this->person = new Client($CLT_VAL);
+                break;
+            case ControllerWebhook::ACTION_FACEBOOKCATALOG:
+            case ControllerWebhook::ACTION_BLUEWEBHOOK:
+                $system = new Map(Configuration::getFromJson(Configuration::JSON_KEY_SYSTEM));
+                $ADM_VAL = $system->get(Map::cookies, Cookie::COOKIE_ADM, Map::cookieValue);
+                $this->person = new Administrator($ADM_VAL);
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+
+    /*———————————————————————————— SECURE CONTROLLER UP —————————————————————*/
 
     /**
      * To handle Stripe's events
@@ -69,8 +100,27 @@ class ControllerWebhook extends ControllerSecure
         (!$response->containError()) ? $response->addResult(self::ACTION_BLUEWEBHOOK, true) : null;
         // $this->saveResponseInFile($file, $response);
     }
+
     /**
-     * To save event in a file
+     * To generate catalog file for Facebook
+     */
+    public function facebookCatalog()
+    {
+        $response = new Response();
+        $file = Query::getParam(Facebook::FILE_CATALOG);
+        // add lang in URL
+        if(!empty($file)){
+            $catalog = Facebook::getCatalog($file);
+            // ob_start();
+            // require "model/marketing/facebook/files/catalog/$file";
+            // echo ob_get_clean();
+            echo $catalog;
+            $response->addResult(self::ACTION_FACEBOOKCATALOG, true);
+        }
+    }
+
+    /**
+     * To save Response returned in a file
      * @param Response $response the response to save
      */
     private function saveResponseInFile($file, Response $response)
@@ -82,39 +132,5 @@ class ControllerWebhook extends ControllerSecure
         $arrayMap->sortKeyAsc();
         $json = json_encode($arrayMap->getMap());
         file_put_contents($file, $json);
-    }
-
-    /*———————————————————————————— CONTROLLER_SECURE DOWN —————————————————————*/
-
-    /**
-     * To initialize the controller
-     */
-    public function initController()
-    {
-        $action = $this->getAction();
-        switch ($action) {
-            case ControllerWebhook::ACTION_STRIPEWEBHOOK:
-                $stripeAPI = new StripeAPI();
-                $stripeAPI->handleEvents();
-                $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
-                $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
-                $this->person = new Client($CLT_VAL);
-                break;
-            case ControllerWebhook::ACTION_BLUEWEBHOOK:
-                $system = new Map(Configuration::getFromJson(Configuration::JSON_KEY_SYSTEM));
-                $ADM_VAL = $system->get(Map::cookies, Cookie::COOKIE_ADM, Map::cookieValue);
-                $this->person = new Administrator($ADM_VAL);
-                break;
-            default:
-                # code...
-                break;
-        }
-        // if ($action == ControllerWebhook::ACTION_STRIPEWEBHOOK) {
-        //     $stripeAPI = new StripeAPI();
-        //     $stripeAPI->handleEvents();
-        //     $clientDatas = $stripeAPI->getCheckoutSessionMetaDatas();
-        //     $CLT_VAL = $clientDatas[Cookie::COOKIE_CLT];
-        //     $this->person = new Client($CLT_VAL);
-        // }
     }
 }

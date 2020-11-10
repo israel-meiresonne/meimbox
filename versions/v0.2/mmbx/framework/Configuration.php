@@ -37,6 +37,13 @@ class Configuration
     public const DIR_EMAIL_FILES = "dir_email_files";
 
     /**
+     * Holds 
+     */
+    public const PATH_CSS = "path_css";
+    public const PATH_JS = "path_js";
+    public const PATH_BRAND = "path_brand";
+
+    /**
      * Keys for SendinBlue datas
      */
     public const SENDINBLUE_APIK = "sendinblue_apik";

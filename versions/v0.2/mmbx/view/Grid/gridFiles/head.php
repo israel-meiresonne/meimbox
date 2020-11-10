@@ -1,2 +1,2 @@
-<script src="content/js/grid.js"></script>
-<link rel="stylesheet" href="content/css/grid.css">
+<script src="<?= self::$PATH_JS ?>grid.js"></script>
+<link rel="stylesheet" href="<?= self::$PATH_CSS ?>grid.css">

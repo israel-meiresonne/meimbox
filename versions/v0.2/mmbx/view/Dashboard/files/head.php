@@ -3,4 +3,4 @@
  * ——————————————————————————————— NEED —————————————————————————————————————
  */
 ?>
-<link rel="stylesheet" href="content/css/cart.css">
+<link rel="stylesheet" href="<?= self::$PATH_CSS ?>cart.css">
