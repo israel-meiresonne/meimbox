@@ -235,6 +235,7 @@ class View
     private function setConstants()
     {
         self::$DIR_STATIC_FILES = (!isset(self::$DIR_STATIC_FILES)) ? Configuration::get(Configuration::DIR_STATIC_FILES) : self::$DIR_STATIC_FILES;
+        self::$PATH_PRODUCT = (!isset(self::$PATH_PRODUCT)) ? Configuration::get(Configuration::PATH_PRODUCT) : self::$PATH_PRODUCT;
         self::$PATH_CSS = (!isset(self::$PATH_CSS)) ? Configuration::get(Configuration::PATH_CSS) : self::$PATH_CSS;
         self::$PATH_JS = (!isset(self::$PATH_JS)) ? Configuration::get(Configuration::PATH_JS) : self::$PATH_JS;
         self::$PATH_BRAND = (!isset(self::$PATH_BRAND)) ? Configuration::get(Configuration::PATH_BRAND) : self::$PATH_BRAND;

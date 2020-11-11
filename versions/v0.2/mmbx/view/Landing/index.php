@@ -285,8 +285,8 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             $i = 0;
             while ($i < 50) {
                 $rand = rand(1, 3);
-                // $file = $dir_prod_files . 'picture01.jpeg';
-                $file = $dir_prod_files . "picture0$rand.jpeg";
+                // $file = self::$PATH_PRODUCT . 'picture01.jpeg';
+                $file = self::$PATH_PRODUCT . "picture0$rand.jpeg";
                 array_push($files, $file);
                 $i++;
             }

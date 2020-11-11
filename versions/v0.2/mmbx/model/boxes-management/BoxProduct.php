@@ -147,12 +147,6 @@ class BoxProduct extends Product
     {
         $this->virtualSizeStock = [];
         $sizesStock = $this->getSizeStock();
-        // $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
-        // $dbSizes = json_decode($json);
-        // $dbSizes = $this->getSupportedSizes();
-        // $sizeSample = array_keys($sizesStock)[0];
-        // $sizeType = $this->extractSizeType($sizeSample);
-        // $this->checkSizeIsSupported($dbSizes, $sizesStock, $sizeType);
 
         $supportedSizes = $this->getSupportedSizes();
         // $supportedSizes = $dbSizes->$sizeType;
@@ -160,49 +154,25 @@ class BoxProduct extends Product
         $sizesPos = array_flip($supportedSizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
         foreach ($sizesStock as $size => $stock) {
             $pos = $sizesPos[$size];
-            $keys = array_keys(array_slice($newSizesStock, $pos));
+            $keys = array_keys(array_slice($newSizesStock, $pos));  // array_slice extract couples after the position $pos
             $newSizesStock = $this->increaseStock($newSizesStock, $keys, $stock);
         }
-        foreach ($newSizesStock as $size => $stock) {
-            if (($stock == 0) && (!key_exists($size, $sizesStock))) {
-                $newSizesStock[$size] = null;
-                unset($newSizesStock[$size]);
-            }
-        }
+        // foreach ($newSizesStock as $size => $stock) {
+        //     if (($stock == 0) && (!key_exists($size, $sizesStock))) {
+        //         $newSizesStock[$size] = null;
+        //         unset($newSizesStock[$size]);
+        //     }
+        // }
         $ordSizeStock =  [];
         foreach ($supportedSizes as $size) {
             if (key_exists($size, $newSizesStock)) {
                 $ordSizeStock[$size] = $newSizesStock[$size];
             }
         }
-        $ordSizeStock = array_reverse($ordSizeStock);
+        $ordSizeStock = array_reverse($ordSizeStock); // cause we want an order low to high while supportedSizes is ordred from high to low 
         // return $ordSizeStock;
         $this->virtualSizeStock = $ordSizeStock;
     }
-
-    // /**
-    //  * To determinate the type of size holds by the current product
-    //  * + Use a exemple of product's size to determinate the size type of the product
-    //  * @param string $sizeSample sample of size holds by the current prroduct
-    //  * @return string the type of size holds by the current product
-    //  */
-    // private  function extractSizeType($sizeSample)
-    // {
-    //     $sizeType = null;
-    //     // $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
-    //     // $dbSizes = json_decode($json);
-    //     $dbSizes = $this->getSupportedSizes();
-    //     foreach ($dbSizes as $type => $supportedSizes) {
-    //         $sizeType = $type;
-    //         if (in_array($sizeSample, $dbSizes->$type)) {
-    //             break;
-    //         }
-    //     }
-    //     if (empty($sizeType)) {
-    //         throw new Exception("This type of size is not supported, size:$sizeSample");
-    //     }
-    //     return $sizeType;
-    // }
 
     /**
      * To check if all sizes holds by the product is supported
@@ -294,7 +264,7 @@ class BoxProduct extends Product
     /**
      * Getter for product's sizes
      * + virtual and real size
-     * @return string[] product's stock for each size
+     * @return string[] product's sizes
      */
     public function getSizes()
     {
@@ -514,7 +484,7 @@ class BoxProduct extends Product
 
     /**
      * Getter for product's price
-     * @return Price product's prrice
+     * @return Price product's price
      * + for boxProduct will return Price with a zero as value
      */
     public function getPrice()

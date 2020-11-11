@@ -1,6 +1,7 @@
 <?php
+require_once 'model/marketing/facebook/Facebook.php';
 
-class Pixel
+class Pixel extends Facebook
 {
     /**
      * Holds configuartion for all pixel
@@ -93,10 +94,11 @@ class Pixel
      */
     public static function getBaseCode()
     {
-        ob_start();
         $pixelID = Configuration::get(Configuration::FB_PIXEL_ID);
-        require 'model/marketing/facebook/files/content/pixelBaseCode.php';
-        return ob_get_clean();
+        $datas = [
+            "pixelID" => $pixelID
+        ];
+        return parent::generateFile('model/marketing/facebook/files/content/pixelBaseCode.php', $datas);
     }
 
     /**
@@ -140,8 +142,7 @@ class Pixel
         /**
          * @var Product */
         $product = $datasMap->get(Map::product);
-        if(empty($product))
-        {
+        if (empty($product)) {
             throw new Exception("The product can't be empty");
         }
         $paramsMap = new Map();
@@ -221,14 +222,14 @@ class Pixel
         /**
          * @var Order */
         $order = $datasMap->get(Map::order);
-        
+
         $basketOrdered = $order->getBasketOrdered();
         $boxes = $basketOrdered->getBoxes();
         if (empty($boxes)) {
             throw new Exception("boxes can't be empty");
         }
         $paramsMap = new Map();
-        
+
         $content_ids = new Map();
         $contents = new Map();
 
@@ -274,8 +275,7 @@ class Pixel
         /**
          * @var Product */
         $product = $datasMap->get(Map::product);
-        if(empty($product))
-        {
+        if (empty($product)) {
             throw new Exception("The product can't be empty");
         }
 

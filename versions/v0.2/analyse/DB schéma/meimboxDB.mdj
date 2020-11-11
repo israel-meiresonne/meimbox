@@ -19138,7 +19138,8 @@
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
 									"type": "VARCHAR",
 									"length": "10",
-									"foreignKey": true
+									"foreignKey": true,
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",

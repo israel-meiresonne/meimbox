@@ -106,16 +106,25 @@ class ControllerWebhook extends ControllerSecure
      */
     public function facebookCatalog()
     {
-        $response = new Response();
-        $file = Query::getParam(Facebook::FILE_CATALOG);
-        // add lang in URL
-        if(!empty($file)){
-            $catalog = Facebook::getCatalog($file);
-            // ob_start();
-            // require "model/marketing/facebook/files/catalog/$file";
-            // echo ob_get_clean();
-            echo $catalog;
-            $response->addResult(self::ACTION_FACEBOOKCATALOG, true);
+        // $saveFile = "model/marketing/facebook/files/catalog/files/response.json";
+        try {
+            $response = new Response();
+            $person = $this->person;
+            $file = Query::getParam(Facebook::GET_CATALOG);
+            if (!empty($file)) {
+                $language = $person->getLanguage();
+                $country = $person->getCountry();
+                $currency = $person->getCurrency();
+                $catalog = Facebook::getCatalog($file, $language, $country, $currency);
+                echo $catalog;
+                $response->addResult(self::ACTION_FACEBOOKCATALOG, $catalog);
+            }
+            // $this->saveResponseInFile($saveFile, $response);
+        } catch (\Throwable $th) {
+        $saveFile = "model/marketing/facebook/files/catalog/files/response.json";
+            $response->addError(Facebook::GET_CATALOG, $file);
+            $response->addError(MyError::ADMIN_ERROR, $th);
+            $this->saveResponseInFile($saveFile, $response);
         }
     }
 
