@@ -996,6 +996,7 @@ abstract class ModelFunctionality extends Model
                 self::$productMap[$tabLine["prodID"]]["colorRGB"] = $tabLine["colorRGB"];
                 self::$productMap[$tabLine["prodID"]]["weight"] = empty($tabLine["weight"]) ? null : (float) $tabLine["weight"];
                 self::$productMap[$tabLine["prodID"]]["price"] = empty($tabLine["price"]) ? null : (float) $tabLine["price"];
+                self::$productMap[$tabLine["prodID"]]["googleCat"] = $tabLine["googleCat"];
             }
         }
     }

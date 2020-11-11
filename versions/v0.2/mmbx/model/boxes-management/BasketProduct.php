@@ -187,6 +187,7 @@ class BasketProduct extends Product
         $country = $this->getCountry();
         $currency = $this->getCurrency();
         (!isset($this->price)) ? $this->setPrice($country, $currency) : null;
+
         return $this->price;
     }
 

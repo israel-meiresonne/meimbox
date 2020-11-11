@@ -11,14 +11,7 @@ class Facebook extends ModelFunctionality
     public const GET_CATALOG = "file_catalog";
 
     /**
-     * Génère un fichier vue et renvoie le résultat produit
-     * 
-     * rnvs : retourne une string dont le contenu est le fichier dont
-     *        le chemin d'accès est contenu dans $file, fichier dont
-     *        le contenu est garni avec les données du tableau associatif
-     *        $datas, tableau éclaté en autant de variables qu'il possède
-     *        d'éléments
-     * 
+     * Execute file with datas given and return the result
      * @param string $file Chemin du fichier vue à générer
      * @param array $datas Données nécessaires à la génération de la vue
      * @return string Résultat de la génération de la vue
@@ -74,11 +67,19 @@ class Facebook extends ModelFunctionality
         $url_DomainWebroot = $url_domain . $webroot;
         $url_file = $url_DomainWebroot . ControllerWebhook::ACTION_FACEBOOKCATALOG . "?" . self::GET_CATALOG . "=" . $file;
         $products = [];
-        array_push($products, (new BoxProduct(1, $language, $country, $currency)));
-        array_push($products, (new BoxProduct(2, $language, $country, $currency)));
-        array_push($products, (new BoxProduct(3, $language, $country, $currency)));
-        array_push($products, (new BoxProduct(4, $language, $country, $currency)));
-        array_push($products, (new BoxProduct(5, $language, $country, $currency)));
+        $tab = parent::select("SELECT `prodID`, `product_type` FROM `Products` WHERE `isAvailable`=1;");
+        foreach ($tab as $tabLine) {
+            $prodID = $tabLine["prodID"];
+            $product_type = $tabLine["product_type"];
+            switch ($product_type) {
+                case BoxProduct::BOX_TYPE:
+                    array_push($products, (new BoxProduct($prodID, $language, $country, $currency)));
+                    break;
+                case BasketProduct::BASKET_TYPE:
+                    array_push($products, (new BasketProduct($prodID, $language, $country, $currency)));
+                    break;
+            }
+        }
         $company = new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY));
         $datas = [
             "url_DomainWebroot" => $url_DomainWebroot,
@@ -100,7 +101,9 @@ class Facebook extends ModelFunctionality
     protected static function cleanXML(string $xml)
     {
         $searchReplace = [
-            '&' => '&amp;'
+            '&' => '&amp;',
+            // '<' => '&lt;',
+            // '>' => '&gt;'
         ];
         return str_replace(array_keys($searchReplace), $searchReplace, $xml);
     }

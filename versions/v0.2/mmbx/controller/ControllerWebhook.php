@@ -1,6 +1,7 @@
 <?php
 require_once 'ControllerSecure.php';
 require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+require_once 'model/marketing/facebook/Facebook.php';
 
 class ControllerWebhook extends ControllerSecure
 {
@@ -106,7 +107,6 @@ class ControllerWebhook extends ControllerSecure
      */
     public function facebookCatalog()
     {
-        // $saveFile = "model/marketing/facebook/files/catalog/files/response.json";
         try {
             $response = new Response();
             $person = $this->person;
@@ -117,14 +117,13 @@ class ControllerWebhook extends ControllerSecure
                 $currency = $person->getCurrency();
                 $catalog = Facebook::getCatalog($file, $language, $country, $currency);
                 echo $catalog;
-                $response->addResult(self::ACTION_FACEBOOKCATALOG, $catalog);
+                $response->addResult(self::ACTION_FACEBOOKCATALOG, true);
             }
-            // $this->saveResponseInFile($saveFile, $response);
         } catch (\Throwable $th) {
-        $saveFile = "model/marketing/facebook/files/catalog/files/response.json";
-            $response->addError(Facebook::GET_CATALOG, $file);
-            $response->addError(MyError::ADMIN_ERROR, $th);
-            $this->saveResponseInFile($saveFile, $response);
+            // $saveFile = "model/marketing/facebook/files/catalog/files/response.json";
+            $response->addError($file, Facebook::GET_CATALOG);
+            $response->addError($th->__toString(), MyError::ADMIN_ERROR);
+            // $this->saveResponseInFile($saveFile, $response);
         }
     }
 
