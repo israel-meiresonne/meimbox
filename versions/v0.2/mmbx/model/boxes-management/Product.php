@@ -141,10 +141,18 @@ abstract class Product extends ModelFunctionality
     protected $buyPrice;
 
     /**
+     * Holds stock product availability
+     * @var string
+     */
+    public const AVAILABILITY_DISCONTINUED = "discontinued";
+    public const AVAILABILITY_OUT_STOCK = "out of stock";
+    public const AVAILABILITY_IN_STOCK = "in stock";
+
+    /**
      * Holds the directory where product's picture are stored
      * @var string
      */
-    private static $DIR_PROD_FILES;
+    private static $PATH_PRODUCT;
 
     /**
      * Holds page's name
@@ -209,9 +217,6 @@ abstract class Product extends ModelFunctionality
     protected function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
         $this->setConstants();
-        self::$DIR_PROD_FILES = (!isset(self::$DIR_PROD_FILES))
-        ? Configuration::get(Configuration::DIR_PROD_FILES)
-        : self::$DIR_PROD_FILES;
         $this->prodID = $prodID;
         $this->language = $language;
         $this->country = $country;
@@ -257,6 +262,9 @@ abstract class Product extends ModelFunctionality
             self::$COLOR_TEXT_05 = "COLOR_TEXT_05";
             self::$COLOR_TEXT_05 = $this->getConstantLine(self::$COLOR_TEXT_05)["stringValue"];
         }
+        self::$PATH_PRODUCT = (!isset(self::$PATH_PRODUCT))
+            ? Configuration::get(Configuration::PATH_PRODUCT)
+            : self::$PATH_PRODUCT;
     }
 
     // /**
@@ -448,6 +456,15 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
+     * To get if product is available to order
+     * @return boolean true if product is available to order else false
+     */
+    public function isAvailable()
+    {
+        return $this->isAvailable;
+    }
+
+    /**
      * Getter for the product's color
      * @return string the product's color
      */
@@ -506,7 +523,7 @@ abstract class Product extends ModelFunctionality
         $pictures = $this->getPictures();
         if (count($pictures) > 0) {
             foreach ($pictures as $key => $picture) {
-                $picSrc[$key] = self::$DIR_PROD_FILES . $picture;
+                $picSrc[$key] = self::$PATH_PRODUCT . $picture;
             }
         }
         return $picSrc;
@@ -560,7 +577,7 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Getter for product's sizes
-     * @return string[] product's stock for each size
+     * @return string[] product's sizes
      */
     public abstract function getSizes();
 
@@ -627,8 +644,8 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
-     * Getter for product's prrice
-     * @return Price product's prrice
+     * Getter for product's price
+     * @return Price product's price
      * + for boxProduct will return Price with a zero as value
      */
     public abstract function getPrice();
@@ -684,6 +701,27 @@ abstract class Product extends ModelFunctionality
      * @return boolean set true if still stock else false
      */
     public abstract function stillUnlockedStock();
+
+    /**
+     * To evaluate if still at less one size in stock
+     * + if $isAvailable = false => 'discontinued'
+     * + if SUM($sizesStock) > 0 => 'in stock'
+     * + if SUM($sizesStock) <= 0 => 'out of stock'
+     * @return string discontinued | in stock | out of stock
+     */
+    public function getAvailability()
+    {
+        $availability = null;
+        if (!$this->isAvailable()) {
+            $availability = self::AVAILABILITY_DISCONTINUED;
+        } else {
+            $sizesStock = $this->getSizeStock();
+            $availability = (array_sum($sizesStock) > 0)
+                ? self::AVAILABILITY_IN_STOCK
+                : self::AVAILABILITY_OUT_STOCK;
+        }
+        return $availability;
+    }
 
     /**
      * Convert setDate to seconde from UNIX.

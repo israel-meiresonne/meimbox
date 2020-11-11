@@ -160,7 +160,7 @@ class BasketProduct extends Product
 
     /**
      * Getter for product's sizes
-     * @return string[] product's stock for each size
+     * @return string[] product's sizes
      */
     public function getSizes()
     {
@@ -178,8 +178,8 @@ class BasketProduct extends Product
     }
 
     /**
-     * Getter for product's prrice
-     * @return Price product's prrice
+     * Getter for product's price
+     * @return Price product's price
      * + for boxProduct will return Price with a zero as value
      */
     public function getPrice()

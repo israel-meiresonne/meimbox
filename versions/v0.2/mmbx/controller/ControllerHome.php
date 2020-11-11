@@ -158,8 +158,9 @@ class ControllerHome extends ControllerSecure
 
     public function testA()
     {
-        header('content-type: application/json');
-        var_dump($_COOKIE);
+        // header('content-type: application/json');
+        // var_dump($_COOKIE);
+        var_dump(strtoupper("i&meim"));
         // ob_start();
         // require 'model/marketing/facebook/files/meimboxCatalog.xml';
         // echo ob_get_clean();

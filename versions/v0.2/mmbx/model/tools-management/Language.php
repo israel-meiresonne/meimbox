@@ -21,6 +21,12 @@ class Language extends ModelFunctionality
     private $langLocalName;
 
     /**
+     * Holds key to get lang in $_GET
+     * @var string
+     */
+    public const GET_LANG = "lang";
+
+    /**
      * holds the id of the default language value stored in database in a constant table
      * @var string 
      */
@@ -84,7 +90,7 @@ class Language extends ModelFunctionality
         $found = isset($isoLang) ? $this->setLanguage($isoLang) : $found;
 
         if (!$found) {
-            $urlLang = Query::getParam("lang");
+            $urlLang = Query::getParam(self::GET_LANG);
             $found = isset($urlLang) ? $this->setLanguage($urlLang) : $found;
         }
 
