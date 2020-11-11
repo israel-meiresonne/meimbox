@@ -3042,20 +3042,35 @@
 													"top": 1973,
 													"width": 723.0283203125,
 													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF1t+t/5bdJwFA=",
+													"_parent": {
+														"$ref": "AAAAAAFwSQPiWZ+ERhM="
+													},
+													"model": {
+														"$ref": "AAAAAAF1t+t/uLdGpps="
+													},
+													"font": "Arial;13;0",
+													"left": 4157,
+													"top": 1988,
+													"width": 723.0283203125,
+													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4152,
 											"top": 1863,
 											"width": 733.0283203125,
-											"height": 128
+											"height": 143
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4152,
 									"top": 1840,
 									"width": 733.0283203125,
-									"height": 226,
+									"height": 166,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSQPiWZ+DVpY="
 									},
@@ -4890,7 +4905,7 @@
 											"font": "Arial;13;1",
 											"left": 4296,
 											"top": 2125,
-											"width": 240.6787109375,
+											"width": 265.9677734375,
 											"height": 13,
 											"text": "ProductsDescriptions"
 										},
@@ -4916,7 +4931,7 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2148,
-													"width": 230.6787109375,
+													"width": 255.9677734375,
 													"height": 13
 												},
 												{
@@ -4931,7 +4946,7 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2163,
-													"width": 230.6787109375,
+													"width": 255.9677734375,
 													"height": 13
 												},
 												{
@@ -4946,22 +4961,37 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2178,
-													"width": 230.6787109375,
+													"width": 255.9677734375,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF1uASAg7dV3Ro=",
+													"_parent": {
+														"$ref": "AAAAAAFwSTqQf6NQhkA="
+													},
+													"model": {
+														"$ref": "AAAAAAF1uASAWbdScLI="
+													},
+													"font": "Arial;13;0",
+													"left": 4301,
+													"top": 2193,
+													"width": 255.9677734375,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4296,
 											"top": 2143,
-											"width": 240.6787109375,
-											"height": 53
+											"width": 265.9677734375,
+											"height": 68
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4296,
 									"top": 2120,
-									"width": 240.6787109375,
-									"height": 76,
+									"width": 265.9677734375,
+									"height": 91,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSTqQf6NPaXo="
 									},
@@ -20320,6 +20350,17 @@
 									"name": "weight",
 									"documentation": "# Définition\n\nPoids du produit en kg",
 									"type": "DOUBLE"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF1t+t/uLdGpps=",
+									"_parent": {
+										"$ref": "AAAAAAFwSQPiWJ+AyGk="
+									},
+									"name": "googleCat",
+									"documentation": "# Definition\n\nPoduct's google category",
+									"type": "VARCHAR",
+									"length": "500"
 								}
 							]
 						},
@@ -20487,6 +20528,17 @@
 										"$ref": "AAAAAAFwSTqQfqNMjok="
 									},
 									"name": "description",
+									"type": "VARCHAR",
+									"length": "5000"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF1uASAWbdScLI=",
+									"_parent": {
+										"$ref": "AAAAAAFwSTqQfqNMjok="
+									},
+									"name": "richDescription",
+									"documentation": "# Definition\n\nHolds description in html format",
 									"type": "VARCHAR",
 									"length": "5000"
 								}

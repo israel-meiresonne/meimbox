@@ -69,6 +69,13 @@ abstract class Product extends ModelFunctionality
     protected $weight;
 
     /**
+     * Holds product's foreign System like Google's or Facebook's
+     * @var Map
+     * + $foreignCategory[SystemCategory{string}] => category{string}
+     */
+    protected $foreignCategory;
+
+    /**
      * List of prictures of the product.
      * + Use the pictureID as access key like $pictures = [pictureID => picture]
      * @var string[]
@@ -115,6 +122,12 @@ abstract class Product extends ModelFunctionality
      */
     protected $description;
 
+    /**
+     * Holds product's richDescription in Visitor's language else default language.
+     * @var string
+     */
+    protected $richDescription;
+
     // /**
     //  * Holds the quantity of this product in a container like basket or box
     //  * + in container, a product is defined by its id, Size and color
@@ -147,6 +160,8 @@ abstract class Product extends ModelFunctionality
     public const AVAILABILITY_DISCONTINUED = "discontinued";
     public const AVAILABILITY_OUT_STOCK = "out of stock";
     public const AVAILABILITY_IN_STOCK = "in stock";
+
+    public const CATEGORY_GOOGLE = "google_category";
 
     /**
      * Holds the directory where product's picture are stored
@@ -216,33 +231,30 @@ abstract class Product extends ModelFunctionality
      */
     protected function __construct($prodID, Language $language, Country $country, Currency $currency)
     {
-        $this->setConstants();
         $this->prodID = $prodID;
-        $this->language = $language;
-        $this->country = $country;
-        $this->currency = $currency;
-        if ($this->existProductInMap($prodID)) {
-            $productLine = $this->getProductLine($prodID);
-            $this->prodName = $productLine["prodName"];
-            $this->isAvailable = $productLine["isAvailable"];
-            $this->addedDate = $productLine["addedDate"];
-            $this->colorName = $productLine["colorName"];
-            $this->colorRGB = $productLine["colorRGB"];
-            $this->weight = $productLine["weight"];
+        if ($this->existProductInMap($this->prodID)) {
+            $productLine = $this->getProductLine($this->prodID);
         } else {
             $sql = "SELECT * FROM `Products` WHERE `prodID` = '$this->prodID'";
             $tab = $this->select($sql);
             if (count($tab) != 1) {
-                throw new Exception("No product has this id $prodID");
+                throw new Exception("No product has this id $this->prodID");
             }
             $productLine = $tab[0];
-            $this->prodName = $productLine["prodName"];
-            $this->isAvailable = $productLine["isAvailable"];
-            $this->addedDate = $productLine["addedDate"];
-            $this->colorName = $productLine["colorName"];
-            $this->colorRGB = $productLine["colorRGB"];
-            $this->weight = $productLine["weight"];
         }
+        $this->setConstants();
+        $this->language = $language;
+        $this->country = $country;
+        $this->currency = $currency;
+        $this->prodName = $productLine["prodName"];
+        $this->isAvailable = $productLine["isAvailable"];
+        $this->addedDate = $productLine["addedDate"];
+        $this->colorName = $productLine["colorName"];
+        $this->colorRGB = $productLine["colorRGB"];
+        $this->weight = $productLine["weight"];
+        $this->foreignCategory = new Map();
+        $googleCat = $productLine["googleCat"];
+        $this->foreignCategory->put($googleCat, self::CATEGORY_GOOGLE);
     }
 
     /**
@@ -395,28 +407,21 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Setter for product's description
-     * @param Language $lang Visitor's language
      */
-    protected function setDescriptions(Language $lang)
+    protected function setDescriptions()
     {
-        $isoLang = $lang->getIsoLang();
+        $language = $this->getLanguage();
+        $isoLang = $language->getIsoLang();
         $sql = "SELECT * 
         FROM `ProductsDescriptions`
         WHERE `prodId` = '$this->prodID' AND `lang_` = '$isoLang'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
-            $this->description = $tab[0]["description"];
+            $tabLine = $tab[0];
+            $this->description = $tabLine["description"];
+            $this->richDescription = $tabLine["richDescription"];
         }
     }
-
-    // /**
-    //  * Setter for product's quantity
-    //  * @param int $quantity product's quantity
-    //  */
-    // protected function setQuantity(int $quantity)
-    // {
-    //     $this->quantity = $quantity;
-    // }
 
     /**
      * To increase or decrease the quantity of product holds by container
@@ -501,6 +506,20 @@ abstract class Product extends ModelFunctionality
     protected function getWeight()
     {
         return $this->weight;
+    }
+
+    /**
+     * To get product's foreaign category
+     * @param string $foreignSystKey to get category from this system
+     * @return string product's foreaign category
+     */
+    public function getForeignCategory(string $foreignSystKey)
+    {
+        $category = $this->foreignCategory->get($foreignSystKey);
+        if(empty($category)){
+            throw new Exception("Product's foreign category can't be empty");
+        }
+        return $category;
     }
 
     /**
@@ -622,12 +641,22 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Getter for product's description
+     * @return string product's description
      */
     public function getDescription()
     {
-        $language = $this->getLanguage();
-        (!isset($this->description)) ? $this->setDescriptions($language) : null;
+        (!isset($this->description)) ? $this->setDescriptions() : null;
         return $this->description;
+    }
+
+    /**
+     * Getter for product's rich description
+     * @return string product's rich description
+     */
+    public function getRichDescription()
+    {
+        (!isset($this->richDescription)) ? $this->setDescriptions() : null;
+        return $this->richDescription;
     }
 
     /**
