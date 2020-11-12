@@ -35,11 +35,12 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 <head>
     <meta charset="UTF-8">
     <base href="<?= $webRoot ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="<?= $description ?>"> <!-- <meta name="description" content=""> -->
     <title><?= $title ?></title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -47,9 +48,8 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
     <?= self::FONT_FAM_SPARTAN ?>
     <?= self::FONT_FAM_PT ?>
 
-    <link rel="stylesheet" href="<?= self::$PATH_CSS . 'root.css' ?>">
-
     <?= $head ?>
+
     <script>
         const jx = function(a, d, r, l, x = null, sc = () => {}, rc = () => {}) {
             // $(l).fadeIn(TS, sc());
@@ -209,7 +209,8 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const TS = 450;
         const BNR = 1000000;
         const AJX = "<?= ControllerSecure::AJX ?>";
-        // const JXF = "<?= ""//self::$PATH_JS ?>qr.php";
+        // const JXF = "<?= "" //self::$PATH_JS 
+                        ?>qr.php";
         const LANG = "lang=" + $("html").attr("lang");
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
@@ -273,6 +274,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         }
     </script>
 
+    <link rel="stylesheet" href="<?= self::$PATH_CSS . 'root.css' ?>">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>header.css">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
     <script src="<?= self::$PATH_JS ?>elements.js"></script>

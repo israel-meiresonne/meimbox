@@ -2437,7 +2437,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     padding: 0 10px 25px;
     height: 95%;
     max-height: 75vh;
-    /* overflow: auto; */
+    overflow: auto;
     background-color: var(--color-white);
 }
 
@@ -2620,13 +2620,85 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 #add_measure_window .brand_reference-content {
     opacity: 1;
-    /* transition: var(--transition-time);
-    -moz-transition: var(--transition-time); */
 }
 
 #add_measurePopUp_loading img {
     height: 100%;
     margin: auto;
+}
+
+.customize_measure-block {
+    display: none;
+}
+
+.customize_measure-input-block {
+    display: flex;
+}
+
+.measure_body-img-container img {
+    width: 100%;
+}
+
+.measure_input-container {
+    display: flex;
+    width: 100%;
+}
+
+/* .measure_input-container-inner {
+    margin: auto;
+} */
+
+.measure_input-checkbox-conatiner .checkbox_set-content-div {
+    display: flex;
+}
+
+.measure_input-checkbox-conatiner .checkbox-container:last-child {
+    margin-left: auto;
+    padding-right: 15px;
+}
+
+@media (min-width: 992px) {
+    .measure_body-img-container {
+        width: 27%;
+    }
+    .measure_input-container-inner {
+        margin: auto;
+    }
+    .measure_input-checkbox-conatiner {
+        width: 50%;
+    }
+    .measure_input-input-group {
+        display: flex;
+    }
+    .measure_input-input-group .input-container {
+        max-width: 50%;
+    }
+    
+    .measure_input-input-group .input-container:first-child {
+        padding-right: 15px;
+    }
+    
+    .measure_input-input-group .input-container:last-child {
+        padding-left: 15px;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 991px) {
+    .customize_measure-input-block{
+        flex-direction: column;
+    }
+    .measure_body-img-container {
+        width: 35%;
+        margin: 0 auto;
+    }
+    .measure_input-container-inner {
+        width: 100%;
+    }
+    .measure_input-checkbox-conatiner {
+        width: 75%;
+        margin: 0 auto;
+    }
 }
 
 /*—————————————————————————————— MEASURE_ADDER UP ———————————————————————————*/
@@ -2965,9 +3037,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 @media (max-width: 991px) {
     #size_editor_pop #form_edit_prod_size {
-        max-height: 400px;
+        /* max-height: 400px; */
         padding: 0 5px 10px;
-        overflow: auto;
+        /* overflow: auto; */
     }
     #size_editor_pop .product-quantity-container {
         margin-bottom: 5px;

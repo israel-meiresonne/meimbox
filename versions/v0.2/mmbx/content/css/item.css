@@ -122,25 +122,8 @@
             width: 5px;
         }
     }
-    /* ——————————————————————— SELECTED CUSTOM POP_UP DOWN ———————————————————*/
-    /* #choose_brand .sticker-button, #measurement_button_div .sticker-button {
-        width: 15px;
-    }
-    #choose_brand .custom_selected-container, #measurement_button_div .custom_selected-container {
-        margin-bottom: 10px;
-    }
-    .customize_choice-block .hr-summary {
-        margin: 0 0 15px;
-    }
-    #choose_brand .custom_selected-title-div .custom_selected-title, #measurement_button_div .custom_selected-title-div .custom_selected-title {
-        margin: 0 0 10px;
-    }
-    #choose_brand .custom_selected-title-div .custom_selected-title::first-letter, #measurement_button_div .custom_selected-title-div .custom_selected-title::first-letter {
-        text-transform: capitalize;
-    } */
-    /*——————————————————————— SELECTED CUSTOM POP_UP UP ————————————————————— */
     /*——————————————————————— MEASUREMENT POP_UP DOWN ———————————————————————*/
-    .customize_measure-block {
+    /* .customize_measure-block {
         display: none;
     }
     .customize_measure-input-block {
@@ -181,11 +164,6 @@
     .measure_input-input-group .input-container:last-child {
         padding-left: 15px;
         max-width: 50%;
-    }
-    /* #measurePopUp_loading img{
-        width: auto;
-        height: 100%;
-        margin: auto;
     } */
     /*——————————————————————— MEASUREMENT POP_UP UP —————————————————————————*/
 }
