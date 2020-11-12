@@ -38,7 +38,7 @@ if (isset($size)) :
 ?>
     <div class="cart-element-property-div">
         <span class="cart-element-property"><?= $translator->translateStation("US9") ?>: </span>
-        <span class="cart-element-value"><?= $size ?></span>
+        <span class="cart-element-value" style="text-transform:uppercase;"><?= $size ?></span>
     </div>
 <?php
 endif;
