@@ -88,6 +88,7 @@ abstract class Product extends ModelFunctionality
      * + sizesStock = [
      * + +     size_name{string} => stock{int}
      * + ]
+     * + NOTE: size are ordred from low to high
      * @var int[]
      */
     protected $sizesStock;
@@ -338,6 +339,9 @@ abstract class Product extends ModelFunctionality
         }
     }
 
+    /**
+     * Setter for sizesStock
+     */
     protected function setSizeStock()
     {
         $this->sizesStock  = [];
@@ -349,8 +353,53 @@ abstract class Product extends ModelFunctionality
             throw new Exception("There no size for this product");
         }
         foreach ($tab as $tabLine) {
-            $this->sizesStock[$tabLine["size_name"]] = (int) $tabLine["stock"];
+            $size = $tabLine["size_name"];
+            $this->sizesStock[$size] = (int) $tabLine["stock"];
         }
+        $supported = $this->getSupportedSizes($size);
+        $this->sizesStock = $this->orderSizes($supported, $this->sizesStock);
+    }
+
+    /**
+     * To order size or an array following orderr of an other array of size
+     * @param array $orderedSizes odered array of size
+     * + [index{int} => size{string|int}] 
+     * @param array $toOrderSizes sizes to order
+     * + [size{string|int} => stock{int}]
+     * @return array ordered array based on the array to order
+     */
+    protected function orderSizes($orderedSizes, $toOrderSizes)
+    {
+        $ordered =  [];
+        foreach ($orderedSizes as $size) {
+            if (key_exists($size, $toOrderSizes)) {
+                $ordered[$size] = $toOrderSizes[$size];
+            }
+        }
+        return $ordered;
+    }
+
+    /**
+     * To get from db the supported sizes
+     * + the type of size is automatically deducted with the type of size holds
+     * in the sizeStock attribut
+     * @param string|int|float $sizeSample size used to determinate the type of the size to return
+     * @return array a list of supported sizes get from db
+     */
+    protected function getSupportedSizes($sizeSample)
+    {
+        $supported = null;
+        $dbSizes = Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS)[Size::SUPPORTED_SIZES];
+        foreach ($dbSizes as $type => $supportedSizes) {
+            if (in_array($sizeSample, $dbSizes[$type])) {
+                $supported = $dbSizes[$type];
+                break;
+            }
+        }
+        if (empty($supported)) {
+            throw new Exception("This type of size is not supported, size:$sizeSample");
+        }
+        return $supported;
     }
 
     /**

@@ -101,41 +101,6 @@ class BoxProduct extends Product
         $this->measure = new Measure($measureMap);
     }
 
-    // /**
-    //  * Setter for product's virtual size and stock
-    //  */
-    // protected function setSizeStock()
-    // {
-    //     parent::setSizeStock();
-    //     $this->virtualSizeStock = $this->setVirtualSizeStock($this->sizesStock);
-    // }
-
-    /**
-     * To get from db the supported sizes
-     * + the type of size is automatically deducted with the type of size holds
-     * in the sizeStock attribut
-     * @return array a list of supported sizes get from db
-     */
-    private function getSupportedSizes()
-    {
-        $sizesStock = $this->getSizeStock();
-        $sizeSample = array_keys($sizesStock)[0];
-
-        $json = $this->getConstantLine(Size::SUPPORTED_SIZES)["jsonValue"];
-        $dbSizes = json_decode($json);
-        $sizeType = null;
-        foreach ($dbSizes as $type => $supportedSizes) {
-            $sizeType = $type;
-            if (in_array($sizeSample, $dbSizes->$type)) {
-                break;
-            }
-        }
-        if (empty($sizeType)) {
-            throw new Exception("This type of size is not supported, size:$sizeSample");
-        }
-        return $dbSizes->$sizeType;
-    }
-
     /**
      * Set virtualSizeStock by decupling stock for each size
      * + decline each size in all size below and increase the stock
@@ -147,31 +112,30 @@ class BoxProduct extends Product
     {
         $this->virtualSizeStock = [];
         $sizesStock = $this->getSizeStock();
-
-        $supportedSizes = $this->getSupportedSizes();
+        $sizeSample =array_keys($sizesStock)[0];
+        $supportedSizes = $this->getSupportedSizes($sizeSample);
         // $supportedSizes = $dbSizes->$sizeType;
         $newSizesStock = array_fill_keys($supportedSizes, 0);
         $sizesPos = array_flip($supportedSizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
         foreach ($sizesStock as $size => $stock) {
             $pos = $sizesPos[$size];
-            $keys = array_keys(array_slice($newSizesStock, $pos));  // array_slice extract couples after the position $pos
+            $keys = array_keys(array_slice($newSizesStock, $pos));  // array_slice extract couples from the position $pos till array's end
             $newSizesStock = $this->increaseStock($newSizesStock, $keys, $stock);
         }
-        // foreach ($newSizesStock as $size => $stock) {
-        //     if (($stock == 0) && (!key_exists($size, $sizesStock))) {
-        //         $newSizesStock[$size] = null;
-        //         unset($newSizesStock[$size]);
-        //     }
-        // }
-        $ordSizeStock =  [];
-        foreach ($supportedSizes as $size) {
-            if (key_exists($size, $newSizesStock)) {
-                $ordSizeStock[$size] = $newSizesStock[$size];
+
+        /** To remove sizes that are bigger than the bigger real size */
+        $ordSizesStock =  $this->orderSizes($supportedSizes, $newSizesStock);
+        $biggerRealSize = array_reverse(array_keys($sizesStock))[0];
+        $ordSizesStockReversed = array_reverse($ordSizesStock);
+        foreach ($ordSizesStockReversed as $size => $stock) {
+            if ($size == $biggerRealSize) {
+                break;
+            } else {
+                $ordSizesStock[$size] = null;
+                unset($ordSizesStock[$size]);
             }
         }
-        $ordSizeStock = array_reverse($ordSizeStock); // cause we want an order low to high while supportedSizes is ordred from high to low 
-        // return $ordSizeStock;
-        $this->virtualSizeStock = $ordSizeStock;
+        $this->virtualSizeStock = $ordSizesStock;
     }
 
     /**
@@ -328,12 +292,12 @@ class BoxProduct extends Product
     private function virtualToRealSize($size)
     {
         $convertedSize = null;
-        // $sizeType = $this->extractSizeType($size);
-        // $supported = $this->getSupportedSizes()->$sizeType;
-        $supported = $this->getSupportedSizes();
-        $supportedFliped = array_flip($supported);
 
         $sizesStock = $this->getSizeStock();
+        $sizeSample =array_keys($sizesStock)[0];
+        $supported = $this->getSupportedSizes($sizeSample);
+        $supportedFliped = array_flip($supported);
+
         $realSizes  = array_keys($sizesStock);
         $realSizesIndexed = [];
 
@@ -806,22 +770,15 @@ class BoxProduct extends Product
     // private static function decreaseStock(Response $response, $products)
     {
         $sql = "";
-        // foreach ($products as $product) {
-        //     // $sizeObj = $product->SelectedToRealSize();
-        //     $sizeObj = $product->getRealSelectedSize();
-        //     $size = $sizeObj->getSize();
-        //     $quantity = $sizeObj->getQuantity();
-        //     $prodID = $product->getProdID();
-        //     $sql .= "UPDATE `Products-Sizes` SET `stock`=`stock`-$quantity WHERE `prodId` = '$prodID' AND `size_name` = '$size';\n";
-        // }
         foreach ($products as $product) {
             $prodID = $product->getProdID();
             $sizeObj = $product->getRealSelectedSize();
             $realSize = $sizeObj->getSize();
             $quantity = $sizeObj->getQuantity();
-            $supported = $product->getSupportedSizes();
-            $index = array_search($realSize, $supported);
             $sizesStock = $product->getSizeStock();
+            $sizeSample =array_keys($sizesStock)[0];
+            $supported = $product->getSupportedSizes($sizeSample);
+            $index = array_search($realSize, $supported);
             while ($index >=  0) { // &&  $quantity > 0
                 if (key_exists($realSize, $sizesStock)) {
                     $stock = $sizesStock[$realSize];
@@ -839,7 +796,7 @@ class BoxProduct extends Product
                 $index--;
                 $realSize = ($index >= 0) ? $supported[$index] : $realSize;
             }
-            if($quantity > 0){
+            if ($quantity > 0) {
                 $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
                 $response->addError($erMsg, MyError::ADMIN_ERROR);
             }
