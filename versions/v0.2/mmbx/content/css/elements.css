@@ -2457,7 +2457,8 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .pop_up-content-block-inner .cart-wrap {
     overflow: auto;
-    max-height: 55vh;
+    /* max-height: 55vh; */
+    max-height: 50vh;
     padding: 8px;
     border: var(--border-float);
     border-radius: var(--border-float-radius);
@@ -2585,12 +2586,14 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 @media (min-width: 992px) {
     .brand_reference-grid-container {
+        max-height: 450px;
         padding: 10px;
     }
 }
 
 @media (max-width: 991px) {
     .brand_reference-grid-container {
+        max-height: 300px;
         padding: 5px;
     }
 }
@@ -3073,10 +3076,12 @@ width: 49%; */
 /*———————————————————————————————— FEATURE UP ———————————————————————————————*/
 
 /*———————————————————————————————— SIZE_FORM DOWN ———————————————————————————*/
+#choose_brand .custom_selected-container, #measurement_button_div .custom_selected-container {
+    margin-bottom: 10px;
+}
+/*+++++++++++++++++  SIZE_FORM DOWN +++++++++++++++++++++*/
 
-/*+++++++++++++++++  SIZE_FORM UP ++++++++++++++++++++++*/
-
-/*+++++++++++++++++  MEASURE_FORM DOWN +++++++++++++++++*/
+/*+++++++++++++++++  MEASURE_FORM DOWN ++++++++++++++++++*/
 
 .product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-block {
     margin-bottom: 30px;
@@ -3098,8 +3103,6 @@ width: 49%; */
     text-transform: capitalize;
 }
 
-/* .product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-button-container button { */
-
 .product-size-customize-container button, .product-size-dropdown-container button {
     box-shadow: none;
 }
@@ -3108,7 +3111,24 @@ width: 49%; */
     box-shadow: none;
 }
 
-@media (min-width: 992px) {}
+@media (min-width: 992px) {
+    /*+++++++++++++++++  SIZE_FORM & MEASURE_FORM DOWN ++++++++++++*/
+    #choose_brand .sticker-button, #measurement_button_div .sticker-button {
+        width: 15px;
+    }
+    .customize_choice-block .hr-summary {
+        margin: 0 0 15px;
+    }
+    #choose_brand .custom_selected-title-div .custom_selected-title, #measurement_button_div .custom_selected-title-div .custom_selected-title {
+        margin: 0 0 10px;
+    }
+    #choose_brand .custom_selected-title-div .custom_selected-title::first-letter, #measurement_button_div .custom_selected-title-div .custom_selected-title::first-letter {
+        text-transform: capitalize;
+    }
+    /*+++++++++++++++++  SIZE_FORM & MEASURE_FORM UP ++++++++++++≠≠*/
+    /*+++++++++++++++++  SIZE_FORM DOWN +++++++++++++++++*/
+    /*+++++++++++++++++  MEASURE_FORM DOWN ++++++++++++++*/
+}
 
 @media (max-width: 991px) {}
 

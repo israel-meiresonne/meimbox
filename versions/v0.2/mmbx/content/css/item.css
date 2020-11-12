@@ -122,8 +122,8 @@
             width: 5px;
         }
     }
-    /*——————————————————————— SELECTED CUSTOM POP_UP DOWN ———————————————————*/
-    #choose_brand .sticker-button, #measurement_button_div .sticker-button {
+    /* ——————————————————————— SELECTED CUSTOM POP_UP DOWN ———————————————————*/
+    /* #choose_brand .sticker-button, #measurement_button_div .sticker-button {
         width: 15px;
     }
     #choose_brand .custom_selected-container, #measurement_button_div .custom_selected-container {
@@ -137,8 +137,8 @@
     }
     #choose_brand .custom_selected-title-div .custom_selected-title::first-letter, #measurement_button_div .custom_selected-title-div .custom_selected-title::first-letter {
         text-transform: capitalize;
-    }
-    /*——————————————————————— SELECTED CUSTOM POP_UP UP —————————————————————*/
+    } */
+    /*——————————————————————— SELECTED CUSTOM POP_UP UP ————————————————————— */
     /*——————————————————————— MEASUREMENT POP_UP DOWN ———————————————————————*/
     .customize_measure-block {
         display: none;
