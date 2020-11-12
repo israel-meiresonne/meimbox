@@ -85,10 +85,10 @@ class Size  extends ModelFunctionality
     public const SEQUENCE_SEPARATOR =  "-";
 
     /**
-     * Holds access key for supported sizes from db's Constante tale
+     * Holds access key for supported sizes from file datas.json
      * @var string
      */
-    public const SUPPORTED_SIZES =  "SUPPORTED_SIZES";
+    public const SUPPORTED_SIZES =  "supported_sizes";
 
     /**
      * Holds configuration for size formular
