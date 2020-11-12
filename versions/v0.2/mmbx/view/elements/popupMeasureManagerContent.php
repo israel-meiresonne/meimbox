@@ -17,7 +17,7 @@ $hipTranslate = $translator->translateStation("US42");
 $armTranslate = $translator->translateStation("US40");
 $inseamTranslate = $translator->translateStation("US43");
 $waistTranslate = $translator->translateStation("US41");
-$editBtnTranslate = $translator->translateStation("US49");
+// $editBtnTranslate = $translator->translateStation("US49");
 
 ?>
 <div class="customize_measure-content">
@@ -106,7 +106,9 @@ $editBtnTranslate = $translator->translateStation("US49");
 
                                 <div class="cart-element-edit-block no_price_block">
                                     <div class="cart-element-edit-inner">
-                                        <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>', () => {switchPopUp('#measure_manager','#measure_adder',()=>{},setUpdateMsr)})" data-measure_id="<?= $measure_id ?>" data-measure='<?= $dataMeasure_json ?>'><?= $editBtnTranslate ?></button>
+                                        <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>', () => {switchPopUp('#measure_manager','#measure_adder',()=>{},setUpdateMsr)})" data-measure_id="<?= $measure_id ?>" data-measure='<?= $dataMeasure_json ?>'>
+                                            <img src="<?= self::$DIR_STATIC_FILES ?>vertical-three-dot.png">
+                                        </button>
                                     </div>
                                 </div>
                             </div>

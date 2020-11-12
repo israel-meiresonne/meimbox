@@ -138,7 +138,6 @@ $size = $product->getSelectedSize();
         "cut" => $sizeObj->getcut(),
         "quantity" => $product->getQuantity(),
         "price" => $price,
-        "editFunc" => $editFunc,
         "miniPopEdit" => $miniPopEdit
     ];
     $properties = $this->generateFile('view/elements/cartElementProperties.php', $datas);

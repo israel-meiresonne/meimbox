@@ -2452,7 +2452,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .pop_up-content-block-inner .popup-add-btn-div {
     max-width: 300px;
     margin: 10px auto;
-    width: 60%;
+    /* width: 60%; */
+}
+
+.pop_up-content-block-inner .popup-add-btn-div button {
+    box-shadow: none;
 }
 
 .pop_up-content-block-inner .cart-wrap {
@@ -2499,6 +2503,18 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*++++ SELECT UP +++++*/
+
+@media (min-width: 992px) {
+    .pop_up-content-block-inner .popup-add-btn-div {
+        width: 60%;
+    }
+}
+
+@media (max-width: 991px) {
+    .pop_up-content-block-inner .popup-add-btn-div {
+        width: 100%;
+    }
+}
 
 /*—————————————————————————————— POP UP UP ——————————————————————————————————*/
 
@@ -3076,9 +3092,11 @@ width: 49%; */
 /*———————————————————————————————— FEATURE UP ———————————————————————————————*/
 
 /*———————————————————————————————— SIZE_FORM DOWN ———————————————————————————*/
+
 #choose_brand .custom_selected-container, #measurement_button_div .custom_selected-container {
     margin-bottom: 10px;
 }
+
 /*+++++++++++++++++  SIZE_FORM DOWN +++++++++++++++++++++*/
 
 /*+++++++++++++++++  MEASURE_FORM DOWN ++++++++++++++++++*/
