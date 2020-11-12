@@ -14,10 +14,10 @@ require_once 'model/tools-management/Measure.php';
  * @param int|null      $max         max number of item in element (used for boxes)
  * @param int|null      $quantity    quantity of same item property (used for products)
  * @param string|null   $price       price property in a displayable format (with currency)
- * @param string|null $editFunc function for edit button
+//  * @param string|null $editFunc function for edit button
  * @param string|null $miniPopEdit mini pop up for edit button
  */
-$TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : null;
+// $TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : null;
 
 if (isset($title)) :
 ?>
@@ -89,20 +89,4 @@ if (isset($price)) :
         <span class="cart-element-value"><?= $price ?></span>
     </div>
 <?php
-endif;
-
-if (isset($TagEditFunc)) :
-    /*
-    <div class="cart-element-property-div cart-element-property-edit-div">
-        <div class="cart-element-edit-block">
-            <div class="cart-element-edit-inner">
-                <button class="cart-element-edit-button remove-button-default-att" <?= $TagEditFunc ?> ><?= $translator->translateStation("US49") ?></button>
-                <?= $miniPopEdit ?>
-            </div>
-        </div>
-    </div>
-    */
-?>
-<?php
-endif;
-?>
+endif;?>

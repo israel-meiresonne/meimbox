@@ -78,15 +78,10 @@ if (!empty($dadx)) {
             <?php
             if (!empty($TagEditFunc)) : ?>
                 <div class="cart-element-edit-inner">
-                    <!-- <button class="cart-element-edit-button remove-button-default-att" <?= $TagEditFunc ?>><?= $translator->translateStation("US49") ?></button> -->
                     <button class="cart-element-edit-button remove-button-default-att" <?= $TagEditFunc ?>>
                         <img src="<?= self::$DIR_STATIC_FILES ?>vertical-three-dot.png">
                     </button>
-                    <?php
-                    // if (isset($miniPopEdit)) {
-                    echo $miniPopEdit;
-                    // }
-                    ?>
+                    <?= $miniPopEdit ?>
                 </div>
             <?php
             endif; ?>
