@@ -17,7 +17,6 @@ $hipTranslate = $translator->translateStation("US42");
 $armTranslate = $translator->translateStation("US40");
 $inseamTranslate = $translator->translateStation("US43");
 $waistTranslate = $translator->translateStation("US41");
-// $editBtnTranslate = $translator->translateStation("US49");
 
 ?>
 <div class="customize_measure-content">

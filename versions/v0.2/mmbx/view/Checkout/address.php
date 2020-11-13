@@ -51,6 +51,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                             <?php
                             if ($person->hasCookie(Cookie::COOKIE_CLT) && empty($addressMap->getKeys())) :
                                 $datas = [
+                                    "title" => $translator->translateStation("US49"),
                                     "country" => $country,
                                     "conf" => Address::CONF_ADRS_FEED,
                                 ];
@@ -61,8 +62,6 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>

@@ -1,17 +1,23 @@
 <?php
+
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param Country $country User's current Country
- * @param string $conf to configure the behavior when the add of the new address succed
+ * @param string    $title      form's title
+ * @param Country   $country    User's current Country
+ * @param string    $conf       to configure the behavior when the add of the new address succed
  * + Address::CONF_ADRS_POP
  * + Address::CONF_ADRS_FEED
  */
+
+/**
+ * @var Translator */
+$translator = $translator;
 ?>
 
 <div class="form-wrap">
     <div class="form-title-block address-title-block">
         <div class="form-title-div">
-            <span class="form-title">add new shipping address</span>
+            <span class="form-title"><?= ucfirst($title) ?></span>
         </div>
     </div>
     <hr class="hr-summary">
@@ -30,7 +36,7 @@
                         "inpId" => ModelFunctionality::generateDateCode(25),
                         "inpType" => Map::text,
                         "inpName" => Address::INPUT_ADDRESS,
-                        "inpTxt" => "address",
+                        "inpTxt" => $translator->translateStation("US96"),
                         "errortype" => self::ER_TYPE_COMMENT,
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
@@ -42,7 +48,7 @@
                         "inpId" => ModelFunctionality::generateDateCode(25),
                         "inpType" => Map::text,
                         "inpName" => Address::INPUT_APPARTEMENT,
-                        "inpTxt" => "apartment, suite, etc. (optional)",
+                        "inpTxt" => $translator->translateStation("US97"),
                         "errortype" => self::ER_TYPE_COMMENT,
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
@@ -56,7 +62,7 @@
                         "inpId" => ModelFunctionality::generateDateCode(25),
                         "inpType" => Map::text,
                         "inpName" => Address::INPUT_PROVINCE,
-                        "inpTxt" => "state, province, region etc...",
+                        "inpTxt" => $translator->translateStation("US98"),
                         "errortype" => self::ER_TYPE_COMMENT,
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
@@ -68,7 +74,7 @@
                         "inpId" => ModelFunctionality::generateDateCode(25),
                         "inpType" => Map::text,
                         "inpName" => Address::INPUT_CITY,
-                        "inpTxt" => "city",
+                        "inpTxt" => $translator->translateStation("US99"),
                         "errortype" => self::ER_TYPE_COMMENT,
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
@@ -110,7 +116,7 @@
                         "inpId" => ModelFunctionality::generateDateCode(25),
                         "inpType" => Map::text,
                         "inpName" => Address::INPUT_ZIPCODE,
-                        "inpTxt" => "postal code",
+                        "inpTxt" => $translator->translateStation("US100"),
                         "errortype" => self::ER_TYPE_COMMENT,
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
@@ -124,7 +130,7 @@
                         "inpId" => ModelFunctionality::generateDateCode(25),
                         "inpType" => Map::tel,
                         "inpName" => Address::INPUT_PHONE,
-                        "inpTxt" => "phone (optional)",
+                        "inpTxt" => $translator->translateStation("US101"),
                         "errortype" => self::ER_TYPE_COMMENT,
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);

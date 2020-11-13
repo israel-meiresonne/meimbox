@@ -1358,7 +1358,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .cart-element-inner {
     display: flex;
-    padding: 15px;
+    /* padding: 15px; */
     /* height: 100%; */
 }
 
@@ -1482,6 +1482,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 @media (min-width: 601px) {
+    .cart-element-inner {
+        padding: 15px;
+    }
     .cart-element-detail-block .cart-element-img-div {
         width: 140px;
         margin: auto;
@@ -1905,10 +1908,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     padding: 10px;
 }
 
-/* .signup-block{
-    display: none;
-} */
-
 .login-block {
     display: none;
 }
@@ -1922,7 +1921,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .form-submit-button-div button {
-    width: 50%;
+    /* width: 50%; */
+    width: 100%;
+    max-width: 280px;
     margin: 0 auto 10px;
     box-shadow: none;
 }
@@ -1999,37 +2000,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     text-transform: capitalize;
 }
 
-@media (max-width: 675px) {
-    /* .signup-50-block {
-        display: flex;
-    } */
-    .signup-50-block .signup-input-container {
-        margin-bottom: 15px;
-    }
-    /* .signup-50-block .signup-input-container:first-child {
-        width: 50%;
-        padding-right: 15px;
-    }
-    .signup-50-block .signup-input-container:last-child {
-        width: 50%;
-        padding-left: 15px;
-    } */
-}
-
-@media (min-width: 676px) {
-    .signup-50-block {
-        display: flex;
-    }
-    .signup-50-block .signup-input-container:first-child {
-        width: 50%;
-        padding-right: 15px;
-    }
-    .signup-50-block .signup-input-container:last-child {
-        width: 50%;
-        padding-left: 15px;
-    }
-}
-
 .signup-paperwork-div {
     margin-top: 25px;
 }
@@ -2046,6 +2016,26 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     display: none;
     color: var(--color-text-05);
     font-size: var(--little-font-size);
+}
+
+@media (max-width: 675px) {
+    .signup-50-block .signup-input-container {
+        margin-bottom: 15px;
+    }
+}
+
+@media (min-width: 676px) {
+    .signup-50-block {
+        display: flex;
+    }
+    .signup-50-block .signup-input-container:first-child {
+        width: 50%;
+        padding-right: 15px;
+    }
+    .signup-50-block .signup-input-container:last-child {
+        width: 50%;
+        padding-left: 15px;
+    }
 }
 
 /*————————————————————— SIGN_UP UP —————————————————*/
@@ -2082,6 +2072,15 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .login-input-block .input-tag::placeholder {
+    text-transform: capitalize;
+}
+
+.login-remember-forgot-div .comment {
+    color: var(--color-red);
+    text-transform: initial;
+}
+
+.login-remember-forgot-div .comment::first-letter {
     text-transform: capitalize;
 }
 
@@ -2124,15 +2123,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     }
 }
 
-.login-remember-forgot-div .comment {
-    color: var(--color-red);
-    text-transform: initial;
-}
-
-.login-remember-forgot-div .comment::first-letter {
-    text-transform: capitalize;
-}
-
 /*————————————————————— LOG_IN UP —————————————————*/
 
 /*————————————————————— FORM DOWN —————————————————*/
@@ -2141,7 +2131,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     color: var(--color-text-05);
     font-size: var(--middle-font-size);
     font-family: var(--main-font-family);
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 }
 
 .form-input-container .input-label {
@@ -2159,32 +2149,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     text-transform: capitalize;
 }
 
-@media (max-width: 675px) {
-    .form-double-input-block {
-        display: block;
-    }
-    .form-double-input-block .form-input-container {
-        margin-bottom: 15px;
-    }
-}
-
-@media (min-width: 676px) {
-    .form-double-input-block {
-        display: flex;
-    }
-    .form-double-input-block .form-input-container:first-child {
-        width: 50%;
-        padding-right: 15px;
-    }
-    .form-double-input-block .form-input-container:last-child {
-        width: 50%;
-        padding-right: 15px;
-    }
-}
-
-.form-wrap .form-wrap-inner {
+/* .form-wrap .form-wrap-inner {
     padding: 0 20px;
-}
+} */
 
 .form-wrap .form-wrap-inner .dropdown-wrap {
     box-shadow: none;
@@ -2198,6 +2165,32 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .form-input-dropdown-container .comment::first-letter {
     text-transform: capitalize;
+}
+
+@media (min-width: 676px) {
+    .form-wrap .form-wrap-inner {
+        padding: 0 20px;
+    }
+    .form-double-input-block {
+        display: flex;
+    }
+    .form-double-input-block .form-input-container:first-child {
+        width: 50%;
+        padding-right: 15px;
+    }
+    .form-double-input-block .form-input-container:last-child {
+        width: 50%;
+        padding-left: 15px;
+    }
+}
+
+@media (max-width: 675px) {
+    .form-double-input-block {
+        display: block;
+    }
+    .form-double-input-block .form-input-container {
+        margin-bottom: 15px;
+    }
 }
 
 /*————————————————————— FORM UP ———————————————————*/
@@ -3090,11 +3083,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .center-btn-div {
     max-width: 300px;
     margin: 10px auto;
-    width: 60%;
+    /* width: 60%; */
+    width: 100%;
 }
-
-/* display: inline-block;
-width: 49%; */
 
 .center-btn-div button {
     box-shadow: none;
@@ -3104,10 +3095,20 @@ width: 49%; */
 
 /*———————————————————————————————— ORDER_SUMMARY DOWN ———————————————————————*/
 
-/* .summary-wrap */
-
 #order_summary_address .cart-element-wrap {
     cursor: initial;
+}
+
+.summary-detail-address .cart-element-detail-block {
+    width: auto;
+    margin: 0 auto;
+}
+
+.summary-detail-address .cart-element-property-set {
+    margin: 0;
+    width: auto;
+    height: auto;
+    padding: 0;
 }
 
 .summary-payement {
