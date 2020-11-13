@@ -2673,11 +2673,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     .measure_input-input-group .input-container {
         max-width: 50%;
     }
-    
     .measure_input-input-group .input-container:first-child {
         padding-right: 15px;
     }
-    
     .measure_input-input-group .input-container:last-child {
         padding-left: 15px;
         max-width: 50%;
@@ -2685,7 +2683,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 @media (max-width: 991px) {
-    .customize_measure-input-block{
+    .customize_measure-input-block {
         flex-direction: column;
     }
     .measure_body-img-container {
@@ -2751,17 +2749,12 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*—————————————————————————————— POP_UP PRINCING DOWN ———————————————————————*/
 
-#box_pricing_window .box_price-box-set-ul {
-    display: flex;
-}
-
-#box_pricing_window .box_price-box-set-li {
-    width: 30%;
-    margin: 0 auto;
-}
-
 #box_pricing_window .pop_up-window {
     width: 90%;
+}
+
+#box_pricing_window .box_price-box-set-ul {
+    display: flex;
 }
 
 #box_pricing_window .box_princing-content {
@@ -2771,7 +2764,82 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     overflow: auto;
 }
 
+@media (min-width: 992px) {
+    #box_pricing_window .box_price-box-set-li {
+        width: 30%;
+        margin: 0 auto;
+    }
+    #box_pricing_window .pricing-wrap .product_image-block {
+        margin-bottom: 35px;
+    }
+    #box_pricing_window .pricing-wrap .product_add-button-block {
+        margin-bottom: 35px;
+    }
+}
+
+@media (max-width: 991px) {
+    #box_pricing_window .box_price-box-set-ul {
+        flex-direction: column;
+    }
+    #box_pricing_window .box_price-box-set-li {
+        width: 100%;
+        max-width: 365px;
+        margin: 0 auto 35px;
+    }
+    #box_pricing_window .pricing-wrap .product_image-block {
+        margin-bottom: 10px;
+    }
+    #box_pricing_window .pricing-wrap .product_add-button-block {
+        max-width: 300px;
+        margin: 0 auto 10px;
+    }
+    #box_pricing_window .pricing-wrap .product_detail-block {
+        box-shadow: none !important;
+    }
+}
+
 /*—————————————————————————————— POP_UP PRINCING UP —————————————————————————*/
+
+/*—————————————————————————————— PRICING DOWN ———————————————————————————————*/
+
+.pricing-wrap .product_image-block .img-text-down-container {
+    width: 150px;
+    margin: 0 auto;
+    border-radius: var(--border-float-radius);
+    box-shadow: var(--box-shadow-centred);
+    border: var(--border-float);
+}
+
+.pricing-wrap .product_image-block .img_text_down-img-inner {
+    width: auto;
+}
+
+.pricing-wrap .product_detail-block .o_symbol-wrap {
+    width: 8px;
+    height: 8px;
+    margin: auto;
+}
+
+.pricing-wrap .product_detail-block .o_symbol {
+    background-color: var(--color-text-05);
+}
+
+/* .pricing-wrap .product_add-button-block {
+    margin-bottom: 35px;
+} */
+
+.pricing-wrap .product_add-button-block button {
+    box-shadow: none;
+}
+
+.pricing-wrap .product_detail-block {
+    padding: 0 10px 10px;
+    border-radius: var(--border-float-radius);
+    box-shadow: var(--box-shadow-centred);
+    border: var(--border-float);
+}
+
+/*—————————————————————————————— PRICING UP —————————————————————————————————*/
 
 /*—————————————————————————————— POP_UP BASKET DOWN —————————————————————————*/
 
@@ -2809,52 +2877,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*—————————————————————————————— POP_UP BASKET UP ———————————————————————————*/
-
-/*—————————————————————————————— PRICING DOWN ———————————————————————————————*/
-
-.pricing-wrap .product_image-block {
-    /* display: flex; */
-    margin-bottom: 35px;
-}
-
-.pricing-wrap .product_image-block .img-text-down-container {
-    width: 150px;
-    margin: 0 auto;
-    border-radius: var(--border-float-radius);
-    box-shadow: var(--box-shadow-centred);
-    border: var(--border-float);
-}
-
-.pricing-wrap .product_image-block .img_text_down-img-inner {
-    width: auto;
-}
-
-.pricing-wrap .product_detail-block .o_symbol-wrap {
-    width: 8px;
-    height: 8px;
-    margin: auto;
-}
-
-.pricing-wrap .product_detail-block .o_symbol {
-    background-color: var(--color-text-05);
-}
-
-.pricing-wrap .product_add-button-block {
-    margin-bottom: 35px;
-}
-
-.pricing-wrap .product_add-button-block button {
-    box-shadow: none;
-}
-
-.pricing-wrap .product_detail-block {
-    padding: 0 10px 10px;
-    border-radius: var(--border-float-radius);
-    box-shadow: var(--box-shadow-centred);
-    border: var(--border-float);
-}
-
-/*—————————————————————————————— PRICING UP —————————————————————————————————*/
 
 /*—————————————————————————————— CHECKED-TEXT DOWN ——————————————————————————*/
 
