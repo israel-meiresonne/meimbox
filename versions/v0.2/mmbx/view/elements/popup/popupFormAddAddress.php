@@ -4,7 +4,10 @@
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param Country $country User's current Country
  */
-$popDatas["title"] = "shipping address";
+/**
+ * @var Translator */
+$translator = $translator;
+$popDatas["title"] = $translator->translateStation("US93");
 $popDatas["closeButtonId"] = "addaddress_form_close_pop";
 $popDatas["laodingId"] = null;
 $popDatas["laodingClass"] = "sign_form-loading";
@@ -16,6 +19,7 @@ $popDatas["submitButtonFunc"] = null;
 
 $popDatas["content"] = '<div class="pop_form_border">';
 $datas = [
+    "title" => $translator->translateStation("US49"),
     "country" => $country,
     "conf" => Address::CONF_ADRS_POP,
 ];

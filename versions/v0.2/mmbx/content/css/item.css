@@ -122,50 +122,6 @@
             width: 5px;
         }
     }
-    /*——————————————————————— MEASUREMENT POP_UP DOWN ———————————————————————*/
-    /* .customize_measure-block {
-        display: none;
-    }
-    .customize_measure-input-block {
-        display: flex;
-    }
-    .measure_body-img-container {
-        width: 27%;
-    }
-    .measure_body-img-container img {
-        width: 100%;
-    }
-    .measure_input-container {
-        display: flex;
-        width: 100%;
-    }
-    .measure_input-container-inner {
-        margin: auto;
-    }
-    .measure_input-checkbox-conatiner {
-        width: 50%;
-    }
-    .measure_input-checkbox-conatiner .checkbox_set-content-div {
-        display: flex;
-    }
-    .measure_input-checkbox-conatiner .checkbox-container:last-child {
-        margin-left: auto;
-        padding-right: 15px;
-    }
-    .measure_input-input-group {
-        display: flex;
-    }
-    .measure_input-input-group .input-container {
-        max-width: 50%;
-    }
-    .measure_input-input-group .input-container:first-child {
-        padding-right: 15px;
-    }
-    .measure_input-input-group .input-container:last-child {
-        padding-left: 15px;
-        max-width: 50%;
-    } */
-    /*——————————————————————— MEASUREMENT POP_UP UP —————————————————————————*/
 }
 
 /*——————————————- MOBILE ——————————————-*/

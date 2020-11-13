@@ -127,7 +127,9 @@ if (!empty($dadx)) {
             <div class="cart-element-edit-block edit-block-external">
                 <div class="cart-element-edit-inner">
                     <button class="cart-element-edit-button remove-button-default-att" <?= "" //$TagEditFunc 
-                                                                                        ?>><?= $translator->translateStation("US49") ?></button>
+                                                                                        ?>>
+                        <img src="<?= self::$DIR_STATIC_FILES ?>vertical-three-dot.png">
+                    </button>
                 </div>
             </div>
         <?php
