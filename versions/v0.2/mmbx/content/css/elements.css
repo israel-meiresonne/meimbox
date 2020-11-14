@@ -2576,13 +2576,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     border-radius: var(--border-float-radius);
 }
 
-.brand_reference-grid-img-block .second-img-div:hover {
-    opacity: 1;
-    box-shadow: var(--selected-shadow);
-    transition: var(--transition-time-picture);
-    -moz-transition: var(--transition-time-picture);
-}
-
 .brand_reference-grid-container .selected_element_shadow {
     opacity: 1 !important;
 }
@@ -2597,6 +2590,12 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     .brand_reference-grid-container {
         max-height: 450px;
         padding: 10px;
+    }
+    .brand_reference-grid-img-block .second-img-div:hover {
+        opacity: 1;
+        box-shadow: var(--selected-shadow);
+        transition: var(--transition-time-picture);
+        -moz-transition: var(--transition-time-picture);
     }
 }
 
