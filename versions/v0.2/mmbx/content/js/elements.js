@@ -404,9 +404,6 @@
         $(".checkbox-label input").click(function () {
             animateCheckbox(this);
         });
-        // $("#filter_minPrice, #filter_maxPrice").change(function () {
-        //     updateNumberInputValue(this);
-        // });
         // //———————————————————— INPUT UP ———————————————————————
 
         /*—————————————————— ARTICLE DOWN ———————————————————————————————————*/
@@ -461,5 +458,18 @@
         });
         //—— MEASUREMENT INPUT UP ——//
         /*—————————————————— SIZE CUSTOMISER UP —————————————————————————————*/
+        /*———————————————————————————————— SIDE_MENU DOWN ———————————————————————————*/
+        $("#header_burger").click(()=>{
+            var x = $(".side_menu");
+            if(isDisplayed(x)){
+                $(x).animate({"left":"-100vw"}, TS, () => {
+                    $(x).css("display", "none");
+                });
+            } else {
+                $(x).css("display", "block");
+                $(x).animate({"left":0}, TS);
+            }
+        });
+        /*———————————————————————————————— SIDE_MENU UP —————————————————————————————*/
     });
 }).call(this);

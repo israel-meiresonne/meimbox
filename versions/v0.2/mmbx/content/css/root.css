@@ -65,9 +65,8 @@
     /*———————————————————————————————— Z-INDEX UP ———————————————————————————*/
     /*———————————————————————————————— POSITION DOWN ————————————————————————*/
     /* --body-top-computer: 145px; */
-    --body-top-computer:120px;
-    /* --body-top-mobile: 100px; */
-    --body-top-mobile:70px;
+    --body-top-computer: 120px;
+    --body-top-mobile: 70px;
     /* --body-initial-top-computer: -145px; */
     --body-initial-top-computer: -120px;
     /* --body-initial-top-mobile: -100px; */
@@ -189,4 +188,21 @@ header {
 
 .capitalize {
     text-transform: capitalize;
+}
+
+.back_red {
+    background: var(--color-red);
+}
+
+.back_blue {
+    background: var(--color-blue);
+}
+
+.back_blur {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.transition_time{
+    transition: var(--transition-time);
+    -moz-transition: var(--transition-time);
 }

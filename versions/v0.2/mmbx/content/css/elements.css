@@ -2331,8 +2331,8 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     top: 0;
     left: 0;
     color: var(--color-text);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); */
     z-index: 100;
 }
 
@@ -3011,10 +3011,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*—————————————————————————————— MINI_POP_UP UP —————————————————————————————*/
 
-/*—————————————————————————————— MINI_POP_2_UP DOWN —————————————————————————*/
-
-/*—————————————————————————————— MINI_POP_2_UP UP ———————————————————————————*/
-
 /*—————————————————————————————— SIZE_EDITOR_POP_UP DOWN ————————————————————*/
 
 #size_editor_pop #form_edit_prod_size {
@@ -3245,3 +3241,66 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 @media (max-width: 991px) {}
 
 /*———————————————————————————————— SIZE_FORM UP —————————————————————————————*/
+
+/*———————————————————————————————— TOUCH DOWN ———————————————————————————————*/
+
+.touch-wrap {
+    position: relative;
+    border: var(--color-text-05) 1px solid;
+    border-radius: 5px;
+}
+
+.touch-content {
+    display: flex;
+}
+
+.touch-content .img-text-wrap {
+    width: auto;
+    margin: auto;
+    max-height: 50px;
+}
+
+.touch-content .img-text-img {
+    margin-right: 10px;
+}
+
+/*———————————————————————————————— TOUCH UP —————————————————————————————————*/
+
+/*———————————————————————————————— NOTIF DOWN ———————————————————————————————*/
+
+.notif-wrap {
+    display: none;
+    position: absolute;
+    padding: 2px;
+}
+
+.notif_active{
+    display: block;
+}
+
+.notif_content {
+    border-radius: 25%;
+    padding: 1px 5px;
+    font-size: var(--micro-font-size);
+    color: var(--color-white);
+}
+
+/* NOTIF POSITION DOWN*/
+
+.notif_top {
+    top: 0;
+}
+
+.notif_bottom {
+    bottom: 0;
+}
+
+.notif_left {
+    left: 0;
+}
+
+.notif_right {
+    right: 0;
+}
+
+/*———————————————————————————————— NOTIF UP —————————————————————————————————*/
