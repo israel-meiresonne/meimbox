@@ -1,5 +1,3 @@
-
-
 /*———————————————————————————————— COMMON HEADER DOWN ———————————————————————*/
 
 /*—————————————— COMPUTER ——————————————*/
@@ -13,6 +11,11 @@
     .navbar-mobile {
         display: none;
         background-color: var(--color-white);
+    }
+    .side_menu {
+        display: none;
+        position: relative;
+        left: -100vw !important;
     }
     .navbar-computer {
         display: block;
@@ -152,6 +155,11 @@
         text-transform: capitalize;
         background-color: var(--color-white);
     }
+    /* .side_menu { */
+        /* display: none; */
+        /* position: relative;
+        left: -100vw; */
+    /* } */
     .navbar-mobile .img-text-block .img-text-wrap {
         height: 100%;
     }
@@ -160,7 +168,7 @@
         width: 17px;
         top: -4px;
     }
-    @media (min-width: 670px) and (max-width: 991px) {
+    /*@media (min-width: 670px) and (max-width: 991px) {
         .navbar-new_drop-add_box-block {
             display: flex;
             height: 100%;
@@ -170,8 +178,9 @@
         .navbar-new_drop-add_box-block .img-text-block {
             margin: 0 auto;
         }
-    }
-    @media (max-width: 670px) {
+    }*/
+    @media (max-width: 991px) {
+        /* @media (max-width: 670px) { */
         .navbar-new_drop-add_box-block {
             display: none;
         }
@@ -216,47 +225,137 @@
 }
 
 /*———————————————————————————————— COMMON HEADER DOWN ———————————————————————*/
-.header_landing{
+
+.header_landing {
     border-bottom: var(--color-white) 1px solid;
 }
-.header_content{
+
+.header_content {
     padding: 0 100px;
     color: var(--color-white);
     background-color: var(--color-pink);
 }
-.header_content-brand{
+
+.header_content-brand {
     display: flex;
     height: 100%;
     font-size: var(--big-font-size);
 }
-.header_content-brand span{
+
+.header_content-brand span {
     /* margin: auto 0; */
     text-transform: uppercase;
     letter-spacing: 5px;
 }
+
+.header_burger {
+    height: max-content;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 /*—————————————— COMPUTER ——————————————*/
+
 @media (min-width: 992px) {
-    .header_landing{
+    .header_landing {
         position: absolute;
         top: var(--body-initial-top-computer);
     }
-    .header_content{
+    .header_content {
         height: var(--body-top-computer);
     }
-    .header_content-brand span{
+    .header_content-brand span {
         margin: auto 0;
     }
 }
+
 /*——————————————- MOBILE ——————————————-*/
+
 @media (max-width: 991px) {
-    .header_landing{
+    .header_landing {
         position: absolute;
         top: var(--body-initial-top-mobile);
     }
-    .header_content{
+    .header_content {
         height: var(--body-top-mobile);
     }
-    .header_content-brand span{
+    .header_content-brand span {
         margin: auto;
     }
 }
+
+/*———————————————————————————————— SIDE_MENU DOWN ———————————————————————————*/
+
+.side_menu {
+    position: relative;
+    display: none;
+    left: -100vw;
+    --side_menu-height: calc(100vh - var(--body-top-mobile));
+    width: 100vw;
+    height: var(--side_menu-height);
+    font-family: var(--main-font-family);
+}
+
+.side_menu_content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    background-color: var(--color-white);
+    max-width: 550px;
+    border-top: var(--color-shadow) solid;
+    border-width: 1px 1px 0 0;
+}
+
+.side_menu_content-childs {
+    width: 100%;
+}
+
+.menu_bottom_content-li {
+    margin-bottom: 10px;
+}
+
+.side_menu_content-menu_bottom {
+    max-width: 450px;
+    margin: auto;
+}
+
+.side_menu_content-childs .touch-wrap {
+    background-color: var(--color-white);
+    cursor: pointer;
+}
+
+.side_menu_content-childs .touch-wrap:hover {
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+
+.menu_bottom_content-li .touch-wrap .img-text-wrap {
+    max-height: 30px;
+}
+
+.menu_bottom_content-li a {
+    display: block;
+    text-align: center;
+}
+
+@media (min-width: 451px) {
+    .menu_top_content-li {
+        width: 50%;
+        float: left;
+        padding-bottom: 5px;
+    }
+    .menu_top_content-li:nth-child(2n-1) {
+        padding-right: 5px;
+    }
+}
+
+@media (max-width: 450px) {
+    .menu_top_content-li {
+        margin-bottom: 10px;
+    }
+}
+
+/*———————————————————————————————— SIDE_MENU UP —————————————————————————————*/

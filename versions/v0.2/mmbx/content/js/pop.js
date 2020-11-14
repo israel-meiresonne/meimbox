@@ -156,6 +156,10 @@
         $(inpx).val("");
         $(inpx).keyup();
     }
+    switchClass = (x, rmv, add) => {
+        $(x).removeClass(rmv);
+        $(x).addClass(add);
+    }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/
     openMiniPop = (x, before = () => { }, after = () => { }) => {
