@@ -266,6 +266,25 @@
     cursor: pointer;
 }
 
+.header-button .minipop-wrap{
+    font-size: var(--little-font-size);
+}
+.header-button .minipop-content .remove-li-default-att:nth-child(n+2){
+    border-top: var(--color-shadow) 1px solid;
+}
+.header-button .minipop-content .touch-wrap{
+    border: none !important;
+}
+.header-button .minipop-content .touch-wrap:hover{
+    background-color: var(--color-shadow-05);
+}
+.header-button .touch-content .img-text-wrap{
+    margin: 0 !important;
+}
+.header-button .touch-content .img-text-img{
+    width: 18px;
+}
+
 /*—————————————— COMPUTER ——————————————*/
 
 @media (min-width: 992px) {

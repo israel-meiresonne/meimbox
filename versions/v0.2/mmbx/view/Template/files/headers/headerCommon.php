@@ -50,30 +50,32 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                     if ($isLogged) :
                     ?>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="console.log('open client menu')">
+                            <?php
+                            $positionMap = new Map();
+                            $positionMap->put(self::DIRECTION_TOP, Map::vertical);
+                            $positionMap->put(self::DIRECTION_RIGHT, Map::side);
+                            $logOutDatas = [
+                                "src" => self::$DIR_STATIC_FILES . 'log-out-100.png',
+                                "text" => "log out"
+                            ];
+                            $logOutImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $logOutDatas);
+                            $homeImgDatas = [
+                                "src" => self::$DIR_STATIC_FILES . 'home-144.png',
+                                "text" => "menu"
+                            ];
+                            $homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
+                            $logOutTouch = new Touch($logOutImg, 4, $positionMap);
+                            $homeTouch = new Touch($homeImg, 44, $positionMap);
+                            $liMap = new Map([$homeTouch, $logOutTouch]);
+                            $contentMiniPop = $this->generateFile('view/view/BasicFiles/ulList.php', ["liMap" => $liMap]);
+                            $menuPop = new MiniPopUp(self::DIRECTION_BOTTOM, $contentMiniPop);
+                            $menuPopId = $menuPop->getId();
+                            ?>
+                            <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openMiniPop('#<?= $menuPopId ?>')">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
-                                        <?php
-                                        $positionMap = new Map();
-                                        $positionMap->put(self::DIRECTION_TOP, Map::vertical);
-                                        $positionMap->put(self::DIRECTION_RIGHT, Map::side);
-                                        $logOutDatas = [
-                                            "src" => self::$DIR_STATIC_FILES . 'log-out-100.png',
-                                            "text" => "log out"
-                                        ];
-                                        $logOutImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $logOutDatas);
-                                        $homeImgDatas = [
-                                            "src" => self::$DIR_STATIC_FILES . 'home-144.png',
-                                            "text" => "menu"
-                                        ];
-                                        $homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
-                                        $logOutTouch = new Touch($logOutImg, 4, $positionMap);
-                                        $homeTouch = new Touch($homeImg, 44, $positionMap);
-                                        $liMap = new Map([$homeTouch,$logOutTouch]);
-                                        $contentMiniPop = $this->generateFile('view/view/BasicFiles/ulList.php', ["liMap" => $liMap]);
-                                        echo (new MiniPopUp(self::DIRECTION_BOTTOM, $contentMiniPop));
-                                        ?>
+                                        <?= $menuPop ?>
                                     </div>
                                     <span class="img-text-span"></span>
                                 </div>

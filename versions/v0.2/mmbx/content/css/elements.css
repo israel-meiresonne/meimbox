@@ -2901,7 +2901,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 /*TO REMOVE*/
 
 .minipop-wrap {
-    /* display: none; */
+    display: none;
     position: absolute;
     /* width: 175px; */
     cursor: auto;
@@ -3257,6 +3257,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: relative;
     border: var(--color-text-05) 1px solid;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .touch-content {
