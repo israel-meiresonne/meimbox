@@ -15,6 +15,8 @@ class Map
     public const picture = "picture";
     public const link = "link";
     public const sql = "sql";
+    public const side = "side";
+    public const vertical = "vertical";
 
     /**
      * Keys for Mosaic
