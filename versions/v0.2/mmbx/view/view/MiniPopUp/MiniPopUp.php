@@ -1,9 +1,6 @@
 <?php
 require_once 'framework/View.php';
 
-/**
- * Represente a clickable touch
- */
 class MiniPopUp extends View
 {
     /**

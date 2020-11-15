@@ -902,6 +902,7 @@
 
 .img-text-wrap {
     display: flex;
+    position: relative;
     width: 100%;
     /* height: 100%; */
 }
@@ -1431,7 +1432,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .cart-element-edit-block button {
+    display: flex;
     width: 100%;
+    min-width: 20px;
     padding: 0;
     border: 0;
     background-color: transparent;
@@ -1440,6 +1443,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .cart-element-edit-button img {
     width: 5px;
+    margin: auto;
 }
 
 .cart-element-price-block {
@@ -2897,15 +2901,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 /*TO REMOVE*/
 
 .minipop-wrap {
-    display: none;
+    /* display: none; */
     position: absolute;
     /* width: 175px; */
     cursor: auto;
-}
-
-.minipop-content ul {
-    padding: 5px;
-    text-align: center;
 }
 
 .minipop-content {
@@ -2913,11 +2912,18 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     box-shadow: var(--box-shadow);
     border: var(--border-float);
     border-radius: var(--border-float-radius);
+    width: max-content;
 }
+
+.minipop-content ul {
+    padding: 5px;
+    text-align: center;
+}
+
 
 /*+++++ minipop-left/right DOWN +++++*/
 
-.minipop-left {
+.minipop_left {
     padding-right: 13px;
     top: 50%;
     transform: translate3d(-100%, -50%, 0);
@@ -2925,7 +2931,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     -webkit-transform: translate3d(-100%, -50%, 0);
 }
 
-.minipop-left::after {
+.minipop_left::after {
     content: '';
     display: block;
     position: absolute;
@@ -2940,7 +2946,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     background-color: var(--color-white);
 }
 
-.minipop-right {
+.minipop_right {
     padding-bottom: 13px;
     top: 0;
     transform: translateY(-100%);
@@ -2948,7 +2954,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     -moz-transform: translateY(-100%);
 }
 
-.minipop-right::after {
+.minipop_right::after {
     content: '';
     display: block;
     position: absolute;
@@ -2963,20 +2969,22 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     background-color: var(--color-white);
 }
 
-/* .minipop-up {
+ .minipop_top {
     padding-bottom: 13px;
     top: 0;
-    transform: translateY(-100%);
-    -webkit-transform: translateY(-100%);
-    -moz-transform: translateY(-100%);
+    left: 50%;
+    transform: translate3d(-50%, -100%, 0);
+    -webkit-transform: translate3d(-50%, -100%, 0);
+    -moz-transform: translate3d(-50%, -100%, 0);
 }
 
-.minipop-up::after {
+.minipop_top::after {
     content: '';
     display: block;
     position: absolute;
     bottom: 4px;
-    right: 50%;
+    /* right: 50%; */
+    right: calc(50% - 8px);
     width: 18px;
     height: 18px;
     border: var(--border-float);
@@ -2986,20 +2994,21 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     background-color: var(--color-white);
 }
 
-.minipop-down {
+.minipop_bottom {
     padding-top: 13px;
     bottom: 0;
-    transform: translateY(100%);
-    -webkit-transform: translateY(100%);
-    -moz-transform: translateY(100%);
+    left: 50%;
+    transform: translate3d(-50%, 100%, 0);
+    -webkit-transform: translate3d(-50%, 100%, 0);
+    -moz-transform: translate3d(-50%, 100%, 0);
 }
 
-.minipop-down::after {
+.minipop_bottom::after {
     content: '';
     display: block;
     position: absolute;
     top: 4px;
-    right: 50%;
+    right: calc(50% - 8px);
     width: 18px;
     height: 18px;
     border: var(--border-float);
@@ -3007,7 +3016,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     border-radius: 30px 0 0px 0;
     transform: rotate(225deg);
     background-color: var(--color-white);
-} */
+}
 
 /*—————————————————————————————— MINI_POP_UP UP —————————————————————————————*/
 
@@ -3252,6 +3261,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 .touch-content {
     display: flex;
+    padding: 5px;
 }
 
 .touch-content .img-text-wrap {

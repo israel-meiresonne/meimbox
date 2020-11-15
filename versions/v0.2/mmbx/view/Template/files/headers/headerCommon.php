@@ -22,7 +22,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
             <div class="navbar-block navbar-center-block">
                 <ul class="navbar-ul remove-ul-default-att">
                     <li class="navbar-li remove-li-default-att center-block-li">
-                        <div class="grey-tag-button standard-tag-button img-text-block">
+                        <div class="header-button grey-tag-button standard-tag-button img-text-block">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
                                     <img src="<?= self::$DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
@@ -33,7 +33,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                     </li>
 
                     <li class="navbar-li remove-li-default-att center-block-li">
-                        <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
+                        <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
                                     <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
@@ -50,10 +50,30 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                     if ($isLogged) :
                     ?>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="grey-tag-button standard-tag-button img-text-block" onclick="console.log('open client menu')">
+                            <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="console.log('open client menu')">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                                        <?php
+                                        $positionMap = new Map();
+                                        $positionMap->put(self::DIRECTION_TOP, Map::vertical);
+                                        $positionMap->put(self::DIRECTION_RIGHT, Map::side);
+                                        $logOutDatas = [
+                                            "src" => self::$DIR_STATIC_FILES . 'log-out-100.png',
+                                            "text" => "log out"
+                                        ];
+                                        $logOutImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $logOutDatas);
+                                        $homeImgDatas = [
+                                            "src" => self::$DIR_STATIC_FILES . 'home-144.png',
+                                            "text" => "menu"
+                                        ];
+                                        $homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
+                                        $logOutTouch = new Touch($logOutImg, 4, $positionMap);
+                                        $homeTouch = new Touch($homeImg, 44, $positionMap);
+                                        $liMap = new Map([$homeTouch,$logOutTouch]);
+                                        $contentMiniPop = $this->generateFile('view/view/BasicFiles/ulList.php', ["liMap" => $liMap]);
+                                        echo (new MiniPopUp(self::DIRECTION_BOTTOM, $contentMiniPop));
+                                        ?>
                                     </div>
                                     <span class="img-text-span"></span>
                                 </div>
@@ -63,7 +83,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                     else :
                     ?>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
+                            <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>icons8-contacts-96.png">
@@ -82,7 +102,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                                     <div class="img-text-img">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>icons8-shopping-cart-96.png" alt="">
                                     </div>
-                                    <span class="img-text-span basket-logo-span">(<span data-basket="quantity">3</span>)</span>
+                                    <span class="img-text-span basket-logo-span"><span data-basket="quantity">3</span></span>
                                 </div>
                             </div>
                         </div>
@@ -96,15 +116,15 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
             <div class="navbar-burger-block navbar-left-block flex-row">
                 <div class="burger-container">
                     <!-- <button id="header_burger" class="header_burger remove-button-default-att"> -->
-                        <input type="checkbox" id="checkbox2" class="checkbox2 visuallyHidden">
-                        <label id="header_burger" class="burger-label" for="checkbox2">
-                            <div class="hamburger hamburger2">
-                                <span class="bar bar1"></span>
-                                <span class="bar bar2"></span>
-                                <span class="bar bar3"></span>
-                                <span class="bar bar4"></span>
-                            </div>
-                        </label>
+                    <input type="checkbox" id="checkbox2" class="checkbox2 visuallyHidden">
+                    <label id="header_burger" class="burger-label" for="checkbox2">
+                        <div class="hamburger hamburger2">
+                            <span class="bar bar1"></span>
+                            <span class="bar bar2"></span>
+                            <span class="bar bar3"></span>
+                            <span class="bar bar4"></span>
+                        </div>
+                    </label>
                     <!-- </button> -->
                 </div>
             </div>
@@ -117,7 +137,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
 
                     </div> -->
             <div class="navbar-new_drop-add_box-block">
-                <div class="grey-tag-button standard-tag-button img-text-block">
+                <div class="header-button grey-tag-button standard-tag-button img-text-block">
                     <div class="img-text-wrap">
                         <div class="img-text-img">
                             <img src="<?= self::$DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
@@ -126,7 +146,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                     </div>
                 </div>
 
-                <div class="grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
+                <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)">
                     <div class="img-text-wrap">
                         <div class="img-text-img">
                             <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
@@ -175,7 +195,6 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                                     </div>
                                 </div>
                             </div>
-
                         </li>
                         <li class="menu_top_content-li remove-li-default-att">
                             <div class="touch-wrap transition_time">
