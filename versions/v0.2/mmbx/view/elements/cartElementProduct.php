@@ -81,14 +81,9 @@ switch ($product->getType()) {
                 </ul>
             <?php
                 $miniPopContent  = ob_get_clean();
-                $miniPopId = ModelFunctionality::generateDateCode(25);
+                $miniPopEdit = new MiniPopUp(self::DIRECTION_LEFT, $miniPopContent);
+                $miniPopId = $miniPopEdit->getId();
                 $miniPopIdx = "#" . $miniPopId;
-                $datas = [
-                    "id" => $miniPopId,
-                    "dir" => "left",
-                    "content" => $miniPopContent
-                ];
-                $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
                 $editFunc = "openMiniPop('$miniPopIdx')";
                 break;
 
@@ -104,14 +99,9 @@ switch ($product->getType()) {
                 </ul>
 <?php
                 $miniPopContent  = ob_get_clean();
-                $miniPopId = ModelFunctionality::generateDateCode(25);
+                $miniPopEdit = new MiniPopUp(self::DIRECTION_LEFT, $miniPopContent);
+                $miniPopId = $miniPopEdit->getId();
                 $miniPopIdx = "#" . $miniPopId;
-                $datas = [
-                    "id" => $miniPopId,
-                    "dir" => "left",
-                    "content" => $miniPopContent
-                ];
-                $miniPopEdit = $this->generateFile('view/elements/miniPopUp.php', $datas);
                 $editFunc = "openMiniPop('$miniPopIdx')";
                 break;
             default:

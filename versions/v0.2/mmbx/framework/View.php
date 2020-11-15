@@ -7,6 +7,10 @@ require_once 'model/special/Map.php';
 require_once 'framework/Configuration.php';
 require_once 'model/marketing/facebook/Facebook.php';
 
+// View childs
+require_once 'view/view/Touch/Touch.php';
+require_once 'view/view/MiniPopUp/MiniPopUp.php';
+
 /**
  * Classe modélisant une vue.
  * 
@@ -169,6 +173,15 @@ class View
      */
     private const CONF_SOMMARY_CHECKOUT = "CONF_SOMMARY_CHECKOUT";
     private const CONF_SOMMARY_SHOPBAG = "CONF_SOMMARY_SHOPBAG";
+
+    /**
+     * Holds direction to configure View elements
+     * @var string
+     */
+    protected const DIRECTION_LEFT = "left";
+    protected const DIRECTION_RIGHT = "right";
+    protected const DIRECTION_TOP = "top";
+    protected const DIRECTION_BOTTOM = "bottom";
 
     /**
      * Holds font-family files
