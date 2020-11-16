@@ -64,8 +64,8 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
                                 "text" => "menu"
                             ];
                             $homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
-                            $logOutTouch = new Touch($logOutImg, 4, $positionMap);
-                            $homeTouch = new Touch($homeImg, 44, $positionMap);
+                            $logOutTouch = new Touch($logOutImg, 0, $positionMap);
+                            $homeTouch = new Touch($homeImg, 0, $positionMap);
                             $liMap = new Map([$homeTouch, $logOutTouch]);
                             $contentMiniPop = $this->generateFile('view/view/BasicFiles/ulList.php', ["liMap" => $liMap]);
                             $menuPop = new MiniPopUp(self::DIRECTION_BOTTOM, $contentMiniPop);

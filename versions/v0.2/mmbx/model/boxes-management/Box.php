@@ -103,18 +103,6 @@ class Box extends ModelFunctionality
      */
     private $discount;
 
-    // /**
-    //  * Holds the buying price of the box
-    //  * @var Price
-    //  */
-    // private $buiyPrice;
-
-    // /**
-    //  * Holds de number of box bought lastely to restock
-    //  * @var int
-    //  */
-    // private $quantity;
-
     /**
      * Length of the box's id
      * @var string

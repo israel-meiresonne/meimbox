@@ -118,34 +118,103 @@ class Visitor extends ModelFunctionality
      * @parram string $childCaller class of the caller (usualy User.php)
      */
     // public function __construct($childCaller = null)
-    public function __construct($VIS_VAL = null)
+    public function __construct($VIS_VAL)
     {
-        $isVisitor = empty($VIS_VAL);
-        $VIS_VAL = ($isVisitor) ? Cookie::getCookieValue(Cookie::COOKIE_VIS) : $VIS_VAL;
-        // $VIS_isValid = false;
-        $tabLine = null;
-        if ($isVisitor && (!empty($VIS_VAL))) { // if empty its mean that the current user is a Visittor
-            $sql = "SELECT u.* 
-                FROM `Users-Cookies` uc
-                JOIN `Users` u ON uc.`userId` = u.`userID`
-                WHERE uc.`cookieId` = '" . Cookie::COOKIE_VIS . "'
-                AND uc.`cookieValue` = '$VIS_VAL'";
-            $tab = $this->select($sql);
-            $tabLine = (count($tab) > 0) ? $tab[0] : null;
-        }
+        // $isVisitor = empty($VIS_VAL);
+        // $VIS_VAL = ($isVisitor) ? Cookie::getCookieValue(Cookie::COOKIE_VIS) : $VIS_VAL;
+
+        // $tabLine = null;
+        // if ($isVisitor && (!empty($VIS_VAL))) { // if empty its mean that the current user is a Visittor
+        //     $sql = "SELECT u.* 
+        //         FROM `Users-Cookies` uc
+        //         JOIN `Users` u ON uc.`userId` = u.`userID`
+        //         WHERE uc.`cookieId` = '" . Cookie::COOKIE_VIS . "'
+        //         AND uc.`cookieValue` = '$VIS_VAL'";
+        //     $tab = $this->select($sql);
+        //     $tabLine = (count($tab) > 0) ? $tab[0] : null;
+        // }
+
+        // $this->setConstants();
+        // $this->location = new Location();
+
+        // $this->currency = ((!empty($tabLine)) && (!empty($tabLine["iso_currency"])))
+        //     ? new Currency($tabLine["iso_currency"])
+        //     : $this->location->getCurrency();
+
+        // $this->country = ((!empty($tabLine)) && (!empty($tabLine["country_"])))
+        //     ? new Country($tabLine["country_"])
+        //     : new Country($this->location->getcountryName());
+
+        // if ($isVisitor) {
+        //     $this->userID = (!empty($tabLine)) ? $tabLine["userID"] : $this->generateCode(9, date("YmdHis")); // replacer par une sequance
+        //     $this->setDate = (!empty($tabLine)) ? $tabLine["setDate"] : $this->getDateTime();
+        //     $this->lang = (!empty($tabLine)) ? new Language($tabLine["lang_"]) : new Language();
+        // }
+        // $this->setMeasure();
+        // ($isVisitor && (empty($tabLine))) ? $this->insertVisitor() : null;
+        // $this->manageCookie(Cookie::COOKIE_VIS, false);
 
         $this->setConstants();
-        $this->location = new Location();
-        $this->currency = $this->location->getCurrency();
-        $this->country = new Country($this->location->getcountryName());
-        if ($isVisitor) {
-            $this->userID = (!empty($tabLine)) ? $tabLine["userID"] : $this->generateCode(9, date("YmdHis")); // replacer par une sequance
-            $this->setDate = (!empty($tabLine)) ? $tabLine["setDate"] : $this->getDateTime();
-            $this->lang = (!empty($tabLine)) ? new Language($tabLine["lang_"]) : new Language();
+        $person = get_class($this);
+        switch ($person) {
+            case Visitor::class:
+                if (empty($VIS_VAL)) {
+                    $this->setNewVisitor();
+                } else {
+                    $this->setKnownVisitor($VIS_VAL);
+                }
+                break;
+            case Administrator::class:
+            case Client::class:
+                # code...
+                break;
+            default:
+                throw new Exception("Unkwon person '$person'");
+                break;
         }
         $this->setMeasure();
-        ($isVisitor && (empty($tabLine))) ? $this->insertVisitor() : null;
         $this->manageCookie(Cookie::COOKIE_VIS, false);
+    }
+
+    /**
+     * To create a new Visitor
+     */
+    private function setNewVisitor()
+    {
+        $this->userID = $this->generateCode(9, date("YmdHis")); // replacer par une sequance
+        $this->location = new Location();
+        $this->lang = new Language();
+        $this->currency = $this->location->getCurrency();
+        $this->country = new Country($this->location->getcountryName());
+        $this->setDate = $this->getDateTime();
+        $this->insertVisitor();
+    }
+
+    /**
+     * To set a known Visitor
+     * @param string $VIS_VAL Visitor's cookie used to access to his datas
+     */
+    private function setKnownVisitor($VIS_VAL)
+    {
+        $sql = "SELECT u.* 
+        FROM `Users-Cookies` uc
+        JOIN `Users` u ON uc.`userId` = u.`userID`
+        WHERE uc.`cookieId` = '" . Cookie::COOKIE_VIS . "'
+        AND uc.`cookieValue` = '$VIS_VAL'";
+        $tab = $this->select($sql);
+        if (empty($tab)) {
+            throw new Exception("There's not Visitor with this Visitor Cookie '$VIS_VAL'");
+        }
+        if (count($tab) != 1) {
+            throw new Exception("A visitor cookie('$VIS_VAL') can't be own by only one Visitor");
+        }
+        $tabLine = $tab[0];
+        $this->userID = $tabLine["userID"];
+        $this->location = new Location();
+        $this->lang = new Language($tabLine["lang_"]);
+        $this->currency = new Currency($tabLine["iso_currency"]);
+        $this->country = new Country($tabLine["country_"]);
+        $this->setDate = $tabLine["setDate"];
     }
 
     /**
@@ -374,6 +443,16 @@ class Visitor extends ModelFunctionality
     }
 
     /**
+     * To set Visitor's currency
+     * @param string $isoCurrency new currency's iso code
+     */
+    public function setCurrency($isoCurrency)
+    {
+        $currency = $this->getCurrency();
+        $currency->setCurrency($isoCurrency);
+    }
+
+    /**
      * Getter of the Currency
      * @return Currency a protected copy of the Visitor's current Currency
      */
@@ -382,6 +461,15 @@ class Visitor extends ModelFunctionality
         return $this->currency;
     }
 
+    /**
+     * To set Visitor's country
+     * @param string $countryName new country's name
+     */
+    private function setCountry($countryName)
+    {
+        $country = $this->getCountry();
+        $country->setCountry($countryName);
+    }
     /**
      * Getter of the Country
      * @return Country a protected copy of the Visitor's current Country
@@ -652,7 +740,29 @@ class Visitor extends ModelFunctionality
     }
 
     /*———————————————————————————— GET DB TABLE UP ——————————————————————————*/
+    /*———————————————————————————— ALTER VISITOR DOWN ———————————————————————*/
+    /**
+     * To update Visitor's country
+     * @param Response  $response       to push in result or accured error
+     * @param string    $newIsoCountry  new country's iso country
+     */
+    public function updateCountry(Response $response, $newIsoCountry)
+    {
+        $countries = Country::getCountries();
+        $isoCountries = $countries->getKeys();
+        if (!in_array($newIsoCountry, $isoCountries)) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $countryName = $countries->get($newIsoCountry, Map::countryName);
+            $isoCurrency = $countries->get($newIsoCountry, Map::isoCurrency);
+            $this->setCountry($countryName);
+            $this->setCurrency($isoCurrency);
+            $this->updateVisitor($response);
+        }
+    }
+    /*———————————————————————————— ALTER VISITOR UP —————————————————————————*/
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
+
 
     /**
      * To sign up a user
@@ -682,7 +792,7 @@ class Visitor extends ModelFunctionality
             $confirmPassword = $upMap->get(Map::confirmPassword);
             ($password != $confirmPassword) ? $response->addErrorStation("ER24", self::INPUT_CONFIRM_PASSWORD) : null;
             if (!$response->containError()) {
-                $this->updateVisitor($response, $upMap);
+                $this->prepareVisitorToClient($response, $upMap);
                 if (!$response->containError()) {
                     $this->manageCookie(Cookie::COOKIE_CLT, true); // Allure_homme97
                 }
@@ -1425,6 +1535,25 @@ class Visitor extends ModelFunctionality
         }
     }
 
+    /**
+     * To add Basket's prices in response
+     * @param Response $response where to strore results
+     */
+    public function addSummaryPrices(Response $response)
+    {
+        $basket = $this->getBasket();
+        $total = $basket->getTotal()->getFormated();
+        $subtotal = $basket->getSubTotal()->getFormated();
+        $vat = $basket->getVatAmount()->getFormated();
+        $quantity = $basket->getQuantity();
+        $shipping = $basket->getShipping()->getFormated();
+        $response->addResult(Basket::KEY_TOTAL, $total);
+        $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
+        $response->addResult(Basket::KEY_VAT, $vat);
+        $response->addResult(Basket::KEY_SHIPPING, $shipping);
+        $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
+    }
+
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
     /**
@@ -1433,18 +1562,46 @@ class Visitor extends ModelFunctionality
     private function insertVisitor()
     {
         $response = new Response();
-        $bracket = "(?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Users`(`userID`, `lang_`, `setDate`) 
+        $bracket = "(?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Users`(`userID`, `lang_`, `country_`, `iso_currency`, `setDate`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
-        array_push($values, $this->getUserID());
-        array_push($values, $this->getLanguage()->getIsoLang());
-        array_push($values, $this->getSetDate());
+        array_push(
+            $values,
+            $this->getUserID(),
+            $this->getLanguage()->getIsoLang(),
+            $this->getCountry()->getCountryName(),
+            $this->getCurrency()->getIsoCurrency(),
+            $this->getSetDate()
+        );
         $this->insert($response, $sql, $values);
     }
 
     /**
-     * To update sign up Vistor to become a Client
+     * To update Visitor's datas
+     * @param Response $response to push in results or accured errors
+     */
+    private function updateVisitor(Response $response)
+    {
+        $userID = $this->getUserID();
+        $sql =
+            "UPDATE `Users` SET
+            `lang_`=?,
+            `country_`=?,
+            `iso_currency`=?
+            WHERE `userID`='$userID'";
+        $values = [];
+        array_push(
+            $values,
+            $this->getLanguage()->getIsoLang(),
+            $this->getCountry()->getCountryName(),
+            $this->getCurrency()->getIsoCurrency()
+        );
+        $this->update($response, $sql, $values);
+    }
+
+    /**
+     * To prepare Visitor to becoming a Client by giving him datas from sign up form
      * @param Response $response to push in results or accured errors
      *  contain the error thrown
      * @param Map $upMap map that contain datas submited for a sign up
@@ -1457,7 +1614,7 @@ class Visitor extends ModelFunctionality
      * + $upMap[Map::password] holds password submited
      * + $upMap[Map::confirmPassword] holds confirm password submited
      */
-    private function updateVisitor(Response $response, Map $upMap) // regex \[value-[0-9]*\]
+    private function prepareVisitorToClient(Response $response, Map $upMap) // regex \[value-[0-9]*\]
     {
         $userID = $this->getUserID();
         $hashedPassword = $this->encrypt($upMap->get(Map::password));
@@ -1516,7 +1673,7 @@ class Visitor extends ModelFunctionality
 
     /**
      * To delete Visitor's datas
-     * + used when datas are ttransfered to a Client account
+     * + used when datas are transfered to a Client account
      * @param Response $response to push in result or accured error
      * @param string $userID_VIS Visitor's id
      */

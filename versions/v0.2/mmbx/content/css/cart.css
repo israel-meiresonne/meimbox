@@ -5,16 +5,16 @@
 .cart-cart_summary-block {
     margin: 10px 0;
 }
-
+.cart-div-container {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+}
 @media (min-width: 992px) {
     .cart-cart_summary-inner {
         display: flex;
     }
-    .cart-div-container {
-        width: 100%;
-        padding: 10px;
-        /* border: olive 1px solid; */
-    }
+
     #shopping_bag {
         position: relative;
     }
@@ -38,10 +38,6 @@
     .cart-cart_summary-inner {
         display: flex;
         flex-direction: column-reverse;
-    }
-    .cart-div-container {
-        width: 100%;
-        padding: 10px;
     }
     #shopping_bag {
         position: relative;

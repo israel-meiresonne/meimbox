@@ -102,6 +102,8 @@ abstract class User extends Visitor
 
         $this->setDate = $this->userLine["setDate"];
         $this->lang = new Language($this->userLine["lang_"]);
+        $this->currency = new Currency($this->userLine["iso_currency"]);
+        $this->country = new Country($this->userLine["country_"]);
         $this->email = $this->userLine["mail"];
         $this->firstname = $this->userLine["firstname"];
         $this->lastname = $this->userLine["lastname"];
@@ -320,7 +322,7 @@ abstract class User extends Visitor
      */
     public function addAddress(Response $response, Map $addressMap)
     {
-        $countries = Country::getCountries();
+        $countries = Country::getCountriesPriced();
         $isoCountries = $countries->getKeys();
         $isoCountry = $addressMap->get(Map::isoCountry);
         if (!in_array($isoCountry, $isoCountries)) {

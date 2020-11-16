@@ -105,13 +105,14 @@ abstract class ControllerSecure extends Controller
         switch ($ctrClass) {
             case ControllerWebhook::class:
                 $this->initController();
-            break;
+                break;
             default:
                 $CLT_VAL = Cookie::getCookieValue(Cookie::COOKIE_CLT);
                 if (!empty($CLT_VAL)) {
                     $this->person = new Client();
                 } else {
-                    $this->person = new Visitor();
+                    $VIS_VAL = Cookie::getCookieValue(Cookie::COOKIE_VIS);
+                    $this->person = new Visitor($VIS_VAL);
                 }
                 break;
         }
