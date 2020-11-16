@@ -22,14 +22,6 @@ $inputMap = $inputMap;
 $labels = $inputMap->getKeys();
 
 $inputType = ($isRadio) ? "radio" : "checkbox";
-// if (!empty($func)) {
-//     $Tagfunc = 'onclick="' . $func . ";" . $inputFunc . '";';
-// } else if (!empty($inputFunc)) {
-//     $Tagfunc = 'onclick="' . $inputFunc . '";';
-// } else {
-//     $Tagfunc = null;
-// }
-// $Tagfunc = (!empty($func)) ? 'onclick="' . $func : null;
 foreach ($labels as $label) :
     $Tagchecked = ($inputMap->get($label, Map::isChecked)) ? 'checked="true"' : null;
     $inputFunc = $inputMap->get($label, Map::inputFunc);
@@ -42,10 +34,9 @@ foreach ($labels as $label) :
         $Tagfunc = null;
     }
     $inpid = ModelFunctionality::generateDateCode(25);
-    // $inpx = "#$inpid";
 ?>
     <div class="dropdown-checkbox-block">
-        <label class="checkbox-label" for="<?= $inpid ?>" ><?= $translator->translateString($label) ?>
+        <label class="checkbox-label" for="<?= $inpid ?>"><?= $translator->translateString($label) ?>
             <input id="<?= $inpid ?>" <?= $Tagfunc ?> type="<?= $inputType ?>" name="<?= $inputMap->get($label, Map::inputName) ?>" value="<?= $inputMap->get($label, Map::inputValue) ?>" <?= $Tagchecked ?>>
             <span class="checkbox-checkmark"></span>
         </label>

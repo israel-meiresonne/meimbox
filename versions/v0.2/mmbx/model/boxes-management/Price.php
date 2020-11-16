@@ -39,23 +39,6 @@ class Price
     {
     }
 
-    // /**
-    //  * @param double $price the price's value
-    //  * @param Currency $currency The current Currency of the Visitor
-    //  */
-    // protected function __construct2($price, $currency)
-    // {
-    //     $this->price = $price;
-    //     $this->currency = $currency;
-    // }
-
-    // protected function __construct4($price, $countryName, $isoCurrency, $dbMap)
-    // {
-    //     $this->price = $price;
-    //     $this->country = new Country($countryName, $dbMap);
-    //     $this->currency = new Currency($isoCurrency, $dbMap);
-    // }
-
     /**
      * Getter of the price
      * @return float the price

@@ -48,14 +48,23 @@ class Country extends ModelFunctionality
      */
     public const INPUT_ISO_COUNTRY = "iso_country";
 
+    /**
+     * Holds extention for input
+     * + used to destinct input by their name when used in radio checkbox
+     * @var string
+     */
+    public const INPUT_EXT_ADRS = "_" . Address::class;
+    public const INPUT_EXT_VISITOR = "_" . Visitor::class;
+
     public function __construct($countryName)
     {
         $this->setConstants();
-        if ($this->existCountry($countryName)) {
-            $this->buildCurrency($countryName);
-        } else {
-            $this->buildCurrency(self::$DEFAULT_COUNTRY_NAME);
-        }
+        if (!$this->existCountry($countryName)) {
+            throw new Exception("This country('$countryName') is not supported");
+        } /*else {
+            $this->setCountry(self::$DEFAULT_COUNTRY_NAME);
+        }*/
+        $this->setCountry($countryName);
     }
 
     /**
@@ -73,7 +82,7 @@ class Country extends ModelFunctionality
      * Anitialize this Country's attributs
      * @param string $isoCurrency currncy's iso code
      */
-    private function buildCurrency($countryName)
+    public function setCountry($countryName)
     {
         $country = $this->getCountryLine($countryName);
         $this->countryName = $countryName;
@@ -125,34 +134,61 @@ class Country extends ModelFunctionality
     public function getVatDisplayable()
     {
         $vat = $this->getVat();
-        $display = number_format(($vat*100), 0, "", "")."%";
+        $display = number_format(($vat * 100), 0, "", "") . "%";
         return $display;
     }
 
     /**
      * To get countries supported and their datas
      * @return Map countries supported and their datas
-     * $countriesMap[isoCountry] => [
-     *      Map::countryName => string
-     *      Map::isoCurrency => string 
-     *      Map::isUE => boolean
-     *      Map::vat => float
-     * ]
+     * + $countriesMap[isoCountry][Map::countryName]    => {string}
+     * + $countriesMap[isoCountry][Map::isoCurrency]    => {string} 
+     * + $countriesMap[isoCountry][Map::isUE]           => {boolean}
+     * + $countriesMap[isoCountry][Map::vat]            => {float}
      */
     public static function getCountries()
     {
         $coutries = parent::getCountriesDb();
         $countriesMap = new Map();
-        foreach($coutries as $countryName => $datas){
+        foreach ($coutries as $countryName => $datas) {
             // $countriesMap->put($datas["isoCountry"], $countryName, Map::isoCountry);
             // $countriesMap->put($datas["iso_currency"], $countryName, Map::isoCurrency);
             // $countriesMap->put($datas["isUE"], $countryName, Map::isUE);
             // $countriesMap->put($datas["vat"], $countryName, Map::vat);
             $isoCountry = $datas["isoCountry"];
-            $countriesMap->put($countryName, $isoCountry,  Map::countryName);
-            $countriesMap->put($datas["iso_currency"], $isoCountry, Map::isoCurrency);
-            $countriesMap->put($datas["isUE"], $isoCountry, Map::isUE);
-            $countriesMap->put($datas["vat"], $isoCountry, Map::vat);
+            $countriesMap->put($countryName,            $isoCountry, Map::countryName);
+            $countriesMap->put($datas["iso_currency"],  $isoCountry, Map::isoCurrency);
+            $countriesMap->put($datas["isUE"],          $isoCountry, Map::isUE);
+            $countriesMap->put($datas["vat"],           $isoCountry, Map::vat);
+        }
+        return $countriesMap;
+    }
+
+    /**
+     * To get countries of item having a selling price (like box of BasketProduct)
+     */
+    public static function getCountriesPriced()
+    {
+        $sql = 
+        "SELECT DISTINCT c.* 
+        FROM `Countries` c
+        WHERE c.`country`IN(SELECT DISTINCT `country_` FROM `BoxPrices`) 
+        OR c.`country`IN(SELECT DISTINCT `country_` FROM `ProductsPrices`)";
+        $tab = parent::select($sql);
+        if(count($tab) <= 0){
+            throw new Exception("There is any country with priced items");
+        }
+        $countriesMap = new Map();
+        foreach($tab as $tabLine){
+            $isoCountry = $tabLine["isoCountry"];
+            $country = $tabLine["country"];
+            $isoCurrency = $tabLine["iso_currency"];
+            $isUE = (boolean) $tabLine["isUE"];
+            $vat = (float) $tabLine["vat"];
+            $countriesMap->put($country,        $isoCountry, Map::countryName);
+            $countriesMap->put($isoCurrency,    $isoCountry, Map::isoCurrency);
+            $countriesMap->put($isUE,           $isoCountry, Map::isUE);
+            $countriesMap->put($vat,            $isoCountry, Map::vat);
         }
         return $countriesMap;
     }

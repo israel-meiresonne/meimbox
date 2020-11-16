@@ -37,18 +37,19 @@ class Currency extends ModelFunctionality
      */
     function __construct($isoCurrency)
     {
-        if ($this->existCurrency($isoCurrency)) {
-            $this->buildCurrency($isoCurrency);
-        } else {
-            $this->buildCurrency(self::$DEFAULT_ISO_CURRENCY);
-        }
+        if (!$this->existCurrency($isoCurrency)) {
+            throw new Exception("This currency('$isoCurrency') is not supported");
+        } /*else {
+            $this->setCurrency(self::$DEFAULT_ISO_CURRENCY);
+        }*/
+        $this->setCurrency($isoCurrency);
     }
 
     /**
      * Anitialize this Currency's attributs
      * @param string $isoCurrency currncy's iso code
      */
-    private function buildCurrency($isoCurrency)
+    public function setCurrency($isoCurrency)
     {
         $tabLine = $this->getCurrencyLine($isoCurrency);
         $this->isoCurrency = $isoCurrency;

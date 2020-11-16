@@ -540,7 +540,6 @@ class ControllerItem extends ControllerSecure
      */
     public function addBox()
     {
-        // $this->secureSession();
         $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
@@ -570,9 +569,8 @@ class ControllerItem extends ControllerSecure
      */
     public function deleteBox()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->person;
         $datasView = [];
         if (!Query::existParam(Box::KEY_BOX_ID)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
@@ -580,20 +578,10 @@ class ControllerItem extends ControllerSecure
             $boxID = Query::getParam(Box::KEY_BOX_ID);
             $this->person->deleteBox($response, $boxID);
             if (!$response->containError()) {
-                $basket = $this->person->getBasket();
-                $total = $basket->getTotal()->getFormated();
-                $subtotal = $basket->getSubTotal()->getFormated();
-                $vat = $basket->getVatAmount()->getFormated();
-                $shipping = $basket->getShipping()->getFormated();
-                $quantity = $basket->getQuantity();
-                $response->addResult(Basket::KEY_TOTAL, $total);
-                $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
-                $response->addResult(Basket::KEY_VAT, $vat);
-                $response->addResult(Basket::KEY_SHIPPING, $shipping);
-                $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
+                $person->addSummaryPrices($response);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -631,7 +619,6 @@ class ControllerItem extends ControllerSecure
      */
     public function updateBoxProduct()
     {
-        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $quantity = $this->checkInput(
@@ -671,7 +658,6 @@ class ControllerItem extends ControllerSecure
      */
     public function moveBoxProduct()
     {
-        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $boxID = Query::getParam(Box::KEY_BOX_ID);
@@ -692,8 +678,8 @@ class ControllerItem extends ControllerSecure
      */
     public function deleteBoxProduct()
     {
-        // $this->secureSession();
         $response = new Response();
+        $person = $this->person;
         $datasView = [];
         $boxID = Query::getParam(Box::KEY_BOX_ID);
         $prodID = Query::getParam(Product::KEY_PROD_ID);
@@ -701,17 +687,16 @@ class ControllerItem extends ControllerSecure
         if (empty($boxID) || empty($prodID) || empty($sequence)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $this->person->deleteBoxProduct($response, $boxID, $prodID, $sequence);
+            $person->deleteBoxProduct($response, $boxID, $prodID, $sequence);
             if (!$response->containError()) {
-                $basket = $this->person->getBasket();
-                $quantity = $basket->getQuantity();
+                $basket = $person->getBasket();
                 $box = $basket->getBoxe($boxID);
                 $boxRate = $box->getQuantity() . "/" . $box->getSizeMax();
                 $response->addResult(Box::KEY_BOX_ID, $boxRate);
-                $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
+                $person->addSummaryPrices($response);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -719,42 +704,25 @@ class ControllerItem extends ControllerSecure
      */
     public function getBasketPop()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
+        $person = $this->person;
         $response = new Response();
         $datasView = [];
         if (!$response->containError()) {
-            $basket = $this->person->getBasket();
-            $country = $this->person->getCountry();
-            $currency = $this->person->getCurrency();
+            $basket = $person->getBasket();
+            $country = $person->getCountry();
+            $currency = $person->getCurrency();
             $datasView = [
                 "basket" => $basket,
                 "country" => $country,
                 "currency" => $currency,
                 "containerId" => "shopping_bag",
                 "elements" => $basket->getMerge(),
-                // cart datas
             ];
             $response->addFiles(self::A_GET_BSKT_POP, "view/elements/popupBasketContent.php");
-            // $boxDatas = [
-            //     // "containerId" => $containerId,
-            //     "country" => $country,
-            //     "currency" => $currency,
-            // ];
             $response->addFiles(Basket::KEY_CART_FILE, 'view/elements/cart.php');
-
-            $total = $basket->getTotal()->getFormated();
-            $subtotal = $basket->getSubTotal()->getFormated();
-            $vat = $basket->getVatAmount()->getFormated();
-            $quantity = $basket->getQuantity();
-            $shipping = $basket->getShipping()->getFormated();
-            $response->addResult(Basket::KEY_TOTAL, $total);
-            $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
-            $response->addResult(Basket::KEY_VAT, $vat);
-            $response->addResult(Basket::KEY_SHIPPING, $shipping);
-            $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
+            $person->addSummaryPrices($response);
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -762,7 +730,6 @@ class ControllerItem extends ControllerSecure
      */
     public function getSizeEditor()
     {
-        // $this->secureSession();
         $response = new Response();
         $datasView = [];
         $prodID = Query::getParam(Product::KEY_PROD_ID);

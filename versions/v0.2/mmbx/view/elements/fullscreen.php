@@ -75,9 +75,7 @@ $language = $person->getLanguage();
     if (!$person->hasCookie(Cookie::COOKIE_CLT)) :
     ?>
         <div id="sign_form_pop" class="pop_up-container">
-            <?php
-            echo $this->generateFile('view/elements/popup/popupFormSign.php', []);
-            ?>
+            <?= $this->generateFile('view/elements/popup/popupFormSign.php', []); ?>
         </div>
     <?php
     endif;
@@ -86,9 +84,7 @@ $language = $person->getLanguage();
     if ($person->hasCookie(Cookie::COOKIE_CLT) && (!empty($person->getAddresses()))) :
     ?>
         <div id="address_adder_pop" class="pop_up-container">
-            <?php
-            echo $this->generateFile('view/elements/popup/popupFormAddAddress.php', ["country" => $country]);
-            ?>
+            <?= $this->generateFile('view/elements/popup/popupFormAddAddress.php', ["country" => $country]); ?>
         </div>
     <?php
     endif;

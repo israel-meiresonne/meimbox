@@ -52,7 +52,7 @@ class ControllerDashboard extends ControllerSecure
     {
         $response = new Response();
         $datasView = [];
-        $country = Query::getParam(Country::INPUT_ISO_COUNTRY);
+        $country = Query::getParam(Country::INPUT_ISO_COUNTRY.Country::INPUT_EXT_ADRS);
         $address = $this->checkInput(
             $response,
             Address::INPUT_ADDRESS,

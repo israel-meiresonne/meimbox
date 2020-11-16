@@ -85,14 +85,14 @@ $translator = $translator;
                 <div class="form-input-container">
                     <div class="form-input-dropdown-container">
                         <?php
-                        $countriesMap = Country::getCountries();
+                        $countriesMap = Country::getCountriesPriced();
                         $isoCountries = $countriesMap->getKeys();
                         $inputMap = new Map();
                         foreach ($isoCountries as $isoCountry) {
                             $label = $countriesMap->get($isoCountry, Map::countryName);
                             if ($label != $country->getCountryNameDefault()) {
                                 $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                $inputMap->put(Country::INPUT_ISO_COUNTRY, $label, Map::inputName);
+                                $inputMap->put(Country::INPUT_ISO_COUNTRY.Country::INPUT_EXT_ADRS, $label, Map::inputName);
                                 $inputMap->put($isoCountry, $label, Map::inputValue);
                                 $inputMap->put($isChecked, $label, Map::isChecked);
                                 $inputMap->put(null, $label, Map::inputFunc);

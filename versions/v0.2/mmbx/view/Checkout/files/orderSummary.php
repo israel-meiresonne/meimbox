@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string $conf sommary's configuration
@@ -6,8 +7,18 @@
  * @param Basket $basket Visitor's basket
  * @param Country $country Visitor's current Country
  * @param boolean $showArrow set true to show the arrow and animate sommary else false
- * @param Address $address User's shipping addresses  (only for conf = CONF_SOMMARY_CHECKOUT)
+ * @param Address $address|null User's shipping addresses  (only for conf = CONF_SOMMARY_CHECKOUT)
  */
+
+/**
+ * @var Basket */
+$basket = $basket;
+/**
+ * @var Country */
+$country = $country;
+/**
+ * @var Address */
+$address = (!empty($address)) ? $address : null;
 ?>
 
 <div class="summary-wrap">
@@ -56,30 +67,34 @@
                                 case self::CONF_SOMMARY_SHOPBAG
                             ?>
                                 <div class="summary-detail-property-country">
-                                    <div class="dropdown-container">
-                                        <?php
-                                        $countriesMap = Country::getCountries();
-                                        $isoCountries = $countriesMap->getKeys();
-                                        $inputMap = new Map();
-                                        foreach ($isoCountries as $isoCountry) {
-                                            $label = $countriesMap->get($isoCountry, Map::countryName);
-                                            if ($label != $country->getCountryNameDefault()) {
-                                                $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                                $inputMap->put(Country::INPUT_ISO_COUNTRY, $label, Map::inputName);
-                                                $inputMap->put($isoCountry, $label, Map::inputValue);
-                                                $inputMap->put($isChecked, $label, Map::isChecked);
-                                                $inputMap->put(null, $label, Map::inputFunc);
-                                            }
+                                    <?php
+                                    $frmId = ModelFunctionality::generateDateCode(25);
+                                    $frmIdx = "#$frmId";
+
+                                    $countriesMap = Country::getCountriesPriced();
+                                    $isoCountries = $countriesMap->getKeys();
+                                    $inputMap = new Map();
+                                    foreach ($isoCountries as $isoCountry) {
+                                        $label = $countriesMap->get($isoCountry, Map::countryName);
+                                        if ($label != $country->getCountryNameDefault()) {
+                                            $isChecked = ($country->getIsoCountry() == $isoCountry);
+                                            $inputMap->put(Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR, $label, Map::inputName);
+                                            $inputMap->put($isoCountry, $label, Map::inputValue);
+                                            $inputMap->put($isChecked, $label, Map::isChecked);
+                                            $inputMap->put("updateCountry('$frmIdx')", $label, Map::inputFunc);
                                         }
-                                        $datas = [
-                                            "title" => $translator->translateStation("US65"),
-                                            "inputMap" => $inputMap,
-                                            "func" => null,
-                                            "isRadio" => true,
-                                            "isDisplayed" => false
-                                        ];
-                                        echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
-                                        ?>
+                                    }
+                                    $datas = [
+                                        "title" => $translator->translateStation("US65"),
+                                        "inputMap" => $inputMap,
+                                        "func" => null,
+                                        "isRadio" => true,
+                                        "isDisplayed" => false
+                                    ];
+                                    // echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
+                                    ?>
+                                    <div id="<?= $frmId ?>" class="dropdown-container">
+                                        <?= $this->generateFile('view/elements/dropdown/dropdown2.php', $datas); ?>
                                     </div>
                                 </div>
                             <?php
@@ -155,7 +170,7 @@
                         $lx = "#$lid";
                 ?>
                         <div class="summary-detail-button-inner">
-                            <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx ="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
+                            <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
                             <div id="<?= $lid ?>" class="btn-loading loading-img-wrap">
                                 <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
                             </div>

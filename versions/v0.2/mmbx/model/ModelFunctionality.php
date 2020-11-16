@@ -442,6 +442,12 @@ abstract class ModelFunctionality extends Model
             self::$countries[$tabLine["country"]]["iso_currency"] = $tabLine["iso_currency"];
             self::$countries[$tabLine["country"]]["isUE"] = ($tabLine["isUE"] == 1);
             self::$countries[$tabLine["country"]]["vat"] = (float) $tabLine["vat"];
+
+            // $isoCountry = $tabLine["isoCountry"];
+            // self::$countries[$isoCountry]["country"] = $tabLine["country"];
+            // self::$countries[$isoCountry]["iso_currency"] = $tabLine["iso_currency"];
+            // self::$countries[$isoCountry]["isUE"] = ($tabLine["isUE"] == 1);
+            // self::$countries[$isoCountry]["vat"] = (float) $tabLine["vat"];
         }
     }
 

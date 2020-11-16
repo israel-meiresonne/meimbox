@@ -249,8 +249,37 @@
         }
     }
     /*———————————————————————————— ADDRESS UP ———————————————————————————————*/
-    /*———————————————————————————— CHECKOUT DOWN ————————————————————————————*/
-    /*———————————————————————————— CHECKOUT UP ——————————————————————————————*/
+    /*———————————————————————————— COUNTTRY DOWN ————————————————————————————*/
+    updateCountry = (frmx) => {
+        var frm = $(frmx).find("input");
+        var d = {
+            "frm": frm,
+            "frmCbk": () => { },
+            "a": QR_UPDATE_COUNTRY,
+            "r": updateCountryRSP,
+            "l": "#nada",
+            "x": null,
+            "sc": () => {
+                displayFlexOn(d.l, TS / 10);
+            },
+            "rc": () => {
+                displayFlexOff(d.l, TS);
+            }
+        };
+        frmSND(d);
+    }
+    const updateCountryRSP = (r) => {
+        if (r.isSuccess) {
+            console.log("success");
+            // basketUpdateDatas(r);
+            getBasketPop();
+        } else {
+            console.log("error");
+            handleErr(r, x.formx);
+        }
+        
+    }
+    /*———————————————————————————— COUNTTRY UP ——————————————————————————————*/
     $(document).ready(function () {
         /*———————————————————————— FILTER POST DOWN —————————————————————————*/
         $("#grid_filter .checkbox-label input").click(function () {

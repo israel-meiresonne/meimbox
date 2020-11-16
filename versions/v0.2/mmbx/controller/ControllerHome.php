@@ -6,6 +6,7 @@ class ControllerHome extends ControllerSecure
 {
     public const A_SIGN_UP = "home/signUp";
     public const A_SIGN_IN = "home/signIn";
+    public const QR_UPDATE_COUNTRY = "home/updateCountry";
 
     /**
      * The index layout
@@ -154,6 +155,27 @@ class ControllerHome extends ControllerSecure
             }
         }
         $this->generateJsonView($datasView, $response, $this->person);
+    }
+
+    /**
+     * To update Visitor's Country
+     */
+    public function updateCountry()
+    {
+        $response = new Response();
+        $person = $this->person;
+        $datasView = [];
+        $inputName = Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR;
+        if (empty(Query::getParam($inputName))) {
+            $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+        } else {
+            $newIsoCountry = Query::getParam($inputName);
+            $person->updateCountry($response, $newIsoCountry);
+            if (!$response->containError()) {
+                $person->addSummaryPrices($response);
+            }
+        }
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     public function testA()
