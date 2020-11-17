@@ -180,8 +180,11 @@ class ControllerHome extends ControllerSecure
 
     public function testA()
     {
-        // header('content-type: application/json');
-        $this->generateView([], $this->person, "test");
+        header('content-type: application/json');
+        $person = $this->person;
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        // var_dump($product->getVirtualSizeStock());
+        // $this->generateView([], $this->person, "test");
     }
 
     public function test()

@@ -171,31 +171,6 @@ class Size  extends ModelFunctionality
                 throw new Exception("The number of param is incorrect, number:$nb");
                 break;
         }
-
-        // $sizeDatas = $this->explodeSequence($sequence);
-        // $size = $sizeDatas[0];
-        // $brand = $sizeDatas[1];
-        // $measure = $sizeDatas[2];
-        // $cut = $sizeDatas[3];
-        // if (empty($measure) && empty($size)) {
-        //     throw new Exception("Param '\$measure' and '\$size' can't both be empty" . " in: " . __FILE__ . " line: " . __LINE__);
-        // }
-        // if (isset($measure) && isset($size)) {
-        //     throw new Exception("Param '\$measure' and '\$size' can't both be setted" . " in: " . __FILE__ . " line: " . __LINE__);
-        // }
-        // $this->setDate = (!empty($setDate)) ? $setDate : $this->getDateTime();
-        // if (!empty($measure)) {
-        //     if (empty($cut)) {
-        //         throw new Exception("Param 'cut' can't be empty for a measure");
-        //     }
-        //     $this->measure = $measure;
-        //     $this->cut = $cut;
-        // }
-        // if (!empty($size)) {
-        //     $this->size = $size;
-        //     $this->brandName = $brand;
-        // }
-        // $this->quantity = 1;
     }
 
     private function __construct0()
