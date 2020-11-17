@@ -175,11 +175,10 @@ abstract class ControllerSecure extends Controller
      * @return mixed|null cleaned value
      */
     // public function checkInput($input, $dataTypes, Response $response, $length = null, $required = true)
-    public function checkInput(Response $response, $input, $data, array $dataTypes, $length = null, $required = true)
+    public function checkInput(Response $response, $input, $data, array $dataTypes, int $length = null, bool $required = true)
     {
         if ($required && empty($data)) {
-            $errorStation = (!empty($dataTypes) && $dataTypes[0] == self::CHECKBOX) ? "ER5"
-                : "ER2";
+            $errorStation = (!empty($dataTypes) && $dataTypes[0] == self::CHECKBOX) ? "ER5" : "ER2";
             $response->addErrorStation($errorStation, $input);
             // return $response->isSuccess();
             return null;

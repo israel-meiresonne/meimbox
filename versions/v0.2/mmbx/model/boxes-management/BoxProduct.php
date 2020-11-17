@@ -112,15 +112,12 @@ class BoxProduct extends Product
     {
         $this->virtualSizeStock = [];
         $sizesStock = $this->getSizeStock();
-        $sizeSample =array_keys($sizesStock)[0];
+        $sizeSample = array_keys($sizesStock)[0];
         $supportedSizes = $this->getSupportedSizes($sizeSample);
         // $supportedSizes = $dbSizes->$sizeType;
         $newSizesStock = array_fill_keys($supportedSizes, 0);
-        $sizesPos = array_flip($supportedSizes); // [$size => $pos] use size as key and index as value, each indix indicate the position of the size in $newSizesStock
         foreach ($sizesStock as $size => $stock) {
-            $pos = $sizesPos[$size];
-            $keys = array_keys(array_slice($newSizesStock, $pos));  // array_slice extract couples from the position $pos till array's end
-            $newSizesStock = $this->increaseStock($newSizesStock, $keys, $stock);
+            $newSizesStock = $this->increaseStockBelow($newSizesStock, $size, $stock);
         }
 
         /** To remove sizes that are bigger than the bigger real size */
@@ -157,17 +154,20 @@ class BoxProduct extends Product
     }
 
     /**
-     * Increase stock value at keys given in param
-     * @param string[] $newSizesStock list of size stock to increase
-     * + $newSizesStock = [
-     *      size{string|int} => stock{int}
-     * ]
-     * @param string[] $keys list of size to increase
-     * @param int $stock amount of stock to add
+     * Increase stock value of given the size and sizes below
+     * @param string[]  $newSizesStock  list of size
+     *                                  + $newSizesStock[size{string|int}] => stock{int}
+     * @param string    $startSize      size from which to start to increase
+     * @param int       $stock          amount of stock to add
+     * @return string[] size stock increased
      */
-    private function increaseStock($newSizesStock, $keys, int $stock)
+    private function increaseStockBelow($newSizesStock, $startSize, int $stock)
     {
-        foreach ($keys as $size) {
+        $supportedSizes = $this->getSupportedSizes($startSize);
+        $sizesToPos = array_flip($supportedSizes); // to flip array from [$index => $size] to [$size => $index] 
+        $startIndex = $sizesToPos[$startSize];
+        for ($i=$startIndex; $i >= 0; $i--) { 
+            $size = $supportedSizes[$i];
             $newSizesStock[$size] += $stock;
         }
         return $newSizesStock;
@@ -294,7 +294,7 @@ class BoxProduct extends Product
         $convertedSize = null;
 
         $sizesStock = $this->getSizeStock();
-        $sizeSample =array_keys($sizesStock)[0];
+        $sizeSample = array_keys($sizesStock)[0];
         $supported = $this->getSupportedSizes($sizeSample);
         $supportedFliped = array_flip($supported);
 
@@ -376,7 +376,7 @@ class BoxProduct extends Product
     }
 
     /**
-     * To merge two map by keeping line whith the same value
+     * To merge two map by keeping key/value couple present in the both array
      * @return string[]
      */
     private function keepCommon($map1, $map2)
@@ -501,7 +501,7 @@ class BoxProduct extends Product
         $size = $sizeObj->getsize();
         $measure = $sizeObj->getMeasure();
         if (empty($size) && empty($measure)) {
-            throw new Exception("Size and measurement can't both be NULL");
+            throw new Exception("The size and measurement can't both be empty");
         }
         if (isset($size) && isset($measure)) {
             throw new Exception("Size and measurement can't both be setted");
@@ -513,6 +513,9 @@ class BoxProduct extends Product
             if (!key_exists($size, $virtualSizesStock)) {
                 throw new Exception("This size '$size' don't exist in virtualSizesStock");
             }
+            // var_dump("selected size: ", $size);
+            // var_dump("selected quantity: ", $quantity);
+            // var_dump("virtualSizesStock: ", $virtualSizesStock);
             $stillStock = ($virtualSizesStock[$size] >= $quantity);
         }
         if (!empty($measure)) {
@@ -522,7 +525,7 @@ class BoxProduct extends Product
                 $stillStock = ($virtualSizesStock[$realSize] >= $quantity);
             }
         }
-        $s = $this->getVirtualSizeStock();
+        // $s = $this->getVirtualSizeStock();
         return $stillStock;
     }
 
@@ -776,7 +779,7 @@ class BoxProduct extends Product
             $realSize = $sizeObj->getSize();
             $quantity = $sizeObj->getQuantity();
             $sizesStock = $product->getSizeStock();
-            $sizeSample =array_keys($sizesStock)[0];
+            $sizeSample = array_keys($sizesStock)[0];
             $supported = $product->getSupportedSizes($sizeSample);
             $index = array_search($realSize, $supported);
             while ($index >=  0) { // &&  $quantity > 0
