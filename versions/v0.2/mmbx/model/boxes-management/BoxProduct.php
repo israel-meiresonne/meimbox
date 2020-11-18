@@ -166,7 +166,7 @@ class BoxProduct extends Product
         $supportedSizes = $this->getSupportedSizes($startSize);
         $sizesToPos = array_flip($supportedSizes); // to flip array from [$index => $size] to [$size => $index] 
         $startIndex = $sizesToPos[$startSize];
-        for ($i=$startIndex; $i >= 0; $i--) { 
+        for ($i = $startIndex; $i >= 0; $i--) {
             $size = $supportedSizes[$i];
             $newSizesStock[$size] += $stock;
         }
@@ -248,40 +248,49 @@ class BoxProduct extends Product
     /**
      * To convert the selected size to a real size (existing in tthe db)
      */
-    // private function SelectedToRealSize()
-    public function setRealSelectedSize()
+    private function setRealSelectedSize()
     {
         $selectedSize = $this->getSelectedSize();
+        $newSizeObj = $this->convertSizeToRealSize($selectedSize);
+        $this->realSelectedSize =  $newSizeObj;
+    }
+
+    /**
+     * To convert a Size object into a size of sizeStock
+     * @param Size $sizeObj the Size to convert
+     * @return Size size of sizeStock
+     */
+    private function convertSizeToRealSize(Size $sizeToconvert)
+    {
         $size = null;
-        $sizeType = $selectedSize->getType();
+        $sizeType = $sizeToconvert->getType();
         switch ($sizeType) {
             case Size::SIZE_TYPE_ALPHANUM:
-                $holdsSize = $selectedSize->getsize();
+                $holdsSize = $sizeToconvert->getsize();
                 $size = $this->virtualToRealSize($holdsSize);
                 if (empty($size)) {
-                    throw new Exception("this size '$holdsSize' can't be converted into real size");
+                    throw new Exception("This size '$size' can't be converted into real size");
                 }
                 break;
             case Size::SIZE_TYPE_MEASURE:
-                // $holdsSize = $selectedSize->getsize();
-                $measure = $selectedSize->getMeasure();
-                $cut = $selectedSize->getCut();
+                $measure = $sizeToconvert->getMeasure();
+                $cut = $sizeToconvert->getCut();
                 $size = $this->measureToRealSize($measure, $cut);
                 if (empty($size)) {
                     $measureID = $measure->getMeasureID();
-                    throw new Exception("this measure '$measureID' can't be converted into real size");
+                    throw new Exception("This measure '$measureID' can't be converted into real size");
                 }
                 break;
 
             default:
-                throw new Exception("This size type is not supported, sizeType:$sizeType");
+                throw new Exception("This size type '$sizeType' is not supported");
                 break;
         }
         $sequence = Size::buildSequence($size, null, null, null);
-        $newSizeObj = new Size($sequence);
-        $quantity = $selectedSize->getQuantity();
-        $newSizeObj->setQuantity($quantity);
-        $this->realSelectedSize =  $newSizeObj;
+        $sizeConverted = new Size($sequence);
+        $quantity = $sizeToconvert->getQuantity();
+        $sizeConverted->setQuantity($quantity);
+        return $sizeConverted;
     }
 
     /**
@@ -292,21 +301,24 @@ class BoxProduct extends Product
     private function virtualToRealSize($size)
     {
         $convertedSize = null;
-
         $sizesStock = $this->getSizeStock();
         $sizeSample = array_keys($sizesStock)[0];
-        $supported = $this->getSupportedSizes($sizeSample);
+        $supported = array_reverse($this->getSupportedSizes($sizeSample));
         $supportedFliped = array_flip($supported);
 
         $realSizes  = array_keys($sizesStock);
-        $realSizesIndexed = [];
+        $realSizesIndexed = [];     // [index => realSize]
 
         foreach ($realSizes as $realSize) {
             $index =  $supportedFliped[$realSize];
             $realSizesIndexed[$index] = $realSize;
         }
-        ksort($realSizesIndexed);
+        ksort($realSizesIndexed);   // low to hight index
         $sizeIndex = $supportedFliped[$size];
+        if (!isset($sizeIndex)) {
+            throw new Exception("This size '$size' is not valid");
+        }
+
         $i = $sizeIndex;
         while ($i >= 0) {
             if (key_exists($i, $realSizesIndexed)) {
@@ -327,7 +339,6 @@ class BoxProduct extends Product
     private function measureToRealSize(Measure $measure, $cut)
     {
         $convertedSize = null;
-        // $comonSizes = [];
         $bodyPartSizes = [];
         $cutMap = parent::getTableValues("cuts");
         $value = $cutMap[$cut]["cutMeasure"];
@@ -493,39 +504,42 @@ class BoxProduct extends Product
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
-     * @param Size $sizeObj thee selected size to check if still stock for it
+     * @param Size $sizeObjs selected sizes to check if still stock for it
+     * + Note: sizes need to be from product with the same id
      * @return boolean true if the stock is available
      */
-    public function stillStock(Size $sizeObj)
+    public function stillStock(Size ...$sizeObjs)
     {
-        $size = $sizeObj->getsize();
-        $measure = $sizeObj->getMeasure();
-        if (empty($size) && empty($measure)) {
-            throw new Exception("The size and measurement can't both be empty");
-        }
-        if (isset($size) && isset($measure)) {
-            throw new Exception("Size and measurement can't both be setted");
-        }
         $stillStock = false;
-        $virtualSizesStock = $this->getVirtualSizeStock();
-        $quantity = $sizeObj->getQuantity();
-        if (!empty($size)) {
-            if (!key_exists($size, $virtualSizesStock)) {
-                throw new Exception("This size '$size' don't exist in virtualSizesStock");
+        $sizesStock = $this->getSizeStock();
+        $sizeSample = array_keys($sizesStock)[0];
+        $supported = array_reverse($this->getSupportedSizes($sizeSample)); // hight size to low
+        foreach ($sizeObjs as $sizeObj) {
+            $realSelectedSize = $this->convertSizeToRealSize($sizeObj);
+            $realSize = $realSelectedSize->getsize();
+            $index = array_search($realSize, $supported);
+            $quantity = $sizeObj->getQuantity();
+            while ($index >= 0) {
+                if (key_exists($realSize, $sizesStock)) {
+                    $stock = $sizesStock[$realSize];
+                    $delta = $quantity - $stock;
+                    if ($delta > 0) {
+                        $quantity = $delta;
+                        $sizesStock[$realSize] = 0;
+                    } else { // $delta <= 0
+                        $quantity = 0;
+                        $sizesStock[$realSize] = abs($delta);
+                        break;
+                    }
+                }
+                $index--;
+                $realSize = ($index >= 0) ? $supported[$index] : $realSize;
             }
-            // var_dump("selected size: ", $size);
-            // var_dump("selected quantity: ", $quantity);
-            // var_dump("virtualSizesStock: ", $virtualSizesStock);
-            $stillStock = ($virtualSizesStock[$size] >= $quantity);
-        }
-        if (!empty($measure)) {
-            $cut = $sizeObj->getCut();
-            $realSize = $this->measureToRealSize($measure, $cut);
-            if (!empty($realSize) && key_exists($realSize, $virtualSizesStock)) {
-                $stillStock = ($virtualSizesStock[$realSize] >= $quantity);
+            $stillStock = ($quantity == 0);
+            if (!$stillStock) {
+                break;
             }
         }
-        // $s = $this->getVirtualSizeStock();
         return $stillStock;
     }
 

@@ -1111,8 +1111,18 @@ class Visitor extends ModelFunctionality
         $stillStock = false;
         $sizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
         if (!$response->containError()) {
+            $basket = $this->getBasket();
             $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
-            $stillStock = $product->stillStock($sizeObj);
+            $product->selecteSize($sizeObj);
+
+            $boxProductsMap = $basket->extractBoxProducts();
+            $prodIDs = $boxProductsMap->getKeys();
+            $boxProducts = (in_array($prodID, $prodIDs)) ? $boxProductsMap->get($prodID) : [];
+            array_push($boxProducts, $product);
+            $sizesMap = Product::extractSizes(...$boxProducts);
+            $sizeObjs = $this->keysToIntKeys($sizesMap->getMap());
+
+            $stillStock = $product->stillStock(...$sizeObjs);
         }
         return $stillStock;
     }

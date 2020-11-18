@@ -182,9 +182,52 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
-        // var_dump($product->getVirtualSizeStock());
+        // $sizeObjs = [];
+        // $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        // $size = null;
+        // $brand = null;
+        // $measureID = "decrease_s_2";
+        // $cut = "fit";
+        // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        // $sizeObj = new Size($sequence);
+        // $sizeObj->setQuantity(7);
+        // array_push($sizeObjs, $sizeObj);
+
+        // $size = "xxs";
+        // $brand = null;
+        // $measureID = null;
+        // $cut = null;
+        // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        // $sizeObj = new Size($sequence);
+        // $sizeObj->setQuantity(2);
+        // array_push($sizeObjs, $sizeObj);
+
+        // var_dump("stillStock: ", $product->stillStock(...$sizeObjs));
+
+        // $a = ["a", "b", "c"];
+        // $nb = count($a);
+        // var_dump($nb);
+        // var_dump($a);
+        // $a[$nb] = "z";
+        // var_dump($a);
+
+        var_dump($person->getBasket()->stillStock());
+
+        // $a = [
+        //     "k1" => "a", 
+        //     "k2" => "b", 
+        //     "k3" => "c"
+        // ];
+        // var_dump($a);
+        // $b = ModelFunctionality::keysToInt($a);
+        // var_dump($b);
+
         // $this->generateView([], $this->person, "test");
+    }
+
+    private function multiparam(...$params)
+    {
+        var_dump($params);
     }
 
     public function test()
