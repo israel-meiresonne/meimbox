@@ -351,33 +351,36 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * To check if stock still available for product in the basket without 
+     * To check if stock still available for products in the basket without 
      * Including locked products
-     * + the stock checked don't include locked products
+     * + check all type of product
+     * + don't check if product has locked stock
      * @return Map map of product out of stock
      */
     public function stillStock()
     {
-        $lockedProd = new Map();
-        $sameBoxProducts = $this->extractSameSize();
-        $keys = $sameBoxProducts->getKeys();
-        if (!empty($keys)) {
-            foreach ($keys as $key) {
+        $soldOutProducts = new Map();
+        $boxProductsMap = $this->extractBoxProducts();
+        $prodIDs = $boxProductsMap->getKeys();
+        if (!empty($prodIDs)) {
+            foreach ($prodIDs as $prodID) {
                 /**
-                 * @var BoxProduct */
-                $boxProducts = $sameBoxProducts->get($key);
-                $selectedSize = $boxProducts->getSelectedSize();
-                if (!$boxProducts->stillStock($selectedSize)) {
-                    $dateKey = $boxProducts->getDateInSec();
-                    $lockedProd->put($boxProducts, $dateKey);
+                 * @var BoxProduct[] */
+                $boxProducts = $boxProductsMap->get($prodID);
+                $sizesMap = Product::extractSizes(...$boxProducts);
+                $selectedSizes = $this->keysToIntKeys($sizesMap->getMap());
+                if (!$boxProducts[0]->stillStock(...$selectedSizes)) {
+                    foreach ($boxProducts as $boxProduct) {
+                        $soldOutProducts->put($boxProduct, count($soldOutProducts->getKeys()));
+                    }
                 }
             }
         }
 
         /** check unlock stock for basketproduct */
 
-        $lockedProd->sortKeyDesc();
-        return $lockedProd;
+        $soldOutProducts->sortKeyDesc();
+        return $soldOutProducts;
     }
 
     /**
@@ -389,7 +392,7 @@ class Basket extends ModelFunctionality
     public function stillUnlockedStock()
     {
         $lockedProd = new Map();
-        $sameBoxProducts = $this->extractSameSize();
+        $sameBoxProducts = $this->extractBoxProductWithSameSize();
         $keys = $sameBoxProducts->getKeys();
         if (!empty($keys)) {
             foreach ($keys as $key) {
@@ -410,14 +413,58 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * To extract from all boxes products with the same id and size
-     * + generate a copy product for each different Size
-     * + the quantity of each copy product is the sum of quantity of all product with the same sizee
-     * @return Map of boxproducts using Size sequence
+     * To generate a map of Boxproduct summaring selected size of all product with give id
+     * + generate a copy of product for each different Size
+     * + each product has his own size and quantity
+     * + the quantity of each product copy is the sum of quantity of all product with the same size
+     * @return Map of Boxproducts using sequence [prodID-SizeSequence]
+     * + Map[sequence] => BoxProduct
      */
-    private function extractSameSize()
+    public function extractBoxProductWithSameSize()
     {
-        $sameSizes = new Map();
+        $sameSizeProducts = new Map();
+        $boxes = $this->getBoxes();
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                $products = $box->getProducts();
+                if (!empty($products)) {
+                    foreach ($products as $product) {
+                        // $realSizeSelected = $product->getRealSelectedSize();
+                        $sizeSelected = $product->getSelectedSize();
+                        $sequence = $product->getSequence();
+                        // $size = $sizeSelected->getsize();
+                        // if(empty($size)){
+                        //     throw new Exception("Product's real size can't be empty");
+                        // }
+                        $sizes = $sameSizeProducts->getKeys();
+                        if (!in_array($sequence, $sizes)) {
+                            $copyProduct = $product->getCopy();
+                            $copySize = $sizeSelected->getCopy();
+                            $copyProduct->selecteSize($copySize);
+                            $sameSizeProducts->put($copyProduct, $sequence);
+                        } else {
+                            /**
+                             * @var Size*/
+                            $copySize = $sameSizeProducts->get($sizes)->getSelectedSize();
+                            $quantity = $sizeSelected->getQuantity();
+                            $copySize->addQuantity($quantity);
+                        }
+                    }
+                }
+            }
+        }
+        return $sameSizeProducts;
+    }
+
+    /**
+     * To extract Boxproduct from all boxes
+     * @return Map
+     * + Map[prodID][index] => BoxProduct
+     */
+    public function extractBoxProducts()
+    // private function extractBoxProducts()
+    {
+        $boxProductsMap = new Map();
         $boxes = $this->getBoxes();
         if (!empty($boxes)) {
             foreach ($boxes as $box) {
@@ -425,26 +472,18 @@ class Basket extends ModelFunctionality
                 if (!empty($products)) {
                     foreach ($products as $product) {
                         $prodID = $product->getProdID();
-                        $selectedSize = $product->getSelectedSize();
-                        $prodSequence = $prodID . Size::SEQUENCE_SEPARATOR . $selectedSize->getSequence();
-                        $keys = $sameSizes->getKeys();
-                        if (!in_array($prodSequence, $keys)) {
-                            $copyProduct = $product->getCopy();
-                            $copySize = $selectedSize->getCopy();
-                            $copyProduct->selecteSize($copySize);
-                            $sameSizes->put($copyProduct, $prodSequence);
-                        } else {
-                            /**
-                             * @var Size*/
-                            $copySize = $sameSizes->get($prodSequence)->getSelectedSize();
-                            $quantity = $selectedSize->getQuantity();
-                            $copySize->addQuantity($quantity);
-                        }
+                        // $prodIDs = $boxProductsMap->getKeys();
+                        // if(in_array($prodID, $prodIDs)){
+                        $prodList = $boxProductsMap->get($prodID);
+                        (empty($prodList))
+                            ? $boxProductsMap->put([$product], $prodID)
+                            : $boxProductsMap->put($product, $prodID, count($prodList));
+                        // }
                     }
                 }
             }
         }
-        return $sameSizes;
+        return $boxProductsMap;
     }
 
     /**
@@ -497,9 +536,9 @@ class Basket extends ModelFunctionality
     {
         $haveDelete = false;
         $boxes = $this->getBoxes();
-        if(!empty($boxes)){
-            foreach($boxes as $box){
-                if($box->getQuantity() <= 0){
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                if ($box->getQuantity() <= 0) {
                     $box->deleteBox($response);
                     $haveDelete = (!$haveDelete) ? true : $haveDelete;
                 }

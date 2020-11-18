@@ -205,6 +205,7 @@ class Size  extends ModelFunctionality
             $this->cut = $cut;
         }
         if (!empty($size)) {
+            self::getSupportedSizes($size); // throw error if size not supported
             $this->size = $size;
             $this->brandName = $brand;
         }
@@ -308,6 +309,29 @@ class Size  extends ModelFunctionality
     }
 
     /**
+     * To get from db the supported sizes
+     * + the type of size is automatically deducted with the type of size holds
+     * in the sizeStock attribut
+     * @param string|int|float $sizeSample size used to determinate the type of the size to return
+     * @return array a list of supported sizes get from db
+     */
+    public static function getSupportedSizes($sizeSample)
+    {
+        $supported = null;
+        $dbSizes = Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS)[Size::SUPPORTED_SIZES];
+        foreach ($dbSizes as $type => $supportedSizes) {
+            if (in_array($sizeSample, $dbSizes[$type])) {
+                $supported = $dbSizes[$type];
+                break;
+            }
+        }
+        if (empty($supported)) {
+            throw new Exception("This type of size is not supported, size:$sizeSample");
+        }
+        return $supported;
+    }
+
+    /**
      * Getter for Size's size value
      * @param boolean $wantStr set true if you want null to be a string else set false or don't set
      * @return string size's size size value
@@ -319,6 +343,7 @@ class Size  extends ModelFunctionality
         }
         return $this->size;
     }
+
     /**
      * Getter for size's brandName
      * @param boolean true if you want null to be a string if empty else false
@@ -358,11 +383,17 @@ class Size  extends ModelFunctionality
 
     /**
      * Getter for size's cut
+     * @param boolean true if you want null to be a string if empty else false
+     *  of nothing
      * @return string size's cut
      */
-    public function getCut()
+    public function getCut($wantStr = false)
     {
         return $this->cut;
+        if ($wantStr) {
+            return (!empty($this->cut)) ? $this->cut : self::STR_NULL;
+        }
+        return (!empty($this->cut)) ? $this->cut :  null;
     }
 
     /**

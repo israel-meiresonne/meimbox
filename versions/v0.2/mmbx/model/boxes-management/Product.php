@@ -388,18 +388,7 @@ abstract class Product extends ModelFunctionality
      */
     protected function getSupportedSizes($sizeSample)
     {
-        $supported = null;
-        $dbSizes = Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS)[Size::SUPPORTED_SIZES];
-        foreach ($dbSizes as $type => $supportedSizes) {
-            if (in_array($sizeSample, $dbSizes[$type])) {
-                $supported = $dbSizes[$type];
-                break;
-            }
-        }
-        if (empty($supported)) {
-            throw new Exception("This type of size is not supported, size:$sizeSample");
-        }
-        return $supported;
+        return Size::getSupportedSizes($sizeSample);
     }
 
     /**
@@ -565,7 +554,7 @@ abstract class Product extends ModelFunctionality
     public function getForeignCategory(string $foreignSystKey)
     {
         $category = $this->foreignCategory->get($foreignSystKey);
-        if(empty($category)){
+        if (empty($category)) {
             throw new Exception("Product's foreign category can't be empty");
         }
         return $category;
@@ -655,8 +644,48 @@ abstract class Product extends ModelFunctionality
      */
     public function getSelectedSize()
     {
+        // if(empty($this->selectedSize)){
+        //     throw new Exception("There's no selected size");
+        // }
         return $this->selectedSize;
     }
+
+    /**
+     * To extract Size from a list of product
+     * @param Product $products list of product
+     * @return Map list of Size
+     * + Map[sequence] => Size
+     */
+    public static function extractSizes(Product ...$products)
+    {
+        $sizesMap = new Map();
+        foreach ($products as $product) {
+            $selectedSize = $product->getSelectedSize();
+            $sequence = $selectedSize->getSequence();
+            $sequences = $sizesMap->getKeys();
+            (!in_array($sequence, $sequences)) ? $sizesMap->put($selectedSize, $sequence) : null;
+        }
+        return $sizesMap;
+    }
+
+    /**
+     * To generate sequence with product's id and the selected size
+     * @return string sequence using product's id and its selected size
+     */
+    public function getSequence()
+    {
+        $prodID = $this->getProdID();
+        $selectedSize = $this->getSelectedSize();
+        return $prodID . Size::SEQUENCE_SEPARATOR  . $selectedSize->getSequence();
+        // return $prodID
+        //     . Size::SEQUENCE_SEPARATOR 
+        //     . $selectedSize->getsize(true) 
+        //     . Size::SEQUENCE_SEPARATOR 
+        //     . $selectedSize->getmeasureID(true)
+        //     . Size::SEQUENCE_SEPARATOR
+        //     . $selectedSize->getCut(true);
+    }
+
 
     /**
      * Getter of product's collection name
@@ -763,14 +792,10 @@ abstract class Product extends ModelFunctionality
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
-     * @param Size $sizeObj
-     * @param string $size to check if stock is available
-     * @param string $brand
-     * @param Measure $measure user's measurement
+     * @param Size $sizeObjs selected sizes to check if still stock for it
      * @return boolean true if the stock is available
      */
-    // public abstract function stillStock($size, $brand, Measure $measure);
-    public abstract function stillStock(Size $sizeObj);
+    public abstract function stillStock(Size ...$sizeObjs);
 
     /**
      * To check if still stock for product including product locked

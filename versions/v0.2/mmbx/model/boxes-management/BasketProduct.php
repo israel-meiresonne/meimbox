@@ -217,13 +217,10 @@ class BasketProduct extends Product
     /**
      * Check if it's still stock for the product submited by Visitor
      * + it's still stock mean that there size that fit the Visitor's submited size
-     * @param Size $sizeObj
-     * @param string $size to check if stock is available
-     * @param string $brand never set for basket product
-     * @param Measure $measure never set for basket product
+     * @param Size $sizeObjs selected sizes to check if still stock for it
      * @return boolean true if the stock is available
      */
-    public function stillStock(Size $sizeObj)
+    public function stillStock(Size ...$sizeObjs)
     {
         $sizesStock = $this->getSizeStock();
         $size = $sizeObj->getSize();
