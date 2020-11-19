@@ -519,6 +519,11 @@ class BoxProduct extends Product
             $realSize = $realSelectedSize->getsize();
             $index = array_search($realSize, $supported);
             $quantity = $sizeObj->getQuantity();
+
+            // var_dump("realSize: $realSize");
+            // var_dump("quantity: $quantity");
+            // var_dump($sizesStock);
+
             while ($index >= 0) {
                 if (key_exists($realSize, $sizesStock)) {
                     $stock = $sizesStock[$realSize];
@@ -540,6 +545,8 @@ class BoxProduct extends Product
                 break;
             }
         }
+        // var_dump("quantity final: $quantity");
+        // var_dump($sizesStock);
         return $stillStock;
     }
 
