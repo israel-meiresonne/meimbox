@@ -184,15 +184,17 @@ class ControllerHome extends ControllerSecure
         header('content-type: application/json');
         $person = $this->person;
         // $sizeObjs = [];
-        // $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
-        // $size = null;
-        // $brand = null;
-        // $measureID = "decrease_s_2";
-        // $cut = "fit";
-        // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
-        // $sizeObj = new Size($sequence);
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = null;
+        $brand = null;
+        $measureID = "decrease_m_6";
+        $cut = "wide";
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $product->selecteSize($sizeObj);
         // $sizeObj->setQuantity(7);
         // array_push($sizeObjs, $sizeObj);
+        var_dump($product->convertSizeToRealSize($sizeObj));
 
         // $size = "xxs";
         // $brand = null;
@@ -212,7 +214,7 @@ class ControllerHome extends ControllerSecure
         // $a[$nb] = "z";
         // var_dump($a);
 
-        var_dump($person->getBasket()->stillStock());
+        // var_dump($person->getBasket()->stillStock());
 
         // $a = [
         //     "k1" => "a", 
