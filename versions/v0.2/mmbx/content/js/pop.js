@@ -112,10 +112,11 @@
     displayFadeOut = (x, t = TS) => {
         $(x).fadeOut(t);
     }
-    handleErr = (r, formx  = null) => {
+    handleErr = (r, formx = null) => {
         var k = Object.keys(r.errors);
         k.forEach(n => {
-            var inpx = $(formx).find("input[name='" + n + "']");
+            // var inpx = $(formx).find("input[name='" + n + "']");
+            var inpx = $(formx).find("[name='" + n + "']");
             var erx = $(inpx).attr(dataerrorx);
             var erType = $(inpx).attr(dataerrortype);
             switch (erType) {
@@ -123,7 +124,9 @@
                     addErr(erx, r.errors[n].message);
                     break;
                 case ER_TYPE_MINIPOP:
-
+                    var cx = $(erx).find(".comment");
+                    $(cx).html(r.errors[n].message);
+                    openMiniPop(erx);
                     break;
 
                 default:
@@ -164,7 +167,7 @@
     /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/
     openMiniPop = (x, before = () => { }, after = () => { }) => {
         var isd = $(x).attr(dataisdisplayed) == "true";
-        if(!isd){
+        if (!isd) {
             before(x);
             displayFadeIn(x, TS);
             after(x);
@@ -430,7 +433,8 @@
     // setAddMsrSuccData = () => {
     //     $("#save_measure_button").attr(datasuccess, 'setCbtnAdderMsr');
     // }
-    setCbtnAdderMsr = () => {datasuccess
+    setCbtnAdderMsr = () => {
+        datasuccess
         var cbtnx = getCloseButton("#measure_adder");
         var fromx = "#measure_adder";
         var tox = "#measure_manager";
@@ -458,7 +462,7 @@
         $("#measure_select_button").attr(datavase, vx);
     }
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
-    addMsr = (succFunc = ()=>{}) => {
+    addMsr = (succFunc = () => { }) => {
         var d = {
             "a": A_ADD_MEASURE,
             "frm": "#add_measure_form input",
@@ -840,49 +844,27 @@
         }
     }
     updateBoxProduct = () => {
-        var inps = $("#form_edit_prod_size input");
-        // var map = {
-        //     // [KEY_BOX_ID]: bxid,
-        //     // [KEY_PROD_ID]: pid,
-        //     [KEY_SEQUENCE]: seq,
-        // }
-        // var params = mapToParam(map);
+        var frmx = "#form_edit_prod_size";
+        var frm = $(frmx).find("input");
         var d = {
-            "frm": inps,
+            "frm": frm,
             "a": A_EDT_BXPROD,
             "frmCbk": () => { },
             "r": updateBoxProductRSP,
             "l": "#size_form_pop_loading",
-            "x": inps,
+            "x": { "frmx": frmx },
             "sc": () => { displayFlexOn(d.l, TS / 10); },
             "rc": () => { displayFlexOff(d.l, TS); }
         };
         frmSND(d);
     }
-    var updateBoxProductRSP = (r, inps) => {
+    var updateBoxProductRSP = (r, x) => {
         if (r.isSuccess) {
             getBasketPop();
             var cbtn = getCloseButton("#size_editor_pop");
             $(cbtn).click();
-        } else if (!empty(r.errors)) {
-            var ks = getKeys(r.errors);
-            ks.forEach(k => {
-                var x = $("#add_measure_form .input-tag" + "[name='" + k + "']+.comment");
-                addErr(x, r.errors[k].message);
-            });
-
-            if (!empty(r.errors[FAT_ERR])) {
-                popAlert(r.errors[FAT_ERR].message);
-            }
-
-            // var k = Object.keys(r.errors);
-            // var cbxE = $("#add_measure_form .measure_input-checkbox-conatiner .checkbox_error-div .comment");
-            // k.forEach(n => {
-            //     var s = $("#add_measure_form .input-tag" + "[name='" + n + "']+.comment");
-            //     addErr(s, r.errors[n].message);
-            //     (n == INPUT_MEASURE_UNIT) ? addErr(cbxE, r.errors[n].message) : "";
-            //     (n == FAT_ERR) ? popAlert(r.errors[n].message) : "";
-            // });
+        } else {
+            handleErr(r, x.frmx);
         }
     }
     /*—————————————————— SIZE EDITOR UP —————————————————————————————————————*/

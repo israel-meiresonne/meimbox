@@ -78,7 +78,8 @@ $address = (!empty($address)) ? $address : null;
                                         $label = $countriesMap->get($isoCountry, Map::countryName);
                                         if ($label != $country->getCountryNameDefault()) {
                                             $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                            $inputMap->put(Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR, $label, Map::inputName);
+                                            // $inputMap->put(Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR, $label, Map::inputName);
+                                            $inputMap->put(Country::INPUT_ISO_COUNTRY_VISITOR, $label, Map::inputName);
                                             $inputMap->put($isoCountry, $label, Map::inputValue);
                                             $inputMap->put($isChecked, $label, Map::isChecked);
                                             $inputMap->put("updateCountry('$frmIdx')", $label, Map::inputFunc);

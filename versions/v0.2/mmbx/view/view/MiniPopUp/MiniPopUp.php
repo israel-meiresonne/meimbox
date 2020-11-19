@@ -23,6 +23,9 @@ class MiniPopUp extends View
 
     /**
      * Constructor
+     * @param string    $direction  View's direction constant
+     *                              + View::DIRECTION_*
+     * @param mixed     $content    content to place in the MiniPopUp
      */
     public function __construct($direction, $content)
     {

@@ -3,7 +3,10 @@
 /**
  * Build a Measure sticker with a Measure given
  * @param Measure $measure Visitor's measure
+ * @param string $TagInput $TagParams additional params to place on input tag
+ * + i.e.: "data-mydate='value' myFunction='newFunction()'"
  */
+$TagInput = (!empty($$TagInput)) ? $TagInput : null;
 
 $measure_id = $measure->getMeasureID();
 $measureName = $measure->getMeasureName();
@@ -18,7 +21,6 @@ $stickerTitleDatas["btnFunc"] = null;
 
 ob_start();
 ?>
-
 <div class="sticker-content-div">
     <div class="data-key_value-wrap">
         <span class="data-key_value-key"><?= $stickerName ?>:</span>
@@ -27,4 +29,9 @@ ob_start();
 </div>
 <?php
 $stickerTitleDatas["content"] = ob_get_clean();
-require 'view/elements/stickerTitle.php';
+
+$datas = [
+    "stickerTitleDatas" => $stickerTitleDatas,
+    "TagInput" => $TagInput
+];
+echo $this->generateFile('view/elements/stickerTitle.php', $datas);

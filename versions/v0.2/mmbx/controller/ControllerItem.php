@@ -291,7 +291,7 @@ class ControllerItem extends ControllerSecure
             $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
             $measure = $this->person->getMeasure($measureID);
             $datasView = [
-                "measure" => $measure
+                "measure" => $measure,
             ];
             $response->addFiles(Measure::MEASURRE_STICKER_KEY, "view/Item/itemFiles/stickerMeasure.php");
         }
@@ -454,12 +454,10 @@ class ControllerItem extends ControllerSecure
     }
 
     /**
-     * To add product to cart
+     * To check BoxProduct's stock
      */
     public function submitBoxProduct()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
         $datasView = [];
         $prodID = Query::getParam(Product::INPUT_PROD_ID);
@@ -481,8 +479,8 @@ class ControllerItem extends ControllerSecure
                 if ($stillStock) {
                     $response->addResult(self::A_SBMT_BXPROD, $stillStock);
                 } else {
-                    $station = "ER13";
-                    $response->addErrorStation($station, self::SBMT_BTN_MSG);
+                    $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ?  "ER13" : "ER32";
+                    $response->addErrorStation($errStation, Size::INPUT_SIZE_TYPE);
                 }
             }
         }
