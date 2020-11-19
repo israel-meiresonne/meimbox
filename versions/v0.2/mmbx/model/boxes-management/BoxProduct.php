@@ -257,39 +257,37 @@ class BoxProduct extends Product
 
     /**
      * To convert a Size object into a size of sizeStock
+     * + Note: Size with Measure can be unconvertible if Measure suit any real size from sizeStock
      * @param Size $sizeObj the Size to convert
-     * @return Size size of sizeStock
+     * @return Size|null Size converrted into a size of sizeStock else null if Size is unconvertible
      */
+    // public function convertSizeToRealSize(Size $sizeToconvert)
     private function convertSizeToRealSize(Size $sizeToconvert)
     {
         $size = null;
+        $sizeConverted = null;
         $sizeType = $sizeToconvert->getType();
         switch ($sizeType) {
             case Size::SIZE_TYPE_ALPHANUM:
                 $holdsSize = $sizeToconvert->getsize();
                 $size = $this->virtualToRealSize($holdsSize);
-                if (empty($size)) {
-                    throw new Exception("This size '$size' can't be converted into real size");
-                }
                 break;
             case Size::SIZE_TYPE_MEASURE:
                 $measure = $sizeToconvert->getMeasure();
                 $cut = $sizeToconvert->getCut();
                 $size = $this->measureToRealSize($measure, $cut);
-                if (empty($size)) {
-                    $measureID = $measure->getMeasureID();
-                    throw new Exception("This measure '$measureID' can't be converted into real size");
-                }
                 break;
 
             default:
                 throw new Exception("This size type '$sizeType' is not supported");
                 break;
         }
-        $sequence = Size::buildSequence($size, null, null, null);
-        $sizeConverted = new Size($sequence);
-        $quantity = $sizeToconvert->getQuantity();
-        $sizeConverted->setQuantity($quantity);
+        if (isset($size)) {
+            $sequence = Size::buildSequence($size, null, null, null);
+            $sizeConverted = new Size($sequence);
+            $quantity = $sizeToconvert->getQuantity();
+            $sizeConverted->setQuantity($quantity);
+        }
         return $sizeConverted;
     }
 
@@ -326,6 +324,9 @@ class BoxProduct extends Product
                 break;
             }
             $i--;
+        }
+        if (empty($convertedSize)) {
+            throw new Exception("This size '$convertedSize' can't be converted into real size");
         }
         return $convertedSize;
     }
@@ -411,6 +412,8 @@ class BoxProduct extends Product
      */
     private function getSizesOver($bodyPart, $value)
     {
+        // var_dump("body part: $bodyPart");
+        // var_dump("value: $value");
         $sizesOver = [];
         $prodID = $this->getProdID();
         $sql = "SELECT *
@@ -424,12 +427,14 @@ class BoxProduct extends Product
                 array_push($sizesOver, $size);
             }
         }
+        // var_dump("sizesOver:", $sizesOver);
         return $sizesOver;
     }
 
     /**
      * To get the selected size converted into a real size present in stock
-     * @return Size the selected size converted into a real size present in stock
+     * @return Size|null the selected size converted into a real size present 
+     * in stock else null if unconvertible
      */
     public function getRealSelectedSize()
     {
@@ -516,14 +521,13 @@ class BoxProduct extends Product
         $supported = array_reverse($this->getSupportedSizes($sizeSample)); // hight size to low
         foreach ($sizeObjs as $sizeObj) {
             $realSelectedSize = $this->convertSizeToRealSize($sizeObj);
+            if (!isset($realSelectedSize)) {
+                $stillStock = false;
+                break;
+            }
             $realSize = $realSelectedSize->getsize();
             $index = array_search($realSize, $supported);
             $quantity = $sizeObj->getQuantity();
-
-            // var_dump("realSize: $realSize");
-            // var_dump("quantity: $quantity");
-            // var_dump($sizesStock);
-
             while ($index >= 0) {
                 if (key_exists($realSize, $sizesStock)) {
                     $stock = $sizesStock[$realSize];
@@ -545,8 +549,6 @@ class BoxProduct extends Product
                 break;
             }
         }
-        // var_dump("quantity final: $quantity");
-        // var_dump($sizesStock);
         return $stillStock;
     }
 

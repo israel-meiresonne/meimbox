@@ -94,13 +94,13 @@ class Size  extends ModelFunctionality
      * Holds configuration for size formular
      * @var string
      */
-    public const CONF_SIZE_ADD_PROD =  "CONF_SIZE_ADD_PROD";
+    public const CONF_SIZE_ADD_PROD =  "conf_size_add_prod";
 
     /**
      * Holds configuration for size formular
      * @var string
      */
-    public const CONF_SIZE_EDITOR =  "CONF_SIZE_EDITOR";
+    public const CONF_SIZE_EDITOR =  "conf_size_editor";
 
     /**
      * Holds the db's Sizes table name
@@ -139,7 +139,9 @@ class Size  extends ModelFunctionality
      * Holds the input name
      * @var string
      */
-    public const INPUT_CUT =  "cut";
+    private const INPUT_CUT =  "cut";
+    public const INPUT_CUT_ADDER =  self::INPUT_CUT."_".self::CONF_SIZE_ADD_PROD;
+    public const INPUT_CUT_EDITOR =  self::INPUT_CUT."_".self::CONF_SIZE_EDITOR;
     /**
      * Holds the input name
      * @var string

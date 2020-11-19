@@ -465,7 +465,8 @@ class ControllerItem extends ControllerSecure
         $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
         $brand = Query::getParam(Size::INPUT_BRAND);
         $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-        $cut = Query::getParam(Size::INPUT_CUT);
+        // $cut = Query::getParam(Size::INPUT_CUT);
+        $cut = Query::getParam(Size::INPUT_CUT_ADDER);
         if (empty($prodID)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
@@ -600,7 +601,8 @@ class ControllerItem extends ControllerSecure
             $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
             $brand = Query::getParam(Size::INPUT_BRAND);
             $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-            $cut = Query::getParam(Size::INPUT_CUT);
+            // $cut = Query::getParam(Size::INPUT_CUT);
+            $cut = Query::getParam(Size::INPUT_CUT_ADDER);
             $sizeMap = new Map();
             $sizeMap->put($size, Map::size);
             $sizeMap->put($brand, Map::brand);
@@ -637,7 +639,8 @@ class ControllerItem extends ControllerSecure
                 $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
                 $brand = Query::getParam(Size::INPUT_BRAND);
                 $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-                $cut = Query::getParam(Size::INPUT_CUT);
+                // $cut = Query::getParam(Size::INPUT_CUT);
+                $cut = Query::getParam(Size::INPUT_CUT_EDITOR);
                 $sizeMap = new Map();
                 $sizeMap->put($size, Map::size);
                 $sizeMap->put($brand, Map::brand);
