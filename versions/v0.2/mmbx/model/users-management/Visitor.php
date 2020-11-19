@@ -1421,12 +1421,12 @@ class Visitor extends ModelFunctionality
                 $response->addErrorStation("ER1", MyError::FATAL_ERROR);
             } else {
                 try {
-                    $holdSizeObj = new Size($sequence);
+                    $refSize = new Size($sequence);
                 } catch (\Throwable $th) {
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                 }
                 if (!$response->containError()) {
-                    $product = $box->getProduct($prodID, $holdSizeObj);
+                    $product = $box->getProduct($prodID, $refSize);
                     if (empty($product)) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                     } else {
@@ -1435,17 +1435,24 @@ class Visitor extends ModelFunctionality
                         if (!$basket->stillSpace($boxID, $needleSpace)) {
                             $response->addErrorStation("ER18", Size::INPUT_QUANTITY);
                         } else {
-                            $stillStock = $this->stillStock($response, $prodID, $sizeType, $sizeMap);
+                            $newSize = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
                             if (!$response->containError()) {
-                                if (!$stillStock) {
-                                    $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ?  "ER13" : "ER32";
-                                    $response->addErrorStation($errStation, Size::INPUT_SIZE_TYPE);
-                                    // $response->addErrorStation("ER13", ControllerItem::A_EDT_BXPROD);
-                                } else {
-                                    $newSizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
-                                    $TrueHoldSize = $product->getSelectedSize();
-                                    if (!$response->containError()) {
-                                        $basket->updateBoxProduct($response, $boxID, $prodID, $TrueHoldSize, $newSizeObj);
+                                $TrueHoldSize = $product->getSelectedSize();
+                                $product->selecteSize($newSize);
+
+                                $boxProductsMap = $basket->extractBoxProducts();
+                                $boxProducts = $boxProductsMap->get($prodID);
+                                $sizesMap = Product::extractSizes(...$boxProducts);
+                                $sizeObjs = $this->keysToIntKeys($sizesMap->getMap());
+                                $stillStock = $product->stillStock(...$sizeObjs);
+
+                                $product->selecteSize($TrueHoldSize);
+                                if (!$response->containError()) {
+                                    if (!$stillStock) {
+                                        $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ?  "ER13" : "ER32";
+                                        $response->addErrorStation($errStation, Size::INPUT_SIZE_TYPE);
+                                    } else {
+                                        $basket->updateBoxProduct($response, $boxID, $prodID, $TrueHoldSize, $newSize);
                                     }
                                 }
                             }
