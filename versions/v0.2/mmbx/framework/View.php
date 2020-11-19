@@ -7,9 +7,10 @@ require_once 'model/special/Map.php';
 require_once 'framework/Configuration.php';
 require_once 'model/marketing/facebook/Facebook.php';
 
-// View childs
+// View Elements
 require_once 'view/view/Touch/Touch.php';
 require_once 'view/view/MiniPopUp/MiniPopUp.php';
+require_once 'view/view/DropDown/DropDown.php';
 
 /**
  * Classe modélisant une vue.

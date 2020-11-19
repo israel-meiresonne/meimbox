@@ -165,7 +165,8 @@ class ControllerHome extends ControllerSecure
         $response = new Response();
         $person = $this->person;
         $datasView = [];
-        $inputName = Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR;
+        // $inputName = Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR;
+        $inputName = Country::INPUT_ISO_COUNTRY_VISITOR;
         if (empty(Query::getParam($inputName))) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {

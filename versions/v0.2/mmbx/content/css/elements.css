@@ -2905,6 +2905,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: absolute;
     /* width: 175px; */
     cursor: auto;
+    z-index: 5;
 }
 
 .minipop-content {
@@ -2919,7 +2920,6 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     padding: 5px;
     text-align: center;
 }
-
 
 /*+++++ minipop-left/right DOWN +++++*/
 
@@ -2969,7 +2969,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     background-color: var(--color-white);
 }
 
- .minipop_top {
+.minipop_top {
     padding-bottom: 13px;
     top: 0;
     left: 50%;
@@ -3020,6 +3020,32 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*—————————————————————————————— MINI_POP_UP UP —————————————————————————————*/
 
+/*—————————————————————————————— SIZE FORM DOWN —————————————————————————————*/
+
+.size_form_common_inner .minipop-wrap {
+    max-width: 100%;
+}
+
+.size_form_common_inner .minipop-wrap .minipop-content {
+    max-width: 100%;
+}
+
+.size_form_common_inner .minipop-wrap .minipop-content .comment {
+    padding: 0 10px;
+    display: block !important;
+}
+
+.customize_choice-button-container {
+    position: relative;
+}
+
+.size_form_common_inner .comment{
+    margin-top: 20px;
+    padding: 0 10px;
+}
+
+/*—————————————————————————————— SIZE FORM UP ———————————————————————————————*/
+
 /*—————————————————————————————— SIZE_EDITOR_POP_UP DOWN ————————————————————*/
 
 #size_editor_pop #form_edit_prod_size {
@@ -3033,7 +3059,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     max-width: 100px;
     margin: auto;
 }
-
+.product-quantity-container {
+    position: relative;
+}
 .product-quantity-container .input-wrap .input-tag {
     text-align: center;
 }
@@ -3285,7 +3313,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     padding: 2px;
 }
 
-.notif_active{
+.notif_active {
     display: block;
 }
 

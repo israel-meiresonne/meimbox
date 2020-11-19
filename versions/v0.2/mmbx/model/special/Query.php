@@ -51,7 +51,8 @@ class Query
     public static function existParam($key)
     {
         (!self::$isset) ? self::setQuery() : null;
-        return (key_exists($key, self::$params)) && (!empty(self::$params[$key]));
+        // return (key_exists($key, self::$params)) && (!empty(self::$params[$key]));
+        return (key_exists($key, self::$params)) && (isset(self::$params[$key]));
     }
 
     /**

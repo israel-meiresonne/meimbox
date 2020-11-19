@@ -31,7 +31,7 @@ if (!empty($checked)) {
 <div class="dropdown_checkbox-wrap">
     <div class="dropdown_checkbox-head">
         <label class="checkbox-label" for="<?= $inp ?>"><?= $title ?>
-            <input id="<?= $inp ?>" <?= $Tagchecked ?> onclick="animateDropdownCheckbox('<?= $inpx ?>', '<?= $bodyx ?>');" type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $inputValue ?>" <?= $dataAttributs ?>>
+            <input id="<?= $inp ?>" <?= $dataAttributs ?> <?= $Tagchecked ?> onclick="animateDropdownCheckbox('<?= $inpx ?>', '<?= $bodyx ?>');animateCheckbox('#<?= $inp ?>');" type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $inputValue ?>">
             <span class="checkbox-checkmark"></span>
         </label>
     </div>

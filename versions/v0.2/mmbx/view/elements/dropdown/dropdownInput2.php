@@ -8,6 +8,7 @@
  *          Map::inputValue => string,
  *          Map::isChecked => boolean,  // set true to check input else false
  *          Map::inputFunc => string|null,   // function to place on the input
+ *          Map::tag => string|null     // to add set additional tag
  *      ]
  * + 🚨only one input of $inputMap can has Map::isChecked = true
  * @param string $func function placed on all input

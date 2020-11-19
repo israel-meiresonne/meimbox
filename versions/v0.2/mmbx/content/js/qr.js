@@ -28,9 +28,9 @@
             f(dts);
         }
     }
-    addErr = function (s, err) {
-        $(s).text(err);
-        $(s).slideDown(TS);
+    addErr = function (x, err) {
+        $(x).html(err);
+        $(x).slideDown(TS);
     }
     //———————————————————————————— SHORTCUT UP ————————————————————————————————————————————————————
     //—————————————————————————————————————————————————————————————————————————————————————————————
@@ -76,30 +76,26 @@
         });
     }
     checkBoxProductStock = (frmx) => {
-        // e.preventDefault();
-        // var frm = $("#form_check_prod_stock input");
         var frm = $(frmx).find("input");
         var d = {
             "frm": frm,
             "frmCbk": () => { },
-            // "frmCbk": function () {
-            //     return "&" + INPUT_PROD_ID + "=" + prodID;
-            // },
             "a": A_SBMT_BXPROD,
-            "r": addProdRSP,
+            "x": { "frmx": frmx },
+            "r": checkBoxProductStockRSP,
             "l": "#add_prod_loading",
             "sc": () => { $(d.l).css("display", "flex") },
             "rc": () => { displayFadeOut(d.l) }
         };
         frmSND(d);
     }
-    var addProdRSP = function (r) {
+    const checkBoxProductStockRSP = (r, x) => {
         if (r.isSuccess) {
             getBoxMngr(CONF_ADD_BXPROD);
             before = () => { disable("#sumbit_box_manager"); }
             openPopUp("#box_manager_window", before);
-        } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
-            popAlert(r.errors[FAT_ERR].message);
+        } else {
+            handleErr(r, x.frmx);
         }
     }
     /*———————————————————————————— SIGN DOWN ————————————————————————————————*/
@@ -153,11 +149,6 @@
     }
     const signInRSP = (r, x) => {
         signUpRSP(r, x);
-        // if (r.isSuccess) {
-        //     window.location.assign(window.location.href);
-        // } else {
-        //     handleErr(r, x.formx);
-        // }
     }
     /*———————————————————————————— SIGN UP ——————————————————————————————————*/
     /*———————————————————————————— ADDRESS DOWN —————————————————————————————*/
@@ -226,7 +217,7 @@
     selectAddress = (sbtnx) => {
         var x = $(sbtnx).attr(datatarget);
         var val = $(x).attr(submitdata);
-        var map = {[KEY_ADRS_SEQUENCE]:val}
+        var map = { [KEY_ADRS_SEQUENCE]: val }
         var params = mapToParam(map);
         var d = {
             "a": QR_SELECT_ADRS,
@@ -241,10 +232,8 @@
     }
     const selectAddressRSP = (r) => {
         if (r.isSuccess) {
-            // console.log("success");
             window.location.assign(r.results[QR_SELECT_ADRS]);
         } else {
-            // console.log("error");
             handleErr(r, x.formx);
         }
     }
@@ -270,14 +259,11 @@
     }
     const updateCountryRSP = (r) => {
         if (r.isSuccess) {
-            console.log("success");
-            // basketUpdateDatas(r);
             getBasketPop();
         } else {
-            console.log("error");
             handleErr(r, x.formx);
         }
-        
+
     }
     /*———————————————————————————— COUNTTRY UP ——————————————————————————————*/
     $(document).ready(function () {
@@ -285,7 +271,6 @@
         $("#grid_filter .checkbox-label input").click(function () {
             frmSND(filterDatas);
         });
-        // $("#grid_filter .apply-button-container button").click(function () {
         $("#grid_filter #filter_button").click(function () {
             frmSND(filterDatas);
         });
@@ -300,31 +285,5 @@
             "rc": function () { }
         }
         /*———————————————————————— FILTER POST UP ———————————————————————————*/
-        /*—————————————————— ADD PRODUCT DOWN ———————————————————————————————*/
-        /*———— sumbit sizes down ————*/
-        // $("#select_size_for_box").click(function (e) {
-        //     e.preventDefault();
-        //     var frm = $("#form_check_prod_stock input");
-        //     var datas = {
-        //         "frm": frm,
-        //         "frmCbk": function () {
-        //             return "&" + INPUT_PROD_ID + "=" + prodID;
-        //         },
-        //         "a": A_SBMT_BXPROD,
-        //         "r": addProdRSP,
-        //         "l": "#add_prod_loading",
-        //         "sc": addProdFlex_on,
-        //         "rc": function () { }
-        //     };
-        //     frmSND(datas);
-        // });
-        // var addProdFlex_on = function () {
-        //     $("#add_prod_loading").css("display", "flex");
-        // }
-        /*———— sumbit sizes up ———*/
-        /*—————————————————— ADD PRODUCT UP —————————————————————————————————*/
-
-
-
     });
 }).call(this);

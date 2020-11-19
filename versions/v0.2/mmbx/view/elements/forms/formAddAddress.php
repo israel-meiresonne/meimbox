@@ -92,7 +92,8 @@ $translator = $translator;
                             $label = $countriesMap->get($isoCountry, Map::countryName);
                             if ($label != $country->getCountryNameDefault()) {
                                 $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                $inputMap->put(Country::INPUT_ISO_COUNTRY.Country::INPUT_EXT_ADRS, $label, Map::inputName);
+                                // $inputMap->put(Country::INPUT_ISO_COUNTRY.Country::INPUT_EXT_ADRS, $label, Map::inputName);
+                                $inputMap->put(Country::INPUT_ISO_COUNTRY_ADRS, $label, Map::inputName);
                                 $inputMap->put($isoCountry, $label, Map::inputValue);
                                 $inputMap->put($isChecked, $label, Map::isChecked);
                                 $inputMap->put(null, $label, Map::inputFunc);

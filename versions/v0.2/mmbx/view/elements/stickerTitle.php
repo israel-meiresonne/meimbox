@@ -13,7 +13,11 @@
  *      "removeBtnId" => string,
  *      "btnFunc" => string,{ex: "myFunction(param)"}
  * ]
+ * @param string $TagInput $TagParams additional params to place on input tag
+ * + i.e.: "data-mydate='value' myFunction='newFunction()'"
  */
+$TagInput = (!empty($$TagInput)) ? $TagInput : null;
+
 $stickerDatas = [
     "content" => $stickerTitleDatas["content"],
     "removeBtnId" => $stickerTitleDatas["removeBtnId"],
@@ -21,7 +25,7 @@ $stickerDatas = [
 ];
 ?>
 <div class="custom_selected-inner">
-    <input name="<?= $stickerTitleDatas["inputName"] ?>" type="hidden" value="<?= $stickerTitleDatas["inputValue"] ?>">
+    <input <?= $TagInput ?> name="<?= $stickerTitleDatas["inputName"] ?>" type="hidden" value="<?= $stickerTitleDatas["inputValue"] ?>">
     <div class="custom_selected-title-div">
         <p class="custom_selected-title"><?= $stickerTitleDatas["stickerTitle"] ?>:</p>
     </div>

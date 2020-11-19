@@ -46,15 +46,15 @@ class Country extends ModelFunctionality
     /**
      * Holds input name
      */
-    public const INPUT_ISO_COUNTRY = "iso_country";
+    private const INPUT_ISO_COUNTRY = "iso_country";
 
     /**
      * Holds extention for input
      * + used to destinct input by their name when used in radio checkbox
      * @var string
      */
-    public const INPUT_EXT_ADRS = "_" . Address::class;
-    public const INPUT_EXT_VISITOR = "_" . Visitor::class;
+    public const INPUT_ISO_COUNTRY_ADRS = self::INPUT_ISO_COUNTRY . "_" . Address::class;
+    public const INPUT_ISO_COUNTRY_VISITOR = self::INPUT_ISO_COUNTRY . "_" . Visitor::class;
 
     public function __construct($countryName)
     {
@@ -169,21 +169,21 @@ class Country extends ModelFunctionality
      */
     public static function getCountriesPriced()
     {
-        $sql = 
-        "SELECT DISTINCT c.* 
+        $sql =
+            "SELECT DISTINCT c.* 
         FROM `Countries` c
         WHERE c.`country`IN(SELECT DISTINCT `country_` FROM `BoxPrices`) 
         OR c.`country`IN(SELECT DISTINCT `country_` FROM `ProductsPrices`)";
         $tab = parent::select($sql);
-        if(count($tab) <= 0){
+        if (count($tab) <= 0) {
             throw new Exception("There is any country with priced items");
         }
         $countriesMap = new Map();
-        foreach($tab as $tabLine){
+        foreach ($tab as $tabLine) {
             $isoCountry = $tabLine["isoCountry"];
             $country = $tabLine["country"];
             $isoCurrency = $tabLine["iso_currency"];
-            $isUE = (boolean) $tabLine["isUE"];
+            $isUE = (bool) $tabLine["isUE"];
             $vat = (float) $tabLine["vat"];
             $countriesMap->put($country,        $isoCountry, Map::countryName);
             $countriesMap->put($isoCurrency,    $isoCountry, Map::isoCurrency);

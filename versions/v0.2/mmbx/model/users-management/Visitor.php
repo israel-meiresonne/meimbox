@@ -1145,7 +1145,6 @@ class Visitor extends ModelFunctionality
         $sizeObj = null;
         $this->checkSizeInput($response, BoxProduct::BOX_TYPE, $sizeType, $sizeMap);
         if (!$response->containError()) {
-            // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
             switch ($sizeType) {
                 case Size::SIZE_TYPE_ALPHANUM:
                     $size = $sizeMap->get(Map::size);
@@ -1199,7 +1198,6 @@ class Visitor extends ModelFunctionality
             case BoxProduct::BOX_TYPE:
                 $this->checkSizeType($response, $sizeType);
                 if (!$response->containError()) {
-                    // $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
                     switch ($sizeType) {
                         case Size::SIZE_TYPE_ALPHANUM:
                             $size = $sizeMap->get(Map::size);
@@ -1213,10 +1211,8 @@ class Visitor extends ModelFunctionality
                             }
                             break;
                         case Size::SIZE_TYPE_MEASURE:
-                            // if (Query::existParam(Measure::KEY_MEASURE_ID)) {
                             $measureID = $sizeMap->get(Map::measureID);
                             if (!empty($measureID)) {
-                                // $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
                                 if (!$this->existMeasure($measureID)) {
                                     $errorMsg = "ER1";
                                     $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
@@ -1250,10 +1246,7 @@ class Visitor extends ModelFunctionality
      */
     private function checkSizeType(Response $response, $sizeType)
     {
-        // if (Query::existParam(Size::INPUT_SIZE_TYPE)) {
         if (!empty($sizeType)) {
-            // if ((Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_ALPHANUM)
-            //     || (Query::getParam(Size::INPUT_SIZE_TYPE) == Size::SIZE_TYPE_MEASURE)
             if (($sizeType == Size::SIZE_TYPE_ALPHANUM) || ($sizeType == Size::SIZE_TYPE_MEASURE)) {
                 return true;
             } else {
@@ -1274,9 +1267,7 @@ class Visitor extends ModelFunctionality
      */
     private function checkSizeAlphaNum(Response $response, $size)
     {
-        // if (Query::existParam(Size::INPUT_ALPHANUM_SIZE)) {
         if (!empty($size)) {
-            // $size = Query::getParam(Size::INPUT_ALPHANUM_SIZE);
             $sizeList = $this->getTableValues("supoortedSizes");
             if (in_array($size, $sizeList)) {
                 return true;
@@ -1298,9 +1289,7 @@ class Visitor extends ModelFunctionality
      */
     private function checkBrand(Response $response, $brand)
     {
-        // if (Query::existParam(Size::INPUT_BRAND)) {
         if (!empty($brand)) {
-            // $brand = Query::getParam(Size::INPUT_BRAND);
             $brandMap = $this->getBrandMeasuresTable();
             if (key_exists($brand, $brandMap)) {
                 return true;
@@ -1308,9 +1297,7 @@ class Visitor extends ModelFunctionality
                 $errorMsg = "ER1";
                 $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
             }
-        } /*else {
-            return true;
-        }*/
+        }
         return false;
     }
 
@@ -1321,7 +1308,6 @@ class Visitor extends ModelFunctionality
      */
     private function checkCut(Response $response, $cut)
     {
-        // $cut = Query::getParam(Size::INPUT_CUT);
         $cutMap = $this->getTableValues("cuts");
         $isCorret = (!empty($cut)) ? key_exists($cut, $cutMap) : false;
         if (!$isCorret) {
@@ -1447,13 +1433,14 @@ class Visitor extends ModelFunctionality
                         $quantity = $product->getQuantity();
                         $needleSpace = $newQty - $quantity;
                         if (!$basket->stillSpace($boxID, $needleSpace)) {
-                            $errStation = "ER18";
-                            $response->addErrorStation($errStation, ControllerItem::A_EDT_BXPROD);
+                            $response->addErrorStation("ER18", Size::INPUT_QUANTITY);
                         } else {
                             $stillStock = $this->stillStock($response, $prodID, $sizeType, $sizeMap);
                             if (!$response->containError()) {
                                 if (!$stillStock) {
-                                    $response->addErrorStation("ER13", ControllerItem::A_EDT_BXPROD);
+                                    $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ?  "ER13" : "ER32";
+                                    $response->addErrorStation($errStation, Size::INPUT_SIZE_TYPE);
+                                    // $response->addErrorStation("ER13", ControllerItem::A_EDT_BXPROD);
                                 } else {
                                     $newSizeObj = $this->extractSizeBoxProduct($response, $sizeType, $sizeMap);
                                     $TrueHoldSize = $product->getSelectedSize();
