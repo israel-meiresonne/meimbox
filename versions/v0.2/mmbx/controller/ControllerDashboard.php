@@ -73,14 +73,14 @@ class ControllerDashboard extends ControllerSecure
             $response,
             Address::INPUT_PROVINCE,
             Query::getParam(Address::INPUT_PROVINCE),
-            [self::TYPE_STRING_SPACE_HYPHEN_UNSER],
+            [self::TYPE_STRING_SPACE_HYPHEN_UNDER],
             $this->person->getDataLength("Addresses", "province")
         );
         $city = $this->checkInput(
             $response,
             Address::INPUT_CITY,
             Query::getParam(Address::INPUT_CITY),
-            [self::TYPE_STRING_SPACE_HYPHEN_UNSER],
+            [self::TYPE_STRING_SPACE_HYPHEN_UNDER],
             $this->person->getDataLength("Addresses", "city")
         );
         $zipcode = $this->checkInput(

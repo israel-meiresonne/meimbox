@@ -289,7 +289,7 @@ switch ($conf) {
                     </div>
                 <?php break;
                 case BasketProduct::BASKET_TYPE:
-                    $buttonTxt = $translator->translateStation("US25"); ?>
+                    $buttonTxt = $translator->translateStation("US24"); ?>
                     <div class="add-button-container product-data-line">
                         <button id="select_size_for_cart" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
                         <div id="add_prod_loading" class="btn-loading loading-img-wrap">
