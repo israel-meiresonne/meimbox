@@ -1452,7 +1452,15 @@ class Visitor extends ModelFunctionality
                                         $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ?  "ER13" : "ER32";
                                         $response->addErrorStation($errStation, Size::INPUT_SIZE_TYPE);
                                     } else {
-                                        $basket->updateBoxProduct($response, $boxID, $prodID, $TrueHoldSize, $newSize);
+                                        $product = $box->getProduct($prodID, $newSize);
+                                        $newIstHold = ($newSize->getSequence() == $TrueHoldSize->getSequence());
+                                        if ((!$newIstHold) && (!empty($product))) {
+                                            $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ? "ER34" : "ER33";
+                                            $errKey = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ? Size::SIZE_TYPE_ALPHANUM : Measure::KEY_MEASURE_ID;
+                                            $response->addErrorStation($errStation, $errKey);
+                                        } else {
+                                            $basket->updateBoxProduct($response, $boxID, $prodID, $TrueHoldSize, $newSize);
+                                        }
                                     }
                                 }
                             }

@@ -185,10 +185,11 @@ switch ($conf) {
                                 <div id="measurement_button_div" class="customize_choice-button-container">
                                     <?php
                                     echo $measureMinipop;
+                                    $TagInput = "data-errorx='#$measureMinipopID' data-errortype='" . self::ER_TYPE_MINIPOP . "'";
                                     ?>
+                                    <div name="<?= Measure::KEY_MEASURE_ID ?>" <?= $TagInput ?>></div>
                                     <div class="custom_selected-container">
                                         <?php
-                                        $TagInput = "data-errorx='#$measureMinipopID' data-errortype='" . self::ER_TYPE_MINIPOP . "'";
                                         if (!empty($measure)) :
                                             $datas = [
                                                 "measure" => $measure,
@@ -196,8 +197,6 @@ switch ($conf) {
                                             ];
                                             echo $this->generateFile('view/Item/itemFiles/stickerMeasure.php', $datas);
                                         else : ?>
-                                            <div name="<?= Measure::KEY_MEASURE_ID ?>" <?= $TagInput ?>></div>
-                                            <input type="hidden" name="<?= Measure::KEY_MEASURE_ID . MiniPopUp::class ?>" value="<?= $TagInput ?>">
                                         <?php endif; ?>
                                     </div>
                                     <?php
@@ -239,7 +238,7 @@ switch ($conf) {
                                     case Size::CONF_SIZE_EDITOR:
                                         $checkedLabels = ($sizeType == Size::SIZE_TYPE_MEASURE) ? [$selectedSize->getCut()] : [Size::DEFAULT_CUT];
                                         $cutInputName = Size::INPUT_CUT_EDITOR;
-                                    break;
+                                        break;
                                 }
                                 $datas = [
                                     "title" => $title,
