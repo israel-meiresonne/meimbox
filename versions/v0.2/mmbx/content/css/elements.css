@@ -3089,7 +3089,8 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
         /* overflow: auto; */
     }
     #size_editor_pop .product-quantity-container {
-        margin-bottom: 5px;
+        /* margin-bottom: 5px; */
+        margin: 30px 0 25px;
     }
     #size_editor_pop .product-size-dropdown-container {
         margin-bottom: 5px;
