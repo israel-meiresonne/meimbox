@@ -16,7 +16,7 @@ class Query
     /**
      * Holds the input type
      */
-    const CHECKBOX = "checckbox";
+    /*const CHECKBOX = "checckbox";
     const PSEUDO = "pseudo";
     const NAME = "name";  // handle space and `-`
     const EMAIL = "email";
@@ -31,7 +31,7 @@ class Query
     const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
     const STRING_REGEX = "#^[a-zA-Z]+$#";
     const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
-    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";*/
 
     /**
      * Constructor
@@ -52,7 +52,7 @@ class Query
     {
         (!self::$isset) ? self::setQuery() : null;
         // return (key_exists($key, self::$params)) && (!empty(self::$params[$key]));
-        return (key_exists($key, self::$params)) && (isset(self::$params[$key]));
+        return (key_exists($key, self::$params)) && (isset(self::$params[$key])) && (self::$params[$key] != "");
     }
 
     /**

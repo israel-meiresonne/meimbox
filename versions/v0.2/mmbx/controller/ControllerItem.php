@@ -202,49 +202,49 @@ class ControllerItem extends ControllerSecure
             $response,
             MeasureUnit::INPUT_MEASURE_UNIT,
             Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT),
-            [Query::CHECKBOX, Query::STRING_TYPE],
+            [self::CHECKBOX, self::STRING_TYPE],
             $this->person->getDataLength($table, "unit_name")
         );
         $measureName = $this->checkInput(
             $response,
             Measure::INPUT_MEASURE_NAME,
             Query::getParam(Measure::INPUT_MEASURE_NAME),
-            [Query::PSEUDO],
+            [self::PSEUDO],
             $this->person->getDataLength($table, "measureName")
         );
         $userBust = $this->checkInput(
             $response,
             Measure::INPUT_BUST,
             Query::getParam(Measure::INPUT_BUST),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userBust")
         );
         $userArm = $this->checkInput(
             $response,
             Measure::INPUT_ARM,
             Query::getParam(Measure::INPUT_ARM),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userArm")
         );
         $userWaist = $this->checkInput(
             $response,
             Measure::INPUT_WAIST,
             Query::getParam(Measure::INPUT_WAIST),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userWaist")
         );
         $userHip = $this->checkInput(
             $response,
             Measure::INPUT_HIP,
             Query::getParam(Measure::INPUT_HIP),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userHip")
         );
         $userInseam = $this->checkInput(
             $response,
             Measure::INPUT_INSEAM,
             Query::getParam(Measure::INPUT_INSEAM),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userInseam")
         );
 
@@ -313,7 +313,7 @@ class ControllerItem extends ControllerSecure
             $response,
             Measure::KEY_MEASURE_ID,
             Query::getParam(Measure::KEY_MEASURE_ID),
-            [Query::ALPHA_NUMERIC],
+            [self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER],
             $this->person->getDataLength($table, "measureID")/*,
             false*/
         );
@@ -321,49 +321,49 @@ class ControllerItem extends ControllerSecure
             $response,
             MeasureUnit::INPUT_MEASURE_UNIT,
             Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT),
-            [Query::CHECKBOX, Query::STRING_TYPE],
+            [self::CHECKBOX, self::STRING_TYPE],
             $this->person->getDataLength($table, "unit_name")
         );
         $measureName = $this->checkInput(
             $response,
             Measure::INPUT_MEASURE_NAME,
             Query::getParam(Measure::INPUT_MEASURE_NAME),
-            [Query::PSEUDO],
+            [self::PSEUDO],
             $this->person->getDataLength($table, "measureName")
         );
         $userBust = $this->checkInput(
             $response,
             Measure::INPUT_BUST,
             Query::getParam(Measure::INPUT_BUST),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userBust")
         );
         $userArm = $this->checkInput(
             $response,
             Measure::INPUT_ARM,
             Query::getParam(Measure::INPUT_ARM),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userArm")
         );
         $userWaist = $this->checkInput(
             $response,
             Measure::INPUT_WAIST,
             Query::getParam(Measure::INPUT_WAIST),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userWaist")
         );
         $userHip = $this->checkInput(
             $response,
             Measure::INPUT_HIP,
             Query::getParam(Measure::INPUT_HIP),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userHip")
         );
         $userInseam = $this->checkInput(
             $response,
             Measure::INPUT_INSEAM,
             Query::getParam(Measure::INPUT_INSEAM),
-            [Query::NUMBER_FLOAT],
+            [self::NUMBER_FLOAT],
             $this->person->getDataLength($table, "userInseam")
         );
         if (!$response->containError()) {
