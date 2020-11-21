@@ -12,6 +12,12 @@ require_once 'model/special/Map.php';
 class Basket extends ModelFunctionality
 {
     /**
+     * Holds Visitor's id
+     * @var string
+     */
+    private $userID;
+
+    /**
      * the Visitor's language
      * @var Language
      */
@@ -69,26 +75,27 @@ class Basket extends ModelFunctionality
      */
     function __construct($userID, Language $language, Country $country, Currency $currency)
     {
-        if (empty($userID)) {
-            throw new Exception("Param '\$userID' can't be empty");
+        // if (empty($userID)) {
+        //     throw new Exception("Param '\$userID' can't be empty");
+        // }
+        if (empty($userID) || empty($language) || empty($country) || empty($currency)) {
+            throw new Exception("The user's id, the language, the 'country' and the 'currency' can't be empty");
         }
-        if (empty($country) || empty($currency)) {
-            throw new Exception("Param '\$country' and '\$currency' can't be empty");
-        }
-        $this->boxes = [];
-        $this->basketProducts = [];
-        $this->discountCodes = [];
+        // $this->boxes = [];
+        // $this->basketProducts = [];
+        // $this->discountCodes = [];
 
+        $this->userID = $userID;
         $this->language = $language;
         $this->country = $country;
         $this->currency = $currency;
 
-        $sql = "SELECT * FROM `Users` WHERE `userID` = '$userID'";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            $this->setBoxes($userID, $language, $country, $currency);
-            $this->setBasketProducts($userID, $language, $country, $currency);
-        }
+        // $sql = "SELECT * FROM `Users` WHERE `userID` = '$userID'";
+        // $tab = $this->select($sql);
+        // if (count($tab) > 0) {
+        // $this->setBoxes($userID, $language, $country, $currency);
+        // $this->setBasketProducts($userID, $language, $country, $currency);
+        // }
     }
 
     /**
@@ -98,8 +105,14 @@ class Basket extends ModelFunctionality
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    private function setBoxes($userID, Language $language, Country $country, Currency $currency)
+    // private function setBoxes($userID, Language $language, Country $country, Currency $currency)
+    private function setBoxes()
     {
+        $this->boxes = [];
+        $userID = $this->getUserID();
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
         $sql = "SELECT * FROM `Baskets-Box` WHERE  `userId` = '$userID'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
@@ -120,8 +133,14 @@ class Basket extends ModelFunctionality
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    private function setBasketProducts($userID, Language $language, Country $country, Currency $currency)
+    // private function setBasketProducts($userID, Language $language, Country $country, Currency $currency)
+    private function setBasketProducts()
     {
+        $this->basketProducts = [];
+        $userID = $this->getUserID();
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
         $sql = "SELECT * FROM `Baskets-Products` WHERE `userId` = '$userID'";
         $tab = $this->select($sql);
         if (count($tab) > 0) {
@@ -137,6 +156,23 @@ class Basket extends ModelFunctionality
             }
             krsort($this->basketProducts);
         }
+    }
+
+    /**
+     * To set basket's discount codes
+     */
+    private function setDiscountCodes()
+    {
+        $this->discountCodes = [];
+    }
+
+    /**
+     * Getter for Visitor's id
+     * @return string Visitor's id
+     */
+    public function getUserID()
+    {
+        return $this->userID;
     }
 
     /**
@@ -175,6 +211,7 @@ class Basket extends ModelFunctionality
      */
     public function getBoxes()
     {
+        (!isset($this->boxes)) ? $this->setBoxes() : null;
         return $this->boxes;
     }
 
@@ -183,7 +220,7 @@ class Basket extends ModelFunctionality
      * @param string $boxID id of the box to get
      * @return Box|null the box with the id given in param else return null
      */
-    public function getBoxe($boxID)
+    public function getBox($boxID)
     {
         $found = false;
         $boxes = $this->getBoxes();
@@ -202,6 +239,7 @@ class Basket extends ModelFunctionality
      */
     public function getBasketProducts()
     {
+        (!isset($this->basketProducts)) ? $this->setBasketProducts() : null;
         return $this->basketProducts;
     }
 
@@ -267,6 +305,7 @@ class Basket extends ModelFunctionality
      */
     public function getDiscountCodes()
     {
+        (!isset($this->discountCodes)) ? $this->setDiscountCodes() : null;
         return $this->discountCodes;
     }
 
@@ -343,7 +382,7 @@ class Basket extends ModelFunctionality
      */
     public function stillSpace($boxID, int $quantity = 1)
     {
-        $box = $this->getBoxe($boxID);
+        $box = $this->getBox($boxID);
         if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
@@ -515,7 +554,7 @@ class Basket extends ModelFunctionality
     {
         $this->emptyBox($response, $boxID);
         if (!$response->containError()) {
-            $box = $this->getBoxe($boxID);
+            $box = $this->getBox($boxID);
             $box->deleteBox($response);
             if (!$response->containError()) {
                 // $key = $box->getDateInSec();
@@ -551,7 +590,7 @@ class Basket extends ModelFunctionality
      */
     public function unsetBox($boxID)
     {
-        $box = $this->getBoxe($boxID);
+        $box = $this->getBox($boxID);
         if (!empty($box)) {
             $key = $box->getDateInSec();
             $this->boxes[$key] = null;
@@ -566,7 +605,7 @@ class Basket extends ModelFunctionality
      */
     private function emptyBox(Response $response, $boxID)
     {
-        $box = $this->getBoxe($boxID);
+        $box = $this->getBox($boxID);
         if (empty($box)) {
             throw new Exception("This box don't exist, boxId: $boxID");
         }
@@ -582,7 +621,7 @@ class Basket extends ModelFunctionality
      */
     public function addBoxProduct(Response $response, $boxID, $prodID, Size $sizeObj)
     {
-        $box = $this->getBoxe($boxID);
+        $box = $this->getBox($boxID);
         if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
@@ -599,7 +638,7 @@ class Basket extends ModelFunctionality
      */
     public function updateBoxProduct(Response $response, $boxID, $prodID, Size $holdSize, Size $newSize)
     {
-        $box = $this->getBoxe($boxID);
+        $box = $this->getBox($boxID);
         if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
@@ -633,8 +672,8 @@ class Basket extends ModelFunctionality
      */
     public function moveBoxProduct(Response $response, $boxID, $newBoxID, $prodID, Size $sizeObj)
     {
-        $box = $this->getBoxe($boxID);
-        $newBox = $this->getBoxe($newBoxID);
+        $box = $this->getBox($boxID);
+        $newBox = $this->getBox($newBoxID);
         if (empty($box)) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
@@ -667,7 +706,7 @@ class Basket extends ModelFunctionality
      */
     public function deleteBoxProduct(Response $response, $boxID, $prodID, Size $size)
     {
-        $box = $this->getBoxe($boxID);
+        $box = $this->getBox($boxID);
         if ($box == null) {
             throw new Exception("This box don't exist boxID:'$boxID'");
         }
@@ -697,8 +736,6 @@ class Basket extends ModelFunctionality
         /** lock stock of basketproduct */
     }
 
-    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
-
     /**
      * To unlock locked stock of prroducts
      * @param Response $response where to strore results
@@ -706,7 +743,9 @@ class Basket extends ModelFunctionality
      */
     public function unlock(Response $response, $userID)
     {
-        $sql = "DELETE FROM `StockLocks` WHERE `userId` = '$userID'";
-        $this->delete($response, $sql);
+        Product::deleteLocks($response, $userID);
     }
+
+    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
+
 }

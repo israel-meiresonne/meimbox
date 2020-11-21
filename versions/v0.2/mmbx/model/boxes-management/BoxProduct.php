@@ -936,15 +936,4 @@ class BoxProduct extends Product
     //     ];
     //     $this->update($response, $sql, $values);
     // }
-
-    /**
-     * To delete all existing locked stock for the User's with the give id
-     * @param Response $response where to strore results
-     * @param string $userID Client's id
-     */
-    public static function deleteAllLcok(Response $response, $userID)
-    {
-        $sql = "DELETE FROM `StockLocks` WHERE `StockLocks`.`userId` = '$userID'";
-        parent::delete($response, $sql);
-    }
 }
