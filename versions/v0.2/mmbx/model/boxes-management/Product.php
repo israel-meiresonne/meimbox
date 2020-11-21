@@ -626,7 +626,8 @@ abstract class Product extends ModelFunctionality
      * Getter for product's stock for each size
      * @return int[] product's stock for each size
      */
-    protected function getSizeStock()
+    public function getSizeStock()
+    // protected function getSizeStock()
     {
         (!isset($this->sizesStock)) ? $this->setSizeStock() : null;
         return $this->sizesStock;
@@ -672,7 +673,7 @@ abstract class Product extends ModelFunctionality
      * To generate sequence with product's id and the selected size
      * @return string sequence using product's id and its selected size
      */
-    public function getSequence()
+    public function generateSequence()
     {
         $prodID = $this->getProdID();
         $selectedSize = $this->getSelectedSize();

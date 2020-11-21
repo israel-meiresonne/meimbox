@@ -1115,12 +1115,13 @@ class Visitor extends ModelFunctionality
             $product = new BoxProduct($prodID, $this->getLanguage(), $this->getCountry(), $this->getCurrency());
             $product->selecteSize($sizeObj);
 
-            $boxProductsMap = $basket->extractBoxProducts();
+            // $boxProductsMap = $basket->extractBoxProducts();
+            $boxProductsMap = Box::extractBoxProducts($basket->getBoxes());
             $prodIDs = $boxProductsMap->getKeys();
             $boxProducts = (in_array($prodID, $prodIDs)) ? $boxProductsMap->get($prodID) : [];
             array_push($boxProducts, $product);
             $sizesMap = Product::extractSizes(...$boxProducts);
-            $sizeObjs = $this->keysToIntKeys($sizesMap->getMap());
+            $sizeObjs = $this->keysToAscInt($sizesMap->getMap());
 
             $stillStock = $product->stillStock(...$sizeObjs);
         }
@@ -1440,10 +1441,11 @@ class Visitor extends ModelFunctionality
                                 $TrueHoldSize = $product->getSelectedSize();
                                 $product->selecteSize($newSize);
 
-                                $boxProductsMap = $basket->extractBoxProducts();
+                                // $boxProductsMap = $basket->extractBoxProducts();
+                                $boxProductsMap = Box::extractBoxProducts($basket->getBoxes());
                                 $boxProducts = $boxProductsMap->get($prodID);
                                 $sizesMap = Product::extractSizes(...$boxProducts);
-                                $sizeObjs = $this->keysToIntKeys($sizesMap->getMap());
+                                $sizeObjs = $this->keysToAscInt($sizesMap->getMap());
                                 $stillStock = $product->stillStock(...$sizeObjs);
 
                                 $product->selecteSize($TrueHoldSize);

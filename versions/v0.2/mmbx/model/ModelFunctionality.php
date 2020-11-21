@@ -1372,7 +1372,7 @@ abstract class ModelFunctionality extends Model
      * + int keys of the first element is 0, the second is 1, and go on
      * @return array with int keys
      */
-    protected function keysToIntKeys(array $map){
+    protected static function keysToAscInt(array $map){
         $keys = array_keys($map);
         $intKeys = array_keys($keys);
         $intKeysMap = array_combine($intKeys, $map);

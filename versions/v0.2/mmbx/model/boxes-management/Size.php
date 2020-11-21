@@ -49,11 +49,12 @@ class Size  extends ModelFunctionality
      */
     private $setDate;
 
-    // /**
-    //  * Holds the number of this product owned by container (basket or box)
-    //  * @var int
-    //  */
-    // private $quantity;
+    /**
+     * Holds Measue of supported sizes
+     * @var Map
+     * + $sizeMeasures[size] => Measure
+     */
+    private static $sizeMeasures;
 
     /**
      * Holds the access key for brand name in Query
@@ -140,8 +141,8 @@ class Size  extends ModelFunctionality
      * @var string
      */
     private const INPUT_CUT =  "cut";
-    public const INPUT_CUT_ADDER =  self::INPUT_CUT."_".self::CONF_SIZE_ADD_PROD;
-    public const INPUT_CUT_EDITOR =  self::INPUT_CUT."_".self::CONF_SIZE_EDITOR;
+    public const INPUT_CUT_ADDER =  self::INPUT_CUT . "_" . self::CONF_SIZE_ADD_PROD;
+    public const INPUT_CUT_EDITOR =  self::INPUT_CUT . "_" . self::CONF_SIZE_EDITOR;
     /**
      * Holds the input name
      * @var string
@@ -283,6 +284,33 @@ class Size  extends ModelFunctionality
     }
 
     /**
+     * To set Measure of a supported size
+     * @param string|int $size a supported size
+     */
+    private static function setSizeMeasure($size)
+    {
+        $sql = "SELECT * FROM `SizesMeasures` WHERE `size_name`='$size'";
+        $tab = parent::select($sql);
+        if (empty($tab)) {
+            throw new Exception("This size '$size' don't have measure in database");
+        }
+        $measureDatas  = [];
+        foreach ($tab as $tabLine) {
+            if (!isset($measureDatas["unitName"])) {
+                $measureDatas["unitName"] = $tabLine["unit_name"];
+            }
+            if ($measureDatas["unitName"] != $tabLine["unit_name"]) {
+                throw new Exception("Unit must be the same for all measure, unit:" . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
+            }
+            $bodyPart = $tabLine["body_part"];
+            $measureDatas[$bodyPart] = (float) $tabLine["value"];
+        }
+        $measureMap = Measure::getDatas4Measure($measureDatas);
+        $measure = new Measure($measureMap);
+        self::$sizeMeasures->put($measure, $size);
+    }
+
+    /**
      * Setter for product's quantity
      * @param int $quantity product's quantity
      */
@@ -346,6 +374,45 @@ class Size  extends ModelFunctionality
         return $this->size;
     }
 
+    // /**
+    //  * To extract the biggest size from a list
+    //  * @param mixed[] $sizes list of sizes
+    //  * + $sizes[index] => size{string|int}
+    //  * @return string the biggest size
+    //  */
+    // public static function extractBiggest(array $sizes)
+    // {
+    //     if (empty($sizes)) {
+    //         throw new Exception("Sizes can't be empty");
+    //     }
+    //     $orderedLH = self::orderSizes($sizes);
+    //     $orderedHL = array_reverse($orderedLH);
+    //     return $orderedHL[0];
+    // }
+
+    /**
+     * To order size from lower to hight
+     * + Note: use order of supported size
+     * @param array $sizes sizes to order
+     * + $sizes[index] => size{string|int}
+     * @return array ordered array
+     */
+    public static function orderSizes($sizes)
+    {
+        if (empty($sizes)) {
+            throw new Exception("Sizes can't be empty");
+        }
+        $supported = self::getSupportedSizes($sizes[0]);
+        $ordered =  [];
+        foreach ($supported as $size) {
+            if (in_array($size, $sizes)) {
+                array_push($ordered, $size);
+                // $ordered[$size] = $toOrderSizes[$size];
+            }
+        }
+        return $ordered;
+    }
+
     /**
      * Getter for size's brandName
      * @param boolean true if you want null to be a string if empty else false
@@ -367,6 +434,19 @@ class Size  extends ModelFunctionality
     public function getmeasure()
     {
         return $this->measure;
+    }
+
+    /**
+     * To get Measure of a supporetd size given
+     * @param string|int $size a supported size
+     * @return Measure Measure of the size given
+     */
+    public static function getSizeMeasure($size)
+    {
+        (!isset(self::$sizeMeasures)) ? (self::$sizeMeasures = new Map()) : null;
+        $sizes = self::$sizeMeasures->getKeys();
+        (!in_array($size, $sizes)) ? self::setSizeMeasure($size) : null;
+        return self::$sizeMeasures->get($size);
     }
 
     /**
@@ -462,7 +542,7 @@ class Size  extends ModelFunctionality
         return ($sequence1 == $sequence2);
     }
 
-        /**
+    /**
      * To get A copy of the currrent instance
      * @return Instance
      */
@@ -472,8 +552,8 @@ class Size  extends ModelFunctionality
         $attributs = array_keys($map);
         $class = get_class($this);
         $copy = new $class();
-        if($class == Size::class){
-    }
+        if ($class == Size::class) {
+        }
         foreach ($attributs as $attribut) {
             switch (gettype($this->{$attribut})) {
                     // case 'object':

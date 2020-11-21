@@ -157,7 +157,7 @@ abstract class ControllerSecure extends Controller
      * + i.e: ControllerMyAss => myass
      * @return string name of a controller get from his class name
      */
-    protected function extractController($ctrClass)
+    public static function extractController($ctrClass)
     {
         return strtolower(str_replace("Controller", "", $ctrClass));
     }

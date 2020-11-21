@@ -8,7 +8,9 @@ require_once 'controller/ControllerDashboard.php';
  */
 
 $containerId = "basket_pop"; // id of the tag that holds datas generated
-
+/**
+ * @var Translator */
+$translator = $translator;
 /**
  * @var Basket
  */
@@ -32,12 +34,12 @@ echo $cart = $this->generateFile('view/elements/cart.php', $boxDatas);
         <ul class="basketpop-resume-buttons remove-ul-default-att">
             <li class="remove-li-default-att">
                 <a href="<?= ControllerDashboard::QR_SHOPBAG ?>">
-                    <button class="blue-button standard-button remove-button-default-att">view bag details</button>
+                    <button class="blue-button standard-button remove-button-default-att"><?= $translator->translateStation("US25") ?></button>
                 </a>
             </li>
             <li class="remove-li-default-att">
-                <a href="">
-                    <button class="green-button standard-button remove-button-default-att">checkout</button>
+                <a href="<?= ControllerCheckout::extractController(ControllerCheckout::class) ?>">
+                    <button class="green-button standard-button remove-button-default-att"><?= $translator->translateStation("US102") ?></button>
                 </a>
             </li>
         </ul>

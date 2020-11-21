@@ -67,39 +67,39 @@ class BoxProduct extends Product
         parent::__construct($prodID, $language, $country, $currency);
     }
 
-    /**
-     * Setter for BoxProduct's measure
-     */
-    private function setMeasure()
-    {
-        $prodID = $this->getProdID();
-        // $sql = "SELECT * FROM `ProductsMeasures` WHERE `prodId` = '$this->prodID'";
-        $sql = "SELECT * FROM `ProductsMeasures` 
-                WHERE `prodId` = '$prodID'
-                AND `value` IN	(SELECT MAX(`value`) FROM `ProductsMeasures` 
-                                WHERE `prodId` = '$prodID'
-                                GROUP BY `body_part` ASC)";
-        $tab = $this->select($sql);
-        if (count($tab) == 0) {
-            throw new Exception("This product has any measure: id=$prodID");
-        }
-        $measureDatas  = [];
-        foreach ($tab as $tabLine) {
-            if (!isset($measureDatas["unitName"])) {
-                $measureDatas["unitName"] = $tabLine["unit_name"];
-            }
-            if ($measureDatas["unitName"] != $tabLine["unit_name"]) {
-                throw new Exception("Product unit measure must be the same for all its measures: id=$prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
-            }
-            // $bodyPart = "user" . ucfirst($tabLine["body_part"]);
-            $bodyPart = $tabLine["body_part"];
-            $measureDatas[$bodyPart] = (float) $tabLine["value"];
-        }
-        $measureMap = Measure::getDatas4Measure($measureDatas);
+    // /**
+    //  * Setter for BoxProduct's measure
+    //  */
+    // private function setMeasure()
+    // {
+    //     $prodID = $this->getProdID();
+    //     // $sql = "SELECT * FROM `ProductsMeasures` WHERE `prodId` = '$this->prodID'";
+    //     $sql = "SELECT * FROM `ProductsMeasures` 
+    //             WHERE `prodId` = '$prodID'
+    //             AND `value` IN	(SELECT MAX(`value`) FROM `ProductsMeasures` 
+    //                             WHERE `prodId` = '$prodID'
+    //                             GROUP BY `body_part` ASC)";
+    //     $tab = $this->select($sql);
+    //     if (count($tab) == 0) {
+    //         throw new Exception("This product has any measure: id=$prodID");
+    //     }
+    //     $measureDatas  = [];
+    //     foreach ($tab as $tabLine) {
+    //         if (!isset($measureDatas["unitName"])) {
+    //             $measureDatas["unitName"] = $tabLine["unit_name"];
+    //         }
+    //         if ($measureDatas["unitName"] != $tabLine["unit_name"]) {
+    //             throw new Exception("Product unit measure must be the same for all its measures: id=$prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
+    //         }
+    //         // $bodyPart = "user" . ucfirst($tabLine["body_part"]);
+    //         $bodyPart = $tabLine["body_part"];
+    //         $measureDatas[$bodyPart] = (float) $tabLine["value"];
+    //     }
+    //     $measureMap = Measure::getDatas4Measure($measureDatas);
 
-        // $this->measure = new Measure($measureDatas);
-        $this->measure = new Measure($measureMap);
-    }
+    //     // $this->measure = new Measure($measureDatas);
+    //     $this->measure = new Measure($measureMap);
+    // }
 
     /**
      * Set virtualSizeStock by decupling stock for each size
@@ -251,31 +251,34 @@ class BoxProduct extends Product
     private function setRealSelectedSize()
     {
         $selectedSize = $this->getSelectedSize();
-        $newSizeObj = $this->convertSizeToRealSize($selectedSize);
+        $sizesStock = $this->getSizeStock();
+        $newSizeObj = $this->convertSizeToRealSize($sizesStock, $selectedSize);
         $this->realSelectedSize =  $newSizeObj;
     }
 
     /**
      * To convert a Size object into a size of sizeStock
      * + Note: Size with Measure can be unconvertible if Measure suit any real size from sizeStock
+     * @param mixed[] $sizesStock product's stock
      * @param Size $sizeObj the Size to convert
      * @return Size|null Size converrted into a size of sizeStock else null if Size is unconvertible
      */
-    // public function convertSizeToRealSize(Size $sizeToconvert)
-    private function convertSizeToRealSize(Size $sizeToconvert)
+    // public static function convertSizeToRealSize($sizesStock, Size $sizeToconvert)
+    private static function convertSizeToRealSize($sizesStock, Size $sizeToconvert)
     {
         $size = null;
         $sizeConverted = null;
         $sizeType = $sizeToconvert->getType();
         switch ($sizeType) {
             case Size::SIZE_TYPE_ALPHANUM:
-                $holdsSize = $sizeToconvert->getsize();
-                $size = $this->virtualToRealSize($holdsSize);
+                $virtualSize = $sizeToconvert->getsize();
+                $size = self::virtualToRealSize($sizesStock, $virtualSize);
                 break;
             case Size::SIZE_TYPE_MEASURE:
                 $measure = $sizeToconvert->getMeasure();
                 $cut = $sizeToconvert->getCut();
-                $size = $this->measureToRealSize($measure, $cut);
+                $sizes = array_keys($sizesStock);
+                $size = self::measureToRealSize($sizes, $measure, $cut);
                 break;
 
             default:
@@ -293,15 +296,16 @@ class BoxProduct extends Product
 
     /**
      * To convert a virtual size to a real size
-     * @param string $size the virtual size to convert into real size
+     * @param mixed[] $sizesStock product's stock
+     * @param string $virtualSize the virtual size to convert into real size
      * @return string the lower real size
      */
-    private function virtualToRealSize($size)
+    private static function virtualToRealSize($sizesStock, $virtualSize)
     {
         $convertedSize = null;
-        $sizesStock = $this->getSizeStock();
+        // $sizesStock = $this->getSizeStock();
         $sizeSample = array_keys($sizesStock)[0];
-        $supported = array_reverse($this->getSupportedSizes($sizeSample));
+        $supported = array_reverse(Size::getSupportedSizes($sizeSample));
         $supportedFliped = array_flip($supported);
 
         $realSizes  = array_keys($sizesStock);
@@ -312,9 +316,9 @@ class BoxProduct extends Product
             $realSizesIndexed[$index] = $realSize;
         }
         ksort($realSizesIndexed);   // low to hight index
-        $sizeIndex = $supportedFliped[$size];
+        $sizeIndex = $supportedFliped[$virtualSize];
         if (!isset($sizeIndex)) {
-            throw new Exception("This size '$size' is not valid");
+            throw new Exception("This size '$virtualSize' is not valid");
         }
 
         $i = $sizeIndex;
@@ -334,102 +338,68 @@ class BoxProduct extends Product
     /**
      * To convert a measure size to a real size
      * @param Measure $measure the measure to convert
-     * @param string $cut used to get the margin error
+     * @param mixed[]   $sizes  product's real sizes
+     *                          + $sizes[index] => size{string|int}
+     * @param string    $cut    used to get the margin error
      * @return string|null the lower real size with dimension over those of the measure given
      */
-    private function measureToRealSize(Measure $measure, $cut)
+    private static function measureToRealSize($sizes, Measure $measure, $cut)
     {
         $convertedSize = null;
-        $bodyPartSizes = [];
-        $cutMap = parent::getTableValues("cuts");
-        $value = $cutMap[$cut]["cutMeasure"];
-        $unitName = $cutMap[$cut]["unit_name"];
-        $cutObj = new MeasureUnit($value, $unitName);
-        $prodMeasure = $this->getMeasure();
-        if (!empty($prodMeasure->getarm())) { // only compare if product has a measure for a body part
-            $bodyPart = $measure->getarm();
-            $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
-            $bodyPartSizes = $this->getSizesOver(Measure::INPUT_ARM, $value);
-            $comonSizes = $bodyPartSizes;
-        }
-        if (!empty($prodMeasure->getbust())) {
-            $bodyPart = $measure->getbust();
-            $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
-            $bodyPartSizes = $this->getSizesOver(Measure::INPUT_BUST, $value);
-            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
-        }
-        if (!empty($prodMeasure->gethip())) {
-            $bodyPart = $measure->gethip();
-            $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
-            $bodyPartSizes = $this->getSizesOver(Measure::INPUT_HIP, $value);
-            // $comonSizes = $this->keepCommon($comonSizes, $bodyPartSizes);
-            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
-        }
-        if (!empty($prodMeasure->getInseam())) {
-            $bodyPart = $measure->getInseam();
-            $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
-            $bodyPartSizes = $this->getSizesOver(Measure::INPUT_INSEAM, $value);
-            // $comonSizes = $this->keepCommon($comonSizes, $bodyPartSizes);
-            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
-        }
-        if (!empty($prodMeasure->getwaist())) {
-            $bodyPart = $measure->getwaist();
-            $value = ($bodyPart->getValue() * $bodyPart->getToSystUnit()) + ($cutObj->getValue() * $cutObj->getToSystUnit());
-            $bodyPartSizes = $this->getSizesOver(Measure::INPUT_WAIST, $value);
-            // $comonSizes = $this->keepCommon($comonSizes, $bodyPartSizes);
-            $comonSizes = (!isset($comonSizes)) ?  $bodyPartSizes : $this->keepCommon($comonSizes, $bodyPartSizes);
-        }
-
-        if (!empty($comonSizes)) {
-            $minIndex = min(array_keys($comonSizes));
-            $convertedSize = $comonSizes[$minIndex];
+        $orderedSizesLH = Size::orderSizes($sizes);
+        foreach ($orderedSizesLH as $size) {
+            $sizeMeasure = Size::getSizeMeasure($size);
+            if (Measure::isUnderLimite($measure, $sizeMeasure, $cut)) {
+                $convertedSize = $size;
+                break;
+            }
         }
         return $convertedSize;
     }
 
-    /**
-     * To merge two map by keeping key/value couple present in the both array
-     * @return string[]
-     */
-    private function keepCommon($map1, $map2)
-    {
-        $newMap = [];
-        if ($map1) {
-            foreach ($map1 as $key1 => $value1) {
-                if (in_array($value1, $map2)) {
-                    $newMap[$key1] = $value1;
-                }
-            }
-        }
-        return $newMap;
-    }
+    // /**
+    //  * To merge two map by keeping key/value couple present in the both array
+    //  * @return string[]
+    //  */
+    // private function keepCommon($map1, $map2)
+    // {
+    //     $newMap = [];
+    //     if ($map1) {
+    //         foreach ($map1 as $key1 => $value1) {
+    //             if (in_array($value1, $map2)) {
+    //                 $newMap[$key1] = $value1;
+    //             }
+    //         }
+    //     }
+    //     return $newMap;
+    // }
 
-    /**
-     * To get size name where dimension value is overt than the give dimension
-     * @param string $bodyPart 
-     * @param string $value 
-     * @return string[] set of size where dimension value is overt than the give dimension
-     */
-    private function getSizesOver($bodyPart, $value)
-    {
-        // var_dump("body part: $bodyPart");
-        // var_dump("value: $value");
-        $sizesOver = [];
-        $prodID = $this->getProdID();
-        $sql = "SELECT *
-        FROM `ProductsMeasures`
-        WHERE `prodId`='$prodID' AND (`body_part`='$bodyPart' AND `value`>=$value)  
-        ORDER BY `ProductsMeasures`.`value` ASC";
-        $tab = $this->select($sql);
-        if (!empty($tab)) {
-            foreach ($tab as $tabLine) {
-                $size = $tabLine["size_name"];
-                array_push($sizesOver, $size);
-            }
-        }
-        // var_dump("sizesOver:", $sizesOver);
-        return $sizesOver;
-    }
+    // /**
+    //  * To get size name where dimension value is overt than the give dimension
+    //  * @param string $bodyPart 
+    //  * @param string $value 
+    //  * @return string[] set of size where dimension value is overt than the give dimension
+    //  */
+    // private function getSizesOver($bodyPart, $value)
+    // {
+    //     // var_dump("body part: $bodyPart");
+    //     // var_dump("value: $value");
+    //     $sizesOver = [];
+    //     $prodID = $this->getProdID();
+    //     $sql = "SELECT *
+    //     FROM `ProductsMeasures`
+    //     WHERE `prodId`='$prodID' AND (`body_part`='$bodyPart' AND `value`>=$value)  
+    //     ORDER BY `ProductsMeasures`.`value` ASC";
+    //     $tab = $this->select($sql);
+    //     if (!empty($tab)) {
+    //         foreach ($tab as $tabLine) {
+    //             $size = $tabLine["size_name"];
+    //             array_push($sizesOver, $size);
+    //         }
+    //     }
+    //     // var_dump("sizesOver:", $sizesOver);
+    //     return $sizesOver;
+    // }
 
     /**
      * To get the selected size converted into a real size present in stock
@@ -452,15 +422,15 @@ class BoxProduct extends Product
         return $this->sameProducts;
     }
 
-    /**
-     * To get the biggest  measure available for this product
-     * @return Measure the biggest  measure available for this product
-     */
-    private function getMeasure()
-    {
-        (!isset($this->measure)) ? $this->setMeasure() : null;
-        return $this->measure;
-    }
+    // /**
+    //  * To get the biggest  measure available for this product
+    //  * @return Measure the biggest  measure available for this product
+    //  */
+    // private function getMeasure()
+    // {
+    //     (!isset($this->measure)) ? $this->setMeasure() : null;
+    //     return $this->measure;
+    // }
 
     /**
      * Getter for product's price
@@ -520,7 +490,7 @@ class BoxProduct extends Product
         $sizeSample = array_keys($sizesStock)[0];
         $supported = array_reverse($this->getSupportedSizes($sizeSample)); // hight size to low
         foreach ($sizeObjs as $sizeObj) {
-            $realSelectedSize = $this->convertSizeToRealSize($sizeObj);
+            $realSelectedSize = self::convertSizeToRealSize($sizesStock, $sizeObj);
             if (!isset($realSelectedSize)) {
                 $stillStock = false;
                 break;
@@ -723,6 +693,7 @@ class BoxProduct extends Product
         $this->delete($response, $sql);
     }
 
+
     /**
      * To insert boxProduct ordred
      * @param Response $response to push in results or accured errors
@@ -735,99 +706,157 @@ class BoxProduct extends Product
         $values = [];
         $nbProd = 0;
         $stockResponse = new Response();
-        $toDecreaseProds = [];
-        foreach ($boxes as $box) {
-            $products = $box->getProducts();
+
+        /** To boxes to know in witch box is each product */
+        $prodToBoxMap = Box::getProductToBox(...$boxes);
+
+        /** check if still stock for all product */
+        $stillStock = false;
+        $boxProductsMap = Box::extractBoxProducts($boxes);
+        $prodIDs = $boxProductsMap->getKeys();
+        foreach ($prodIDs as $prodID) {
+            /**
+             * @var BoxProduct[] */
+            $products = $boxProductsMap->get($prodID);
+            $sizesMap = Product::extractSizes(...$products);
+            $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
+
+            $stillStock = $products[0]->stillStock(...$selectedSizes);
+            ((!$stillStock) && (!$stockResponse->existErrorKey(MyError::ERROR_STILL_STOCK)))
+                ? $stockResponse->addError($stillStock, MyError::ERROR_STILL_STOCK)
+                : null;
+
             $nbProd += count($products);
-            if (!empty($products)) {
-                foreach ($products as $product) {
-                    array_push($toDecreaseProds, $product);
-                    $size = $product->getSelectedSize();
-                    if ($size->getType() == Size::SIZE_TYPE_MEASURE) {
-                        $measure = $size->getMeasure();
-                        $measureID = $measure->getMeasureID();
-                        if (!key_exists($measureID, $measures)) {
-                            $measures[$measureID] = $measure;
-                        }
+            foreach ($products as $product) {
+                $size = $product->getSelectedSize();
+                if ($size->getType() == Size::SIZE_TYPE_MEASURE) {
+                    $measure = $size->getMeasure();
+                    $measureID = $measure->getMeasureID();
+                    if (!key_exists($measureID, $measures)) {
+                        $measures[$measureID] = $measure;
                     }
-                    $stillStock = $product->stillStock($size);
-                    ((!$stillStock) && (!$stockResponse->existErrorKey(MyError::ERROR_STILL_STOCK)))
-                        ? $stockResponse->addError($stillStock, MyError::ERROR_STILL_STOCK)
-                        : null;
-                    array_push(
-                        $values,
-                        $box->getBoxID(),
-                        $product->getProdID(),
-                        $size->getSequence(),
-                        $product->getType(),
-                        $product->getRealSelectedSize()->getSize(),
-                        $product->getWeight(),
-                        $size->getsize(),
-                        $size->getbrandName(),
-                        $size->getmeasureID(),
-                        $size->getCut(),
-                        $size->getQuantity(),
-                        $size->getSetDate(),
-                        ((int) $stillStock)
-                    );
                 }
+
+                $prodUnix = $product->getDateInSec();
+                array_push(
+                    $values,
+                    $prodToBoxMap->get($prodUnix),
+                    $product->getProdID(),
+                    $size->getSequence(),
+                    $product->getType(),
+                    $product->getRealSelectedSize()->getSize(),
+                    $product->getWeight(),
+                    $size->getsize(),
+                    $size->getbrandName(),
+                    $size->getmeasureID(),
+                    $size->getCut(),
+                    $size->getQuantity(),
+                    $size->getSetDate(),
+                    ((int) $stillStock)
+                );
             }
+            ($stillStock) ? self::updateStock($response, $products) : null; // don't touch stock if there's not enought stock, but order will be saved
         }
+
         $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
         $sql = "INSERT INTO `Orders-BoxProducts`(`boxId`, `prodId`, `sequenceID`, `product_type`, `realSize`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`, `stillStock`)
                 VALUES " . self::buildBracketInsert($nbProd, $bracket);
         (!empty($measures)) ?  Measure::insertOrderMeasures($response, $measures, $orderID) : null;
-        if (!$response->containError()) {
-            self::insert($response, $sql, $values);
-        }
+        // if (!$response->containError()) {
+        self::insert($response, $sql, $values);
+        // }
         if ($stockResponse->existErrorKey(MyError::ERROR_STILL_STOCK)) {
             $stillStock = $stockResponse->getError(MyError::ERROR_STILL_STOCK)->getMeassage();
             $response->addError($stillStock, MyError::ERROR_STILL_STOCK);
         }
-        self::decreaseStock($response, $toDecreaseProds);
+        // self::updateStock($response, $toDecreaseProds);
     }
 
     /**
      * To decrease the stock of a set of products
-     * @param Response $response to push in results or accured errors
-     * @param BoxProduct[] $products set of product to decrease
+     * @param Response      $response to push in results or accured errors
+     * @param BoxProduct[]  $products set of product to decrease
+     *                      + Note: products must share the same id
      */
-    public static function decreaseStock(Response $response, $products)
-    // private static function decreaseStock(Response $response, $products)
+    // public static function updateStock(Response $response, array $products)
+    private static function updateStock(Response $response, $products)
     {
         $sql = "";
-        foreach ($products as $product) {
-            $prodID = $product->getProdID();
-            $sizeObj = $product->getRealSelectedSize();
-            $realSize = $sizeObj->getSize();
-            $quantity = $sizeObj->getQuantity();
-            $sizesStock = $product->getSizeStock();
-            $sizeSample = array_keys($sizesStock)[0];
-            $supported = $product->getSupportedSizes($sizeSample);
+        $product =  $products[0];
+        $prodID = $product->getProdID();
+        $sizesStock = $product->getSizeStock();
+        $sizesMap = Product::extractSizes(...$products);
+        $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
+        $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
+        $resultMap = self::decreasStock($response,  $supported,  $sizesStock, ...$selectedSizes);
+        $quantity = $resultMap->get(Map::quantity);
+        if ($quantity > 0) {
+            $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
+            $response->addError($erMsg, MyError::ADMIN_ERROR);
+        }
+        $newSizesStock = $resultMap->get(Map::size);
+        foreach ($newSizesStock as $realSize => $stock) {
+            $holdsStock = $sizesStock[$realSize];
+            $sql .= ($stock != $holdsStock)  ? "UPDATE `Products-Sizes` SET `stock`=$stock WHERE `prodId` = '$prodID' AND `size_name` = '$realSize';\n" : null;
+        }
+        var_dump("sizesStock: ", $sizesStock);
+        var_dump("resultMap: ", $resultMap);
+        var_dump("sql: \n$sql");
+
+        self::update($response, $sql, []);
+    }
+
+    /**
+     * To deacrease stock
+     * @param Response  $response to push in results or accured errors
+     * @param mixed[]   $supported  list of supported size ordered from low to hight
+     * @param int[]     $sizesStock  stock to decrease
+     * @param Size[]    $sizeObjs   list of Size from products sharing the same id
+     * @return Map      result of the decrreasing
+     *                  + Map[Map::quantity]    => int holds surplus of size asked
+     *                  + Map[Map::size]        => stock decreased
+     */
+    // public static function decreasStock(Response $response, array $supported, array $sizesStock, Size ...$sizeObjs)
+    private static function decreasStock(Response $response, array $supported, array $sizesStock, Size ...$sizeObjs)
+    {
+        $stillStock = false;
+        $result = new Map();
+        $supported = array_reverse($supported);
+        foreach ($sizeObjs as $sizeObj) {
+            $realSelectedSize = self::convertSizeToRealSize($sizesStock, $sizeObj);
+            if (!isset($realSelectedSize)) {
+                $sequence = $sizeObj->getSequence();
+                $erMsg = "Size '$sequence' can't be converted into real size";
+                $response->addError($erMsg, MyError::ADMIN_ERROR);
+                continue;
+            }
+            $realSize = $realSelectedSize->getsize();
             $index = array_search($realSize, $supported);
-            while ($index >=  0) { // &&  $quantity > 0
+            $quantity = $sizeObj->getQuantity();
+            while ($index >= 0) {
                 if (key_exists($realSize, $sizesStock)) {
                     $stock = $sizesStock[$realSize];
                     $delta = $quantity - $stock;
                     if ($delta > 0) {
-                        $sql .= "UPDATE `Products-Sizes` SET `stock`=0 WHERE `prodId` = '$prodID' AND `size_name` = '$realSize';\n";
                         $quantity = $delta;
-                    } else {
-                        $stillingStock = abs($delta);
-                        $sql .= "UPDATE `Products-Sizes` SET `stock`=$stillingStock WHERE `prodId` = '$prodID' AND `size_name` = '$realSize';\n";
+                        $sizesStock[$realSize] = 0;
+                    } else { // $delta <= 0
                         $quantity = 0;
+                        $sizesStock[$realSize] = abs($delta);
                         break;
                     }
                 }
                 $index--;
                 $realSize = ($index >= 0) ? $supported[$index] : $realSize;
             }
-            if ($quantity > 0) {
-                $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
-                $response->addError($erMsg, MyError::ADMIN_ERROR);
+            $stillStock = ($quantity == 0);
+            if (!$stillStock) {
+                break;
             }
         }
-        self::update($response, $sql, []);
+        $result->put($quantity, Map::quantity);
+        $result->put($sizesStock, Map::size);
+        return $result;
     }
 
     /**

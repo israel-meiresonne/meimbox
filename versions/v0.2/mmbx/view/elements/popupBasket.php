@@ -6,9 +6,12 @@
  * @param Country $country Visitor's current Country
  * @param Currency $currency Visitor's current Currency
  */
+/**
+ * @var Translator */
+$translator = $translator;
 $datas = [];
 // $datas["windowId"] = "";
-$datas["title"] = "shopping bag";
+$datas["title"] = $translator->translateStation("US25");
 $datas["closeButtonId"] = "basket_pop_close_button";
 // $datas["laodingId"] = "basket_pop_loading";
 // $datas["laodingClass"] = "basket_pop_loading";
