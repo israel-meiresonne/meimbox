@@ -493,6 +493,55 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * To extract Boxproduct from all boxes
+     * @param Box[] $boxes boxes to extract BoxProduct from
+     * @return Map of BoxProduct
+     * + Map[prodID][index] => BoxProduct
+     */
+    public static function extractBoxProducts(array $boxes)
+    {
+        $boxProductsMap = new Map();
+        // $boxes = $this->getBoxes();
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                $products = $box->getProducts();
+                if (!empty($products)) {
+                    foreach ($products as $product) {
+                        $prodID = $product->getProdID();
+                        $prodList = $boxProductsMap->get($prodID);
+                        (empty($prodList))
+                            ? $boxProductsMap->put([$product], $prodID)
+                            : $boxProductsMap->put($product, $prodID, count($prodList));
+                    }
+                }
+            }
+        }
+        return $boxProductsMap;
+    }
+
+    /**
+     * To get a map that return the id of the box that holds the product
+     * @return Map map that return the id of the box that holds the product
+     * + Map[prodUnix] => boxID
+     */
+    public static function getProductToBox(Box ...$boxes)
+    {
+        if(empty($boxes)){
+            throw new Exception("Boxes can be empty");
+        }
+        $prodToBoxMap = new Map();
+        foreach($boxes as $box){
+            $boxID = $box->getBoxID();
+            $products = $box->getProducts();
+            foreach($products as $product){
+                $prodUnix = $product->getDateInSec();
+                $prodToBoxMap->put($boxID, $prodUnix);
+            }
+        }
+        return $prodToBoxMap;
+    }
+
+    /**
      * To get the amount of product in the box
      * @return int amount of product in the box
      */
@@ -785,8 +834,6 @@ class Box extends ModelFunctionality
 
         if (!$response->containError()) {
             BoxProduct::orderProducts($response, $boxes, $orderID);
-            // insert measure
-            // insert boxProducts
         }
     }
 }

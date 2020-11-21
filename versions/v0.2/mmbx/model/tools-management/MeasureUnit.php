@@ -131,23 +131,23 @@ class MeasureUnit extends ModelFunctionality
     }
 
     /**
-     * Check if first measure is bellow seconde measure
-     * + all measure not null from second is compared to first
-     * + formula: (first + margin) <= second
-     * @param MeasureUnit $firstM
-     * @param MeasureUnit $secondM 
+     * Check if a given Measure is under or equal a limite Measure
+     * + all measure not null from limite is compared to measure
+     * + formula: (measure + cut) <= limite
+     * @param MeasureUnit $measure
+     * @param MeasureUnit $limite 
      * @param MeasureUnit $margin the error margin
-     * + error margin is added to the first measure before to compare  the 
-     * first and the second measure
-     * @return boolean true if first measure is bellow all measure of second else false
+     * + error margin is added to the measure measure before to compare  the 
+     * measure and the limite measure
+     * @return bool true if measure is under or equal limite else false
      */
-    public static function compare(MeasureUnit $first, MeasureUnit $second, MeasureUnit $margin)
+    public static function isUnderLimite(MeasureUnit $measure, MeasureUnit $limite, MeasureUnit $margin)
     {
-        $firstVal = (($first->value * $first->toSystUnit) + ($margin->value * $margin->toSystUnit));
-        $secondVal = $second->value * $second->toSystUnit;
+        $measureVal = (($measure->value * $measure->toSystUnit) + ($margin->value * $margin->toSystUnit));
+        $limiteVal = $limite->value * $limite->toSystUnit;
         // var_dump("user", $leftVal);
         // var_dump("product", $rightVal);
         // echo "\n—————————";
-        return ($firstVal <= $secondVal);
+        return ($measureVal <= $limiteVal);
     }
 }

@@ -360,7 +360,9 @@ class Basket extends ModelFunctionality
     public function stillStock()
     {
         $soldOutProducts = new Map();
-        $boxProductsMap = $this->extractBoxProducts();
+        // $boxProductsMap = $this->extractBoxProducts();
+        $boxes = $this->getBoxes();
+        $boxProductsMap = Box::extractBoxProducts($boxes);
         $prodIDs = $boxProductsMap->getKeys();
         if (!empty($prodIDs)) {
             foreach ($prodIDs as $prodID) {
@@ -368,7 +370,7 @@ class Basket extends ModelFunctionality
                  * @var BoxProduct[] */
                 $boxProducts = $boxProductsMap->get($prodID);
                 $sizesMap = Product::extractSizes(...$boxProducts);
-                $selectedSizes = $this->keysToIntKeys($sizesMap->getMap());
+                $selectedSizes = $this->keysToAscInt($sizesMap->getMap());
                 if (!$boxProducts[0]->stillStock(...$selectedSizes)) {
                     foreach ($boxProducts as $boxProduct) {
                         $soldOutProducts->put($boxProduct, count($soldOutProducts->getKeys()));
@@ -431,7 +433,7 @@ class Basket extends ModelFunctionality
                     foreach ($products as $product) {
                         // $realSizeSelected = $product->getRealSelectedSize();
                         $sizeSelected = $product->getSelectedSize();
-                        $sequence = $product->getSequence();
+                        $sequence = $product->generateSequence();
                         // $size = $sizeSelected->getsize();
                         // if(empty($size)){
                         //     throw new Exception("Product's real size can't be empty");
@@ -456,35 +458,32 @@ class Basket extends ModelFunctionality
         return $sameSizeProducts;
     }
 
-    /**
-     * To extract Boxproduct from all boxes
-     * @return Map
-     * + Map[prodID][index] => BoxProduct
-     */
-    public function extractBoxProducts()
-    // private function extractBoxProducts()
-    {
-        $boxProductsMap = new Map();
-        $boxes = $this->getBoxes();
-        if (!empty($boxes)) {
-            foreach ($boxes as $box) {
-                $products = $box->getProducts();
-                if (!empty($products)) {
-                    foreach ($products as $product) {
-                        $prodID = $product->getProdID();
-                        // $prodIDs = $boxProductsMap->getKeys();
-                        // if(in_array($prodID, $prodIDs)){
-                        $prodList = $boxProductsMap->get($prodID);
-                        (empty($prodList))
-                            ? $boxProductsMap->put([$product], $prodID)
-                            : $boxProductsMap->put($product, $prodID, count($prodList));
-                        // }
-                    }
-                }
-            }
-        }
-        return $boxProductsMap;
-    }
+    // /**
+    //  * To extract Boxproduct from all boxes
+    //  * @return Map
+    //  * + Map[prodID][index] => BoxProduct
+    //  */
+    // public function extractBoxProducts()
+    // // private function extractBoxProducts()
+    // {
+    //     $boxProductsMap = new Map();
+    //     $boxes = $this->getBoxes();
+    //     if (!empty($boxes)) {
+    //         foreach ($boxes as $box) {
+    //             $products = $box->getProducts();
+    //             if (!empty($products)) {
+    //                 foreach ($products as $product) {
+    //                     $prodID = $product->getProdID();
+    //                     $prodList = $boxProductsMap->get($prodID);
+    //                     (empty($prodList))
+    //                         ? $boxProductsMap->put([$product], $prodID)
+    //                         : $boxProductsMap->put($product, $prodID, count($prodList));
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return $boxProductsMap;
+    // }
 
     /**
      * To add new box in basket

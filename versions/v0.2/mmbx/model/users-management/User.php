@@ -179,8 +179,8 @@ abstract class User extends Visitor
     public function getCustoIDStripe()
     {
         (!isset($this->custoID)) ? $this->setCustoID() : null;
-        /* check test custoID with empty() instead of isset() 
-        because it has a empty string as default value so isset() will alway return true */
+        /* checking  custoID with empty() cause it's can be setted with an 
+        empty string if this function has already be called */
         return (!empty($this->custoID)) ? $this->custoID : null;
     }
 
@@ -381,7 +381,6 @@ abstract class User extends Visitor
         }
         return $address;
     }
-
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/
     /*———————————————————————————— PAYEMENT DOWN ————————————————————————————*/
     /**
@@ -405,7 +404,6 @@ abstract class User extends Visitor
             } else {
                 $lockedProductMap = $basket->stillUnlockedStock();
                 $prodKeys = $lockedProductMap->getKeys();
-                // var_dump($lockedProductMap);
                 if (!empty($prodKeys)) {
                     $response->addError("ER1", MyError::FATAL_ERROR);
                     $response->addError($lockedProductMap, Product::KEY_PROD_LOCKED);

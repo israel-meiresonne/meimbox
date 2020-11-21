@@ -201,8 +201,8 @@ class Measure extends ModelFunctionality
     }
 
     /**
-     * Convert setDate to seconde from UNIX.
-     * @return int seconde from UNIX
+     * Convert setDate to limitee from UNIX.
+     * @return int limitee from UNIX
      */
     public function getDateInSec()
     {
@@ -211,38 +211,38 @@ class Measure extends ModelFunctionality
 
 
     /**
-     * Check if first measure is bellow seconde measure
-     * + all measure not null from second is compared to first
-     * + formula: (first + cut) <= second
-     * @param Measure $firstM
-     * @param Measure $secondM 
+     * Check if a given Measure is under or equal a limite Measure
+     * + all measure not null from limite is isUnderLimited to measure
+     * + formula: (measure + cut) <= limite
+     * @param Measure $measureM
+     * @param Measure $limite 
      * @param string $cut used to get error margin
-     * @return boolean true if first measure is bellow all measure of second else false
+     * @return bool true if Measure is under or equal all Measure of limite else false
      */
-    public static function compare(Measure $first, Measure $second, $cut)
+    public static function isUnderLimite(Measure $measure, Measure $limite, $cut)
     {
         $isBellow = false;
         $cutMap = parent::getTableValues("cuts");
         $value = $cutMap[$cut]["cutMeasure"];
         $unitName = $cutMap[$cut]["unit_name"];
         $cutObj = new MeasureUnit($value, $unitName);
-        $isBellow = (!empty($second->bust)) ? MeasureUnit::compare($first->bust, $second->bust, $cutObj) : $isBellow;
+        $isBellow = (!empty($limite->bust)) ? MeasureUnit::isUnderLimite($measure->bust, $limite->bust, $cutObj) : $isBellow;
         if (!$isBellow) {
             return $isBellow;
         }
-        $isBellow = (!empty($second->arm)) ? MeasureUnit::compare($first->arm, $second->arm, $cutObj) : $isBellow;
+        $isBellow = (!empty($limite->arm)) ? MeasureUnit::isUnderLimite($measure->arm, $limite->arm, $cutObj) : $isBellow;
         if (!$isBellow) {
             return $isBellow;
         }
-        $isBellow = (!empty($second->waist)) ? MeasureUnit::compare($first->waist, $second->waist, $cutObj) : $isBellow;
+        $isBellow = (!empty($limite->waist)) ? MeasureUnit::isUnderLimite($measure->waist, $limite->waist, $cutObj) : $isBellow;
         if (!$isBellow) {
             return $isBellow;
         }
-        $isBellow = (!empty($second->hip)) ? MeasureUnit::compare($first->hip, $second->hip, $cutObj) : $isBellow;
+        $isBellow = (!empty($limite->hip)) ? MeasureUnit::isUnderLimite($measure->hip, $limite->hip, $cutObj) : $isBellow;
         if (!$isBellow) {
             return $isBellow;
         }
-        $isBellow = (!empty($second->inseam)) ? MeasureUnit::compare($first->inseam, $second->inseam, $cutObj) : $isBellow;
+        $isBellow = (!empty($limite->inseam)) ? MeasureUnit::isUnderLimite($measure->inseam, $limite->inseam, $cutObj) : $isBellow;
         return $isBellow;
     }
 
@@ -250,17 +250,15 @@ class Measure extends ModelFunctionality
      * Build a map that contain all value needed to create a Measure
      * + the map used to build is a line from db
      * @param string[] $tabLine
-     * $tabLine = [
-     *      "measureID" => string,
-     *      "measure_name" => string,
-     *      "userBust" => float,
-     *      "userArm" => float,
-     *      "userWaist" => float,
-     *      "userHip" => float,
-     *      "userInseam" => float,
-     *      "unit_name" => string,
-     *      "setDate" => string
-     * ]
+     * + $tabLine["measureID"] => string,
+     * + $tabLine["measure_name"] => string,
+     * + $tabLine["userBust"] => float,
+     * + $tabLine["userArm"] => float,
+     * + $tabLine["userWaist"] => float,
+     * + $tabLine["userHip"] => float,
+     * + $tabLine["userInseam"] => float,
+     * + $tabLine["unit_name"] => string,
+     * + $tabLine["setDate"] => string
      * @return Map a map that contain all value needed to create a Measure
      */
     public static function getDatas4Measure($tabLine)

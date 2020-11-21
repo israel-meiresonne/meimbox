@@ -8,7 +8,7 @@ class ControllerCheckout extends ControllerSecure
     /**
      * Holds actions function
      */
-    public const CTR_NAME = "checkout";
+    // public const CTR_NAME = "checkout";
 
     /**
      * Holds actions function
@@ -34,7 +34,7 @@ class ControllerCheckout extends ControllerSecure
         $person = $this->person;
         $address = $person->getSelectedAddress();
         if (empty($address)) {
-            $this->redirect($this->extractController(get_class($this)), self::ACTION_ADDRESS);
+            $this->redirect(self::extractController(get_class($this)), self::ACTION_ADDRESS);
         }
         $datasView = [
             "address" => $address
@@ -88,7 +88,8 @@ class ControllerCheckout extends ControllerSecure
             $sequence =  Query::getParam(Address::KEY_ADRS_SEQUENCE);
             $person->selectAddress($response, $sequence);
             if (!$response->containError()) {
-                $response->addResult(self::QR_SELECT_ADRS, self::CTR_NAME);
+                $ctrName = self::extractController(ControllerCheckout::class);
+                $response->addResult(self::QR_SELECT_ADRS, $ctrName);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -129,22 +130,22 @@ class ControllerCheckout extends ControllerSecure
         switch ($action) {
             case ControllerCheckout::ACTION_INDEX:
                 if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
-                    $ctr = $this->extractController($ctrClass);
+                    $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
                 } else if (!$this->person->hasCookie(Cookie::COOKIE_ADRS)) {
-                    $ctr = $this->extractController($ctrClass);
+                    $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr, ControllerCheckout::ACTION_ADDRESS);
                 }
                 break;
             case ControllerCheckout::ACTION_ADDRESS:
                 if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
-                    $ctr = $this->extractController($ctrClass);
+                    $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
                 }
                 break;
             case ControllerCheckout::ACTION_SIGN:
                 if ($this->person->hasCookie(Cookie::COOKIE_CLT)) {
-                    $ctr = $this->extractController($ctrClass);
+                    $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr);
                 }
                 break;

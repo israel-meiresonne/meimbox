@@ -182,7 +182,9 @@ $address = (!empty($address)) ? $address : null;
                     case self::CONF_SOMMARY_SHOPBAG:
                     ?>
                         <div class="summary-detail-button-inner">
-                            <button class="green-button standard-button remove-button-default-att">checkout</button>
+                            <a href="<?= ControllerCheckout::extractController(ControllerCheckout::class) ?>">
+                                <button class="green-button standard-button remove-button-default-att"><?= $translator->translateStation("US102") ?></button>
+                            </a>
                             <div class="btn-loading loading-img-wrap">
                                 <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
                             </div>

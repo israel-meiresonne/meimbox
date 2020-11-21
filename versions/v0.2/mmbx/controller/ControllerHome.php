@@ -179,58 +179,174 @@ class ControllerHome extends ControllerSecure
         $this->generateJsonView($datasView, $response, $person);
     }
 
-    public function testA()
+    public function test_orderBoxes()
     {
         header('content-type: application/json');
         $person = $this->person;
-        // $sizeObjs = [];
+
+        $orderID = "test";
+        $boxes = $person->getBasket()->getBoxes();
+        $response = new Response();
+        // var_dump(Box::getProductToBox(...$boxes));
+        echo str_repeat("-", 50) . " INSERT " . str_repeat("-", 50);
+        echo "\n";
+        var_dump(Box::orderBoxes($response, $boxes, $orderID));
+        echo "\n";
+        echo str_repeat("-", 50) . " RESPONSE " . str_repeat("-", 50);
+        echo "\n";
+        var_dump($response->getAttributs());
+    }
+
+    public function test_size()
+    {
+        header('content-type: application/json');
+        $s = ["s", "xxs", "4xl", "m", "l"];
+        // var_dump(Size::orderSizes($s));
+        // var_dump(Size::extractBiggest($s));
+        var_dump(Size::getSizeMeasure("s"));
+        var_dump(Size::getSizeMeasure("m"));
+    }
+
+    public function test_measure()
+    {
+        header('content-type: application/json');
+        $a = ["s", "xxs", "4xl", "m", "l"];
+        // var_dump(Size::orderSizes($s));
+        // var_dump(Size::extractBiggest($s));
+        $s = Size::getSizeMeasure("m");
+        $m = Size::getSizeMeasure("xl");
+        $cut = "wide";
+        var_dump(Measure::isUnderLimite($s, $m, $cut));
+    }
+
+    public function test_measureToRealSize()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $measure = $person->getMeasure("decrease_s_2");
+        // $cut = "fit";
+        $cut = "wide";
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $sizesStock = $product->getSizeStock();
+        var_dump(BoxProduct::measureToRealSize(array_keys($sizesStock), $measure, $cut));
+    }
+
+    public function test_convertSizeToRealSize()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = "4xl";
+        $brand = "asos";
+        $measureID = null;
+        $cut = null;
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizesStock = $product->getSizeStock();
+        var_dump($product->convertSizeToRealSize($sizesStock, $sizeObj));
+    }
+
+    public function test_getRealSelectedSize()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
         $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
         $size = null;
         $brand = null;
         $measureID = "decrease_m_6";
-        $cut = "wide";
+        $cut = "fit";
         $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
         $sizeObj = new Size($sequence);
         $product->selecteSize($sizeObj);
-        // $sizeObj->setQuantity(7);
-        // array_push($sizeObjs, $sizeObj);
-        var_dump($product->convertSizeToRealSize($sizeObj));
+        var_dump($product->getRealSelectedSize());
+    }
 
-        // $size = "xxs";
+    public function test_decreasStock()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $products = [];
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = "m";
+        $brand = null;
+        $measureID = null;
+        $cut = null;
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(2);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = null;
+        $brand = null;
+        $measureID = "decrease_s_2";
+        $cut = "fit";
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(2);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = null;
+        $brand = null;
+        $measureID = "a5rn30s0gtn2x2998j3000221";
+        $cut = "fit";
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(2);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+        
+
+        $response = new Response();
+        BoxProduct::updateStock($response, $products);
+        var_dump($response->getAttributs());
+    }
+    
+    public function test_updateStock()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $sizesStock = $product->getSizeStock();
+
+        $sizeObjs = [];
+
+        $size = null;
+        $brand = null;
+        $measureID = "a5rn30s0gtn2x2998j3000221";
+        $cut = "fit";
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(5);
+        array_push($sizeObjs, $sizeObj);
+
+        // $size = "m";
         // $brand = null;
         // $measureID = null;
         // $cut = null;
         // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
         // $sizeObj = new Size($sequence);
-        // $sizeObj->setQuantity(2);
+        // $sizeObj->setQuantity(11);
         // array_push($sizeObjs, $sizeObj);
 
-        // var_dump("stillStock: ", $product->stillStock(...$sizeObjs));
+        // $size = "m";
+        // $brand = null;
+        // $measureID = null;
+        // $cut = null;
+        // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        // $sizeObj = new Size($sequence);
+        // $sizeObj->setQuantity(11);
+        // array_push($sizeObjs, $sizeObj);
 
-        // $a = ["a", "b", "c"];
-        // $nb = count($a);
-        // var_dump($nb);
-        // var_dump($a);
-        // $a[$nb] = "z";
-        // var_dump($a);
-
-        // var_dump($person->getBasket()->stillStock());
-
-        // $a = [
-        //     "k1" => "a", 
-        //     "k2" => "b", 
-        //     "k3" => "c"
-        // ];
-        // var_dump($a);
-        // $b = ModelFunctionality::keysToInt($a);
-        // var_dump($b);
-
-        // $this->generateView([], $this->person, "test");
-    }
-
-    private function multiparam(...$params)
-    {
-        var_dump($params);
+        $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
+        $response = new Response();
+        var_dump($sizesStock);
+        var_dump(BoxProduct::decreasStock($response, $supported, $sizesStock, ...$sizeObjs));
+        var_dump($response->getAttributs());
     }
 
     public function test()
