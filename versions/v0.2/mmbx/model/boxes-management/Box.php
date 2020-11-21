@@ -526,14 +526,14 @@ class Box extends ModelFunctionality
      */
     public static function getProductToBox(Box ...$boxes)
     {
-        if(empty($boxes)){
+        if (empty($boxes)) {
             throw new Exception("Boxes can be empty");
         }
         $prodToBoxMap = new Map();
-        foreach($boxes as $box){
+        foreach ($boxes as $box) {
             $boxID = $box->getBoxID();
             $products = $box->getProducts();
-            foreach($products as $product){
+            foreach ($products as $product) {
                 $prodUnix = $product->getDateInSec();
                 $prodToBoxMap->put($boxID, $prodUnix);
             }
@@ -732,20 +732,20 @@ class Box extends ModelFunctionality
         }
     }
 
-    /**
-     * To reserve ,for a duration, the stock of all products in the box
-     * @param Response $response where to strore results
-     * @param string $userID Client's id
-     */
-    public function lock(Response $response, $userID)
-    {
-        $products = $this->getProducts();
-        if(!empty($products)){
-            foreach($products as $product){
-                $product->lock($response, $userID);
-            }
-        }
-    }
+    // /**
+    //  * To reserve ,for a duration, the stock of all products in the box
+    //  * @param Response $response where to strore results
+    //  * @param string $userID Client's id
+    //  */
+    // public function lock(Response $response, $userID)
+    // {
+    //     $products = $this->getProducts();
+    //     if(!empty($products)){
+    //         foreach($products as $product){
+    //             $product->lock($response, $userID);
+    //         }
+    //     }
+    // }
 
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
     /**
@@ -832,8 +832,8 @@ class Box extends ModelFunctionality
         }
         self::insert($response, $sql, $values);
 
-        if (!$response->containError()) {
-            BoxProduct::orderProducts($response, $boxes, $orderID);
-        }
+        // if (!$response->containError()) {
+        BoxProduct::orderProducts($response, $boxes, $orderID);
+        // }
     }
 }
