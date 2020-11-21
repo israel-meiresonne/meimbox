@@ -548,7 +548,7 @@ class BoxProduct extends Product
             GROUP BY ps.`prodId`, ps.`size_name`";
         $tab = $this->select($sql);
         if (empty($tab)) {
-            throw new Exception("Table StockLocked returned can't be empty. Error happen Probably beacause size  '$size' don't appear in table Products-Size");
+            throw new Exception("Table StockLocked returned can't be empty. Error happen Probably beacause size '$size' don't appear in table Products-Size");
         } else {
             $tabLine = $tab[0];
             $setDate = (int) strtotime($tabLine["MaxSetDate"]);
@@ -769,7 +769,6 @@ class BoxProduct extends Product
             $stillStock = $stockResponse->getError(MyError::ERROR_STILL_STOCK)->getMeassage();
             $response->addError($stillStock, MyError::ERROR_STILL_STOCK);
         }
-        // self::updateStock($response, $toDecreaseProds);
     }
 
     /**
@@ -778,7 +777,6 @@ class BoxProduct extends Product
      * @param BoxProduct[]  $products set of product to decrease
      *                      + Note: products must share the same id
      */
-    // public static function updateStock(Response $response, array $products)
     private static function updateStock(Response $response, $products)
     {
         $sql = "";
@@ -816,7 +814,6 @@ class BoxProduct extends Product
      *                  + Map[Map::quantity]    => int holds surplus of size asked
      *                  + Map[Map::size]        => stock decreased
      */
-    // public static function decreasStock(Response $response, array $supported, array $sizesStock, Size ...$sizeObjs)
     private static function decreasStock(Response $response, array $supported, array $sizesStock, Size ...$sizeObjs)
     {
         $stillStock = false;
@@ -902,5 +899,16 @@ class BoxProduct extends Product
             $this->getDateTime()
         ];
         $this->update($response, $sql, $values);
+    }
+
+    /**
+     * To delete all existing locked stock for the User's with the give id
+     * @param Response $response where to strore results
+     * @param string $userID Client's id
+     */
+    public static function deleteAllLcok(Response $response, $userID)
+    {
+        $sql = "DELETE FROM `StockLocks` WHERE `StockLocks`.`userId` = '$userID'";
+        parent::delete($response, $sql);
     }
 }

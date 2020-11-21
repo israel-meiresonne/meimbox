@@ -251,9 +251,9 @@ abstract class ModelFunctionality extends Model
      * @return Response if its success Response.results[DELETE_STATUS_KEY] contain the success code else it
      *  contain the error thrown
      */
-    public function delete(Response $response, $sql)
+    public static function delete(Response $response, $sql)
     {
-        return $this->insert($response, $sql, null);
+        return self::insert($response, $sql, null);
     }
 
     /**
