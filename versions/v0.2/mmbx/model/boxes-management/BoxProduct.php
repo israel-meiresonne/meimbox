@@ -574,19 +574,38 @@ class BoxProduct extends Product
 
     /**
      * To reserve ,for a duration, the selected stock of the product
-     * @param Response $response where to strore results
-     * @param string $userID Client's id
+     * @param Response      $response   where to strore results
+     * @param string        $userID     Client's id
+     * @param BoxProduct[]  $products   products sharing the same id
      */
-    public function lock(Response $response, $userID)
+    public static function lock(Response $response, $userID, array $products)
     {
-        $realSelectedSize = $this->getRealSelectedSize();
-        $prodID = $this->getProdID();
-        $size = $realSelectedSize->getSize();
-        $sql = "SELECT * 
-                FROM `StockLocks`
-                WHERE `userId`='$userID' AND `prodId`='$prodID' AND `size_name`='$size'";
-        $tab = $this->select($sql);
-        (empty($tab)) ? $this->insertLock($response, $userID) : $this->updateLock($response, $userID);
+        $product =  $products[0];
+        $sizesStock = $product->getSizeStock();
+        $prodID = $product->getProdID();
+        $sizesMap = Product::extractSizes(...$products);
+        $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
+        $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
+        $resultMap = self::decreasStock($supported,  $sizesStock, ...$selectedSizes);
+        $stillingSizesStock = $resultMap->get(Map::size);
+        $stockToLocks = [];
+        foreach ($stillingSizesStock as $size => $stillingStock) {
+            if ($sizesStock[$size] != $stillingSizesStock[$size]) {
+                $stock = $sizesStock[$size];
+                $stockToLocks[$size] = ($stock - $stillingStock);
+            }
+        }
+        $quantity = $resultMap->get(Map::quantity);
+        if ($quantity > 0) {
+            $notifAdmin = new Response();
+            $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
+            $notifAdmin->addError($erMsg, MyError::ADMIN_ERROR);
+        }
+        // var_dump("sizesStock: ", $sizesStock);      // ❌
+        // var_dump("resultMap: ", $resultMap);        // ❌
+        // var_dump("stockToLocks:", $stockToLocks);   // ❌
+        // var_dump("notifAdmin:", $notifAdmin);       // ❌
+        self::insertLocks($response, $userID, $prodID, $stockToLocks);
     }
 
     /**
@@ -777,6 +796,7 @@ class BoxProduct extends Product
      * @param BoxProduct[]  $products set of product to decrease
      *                      + Note: products must share the same id
      */
+    // public static function updateStock(Response $response, $products)
     private static function updateStock(Response $response, $products)
     {
         $sql = "";
@@ -786,8 +806,12 @@ class BoxProduct extends Product
         $sizesMap = Product::extractSizes(...$products);
         $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
-        $resultMap = self::decreasStock($response,  $supported,  $sizesStock, ...$selectedSizes);
+        $resultMap = self::decreasStock($supported,  $sizesStock, ...$selectedSizes);
         $quantity = $resultMap->get(Map::quantity);
+        $errors = $resultMap->get(Map::error);
+        foreach ($errors as $erMsg) {
+            $response->addError($erMsg, MyError::ADMIN_ERROR);
+        }
         if ($quantity > 0) {
             $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
             $response->addError($erMsg, MyError::ADMIN_ERROR);
@@ -797,11 +821,12 @@ class BoxProduct extends Product
             $holdsStock = $sizesStock[$realSize];
             $sql .= ($stock != $holdsStock)  ? "UPDATE `Products-Sizes` SET `stock`=$stock WHERE `prodId` = '$prodID' AND `size_name` = '$realSize';\n" : null;
         }
-        var_dump("sizesStock: ", $sizesStock);
-        var_dump("resultMap: ", $resultMap);
-        var_dump("sql: \n$sql");
 
-        self::update($response, $sql, []);
+        // var_dump("sizesStock: ", $sizesStock);  // ❌
+        // var_dump("resultMap: ", $resultMap);    // ❌
+        // var_dump("sql: \n$sql");                // ❌
+
+        self::update($response, $sql, []);   // ✅
     }
 
     /**
@@ -811,12 +836,15 @@ class BoxProduct extends Product
      * @param int[]     $sizesStock  stock to decrease
      * @param Size[]    $sizeObjs   list of Size from products sharing the same id
      * @return Map      result of the decrreasing
-     *                  + Map[Map::quantity]    => int holds surplus of size asked
-     *                  + Map[Map::size]        => stock decreased
+     *                  + Map[Map::quantity]        =>  int holds surplus of size asked
+     *                  + Map[Map::size]            =>  stock decreased
+     *                  + Map[Map::error][index]    =>  set of error messages occured
      */
-    private static function decreasStock(Response $response, array $supported, array $sizesStock, Size ...$sizeObjs)
+    public static function decreasStock(array $supported, array $sizesStock, Size ...$sizeObjs)
+    // private static function decreasStock(array $supported, array $sizesStock, Size ...$sizeObjs)
     {
         $stillStock = false;
+        $errors = [];
         $result = new Map();
         $supported = array_reverse($supported);
         foreach ($sizeObjs as $sizeObj) {
@@ -824,7 +852,8 @@ class BoxProduct extends Product
             if (!isset($realSelectedSize)) {
                 $sequence = $sizeObj->getSequence();
                 $erMsg = "Size '$sequence' can't be converted into real size";
-                $response->addError($erMsg, MyError::ADMIN_ERROR);
+                array_push($errors, $erMsg);
+                // $response->addError($erMsg, MyError::ADMIN_ERROR);
                 continue;
             }
             $realSize = $realSelectedSize->getsize();
@@ -853,6 +882,7 @@ class BoxProduct extends Product
         }
         $result->put($quantity, Map::quantity);
         $result->put($sizesStock, Map::size);
+        $result->put($errors, Map::error);
         return $result;
     }
 
@@ -860,46 +890,52 @@ class BoxProduct extends Product
      * To place lock on product's selected stock for a duration
      * @param Response $response where to strore results
      * @param string $userID Client's id
-     */
-    private function insertLock(Response $response, $userID)
-    {
-        $realSelectedSize = $this->getRealSelectedSize();
-        $lockLimit = $this->getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
-        $bracket = "(?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `StockLocks`(`userId`, `prodId`, `size_name`, `quantity`, `lockTime`, `setDate`)
-            VALUES " . $this->buildBracketInsert(1, $bracket);
-        $values = [
-            $userID,
-            $this->getProdID(),
-            $realSelectedSize->getsize(),
-            $realSelectedSize->getQuantity(),
-            $lockLimit,
-            $this->getDateTime()
-        ];
-        $this->insert($response, $sql, $values);
-    }
-
-    /**
-     * To increamente the quantity of product locked
-     * @param Response $response where to strore results
      * @param string $userID Client's id
      */
-    private function updateLock(Response $response, $userID)
+    private static function insertLocks(Response $response, $userID, $prodID, array $stockToLocks)
     {
-        $prodID = $this->getProdID();
-        $realSelectedSize = $this->getRealSelectedSize();
-        $size = $realSelectedSize->getsize();
-        $sql =
-            "UPDATE `StockLocks` SET
-            `quantity`=`quantity`+?,
-            `setDate`=?
-            WHERE `userId`='$userID' AND `prodId`='$prodID' AND `size_name`='$size'";
-        $values = [
-            $realSelectedSize->getQuantity(),
-            $this->getDateTime()
-        ];
-        $this->update($response, $sql, $values);
+        $lockLimit = parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        $setDate = parent::getDateTime();
+        $nbLine = count($stockToLocks);
+        $bracket = "(?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `StockLocks`(`userId`, `prodId`, `size_name`, `quantity`, `lockTime`, `setDate`)
+            VALUES " . parent::buildBracketInsert($nbLine, $bracket);
+        $values = [];
+        foreach ($stockToLocks as $size => $toLock) {
+            array_push(
+                $values,
+                $userID,
+                $prodID,
+                $size,
+                $toLock,
+                $lockLimit,
+                $setDate
+            );
+        }
+        parent::insert($response, $sql, $values);
     }
+
+    // /**
+    //  * To increamente the quantity of product locked
+    //  * @param Response $response where to strore results
+    //  * @param string $userID Client's id
+    //  */
+    // private function updateLock(Response $response, $userID)
+    // {
+    //     $prodID = $this->getProdID();
+    //     $realSelectedSize = $this->getRealSelectedSize();
+    //     $size = $realSelectedSize->getsize();
+    //     $sql =
+    //         "UPDATE `StockLocks` SET
+    //         `quantity`=`quantity`+?,
+    //         `setDate`=?
+    //         WHERE `userId`='$userID' AND `prodId`='$prodID' AND `size_name`='$size'";
+    //     $values = [
+    //         $realSelectedSize->getQuantity(),
+    //         $this->getDateTime()
+    //     ];
+    //     $this->update($response, $sql, $values);
+    // }
 
     /**
      * To delete all existing locked stock for the User's with the give id

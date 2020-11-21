@@ -261,7 +261,7 @@ class ControllerHome extends ControllerSecure
         var_dump($product->getRealSelectedSize());
     }
 
-    public function test_decreasStock()
+    public function test_updateStock()
     {
         header('content-type: application/json');
         $person = $this->person;
@@ -274,14 +274,14 @@ class ControllerHome extends ControllerSecure
         $cut = null;
         $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
         $sizeObj = new Size($sequence);
-        $sizeObj->setQuantity(2);
+        $sizeObj->setQuantity(7);
         $product->selecteSize($sizeObj);
         array_push($products, $product);
 
         $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
         $size = null;
         $brand = null;
-        $measureID = "decrease_s_2";
+        $measureID = "decrease_s";
         $cut = "fit";
         $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
         $sizeObj = new Size($sequence);
@@ -306,7 +306,7 @@ class ControllerHome extends ControllerSecure
         var_dump($response->getAttributs());
     }
     
-    public function test_updateStock()
+    public function test_decreasStock()
     {
         header('content-type: application/json');
         $person = $this->person;
@@ -343,9 +343,53 @@ class ControllerHome extends ControllerSecure
         // array_push($sizeObjs, $sizeObj);
 
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
-        $response = new Response();
+        // $response = new Response();
         var_dump($sizesStock);
-        var_dump(BoxProduct::decreasStock($response, $supported, $sizesStock, ...$sizeObjs));
+        var_dump(BoxProduct::decreasStock($supported, $sizesStock, ...$sizeObjs));
+        // var_dump($response->getAttributs());
+    }
+
+    public function test_lock()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $products = [];
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = "m";
+        $brand = null;
+        $measureID = null;
+        $cut = null;
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(7);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = null;
+        $brand = null;
+        $measureID = "decrease_s";
+        $cut = "fit";
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(6);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+    
+        $response = new Response();
+        $userID = $person->getUserID();
+        BoxProduct::lock($response, $userID, $products);
+        var_dump($response->getAttributs());
+    }
+
+    public function test_basket_lock()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $response = new Response();
+        $userID = $person->getUserID();
+        $person->getBasket()->lock($response, $userID);
         var_dump($response->getAttributs());
     }
 

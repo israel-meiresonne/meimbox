@@ -360,7 +360,6 @@ class Basket extends ModelFunctionality
     public function stillStock()
     {
         $soldOutProducts = new Map();
-        // $boxProductsMap = $this->extractBoxProducts();
         $boxes = $this->getBoxes();
         $boxProductsMap = Box::extractBoxProducts($boxes);
         $prodIDs = $boxProductsMap->getKeys();
@@ -677,15 +676,22 @@ class Basket extends ModelFunctionality
 
     /**
      * To reserve ,for a duration, the stock of all products in the basket and in boxes
+     * Note: this function can be used only if you already checking that it 
+     * still stock for all product with Basket::stillStock()
      * @param Response $response where to strore results
      * @param string $userID Client's id
      */
     public function lock(Response $response, $userID)
     {
         $boxes = $this->getBoxes();
-        if (!empty($boxes)) {
-            foreach ($boxes as $box) {
-                ($box->getQuantity() > 0) ? $box->lock($response, $userID) : null;
+        $boxProductsMap = Box::extractBoxProducts($boxes);
+        $prodIDs = $boxProductsMap->getKeys();
+        if (!empty($prodIDs)) {
+            foreach ($prodIDs as $prodID) {
+                /**
+                 * @var BoxProduct[] */
+                $boxProducts = $boxProductsMap->get($prodID);
+                BoxProduct::lock($response, $userID, $boxProducts);
             }
         }
         /** lock stock of basketproduct */

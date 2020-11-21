@@ -17,6 +17,7 @@ class Map
     public const sql = "sql";
     public const side = "side";
     public const vertical = "vertical";
+    public const error = "error";
 
     /**
      * Keys for Mosaic
