@@ -515,7 +515,7 @@ class Visitor extends ModelFunctionality
                     $product = $basket->getBasketProduct($prodID, $sizeObj);
                     break;
                 case BoxProduct::BOX_TYPE:
-                    $box = $basket->getBoxe($boxID);
+                    $box = $basket->getBox($boxID);
                     // $isBoxProd = ((!empty($product)) && ($product->getType() == BoxProduct::BOX_TYPE));
                     if (empty($box)) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);
@@ -731,7 +731,7 @@ class Visitor extends ModelFunctionality
             if (!empty($usersCookiesMap->get(Cookie::COOKIE_LCK))) {
                 $response = new Response();
                 $this->destroyCookie(Cookie::COOKIE_LCK, true);
-                BoxProduct::deleteAllLcok($response, $userID);
+                $this->getBasket()->unlock($response, $userID);
             }
         }
         // var_dump($response);
@@ -1366,7 +1366,7 @@ class Visitor extends ModelFunctionality
     public function deleteBox(Response $response, $boxID)
     {
         $basket = $this->getBasket();
-        $box = $basket->getBoxe($boxID);
+        $box = $basket->getBox($boxID);
         if (empty($box)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
@@ -1391,7 +1391,7 @@ class Visitor extends ModelFunctionality
     public function addBoxProduct(Response $response, $boxID, $prodID, $sizeType, Map $sizeMap)
     {
         $basket = $this->getBasket();
-        $box = $basket->getBoxe($boxID);
+        $box = $basket->getBox($boxID);
         $existProd = $this->existProductInDb($prodID);
         $isBoxProd = $this->getProductLine($prodID)["product_type"] == BoxProduct::BOX_TYPE;
         if ((empty($box)) || (!$existProd) || (!$isBoxProd)) {
@@ -1436,7 +1436,7 @@ class Visitor extends ModelFunctionality
             $response->addErrorStation("ER17", Size::INPUT_QUANTITY);
         } else {
             $basket = $this->getBasket();
-            $box = $basket->getBoxe($boxID);
+            $box = $basket->getBox($boxID);
             if (empty($box)) {
                 $response->addErrorStation("ER1", MyError::FATAL_ERROR);
             } else {
@@ -1512,8 +1512,8 @@ class Visitor extends ModelFunctionality
             }
             if (!$response->containError()) {
                 $basket = $this->getBasket();
-                $box = $basket->getBoxe($boxID);
-                $newBox = $basket->getBoxe($newBoxID);
+                $box = $basket->getBox($boxID);
+                $newBox = $basket->getBox($newBoxID);
                 if ((empty($box)) || (empty($newBox))) {
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                 } else {
@@ -1552,7 +1552,7 @@ class Visitor extends ModelFunctionality
         }
         if (!$response->containError()) {
             $basket = $this->getBasket();
-            $box = $basket->getBoxe($boxID);
+            $box = $basket->getBox($boxID);
             if (empty($box)) {
                 $response->addErrorStation("ER1", MyError::FATAL_ERROR);
             } else {

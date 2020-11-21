@@ -691,7 +691,7 @@ class ControllerItem extends ControllerSecure
             $person->deleteBoxProduct($response, $boxID, $prodID, $sequence);
             if (!$response->containError()) {
                 $basket = $person->getBasket();
-                $box = $basket->getBoxe($boxID);
+                $box = $basket->getBox($boxID);
                 $boxRate = $box->getQuantity() . "/" . $box->getSizeMax();
                 $response->addResult(Box::KEY_BOX_ID, $boxRate);
                 $person->addSummaryPrices($response);
@@ -740,7 +740,7 @@ class ControllerItem extends ControllerSecure
         } else {
             $boxID = Query::getParam(Box::KEY_BOX_ID);
             $product = $this->person->getProduct($response, $prodID, $sequence, $boxID);
-            $box = ($product->getType() == BoxProduct::BOX_TYPE) ? $this->person->getBasket()->getBoxe($boxID) : null;
+            $box = ($product->getType() == BoxProduct::BOX_TYPE) ? $this->person->getBasket()->getBox($boxID) : null;
             if ((!$response->containError()) && (!empty($product))) {
                 $measures = $this->person->getMeasures();
                 $datasView = [
