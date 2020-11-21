@@ -232,7 +232,8 @@ class Visitor extends ModelFunctionality
         $cookieIDs = $usersCookiesMap->getKeys();
         $inDb = in_array($cookieID, $cookieIDs);
         // $onUser = $this->existCookie($cookieID);
-        $onUser = (!empty($this->getCookie($cookieID)));
+        // $onUser = (!empty($this->getCookie($cookieID)));
+        $onUser = (!empty(Cookie::getCookieValue($cookieID)));
         if ($inDb && $onUser) {
             // --- cookie exist
             $cookieState = Cookie::STATE_UPDATE;
@@ -249,9 +250,7 @@ class Visitor extends ModelFunctionality
             // --- cookie don't exist
             $cookieState = Cookie::STATE_GENERATE;
         }
-        // var_dump("inDb", $inDb); echo "<br>";
-        // var_dump("onUser", $onUser); echo "<br>";
-        // var_dump("cookieState", $cookieState); echo "<br>";
+
         $cookies = $this->getCookies();
         switch ($cookieState) {
             case Cookie::STATE_GENERATE:
@@ -360,6 +359,8 @@ class Visitor extends ModelFunctionality
     /**
      * Setter for Visitor's cookies
      * + get Visitor's cookies from db
+     * + Note: only set cookie existing in db and on Vistor's driver 
+     * and sharing the same value
      */
     protected function setCookies()
     {
@@ -562,30 +563,31 @@ class Visitor extends ModelFunctionality
     // }
 
     /**
-     * Check if Visitor has a cookie
-     * @param string $cookieID cookie  to check
+     * Check if Visitor has a cookie on his driver
+     * @param string $cookieID cookie to check
      * @return boolean true if has privilege else false
      */
     public function hasCookie($cookieID)
     {
-        $hasCookie = false;
-        switch ($cookieID) {
-            case Cookie::COOKIE_CLT:
-                // $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
-                $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_CLT)));
-                break;
-            case Cookie::COOKIE_ADM:
-                // $hasCookie = $this->existCookie(Cookie::COOKIE_ADM);
-                $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADM)));
-                break;
-            case Cookie::COOKIE_ADRS:
-                // $hasCookie = $this->existCookie(Cookie::COOKIE_ADRS);
-                $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADRS)));
-                break;
-            default:
-                throw new Exception("This id of cookie don't exist, cookieID:$cookieID");
-                break;
-        }
+        $cookieValue = Cookie::getCookieValue($cookieID);
+        $hasCookie = isset($cookieValue);
+        // switch ($cookieID) {
+        //     case Cookie::COOKIE_CLT:
+        //         // $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
+        //         $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_CLT)));
+        //         break;
+        //     case Cookie::COOKIE_ADM:
+        //         // $hasCookie = $this->existCookie(Cookie::COOKIE_ADM);
+        //         $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADM)));
+        //         break;
+        //     case Cookie::COOKIE_ADRS:
+        //         // $hasCookie = $this->existCookie(Cookie::COOKIE_ADRS);
+        //         $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADRS)));
+        //         break;
+        //     default:
+        //         throw new Exception("This id of cookie don't exist, cookieID:$cookieID");
+        //         break;
+        // }
         return $hasCookie;
     }
 
@@ -716,6 +718,23 @@ class Visitor extends ModelFunctionality
     private function hasPrivilege($privilege)
     {
         // $privileges = $this->getPrivileges();
+    }
+
+    /**
+     * 
+     */
+    public function unlockStock()
+    {
+        if (get_class($this) != Visitor::class) {
+            $userID = $this->getUserID();
+            $usersCookiesMap = $this->getUsersCookiesMap($userID);
+            if (!empty($usersCookiesMap->get(Cookie::COOKIE_LCK))) {
+                $response = new Response();
+                $this->destroyCookie(Cookie::COOKIE_LCK, true);
+                BoxProduct::deleteAllLcok($response, $userID);
+            }
+        }
+        // var_dump($response);
     }
 
     /*———————————————————————————— MANAGE CLASS UP ——————————————————————————*/

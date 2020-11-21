@@ -36,7 +36,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
                         <div class="sign-container">
                             <div class="sign-container-inner">
                                 <?php
-                                echo $this->generateFile('view/elements/forms/fromSign.php', ["redirLink" => ControllerCheckout::CTR_NAME]);
+                                echo $this->generateFile('view/elements/forms/fromSign.php', ["redirLink" => ControllerCheckout::extractController(ControllerCheckout::class)]);
                                 ?>
                             </div>
                         </div>
