@@ -306,7 +306,7 @@ class ControllerHome extends ControllerSecure
         var_dump($response->getAttributs());
     }
     
-    public function test_decreasStock()
+    public function test_decreaseStock()
     {
         header('content-type: application/json');
         $person = $this->person;
@@ -345,7 +345,7 @@ class ControllerHome extends ControllerSecure
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
         // $response = new Response();
         var_dump($sizesStock);
-        var_dump(BoxProduct::decreasStock($supported, $sizesStock, ...$sizeObjs));
+        var_dump(BoxProduct::decreaseStock($supported, $sizesStock, $sizeObjs));
         // var_dump($response->getAttributs());
     }
 
@@ -391,6 +391,58 @@ class ControllerHome extends ControllerSecure
         $userID = $person->getUserID();
         $person->getBasket()->lock($response, $userID);
         var_dump($response->getAttributs());
+    }
+
+    public function test_stillUnlockedStock()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $products = [];
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = null;
+        $brand = null;
+        $measureID = "a5rn30s0gtn2x2998j3000221";
+        $cut = "wide";
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(7);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = "m";
+        $brand = null;
+        $measureID = null;
+        $cut = null;
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(6);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+
+        $product = new BoxProduct(1, $person->getLanguage(), $person->getCountry(), $person->getCurrency());
+        $size = "l";
+        $brand = null;
+        $measureID = null;
+        $cut = null;
+        $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+        $sizeObj = new Size($sequence);
+        $sizeObj->setQuantity(2);
+        $product->selecteSize($sizeObj);
+        array_push($products, $product);
+
+        var_dump("stillUnlockedStock: ", BoxProduct::stillUnlockedStock($products));
+        // var_dump($response->getAttributs());
+    }
+
+    public function test_basket_stillUnlockedStock()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+
+        var_dump($person->getBasket()->stillUnlockedStock());
+        // var_dump($response->getAttributs());
     }
 
     public function test()

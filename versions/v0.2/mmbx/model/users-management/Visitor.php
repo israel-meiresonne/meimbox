@@ -721,7 +721,7 @@ class Visitor extends ModelFunctionality
     }
 
     /**
-     * 
+     * To unlock locked stock of products
      */
     public function unlockStock()
     {
