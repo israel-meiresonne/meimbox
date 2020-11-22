@@ -970,31 +970,25 @@ class Visitor extends ModelFunctionality
      */
     public function updateMeasure(Response $response, Map $measureMap)
     {
-        // $this->checkMeasureInput($response);
-        // if (!$response->containError()) {
-        // $measureDatas = Measure::getDatas4MeasurePOST();
-        // $newMeasure = new Measure($measureDatas);
         $measureID = $measureMap->get(Map::measureID);
-        $newMeasure = new Measure($measureMap);
-        $userID = $this->getUserID();
-
-        $oldMeasure = $this->getMeasure($measureID);
-
-        // var_dump("newMeasure", $newMeasure);
-        // var_dump("oldMeasure", $oldMeasure);
-        $oldMeasure->updateMeasure($response, $userID, $newMeasure);
-        if (!$response->containError()) {
-            $key = $this->getMeasureKey($measureID);
-            $this->unsetMeasure($measureID);
-            $this->measures[$key] = $newMeasure;
-            $this->sortMeasure();
+        $basket = $this->getBasket();
+        if($basket->existMeasure($measureID)){
+            $response->addErrorStation("ER36", MyError::FATAL_ERROR);
         } else {
-            if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
+            $newMeasure = new Measure($measureMap);
+            $userID = $this->getUserID();
+            $oldMeasure = $this->getMeasure($measureID);
+            $oldMeasure->updateMeasure($response, $userID, $newMeasure);
+            if (!$response->containError()) {
+                $key = $this->getMeasureKey($measureID);
+                $this->unsetMeasure($measureID);
+                $this->measures[$key] = $newMeasure;
+                $this->sortMeasure();
+            } else if (!$response->existErrorKey(MyError::FATAL_ERROR)) {
                 $errorMsg = "ER1";
                 $response->addErrorStation($errorMsg, MyError::FATAL_ERROR);
             }
         }
-        // }
     }
 
     /**
@@ -1139,7 +1133,7 @@ class Visitor extends ModelFunctionality
             $prodIDs = $boxProductsMap->getKeys();
             $boxProducts = (in_array($prodID, $prodIDs)) ? $boxProductsMap->get($prodID) : [];
             array_push($boxProducts, $product);
-            $sizesMap = Product::extractSizes(...$boxProducts);
+            $sizesMap = Product::extractSizes($boxProducts);
             $sizeObjs = $this->keysToAscInt($sizesMap->getMap());
 
             $stillStock = $product->stillStock(...$sizeObjs);
@@ -1463,7 +1457,7 @@ class Visitor extends ModelFunctionality
                                 // $boxProductsMap = $basket->extractBoxProducts();
                                 $boxProductsMap = Box::extractBoxProducts($basket->getBoxes());
                                 $boxProducts = $boxProductsMap->get($prodID);
-                                $sizesMap = Product::extractSizes(...$boxProducts);
+                                $sizesMap = Product::extractSizes($boxProducts);
                                 $sizeObjs = $this->keysToAscInt($sizesMap->getMap());
                                 $stillStock = $product->stillStock(...$sizeObjs);
 

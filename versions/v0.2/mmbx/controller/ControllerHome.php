@@ -299,13 +299,13 @@ class ControllerHome extends ControllerSecure
         $sizeObj->setQuantity(2);
         $product->selecteSize($sizeObj);
         array_push($products, $product);
-        
+
 
         $response = new Response();
         BoxProduct::updateStock($response, $products);
         var_dump($response->getAttributs());
     }
-    
+
     public function test_decreaseStock()
     {
         header('content-type: application/json');
@@ -376,7 +376,7 @@ class ControllerHome extends ControllerSecure
         $sizeObj->setQuantity(6);
         $product->selecteSize($sizeObj);
         array_push($products, $product);
-    
+
         $response = new Response();
         $userID = $person->getUserID();
         BoxProduct::lock($response, $userID, $products);
@@ -442,6 +442,15 @@ class ControllerHome extends ControllerSecure
         $person = $this->person;
 
         var_dump($person->getBasket()->stillUnlockedStock());
+        // var_dump($response->getAttributs());
+    }
+
+    public function test_basket_existMeasure()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $measureID = "decrease_s";
+        var_dump($person->getBasket()->existMeasure($measureID));
         // var_dump($response->getAttributs());
     }
 

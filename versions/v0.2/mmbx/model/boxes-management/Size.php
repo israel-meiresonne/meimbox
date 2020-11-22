@@ -415,7 +415,7 @@ class Size  extends ModelFunctionality
 
     /**
      * Getter for size's brandName
-     * @param boolean true if you want null to be a string if empty else false
+     * @param bool $wantStr true if you want null to be a string when empty else set false or empty
      *  of nothing
      * @return string size's brandName
      */
@@ -451,7 +451,7 @@ class Size  extends ModelFunctionality
 
     /**
      * Getter for size's measure
-     * @param boolean true if you want null to be a string if empty else false
+     * @param bool $wantStr true if you want null to be a string when empty else set false or empty
      *  of nothing
      * @return string size's measure
      */
@@ -465,8 +465,7 @@ class Size  extends ModelFunctionality
 
     /**
      * Getter for size's cut
-     * @param boolean true if you want null to be a string if empty else false
-     *  of nothing
+     * @param bool $wantStr true if you want null to be a string when empty else set false or empty
      * @return string size's cut
      */
     public function getCut($wantStr = false)

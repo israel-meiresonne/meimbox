@@ -407,7 +407,7 @@ class Basket extends ModelFunctionality
                 /**
                  * @var BoxProduct[] */
                 $boxProducts = $boxProductsMap->get($prodID);
-                $sizesMap = Product::extractSizes(...$boxProducts);
+                $sizesMap = Product::extractSizes($boxProducts);
                 $selectedSizes = $this->keysToAscInt($sizesMap->getMap());
                 if (!$boxProducts[0]->stillStock(...$selectedSizes)) {
                     foreach ($boxProducts as $boxProduct) {
@@ -455,48 +455,82 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * To generate a map of Boxproduct summaring selected size of all product with give id
-     * + generate a copy of product for each different Size
-     * + each product has his own size and quantity
-     * + the quantity of each product copy is the sum of quantity of all product with the same size
-     * @return Map of Boxproducts using sequence [prodID-SizeSequence]
-     * + Map[sequence] => BoxProduct
+     * To check if there is a BoxProduct using the Measure with the given id
+     * @param string $measureID id of the measure to look for
+     * @return bool true if there is a BoxProduct using the Measure with the 
+     * given id else false
      */
-    public function extractBoxProductWithSameSize()
+    public function existMeasure($measureID)
     {
-        $sameSizeProducts = new Map();
+        $exist = false;
         $boxes = $this->getBoxes();
         if (!empty($boxes)) {
-            foreach ($boxes as $box) {
-                $products = $box->getProducts();
-                if (!empty($products)) {
-                    foreach ($products as $product) {
-                        // $realSizeSelected = $product->getRealSelectedSize();
-                        $sizeSelected = $product->getSelectedSize();
-                        $sequence = $product->generateSequence();
-                        // $size = $sizeSelected->getsize();
-                        // if(empty($size)){
-                        //     throw new Exception("Product's real size can't be empty");
-                        // }
-                        $sizes = $sameSizeProducts->getKeys();
-                        if (!in_array($sequence, $sizes)) {
-                            $copyProduct = $product->getCopy();
-                            $copySize = $sizeSelected->getCopy();
-                            $copyProduct->selecteSize($copySize);
-                            $sameSizeProducts->put($copyProduct, $sequence);
-                        } else {
-                            /**
-                             * @var Size*/
-                            $copySize = $sameSizeProducts->get($sizes)->getSelectedSize();
-                            $quantity = $sizeSelected->getQuantity();
-                            $copySize->addQuantity($quantity);
-                        }
+            $productsMap = Box::extractBoxProducts($boxes);
+            $prodIDs = $productsMap->getKeys();
+            foreach ($prodIDs as $prodID) {
+                $products = $productsMap->get($prodID);
+                $sizesMap = Product::extractSizes($products);
+                $sequences = $sizesMap->getKeys();
+                foreach ($sequences as $sequence) {
+                    /**
+                     * @var Size */
+                    $size = $sizesMap->get($sequence);
+                    if ($size->getmeasureID() == $measureID) {
+                        $exist = true;
+                        break;
                     }
+                }
+                if ($exist) {
+                    break;
                 }
             }
         }
-        return $sameSizeProducts;
+        return $exist;
     }
+
+    // /**
+    //  * To generate a map of Boxproduct summaring selected size of all product with give id
+    //  * + generate a copy of product for each different Size
+    //  * + each product has his own size and quantity
+    //  * + the quantity of each product copy is the sum of quantity of all product with the same size
+    //  * @return Map of Boxproducts using sequence [prodID-SizeSequence]
+    //  * + Map[sequence] => BoxProduct
+    //  */
+    // public function extractBoxProductWithSameSize()
+    // {
+    //     $sameSizeProducts = new Map();
+    //     $boxes = $this->getBoxes();
+    //     if (!empty($boxes)) {
+    //         foreach ($boxes as $box) {
+    //             $products = $box->getProducts();
+    //             if (!empty($products)) {
+    //                 foreach ($products as $product) {
+    //                     // $realSizeSelected = $product->getRealSelectedSize();
+    //                     $sizeSelected = $product->getSelectedSize();
+    //                     $sequence = $product->generateSequence();
+    //                     // $size = $sizeSelected->getsize();
+    //                     // if(empty($size)){
+    //                     //     throw new Exception("Product's real size can't be empty");
+    //                     // }
+    //                     $sizes = $sameSizeProducts->getKeys();
+    //                     if (!in_array($sequence, $sizes)) {
+    //                         $copyProduct = $product->getCopy();
+    //                         $copySize = $sizeSelected->getCopy();
+    //                         $copyProduct->selecteSize($copySize);
+    //                         $sameSizeProducts->put($copyProduct, $sequence);
+    //                     } else {
+    //                         /**
+    //                          * @var Size*/
+    //                         $copySize = $sameSizeProducts->get($sizes)->getSelectedSize();
+    //                         $quantity = $sizeSelected->getQuantity();
+    //                         $copySize->addQuantity($quantity);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return $sameSizeProducts;
+    // }
 
     // /**
     //  * To extract Boxproduct from all boxes
@@ -749,5 +783,4 @@ class Basket extends ModelFunctionality
     }
 
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
-
 }
