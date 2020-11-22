@@ -56,7 +56,7 @@ $colorRGBText = $product->getColorRGBText();
             </h4>
         </div>
         <div class="detail-price-div">
-            <?= $product->getDisplayablePrice($country, $currency) ?>
+            <?= $product->getFormatedPrice() ?>
         </div>
         <div class="detail-color-div">
             <ul class="remove-ul-default-att">

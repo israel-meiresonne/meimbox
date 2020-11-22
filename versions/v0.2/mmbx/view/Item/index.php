@@ -98,7 +98,7 @@ $brandsMeasures = $brandsMeasures;
                             </h3>
                         </div>
                         <div class="product-price-div product-data-line">
-                            <h3><?= $product->getDisplayablePrice($country, $currency) ?></h3>
+                            <h3><?= $product->getFormatedPrice() ?></h3>
                         </div>
                         <div class="detail-color-div product-data-line">
                             <ul class="remove-ul-default-att">

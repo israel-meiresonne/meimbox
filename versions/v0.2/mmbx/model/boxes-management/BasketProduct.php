@@ -201,18 +201,18 @@ class BasketProduct extends Product
         return $price->getFormated();
     }
 
-    /**
-     * Build a HTML displayable price
-     * @param Country $country Visitor's current Country
-     * @param Currency $currency Visitor's current Currency
-     * @return string[] product's HTML displayable price
-     */
-    public function getDisplayablePrice()
-    {
-        $price = $this->getPrice();
-        $priceStr = '<p>' . $price->getFormated() . '</p>';
-        return $priceStr;
-    }
+    // /**
+    //  * Build a HTML displayable price
+    //  * @param Country $country Visitor's current Country
+    //  * @param Currency $currency Visitor's current Currency
+    //  * @return string[] product's HTML displayable price
+    //  */
+    // public function getDisplayablePrice()
+    // {
+    //     $price = $this->getPrice();
+    //     $priceStr = '<p>' . $price->getFormated() . '</p>';
+    //     return $priceStr;
+    // }
 
     /**
      * Check if it's still stock for the product submited by Visitor
@@ -223,7 +223,7 @@ class BasketProduct extends Product
     public function stillStock(Size ...$sizeObjs)
     {
         $sizesStock = $this->getSizeStock();
-        $size = $sizeObj->getSize();
+        $size = $sizeObjs[0]->getSize();
         if (!key_exists($size, $sizesStock)) {
             throw new Exception("This size '$size' don't exist in sizesStock");
         }
