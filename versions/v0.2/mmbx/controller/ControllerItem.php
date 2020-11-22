@@ -651,6 +651,7 @@ class ControllerItem extends ControllerSecure
                 (!$response->containError()) ? $response->addResult(self::A_EDT_BXPROD, true) : null;
             }
         }
+        ($response->containError() &&  (!$response->existErrorKey(Size::INPUT_SIZE_TYPE))) ? $response->addErrorStation("ER35", Size::INPUT_SIZE_TYPE) : null;
         $this->generateJsonView($datasView, $response, $this->person);
     }
 
