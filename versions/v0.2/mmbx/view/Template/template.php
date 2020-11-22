@@ -10,7 +10,7 @@ require_once 'model/boxes-management/Product.php';
 require_once 'model/boxes-management/Size.php';
 require_once 'model/tools-management/Measure.php';
 require_once 'model/tools-management/MeasureUnit.php';
-require_once 'model/view-management/PageContent.php';
+// require_once 'model/view-management/PageContent.php';
 require_once 'model/special/MyError.php';
 require_once 'model/special/Response.php';
 /**
