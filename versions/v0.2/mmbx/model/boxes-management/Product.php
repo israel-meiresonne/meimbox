@@ -759,6 +759,12 @@ abstract class Product extends ModelFunctionality
     public abstract function getPrice();
 
     /**
+     * Getter for product's formated price
+     * @return string product's formated price
+     */
+    public abstract function getFormatedPrice();
+
+    /**
      * To get cuts available
      * @return string[] cuts available
      */
@@ -769,11 +775,11 @@ abstract class Product extends ModelFunctionality
         return $this->arrayToMap($cuts);
     }
 
-    /**
-     * Build a HTML displayable price
-     * @return string[] product's HTML displayable price
-     */
-    public abstract function getDisplayablePrice();
+    // /**
+    //  * Build a HTML displayable price
+    //  * @return string[] product's HTML displayable price
+    //  */
+    // public abstract function getDisplayablePrice();
 
     /**
      * Getter for sameProducts

@@ -445,36 +445,47 @@ class BoxProduct extends Product
     }
 
     /**
-     * Build a HTML displayable price
-     * @param Country $country Visitor's current Country
-     * @param Currency $currency Visitor's current Currency
-     * @return string[] product's HTML displayable price
+     * Getter for product's formated price
+     * @return string product's formated price
      */
-    public function getDisplayablePrice()
+    public function getFormatedPrice()
     {
-        $country = $this->getCountry();
-        $currency = $this->getCurrency();
-        $tab = $this->getBoxMap($country, $currency);
-        $boxesPrices = [];
-        foreach ($tab as $boxColor => $datas) {
-            $boxPriceVal = $tab[$boxColor]["price"];
-
-            $priceKey = number_format($boxPriceVal * 100, 2, "", "");
-            $prodPrice = $boxPriceVal / $datas["sizeMax"];
-            $prodPriceObj = new Price($prodPrice, $currency);
-
-            $boxesPrices[$priceKey]["boxColor"] = $boxColor;
-            $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
-            $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
-            $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
-            $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
-            $boxesPrices[$priceKey]["price"] = $prodPriceObj;
-        }
-        ksort($boxesPrices);
-        ob_start();
-        require 'view/elements/boxPrice.php';
-        return ob_get_clean();
+        // $price = $this->getPrice();
+        // return $price->getFormated();
+        return "—";
     }
+
+    // /**
+    //  * Build a HTML displayable price
+    //  * @param Country $country Visitor's current Country
+    //  * @param Currency $currency Visitor's current Currency
+    //  * @return string[] product's HTML displayable price
+    //  */
+    // public function getDisplayablePrice()
+    // {
+    //     $country = $this->getCountry();
+    //     $currency = $this->getCurrency();
+    //     $tab = $this->getBoxMap($country, $currency);
+    //     $boxesPrices = [];
+    //     foreach ($tab as $boxColor => $datas) {
+    //         $boxPriceVal = $tab[$boxColor]["price"];
+
+    //         $priceKey = number_format($boxPriceVal * 100, 2, "", "");
+    //         $prodPrice = $boxPriceVal / $datas["sizeMax"];
+    //         $prodPriceObj = new Price($prodPrice, $currency);
+
+    //         $boxesPrices[$priceKey]["boxColor"] = $boxColor;
+    //         $boxesPrices[$priceKey]["sizeMax"] = $datas["sizeMax"];
+    //         $boxesPrices[$priceKey]["boxColorRGB"] = $datas["boxColorRGB"];
+    //         $boxesPrices[$priceKey]["priceRGB"] = $datas["priceRGB"];
+    //         $boxesPrices[$priceKey]["textualRGB"] = $datas["textualRGB"];
+    //         $boxesPrices[$priceKey]["price"] = $prodPriceObj;
+    //     }
+    //     ksort($boxesPrices);
+    //     ob_start();
+    //     require 'view/elements/boxPrice.php';
+    //     return ob_get_clean();
+    // }
 
     /**
      * Check if it's still stock for the product submited by Visitor
