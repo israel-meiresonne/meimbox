@@ -564,7 +564,7 @@ class BoxProduct extends Product
         }
         if ($stillUnlockedStock) {
             $freeSizesStock = (!empty($freeSizesStock)) ? $freeSizesStock : $sizesStock;
-            $sizesMap = Product::extractSizes(...$products);
+            $sizesMap = Product::extractSizes($products);
             $freeSizeObjs = parent::keysToAscInt($sizesMap->getMap());
             $freeResultMap = self::decreaseStock($supported, $freeSizesStock, $freeSizeObjs);
             $freeQuantity = $freeResultMap->get(Map::quantity);
@@ -602,7 +602,7 @@ class BoxProduct extends Product
         $product =  $products[0];
         $sizesStock = $product->getSizeStock();
         $prodID = $product->getProdID();
-        $sizesMap = Product::extractSizes(...$products);
+        $sizesMap = Product::extractSizes($products);
         $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
         $resultMap = self::decreaseStock($supported,  $sizesStock, $selectedSizes);
@@ -836,7 +836,7 @@ class BoxProduct extends Product
             /**
              * @var BoxProduct[] */
             $products = $boxProductsMap->get($prodID);
-            $sizesMap = Product::extractSizes(...$products);
+            $sizesMap = Product::extractSizes($products);
             $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
 
             $stillStock = $products[0]->stillStock(...$selectedSizes);
@@ -902,7 +902,7 @@ class BoxProduct extends Product
         $product =  $products[0];
         $prodID = $product->getProdID();
         $sizesStock = $product->getSizeStock();
-        $sizesMap = Product::extractSizes(...$products);
+        $sizesMap = Product::extractSizes($products);
         $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
         $resultMap = self::decreaseStock($supported,  $sizesStock, $selectedSizes);

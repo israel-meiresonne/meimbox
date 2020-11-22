@@ -657,7 +657,7 @@ abstract class Product extends ModelFunctionality
      * @return Map list of Size
      * + Map[sequence] => Size
      */
-    public static function extractSizes(Product ...$products)
+    public static function extractSizes(array $products)
     {
         $sizesMap = new Map();
         foreach ($products as $product) {
