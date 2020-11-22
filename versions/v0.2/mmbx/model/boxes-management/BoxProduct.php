@@ -523,52 +523,71 @@ class BoxProduct extends Product
     }
 
     /**
-     * To check if still stock for product including product locked
-     * + this function combine stock available and stock locked to deduct the 
-     * stilling stock
-     * + NOTE: this function only check if there is stock stilling when locks 
-     * are active so if there's any active locks it will return true without 
-     * check if still stock
-     * + use this function only after you have checked that still real stock 
-     * (in table Products-Sizes)
+     * Check if there's enought stock after removing locked stock from stock
+     * + Note: use this function after checked if still stock with BoxProduct::stillStock()
+     * @param BoxProduct[]  $products set of product to decrease
+     *                      + Note: products must share the same id
      * @return boolean true if still stock else false
      */
-    public function stillUnlockedStock()
+    public static function stillUnlockedStock(array $products)
     {
-        $stillUnlockedStock = false;
-        $realSelectedSize = $this->getRealSelectedSize();
-        $size = $realSelectedSize->getSize();
-        $prodID = $this->getProdID();
-        $sql =
-            "SELECT ps.`prodId`, ps.`size_name`, IFNULL(SUM(sl.`quantity`), 0) AS 'TotLocked', MAX(ps.`stock`) AS 'MaxStock',
-            (MAX(ps.`stock`)-IFNULL(SUM(sl.`quantity`), 0)) AS 'stillingStock', MAX(sl.`setDate`) AS 'MaxSetDate'
-            FROM `Products-Sizes` ps
-            LEFT JOIN `StockLocks` sl ON ps.`prodId` = sl.`prodId` AND ps.`size_name` = sl.`size_name`
-            WHERE ps.`prodId`='$prodID' AND ps.`size_name`='$size'
-            GROUP BY ps.`prodId`, ps.`size_name`";
-        $tab = $this->select($sql);
-        if (empty($tab)) {
-            throw new Exception("Table StockLocked returned can't be empty. Error happen Probably beacause size '$size' don't appear in table Products-Size");
-        } else {
-            $tabLine = $tab[0];
-            $setDate = (int) strtotime($tabLine["MaxSetDate"]);
-            $lockLimit = $this->getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
-            $expiration = $setDate + $lockLimit;
-            $lockIsActive = ($expiration > time());
-            if ($lockIsActive) {
-                $virtualSizesStock = $this->getVirtualSizeStock();
-                if (!key_exists($size, $virtualSizesStock)) {
-                    throw new Exception("This size '$size' don't exist in virtual stock");
-                }
-                $lockedStock = $tabLine["TotLocked"];
-                $stock = $virtualSizesStock[$size];
-                $stillingStock = $stock - $lockedStock;
-                $quantity = $realSelectedSize->getQuantity();
-                $stillUnlockedStock = ($quantity <= $stillingStock);
-            } else {
-                $stillUnlockedStock = true;
+        $stillUnlockedStock = true;
+        $product =  $products[0];
+        $prodID = $product->getProdID();
+        $sizesStock = $product->getSizeStock();
+        $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
+
+        $lockLimit = parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        $endTime = time() - $lockLimit;
+        $endDate = date('Y-m-d H:i:s', $endTime);
+        $sql = "SELECT * FROM `StockLocks`WHERE `prodId`='$prodID' AND `setDate`>='$endDate'";
+        $tab = parent::select($sql);
+        if (!empty($tab)) {
+            $sizesLockedMap = new Map();
+            foreach ($tab as $tabLine) {
+                $size = $tabLine["size_name"];
+                $setDate = $tabLine["setDate"];
+                $quantity = $tabLine["quantity"];
+                $sequence = Size::buildSequence($size, null, null, null);
+                $sizeObj = new Size($sequence, $setDate);
+                $sizeObj->setQuantity($quantity);
+                $keys = $sizesLockedMap->getKeys();
+                $sizesLockedMap->put($sizeObj, count($keys));
             }
+            $lockedSizeObjs = $sizesLockedMap->getMap();
+            $lockedResultMap = self::decreaseStock($supported, $sizesStock, $lockedSizeObjs);
+            $lockedQuantity = $lockedResultMap->get(Map::quantity);
+            $stillUnlockedStock = ($lockedQuantity == 0);
+            $freeSizesStock = $lockedResultMap->get(Map::size);
+            $notifAdmin = new Response();
+            self::handleDecreaseErrors($notifAdmin, $lockedResultMap, $prodID, __METHOD__);
         }
+        if ($stillUnlockedStock) {
+            $freeSizesStock = (!empty($freeSizesStock)) ? $freeSizesStock : $sizesStock;
+            $sizesMap = Product::extractSizes(...$products);
+            $freeSizeObjs = parent::keysToAscInt($sizesMap->getMap());
+            $freeResultMap = self::decreaseStock($supported, $freeSizesStock, $freeSizeObjs);
+            $freeQuantity = $freeResultMap->get(Map::quantity);
+            $stillUnlockedStock = ($freeQuantity == 0);
+            $notifAdmin = (!empty($notifAdmin)) ? $notifAdmin : new Response();
+            self::handleDecreaseErrors($notifAdmin, $freeResultMap, $prodID, __METHOD__);
+        }
+        // var_dump(str_repeat("-", 10) . " endDate: $endDate " . str_repeat("-", 10));                            // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " tab " . str_repeat("-", 10), $tab);                                    // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " sizesStock " . str_repeat("-", 10), $sizesStock);                      // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " sizesLockedMap " . str_repeat("-", 10), $sizesLockedMap);              // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " lockedResultMap " . str_repeat("-", 10), $lockedResultMap);            // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " freeSizeObjs " . str_repeat("-", 10), $freeSizeObjs);                  // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " freeResultMap " . str_repeat("-", 10), $freeResultMap);                // ❌
+        // echo "\n";                                                                                              // ❌
+        // var_dump(str_repeat("-", 10) . " notifAdmin " . str_repeat("-", 10), $notifAdmin);                      // ❌
+        // echo "\n";
         return $stillUnlockedStock;
     }
 
@@ -586,7 +605,7 @@ class BoxProduct extends Product
         $sizesMap = Product::extractSizes(...$products);
         $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
-        $resultMap = self::decreasStock($supported,  $sizesStock, ...$selectedSizes);
+        $resultMap = self::decreaseStock($supported,  $sizesStock, $selectedSizes);
         $stillingSizesStock = $resultMap->get(Map::size);
         $stockToLocks = [];
         foreach ($stillingSizesStock as $size => $stillingStock) {
@@ -598,7 +617,13 @@ class BoxProduct extends Product
         $quantity = $resultMap->get(Map::quantity);
         if ($quantity > 0) {
             $notifAdmin = new Response();
-            $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
+            $erMsg = "Not enough stock (missing stock:'$quantity') for product '$prodID' in " . __METHOD__;
+            $notifAdmin->addError($erMsg, MyError::ADMIN_ERROR);
+        }
+        $errors = $resultMap->get(Map::error);
+        foreach ($errors as $erMsg) {
+            $notifAdmin = (!empty($notifAdmin)) ? $notifAdmin : new Response();
+            $erMsg .= " in " . __METHOD__;
             $notifAdmin->addError($erMsg, MyError::ADMIN_ERROR);
         }
         // var_dump("sizesStock: ", $sizesStock);      // ❌
@@ -606,6 +631,81 @@ class BoxProduct extends Product
         // var_dump("stockToLocks:", $stockToLocks);   // ❌
         // var_dump("notifAdmin:", $notifAdmin);       // ❌
         self::insertLocks($response, $userID, $prodID, $stockToLocks);
+    }
+
+    /**
+     * To deacrease stock
+     * @param Response  $response to push in results or accured errors
+     * @param mixed[]   $supported  list of supported size ordered from low to hight
+     * @param int[]     $sizesStock  stock to decrease
+     * @param Size[]    $sizeObjs   list of Size from products sharing the same id
+     * @return Map      result of the decrreasing
+     *                  + Map[Map::quantity]        =>  int holds surplus of size asked
+     *                  + Map[Map::size]            =>  stock decreased
+     *                  + Map[Map::error][index]    =>  set of error messages occured
+     */
+    // public static function decreaseStock(array $supported, array $sizesStock, array $sizeObjs)
+    private static function decreaseStock(array $supported, array $sizesStock, array $sizeObjs)
+    {
+        $stillStock = false;
+        $errors = [];
+        $result = new Map();
+        $supported = array_reverse($supported);
+        foreach ($sizeObjs as $sizeObj) {
+            $realSelectedSize = self::convertSizeToRealSize($sizesStock, $sizeObj);
+            if (!isset($realSelectedSize)) {
+                $sequence = $sizeObj->getSequence();
+                $erMsg = "Size '$sequence' can't be converted into real size";
+                array_push($errors, $erMsg);
+                continue;
+            }
+            $realSize = $realSelectedSize->getsize();
+            $index = array_search($realSize, $supported);
+            $quantity = $sizeObj->getQuantity();
+            while ($index >= 0) {
+                if (key_exists($realSize, $sizesStock)) {
+                    $stock = $sizesStock[$realSize];
+                    $delta = $quantity - $stock;
+                    if ($delta > 0) {
+                        $quantity = $delta;
+                        $sizesStock[$realSize] = 0;
+                    } else { // $delta <= 0
+                        $quantity = 0;
+                        $sizesStock[$realSize] = abs($delta);
+                        break;
+                    }
+                }
+                $index--;
+                $realSize = ($index >= 0) ? $supported[$index] : $realSize;
+            }
+            $stillStock = ($quantity == 0);
+            if (!$stillStock) {
+                break;
+            }
+        }
+        $result->put($quantity, Map::quantity);
+        $result->put($sizesStock, Map::size);
+        $result->put($errors, Map::error);
+        return $result;
+    }
+
+    /**
+     * To handle result returned by the BoxProduct::decreasStock
+     * @param Response      $response   where to strore results
+     * @param Map           $resultMap  containt result returned 
+     */
+    private static function handleDecreaseErrors(Response $response, Map $resultMap, $prodID, string $method)
+    {
+        $quantity = $resultMap->get(Map::quantity);
+        if ($quantity > 0) {
+            $erMsg = "Not enough stock (missing stock:'$quantity') for product '$prodID' in $method";
+            $response->addError($erMsg, MyError::ADMIN_ERROR);
+        }
+        $errors = $resultMap->get(Map::error);
+        foreach ($errors as $erMsg) {
+            $erMsg .= " in $method";
+            $response->addError($erMsg, MyError::ADMIN_ERROR);
+        }
     }
 
     /**
@@ -712,7 +812,6 @@ class BoxProduct extends Product
         $this->delete($response, $sql);
     }
 
-
     /**
      * To insert boxProduct ordred
      * @param Response $response to push in results or accured errors
@@ -806,14 +905,15 @@ class BoxProduct extends Product
         $sizesMap = Product::extractSizes(...$products);
         $selectedSizes = parent::keysToAscInt($sizesMap->getMap());
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
-        $resultMap = self::decreasStock($supported,  $sizesStock, ...$selectedSizes);
+        $resultMap = self::decreaseStock($supported,  $sizesStock, $selectedSizes);
         $quantity = $resultMap->get(Map::quantity);
         $errors = $resultMap->get(Map::error);
         foreach ($errors as $erMsg) {
+            $erMsg .= " in " . __METHOD__;
             $response->addError($erMsg, MyError::ADMIN_ERROR);
         }
         if ($quantity > 0) {
-            $erMsg = "Not enough stock for product '$prodID', missing stock:'$quantity'";
+            $erMsg = "Not enough stock (missing stock:'$quantity') for product '$prodID' in " . __METHOD__;
             $response->addError($erMsg, MyError::ADMIN_ERROR);
         }
         $newSizesStock = $resultMap->get(Map::size);
@@ -826,64 +926,7 @@ class BoxProduct extends Product
         // var_dump("resultMap: ", $resultMap);    // ❌
         // var_dump("sql: \n$sql");                // ❌
 
-        self::update($response, $sql, []);   // ✅
-    }
-
-    /**
-     * To deacrease stock
-     * @param Response  $response to push in results or accured errors
-     * @param mixed[]   $supported  list of supported size ordered from low to hight
-     * @param int[]     $sizesStock  stock to decrease
-     * @param Size[]    $sizeObjs   list of Size from products sharing the same id
-     * @return Map      result of the decrreasing
-     *                  + Map[Map::quantity]        =>  int holds surplus of size asked
-     *                  + Map[Map::size]            =>  stock decreased
-     *                  + Map[Map::error][index]    =>  set of error messages occured
-     */
-    public static function decreasStock(array $supported, array $sizesStock, Size ...$sizeObjs)
-    // private static function decreasStock(array $supported, array $sizesStock, Size ...$sizeObjs)
-    {
-        $stillStock = false;
-        $errors = [];
-        $result = new Map();
-        $supported = array_reverse($supported);
-        foreach ($sizeObjs as $sizeObj) {
-            $realSelectedSize = self::convertSizeToRealSize($sizesStock, $sizeObj);
-            if (!isset($realSelectedSize)) {
-                $sequence = $sizeObj->getSequence();
-                $erMsg = "Size '$sequence' can't be converted into real size";
-                array_push($errors, $erMsg);
-                // $response->addError($erMsg, MyError::ADMIN_ERROR);
-                continue;
-            }
-            $realSize = $realSelectedSize->getsize();
-            $index = array_search($realSize, $supported);
-            $quantity = $sizeObj->getQuantity();
-            while ($index >= 0) {
-                if (key_exists($realSize, $sizesStock)) {
-                    $stock = $sizesStock[$realSize];
-                    $delta = $quantity - $stock;
-                    if ($delta > 0) {
-                        $quantity = $delta;
-                        $sizesStock[$realSize] = 0;
-                    } else { // $delta <= 0
-                        $quantity = 0;
-                        $sizesStock[$realSize] = abs($delta);
-                        break;
-                    }
-                }
-                $index--;
-                $realSize = ($index >= 0) ? $supported[$index] : $realSize;
-            }
-            $stillStock = ($quantity == 0);
-            if (!$stillStock) {
-                break;
-            }
-        }
-        $result->put($quantity, Map::quantity);
-        $result->put($sizesStock, Map::size);
-        $result->put($errors, Map::error);
-        return $result;
+        self::update($response, $sql, []);          // ✅
     }
 
     /**

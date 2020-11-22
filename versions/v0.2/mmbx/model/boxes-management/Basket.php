@@ -432,16 +432,18 @@ class Basket extends ModelFunctionality
     public function stillUnlockedStock()
     {
         $lockedProd = new Map();
-        $sameBoxProducts = $this->extractBoxProductWithSameSize();
-        $keys = $sameBoxProducts->getKeys();
-        if (!empty($keys)) {
-            foreach ($keys as $key) {
+        $boxes = $this->getBoxes();
+        $boxProductsMap = Box::extractBoxProducts($boxes);
+        $prodIDs = $boxProductsMap->getKeys();
+        if (!empty($prodIDs)) {
+            foreach ($prodIDs as $prodID) {
                 /**
-                 * @var BoxProduct */
-                $boxProducts = $sameBoxProducts->get($key);
-                if (!$boxProducts->stillUnlockedStock()) {
-                    $dateKey = $boxProducts->getDateInSec();
-                    $lockedProd->put($boxProducts, $dateKey);
+                 * @var BoxProduct[] */
+                $boxProducts = $boxProductsMap->get($prodID);
+                if (!BoxProduct::stillUnlockedStock($boxProducts)) {
+                    foreach ($boxProducts as $boxProduct) {
+                        $lockedProd->put($boxProduct, count($lockedProd->getKeys()));
+                    }
                 }
             }
         }
@@ -737,7 +739,7 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * To unlock locked stock of prroducts
+     * To unlock locked stock of products
      * @param Response $response where to strore results
      * @param string $userID Client's id
      */

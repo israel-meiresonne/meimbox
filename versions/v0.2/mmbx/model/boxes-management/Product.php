@@ -798,13 +798,13 @@ abstract class Product extends ModelFunctionality
      */
     public abstract function stillStock(Size ...$sizeObjs);
 
-    /**
-     * To check if still stock for product including product locked
-     * + this function combine stock available and stock locked to deduct the 
-     * stilling stock
-     * @return boolean set true if still stock else false
-     */
-    public abstract function stillUnlockedStock();
+    // /**
+    //  * To check if still stock for product including product locked
+    //  * + this function combine stock available and stock locked to deduct the 
+    //  * stilling stock
+    //  * @return boolean set true if still stock else false
+    //  */
+    // public abstract function stillUnlockedStock();
 
     /**
      * To evaluate if still at less one size in stock

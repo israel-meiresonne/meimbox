@@ -617,28 +617,28 @@ class Box extends ModelFunctionality
         return $boxes;
     }
 
-    /**
-     * To check if stock still available for product in the box
-     * + the stock checked don't include locked products
-     * @return Map map of product out of stock
-     */
-    public function stillStock()
-    {
-        $lockedProd = new Map();
-        $products = $this->getProducts();
-        if (!empty($products)) {
-            foreach ($products as $product) {
-                $selectedSize = $product->getSelectedSize();
-                if (!$product->stillStock($selectedSize)) {
-                    $key = $product->getDateInSec();
-                    $lockedProd->put($product, $key);
-                }
-            }
-        }
-        // (!empty($lockedProd)) ? krsort($lockedProd) : null;
-        $lockedProd->sortKeyDesc();
-        return $lockedProd;
-    }
+    // /**
+    //  * To check if stock still available for product in the box
+    //  * + the stock checked don't include locked products
+    //  * @return Map map of product out of stock
+    //  */
+    // public function stillStock()
+    // {
+    //     $lockedProd = new Map();
+    //     $products = $this->getProducts();
+    //     if (!empty($products)) {
+    //         foreach ($products as $product) {
+    //             $selectedSize = $product->getSelectedSize();
+    //             if (!$product->stillStock($selectedSize)) {
+    //                 $key = $product->getDateInSec();
+    //                 $lockedProd->put($product, $key);
+    //             }
+    //         }
+    //     }
+    //     // (!empty($lockedProd)) ? krsort($lockedProd) : null;
+    //     $lockedProd->sortKeyDesc();
+    //     return $lockedProd;
+    // }
 
     // /**
     //  * To check if still stock for product in the box including locked stock
