@@ -399,8 +399,8 @@ abstract class User extends Visitor
             $soldOutProdMap = $basket->stillStock();
             $soldOutKeys = $soldOutProdMap->getKeys();
             if (!empty($soldOutKeys)) {
-                    $response->addError("there's not enought stock", MyError::FATAL_ERROR);
-                    // $response->addErrorStation("ER1", MyError::FATAL_ERROR);
+                $response->addError("there's not enought stock", MyError::FATAL_ERROR);
+                // $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                 $response->addError($soldOutProdMap, Product::KEY_PROD_SOLD_OUT);
             } else {
                 $lockedProductMap = $basket->stillUnlockedStock();
@@ -414,7 +414,7 @@ abstract class User extends Visitor
 
                     $haveDelete = $basket->deleteEmptyBoxes($response);
                     (!empty($haveDelete)) ? $response->addResultStation(Response::RSP_NOTIFICATION, "US69") : null;
-                    
+
                     $cookieValue = $this->generateDateCode(25);
                     $this->generateCookie(Cookie::COOKIE_LCK, $cookieValue);
                     try {
