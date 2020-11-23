@@ -87,8 +87,36 @@ class Location extends ModelFunctionality
             mobile
             proxy 
             query => $ip
+
+            status          success or fail
+            message         included only when status is fail Can be one of the following: private range, reserved range, invalid query
+            continent       Continent name
+            continentCode   Two-letter continent code
+            country         Country name
+            countryCode     Two-letter country code ISO 3166-1 alpha-2
+            region          Region/state short code (FIPS or ISO)
+            regionName      Region/state
+            city            City
+            district        District (subdivision of city)
+            zip             Zip code
+            lat             Latitude
+            lon             Longitude
+            timezone        Timezone (tz)
+            offset          Timezone UTC DST offset in seconds
+            currency        National currency
+            isp             ISP name
+            org             Organization name
+            as              AS number and organization, separated by space (RIR). Empty for IP blocks not being announced in BGP tables.
+            asname          AS name (RIR). Empty for IP blocks not being announced in BGP tables.
+            reverse         Reverse DNS of the IP (can delay response)
+            mobile          Mobile (cellular) connection
+            proxy           Proxy, VPN or Tor exit address
+            hosting         Hosting, colocated or data center
+            query           IP used for the query
+            
         */
-        $endpoint = json_decode(file_get_contents('http://ip-api.com/json/' . $ip . '?lang=en&fields=15984443')); //connection au serveur de ip-api.com et recuperation des données
+        // $endpoint = json_decode(file_get_contents('http://ip-api.com/json/' . $ip . '?lang=en&fields=15984443')); //connection au serveur de ip-api.com et recuperation des données
+        $endpoint = json_decode(file_get_contents('http://ip-api.com/json/' . $ip . '?lang=en&fields=66846719')); //connection au serveur de ip-api.com et recuperation des données
         return $endpoint;
     }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  jeu. 15 oct. 2020 à 21:05
+-- Généré le :  lun. 23 nov. 2020 à 21:04
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -50,7 +50,8 @@ CREATE TABLE `Addresses` (
 
 INSERT INTO `Addresses` (`userId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `setDate`) VALUES
 (3330090, 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38'),
-(3330090, 'place royale 4', '1640', 'belgium', NULL, 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
+(3330090, 'place royale 4', '1640abc', 'belgium', 'studio', 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
+(3330090, 'rue royale 67', '1000', 'belgium', 'house', 'bruxelles', 'bruxelles', '472174210', '2020-11-15 20:52:51'),
 (651853948, 'place royale 4', '1640', 'canada', 'app', 'state', 'rhode-saint-genese', '472174210', '2020-10-03 16:06:58'),
 (651853948, 'place royele 4', '1640', 'belgium', NULL, 'Brabant-flamand', 'rhode-saint-genese', '32472274210', '2020-02-28 00:00:00'),
 (651853948, 'rue des bargeo 4', '4780', 'canada', 'boite 17', 'ma province perdu', 'ma ville perdu', '428284890', '2020-02-27 00:00:00'),
@@ -93,8 +94,9 @@ CREATE TABLE `Baskets-Box` (
 --
 
 INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
-('228js300w1092410bw0151q82', 3330090),
-('2yy0915653022280at1m10zv1', 3330090),
+('002ju101v150c24oad32102a4', 3330090),
+('221251413024ql01301424n3x', 3330090),
+('h0r21wf0k6v4110442162112h', 3330090),
 ('0860g1009tn0i31s2s6b24112', 651853948),
 ('120p222c5150ym3wt2308y193', 651853948),
 ('70r904v2240t0292ko1514055', 651853948),
@@ -166,9 +168,12 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('228js300w1092410bw0151q82', 1, 'l-asos-null-null', 'l', 'asos', NULL, NULL, 4, '2020-10-13 21:10:14'),
-('2yy0915653022280at1m10zv1', 2, 'null-null-decrease_s_2-fit', NULL, NULL, 'decrease_s_2', 'fit', 6, '2020-10-13 21:09:07'),
+('221251413024ql01301424n3x', 1, 'null-null-decrease_s-fit', NULL, NULL, 'decrease_s', 'fit', 1, '2020-11-22 19:21:42'),
+('221251413024ql01301424n3x', 2, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-11-22 13:34:37'),
 ('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20'),
+('h0r21wf0k6v4110442162112h', 1, 'm-null-null-null', 'm', NULL, NULL, NULL, 7, '2020-11-21 17:01:11'),
+('h0r21wf0k6v4110442162112h', 1, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-11-22 21:07:44'),
+('h0r21wf0k6v4110442162112h', 2, 'm-null-null-null', 'm', NULL, NULL, NULL, 1, '2020-11-22 13:35:14'),
 ('mf1550920290g92f0261m60i2', 3, 's-the north face-null-null', 's', 'the north face', NULL, NULL, 1, '2020-09-25 19:06:42');
 
 -- --------------------------------------------------------
@@ -341,40 +346,72 @@ CREATE TABLE `Boxes` (
 --
 
 INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
+('002ju101v150c24oad32102a4', 'regular', '2020-11-23 01:44:25'),
 ('022i90x55y3013ue680l10125', 'gold', '2020-10-13 09:58:50'),
+('02hm75350n91q2000042my115', 'regular', '2020-11-20 05:30:50'),
 ('0782s02x110n1n3v327i7y10h', 'silver', '2020-10-07 17:33:27'),
+('07ev531313rul51o25220p12m', 'gold', '2020-11-17 23:35:55'),
 ('0860g1009tn0i31s2s6b24112', 'gold', '2020-09-16 21:40:10'),
+('0ca4ie800824k256i21011m1v', 'regular', '2020-10-20 18:58:41'),
 ('0gi1031159y53i7209g2o2r40', 'gold', '2020-09-15 13:20:53'),
 ('0n57q1k1902082n05n9ug5280', 'silver', '2020-09-17 09:50:58'),
 ('0uj18003912412m142z1l16sl', 'silver', '2020-10-13 14:19:28'),
+('101222k1f1s02e0m43237171e', 'silver', '2020-11-20 17:24:11'),
 ('1015q398el203w025f0012211', 'gold', '2020-10-10 18:20:35'),
 ('102901079c41fcg2mtw96t40d', 'regular', '2020-09-17 09:49:41'),
+('10qh62j132wz140d3g82013m1', 'gold', '2020-11-13 13:43:08'),
+('111p35q11aq70124v2yf00120', 'gold', '2020-11-21 11:03:54'),
 ('11bqwo2f11231800vpg50f21d', 'regular', '2020-10-13 12:11:58'),
 ('120p222c5150ym3wt2308y193', 'gold', '2020-09-25 22:31:35'),
 ('122l41wz1m49o1i31352a00f0', 'regular', '2020-10-11 21:44:35'),
 ('1232v21310hu04d2j0w9f3b2e', 'gold', '2020-09-23 14:23:23'),
+('12a00o11g514x80220331w0gt', 'regular', '2020-10-20 18:15:01'),
+('12t1u4201g2e26ld0021re51n', 'regular', '2020-10-21 12:25:16'),
 ('131u45w04001h52945214200j', 'gold', '2020-10-01 14:25:40'),
+('164o1150kc229l2n16j2t4301', 'regular', '2020-11-21 12:46:53'),
 ('182269c17d0972rf2q0012ot1', 'regular', '2020-09-27 12:18:12'),
+('1a11b2gb2m6705201z9gh27b0', 'regular', '2020-11-05 17:26:29'),
+('1f232031010429a2f1d0ds084', 'regular', '2020-10-20 18:09:23'),
 ('1g84sa23913n2o5011w014041', 'silver', '2020-10-13 14:38:45'),
 ('200e2001142d00916f4kjecbs', 'regular', '2020-09-16 21:40:04'),
 ('20341003s1w013ky47va1s422', 'regular', '2020-10-13 14:40:33'),
+('204j10d1410q212cn22qv1198', 'gold', '2020-11-04 12:12:19'),
+('20a31i02ev20lc1122pzi1501', 'silver', '2020-10-21 12:25:31'),
+('20g111t2323sd39gus5000020', 'silver', '2020-11-20 05:33:09'),
+('210e40ty12v1e2m101271z273', 'silver', '2020-11-04 12:12:12'),
 ('21rta90q0o5j9120230182424', 'regular', '2020-10-13 09:45:24'),
 ('22062fl1210dddu0101lj0243', 'gold', '2020-10-11 22:03:42'),
+('2211026j1098pg7101h94164u', 'regular', '2020-11-16 10:28:19'),
+('221251413024ql01301424n3x', 'gold', '2020-11-22 13:34:34'),
 ('228js300w1092410bw0151q82', 'gold', '2020-10-13 21:09:52'),
 ('28p24122nv001l11m1u051122', 'gold', '2020-10-11 22:14:22'),
 ('2a1ta22010112sqsiz250z331', 'gold', '2020-10-11 22:13:53'),
+('2lv1th2u3h05211200dz1c0o1', 'gold', '2020-10-21 21:15:03'),
 ('2x8gb01iw9130u22210422450', 'gold', '2020-09-14 12:45:08'),
 ('2yy0915653022280at1m10zv1', 'silver', '2020-10-13 21:08:52'),
 ('30owo260119100q2f9cl25im1', 'silver', '2020-09-15 13:21:09'),
 ('310m035013939e0523112udmk', 'gold', '2020-09-30 11:53:33'),
+('319001s1sf2h4y02822x12oc4', 'silver', '2020-11-21 02:43:28'),
+('336210a021090uq4210117p4n', 'gold', '2020-11-21 03:01:40'),
+('35020w41820k0sj10025v44h1', 'gold', '2020-11-20 05:34:48'),
+('402i3x316hr4021df1p014u12', 'regular', '2020-11-16 10:34:42'),
+('43012119426c1b0jy02xt21j1', 'silver', '2020-11-21 10:34:19'),
 ('607029oh2y1x0j1zj41101x05', 'silver', '2020-10-11 15:40:07'),
 ('611026076001h2su60044z19i', 'regular', '2020-10-06 17:19:04'),
+('6724nwr140i12120gm0115er1', 'gold', '2020-11-20 16:47:14'),
 ('70r904v2240t0292ko1514055', 'silver', '2020-09-24 17:55:02'),
+('7107yg91203k0o110239dk641', 'regular', '2020-11-16 10:33:07'),
 ('7248u731q010sj978202110nk', 'regular', '2020-10-07 18:27:43'),
+('81n00516a381122powtw00014', 'regular', '2020-11-16 10:38:05'),
+('8z10i213230110q520hft134m', 'regular', '2020-11-13 14:08:03'),
 ('8z441320demj9320011641962', 'silver', '2020-09-14 12:46:18'),
 ('9283q00b42f10224e1e14520o', 'regular', '2020-09-21 20:24:34'),
+('95p22611ccupsa0207511022n', 'regular', '2020-11-20 17:25:25'),
 ('by2a810211482640i45010234', 'gold', '2020-10-13 14:40:42'),
+('cq71515me0250v621210920qg', 'regular', '2020-10-21 09:56:25'),
 ('di9220591ht9210ji3s1805s0', 'silver', '2020-09-30 12:55:19'),
+('e0l140t21bx101120mc216201', 'regular', '2020-11-21 14:21:10'),
+('h0r21wf0k6v4110442162112h', 'gold', '2020-11-21 14:20:44'),
 ('hsr30112c1q481957r31z0210', 'gold', '2020-10-13 14:38:51'),
 ('i7g413031pq041h220ui30i01', 'silver', '2020-10-13 14:40:37'),
 ('k23h21r10j70793907150552g', 'gold', '2020-09-15 21:59:03'),
@@ -389,7 +426,11 @@ INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('v04102j401krzp90015292223', 'gold', '2020-09-23 14:21:05'),
 ('vg2nu9x12160091342714u204', 'silver', '2020-09-16 22:14:49'),
 ('vl08q977s031k1g2002ejy275', 'regular', '2020-09-27 18:37:57'),
-('y0g00v9212r49ip12v3132k56', 'silver', '2020-09-14 12:25:39');
+('w0322580e2g2ks141u21d2h01', 'gold', '2020-11-22 13:28:24'),
+('x3a25kt5120790270vt12hj11', 'silver', '2020-11-05 17:25:27'),
+('x41j20002158p2t901tl088e0', 'silver', '2020-10-20 18:59:08'),
+('y0g00v9212r49ip12v3132k56', 'silver', '2020-09-14 12:25:39'),
+('z014a4h1213d6ad2912002012', 'gold', '2020-10-21 21:44:06');
 
 -- --------------------------------------------------------
 
@@ -1263,6 +1304,7 @@ INSERT INTO `Constants` (`constName`, `stringValue`, `jsonValue`, `setDate`, `de
 ('DEFAULT_ISO_CURRENCY', 'usd', NULL, '2020-05-02 00:00:00', 'The default currency iso code 2 of a user if his localcurrency is not supported by the System.'),
 ('DEFAULT_LANGUAGE', 'en', NULL, '2020-02-28 00:00:00', 'Default language given to the visitor if his driver language is not supported by the web site.'),
 ('GRID_USED_INSIDE', 'grid.php', NULL, '2020-03-30 00:00:00', 'Indicate the value of the attribut \"inside\" in TranslationStation table. Used to get the translation to the \"inside\" indicated.\r\nIts the file name of the method name where the translation is used.'),
+('INFOS_COMPANY', NULL, '{\"brand\": \"i&meim\", \"media\": {\"faceboock\": {\"link\": \"https://www.facebook.com/iandmeimofficial/\", \"logo\": \"facebook2x.png\"}, \"instagram\": {\"link\": \"https://www.instagram.com/iandmeim/\", \"logo\": \"instagram2x.png\"}}, \"address\": {\"city\": \"sint-genesius-rode\", \"door\": null, \"phone\": \"32\", \"state\": \"flemish brabant\", \"street\": null, \"country\": \"belgium\", \"zipcode\": \"1640\"}}', '2020-10-18 20:35:28', 'Holds all datas about the company.'),
 ('MAX_MEASURE', '4', NULL, '2020-04-23 00:00:00', 'Indicate how much measure can be holded by a user.'),
 ('MAX_PRODUCT_CUBE_DISPLAYABLE', '3', NULL, '2020-04-02 00:00:00', 'The maximum of product\'s cubes displayable before to display the plus symbol including the plus symbole in the count of cube to display.\r\nex: MAX_PRODUCT_CUBE_DISPLAYABLE = 4\r\nwill display: 3 color cube + 1 symbole cube = 4 cubes\r\n\r\nThis number of cube must avoid to display cubes in multiple ligne and disturbe the grid arrangement.\r\nNOTE: the number of cube displayed exactly MAX_PRODUCT_CUBE_DISPLAYABLE cause this constante include already the plus symbole'),
 ('NB_DAYS_BEFORE', '15', NULL, '2020-02-21 21:28:28', 'The number of days to go back in navigation history.'),
@@ -1296,7 +1338,7 @@ CREATE TABLE `Cookies` (
 
 INSERT INTO `Cookies` (`cookieID`, `cookiePeriod`, `cookieDomain`, `cookiePath`, `cookieSecure`, `cookieHttponly`) VALUES
 ('ADM', 10800, NULL, NULL, 0, 1),
-('ADRS', 86400, NULL, 'checkout', 0, 1),
+('ADRS', 86400, NULL, NULL, 0, 1),
 ('CLT', 31536000, NULL, NULL, 0, 1),
 ('LCK', 120, NULL, NULL, 0, 1),
 ('VIS', 94608000, NULL, NULL, 0, 1);
@@ -1402,7 +1444,8 @@ CREATE TABLE `Details` (
 
 CREATE TABLE `Devices` (
   `userId` int(11) NOT NULL,
-  `setDate` datetime NOT NULL,
+  `nav_date` datetime NOT NULL,
+  `deviceDate` datetime NOT NULL,
   `ddData` json NOT NULL,
   `userAgent` varchar(100) NOT NULL,
   `isBot` tinyint(1) NOT NULL,
@@ -1529,36 +1572,24 @@ INSERT INTO `DiscountValues` (`discountValue`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `EmailsCategories`
---
-
-CREATE TABLE `EmailsCategories` (
-  `category` varchar(30) NOT NULL,
-  `subject` varchar(30) NOT NULL,
-  `sender` int(11) DEFAULT NULL,
-  `replyTo` int(11) DEFAULT NULL,
-  `content` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `EmailsSent`
 --
 
 CREATE TABLE `EmailsSent` (
   `messageID` varchar(100) NOT NULL,
   `recipient` varchar(100) NOT NULL,
+  `recipientName` varchar(50) DEFAULT NULL,
   `mailer_` varchar(30) NOT NULL,
-  `category_` varchar(30) NOT NULL,
   `subject` varchar(30) NOT NULL,
   `sender` varchar(100) NOT NULL,
   `toField` tinyint(1) NOT NULL,
   `ccField` tinyint(1) NOT NULL,
   `bccField` tinyint(1) NOT NULL,
-  `replyTo` int(11) NOT NULL,
+  `replyTo` varchar(100) NOT NULL,
   `content` text NOT NULL,
-  `sendDate` datetime NOT NULL
+  `sendDate` datetime NOT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `message` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1572,7 +1603,7 @@ CREATE TABLE `EmailsStatus` (
   `status` varchar(50) NOT NULL,
   `reason` varchar(50) DEFAULT NULL,
   `url` varchar(256) DEFAULT NULL,
-  `sentIP` varchar(50) DEFAULT NULL,
+  `sendingIP` varchar(50) DEFAULT NULL,
   `sendDate` datetime NOT NULL,
   `eventDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1612,12 +1643,56 @@ INSERT INTO `Languages` (`langIsoCode`, `langName`, `langLocalName`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Locations`
+--
+
+CREATE TABLE `Locations` (
+  `userId` int(11) NOT NULL,
+  `nav_date` datetime NOT NULL,
+  `locationDate` datetime NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `message` varchar(100) NOT NULL,
+  `continent` varchar(50) NOT NULL,
+  `continentCode` varchar(10) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `countryCode` varchar(10) NOT NULL,
+  `region` varchar(10) NOT NULL,
+  `regionName` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `district` varchar(100) NOT NULL,
+  `zip` varchar(50) NOT NULL,
+  `lat` float NOT NULL,
+  `lon` float NOT NULL,
+  `timezone` varchar(50) NOT NULL,
+  `offset` float NOT NULL,
+  `currency` varchar(50) NOT NULL,
+  `isp` varchar(100) NOT NULL,
+  `org` varchar(100) NOT NULL,
+  `as` varchar(100) NOT NULL,
+  `asname` varchar(100) NOT NULL,
+  `reverse` varchar(100) NOT NULL,
+  `mobile` tinyint(1) NOT NULL,
+  `proxy` tinyint(1) NOT NULL,
+  `hosting` tinyint(1) NOT NULL,
+  `query` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Mailers`
 --
 
 CREATE TABLE `Mailers` (
   `mailer` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Mailers`
+--
+
+INSERT INTO `Mailers` (`mailer`) VALUES
+('BlueAPI');
 
 -- --------------------------------------------------------
 
@@ -1665,6 +1740,50 @@ INSERT INTO `MeasureUnits` (`unitName`, `measureUnit`, `toSystUnit`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Navigations`
+--
+
+CREATE TABLE `Navigations` (
+  `userId` int(11) NOT NULL,
+  `navDate` datetime NOT NULL,
+  `url` varchar(1000) NOT NULL,
+  `webroot` varchar(50) NOT NULL,
+  `path` varchar(100) NOT NULL,
+  `timeOn` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Navigations-Actions`
+--
+
+CREATE TABLE `Navigations-Actions` (
+  `userId` int(11) NOT NULL,
+  `nav_Date` datetime NOT NULL,
+  `actionDate` datetime NOT NULL,
+  `action_` varchar(50) NOT NULL,
+  `actionOn` varchar(50) NOT NULL,
+  `onID` varchar(100) NOT NULL,
+  `response` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `NavigationsParameters`
+--
+
+CREATE TABLE `NavigationsParameters` (
+  `userId` int(11) NOT NULL,
+  `nav_date` datetime NOT NULL,
+  `paramKey` varchar(100) NOT NULL,
+  `paramData` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Orders`
 --
 
@@ -1678,6 +1797,13 @@ CREATE TABLE `Orders` (
   `iso_currency` varchar(10) NOT NULL,
   `setDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Orders`
+--
+
+INSERT INTO `Orders` (`orderID`, `userId`, `stripeCheckoutId`, `vat`, `paidAmount`, `shippingCost`, `iso_currency`, `setDate`) VALUES
+('test', 3330090, 'cs_test_0reyhQRw4ymeuTwxKugUkSI2Dvcow8KWUy6vxC7Dz8uQNAcGF3I9PkAT', 0.2, 150, 2, 'eur', '2020-11-20 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1794,49 +1920,6 @@ CREATE TABLE `OrdersStatus` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Pages`
---
-
-CREATE TABLE `Pages` (
-  `userId` int(11) NOT NULL,
-  `setDate` datetime NOT NULL,
-  `page` varchar(100) NOT NULL,
-  `timeOn` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `Pages-Actions`
---
-
-CREATE TABLE `Pages-Actions` (
-  `userId` int(11) NOT NULL,
-  `setDate` datetime NOT NULL,
-  `page_` varchar(100) NOT NULL,
-  `action_` varchar(50) NOT NULL,
-  `on_` varchar(100) NOT NULL,
-  `onName` varchar(100) NOT NULL,
-  `response` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `PagesParameters`
---
-
-CREATE TABLE `PagesParameters` (
-  `userId` int(11) NOT NULL,
-  `setDate_` datetime NOT NULL,
-  `page_` varchar(100) NOT NULL,
-  `param_key` varchar(100) NOT NULL,
-  `param_data` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `Payements`
 --
 
@@ -1939,32 +2022,33 @@ CREATE TABLE `Products` (
   `addedDate` datetime NOT NULL,
   `colorName` enum('red','gold','purple','pink','blue','green','white','black','beige','grey','brown','yellow','orange') NOT NULL,
   `colorRGB` varchar(50) NOT NULL,
-  `weight` double NOT NULL
+  `weight` double NOT NULL,
+  `googleCat` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `Products`
 --
 
-INSERT INTO `Products` (`prodID`, `prodName`, `isAvailable`, `product_type`, `addedDate`, `colorName`, `colorRGB`, `weight`) VALUES
-(1, 'boxproduct1', 1, 'boxproduct', '2020-01-08 15:00:05', 'green', '#33cc33', 0.54),
-(2, 'boxproduct2', 1, 'boxproduct', '2020-01-09 15:00:05', 'blue', '#00ccff', 0.98),
-(3, 'boxproduct3', 1, 'boxproduct', '2020-01-10 15:00:05', 'yellow', '#ffff00', 0.71),
-(4, 'boxproduct3', 1, 'boxproduct', '2020-01-11 15:00:05', 'red', '#ff3300', 0.71),
-(5, 'boxproduct3', 1, 'boxproduct', '2020-01-12 15:00:05', 'orange', '#ff9900', 0.34),
-(6, 'basketproduct4', 1, 'basketproduct', '2020-01-13 15:00:05', 'black', '#000000', 0.32),
-(7, 'basketproduct4', 1, 'basketproduct', '2020-01-14 15:00:05', 'green', '#33cc33', 0.65),
-(8, 'basketproduct4', 1, 'basketproduct', '2020-01-15 15:00:05', 'white', '#ffffff', 0.48),
-(9, 'basketproduct5', 1, 'basketproduct', '2020-01-16 15:00:05', 'yellow', '#ffff00', 0.73),
-(10, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'red', '#ff3300', 0.76),
-(11, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'blue', '#00ccff', 0.76),
-(12, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76),
-(13, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'green', '#33cc33', 0.76),
-(14, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'orange', '#ff9900', 0.76),
-(15, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'black', '#000000', 0.76),
-(16, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'white', '#ffffff', 0.76),
-(17, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'red', '#00ccff', 0.76),
-(18, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76);
+INSERT INTO `Products` (`prodID`, `prodName`, `isAvailable`, `product_type`, `addedDate`, `colorName`, `colorRGB`, `weight`, `googleCat`) VALUES
+(1, 'boxproduct1', 1, 'boxproduct', '2020-01-08 15:00:05', 'green', '#33cc33', 0.54, 'Apparel & Accessories > Clothing > Sleepwear & Loungewear > Nightgowns'),
+(2, 'boxproduct2', 1, 'boxproduct', '2020-01-09 15:00:05', 'blue', '#00ccff', 0.98, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Swimwear'),
+(3, 'boxproduct3', 1, 'boxproduct', '2020-01-10 15:00:05', 'yellow', '#ffff00', 0.71, 'Apparel & Accessories > Clothing > Shirts & Tops'),
+(4, 'boxproduct3', 1, 'boxproduct', '2020-01-11 15:00:05', 'red', '#ff3300', 0.71, 'Apparel & Accessories > Clothing > Shirts & Tops'),
+(5, 'boxproduct3', 1, 'boxproduct', '2020-01-12 15:00:05', 'orange', '#ff9900', 0.34, 'Apparel & Accessories > Clothing > Shirts & Tops'),
+(6, 'basketproduct4', 1, 'basketproduct', '2020-01-13 15:00:05', 'black', '#000000', 0.32, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
+(7, 'basketproduct4', 1, 'basketproduct', '2020-01-14 15:00:05', 'green', '#33cc33', 0.65, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
+(8, 'basketproduct4', 1, 'basketproduct', '2020-01-15 15:00:05', 'white', '#ffffff', 0.48, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
+(9, 'basketproduct5', 1, 'basketproduct', '2020-01-16 15:00:05', 'yellow', '#ffff00', 0.73, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(10, 'basketproduct5', 1, 'basketproduct', '2020-01-17 15:00:05', 'red', '#ff3300', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(11, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'blue', '#00ccff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(12, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(13, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'green', '#33cc33', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(14, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'orange', '#ff9900', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(15, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'black', '#000000', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(16, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'white', '#ffffff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(17, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'red', '#00ccff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+(18, 'basketproduct5', 0, 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses');
 
 -- --------------------------------------------------------
 
@@ -2106,12 +2190,12 @@ CREATE TABLE `Products-Sizes` (
 --
 
 INSERT INTO `Products-Sizes` (`prodId`, `size_name`, `stock`) VALUES
+(1, '4xl', 5),
 (1, 'm', 5),
-(1, 'xl', 0),
-(1, 'xs', 3),
-(2, 'l', 0),
-(2, 'm', 0),
-(2, 's', 0),
+(1, 's', 5),
+(2, 'l', 5),
+(2, 'm', 5),
+(2, 's', 5),
 (3, 'l', 9),
 (3, 'm', 1),
 (3, 's', 1),
@@ -2146,44 +2230,45 @@ INSERT INTO `Products-Sizes` (`prodId`, `size_name`, `stock`) VALUES
 CREATE TABLE `ProductsDescriptions` (
   `prodId` int(11) NOT NULL,
   `lang_` varchar(10) NOT NULL,
-  `description` text NOT NULL
+  `description` varchar(5000) NOT NULL,
+  `richDescription` varchar(5000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `ProductsDescriptions`
 --
 
-INSERT INTO `ProductsDescriptions` (`prodId`, `lang_`, `description`) VALUES
-(1, 'en', 'this description is in english'),
-(1, 'es', 'esta descripción está en inglés'),
-(1, 'fr', 'cette description est en français '),
-(2, 'en', 'this description is in english'),
-(2, 'es', 'esta descripción está en inglés'),
-(2, 'fr', 'cette description est en français '),
-(3, 'en', 'this description is in english'),
-(3, 'es', 'esta descripción está en inglés'),
-(3, 'fr', 'cette description est en français '),
-(4, 'en', 'this description is in english'),
-(4, 'es', 'esta descripción está en inglés'),
-(4, 'fr', 'cette description est en français '),
-(5, 'en', 'this description is in english'),
-(5, 'es', 'esta descripción está en inglés'),
-(5, 'fr', 'cette description est en français '),
-(6, 'en', 'this description is in english'),
-(6, 'es', 'esta descripción está en inglés'),
-(6, 'fr', 'cette description est en français '),
-(7, 'en', 'this description is in english'),
-(7, 'es', 'esta descripción está en inglés'),
-(7, 'fr', 'cette description est en français '),
-(8, 'en', 'this description is in english'),
-(8, 'es', 'esta descripción está en inglés'),
-(8, 'fr', 'cette description est en français '),
-(9, 'en', 'this description is in english'),
-(9, 'es', 'esta descripción está en inglés'),
-(9, 'fr', 'cette description est en français '),
-(10, 'en', 'this description is in english'),
-(10, 'es', 'esta descripción está en inglés'),
-(10, 'fr', 'cette description est en français ');
+INSERT INTO `ProductsDescriptions` (`prodId`, `lang_`, `description`, `richDescription`) VALUES
+(1, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(1, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(1, 'fr', 'cette description est en français', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(2, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(2, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(2, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(3, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(3, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(3, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(4, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(4, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(4, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(5, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(5, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(5, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(6, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(6, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(6, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(7, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(7, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(7, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(8, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(8, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(8, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(9, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(9, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(9, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+(10, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+(10, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+(10, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français');
 
 -- --------------------------------------------------------
 
@@ -2224,173 +2309,6 @@ INSERT INTO `ProductsDiscounts` (`prodId`, `country_`, `discount_value`, `beginD
 (10, 'belgium', 0.45, '2020-02-15 18:02:20', '2020-03-17 18:02:20'),
 (10, 'canada', 0.45, '2020-02-13 18:02:20', '2020-03-15 18:02:20'),
 (10, 'switzerland', 0.12, '2020-02-14 18:02:20', '2020-03-16 18:02:20');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `ProductsMeasures`
---
-
-CREATE TABLE `ProductsMeasures` (
-  `prodId` int(11) NOT NULL,
-  `size_name` varchar(100) NOT NULL,
-  `body_part` varchar(30) NOT NULL,
-  `unit_name` varchar(50) NOT NULL,
-  `value` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `ProductsMeasures`
---
-
-INSERT INTO `ProductsMeasures` (`prodId`, `size_name`, `body_part`, `unit_name`, `value`) VALUES
-(1, 'm', 'bust', 'centimeter', 80.12),
-(1, 'm', 'hip', 'centimeter', 80.12),
-(1, 'm', 'inseam', 'centimeter', 80.12),
-(1, 'm', 'waist', 'centimeter', 80.12),
-(1, 'xl', 'bust', 'centimeter', 100.12),
-(1, 'xl', 'hip', 'centimeter', 100.12),
-(1, 'xl', 'inseam', 'centimeter', 100.12),
-(1, 'xl', 'waist', 'centimeter', 100.12),
-(1, 'xs', 'bust', 'centimeter', 60.12),
-(1, 'xs', 'hip', 'centimeter', 60.12),
-(1, 'xs', 'inseam', 'centimeter', 60.12),
-(1, 'xs', 'waist', 'centimeter', 60.12),
-(2, 'l', 'arm', 'centimeter', 100.12),
-(2, 'l', 'bust', 'centimeter', 100.12),
-(2, 'l', 'hip', 'centimeter', 100.12),
-(2, 'l', 'inseam', 'centimeter', 100.12),
-(2, 'l', 'waist', 'centimeter', 100.12),
-(2, 'm', 'arm', 'centimeter', 80.12),
-(2, 'm', 'bust', 'centimeter', 80.12),
-(2, 'm', 'hip', 'centimeter', 80.12),
-(2, 'm', 'inseam', 'centimeter', 80.12),
-(2, 'm', 'waist', 'centimeter', 80.12),
-(2, 's', 'arm', 'centimeter', 60.12),
-(2, 's', 'bust', 'centimeter', 60.12),
-(2, 's', 'hip', 'centimeter', 60.12),
-(2, 's', 'inseam', 'centimeter', 60.12),
-(2, 's', 'waist', 'centimeter', 60.12),
-(3, 'l', 'arm', 'centimeter', 54.09),
-(3, 'l', 'bust', 'centimeter', 54.75),
-(3, 'l', 'hip', 'centimeter', 84.47),
-(3, 'l', 'inseam', 'centimeter', 63.82),
-(3, 'l', 'waist', 'centimeter', 88.41),
-(3, 'm', 'arm', 'centimeter', 107.96),
-(3, 'm', 'bust', 'centimeter', 113.41),
-(3, 'm', 'hip', 'centimeter', 64.63),
-(3, 'm', 'inseam', 'centimeter', 68.01),
-(3, 'm', 'waist', 'centimeter', 70.49),
-(3, 's', 'arm', 'centimeter', 113.03),
-(3, 's', 'bust', 'centimeter', 70.67),
-(3, 's', 'hip', 'centimeter', 52.83),
-(3, 's', 'inseam', 'centimeter', 85.81),
-(3, 's', 'waist', 'centimeter', 118.39),
-(4, 'l', 'arm', 'centimeter', 57.06),
-(4, 'l', 'bust', 'centimeter', 116.02),
-(4, 'l', 'hip', 'centimeter', 60.29),
-(4, 'l', 'inseam', 'centimeter', 79.62),
-(4, 'l', 'waist', 'centimeter', 100.97),
-(4, 'm', 'arm', 'centimeter', 106.74),
-(4, 'm', 'bust', 'centimeter', 73.71),
-(4, 'm', 'hip', 'centimeter', 53.6),
-(4, 'm', 'inseam', 'centimeter', 117.16),
-(4, 'm', 'waist', 'centimeter', 95.04),
-(4, 's', 'arm', 'centimeter', 87.36),
-(4, 's', 'bust', 'centimeter', 75.24),
-(4, 's', 'hip', 'centimeter', 92.66),
-(4, 's', 'inseam', 'centimeter', 109.45),
-(4, 's', 'waist', 'centimeter', 79.18),
-(5, 'l', 'arm', 'centimeter', 116.16),
-(5, 'l', 'bust', 'centimeter', 87.75),
-(5, 'l', 'hip', 'centimeter', 64.87),
-(5, 'l', 'inseam', 'centimeter', 74.5),
-(5, 'l', 'waist', 'centimeter', 92.2),
-(5, 'm', 'arm', 'centimeter', 54.34),
-(5, 'm', 'bust', 'centimeter', 80.96),
-(5, 'm', 'hip', 'centimeter', 116.81),
-(5, 'm', 'inseam', 'centimeter', 58.92),
-(5, 'm', 'waist', 'centimeter', 93.28),
-(5, 's', 'arm', 'centimeter', 58.54),
-(5, 's', 'bust', 'centimeter', 90.07),
-(5, 's', 'hip', 'centimeter', 78.81),
-(5, 's', 'inseam', 'centimeter', 115.74),
-(5, 's', 'waist', 'centimeter', 67.23),
-(6, 'l', 'arm', 'centimeter', 110.14),
-(6, 'l', 'bust', 'centimeter', 116.44),
-(6, 'l', 'hip', 'centimeter', 116.39),
-(6, 'l', 'inseam', 'centimeter', 120.36),
-(6, 'l', 'waist', 'centimeter', 73.72),
-(6, 'm', 'arm', 'centimeter', 84.54),
-(6, 'm', 'bust', 'centimeter', 113.08),
-(6, 'm', 'hip', 'centimeter', 118.77),
-(6, 'm', 'inseam', 'centimeter', 100.15),
-(6, 'm', 'waist', 'centimeter', 68.54),
-(6, 's', 'arm', 'centimeter', 50.21),
-(6, 's', 'bust', 'centimeter', 76.47),
-(6, 's', 'hip', 'centimeter', 98.67),
-(6, 's', 'inseam', 'centimeter', 111.49),
-(6, 's', 'waist', 'centimeter', 116.18),
-(7, 'l', 'arm', 'centimeter', 107.96),
-(7, 'l', 'bust', 'centimeter', 84.36),
-(7, 'l', 'hip', 'centimeter', 93.34),
-(7, 'l', 'inseam', 'centimeter', 70.53),
-(7, 'l', 'waist', 'centimeter', 83.01),
-(7, 'm', 'arm', 'centimeter', 71.67),
-(7, 'm', 'bust', 'centimeter', 113.65),
-(7, 'm', 'hip', 'centimeter', 99.38),
-(7, 'm', 'inseam', 'centimeter', 55.76),
-(7, 'm', 'waist', 'centimeter', 105.89),
-(7, 's', 'arm', 'centimeter', 90.61),
-(7, 's', 'bust', 'centimeter', 101.34),
-(7, 's', 'hip', 'centimeter', 90.01),
-(7, 's', 'inseam', 'centimeter', 99.11),
-(7, 's', 'waist', 'centimeter', 115.76),
-(8, 'l', 'arm', 'centimeter', 108.92),
-(8, 'l', 'bust', 'centimeter', 116.73),
-(8, 'l', 'hip', 'centimeter', 69.39),
-(8, 'l', 'inseam', 'centimeter', 73.88),
-(8, 'l', 'waist', 'centimeter', 66.04),
-(8, 'm', 'arm', 'centimeter', 102.09),
-(8, 'm', 'bust', 'centimeter', 76.84),
-(8, 'm', 'hip', 'centimeter', 80.17),
-(8, 'm', 'inseam', 'centimeter', 50.85),
-(8, 'm', 'waist', 'centimeter', 95.91),
-(8, 's', 'arm', 'centimeter', 70.33),
-(8, 's', 'bust', 'centimeter', 120.07),
-(8, 's', 'hip', 'centimeter', 57.59),
-(8, 's', 'inseam', 'centimeter', 53.04),
-(8, 's', 'waist', 'centimeter', 112.32),
-(9, 'l', 'arm', 'centimeter', 98.46),
-(9, 'l', 'bust', 'centimeter', 98.66),
-(9, 'l', 'hip', 'centimeter', 105.78),
-(9, 'l', 'inseam', 'centimeter', 82.31),
-(9, 'l', 'waist', 'centimeter', 52.44),
-(9, 'm', 'arm', 'centimeter', 64.03),
-(9, 'm', 'bust', 'centimeter', 91.46),
-(9, 'm', 'hip', 'centimeter', 67.74),
-(9, 'm', 'inseam', 'centimeter', 81.32),
-(9, 'm', 'waist', 'centimeter', 104.21),
-(9, 's', 'arm', 'centimeter', 120.42),
-(9, 's', 'bust', 'centimeter', 105.14),
-(9, 's', 'hip', 'centimeter', 94.28),
-(9, 's', 'inseam', 'centimeter', 69.31),
-(9, 's', 'waist', 'centimeter', 77.81),
-(10, 'l', 'arm', 'centimeter', 69.93),
-(10, 'l', 'bust', 'centimeter', 107.79),
-(10, 'l', 'hip', 'centimeter', 65.53),
-(10, 'l', 'inseam', 'centimeter', 102.83),
-(10, 'l', 'waist', 'centimeter', 53.96),
-(10, 'm', 'arm', 'centimeter', 77.58),
-(10, 'm', 'bust', 'centimeter', 114.69),
-(10, 'm', 'hip', 'centimeter', 95.85),
-(10, 'm', 'inseam', 'centimeter', 87.22),
-(10, 'm', 'waist', 'centimeter', 96.72),
-(10, 's', 'arm', 'centimeter', 62.6),
-(10, 's', 'bust', 'centimeter', 80.89),
-(10, 's', 'hip', 'centimeter', 55.83),
-(10, 's', 'inseam', 'centimeter', 53.19),
-(10, 's', 'waist', 'centimeter', 63.41);
 
 -- --------------------------------------------------------
 
@@ -2989,6 +2907,70 @@ INSERT INTO `Sizes` (`sizeName`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `SizesMeasures`
+--
+
+CREATE TABLE `SizesMeasures` (
+  `size_name` varchar(100) NOT NULL,
+  `body_part` varchar(30) NOT NULL,
+  `unit_name` varchar(50) NOT NULL,
+  `value` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `SizesMeasures`
+--
+
+INSERT INTO `SizesMeasures` (`size_name`, `body_part`, `unit_name`, `value`) VALUES
+('3xl', 'arm', 'centimeter', 88.39),
+('3xl', 'bust', 'centimeter', 89.34),
+('3xl', 'hip', 'centimeter', 89.91),
+('3xl', 'inseam', 'centimeter', 87.78),
+('3xl', 'waist', 'centimeter', 82.34),
+('4xl', 'arm', 'centimeter', 95.4),
+('4xl', 'bust', 'centimeter', 98.41),
+('4xl', 'hip', 'centimeter', 97.9),
+('4xl', 'inseam', 'centimeter', 100.14),
+('4xl', 'waist', 'centimeter', 100.56),
+('l', 'arm', 'centimeter', 54.35),
+('l', 'bust', 'centimeter', 57.25),
+('l', 'hip', 'centimeter', 57.11),
+('l', 'inseam', 'centimeter', 57.24),
+('l', 'waist', 'centimeter', 58.65),
+('m', 'arm', 'centimeter', 48.62),
+('m', 'bust', 'centimeter', 41.62),
+('m', 'hip', 'centimeter', 47.15),
+('m', 'inseam', 'centimeter', 50.02),
+('m', 'waist', 'centimeter', 47.71),
+('s', 'arm', 'centimeter', 34.53),
+('s', 'bust', 'centimeter', 37.31),
+('s', 'hip', 'centimeter', 36.58),
+('s', 'inseam', 'centimeter', 36.15),
+('s', 'waist', 'centimeter', 39.48),
+('xl', 'arm', 'centimeter', 65.06),
+('xl', 'bust', 'centimeter', 61.06),
+('xl', 'hip', 'centimeter', 63.47),
+('xl', 'inseam', 'centimeter', 65.75),
+('xl', 'waist', 'centimeter', 62.46),
+('xs', 'arm', 'centimeter', 26.58),
+('xs', 'bust', 'centimeter', 22.99),
+('xs', 'hip', 'centimeter', 29.14),
+('xs', 'inseam', 'centimeter', 26.04),
+('xs', 'waist', 'centimeter', 27.99),
+('xxl', 'arm', 'centimeter', 74.26),
+('xxl', 'bust', 'centimeter', 76.9),
+('xxl', 'hip', 'centimeter', 71.88),
+('xxl', 'inseam', 'centimeter', 71.09),
+('xxl', 'waist', 'centimeter', 75.04),
+('xxs', 'arm', 'centimeter', 10.44),
+('xxs', 'bust', 'centimeter', 13.58),
+('xxs', 'hip', 'centimeter', 16.82),
+('xxs', 'inseam', 'centimeter', 20.25),
+('xxs', 'waist', 'centimeter', 14.59);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `StockLocks`
 --
 
@@ -3025,7 +3007,28 @@ INSERT INTO `StripeCheckoutSessions` (`sessionID`, `payId`, `userId`, `custoID`,
 ('cs_test_3ypf1Mc20EZHhEEvUy0gv3uYfB7wR5gDnILNr8bgTF0egkVewLp7uDvH', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-07 18:08:46'),
 ('cs_test_8ZUN7qF2LqfEEERjeyT1KCLitZHfD9oZvqCbkvGBRG5Oe4B1KMiUeKFY', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-07 18:30:50'),
 ('cs_test_AsJVwCHMgwm654UNKSdKLfxFkZ8OigNBgOnaDCVwspxr7PyaWbnEiDcY', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-13 15:07:24'),
+('cs_test_b123QoMhlQq6FSjsOaIlDUgOKJ5xfzqqZA5f4PVpBFmbpe9tEycxLLfAEg', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 16:52:06'),
+('cs_test_b12zNbtuVvgoIaAy3dET8PjlAuu3maUkgLfk0tqei5HQAVvidTpmqBIzTP', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 21:58:30'),
+('cs_test_b13kJtNXYJqWFDD3EvnklMJ08jCFFeW2xx2t7p5CTjk5PxEYBUNcisoh3E', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 14:08:07'),
+('cs_test_b16NqXtkZhf0YcoyIjGtMs6zQ8h0HOGhSFmLotlitU1oT8mtk3uRA1AnEO', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 12:47:50'),
+('cs_test_b1AkYiQRguk3xyqvHeFprtbfxJkATUPRGH1U7bqkZ1srDwgPq9VC87RqKN', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 14:59:25'),
+('cs_test_b1BWQ2r1T8oOkKPpOgFCfbkdE3TSwXhduFEjS1m0SalFm9xUBfA0x7D6Cw', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 17:01:17'),
+('cs_test_b1BxtskerV9XBw0nz3vLMjfDxpopnHbnQWpi20p2stz8xWcQtyIApEvpQW', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 16:49:46'),
+('cs_test_b1cKbrOyKvb9hZhbac1T4ATBvjMxx4tSCpUKS2qoNfCpHq2zSXFE3pb5da', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 21:06:03'),
+('cs_test_b1eSga0T4ex4rM93F7gHexb7JTAh2t2lJtn8rGa58COeBKrIxm4h2d00uj', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-22 14:01:47'),
+('cs_test_b1Gj3Z79jP4h7F5uV98By15m3hza645nROwmiuoC2LEEFXxbhsA7jnCgxl', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 16:59:28'),
+('cs_test_b1lrnTASPCQsRsVOnKtRdHmlQUg76ydKBwESxi7MzVLPoFIFkzD9orNaf5', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 14:14:38'),
+('cs_test_b1MXnENfjtduz5ZbqfowfainkP3WqR4qJQZUDC2rrnk0jkeWCwG6UnnYBI', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-22 14:03:30'),
+('cs_test_b1pJ1AcUrlK8ruLpTAHwGK388oauopFCw5kXtr0dHXAkuTtUncoT37HNFz', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-11-20 06:21:36'),
+('cs_test_b1qBOqEwArQNlIoF25ZKdO4BP2G8n4DW0D8rxP9hvaf3DVQhsHwp1BZYZc', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 21:52:41'),
+('cs_test_b1rXVMsdB36NekEtadlRTnpUsIwUunNBiQWNAXUPUHBSw7wGQWJYyW9mxb', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 12:53:04'),
+('cs_test_b1uehoxCHj0sXJeQWWe1EfFW2OmZsxYqByEg1xj1vzrLTzNAcBNOMwBDBk', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 14:07:13'),
+('cs_test_b1wJ3RTDlADeRi6TnceMzSxLtGGxOMOCzZclbFTSvUsSIIDkuJHarojSZc', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 21:06:48'),
+('cs_test_b1XrQSCJOdYqnZsZVjgWfDl2JhTQA8JKZ1mRAmfPiKYycI8PMp0qdrVOZH', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 13:07:05'),
+('cs_test_b1ZoxyqF9XFnjB5gcxVycPZvvMU1TeUx4t3ezc7XD74NljrNs53tzesqGX', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 14:28:26'),
+('cs_test_HJO6FfxCPhtCOXUbcL5G6PAAkR2Nshdgn1ZfRaQ8OhD2oHjrjNwZ0cCs', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-20 17:52:29'),
 ('cs_test_TA5VDfNHhOQZ79WpG9zCt6wAxGx8JiTncXito3SV5WpsPzCzP0VYKoXT', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-11 22:18:35'),
+('cs_test_TR7rz4vKjIePNhjDdIAGRa95QasRIQJ6cF3InnlY1YMRu3W3BUcz3C2d', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-20 18:10:00'),
 ('cs_test_ZpDGLbqFNAQqyJtMWIPHvMDCYFaN9IhZiaqhw1CuLsPqF1WsoORAEygy', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-10-09 19:19:42');
 
 -- --------------------------------------------------------
@@ -3074,22 +3077,22 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER1', 'fr', 'Désolé, ce service est pontuellement indisponible'),
 ('ER10', 'en', 'Please select a size'),
 ('ER10', 'fr', 'veuillez choisir une taille'),
-('ER11', 'en', 'if you choose the \'Size\' option you must choose a size.'),
-('ER11', 'fr', 'si vous choisissez l\'option \'Taille\' vous devez choisir une taille.'),
-('ER12', 'en', 'if you choose the option \'Custom size\' you must choose one of your measurements or create a new one.'),
-('ER12', 'fr', 'si vous choisissez l\'option \'Taille personnalisée\' vous devez choisir une de vos mesures ou en créer une nouvelle.'),
-('ER13', 'en', 'sorry, the stock of this product is exhausted for the moment.'),
-('ER13', 'fr', 'désolé, le stock de ce produit est épuisé pour le moment.'),
+('ER11', 'en', 'if you choose the option \'Size\' you must check a size.'),
+('ER11', 'fr', 'si vous choisissez l\'option \'Taille\' vous devez cocher une taille.'),
+('ER12', 'en', 'if you choose the option \'Custom size\' you must select one of your measurements or create a new one.'),
+('ER12', 'fr', 'si vous choisissez l\'option \'Taille personnalisée\' vous devez sélectionner une de vos mesures ou en créer une nouvelle.'),
+('ER13', 'en', 'sorry, the stock for this size is sold out at the moment.'),
+('ER13', 'fr', 'désolé, le stock pour cette taille est épuisé pour le moment.'),
 ('ER14', 'en', 'Sorry, this box has reached the maximum number of items: '),
 ('ER14', 'fr', 'Désolé, cette box a atteint le nombre maximum d\'article: '),
 ('ER15', 'en', 'sorry, there is not enough free space in this box to move all the copies of your item'),
 ('ER15', 'fr', 'désolé, il n\'y a pas assez d\'espace libre dans cette box pour déplacer toutes les copies de votre article'),
-('ER16', 'en', 'this measurement cannot be deleted because it is used on cart items.'),
+('ER16', 'en', 'this measurement cannot be deleted because it is used on items in the shopping bag.'),
 ('ER16', 'fr', 'cette mesure ne peut pas être supprimée car elle est utilisée sur des articles du panier.'),
 ('ER17', 'en', 'the quantity must be at least 1'),
 ('ER17', 'fr', 'la quantité doit être de minimum 1'),
-('ER18', 'en', 'sorry, the quantity indicated exceeds the space available in the box'),
-('ER18', 'fr', 'désolé, la quantité indiquée dépasse l\'espace disponible dans la box'),
+('ER18', 'en', 'the quantity indicated exceeds the space available in the box'),
+('ER18', 'fr', 'la quantité indiquée dépasse l\'espace disponible dans la box'),
 ('ER19', 'en', 'this email is invalid'),
 ('ER19', 'fr', 'cet email est invalide'),
 ('ER2', 'en', 'this field can not be empty'),
@@ -3120,6 +3123,16 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER30', 'fr', 'une erreur de stock s\'est produite'),
 ('ER31', 'en', 'you cannot proceed to payment because your shopping bag is empty'),
 ('ER31', 'fr', 'vous ne pouvez pas procéder au paiement car votre panier est vide'),
+('ER32', 'en', 'sorry, this item is no longer available in the measurements you gave'),
+('ER32', 'fr', 'désolé, cette article n\'est plus disponible dans les mesures que vous avez donné'),
+('ER33', 'en', 'you already have this item with this measurement'),
+('ER33', 'fr', 'vous avez déjà cet article avec cette mesure'),
+('ER34', 'en', 'you already have this item in this size'),
+('ER34', 'fr', 'vous avez déjà cet article dans cette taille'),
+('ER35', 'en', 'please correct the above errors before continuing.'),
+('ER35', 'fr', 'veuillez corriger les erreurs ci-dessus avant de continuer.'),
+('ER36', 'en', 'you cannot change this measurement because it is used on an item.'),
+('ER36', 'fr', 'vous ne pouvez pas modifier cette mesure car elle est utilisée sur un article.'),
 ('ER4', 'en', 'this field can only contain letters, numbers, spaces and the special characters `-` and ` _`'),
 ('ER4', 'fr', 'ce champ peut uniquement contenir des lettres, des chiffres, des espaces ansi que les caractères spéciaux `-` et `_`'),
 ('ER5', 'en', 'you must tick a choice'),
@@ -3130,12 +3143,20 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('ER7', 'fr', 'ce champ ne peut contenir que des chiffres (0-9)'),
 ('ER8', 'en', 'Sorry, You have reached the maximum number of measurements:'),
 ('ER8', 'fr', 'Désolé, Vous avez atteint le nombre maximum de mesure:'),
-('ER9', 'en', 'please choose \'Size\' or \'Custom size\' option'),
-('ER9', 'fr', 'veuillez choisir l\'option \'Taille\' ou \'Taille personnalisée\''),
+('ER9', 'en', 'you must check the option <b>\'Size\'</b> or <b>\'Custom size\'</b>'),
+('ER9', 'fr', 'vous devez cocher l\'option <b>\'Taille\'</b> ou <b>\'Taille personnalisée\'</b>'),
 ('US1', 'en', 'filters'),
 ('US1', 'fr', 'filtres'),
 ('US10', 'en', 'color'),
 ('US10', 'fr', 'couleur'),
+('US100', 'en', 'postal code'),
+('US100', 'fr', 'code postal'),
+('US101', 'en', 'phone(optional)'),
+('US101', 'fr', 'téléphone(facultatif)'),
+('US102', 'en', 'checkout'),
+('US102', 'fr', 'commander'),
+('US103', 'en', 'are you sure you want to log out?'),
+('US103', 'fr', 'voulez-vous vraiment vous déconnecter?'),
 ('US11', 'en', 'price'),
 ('US11', 'fr', 'prix'),
 ('US12', 'en', 'minimum price'),
@@ -3164,10 +3185,10 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('US22', 'fr', 'gérer mes mensurations'),
 ('US23', 'en', 'choose cut'),
 ('US23', 'fr', 'choisir une coupe'),
-('US24', 'en', 'add to box'),
-('US24', 'fr', 'ajouter aux boxes'),
-('US25', 'en', 'add to cart'),
-('US25', 'fr', 'ajouter au panier'),
+('US24', 'en', 'add'),
+('US24', 'fr', 'ajouter'),
+('US25', 'en', 'shopping bag'),
+('US25', 'fr', 'panier'),
 ('US26', 'en', '3D secure & <br>AES-256 encrypted payement'),
 ('US26', 'fr', 'paiement crypté avec AES-256 et sécurisé avec 3D secure'),
 ('US27', 'en', 'customer service 24h/7 response in 1h'),
@@ -3218,8 +3239,8 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('US47', 'fr', 'marque'),
 ('US48', 'en', 'measure'),
 ('US48', 'fr', 'mesure'),
-('US49', 'en', 'edit'),
-('US49', 'fr', 'modifier'),
+('US49', 'en', 'add a new shipping address'),
+('US49', 'fr', 'ajouter une nouvelle adresse de livraison'),
 ('US5', 'en', 'price - hight to low'),
 ('US5', 'fr', 'prix - décroissant'),
 ('US50', 'en', 'Are you sure you want to delete this measurement?'),
@@ -3264,10 +3285,70 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 ('US69', 'fr', 'les boxes vides ont été automatiquement supprimées'),
 ('US7', 'en', 'type'),
 ('US7', 'fr', 'type'),
+('US70', 'en', 'hi'),
+('US70', 'fr', 'bonjour'),
+('US71', 'en', 'your order is in preparation'),
+('US71', 'fr', 'votre commande est en préparation '),
+('US72', 'en', 'thank you for your confidence'),
+('US72', 'fr', 'merci de votre confiance'),
+('US73', 'en', 'your order is currently in preparation'),
+('US73', 'fr', 'votre commande est actuellement en préparation'),
+('US74', 'en', 'you will receive a new message as soon as we have shipped your order'),
+('US74', 'fr', 'vous recevrez un nouveau message aussi tôt que nous aurons  expédié votre commande'),
+('US75', 'en', 'you can follow the progress of your order at any time'),
+('US75', 'fr', 'vous pouvez à tout moment suivre l\'évolution de votre commande'),
+('US76', 'en', 'here'),
+('US76', 'fr', 'ici'),
+('US77', 'en', 'delivery'),
+('US77', 'fr', 'livraison'),
+('US78', 'en', 'item number'),
+('US78', 'fr', 'nombre d\'article'),
+('US79', 'en', 'shipping'),
+('US79', 'fr', 'livraison'),
 ('US8', 'en', 'category'),
 ('US8', 'fr', 'catégorie'),
+('US80', 'en', 'vat'),
+('US80', 'fr', 'tva'),
+('US81', 'en', 'subtotal'),
+('US81', 'fr', 'sous-total'),
+('US82', 'en', 'total'),
+('US82', 'fr', 'total'),
+('US83', 'en', 'see my order'),
+('US83', 'fr', 'voir ma commande'),
+('US84', 'en', 'thanks'),
+('US84', 'fr', 'merci'),
+('US85', 'en', '{brand}\'s team'),
+('US85', 'fr', 'l\'équipe {brand}'),
+('US86', 'en', 'contact us'),
+('US86', 'fr', 'nous contacter'),
+('US87', 'en', 'changed your mind?'),
+('US87', 'fr', 'tu as changé d\'avis?'),
+('US88', 'en', 'unsubscribe'),
+('US88', 'fr', 'se désabonner'),
+('US89', 'en', 'social media'),
+('US89', 'fr', 'nos réseaux'),
 ('US9', 'en', 'size'),
-('US9', 'fr', 'taille');
+('US9', 'fr', 'taille'),
+('US90', 'en', 'stay up-to-date with current activities and future events or share with us your experience by following us on your favorite social media.'),
+('US90', 'fr', 'reste informé sur nos dernières actions et nos événements ou partage juste ton expérience avec nous en nous suivant sur ton réseaux favoris.'),
+('US91', 'en', 'your order confirmation'),
+('US91', 'fr', 'confirmation de votre commande'),
+('US92', 'en', 'customer service'),
+('US92', 'fr', 'service client'),
+('US93', 'en', 'shipping address'),
+('US93', 'fr', 'adresse de livraison'),
+('US94', 'en', 'new address'),
+('US94', 'fr', 'nouvelle adresse'),
+('US95', 'en', 'select a shipping address'),
+('US95', 'fr', 'sélectionnez une adresse de livraison'),
+('US96', 'en', 'address'),
+('US96', 'fr', 'adresse'),
+('US97', 'en', 'apartment, suite,.(optional)'),
+('US97', 'fr', 'appartement, suite,.(facultatif)'),
+('US98', 'en', 'state, province, region, etc...'),
+('US98', 'fr', 'province, région, état, etc...'),
+('US99', 'en', 'city'),
+('US99', 'fr', 'ville');
 
 -- --------------------------------------------------------
 
@@ -3277,7 +3358,9 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 
 CREATE TABLE `Users` (
   `userID` int(11) NOT NULL,
-  `lang_` varchar(10) NOT NULL,
+  `lang_` varchar(10) DEFAULT NULL,
+  `country_` varchar(100) NOT NULL,
+  `iso_currency` varchar(10) NOT NULL,
   `mail` varchar(100) DEFAULT NULL,
   `password` varchar(512) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -3292,16 +3375,14 @@ CREATE TABLE `Users` (
 -- Déchargement des données de la table `Users`
 --
 
-INSERT INTO `Users` (`userID`, `lang_`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
-(1, 'en', 'system@mail.domain', 'fuck that shit', 'system', 'system', '2019-09-01', NULL, 'other', '2020-10-09 18:42:45'),
-(3330090, 'fr', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
-(153092441, 'fr', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-13 12:19:45'),
-(605320260, 'fr', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-15 06:56:53'),
-(651853948, 'fr', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
-(666200808, 'en', 'rukefiwoh-5422@yopmail.com', 'qffrzrrfzfzfqcrzvrv', 'bob', 'makinson', '1995-02-27', 0, 'other', '2020-01-05 15:00:05'),
-(846470517, 'fr', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'lady', '2020-01-08 15:00:05'),
-(934967739, 'en', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'sir', '2020-02-27 18:02:20'),
-(997763060, 'es', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'lady', '2020-01-07 15:00:05');
+INSERT INTO `Users` (`userID`, `lang_`, `country_`, `iso_currency`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
+(1, NULL, 'belgium', 'jpy', 'system@mail.domain', 'no password', 'system', 'system', '2019-09-01', NULL, 'other', '2020-10-09 18:42:45'),
+(3330090, 'fr', 'belgium', 'eur', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
+(651853948, 'fr', 'belgium', 'jpy', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
+(666200808, 'en', 'belgium', 'jpy', 'rukefiwoh-5422@yopmail.com', 'qffrzrrfzfzfqcrzvrv', 'bob', 'makinson', '1995-02-27', 0, 'other', '2020-01-05 15:00:05'),
+(846470517, 'fr', 'belgium', 'jpy', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'lady', '2020-01-08 15:00:05'),
+(934967739, 'en', 'belgium', 'jpy', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'sir', '2020-02-27 18:02:20'),
+(997763060, 'es', 'belgium', 'jpy', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'lady', '2020-01-07 15:00:05');
 
 -- --------------------------------------------------------
 
@@ -3324,10 +3405,12 @@ CREATE TABLE `Users-Cookies` (
 --
 
 INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `path`, `setDate`, `settedPeriod`) VALUES
-(3330090, 'ADRS', '\"place royale 4|1640|belgium\"', '3344900f0c68.eu.ngrok.io', '/versions/v0.2/mmbx/checkout', '2020-10-13 15:09:36', 86400),
-(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', 'e55242a0cc41.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-14 21:54:54', 31536000),
-(3330090, 'VIS', '100d1sq639120hby303243a50', 'e55242a0cc41.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-14 21:54:54', 94608000),
-(605320260, 'VIS', '265bq2a02x1k9i055673010i1', 'd731e011b9f7.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-10-15 12:57:19', 94608000),
+(1, 'ADM', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 10800),
+(1, 'CLT', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 31536000),
+(1, 'VIS', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 94608000),
+(3330090, 'ADRS', '\"place royale 4|1640abc|belgium\"', 'f744012b323f.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-22 13:29:01', 86400),
+(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '3a1baf8702c4.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-23 11:45:52', 31536000),
+(3330090, 'VIS', '100d1sq639120hby303243a50', '3a1baf8702c4.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-23 11:45:52', 94608000),
 (651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
 
 -- --------------------------------------------------------
@@ -3379,9 +3462,9 @@ INSERT INTO `UsersMeasures` (`userId`, `measureID`, `measureName`, `userBust`, `
 (651853948, '2191802te91kv3ee27a280h02', 'bellow l', 85.12, 85.12, 85.12, 85.12, 85.12, 'centimeter', '2020-09-12 19:27:23'),
 (651853948, '651853948740', 'equal l', 100.12, 100.12, 100.12, 100.12, 100.12, 'inch', '2018-01-18 00:00:00'),
 (997763060, '997763060659', 'victo dim1', 61.83, 107.19, 60.42, 52.28, 54.01, 'centimeter', '2017-02-28 00:00:00'),
-(3330090, 'a5rn30s0gtn2x2998j3000221', 'equals s inch to cm', 152.71, 152.71, 152.71, 152.71, 152.71, 'centimeter', '2020-09-30 20:58:23'),
+(3330090, 'a5rn30s0gtn2x2998j3000221', 'equals s in inch', 152.71, 152.71, 152.71, 152.71, 152.71, 'centimeter', '2020-09-30 20:58:23'),
 (3330090, 'decrease_m_6', 'decrease_m_6', 65.12, 65.12, 65.12, 65.12, 65.12, 'centimeter', '2020-09-30 21:05:12'),
-(3330090, 'decrease_s_2', 'decrease_s_2', 11, 11, 11, 11, 11, 'centimeter', '2020-09-30 21:05:28');
+(3330090, 'decrease_s', 'decrease_s', 10, 10, 10, 10, 10, 'centimeter', '2020-09-30 21:05:28');
 
 --
 -- Index pour les tables déchargées
@@ -3587,7 +3670,7 @@ ALTER TABLE `Details`
 -- Index pour la table `Devices`
 --
 ALTER TABLE `Devices`
-  ADD PRIMARY KEY (`userId`,`setDate`);
+  ADD PRIMARY KEY (`userId`,`nav_date`) USING BTREE;
 
 --
 -- Index pour la table `DiscountCodes`
@@ -3616,20 +3699,10 @@ ALTER TABLE `DiscountValues`
   ADD PRIMARY KEY (`discountValue`);
 
 --
--- Index pour la table `EmailsCategories`
---
-ALTER TABLE `EmailsCategories`
-  ADD PRIMARY KEY (`category`),
-  ADD KEY `fk-sender.EmailsCategories-FROM-Users` (`sender`),
-  ADD KEY `fk-replyTo.EmailsCategories-FROM-Users` (`replyTo`);
-
---
 -- Index pour la table `EmailsSent`
 --
 ALTER TABLE `EmailsSent`
   ADD PRIMARY KEY (`messageID`,`recipient`),
-  ADD KEY `replyTo` (`replyTo`),
-  ADD KEY `fk-category_.EmailsSent-FROM-EmailsCategories` (`category_`),
   ADD KEY `messageID` (`messageID`),
   ADD KEY `fk_mailer_.EmailsSent-FROM-Mailers` (`mailer_`);
 
@@ -3652,6 +3725,12 @@ ALTER TABLE `Languages`
   ADD PRIMARY KEY (`langIsoCode`);
 
 --
+-- Index pour la table `Locations`
+--
+ALTER TABLE `Locations`
+  ADD PRIMARY KEY (`userId`,`nav_date`);
+
+--
 -- Index pour la table `Mailers`
 --
 ALTER TABLE `Mailers`
@@ -3668,6 +3747,26 @@ ALTER TABLE `MeasureScales`
 --
 ALTER TABLE `MeasureUnits`
   ADD PRIMARY KEY (`unitName`) USING BTREE;
+
+--
+-- Index pour la table `Navigations`
+--
+ALTER TABLE `Navigations`
+  ADD PRIMARY KEY (`userId`,`navDate`);
+
+--
+-- Index pour la table `Navigations-Actions`
+--
+ALTER TABLE `Navigations-Actions`
+  ADD PRIMARY KEY (`userId`,`nav_Date`,`actionDate`) USING BTREE,
+  ADD KEY `fk_action_.Navigations-Actions-FROM-Actions` (`action_`);
+
+--
+-- Index pour la table `NavigationsParameters`
+--
+ALTER TABLE `NavigationsParameters`
+  ADD PRIMARY KEY (`userId`,`nav_date`,`paramKey`) USING BTREE,
+  ADD KEY `userId` (`userId`,`nav_date`) USING BTREE;
 
 --
 -- Index pour la table `Orders`
@@ -3725,29 +3824,6 @@ ALTER TABLE `Orders-UsersMeasures`
 ALTER TABLE `OrdersStatus`
   ADD PRIMARY KEY (`orderId`,`status`) USING BTREE,
   ADD KEY `fk_adminId.OrdersStatus-FROM-Users` (`adminId`);
-
---
--- Index pour la table `Pages`
---
-ALTER TABLE `Pages`
-  ADD PRIMARY KEY (`userId`,`setDate`),
-  ADD KEY `userId-setDate-page` (`userId`,`setDate`,`page`) USING BTREE,
-  ADD KEY `userId-page` (`userId`,`page`) USING BTREE;
-
---
--- Index pour la table `Pages-Actions`
---
-ALTER TABLE `Pages-Actions`
-  ADD PRIMARY KEY (`userId`,`setDate`),
-  ADD KEY `fk_userId.page_.Pages-Actions-FROM-Pages` (`userId`,`page_`),
-  ADD KEY `fk_action_.Pages-Actions-FROM-Actions` (`action_`);
-
---
--- Index pour la table `PagesParameters`
---
-ALTER TABLE `PagesParameters`
-  ADD PRIMARY KEY (`userId`,`setDate_`),
-  ADD KEY `fk_userId.setDate_.page_.PagesParameters-FROM-Pages` (`userId`,`setDate_`,`page_`);
 
 --
 -- Index pour la table `Payements`
@@ -3827,14 +3903,6 @@ ALTER TABLE `ProductsDiscounts`
   ADD KEY `fk_discount_value.ProductsDiscounts-FROM-DiscountValues` (`discount_value`);
 
 --
--- Index pour la table `ProductsMeasures`
---
-ALTER TABLE `ProductsMeasures`
-  ADD PRIMARY KEY (`prodId`,`size_name`,`body_part`) USING BTREE,
-  ADD KEY `FK_body_part.ProductsMeasures-FROM-BodyPart` (`body_part`),
-  ADD KEY `FK_unit_name.ProductsMeasures-FROM-MeasureUnits` (`unit_name`);
-
---
 -- Index pour la table `ProductsPictures`
 --
 ALTER TABLE `ProductsPictures`
@@ -3875,6 +3943,14 @@ ALTER TABLE `Sizes`
   ADD PRIMARY KEY (`sizeName`);
 
 --
+-- Index pour la table `SizesMeasures`
+--
+ALTER TABLE `SizesMeasures`
+  ADD PRIMARY KEY (`size_name`,`body_part`) USING BTREE,
+  ADD KEY `FK_body_part.SizesMeasures-FROM-BodyPart` (`body_part`),
+  ADD KEY `FK_unit_name.SizesMeasures-FROM-MeasureUnits` (`unit_name`);
+
+--
 -- Index pour la table `StockLocks`
 --
 ALTER TABLE `StockLocks`
@@ -3910,14 +3986,16 @@ ALTER TABLE `Users`
   ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `mail` (`mail`),
   ADD KEY `fk_lang_FROM-Languages` (`lang_`),
-  ADD KEY `fk_sexe_FROM-Sexes` (`sexe_`);
+  ADD KEY `fk_sexe_FROM-Sexes` (`sexe_`),
+  ADD KEY `fk_country_-FROM-Country` (`country_`),
+  ADD KEY `fk_iso_currency-FROM-Currency` (`iso_currency`);
 
 --
 -- Index pour la table `Users-Cookies`
 --
 ALTER TABLE `Users-Cookies`
   ADD PRIMARY KEY (`userId`,`cookieId`),
-  ADD KEY `FK_cookieId.Users-Cookies-FROM-Cookies` (`cookieId`);
+  ADD UNIQUE KEY `cookieId` (`cookieId`,`cookieValue`);
 
 --
 -- Index pour la table `Users-Privileges`
@@ -4096,7 +4174,7 @@ ALTER TABLE `Details`
 -- Contraintes pour la table `Devices`
 --
 ALTER TABLE `Devices`
-  ADD CONSTRAINT `fk_userId.Devices-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.nav_dateDevices-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `DiscountCodes`
@@ -4112,19 +4190,10 @@ ALTER TABLE `DiscountCodes-Countries`
   ADD CONSTRAINT `fk_discount_code.DiscountCodes-Countries-FROM-DiscountCodes` FOREIGN KEY (`discount_code`) REFERENCES `DiscountCodes` (`discountCode`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `EmailsCategories`
---
-ALTER TABLE `EmailsCategories`
-  ADD CONSTRAINT `fk-replyTo.EmailsCategories-FROM-Users` FOREIGN KEY (`replyTo`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk-sender.EmailsCategories-FROM-Users` FOREIGN KEY (`sender`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
-
---
 -- Contraintes pour la table `EmailsSent`
 --
 ALTER TABLE `EmailsSent`
-  ADD CONSTRAINT `fk-category_.EmailsSent-FROM-EmailsCategories` FOREIGN KEY (`category_`) REFERENCES `EmailsCategories` (`category`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_mailer_.EmailsSent-FROM-Mailers` FOREIGN KEY (`mailer_`) REFERENCES `Mailers` (`mailer`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_replyTo.EmailsSent-FROM-Users` FOREIGN KEY (`replyTo`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_mailer_.EmailsSent-FROM-Mailers` FOREIGN KEY (`mailer_`) REFERENCES `Mailers` (`mailer`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `EmailsStatus`
@@ -4137,6 +4206,31 @@ ALTER TABLE `EmailsStatus`
 --
 ALTER TABLE `EmailsTags`
   ADD CONSTRAINT `fk-messageId.EmailsTags-FROM-EmailsSent` FOREIGN KEY (`messageId`) REFERENCES `EmailsSent` (`messageID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Locations`
+--
+ALTER TABLE `Locations`
+  ADD CONSTRAINT `fk-userId.nav_date.Locations-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Navigations`
+--
+ALTER TABLE `Navigations`
+  ADD CONSTRAINT `fk_userId.Pages-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Navigations-Actions`
+--
+ALTER TABLE `Navigations-Actions`
+  ADD CONSTRAINT `fk-userId..nav_date.Navigations-Actions-FROM-Navigations` FOREIGN KEY (`userId`,`nav_Date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_action_.Navigations-Actions-FROM-Actions` FOREIGN KEY (`action_`) REFERENCES `Actions` (`action`) ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `NavigationsParameters`
+--
+ALTER TABLE `NavigationsParameters`
+  ADD CONSTRAINT `fk-userId.nav_date.NavigationsParameters-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Orders`
@@ -4190,25 +4284,6 @@ ALTER TABLE `Orders-UsersMeasures`
 ALTER TABLE `OrdersStatus`
   ADD CONSTRAINT `fk_adminId.OrdersStatus-FROM-Users` FOREIGN KEY (`adminId`) REFERENCES `Users-Privileges` (`userId`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_orderId.OrdersStatus-FROM-Orders` FOREIGN KEY (`orderId`) REFERENCES `Orders` (`orderID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `Pages`
---
-ALTER TABLE `Pages`
-  ADD CONSTRAINT `fk_userId.Pages-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `Pages-Actions`
---
-ALTER TABLE `Pages-Actions`
-  ADD CONSTRAINT `fk_action_.Pages-Actions-FROM-Actions` FOREIGN KEY (`action_`) REFERENCES `Actions` (`action`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.page_.Pages-Actions-FROM-Pages` FOREIGN KEY (`userId`,`page_`) REFERENCES `Pages` (`userId`, `page`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `PagesParameters`
---
-ALTER TABLE `PagesParameters`
-  ADD CONSTRAINT `fk_userId.setDate_.page_.PagesParameters-FROM-Pages` FOREIGN KEY (`userId`,`setDate_`,`page_`) REFERENCES `Pages` (`userId`, `setDate`, `page`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Payements`
@@ -4274,14 +4349,6 @@ ALTER TABLE `ProductsDiscounts`
   ADD CONSTRAINT `fk_prodId.ProductsDiscounts-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `ProductsMeasures`
---
-ALTER TABLE `ProductsMeasures`
-  ADD CONSTRAINT `FK_body_part.ProductsMeasures-FROM-BodyPart` FOREIGN KEY (`body_part`) REFERENCES `BodyParts` (`bodyPart`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_prodId.size_name.ProductsMeasures-FROM-Products-Sizes` FOREIGN KEY (`prodId`,`size_name`) REFERENCES `Products-Sizes` (`prodId`, `size_name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_unit_name.ProductsMeasures-FROM-MeasureUnits` FOREIGN KEY (`unit_name`) REFERENCES `MeasureUnits` (`unitName`) ON UPDATE CASCADE;
-
---
 -- Contraintes pour la table `ProductsPictures`
 --
 ALTER TABLE `ProductsPictures`
@@ -4302,6 +4369,14 @@ ALTER TABLE `ProductsShippings`
   ADD CONSTRAINT `fk_country_.ProductsShipping-FROM-Countries` FOREIGN KEY (`country_`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_iso_currency.ProductsShipping-FROM-CurrenciesIsoCodes` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_prodId.ProductsShipping-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `SizesMeasures`
+--
+ALTER TABLE `SizesMeasures`
+  ADD CONSTRAINT `FK_body_part.SizesMeasures-FROM-BodyPart` FOREIGN KEY (`body_part`) REFERENCES `BodyParts` (`bodyPart`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_size_name.SizesMeasures-FROM-Sizes` FOREIGN KEY (`size_name`) REFERENCES `Sizes` (`sizeName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_unit_name.SizesMeasures-FROM-MeasureUnits` FOREIGN KEY (`unit_name`) REFERENCES `MeasureUnits` (`unitName`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `StockLocks`
@@ -4333,6 +4408,8 @@ ALTER TABLE `TranslationStations`
 -- Contraintes pour la table `Users`
 --
 ALTER TABLE `Users`
+  ADD CONSTRAINT `fk_country_-FROM-Country` FOREIGN KEY (`country_`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_iso_currency-FROM-Currency` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_lang_FROM-Languages` FOREIGN KEY (`lang_`) REFERENCES `Languages` (`langIsoCode`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sexe_FROM-Sexes` FOREIGN KEY (`sexe_`) REFERENCES `Sexes` (`sexe`) ON UPDATE CASCADE;
 
