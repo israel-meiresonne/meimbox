@@ -6,6 +6,7 @@ class ControllerHome extends ControllerSecure
 {
     public const A_SIGN_UP = "home/signUp";
     public const A_SIGN_IN = "home/signIn";
+    public const QR_LOG_OUT = "home/logOut";
     public const QR_UPDATE_COUNTRY = "home/updateCountry";
 
     /**
@@ -18,7 +19,7 @@ class ControllerHome extends ControllerSecure
     }
 
     /**
-     * To sign up a new user
+     * To sign up a new User
      */
     public function signUp()
     {
@@ -113,7 +114,7 @@ class ControllerHome extends ControllerSecure
     }
 
     /**
-     * To sign in a user
+     * To sign in a User
      */
     public function signIn()
     {
@@ -158,6 +159,20 @@ class ControllerHome extends ControllerSecure
     }
 
     /**
+     * To log out a User
+     */
+    public function logOut()
+    {
+        $response = new Response();
+        /**
+         * @var  User */
+        $person = $this->person;
+        $person->logOut();
+        $response->addResult(self::QR_LOG_OUT, true);
+        $this->generateJsonView([], $response, $person);
+    }
+
+    /**
      * To update Visitor's Country
      */
     public function updateCountry()
@@ -179,6 +194,12 @@ class ControllerHome extends ControllerSecure
         $this->generateJsonView($datasView, $response, $person);
     }
 
+    /*———————————————————————————— TESTS DOWN ———————————————————————————————*/
+
+    public function test()
+    {
+        header('content-type: application/json');
+    }
     public function test_orderBoxes()
     {
         header('content-type: application/json');
@@ -454,7 +475,7 @@ class ControllerHome extends ControllerSecure
         // var_dump($response->getAttributs());
     }
 
-    public function test()
+    public function test_order()
     {
         $datasViewMap = new Map();
         $templateFile = 'view/EmailTemplates/orderConfirmation.php';

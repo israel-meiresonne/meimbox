@@ -2745,9 +2745,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /*—————————————————————————————— POP_UP PRINCING DOWN ———————————————————————*/
 
-#box_pricing_window .pop_up-window {
+/* #box_pricing_window .pop_up-window {
     width: 90%;
-}
+} */
 
 #box_pricing_window .box_price-box-set-ul {
     display: flex;
@@ -3039,7 +3039,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     position: relative;
 }
 
-.size_form_common_inner .comment{
+.size_form_common_inner .comment {
     margin-top: 20px;
     padding: 0 10px;
 }
@@ -3059,9 +3059,11 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     max-width: 100px;
     margin: auto;
 }
+
 .product-quantity-container {
     position: relative;
 }
+
 .product-quantity-container .input-wrap .input-tag {
     text-align: center;
 }
@@ -3344,3 +3346,18 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*———————————————————————————————— NOTIF UP —————————————————————————————————*/
+
+/*———————————————————————————————— SCREEN LOADING DOWN ——————————————————————*/
+
+#full_screen_loading {
+    /* display: flex; */
+    display: none;
+    height: 100%;
+}
+
+#full_screen_loading img {
+    max-width: 10%;
+    margin: auto;
+}
+
+/*———————————————————————————————— SCREEN LOADING UP ————————————————————————*/

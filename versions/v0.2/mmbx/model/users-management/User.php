@@ -94,7 +94,7 @@ abstract class User extends Visitor
         }
         $this->userLine = $tab[0];
         $this->userID = $this->userLine["userID"];
-        $this->setCookies();
+        // $this->setCookies();
         // $VIS_VAL = $this->getCookie(Cookie::COOKIE_VIS)->getValue();
         $usersCookiesMap = $this->getUsersCookiesMap($this->userID);
         $VIS_VAL = $usersCookiesMap->get(Cookie::COOKIE_VIS, Map::value);
@@ -308,6 +308,18 @@ abstract class User extends Visitor
     }
 
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
+
+    /**
+     * To log out the User
+     */
+    public function logOut()
+    {
+        $userID = $this->getUserID();
+        Cookie::destroyCookie($userID, Cookie::COOKIE_VIS);
+        Cookie::destroyCookie($userID, Cookie::COOKIE_CLT);
+        Cookie::destroyCookie($userID, Cookie::COOKIE_ADM);
+    }
+
     /**
      * To add new address
      * @param Response $response to push in result or accured error
