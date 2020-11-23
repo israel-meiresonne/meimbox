@@ -112,11 +112,10 @@
     displayFadeOut = (x, t = TS) => {
         $(x).fadeOut(t);
     }
-    handleErr = (r, formx = null) => {
+    handleErr = (r, frmx = null) => {
         var k = Object.keys(r.errors);
         k.forEach(n => {
-            // var inpx = $(formx).find("input[name='" + n + "']");
-            var inpx = $(formx).find("[name='" + n + "']");
+            var inpx = $(frmx).find("[name='" + n + "']");
             var erx = $(inpx).attr(dataerrorx);
             var erType = $(inpx).attr(dataerrortype);
             switch (erType) {
@@ -127,9 +126,6 @@
                     var cx = $(erx).find(".comment");
                     $(cx).html(r.errors[n].message);
                     openMiniPop(erx);
-                    break;
-
-                default:
                     break;
             }
         });

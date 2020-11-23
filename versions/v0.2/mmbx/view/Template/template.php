@@ -52,14 +52,10 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 
     <script>
         const jx = function(a, d, r, l, x = null, sc = () => {}, rc = () => {}) {
-            // $(l).fadeIn(TS, sc());
             $(l).css("display", "block");
             sc();
-            // var url = rburl(a);
             $.ajax({
                 type: 'POST',
-                // url: WR + a + "?" + LANG,
-                // url: url,
                 url: a,
                 data: d,
                 dataType: 'json',
@@ -80,26 +76,13 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
             return u;
         };
 
-        /**
-         * var datas = {
-         *      "qr" : QR_FILTER,
-         *      "inputSelector" : "#grid_filter input",
-         *      "frmCbk" : getCol,
-         *      "f" : filterRSP,
-         *      "lds" : "#prodGrid_loading",
-         *      "cbkSND" : function () { },
-         *      "cbkRSP" : function () { }
-         * }
-         */
         frmSND = function(datas) {
             var param = $(datas.frm).serialize();
             if (datas.frmCbk() != null) {
                 param += datas.frmCbk();
             }
-
             var datasSND = {
                 "a": datas.a,
-                // "qr": datas.qr,
                 "d": param,
                 "r": datas.r,
                 "l": datas.l,
@@ -110,18 +93,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
             SND(datasSND);
         }
 
-        /**
-         * var datas = {
-         *     "qr": A_DELETE_MEASURE,
-         *     "param": param,
-         *     "f": removeMsrRSP,
-         *     "lds": "#measurePopUp_loading",
-         *     "cbkSND": msrMangerLoading_on,
-         *     "cbkRSP": msrMangerLoading_off
-         * };
-         */
         const SND = function(datas) {
-            // var a = datas.a;
             var a = rburl(datas.a);
             var d = datas.d;
             var r = datas.r;
@@ -139,6 +111,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const WR = "<?= $webRoot ?>";
         const A_SIGN_UP = "<?= ControllerHome::A_SIGN_UP ?>";
         const A_SIGN_IN = "<?= ControllerHome::A_SIGN_IN ?>";
+        const QR_LOG_OUT = "<?= ControllerHome::QR_LOG_OUT ?>";
         const QR_UPDATE_COUNTRY = "<?= ControllerHome::QR_UPDATE_COUNTRY ?>";
 
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
@@ -183,8 +156,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
         const KEY_SHIPPING = "<?= Basket::KEY_SHIPPING ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
-        const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
-        const ALERT_DLT_BXPROD = "<?= $translator->translateStation("US64") ?>";
+
 
         const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
         const KEY_NEW_BOX_ID = "<?= Box::KEY_NEW_BOX_ID ?>";
@@ -204,8 +176,12 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 
         const TITLE_KEY = "<?= ControllerSecure::TITLE_KEY ?>";
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
-        const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
         const FAT_ERR = "<?= MyError::FATAL_ERROR ?>";
+
+        const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
+        const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
+        const ALERT_DLT_BXPROD = "<?= $translator->translateStation("US64") ?>";
+        const ALERT_LOG_OUT = "<?= $translator->translateStation("US103") ?>";
 
         const TS = 450;
         const BNR = 1000000;

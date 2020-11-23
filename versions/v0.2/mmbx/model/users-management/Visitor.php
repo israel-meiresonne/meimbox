@@ -172,7 +172,7 @@ class Visitor extends ModelFunctionality
                 throw new Exception("Unkwon person '$person'");
                 break;
         }
-        $this->setMeasure();
+        // $this->setMeasure();
         $this->manageCookie(Cookie::COOKIE_VIS, false);
     }
 
@@ -203,7 +203,9 @@ class Visitor extends ModelFunctionality
         AND uc.`cookieValue` = '$VIS_VAL'";
         $tab = $this->select($sql);
         if (empty($tab)) {
+            // $this->setNewVisitor();
             throw new Exception("There's not Visitor with this Visitor Cookie '$VIS_VAL'");
+            // return;
         }
         if (count($tab) != 1) {
             throw new Exception("A visitor cookie('$VIS_VAL') can't be own by only one Visitor");
@@ -232,8 +234,8 @@ class Visitor extends ModelFunctionality
         $cookieIDs = $usersCookiesMap->getKeys();
         $inDb = in_array($cookieID, $cookieIDs);
         // $onUser = $this->existCookie($cookieID);
-        // $onUser = (!empty($this->getCookie($cookieID)));
-        $onUser = (!empty(Cookie::getCookieValue($cookieID)));
+        $onUser = (!empty($this->getCookie($cookieID)));
+        // $onUser = (!empty(Cookie::getCookieValue($cookieID)));
         if ($inDb && $onUser) {
             // --- cookie exist
             $cookieState = Cookie::STATE_UPDATE;
@@ -323,7 +325,7 @@ class Visitor extends ModelFunctionality
     /**
      * Setter for Visitor's measures
      */
-    protected function setMeasure()
+    protected function setMeasures()
     {
         $this->measures = [];
         $sql = "SELECT * FROM `UsersMeasures` WHERE `userId` = '$this->userID'";
@@ -359,7 +361,7 @@ class Visitor extends ModelFunctionality
     /**
      * Setter for Visitor's cookies
      * + get Visitor's cookies from db
-     * + Note: only set cookie existing in db and on Vistor's driver 
+     * + Note: only set cookies existing in db and on Vistor's driver 
      * and sharing the same value
      */
     protected function setCookies()
@@ -367,11 +369,18 @@ class Visitor extends ModelFunctionality
         $this->cookies = new Map();
         $userID = $this->getUserID();
         $usersCookiesMap = $this->getUsersCookiesMap($userID);
+        // echo str_repeat("—", 50);
+        // echo "\n";
+        // var_dump("userID:", $userID);
+        // var_dump("usersCookiesMap:", $usersCookiesMap);
         $cookieIDs = $usersCookiesMap->getKeys();
         if (!empty($cookieIDs)) {
             foreach ($cookieIDs as $cookieID) {
                 $holdsCookieValue = Cookie::getCookieValue($cookieID);
                 $value = $usersCookiesMap->get($cookieID, Map::value);
+                // var_dump("cookieID: $cookieID");
+                // var_dump("holdsCookieValue: $holdsCookieValue");
+                // var_dump("value: $value");
                 if ((!empty($holdsCookieValue)) && ($holdsCookieValue == $value)) {
                     $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
                     $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
@@ -380,6 +389,7 @@ class Visitor extends ModelFunctionality
                 }
             }
         }
+        // var_dump("cookies:", $this->cookies);
     }
 
     /**
@@ -532,7 +542,8 @@ class Visitor extends ModelFunctionality
     }
 
     /**
-     * To get Visitor's Cookies
+     * To get Visitor's Cookies present in db and on his driver and sharing 
+     * the same value
      * @return Map
      */
     public function getCookies()
@@ -543,6 +554,8 @@ class Visitor extends ModelFunctionality
 
     /**
      * To get a Cookie
+     * + Note: only return cookie existing in db and on Vistor's driver 
+     * and sharing the same value
      * @param string $cookieID id of the cookie to get
      * @return Cookie|null
      */
@@ -569,8 +582,10 @@ class Visitor extends ModelFunctionality
      */
     public function hasCookie($cookieID)
     {
-        $cookieValue = Cookie::getCookieValue($cookieID);
-        $hasCookie = isset($cookieValue);
+        // $cookieValue = Cookie::getCookieValue($cookieID);
+        // $hasCookie = isset($cookieValue);
+        $cookie = $this->getCookie($cookieID);
+        $hasCookie = isset($cookie);
         // switch ($cookieID) {
         //     case Cookie::COOKIE_CLT:
         //         // $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
@@ -616,7 +631,7 @@ class Visitor extends ModelFunctionality
      */
     public function getMeasures()
     {
-        (!isset($this->measures) ? $this->setMeasure() : null);
+        (!isset($this->measures) ? $this->setMeasures() : null);
         return $this->measures;
         // return [];
     }
@@ -972,7 +987,7 @@ class Visitor extends ModelFunctionality
     {
         $measureID = $measureMap->get(Map::measureID);
         $basket = $this->getBasket();
-        if($basket->existMeasure($measureID)){
+        if ($basket->existMeasure($measureID)) {
             $response->addErrorStation("ER36", MyError::FATAL_ERROR);
         } else {
             $newMeasure = new Measure($measureMap);

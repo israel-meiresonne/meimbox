@@ -15,6 +15,9 @@ $language = $person->getLanguage();
 ?>
 
 <div id="full_screen_div" class="full_screen-block back_blur">
+    <div id="full_screen_loading">
+        <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
+    </div>
     <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
         <?php
         $datas = ["brandsMeasures" => $brandsMeasures];

@@ -31,7 +31,7 @@ class Client extends User
         }
         parent::__construct($CLT_VAL);
         $this->newsletter = (bool) $this->userLine["newsletter"];
-        $this->setMeasure();
+        // $this->setMeasure();
         $this->manageCookie(Cookie::COOKIE_CLT, true);
     }
 

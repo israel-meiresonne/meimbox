@@ -357,8 +357,9 @@
 }
 
 .side_menu_content-childs .touch-wrap:hover {
-    background-color: var(--color-blue);
-    color: var(--color-white);
+    background-color: var(--color-shadow-05);
+    /* background-color: var(--color-blue);
+    color: var(--color-white); */
 }
 
 .menu_bottom_content-li .touch-wrap .img-text-wrap {

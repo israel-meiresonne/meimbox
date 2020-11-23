@@ -120,21 +120,6 @@ class Cookie extends ModelFunctionality
      */
     public static function generateCookie($userID, $cookieID, $value)
     {
-        // $cookiesMap  = parent::getCookiesMap();
-        // $cookieIDs = $cookiesMap->getKeys();
-        // if (!in_array($cookieID, $cookieIDs)) {
-        //     throw new Exception("This cookie is not supported, cookieID: '$cookieID'");
-        // }
-        // $setDate = parent::getDateTime();
-        // $settedPeriod = $cookiesMap->get($cookieID, Map::period);
-        // $cookie = new Cookie($cookieID, $value, $setDate, $settedPeriod);
-        // $cookie->period = $cookiesMap->get($cookieID, Map::period);
-        // // $cookie->domain = $cookiesMap->get($cookieID, Map::domain);
-        // $domainDb = $cookiesMap->get($cookieID, Map::domain);
-        // $cookie->domain = (!empty($domainDb)) ? $domainDb : Configuration::get(Configuration::DOMAIN);
-        // $cookie->path = Configuration::getWebRoot() . $cookiesMap->get($cookieID, Map::path);
-        // $cookie->secure = $cookiesMap->get($cookieID, Map::secure);
-        // $cookie->httponly = $cookiesMap->get($cookieID, Map::httponly);
         $cookie = self::buildCompleteCookie($cookieID, $value);
         $cookie->createCookie($userID);
         return $cookie;
@@ -149,8 +134,12 @@ class Cookie extends ModelFunctionality
     public static function destroyCookie($userID, $cookieID, $deleteDb = false)
     {
         $cookie = self::buildCompleteCookie($cookieID, "deleted");
-        // $cookie->createCookie($userID);
-        ($deleteDb) ? $cookie->removeCookie($userID) : null;
+        $cookie->removeCookie();
+        if($deleteDb){
+            $response = new Response();
+            $cookie->deleteCookie($response, $userID);
+        }
+        // ($deleteDb) ? $cookie-> : null;
     }
 
     /**
@@ -197,9 +186,8 @@ class Cookie extends ModelFunctionality
 
     /**
      * To create a cookie on Visitor's session and save it in db
-     * @param string $userID Visitor's id
      */
-    private function removeCookie($userID)
+    private function removeCookie()
     {
         setcookie(
             $this->cookieID,
@@ -210,8 +198,8 @@ class Cookie extends ModelFunctionality
             $this->secure,
             $this->httponly
         );
-        $response = new Response();
-        $this->deleteCookie($response, $userID);
+        // $response = new Response();
+        // $this->deleteCookie($response, $userID);
     }
 
     /**

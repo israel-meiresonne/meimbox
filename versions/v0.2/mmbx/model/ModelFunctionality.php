@@ -838,7 +838,7 @@ abstract class ModelFunctionality extends Model
             foreach ($tab as $tabLine) {
                 $cookieID = $tabLine["cookieId"];
                 // self::$usersCookiesMap->put($tabLine["cookieId"], Map::cookieID);
-                self::$usersCookiesMap->put($userID, Map::userID);
+                // self::$usersCookiesMap->put($userID, Map::userID);
                 self::$usersCookiesMap->put($tabLine["cookieValue"], $cookieID, Map::value);
                 self::$usersCookiesMap->put($tabLine["setDate"], $cookieID, Map::setDate);
                 self::$usersCookiesMap->put($tabLine["settedPeriod"], $cookieID, Map::settedPeriod);

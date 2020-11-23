@@ -190,11 +190,6 @@ $address = (!empty($address)) ? $address : null;
                             </div>
                         </div>
                 <?php
-                        # code...
-                        break;
-
-                    default:
-                        # code...
                         break;
                 }
                 ?>

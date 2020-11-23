@@ -150,6 +150,26 @@
     const signInRSP = (r, x) => {
         signUpRSP(r, x);
     }
+    logOut = () => {
+        if (popAsk(ALERT_LOG_OUT)) {
+            var d = {
+                "a": QR_LOG_OUT,
+                "d": null,
+                "r": logOutRSP,
+                "l": "#full_screen_loading",
+                "sc": () => { displayFlexOn(d.l); $(FCID).fadeIn(TS) },
+                "rc": () => { displayFlexOff(d.l); $(FCID).fadeOut(TS) }
+            };
+            SND(d);
+        }
+    }
+    const logOutRSP = (r) => {
+        if (r.isSuccess) {
+            window.location.assign(window.location.href);
+        } else {
+            handleErr(r);
+        }
+    }
     /*———————————————————————————— SIGN UP ——————————————————————————————————*/
     /*———————————————————————————— ADDRESS DOWN —————————————————————————————*/
     getAddressesSet = () => {
