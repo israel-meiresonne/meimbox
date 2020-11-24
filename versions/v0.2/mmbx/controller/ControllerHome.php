@@ -200,6 +200,8 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         // var_dump($_SERVER);
+        require_once 'model/navigation/Device.php';
+        new Device();
     }
     public function test_orderBoxes()
     {

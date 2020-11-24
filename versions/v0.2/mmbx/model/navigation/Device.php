@@ -1,19 +1,19 @@
 <?php
-// namespace Oop\model;
-include_once 'library/spyc/Spyc.php';
-include_once 'library/device-detector/autoload.php';
+require_once 'model/ModelFunctionality.php';
+require_once 'vendor/autoload.php';
 
 use DeviceDetector\DeviceDetector;
-use DeviceDetector\Parser\Device\DeviceParserAbstract;
+use DeviceDetector\Parser\Device\AbstractDeviceParser;
 
 
-class Device
+
+class Device extends ModelFunctionality
 {
     /**
-     * Holds all data detected into json format
-     * @var string all data returned by the DeviceDetector into JSON format
+     * Holds all data detected
+     * @var Map all data returned by the DeviceDetector
      */
-    private $ddData;
+    private $deviceDatas;
 
     /**
      * @var string
@@ -106,11 +106,12 @@ class Device
 
     function __construct()
     {
+        AbstractDeviceParser::setVersionTruncation(AbstractDeviceParser::VERSION_TRUNCATION_NONE);
         $this->userAgent = $_SERVER['HTTP_USER_AGENT']; // change this to the useragent you want to parse
         $dd = new DeviceDetector($this->userAgent);
         $dd->parse();
 
-        $this->setDate = GeneralCode::getDateTime();
+        $this->setDate = $this->getDateTime();
 
         $this->isBot = $dd->isBot();
         if ($this->isBot) {
@@ -120,7 +121,7 @@ class Device
             $os = $dd->getOs();
             $this->osName = strtolower($os["name"]);
             $this->osVersion = strtolower($os["version"]);
-            $this->osPlateform = strtolower($os["plateform"]);
+            $this->osPlateform = strtolower($os["platform"]);
 
             $clientInfo = $dd->getClient(); // holds information about browser, feed reader, media player, ...
             $this->driverType = strtolower($clientInfo["type"]);
@@ -138,33 +139,14 @@ class Device
             $model = $dd->getModel();
             $this->deviceModel = strtolower($model);
 
-            $datasList = [];
-            array_push($datasList, ["os" => $os]);
-            array_push($datasList, ["clientInfo" => $clientInfo]);
-            array_push($datasList, ["device" => $device]);
-            array_push($datasList, ["brand" => $brand]);
-            array_push($datasList, ["model" => $model]);
-            $this->ddData = json_encode($datasList);
+            // $datasList = [];
+            $this->deviceDatas = new Map();
+            $this->deviceDatas->put($os, Map::os);
+            $this->deviceDatas->put($clientInfo, Map::clientInfo);
+            $this->deviceDatas->put($device, Map::device);
+            $this->deviceDatas->put($brand, Map::brand);
+            $this->deviceDatas->put($model, Map::model);
         }
-    }
-
-    public function __toString()
-    {
-
-        Helper::printLabelValue("ddData", $this->ddData);
-        Helper::printLabelValue("isBot", $this->isBot);
-        Helper::printLabelValue("botInfo", $this->botInfo);
-        Helper::printLabelValue("userAgent", $this->userAgent);
-        Helper::printLabelValue("osName", $this->osName);
-        Helper::printLabelValue("osVersion", $this->osVersion);
-        Helper::printLabelValue("osPlateform", $this->osPlateform);
-        Helper::printLabelValue("driverType", $this->driverType);
-        Helper::printLabelValue("driverName", $this->driverName);
-        Helper::printLabelValue("driverVersion", $this->driverVersion);
-        Helper::printLabelValue("driverEngine", $this->driverEngine);
-        Helper::printLabelValue("driverEngineVersion", $this->driverEngineVersion);
-        Helper::printLabelValue("deviceType", $this->deviceType);
-        Helper::printLabelValue("deviceBrand", $this->deviceBrand);
-        Helper::printLabelValue("deviceModel", $this->deviceModel);
+        var_dump(get_object_vars($this));
     }
 }

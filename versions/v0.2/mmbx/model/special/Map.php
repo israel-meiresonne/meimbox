@@ -246,7 +246,14 @@ class Map
     public const content_category = "content_category";
     public const datasMap = "datasMap";
 
-
+    /**
+     * Keys for Device
+     */
+    public const os = "os";
+    public const clientInfo = "clientInfo";
+    public const device = "device";
+    // public const brand = "brand";
+    public const model = "model";
 
 
 
