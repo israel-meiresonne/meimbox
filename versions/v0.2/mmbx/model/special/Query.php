@@ -14,26 +14,6 @@ class Query
     private static $params;
 
     /**
-     * Holds the input type
-     */
-    /*const CHECKBOX = "checckbox";
-    const PSEUDO = "pseudo";
-    const NAME = "name";  // handle space and `-`
-    const EMAIL = "email";
-    const PHONE_NUMBER = "phone";
-    const PASSWORD = "psw";
-    const BOOLEAN_TYPE = "boolean";
-    const STRING_TYPE = "string";
-    const NUMBER_FLOAT = "float";
-    const NUMBER_INT = "int";
-    const ALPHA_NUMERIC = "alpha_numeric";
-
-    const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
-    const STRING_REGEX = "#^[a-zA-Z]+$#";
-    const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
-    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";*/
-
-    /**
      * Constructor
      */
     private static function setQuery()
