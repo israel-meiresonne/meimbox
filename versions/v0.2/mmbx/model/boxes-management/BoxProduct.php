@@ -450,10 +450,10 @@ class BoxProduct extends Product
      */
     public function getFormatedPrice()
     {
-        $price = $this->getPrice();
-        return $price->getFormated();
+        // $price = $this->getPrice();
+        // return $price->getFormated();
         // return "—";
-        // return "";
+        return "";
     }
 
     // /**

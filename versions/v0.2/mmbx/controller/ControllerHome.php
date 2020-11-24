@@ -199,6 +199,7 @@ class ControllerHome extends ControllerSecure
     public function test()
     {
         header('content-type: application/json');
+        // var_dump($_SERVER);
     }
     public function test_orderBoxes()
     {

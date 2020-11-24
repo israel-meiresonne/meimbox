@@ -1,40 +1,66 @@
 <?php
+require_once 'model/ModelFunctionality.php';
 
-class Page
+/**
+ * This class represente a web page visited by the Visitor
+ */
+class Page extends ModelFunctionality
 {
-    
     /**
+     * Holds Page's url
+     * i.e.: https://my.domain.com/my/webroot/my/path?my=param
      * @var string
      */
-    private $page;
-    
+    private $url;
+
     /**
+     * Holds Page's web root
+     * i.e.: /my/webroot/
+     * Note: begin and end with slash
      * @var string
      */
-    private $setDate;
+    private static $webroot;
+
+    /**
+     * Holds Page's path
+     * i.e.: my/path?my=param
+     * Note: don't begin with slash
+     * @var string
+     */
+    private $path;
     
     /**
-     * Time (second) passed on a web page
+     * Holds url's $_GET parameters
+     * @var string[]
+     */
+    private $params;
+    
+    /**
+     * Holds the time that the Visitor spent on the Page in second
      * @var int
      */
     private $timeOn;
-    
+        
     /**
-     * @var Parameters
+     * Holds the date Visitor visited this Page
+     * @var string
      */
-    private $parameters;
+    private $setDate;
 
     /**
-     * @param string $page
-     * @param string $setDate
-     * @param int $page
+     * Holds Visitor's behavior on the Page
+     * + Note: Action are ordered from new to hold
+     * @var Action[]
      */
-    function __construct($page, $setDate, $timeOn)
+    private $actions;
+
+    /**
+     * Constructor
+     * @param $minTime   min time in second from today to get history in database
+     * @param $maxTime   max time in second from today to get history in database
+     */
+    function __construct()
     {
-        $this->page = $page;
-        $this->setDate = $setDate;
-        $this->timeOn = $timeOn;
-        $this->parameters = [];
     }
 
     private function getSetDate(){
@@ -48,29 +74,4 @@ class Page
     public function getDateInSec(){
         return strtotime($this->setDate);
     }
-
-    /**
-     * Add new parameter in $this->parameters in format $key => $value.
-     * @param string $key
-     * @param string $data
-     */
-    public function addParam($key, $data){
-        // $this->parameters[$key] = $data;
-        $parameter = new Parameter($key, $data);
-        array_push($this->parameters, $parameter);
-    }
-
-    public function __toString()
-    {
-        
-        Helper::printLabelValue("page", $this->page);
-        Helper::printLabelValue("setDate", $this->setDate);
-        Helper::printLabelValue("timeOn", $this->timeOn);
-        Helper::printLabelValue("parameters", $this->parameters);
-    }
-
-
-
-
-
 }
