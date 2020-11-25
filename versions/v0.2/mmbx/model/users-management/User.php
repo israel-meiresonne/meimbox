@@ -315,9 +315,11 @@ abstract class User extends Visitor
     public function logOut()
     {
         $userID = $this->getUserID();
+        $session = $this->getSession();
         Cookie::destroyCookie($userID, Cookie::COOKIE_VIS);
         Cookie::destroyCookie($userID, Cookie::COOKIE_CLT);
         Cookie::destroyCookie($userID, Cookie::COOKIE_ADM);
+        $session->destroy();
     }
 
     /**
