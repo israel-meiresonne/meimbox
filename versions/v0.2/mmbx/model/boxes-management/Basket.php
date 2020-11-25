@@ -69,7 +69,7 @@ class Basket extends ModelFunctionality
 
     /**
      * Constructor
-     * @var int $userID identifiant of the user
+     * @var string $userID Visitor's id
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
@@ -100,7 +100,7 @@ class Basket extends ModelFunctionality
 
     /**
      * Setter for boxes
-     * @var int $userID identifiant of the user
+     * @var string $userID Visitor's id
      * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
@@ -128,7 +128,7 @@ class Basket extends ModelFunctionality
 
     /**
      * Setter for basketproducts
-     * @var int $userID identifiant of the user
+     * @var string $userID Visitor's id
      * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency

@@ -69,7 +69,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 
         const rburl = (a) => {
             var as = a.split("/");
-            var u = as[0] + AJX;
+            var u = as[0] + XHR;
             for (var i = 1; i < as.length; i++) {
                 u += as[i];
             }
@@ -185,14 +185,11 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 
         const TS = 450;
         const BNR = 1000000;
-        const AJX = "<?= ControllerSecure::AJX ?>";
-        // const JXF = "<?= "" //self::$PATH_JS 
-                        ?>qr.php";
+        const XHR = "<?= Page::PATH_XHR ?>";
         const LANG = "lang=" + $("html").attr("lang");
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
         const ER_TYPE_COMMENT = "<?= self::ER_TYPE_COMMENT ?>";
-        var miniPopIsOpen = false;
 
         /**
          * @param {number} number 
