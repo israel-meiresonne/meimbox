@@ -58,7 +58,7 @@ class Action extends ModelFunctionality
     /**
      * Constructor
      */
-    function __construct()
+    public function __construct()
     {
         $this->setConstants();
         $args = func_get_args();

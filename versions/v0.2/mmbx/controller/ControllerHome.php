@@ -200,9 +200,13 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         // var_dump($_SERVER);
-        require_once 'model/navigation/Device.php';
-        new Device();
+        // require_once 'model/navigation/Device.php';
+        require_once 'model/navigation/Location.php';
+        // new Device();
+        // var_dump(Configuration::getEnvironement());
+        var_dump(new Location());
     }
+
     public function test_orderBoxes()
     {
         header('content-type: application/json');

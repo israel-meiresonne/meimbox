@@ -28657,7 +28657,7 @@
 									},
 									"name": "offset",
 									"documentation": "# Definition\n\n Timezone UTC DST offset in seconds",
-									"type": "FLOAT"
+									"type": "INTEGER"
 								},
 								{
 									"_type": "ERDColumn",
