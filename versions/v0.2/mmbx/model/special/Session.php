@@ -1,5 +1,5 @@
 <?php
-require_once 'Configuration.php';
+require_once 'framework/Configuration.php';
 
 /**
  * This class manage $_SESSION access
@@ -19,6 +19,7 @@ class Session
      */
     public function destroy()
     {
+        session_unset(); 
         session_destroy();
     }
 
@@ -34,6 +35,16 @@ class Session
     }
 
     /**
+     * To unset a Session value
+     * @param string $key   access key
+     */
+    public function unset($key)
+    {
+        $_SESSION[$key] = null;
+        unset($_SESSION[$key]);
+    }
+
+    /**
      * To get value in $_SESSION with the given key
      *
      * @param string $key access key
@@ -41,6 +52,6 @@ class Session
      */
     public function get($key)
     {
-        return (isset($_SESSION[$key])) && ($_SESSION[$key] != "") ? $_SESSION[$key] : null;
+        return (key_exists($key, $_SESSION)) && ($_SESSION[$key] !== "") ? $_SESSION[$key] : null;
     }
 }

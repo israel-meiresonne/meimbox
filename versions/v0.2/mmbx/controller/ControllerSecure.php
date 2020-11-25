@@ -18,12 +18,6 @@ require_once 'model/special/Map.php';
 abstract class ControllerSecure extends Controller
 {
     /**
-     * Holds key to store response
-     * @var string
-     */
-    public const AJX = "/qr/";
-
-    /**
      * Holds input name that contain redirect link
      * @var string
      */

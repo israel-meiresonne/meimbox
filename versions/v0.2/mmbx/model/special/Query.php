@@ -32,7 +32,8 @@ class Query
     {
         (!self::$isset) ? self::setQuery() : null;
         // return (key_exists($key, self::$params)) && (!empty(self::$params[$key]));
-        return (key_exists($key, self::$params)) && (isset(self::$params[$key])) && (self::$params[$key] != "");
+        // return (key_exists($key, self::$params)) && (isset(self::$params[$key])) && (self::$params[$key] != "");
+        return (key_exists($key, self::$params)) && (self::$params[$key] !== "");
     }
 
     /**

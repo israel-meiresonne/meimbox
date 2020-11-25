@@ -255,6 +255,11 @@ class Map
     // public const brand = "brand";
     public const model = "model";
 
+    /**
+     * Keys for Page
+     */
+    public const query = "query";
+
 
 
     /**

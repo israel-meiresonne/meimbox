@@ -198,13 +198,96 @@ class ControllerHome extends ControllerSecure
 
     public function test()
     {
+        // $a = 'time()';
+        // $b = {$a};
+        // var_dump({$a});
+    }
+
+    public function test_Navigation(){
         header('content-type: application/json');
+        $person = $this->person;
+        $userID = $person->getUserID();
+        $session = $person->getSession();
+        $nav = new Navigation($userID);
+        $nav->handleRequest($session);
+        // $session->destroy();
+        var_dump($_SESSION);
+        var_dump($_GET);
+    }
+
+    public function test_Page()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
         // var_dump($_SERVER);
+        // var_dump(Page::extractUrl());
         // require_once 'model/navigation/Device.php';
-        require_once 'model/navigation/Location.php';
-        // new Device();
+        // require_once 'model/navigation/Location.php';
+        // var_dump(new Device());
         // var_dump(Configuration::getEnvironement());
-        var_dump(new Location());
+        // var_dump(new Location());
+
+        // $nav =  new Navigation();
+        $userID = $person->getUserID();
+        $page = new Page(Page::extractUrl(), date(ModelFunctionality::DATE_FORMAT, time()));
+        // $page = new Page("3330090", "2020-11-25 20:40:30");
+        $session = $person->getSession();
+        $session->unset(Page::KEY_LAST_LOAD);
+        // $session->set(Page::KEY_LAST_LOAD, $page->generatePageID($userID));
+        // $session->destroy();
+        // $response = new Response;
+        // $page->updatePage($response, $userID);
+        // $pageID = $page->generatePageID($userID);
+        var_dump($page->getPageType($session));
+        var_dump($_SESSION);
+        var_dump($_GET);
+        // var_dump($pageID);
+        // var_dump(Page::explodePageID($pageID));
+        // var_dump($page->isXHR());
+        // var_dump($page->getParams());
+        // var_dump($page->getPath());
+        // $userID = $person->getUserID();
+        // $response = new Response;
+        // $page->savePage($response, $userID);
+        // var_dump($response->getAttributs());
+        // $page = new Page("localhost:8090/versions/v0.2/mmbx/home/qr/test?param1=A&param2=B", "2021-01-01 01:01:01");
+        // var_dump($page->getPath());
+        // var_dump($_GET);
+        // $nav->addPage();
+        // $nav->addPage($page);
+        // var_dump($nav);
+
+        // $webroot = "/versions/v0.2/mmbx/";
+        // // $webroot = "/";
+        // $url = "https://3a1baf8702c4.eu.ngrok.io". $webroot ."home/qr/test?param1=A&param2=B";
+        // // $url = "localhost:8090". $webroot ."home/qr/test?param1=A&param2=B";
+        // var_dump("url: $url");
+        // $parsed = parse_url($url);
+        // var_dump($parsed);
+        // $query = $parsed["query"];
+        // $query = null;
+        // parse_str($query, $params);
+        // var_dump($params);
+        // $webrootPath = $parsed["path"];
+        // $nb = 1;
+        // // $path = str_replace($webroot, "", $parsed["path"], $nb);
+        // $path = substr_replace($webrootPath, "", 0, strlen($webroot));
+        // var_dump("path: $path");
+    }
+
+    public function test_Session()
+    {
+        header('content-type: application/json');
+        require_once 'model/special/Session.php';
+        $person = $this->person;
+        $session = $person->getSession();
+        $key = "hello";
+        $value = "world";
+        $session->set($key, 0);
+        var_dump($_SESSION);
+        // var_dump("value: ", $session->get($key));
+        $session->destroy();
+        var_dump($_SESSION);
     }
 
     public function test_orderBoxes()
