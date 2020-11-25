@@ -1,5 +1,8 @@
 <?php
 require_once 'model/ModelFunctionality.php';
+require_once 'model/navigation/Page.php';
+require_once 'model/navigation/Action.php';
+require_once 'model/navigation/Device.php';
 
 /**
  * This class is used as facade to manage and track Visitor's navigation
@@ -32,7 +35,7 @@ class Navigation extends ModelFunctionality
      * @var int
      */
     private $minTime;
-    
+
     /**
      * Holds max time in second from today to get history in database
      * @var int

@@ -20,6 +20,13 @@ class Configuration
     private static $json;
 
     /**
+     * Holds available environement files
+     * @var string
+     */
+    public const ENV_DEV = "dev.ini";
+    public const ENV_PROD = "prod.ini";
+
+    /**
      * Keys to acces datas
      */
     public const DOMAIN = "domain";
@@ -133,5 +140,23 @@ class Configuration
         }
         $datas = ($inStd)  ? $parsed->$name : $parsed[$name];
         return $datas;
+    }
+
+    /**
+     * To get the name of the config file of the environement
+     * @return string the name of the config file of the environement
+     */
+    public static function getEnvironement()
+    {
+        $files = scandir('config', 1);
+        $index = array_search(self::ENV_DEV, $files);
+        if(!is_bool($index)){
+            return $files[$index];
+        }
+        $index = array_search(self::ENV_PROD, $files);
+        if(!is_bool($index)){
+            return $files[$index];
+        }
+        throw new Exception("This environement is not supported");
     }
 }

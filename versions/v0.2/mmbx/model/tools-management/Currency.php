@@ -37,11 +37,10 @@ class Currency extends ModelFunctionality
      */
     function __construct($isoCurrency)
     {
+        self::setConstants();
         if (!$this->existCurrency($isoCurrency)) {
             throw new Exception("This currency('$isoCurrency') is not supported");
-        } /*else {
-            $this->setCurrency(self::$DEFAULT_ISO_CURRENCY);
-        }*/
+        }
         $this->setCurrency($isoCurrency);
     }
 
@@ -73,16 +72,24 @@ class Currency extends ModelFunctionality
     // }
 
     /**
-     * Initialize Language's constants
-     * @var string[string[...]] $dbMap The database tables in mapped format 
-     * specified in file /oop/model/special/dbMap.txt
+     * To set Currency's constants
      */
-    private function setConstants()
+    private static function setConstants()
     {
         if (!isset(self::$DEFAULT_ISO_CURRENCY)) {
             self::$DEFAULT_ISO_CURRENCY = "DEFAULT_ISO_CURRENCY";
-            self::$DEFAULT_ISO_CURRENCY = $this->getConstantLine(self::$DEFAULT_ISO_CURRENCY)["stringValue"];
+            self::$DEFAULT_ISO_CURRENCY = parent::getConstantLine(self::$DEFAULT_ISO_CURRENCY)["stringValue"];
         }
+    }
+
+    /**
+     * To get System's default iso currency code
+     * @return string System's default iso currency code
+     */
+    public static function getDefaultIsoCurrency()
+    {
+        (!isset(self::$DEFAULT_ISO_CURRENCY)) ? self::setConstants() : null;
+        return self::$DEFAULT_ISO_CURRENCY;
     }
 
     /**
@@ -101,29 +108,5 @@ class Currency extends ModelFunctionality
     public function getSymbol()
     {
         return $this->symbol;
-    }
-
-    /**
-     * To get a protected copy of a Currency instance
-     * @return Currency a protected copy of the Currency instance
-     */
-    // public function getCopy()
-    // {
-    //     $copy = new Currency();
-    //     $copy->isoCurrency = $this->isoCurrency;
-    //     $copy->currencyName = $this->currencyName;
-    //     $copy->symbol = $this->symbol;
-    //     $copy->eurToCurrency = $this->eurToCurrency;
-
-    //     return $copy;
-    // }
-
-    function __toString()
-    {
-        var_dump(get_object_vars($this));
-        // Helper::printLabelValue("isoCode", $this->isoCurrency);
-        // Helper::printLabelValue("currency", $this->currencyName);
-        // Helper::printLabelValue("symbol", $this->symbol);
-        // Helper::printLabelValue("eurToCurrency", $this->eurToCurrency);
     }
 }

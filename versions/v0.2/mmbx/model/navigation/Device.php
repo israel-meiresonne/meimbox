@@ -104,7 +104,10 @@ class Device extends ModelFunctionality
      */
     private $deviceModel;
 
-    function __construct()
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
         AbstractDeviceParser::setVersionTruncation(AbstractDeviceParser::VERSION_TRUNCATION_NONE);
         $this->userAgent = $_SERVER['HTTP_USER_AGENT']; // change this to the useragent you want to parse
@@ -139,7 +142,6 @@ class Device extends ModelFunctionality
             $model = $dd->getModel();
             $this->deviceModel = strtolower($model);
 
-            // $datasList = [];
             $this->deviceDatas = new Map();
             $this->deviceDatas->put($os, Map::os);
             $this->deviceDatas->put($clientInfo, Map::clientInfo);
@@ -147,6 +149,5 @@ class Device extends ModelFunctionality
             $this->deviceDatas->put($brand, Map::brand);
             $this->deviceDatas->put($model, Map::model);
         }
-        var_dump(get_object_vars($this));
     }
 }

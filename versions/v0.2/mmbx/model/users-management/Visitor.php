@@ -184,7 +184,11 @@ class Visitor extends ModelFunctionality
         $this->userID = $this->generateCode(9, date("YmdHis")); // replacer par une sequance
         $this->location = new Location();
         $this->lang = new Language();
-        $this->currency = $this->location->getCurrency();
+        // $this->currency = $this->location->getCurrency();
+        $localIsoCurrency = $this->location->getIsoCurrency();
+        $this->currency = ($this->existCurrency($localIsoCurrency))
+            ? new Currency($localIsoCurrency)
+            : new Currency(Currency::getDefaultIsoCurrency());
         $this->country = new Country($this->location->getcountryName());
         $this->setDate = $this->getDateTime();
         $this->insertVisitor();
