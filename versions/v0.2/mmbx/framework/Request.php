@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Session.php';
+// require_once 'Session.php';
 
 /**
  * Classe modélisant une requête HTTP entrante.
@@ -31,21 +31,21 @@ class Request
     {
         $this->parameters = $parameters;
         
-        // rnvs : création / prolongement de la session dans ctor de Session
-        $this->session = new Session();
+        // // rnvs : création / prolongement de la session dans ctor de Session
+        // $this->session = new Session();
     }
 
-    /**
-     * Renvoie l'objet session associé à la requête
-     * 
-     * rnvs : pour l'accès à $_SESSION via les méthodes de Session
-     * 
-     * @return Session Objet session
-     */
-    public function getSession()
-    {
-        return $this->session;
-    }
+    // /**
+    //  * Renvoie l'objet session associé à la requête
+    //  * 
+    //  * rnvs : pour l'accès à $_SESSION via les méthodes de Session
+    //  * 
+    //  * @return Session Objet session
+    //  */
+    // public function getSession()
+    // {
+    //     return $this->session;
+    // }
 
     /**
      * Renvoie vrai si le paramètre existe dans la requête
