@@ -21136,7 +21136,8 @@
 									"name": "timeOn",
 									"documentation": "# Definition\n\nTime passed on the page in second",
 									"type": "INTEGER",
-									"length": "11"
+									"length": "11",
+									"nullable": true
 								}
 							]
 						},
@@ -28495,7 +28496,8 @@
 									"name": "ip",
 									"documentation": "# Definition\n\n IP used for the query",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28517,7 +28519,8 @@
 									"name": "message",
 									"documentation": "# Definition\n\n included only when status is fail Can be one of the following: private range, reserved range, invalid query",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28528,7 +28531,8 @@
 									"name": "continent",
 									"documentation": "# Definition\n\n Continent name",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28539,7 +28543,8 @@
 									"name": "continentCode",
 									"documentation": "# Definition\n\n Two-letter continent code",
 									"type": "VARCHAR",
-									"length": "10"
+									"length": "10",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28550,7 +28555,8 @@
 									"name": "country",
 									"documentation": "# Definition\n\n Country name",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28561,7 +28567,8 @@
 									"name": "countryCode",
 									"documentation": "# Definition\n\n Two-letter country code ISO 3166-1 alpha-2",
 									"type": "VARCHAR",
-									"length": "10"
+									"length": "10",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28572,7 +28579,8 @@
 									"name": "region",
 									"documentation": "# Definition\n\n Region/state short code (FIPS or ISO)",
 									"type": "VARCHAR",
-									"length": "10"
+									"length": "10",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28583,7 +28591,8 @@
 									"name": "regionName",
 									"documentation": "# Definition\n\n Region/state",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28594,7 +28603,8 @@
 									"name": "city",
 									"documentation": "# Definition\n\n City",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28605,7 +28615,8 @@
 									"name": "district",
 									"documentation": "# Definition\n\n District (subdivision of city)",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28616,7 +28627,8 @@
 									"name": "zip",
 									"documentation": "# Definition\n\n Zip code",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28626,7 +28638,8 @@
 									},
 									"name": "lat",
 									"documentation": "# Definition\n\n Latitude",
-									"type": "FLOAT"
+									"type": "FLOAT",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28636,7 +28649,8 @@
 									},
 									"name": "lon",
 									"documentation": "# Definition\n\n Longitude",
-									"type": "FLOAT"
+									"type": "FLOAT",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28647,7 +28661,8 @@
 									"name": "timezone",
 									"documentation": "# Definition\n\n Timezone (tz)",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28657,7 +28672,8 @@
 									},
 									"name": "offset",
 									"documentation": "# Definition\n\n Timezone UTC DST offset in seconds",
-									"type": "INTEGER"
+									"type": "INTEGER",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28668,7 +28684,8 @@
 									"name": "currency",
 									"documentation": "# Definition\n\n National currency",
 									"type": "VARCHAR",
-									"length": "50"
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28679,7 +28696,8 @@
 									"name": "isp",
 									"documentation": "# Definition\n\n ISP name",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28687,10 +28705,11 @@
 									"_parent": {
 										"$ref": "AAAAAAF19iSYBWyZvMU="
 									},
-									"name": "org",
+									"name": "ispOrg",
 									"documentation": "# Definition\n\n Organization name",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28698,10 +28717,11 @@
 									"_parent": {
 										"$ref": "AAAAAAF19iSYBWyZvMU="
 									},
-									"name": "as",
+									"name": "ispAs",
 									"documentation": "# Definition\n\n AS number and organization, separated by space (RIR). Empty for IP blocks not being announced in BGP tables.",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28712,7 +28732,8 @@
 									"name": "asname",
 									"documentation": "# Definition\n\n AS name (RIR). Empty for IP blocks not being announced in BGP tables.",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28723,7 +28744,8 @@
 									"name": "reverse",
 									"documentation": "# Definition\n\n Reverse DNS of the IP (can delay response)",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "100",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28733,7 +28755,8 @@
 									},
 									"name": "mobile",
 									"documentation": "# Definition\n\n Mobile (cellular) connection",
-									"type": "BOOLEAN"
+									"type": "BOOLEAN",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28743,7 +28766,8 @@
 									},
 									"name": "proxy",
 									"documentation": "# Definition\n\n Proxy, VPN or Tor exit address",
-									"type": "BOOLEAN"
+									"type": "BOOLEAN",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -28753,7 +28777,8 @@
 									},
 									"name": "hosting",
 									"documentation": "# Definition\n\n Hosting, colocated or data center",
-									"type": "BOOLEAN"
+									"type": "BOOLEAN",
+									"nullable": true
 								}
 							]
 						}

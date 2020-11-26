@@ -380,8 +380,6 @@
         $(document).click(() => {
             if ($('.minipop-wrap[' + dataisdisplayed + '="true"]').length > 0) {
                 var xs = $('.minipop-wrap[' + dataisdisplayed + '="true"]');
-                console.log(xs);
-                // miniPopIsOpen = false;
                 displayFadeOut(xs, TS);
                 $(xs).attr(dataisdisplayed, false);
             }

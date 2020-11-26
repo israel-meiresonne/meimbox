@@ -11,6 +11,8 @@ require_once 'model/boxes-management/Basket.php';
 require_once 'model/tools-management/Cookie.php';
 require_once 'model/tools-management/Address.php';
 require_once 'model/users-management/Visitor.php';
+require_once 'model/navigation/Navigation.php';
+require_once 'model/special/Session.php';
 
 class Visitor extends ModelFunctionality
 {
@@ -54,22 +56,16 @@ class Visitor extends ModelFunctionality
     protected $country;
 
     /**
-     * Hold location datas provided by the Visitor's IP address
-     * @var Location
-     */
-    protected $location;
-
-    /**
-     * Hold data about the Visitor's device
-     * @var Device
-     */
-    protected $device;
-
-    /**
-     * Hold Visitor's navigation data
+     * Hold Visitor's navigation datas
      * @var Navigation
      */
     protected $navigation;
+
+    /**
+     * Hold Visitor's session $_SESSION
+     * @var Session
+     */
+    protected $session;
 
     /**
      * @var Basket
@@ -120,42 +116,10 @@ class Visitor extends ModelFunctionality
     // public function __construct($childCaller = null)
     public function __construct($VIS_VAL)
     {
-        // $isVisitor = empty($VIS_VAL);
-        // $VIS_VAL = ($isVisitor) ? Cookie::getCookieValue(Cookie::COOKIE_VIS) : $VIS_VAL;
-
-        // $tabLine = null;
-        // if ($isVisitor && (!empty($VIS_VAL))) { // if empty its mean that the current user is a Visittor
-        //     $sql = "SELECT u.* 
-        //         FROM `Users-Cookies` uc
-        //         JOIN `Users` u ON uc.`userId` = u.`userID`
-        //         WHERE uc.`cookieId` = '" . Cookie::COOKIE_VIS . "'
-        //         AND uc.`cookieValue` = '$VIS_VAL'";
-        //     $tab = $this->select($sql);
-        //     $tabLine = (count($tab) > 0) ? $tab[0] : null;
-        // }
-
-        // $this->setConstants();
-        // $this->location = new Location();
-
-        // $this->currency = ((!empty($tabLine)) && (!empty($tabLine["iso_currency"])))
-        //     ? new Currency($tabLine["iso_currency"])
-        //     : $this->location->getCurrency();
-
-        // $this->country = ((!empty($tabLine)) && (!empty($tabLine["country_"])))
-        //     ? new Country($tabLine["country_"])
-        //     : new Country($this->location->getcountryName());
-
-        // if ($isVisitor) {
-        //     $this->userID = (!empty($tabLine)) ? $tabLine["userID"] : $this->generateCode(9, date("YmdHis")); // replacer par une sequance
-        //     $this->setDate = (!empty($tabLine)) ? $tabLine["setDate"] : $this->getDateTime();
-        //     $this->lang = (!empty($tabLine)) ? new Language($tabLine["lang_"]) : new Language();
-        // }
-        // $this->setMeasure();
-        // ($isVisitor && (empty($tabLine))) ? $this->insertVisitor() : null;
-        // $this->manageCookie(Cookie::COOKIE_VIS, false);
-
         $this->setConstants();
         $person = get_class($this);
+        
+        // $this->navigation->addPage();
         switch ($person) {
             case Visitor::class:
                 if (empty($VIS_VAL)) {
@@ -166,13 +130,15 @@ class Visitor extends ModelFunctionality
                 break;
             case Administrator::class:
             case Client::class:
-                # code...
                 break;
             default:
                 throw new Exception("Unkwon person '$person'");
                 break;
         }
-        // $this->setMeasure();
+        $navigation = $this->getNavigation();
+        $session = $this->getSession();
+        $navigation->handleRequest($session);
+        $navigation->locate($session);
         $this->manageCookie(Cookie::COOKIE_VIS, false);
     }
 
@@ -182,14 +148,17 @@ class Visitor extends ModelFunctionality
     private function setNewVisitor()
     {
         $this->userID = $this->generateCode(9, date("YmdHis")); // replacer par une sequance
-        $this->location = new Location();
+        $navigation = $this->getNavigation();
+        $location = $navigation->getCurrentLocation();
+        // $this->location = new Location();
         $this->lang = new Language();
-        // $this->currency = $this->location->getCurrency();
-        $localIsoCurrency = $this->location->getIsoCurrency();
+        // $localIsoCurrency = $this->location->getIsoCurrency();
+        $localIsoCurrency = $location->getIsoCurrency();
         $this->currency = ($this->existCurrency($localIsoCurrency))
             ? new Currency($localIsoCurrency)
             : new Currency(Currency::getDefaultIsoCurrency());
-        $this->country = new Country($this->location->getcountryName());
+        // $this->country = new Country($this->location->getcountryName());
+        $this->country = new Country($location->getcountryName());
         $this->setDate = $this->getDateTime();
         $this->insertVisitor();
     }
@@ -207,20 +176,40 @@ class Visitor extends ModelFunctionality
         AND uc.`cookieValue` = '$VIS_VAL'";
         $tab = $this->select($sql);
         if (empty($tab)) {
-            // $this->setNewVisitor();
             throw new Exception("There's not Visitor with this Visitor Cookie '$VIS_VAL'");
-            // return;
         }
         if (count($tab) != 1) {
             throw new Exception("A visitor cookie('$VIS_VAL') can't be own by only one Visitor");
         }
         $tabLine = $tab[0];
         $this->userID = $tabLine["userID"];
-        $this->location = new Location();
+        // $this->location = new Location();
+        // $navigation = $this->getNavigation();
+        // $navigation->getCurrentLocation();
         $this->lang = new Language($tabLine["lang_"]);
         $this->currency = new Currency($tabLine["iso_currency"]);
         $this->country = new Country($tabLine["country_"]);
         $this->setDate = $tabLine["setDate"];
+    }
+
+    /**
+     * To set navigation
+     * @param string $VIS_VAL Visitor's cookie used to access to his datas
+     */
+    private function setNavigation()
+    {
+        $userID = $this->getUserID();
+        $this->navigation = new Navigation($userID);
+    }
+
+    /**
+     * To get Visitor's navigation datas
+     * @return Navigation Visitor's navigation datas
+     */
+    private function getNavigation()
+    {
+        (!isset($this->navigation)) ? $this->setNavigation() : null;
+        return $this->navigation;
     }
 
     /**
@@ -502,6 +491,16 @@ class Visitor extends ModelFunctionality
     {
         (!isset($this->basket)) ? $this->setBasket() : null;
         return $this->basket;
+    }
+
+    /**
+     * To get Visitor's Session
+     * @return Session Visitor's Session
+     */
+    public function getSession()
+    {
+        (!isset($this->session)) ? $this->session = new Session() : null;
+        return $this->session;
     }
 
     /**

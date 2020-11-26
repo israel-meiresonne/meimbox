@@ -161,33 +161,12 @@ abstract class ModelFunctionality extends Model
      */
     private const PDO_SUCCEESS = "00000";
 
-    const CRUD_STATUS = "crud_status";
+    /**
+     * Holds access keys for CRUD
+     */
+    public const CRUD_STATUS = "crud_status";
 
-    // /*———————————————————————————— INPUT ATTRIBUTS DOWN ———————————————————————*/
-    // /**
-    //  * Holds the input type
-    //  */
-    // const CHECKBOX = "checckbox";
-    // const PSEUDO = "pseudo";
-    // const NAME = "name";  // handle space and `-`
-    // const EMAIL = "email";
-    // const PHONE_NUMBER = "phone";
-    // const PASSWORD = "psw";
-    // const SIZE = "size";
-    // const BOOLEAN_TYPE = "boolean";
-    // const STRING_TYPE = "string";
-    // const NUMBER_FLOAT = "float";
-    // const NUMBER_INT = "int";
-    // const ALPHA_NUMERIC = "alpha_numeric";
-
-    // const SIZE_REGEX = "#^[xX]*[sS]{1}$|^[ml]{1}$|^[xX]*[l]{1}$#";
-    // const INT_REGEX = "#(^[0-9]+$#";
-    // const FLOAT_REGEX = "#(^0{1}$)|(^0{1}[.,]{1}[0-9]+$)|(^[1-9]+[0-9]*[.,]?[0-9]*$)#";
-    // const STRING_REGEX = "#^[a-zA-Z]+$#";
-    // const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_ ]*$#";
-    // const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
-
-    // /*———————————————————————————— INPUT ATTRIBUTS UP ———————————————————————*/
+    public const DATE_FORMAT = "Y-m-d H:i:s";
     /*———————————————————————————— CRUD DOWN ————————————————————————————————*/
 
     /**

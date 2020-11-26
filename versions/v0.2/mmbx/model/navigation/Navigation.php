@@ -16,6 +16,12 @@ class Navigation extends ModelFunctionality
     private $userID;
 
     /**
+     * Holds the current pages
+     * @var Page
+     */
+    private static $currentPage;
+
+    /**
      * Holds pages visited by the Visitor
      * + Note: Pages are ordered from new to hold
      * @var Page[]
@@ -28,6 +34,12 @@ class Navigation extends ModelFunctionality
      * @var Device[]
      */
     private $devices;
+
+    /**
+     * Holds Visitor's current location
+     * @var Location
+     */
+    private static $currentLocation;
 
     /**
      * Holds Visitor's locations
@@ -56,7 +68,30 @@ class Navigation extends ModelFunctionality
      */
     public function __construct($userID, int $minTime = null, int $maxTime = null)
     {
+        if (!isset($userID)) {
+            throw new Exception("The Visitor's id must be setted");
+        }
         $this->userID = $userID;
+    }
+
+    /**
+     * To set current Pages
+     */
+    private function setCurrentPage()
+    {
+        $url = Page::extractUrl();
+        self::$currentPage = new Page($url);
+        // $response = new Response();
+        // $userID = $this->getUserID();
+        // self::$currentPage->insertPage($response, $userID);
+    }
+
+    /**
+     * To set Location
+     */
+    private function setCurrentLocation()
+    {
+        self::$currentLocation = new Location();
     }
 
     /**
@@ -69,21 +104,23 @@ class Navigation extends ModelFunctionality
     }
 
     /**
-     * To set Pages
+     * To get the current Pages
+     * @return Page current Page
      */
-    private function setPages()
+    private function getCurrentPage()
     {
-        $this->pages = [];
+        (!isset(self::$currentPage)) ? $this->setCurrentPage() : null;
+        return self::$currentPage;
     }
 
     /**
-     * To get Pages visited by the Visitor
-     * @return Page[] Pages visited by the Visitor
+     * To get Visitor's Location
+     * @return Location Visitor's Location
      */
-    private function getPages()
+    public function getCurrentLocation()
     {
-        (!isset($this->pages)) ? $this->setPages() : null;
-        return $this->pages;
+        (!isset(self::$currentLocation)) ? $this->setCurrentLocation() : null;
+        return self::$currentLocation;
     }
 
     /**
@@ -93,24 +130,32 @@ class Navigation extends ModelFunctionality
     public function handleRequest(Session $session)
     {
         $userID = $this->getUserID();
-        $url = Page::extractUrl();
-        $currentPage = new Page($url);
+        $currentPage = $this->getCurrentPage();
         $response = new Response();
 
         $pageType = $currentPage->getPageType($session);
-        var_dump("pageType: $pageType");
         switch ($pageType) {
             case Page::TYPE_XHR:
                 /** Update Time on last Page */
-                $pageID = $session->get(Page::KEY_LAST_LOAD);
-                $lastPage = Page::retreivePage($pageID);
-                $lastPage->updatePage($response, $userID);
+                try {
+                    $pageID = $session->get(Page::KEY_LAST_LOAD);
+                    $lastPage = Page::retreivePage($pageID);
+                    $lastPage->updatePage($response, $userID);
+                } catch (\Throwable $th) {
+                    $response->addError($th->__toString(), MyError::ADMIN_ERROR);
+                    $currentPageID = $currentPage->generatePageID($userID);
+                    $session->set(Page::KEY_LAST_LOAD, $currentPageID);
+                }
                 break;
             case Page::TYPE_NAVIGATOR:
                 /** Update Time on last Page */
-                $pageID = $session->get(Page::KEY_LAST_LOAD);
-                $lastPage = Page::retreivePage($pageID);
-                $lastPage->updatePage($response, $userID);
+                try {
+                    $pageID = $session->get(Page::KEY_LAST_LOAD);
+                    $lastPage = Page::retreivePage($pageID);
+                    $lastPage->updatePage($response, $userID);
+                } catch (\Throwable $th) {
+                    $response->addError($th->__toString(), MyError::ADMIN_ERROR);
+                }
                 /** Update last Page in session */
                 $currentPageID = $currentPage->generatePageID($userID);
                 $session->set(Page::KEY_LAST_LOAD, $currentPageID);
@@ -124,6 +169,28 @@ class Navigation extends ModelFunctionality
                 throw new Exception("Unknow Page type '$pageType'");
                 break;
         }
-        $currentPage->insertPage($response, $userID);
+        self::$currentPage->insertPage($response, $userID);
+    }
+
+    /**
+     * To locate Visitor
+     * @param Session $session Visitor's Sesssion
+     */
+    public function locate(Session $session)
+    {
+        $locationID = $session->get(Location::KEY_LOCATED);
+        if (!isset($locationID)) {
+            $currentLocation = $this->getCurrentLocation();
+
+            $currentPage = $this->getCurrentPage();
+            $response = new Response();
+            $userID = $this->getUserID();
+            $navDate = $currentPage->getSetDate();
+            $currentLocation->insertLocation($response, $userID, $navDate);
+            // var_dump($response);
+
+            $newLocationID = $currentLocation->generateLocationID($userID);
+            $session->set(Location::KEY_LOCATED, $newLocationID);
+        }
     }
 }

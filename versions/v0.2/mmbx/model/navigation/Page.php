@@ -62,7 +62,7 @@ class Page extends ModelFunctionality
     public const PATH_XHR = "/qr/";
 
     /**
-     * Holds path used to send XHR request
+     * Holds separator for id
      * @var string
      */
     public const SEPARATOR = "|";
@@ -182,7 +182,7 @@ class Page extends ModelFunctionality
         return $this->timeOn;
     }
 
-    private function getSetDate()
+    public function getSetDate()
     {
         return $this->setDate;
     }
@@ -227,7 +227,6 @@ class Page extends ModelFunctionality
         if (!isset($userID)) {
             throw new Exception("Visitor's id can't be unsetted");
         }
-
         return $userID . self::SEPARATOR . $this->getSetDate();
     }
 
