@@ -198,9 +198,15 @@ class ControllerHome extends ControllerSecure
 
     public function test()
     {
-        // $a = 'time()';
-        // $b = {$a};
-        // var_dump({$a});
+        header('content-type: application/json');
+        $person = $this->person;
+        $userID = $person->getUserID();
+        // var_dump($_SESSION);
+        // var_dump($_GET);
+        // $session = $person->getSession();
+        // $session->destroy();
+        var_dump($_SESSION);
+        var_dump($_GET);
     }
 
     public function test_Navigation(){
@@ -209,10 +215,31 @@ class ControllerHome extends ControllerSecure
         $userID = $person->getUserID();
         $session = $person->getSession();
         $nav = new Navigation($userID);
-        $nav->handleRequest($session);
+        // $nav->handleRequest($session);
+        var_dump($_SESSION);
+        var_dump($_GET);
+        $nav->locate($session);
         // $session->destroy();
         var_dump($_SESSION);
         var_dump($_GET);
+    }
+
+    public function test_Location()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $userID = $person->getUserID();
+        $session = $person->getSession();
+        // $session->destroy();
+        $localtion = new Location();
+        var_dump($localtion->generateLocationID($userID));
+        // var_dump($localtion);
+        var_dump($_SESSION);
+        var_dump($_GET);
+        // $response = new Response();
+        // $navDate = "2020-11-26 01:01:22";
+        // $localtion->insertLocation($response, $userID, $navDate);
+        // var_dump($response->getAttributs());
     }
 
     public function test_Page()
