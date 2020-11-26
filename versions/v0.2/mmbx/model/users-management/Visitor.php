@@ -118,11 +118,9 @@ class Visitor extends ModelFunctionality
     {
         $this->setConstants();
         $person = get_class($this);
-        
-        // $this->navigation->addPage();
         switch ($person) {
             case Visitor::class:
-                if (empty($VIS_VAL)) {
+                if (!isset($VIS_VAL)) {
                     $this->setNewVisitor();
                 } else {
                     $this->setKnownVisitor($VIS_VAL);
@@ -139,6 +137,7 @@ class Visitor extends ModelFunctionality
         $session = $this->getSession();
         $navigation->handleRequest($session);
         $navigation->locate($session);
+        (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
         $this->manageCookie(Cookie::COOKIE_VIS, false);
     }
 
@@ -150,15 +149,17 @@ class Visitor extends ModelFunctionality
         $this->userID = $this->generateCode(9, date("YmdHis")); // replacer par une sequance
         $navigation = $this->getNavigation();
         $location = $navigation->getCurrentLocation();
-        // $this->location = new Location();
+        // $navigation->detectDevice();
+        $this->location = new Location();
         $this->lang = new Language();
-        // $localIsoCurrency = $this->location->getIsoCurrency();
         $localIsoCurrency = $location->getIsoCurrency();
         $this->currency = ($this->existCurrency($localIsoCurrency))
             ? new Currency($localIsoCurrency)
             : new Currency(Currency::getDefaultIsoCurrency());
-        // $this->country = new Country($this->location->getcountryName());
-        $this->country = new Country($location->getcountryName());
+        $countryName = $location->getcountryName();
+        $this->country = ($this->existCountry($countryName))
+            ? new Country($countryName)
+            : new Country(Country::getDefaultCountryName());
         $this->setDate = $this->getDateTime();
         $this->insertVisitor();
     }

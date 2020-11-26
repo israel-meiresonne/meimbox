@@ -29,6 +29,12 @@ class Navigation extends ModelFunctionality
     private $pages;
 
     /**
+     * Holds the current devices
+     * @var Device
+     */
+    private static $currentDevice;
+
+    /**
      * Holds devices used by the Visitor
      * + Note: Device are ordered from new to hold
      * @var Device[]
@@ -81,9 +87,14 @@ class Navigation extends ModelFunctionality
     {
         $url = Page::extractUrl();
         self::$currentPage = new Page($url);
-        // $response = new Response();
-        // $userID = $this->getUserID();
-        // self::$currentPage->insertPage($response, $userID);
+    }
+
+    /**
+     * To set current Device
+     */
+    private function setCurrentDevice()
+    {
+        self::$currentDevice = new Device();
     }
 
     /**
@@ -111,6 +122,16 @@ class Navigation extends ModelFunctionality
     {
         (!isset(self::$currentPage)) ? $this->setCurrentPage() : null;
         return self::$currentPage;
+    }
+
+    /**
+     * To get current Device
+     * @return Device current Device
+     */
+    private function getCurrentDevice()
+    {
+        (!isset(self::$currentDevice)) ? $this->setCurrentDevice() : null;
+        return self::$currentDevice;
     }
 
     /**
@@ -192,5 +213,19 @@ class Navigation extends ModelFunctionality
             $newLocationID = $currentLocation->generateLocationID($userID);
             $session->set(Location::KEY_LOCATED, $newLocationID);
         }
+    }
+
+    /**
+     * To detect Visitor's Device
+     */
+    public function detectDevice()
+    {
+        $currentDevice = $this->getCurrentDevice();
+        $response = new Response();
+        $userID = $this->getUserID();
+        $navDate = $this->getCurrentPage()->getSetDate();
+        $currentDevice->insertDevice($response, $userID, $navDate);
+        // var_dump("currentDevice:", $currentDevice);
+        // var_dump("response:", $response->getAttributs());
     }
 }

@@ -20680,7 +20680,7 @@
 									},
 									"name": "userAgent",
 									"type": "VARCHAR",
-									"length": "100"
+									"length": "250"
 								},
 								{
 									"_type": "ERDColumn",
