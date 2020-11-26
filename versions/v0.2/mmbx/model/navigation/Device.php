@@ -104,6 +104,12 @@ class Device extends ModelFunctionality
      */
     private $deviceModel;
 
+    // /**
+    //  * Holds acces key to Device's detection status
+    //  * @var string
+    //  */
+    // public const KEY_DETECTED = "dvc_detected";
+
     /**
      * Constructor
      */

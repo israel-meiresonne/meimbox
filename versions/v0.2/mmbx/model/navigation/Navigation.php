@@ -67,6 +67,12 @@ class Navigation extends ModelFunctionality
     private $maxTime;
 
     /**
+     * Holds admin notification
+     * @var Response
+     */
+    private $response;
+
+    /**
      * Constructor
      * @param string    $userID     Visitor's id
      * @param int       $minTime    min time in second from today to get history in database
@@ -78,6 +84,7 @@ class Navigation extends ModelFunctionality
             throw new Exception("The Visitor's id must be setted");
         }
         $this->userID = $userID;
+        $this->response = new Response();
     }
 
     /**
@@ -145,6 +152,16 @@ class Navigation extends ModelFunctionality
     }
 
     /**
+     * To get Navigation's Response
+     * @return Response Navigation's Response
+     */
+    public function getResponse()
+    // private function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
      * To handle submited request
      * @param Session $session Visitor's Sesssion
      */
@@ -152,7 +169,8 @@ class Navigation extends ModelFunctionality
     {
         $userID = $this->getUserID();
         $currentPage = $this->getCurrentPage();
-        $response = new Response();
+        // $response = new Response();
+        $response = $this->getResponse();
 
         $pageType = $currentPage->getPageType($session);
         switch ($pageType) {
@@ -204,7 +222,8 @@ class Navigation extends ModelFunctionality
             $currentLocation = $this->getCurrentLocation();
 
             $currentPage = $this->getCurrentPage();
-            $response = new Response();
+            // $response = new Response();
+            $response = $this->getResponse();
             $userID = $this->getUserID();
             $navDate = $currentPage->getSetDate();
             $currentLocation->insertLocation($response, $userID, $navDate);
@@ -217,11 +236,14 @@ class Navigation extends ModelFunctionality
 
     /**
      * To detect Visitor's Device
+     * @param Session $session Visitor's Sesssion
      */
+    // public function detectDevice(Session $session)
     public function detectDevice()
     {
         $currentDevice = $this->getCurrentDevice();
-        $response = new Response();
+        // $response = new Response();
+        $response = $this->getResponse();
         $userID = $this->getUserID();
         $navDate = $this->getCurrentPage()->getSetDate();
         $currentDevice->insertDevice($response, $userID, $navDate);

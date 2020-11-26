@@ -111,9 +111,9 @@ class Visitor extends ModelFunctionality
     // public const PRIV_ADM = Cookie::COOKIE_ADM;
 
     /**
-     * @parram string $childCaller class of the caller (usualy User.php)
+     * Constructor
+     * @param string $VIS_VAL Visitor's visitor cookie
      */
-    // public function __construct($childCaller = null)
     public function __construct($VIS_VAL)
     {
         $this->setConstants();
@@ -125,7 +125,13 @@ class Visitor extends ModelFunctionality
                 } else {
                     $this->setKnownVisitor($VIS_VAL);
                 }
+                $this->trackNavigation($VIS_VAL);
                 break;
+                // $navigation = $this->getNavigation();
+                // $session = $this->getSession();
+                // $navigation->handleRequest($session);
+                // $navigation->locate($session);
+                // (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
             case Administrator::class:
             case Client::class:
                 break;
@@ -133,12 +139,20 @@ class Visitor extends ModelFunctionality
                 throw new Exception("Unkwon person '$person'");
                 break;
         }
+        $this->manageCookie(Cookie::COOKIE_VIS, false);
+    }
+
+    /**
+     * To manage Visitor's navigation
+     * @param string $VIS_VAL Visitor's visitor cookie
+     */
+    protected function trackNavigation($VIS_VAL = null)
+    {
         $navigation = $this->getNavigation();
         $session = $this->getSession();
         $navigation->handleRequest($session);
         $navigation->locate($session);
         (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
-        $this->manageCookie(Cookie::COOKIE_VIS, false);
     }
 
     /**
@@ -184,9 +198,6 @@ class Visitor extends ModelFunctionality
         }
         $tabLine = $tab[0];
         $this->userID = $tabLine["userID"];
-        // $this->location = new Location();
-        // $navigation = $this->getNavigation();
-        // $navigation->getCurrentLocation();
         $this->lang = new Language($tabLine["lang_"]);
         $this->currency = new Currency($tabLine["iso_currency"]);
         $this->country = new Country($tabLine["country_"]);
@@ -201,16 +212,6 @@ class Visitor extends ModelFunctionality
     {
         $userID = $this->getUserID();
         $this->navigation = new Navigation($userID);
-    }
-
-    /**
-     * To get Visitor's navigation datas
-     * @return Navigation Visitor's navigation datas
-     */
-    private function getNavigation()
-    {
-        (!isset($this->navigation)) ? $this->setNavigation() : null;
-        return $this->navigation;
     }
 
     /**
@@ -482,6 +483,16 @@ class Visitor extends ModelFunctionality
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * To get Visitor's navigation datas
+     * @return Navigation Visitor's navigation datas
+     */
+    protected function getNavigation()
+    {
+        (!isset($this->navigation)) ? $this->setNavigation() : null;
+        return $this->navigation;
     }
 
     /**
@@ -860,55 +871,56 @@ class Visitor extends ModelFunctionality
                 $response->addErrorStation("ER26", self::INPUT_PASSWORD);
             } else {
                 // $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
-                $client = $this->getClient($response, $email);
-                $this->visitorToClient($response, $client);
+                // $client = $this->getClient($response, $email);
+                $client = Client::visitorToClient($response, $this, $email);
+                // $this->visitorToClient($response, $client);
                 if ($response->containError()) {
                 }
             }
         }
     }
 
-    /**
-     * To Clientt with the email given
-     * @param string $email email a Client account
-     * @return  Client a Client account
-     */
-    private function getClient(Response $response, $email)
-    {
-        $sql = "SELECT * 
-        FROM `Users` u
-        JOIN `Users-Cookies` uc ON u.`userID` = uc.`userId`
-        WHERE u.`mail` = '$email' AND uc.`cookieId` = '" . Cookie::COOKIE_CLT . "'";
-        $tab = $this->select($sql);
-        if (count($tab) != 1) {
-            throw new Exception("There any Client token for this email, email: $email");
-        }
-        $tabLine = $tab[0];
-        $CLT_VAL = $tabLine["cookieValue"];
-        $client = new Client($CLT_VAL);
-        return $client;
-    }
+    // /**
+    //  * To Clientt with the email given
+    //  * @param string $email email a Client account
+    //  * @return  Client a Client account
+    //  */
+    // private function getClient(Response $response, $email)
+    // {
+    //     $sql = "SELECT * 
+    //     FROM `Users` u
+    //     JOIN `Users-Cookies` uc ON u.`userID` = uc.`userId`
+    //     WHERE u.`mail` = '$email' AND uc.`cookieId` = '" . Cookie::COOKIE_CLT . "'";
+    //     $tab = $this->select($sql);
+    //     if (count($tab) != 1) {
+    //         throw new Exception("There any client cookie for this email '$email'");
+    //     }
+    //     $tabLine = $tab[0];
+    //     $CLT_VAL = $tabLine["cookieValue"];
+    //     $client = new Client($CLT_VAL);
+    //     return $client;
+    // }
 
-    /**
-     * To addition Visitor's datas with datas from his Client account
-     * @param Response $response to push in result or accured error
-     * @param Client $client Visitor's Client account
-     */
-    private function visitorToClient(Response $response, Client $client)
-    {
-        $userID_VIS = $this->getUserID();
-        $userID_CLT = $client->getUserID();
-        $this->updateVisitorToClient($response, $userID_VIS, $userID_CLT);
-        if (!$response->containError()) {
-            $this->deleteVisitorToClient($response, $userID_VIS);
-            if (!$response->containError()) {
-                (count($this->getMeasures()) > 0) ? $this->mergeMeasures($response, $client) : null;
-                // if(!$response->containError()){ put this method in basket
-                //     (count($this->getBasket()->getBasketProducts()) > 0) ? $this->getBasket()->mergeBasket($response, $client) : null;
-                // }
-            }
-        }
-    }
+    // /**
+    //  * To addition Visitor's datas with datas from his Client account
+    //  * @param Response $response to push in result or accured error
+    //  * @param Client $client Visitor's Client account
+    //  */
+    // private function visitorToClient(Response $response, Client $client)
+    // {
+    //     $userID_VIS = $this->getUserID();
+    //     $userID_CLT = $client->getUserID();
+    //     $this->updateVisitorToClient($response, $userID_VIS, $userID_CLT);
+    //     if (!$response->containError()) {
+    //         $this->deleteVisitorToClient($response, $userID_VIS);
+    //         if (!$response->containError()) {
+    //             (count($this->getMeasures()) > 0) ? $this->mergeMeasures($response, $client) : null;
+    //             // if(!$response->containError()){ put this method in basket
+    //             //     (count($this->getBasket()->getBasketProducts()) > 0) ? $this->getBasket()->mergeBasket($response, $client) : null;
+    //             // }
+    //         }
+    //     }
+    // }
 
     /** 
      * Crypt the password passed in parm
@@ -1690,18 +1702,21 @@ class Visitor extends ModelFunctionality
      * @param string $userID_VIS Visitor's id
      * @param string $userID_CLT Client's id
      */
-    private function updateVisitorToClient(Response $response, $userID_VIS, $userID_CLT)
+    protected function updateVisitorToClient(Response $response, $userID_VIS, $userID_CLT)
     {
         $sql =
-            "UPDATE `Devices` SET `userId`= ? WHERE `userId`= ?;
-            UPDATE `Pages` SET `userId`= ? WHERE `userId`= ?;
+            // "UPDATE `Devices` SET `userId`= ? WHERE `userId`= ?;
+            // UPDATE `Pages` SET `userId`= ? WHERE `userId`= ?;
+            // UPDATE `Baskets-Box` SET `userId`= ? WHERE `userId`= ?;
+            // UPDATE `Basket-DiscountCodes` SET `userId`= ? WHERE `userId`= ?;";
+            "UPDATE `Navigations` SET `userId`= ? WHERE `userId`= ?;
             UPDATE `Baskets-Box` SET `userId`= ? WHERE `userId`= ?;
             UPDATE `Basket-DiscountCodes` SET `userId`= ? WHERE `userId`= ?;";
         // UPDATE `Users-Cookies` SET `userId`= ? WHERE `userId`= ?;
         $values = [];
         // Devices
-        array_push($values, $userID_CLT);
-        array_push($values, $userID_VIS);
+        // array_push($values, $userID_CLT);
+        // array_push($values, $userID_VIS);
         // Pages
         array_push($values, $userID_CLT);
         array_push($values, $userID_VIS);
@@ -1723,15 +1738,23 @@ class Visitor extends ModelFunctionality
      * @param Response $response to push in result or accured error
      * @param string $userID_VIS Visitor's id
      */
-    private function deleteVisitorToClient(Response $response, $userID_VIS)
+    protected function deleteVisitorToClient(Response $response, $userID_VIS)
     {
         $sql =
-            "DELETE FROM `Devices` WHERE `userId`= '$userID_VIS';
-            DELETE FROM  `Pages` WHERE `userId`= '$userID_VIS';
-            DELETE FROM `Box-Products` WHERE `boxId` IN (SELECT `boxId` FROM `Baskets-Box` WHERE `userId` = '$userID_VIS');
+            // "DELETE FROM `Devices` WHERE `userId`= '$userID_VIS';
+            // DELETE FROM  `Pages` WHERE `userId`= '$userID_VIS';
+            // DELETE FROM `Box-Products` WHERE `boxId` IN (SELECT `boxId` FROM `Baskets-Box` WHERE `userId` = '$userID_VIS');
+            // DELETE FROM `Baskets-Box` WHERE `userId`= '$userID_VIS';
+            // DELETE FROM `Basket-DiscountCodes` WHERE `userId`= '$userID_VIS';
+            // DELETE FROM `Users-Cookies` WHERE `userId`= '$userID_VIS' AND `cookieId` = '" . Cookie::COOKIE_VIS . "';
+            // DELETE FROM `Users` WHERE `userID` = '$userID_VIS';";
+            "DELETE FROM `Box-Products` WHERE `boxId` IN (SELECT `boxId` FROM `Baskets-Box` WHERE `userId` = '$userID_VIS');
             DELETE FROM `Baskets-Box` WHERE `userId`= '$userID_VIS';
             DELETE FROM `Basket-DiscountCodes` WHERE `userId`= '$userID_VIS';
-            DELETE FROM `Users-Cookies` WHERE `userId`= '$userID_VIS' AND `cookieId` = '" . Cookie::COOKIE_VIS . "';
+            DELETE FROM `Users-Cookies` 
+                WHERE `userId`= '$userID_VIS' 
+                AND `cookieId` = '" . Cookie::COOKIE_VIS . "' 
+                AND `userId` IN (SELECT `userID` FROM `Users` WHERE `mail` IS NULL);
             DELETE FROM `Users` WHERE `userID` = '$userID_VIS';";
         $this->delete($response, $sql, []);
         // DELETE FROM `Boxes` WHERE `boxID` NOT IN (SELECT bb.`boxId` FROM `Baskets-Box` bb JOIN `Boxes` b ON bb.`boxId` = b.`boxID`);
@@ -1744,7 +1767,7 @@ class Visitor extends ModelFunctionality
      * @param Response $response to push in result or accured error
      * @param Client $client Visitor's Client account
      */
-    private function mergeMeasures(Response $response, Client $client)
+    protected function mergeMeasures(Response $response, Client $client)
     {
         $measures_VIS = $this->getMeasures();
         $measures_CLT = $client->getMeasures();

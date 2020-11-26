@@ -7,11 +7,18 @@ require_once 'framework/Configuration.php';
 class Session
 {
     /**
+     * Holds if session has been started
+     */
+    private static $isSet;
+    /**
      * Constructor
      */
     public function __construct()
     {
-        session_start();
+        if(!isset(self::$isSet)){
+            session_start();
+            self::$isSet = true;
+        }
     }
 
     /**
