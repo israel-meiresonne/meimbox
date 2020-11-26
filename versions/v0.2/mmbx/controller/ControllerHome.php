@@ -215,10 +215,11 @@ class ControllerHome extends ControllerSecure
         $userID = $person->getUserID();
         $session = $person->getSession();
         $nav = new Navigation($userID);
-        // $nav->handleRequest($session);
         var_dump($_SESSION);
         var_dump($_GET);
-        $nav->locate($session);
+        // $nav->handleRequest($session);
+        // $nav->locate($session);
+        // $nav->detectDevice();
         // $session->destroy();
         var_dump($_SESSION);
         var_dump($_GET);

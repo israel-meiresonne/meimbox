@@ -58,7 +58,7 @@ class Country extends ModelFunctionality
 
     public function __construct($countryName)
     {
-        $this->setConstants();
+        self::setConstants();
         if (!$this->existCountry($countryName)) {
             throw new Exception("This country('$countryName') is not supported");
         } /*else {
@@ -70,11 +70,11 @@ class Country extends ModelFunctionality
     /**
      * Initialize Language's constants
      */
-    private function setConstants()
+    private static function setConstants()
     {
         if (!isset(self::$DEFAULT_COUNTRY_NAME)) {
             self::$DEFAULT_COUNTRY_NAME  = "DEFAULT_COUNTRY_NAME";
-            self::$DEFAULT_COUNTRY_NAME = $this->getConstantLine(self::$DEFAULT_COUNTRY_NAME)["stringValue"];
+            self::$DEFAULT_COUNTRY_NAME = parent::getConstantLine(self::$DEFAULT_COUNTRY_NAME)["stringValue"];
         }
     }
 
@@ -107,6 +107,16 @@ class Country extends ModelFunctionality
     public function getCountryName()
     {
         return $this->countryName;
+    }
+
+    /**
+     * To get default country name
+     * @return string default country name
+     */
+    public static function getDefaultCountryName()
+    {
+        (!isset(self::$DEFAULT_COUNTRY_NAME)) ? self::setConstants() : null;
+        return self::$DEFAULT_COUNTRY_NAME;
     }
 
     /**
@@ -151,10 +161,6 @@ class Country extends ModelFunctionality
         $coutries = parent::getCountriesDb();
         $countriesMap = new Map();
         foreach ($coutries as $countryName => $datas) {
-            // $countriesMap->put($datas["isoCountry"], $countryName, Map::isoCountry);
-            // $countriesMap->put($datas["iso_currency"], $countryName, Map::isoCurrency);
-            // $countriesMap->put($datas["isUE"], $countryName, Map::isUE);
-            // $countriesMap->put($datas["vat"], $countryName, Map::vat);
             $isoCountry = $datas["isoCountry"];
             $countriesMap->put($countryName,            $isoCountry, Map::countryName);
             $countriesMap->put($datas["iso_currency"],  $isoCountry, Map::isoCurrency);
