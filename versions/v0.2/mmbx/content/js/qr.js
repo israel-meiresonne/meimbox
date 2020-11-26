@@ -101,21 +101,19 @@
     /*———————————————————————————— SIGN DOWN ————————————————————————————————*/
     signUp = (formx, sbtnx) => {
         var frm = $(formx).find("input");
+        var l = ".sign_form-loading";
         var d = {
             "frm": frm,
             "frmCbk": () => { },
             "a": A_SIGN_UP,
             "r": signUpRSP,
-            "l": ".sign_form-loading",
-            "x": { "sbtnx": sbtnx, "formx": formx },
+            "l": l,
+            "x": { "sbtnx": sbtnx, "formx": formx, "l": l },
             "sc": () => {
                 displayFlexOn(d.l, TS / 10);
                 disable(sbtnx);
             },
-            "rc": () => {
-                displayFlexOff(d.l, TS);
-                enable(sbtnx);
-            }
+            "rc": () => { }
         };
         frmSND(d);
     }
@@ -123,27 +121,27 @@
         if (r.isSuccess) {
             window.location.assign(window.location.href);
         } else {
+            displayFlexOff(x.l, TS);
+            enable(x.sbtnx);
             handleErr(r, x.formx);
         }
     }
 
     signIn = (formx, sbtnx) => {
         var frm = $(formx).find("input");
+        var l = ".sign_form-loading";
         var d = {
             "frm": frm,
             "frmCbk": () => { },
             "a": A_SIGN_IN,
             "r": signInRSP,
-            "l": ".sign_form-loading",
-            "x": { "sbtnx": sbtnx, "formx": formx },
+            "l": l,
+            "x": { "sbtnx": sbtnx, "formx": formx, "l": l },
             "sc": () => {
                 displayFlexOn(d.l, TS / 10);
                 disable(sbtnx);
             },
-            "rc": () => {
-                displayFlexOff(d.l, TS);
-                enable(sbtnx);
-            }
+            "rc": () => {}
         };
         frmSND(d);
     }
@@ -152,21 +150,24 @@
     }
     logOut = () => {
         if (popAsk(ALERT_LOG_OUT)) {
+            var l = "#full_screen_loading";
             var d = {
                 "a": QR_LOG_OUT,
                 "d": null,
                 "r": logOutRSP,
-                "l": "#full_screen_loading",
+                "x": { 'l': l },
+                "l": l,
                 "sc": () => { displayFlexOn(d.l); $(FCID).fadeIn(TS) },
-                "rc": () => { displayFlexOff(d.l); $(FCID).fadeOut(TS) }
+                "rc": () => { }
             };
             SND(d);
         }
     }
-    const logOutRSP = (r) => {
+    const logOutRSP = (r, x) => {
         if (r.isSuccess) {
             window.location.assign(window.location.href);
         } else {
+            displayFlexOff(x.l); $(FCID).fadeOut(TS);
             handleErr(r);
         }
     }

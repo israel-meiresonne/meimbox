@@ -56,7 +56,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
             sc();
             $.ajax({
                 type: 'POST',
-                url: a,
+                url: a + QR_XHR,
                 data: d,
                 dataType: 'json',
                 success: function(j) {
@@ -187,6 +187,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const BNR = 1000000;
         const XHR = "<?= Page::PATH_XHR ?>";
         const LANG = "lang=" + $("html").attr("lang");
+        const QR_XHR = "?<?= Page::KEY_XHR ?>=true";
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
         const ER_TYPE_COMMENT = "<?= self::ER_TYPE_COMMENT ?>";
