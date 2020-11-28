@@ -198,7 +198,7 @@ class Location extends ModelFunctionality
      * @param string $pageID    id of the current page when this Location is created
      * @param string $ip        ip to localise
      */
-    public function __construct($pageID, $ip = null)
+    public function __construct(string $pageID, $ip = null)
     {
         $this->locationID = $pageID;
         $endpoint = $this->getEndpoint($ip);

@@ -16,19 +16,25 @@ class Action extends ModelFunctionality
      * Holds support where the Action's applied
      * @var string
      */
-    private $on;
+    private $element;
 
     /**
      * Holds identifient of the support where the Action's applied
      * @var string
      */
-    private $onID;
+    private $name;
 
     /**
      * Holds the result of the action
      * @var string
      */
-    private $response;
+    private $result;
+
+    /**
+     * Holds datas related to the action
+     * @var Map
+     */
+    private $datas;
 
     /**
      * @var string
@@ -54,6 +60,7 @@ class Action extends ModelFunctionality
     public const ON_BUTTON = "button";
     public const ON_PAGE = "page";
     public const ON_LINK = "link";
+    public const ON_TEXT = "text";
 
     /**
      * Constructor
@@ -71,16 +78,17 @@ class Action extends ModelFunctionality
 
     /**
      * @param string $action
-     * @param string $on
-     * @param string $onID
-     * @param string $response
+     * @param string $element
+     * @param string $name
+     * @param string $result
      */
-    private function __construct4($action, $on, $onID, $response)
+    private function __construct4($action, $element, $name, $result, Map $datas = null)
     {
         $this->action = $action;
-        $this->on = $on;
-        $this->onID = $onID;
-        $this->response = $response;
+        $this->element = $element;
+        $this->name = $name;
+        $this->result = $result;
+        $this->datas = $datas;
     }
 
     /**

@@ -10,6 +10,12 @@ use DeviceDetector\Parser\Device\AbstractDeviceParser;
 class Device extends ModelFunctionality
 {
     /**
+     * Holds Device's id
+     * @var string
+     */
+    private $deviceID;
+
+    /**
      * @var string
      */
     private $setDate;
@@ -112,9 +118,11 @@ class Device extends ModelFunctionality
 
     /**
      * Constructor
+     * @param string $pageID id of the current page when this Location is created
      */
-    public function __construct()
+    public function __construct($pageID)
     {
+        $this->deviceID = $pageID;
         AbstractDeviceParser::setVersionTruncation(AbstractDeviceParser::VERSION_TRUNCATION_NONE);
         $this->userAgent = $_SERVER['HTTP_USER_AGENT']; // change this to the useragent you want to parse
         $dd = new DeviceDetector($this->userAgent);
@@ -160,6 +168,15 @@ class Device extends ModelFunctionality
                 $this->{$attribut} = (isset($this->{$attribut}) && ($this->{$attribut} === '')) ? null : $value;
             }
         }
+    }
+
+    /**
+     * To get Device's id
+     * @return string Device's id
+     */
+    private function getDeviceID()
+    {
+        return $this->deviceID;
     }
 
     /**
@@ -314,16 +331,16 @@ class Device extends ModelFunctionality
      * @param string    $userID     Visitor's id
      * @param string    $navDate    creation date of the current Page's Visited
      */
-    public function insertDevice(Response $response, $userID, $navDate)
+    public function insertDevice(Response $response)
     {
-        $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Devices`(`userId`, `nav_date`, `deviceDate`, `deviceDatas`, `userAgent`, `isBot`, `botInfo`, `osName`, `osVersion`, `osPlateform`, `driverType`, `driverName`, `driverVersion`, `driverEngine`, `driverEngineVersion`, `deviceType`, `deviceBrand`, `deviceModel`)
+        $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Devices`(`navId`, `deviceDate`, `deviceDatas`, `userAgent`, `isBot`, `botInfo`, `osName`, `osVersion`, `osPlateform`, `driverType`, `driverName`, `driverVersion`, `driverEngine`, `driverEngineVersion`, `deviceType`, `deviceBrand`, `deviceModel`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
+        $deviceID = $this->getDeviceID();
         array_push(
             $values,
-            $userID,
-            $navDate,
+            $deviceID,
             $this->getSetDate(),
             json_encode($this->getDeviceDatas()->getMap()),
             $this->getUserAgent(),

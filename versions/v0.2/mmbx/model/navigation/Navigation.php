@@ -101,7 +101,8 @@ class Navigation extends ModelFunctionality
      */
     private function setCurrentDevice()
     {
-        self::$currentDevice = new Device();
+        $pageID = $this->getCurrentPage()->getPageID();
+        self::$currentDevice = new Device($pageID);
     }
 
     /**
@@ -109,7 +110,7 @@ class Navigation extends ModelFunctionality
      */
     private function setCurrentLocation()
     {
-        $pageID = $this->getCurrentPage();
+        $pageID = $this->getCurrentPage()->getPageID();
         self::$currentLocation = new Location($pageID);
     }
 
@@ -157,7 +158,6 @@ class Navigation extends ModelFunctionality
      * @return Response Navigation's Response
      */
     public function getResponse()
-    // private function getResponse()
     {
         return $this->response;
     }
@@ -173,6 +173,7 @@ class Navigation extends ModelFunctionality
         $response = $this->getResponse();
 
         $pageType = $currentPage->getPageType($session);
+        // var_dump($pageType);
         switch ($pageType) {
             case Page::TYPE_XHR:
                 /** Update Time on last Page */
@@ -220,16 +221,8 @@ class Navigation extends ModelFunctionality
         $locationID = $session->get(Location::KEY_LOCATED);
         if (!isset($locationID)) {
             $currentLocation = $this->getCurrentLocation();
-
-            // $currentPage = $this->getCurrentPage();
-            // $response = new Response();
             $response = $this->getResponse();
-            // $userID = $this->getUserID();
-            // $navDate = $currentPage->getSetDate();
-            // $pageID = $currentPage->getPageID();
             $currentLocation->insertLocation($response);
-            // var_dump($response);
-
             $newLocationID = $currentLocation->getLocationID();
             $session->set(Location::KEY_LOCATED, $newLocationID);
         }
@@ -243,16 +236,11 @@ class Navigation extends ModelFunctionality
     public function detectDevice()
     {
         $currentDevice = $this->getCurrentDevice();
-        // $response = new Response();
         $response = $this->getResponse();
-        $userID = $this->getUserID();
-        $navDate = $this->getCurrentPage()->getSetDate();
-        $currentDevice->insertDevice($response, $userID, $navDate);
-        // var_dump("currentDevice:", $currentDevice);
-        // var_dump("response:", $response->getAttributs());
+        $currentDevice->insertDevice($response);
     }
 
-        /**
+    /**
      * To save Response returned in a file
      * @param Response $response the response to save
      */
