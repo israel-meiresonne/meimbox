@@ -7,8 +7,14 @@ require_once 'model/ModelFunctionality.php';
 class Location extends ModelFunctionality
 {
     /**
+     * Holds id of the Page that created this Location
+     * @var string
+     */
+    private $locationID;
+
+    /**
      * Holds ip used to get Location's datas
-     * @string
+     * @var string
      */
     private $ip;
 
@@ -189,10 +195,12 @@ class Location extends ModelFunctionality
 
     /**
      * Constructor
-     * @param string $ip ip to localise
+     * @param string $pageID    id of the current page when this Location is created
+     * @param string $ip        ip to localise
      */
-    public function __construct($ip = null)
+    public function __construct($pageID, $ip = null)
     {
+        $this->locationID = $pageID;
         $endpoint = $this->getEndpoint($ip);
         $this->ip = (isset($ip)) ? $ip : $endpoint->query;
         $this->status = strtolower($endpoint->status);
@@ -239,8 +247,8 @@ class Location extends ModelFunctionality
             $config = Configuration::getEnvironement();
             switch ($config) {
                 case Configuration::ENV_DEV:
-                    // $ip = "203.194.21.241"; // Australie Alexandria
-                    $ip = "138.197.157.60"; // Canada Toronto
+                    $ip = "203.194.21.241"; // Australie Alexandria
+                    // $ip = "138.197.157.60"; // Canada Toronto
                     // $ip = "77.73.241.154"; // Suisse Basel
                     // $ip = "126.29.117.191"; // Tokyo
                     // $ip = "197.157.210.199"; // Kinshasa
@@ -255,6 +263,15 @@ class Location extends ModelFunctionality
         // $ip = null;
         $endpoint = json_decode(file_get_contents('http://ip-api.com/json/' . $ip . '?lang=en&fields=66846719'));
         return $endpoint;
+    }
+
+    /**
+     * To get Location's id
+     * @return string Location's id
+     */
+    public function getLocationID()
+    {
+        return $this->locationID;
     }
 
     /**
@@ -490,19 +507,6 @@ class Location extends ModelFunctionality
         return $this->setDate;
     }
 
-    /**
-     * To generate Location's id
-     * @param string    $userID     Visitor's id
-     * @return string Location's id
-     */
-    public function generateLocationID($userID)
-    {
-        if (!isset($userID)) {
-            throw new Exception("Visitor's id can't be unsetted");
-        }
-        return $userID . self::SEPARATOR . $this->getSetDate();
-    }
-
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
 
     /**
@@ -511,19 +515,19 @@ class Location extends ModelFunctionality
      * @param string    $userID     Visitor's id
      * @param string    $navDate    creation date of the current Page's Visited
      */
-    public function insertLocation(Response $response, $userID, $navDate)
+    public function insertLocation(Response $response)
     {
-        $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Locations`(`userId`, `nav_date`, `locationDate`, `ip`, `status`, `message`, `continent`, `continentCode`, `country`, `countryCode`, `region`, `regionName`, `city`, `district`, `zip`, `lat`, `lon`, `timezone`, `offset`, `currency`, `isp`, `ispOrg`, `ispAs`, `asname`, `reverse`, `mobile`, `proxy`, `hosting`)
+        $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Locations`(`navId`, `locationDate`, `ip`, `status`, `message`, `continent`, `continentCode`, `country`, `countryCode`, `region`, `regionName`, `city`, `district`, `zip`, `lat`, `lon`, `timezone`, `offset`, `currency`, `isp`, `ispOrg`, `ispAs`, `asname`, `reverse`, `mobile`, `proxy`, `hosting`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
         $isMobile = (!is_null($this->isMobile())) ? (int)$this->isMobile() : null;
         $isProxy = (!is_null($this->isProxy())) ? (int)$this->isProxy() : null;
         $isHosting = (!is_null($this->isHosting())) ? (int)$this->isHosting() : null;
+        $locationID = $this->getLocationID();
         array_push(
             $values,
-            $userID,
-            $navDate,
+            $locationID,
             $this->getSetDate(),
             $this->getIp(),
             $this->getStatus(),

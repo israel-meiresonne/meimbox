@@ -109,7 +109,8 @@ class Navigation extends ModelFunctionality
      */
     private function setCurrentLocation()
     {
-        self::$currentLocation = new Location();
+        $pageID = $this->getCurrentPage();
+        self::$currentLocation = new Location($pageID);
     }
 
     /**
@@ -220,15 +221,16 @@ class Navigation extends ModelFunctionality
         if (!isset($locationID)) {
             $currentLocation = $this->getCurrentLocation();
 
-            $currentPage = $this->getCurrentPage();
+            // $currentPage = $this->getCurrentPage();
             // $response = new Response();
             $response = $this->getResponse();
-            $userID = $this->getUserID();
-            $navDate = $currentPage->getSetDate();
-            $currentLocation->insertLocation($response, $userID, $navDate);
+            // $userID = $this->getUserID();
+            // $navDate = $currentPage->getSetDate();
+            // $pageID = $currentPage->getPageID();
+            $currentLocation->insertLocation($response);
             // var_dump($response);
 
-            $newLocationID = $currentLocation->generateLocationID($userID);
+            $newLocationID = $currentLocation->getLocationID();
             $session->set(Location::KEY_LOCATED, $newLocationID);
         }
     }
