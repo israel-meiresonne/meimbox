@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  jeu. 26 nov. 2020 à 01:26
+-- Généré le :  sam. 28 nov. 2020 à 11:41
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -96,6 +96,7 @@ CREATE TABLE `Baskets-Box` (
 INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
 ('002ju101v150c24oad32102a4', 3330090),
 ('221251413024ql01301424n3x', 3330090),
+('421cgh2o222160508a51v0nk9', 3330090),
 ('h0r21wf0k6v4110442162112h', 3330090),
 ('0860g1009tn0i31s2s6b24112', 651853948),
 ('120p222c5150ym3wt2308y193', 651853948),
@@ -168,7 +169,7 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('221251413024ql01301424n3x', 1, 'null-null-decrease_s-fit', NULL, NULL, 'decrease_s', 'fit', 1, '2020-11-22 19:21:42'),
+('002ju101v150c24oad32102a4', 1, 's-null-null-null', 's', NULL, NULL, NULL, 1, '2020-11-27 01:23:22'),
 ('221251413024ql01301424n3x', 2, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-11-22 13:34:37'),
 ('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20'),
 ('h0r21wf0k6v4110442162112h', 1, 'm-null-null-null', 'm', NULL, NULL, NULL, 7, '2020-11-21 17:01:11'),
@@ -395,6 +396,7 @@ INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('336210a021090uq4210117p4n', 'gold', '2020-11-21 03:01:40'),
 ('35020w41820k0sj10025v44h1', 'gold', '2020-11-20 05:34:48'),
 ('402i3x316hr4021df1p014u12', 'regular', '2020-11-16 10:34:42'),
+('421cgh2o222160508a51v0nk9', 'regular', '2020-11-26 20:59:54'),
 ('43012119426c1b0jy02xt21j1', 'silver', '2020-11-21 10:34:19'),
 ('607029oh2y1x0j1zj41101x05', 'silver', '2020-10-11 15:40:07'),
 ('611026076001h2su60044z19i', 'regular', '2020-10-06 17:19:04'),
@@ -1443,11 +1445,10 @@ CREATE TABLE `Details` (
 --
 
 CREATE TABLE `Devices` (
-  `userId` int(11) NOT NULL,
-  `nav_date` datetime NOT NULL,
+  `navId` varchar(30) NOT NULL,
   `deviceDate` datetime NOT NULL,
   `deviceDatas` json NOT NULL,
-  `userAgent` varchar(100) NOT NULL,
+  `userAgent` varchar(250) NOT NULL,
   `isBot` tinyint(1) NOT NULL,
   `botInfo` json DEFAULT NULL,
   `osName` varchar(50) DEFAULT NULL,
@@ -1462,6 +1463,13 @@ CREATE TABLE `Devices` (
   `deviceBrand` varchar(50) DEFAULT NULL,
   `deviceModel` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Devices`
+--
+
+INSERT INTO `Devices` (`navId`, `deviceDate`, `deviceDatas`, `userAgent`, `isBot`, `botInfo`, `osName`, `osVersion`, `osPlateform`, `driverType`, `driverName`, `driverVersion`, `driverEngine`, `driverEngineVersion`, `deviceType`, `deviceBrand`, `deviceModel`) VALUES
+('nav_yrja0311111ai0n1v22812633', '2020-11-28 11:33:38', '{\"os\": {\"name\": \"Mac\", \"version\": \"10.15.7\", \"platform\": \"\", \"short_name\": \"MAC\"}, \"brand\": \"Apple\", \"model\": \"\", \"device\": \"desktop\", \"clientInfo\": {\"name\": \"Chrome\", \"type\": \"browser\", \"engine\": \"Blink\", \"version\": \"87.0.4280.67\", \"short_name\": \"CH\", \"engine_version\": \"\"}}', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36', 0, 'null', 'mac', '10.15.7', NULL, 'browser', 'chrome', '87.0.4280.67', 'blink', NULL, 'desktop', 'apple', NULL);
 
 -- --------------------------------------------------------
 
@@ -1647,8 +1655,7 @@ INSERT INTO `Languages` (`langIsoCode`, `langName`, `langLocalName`) VALUES
 --
 
 CREATE TABLE `Locations` (
-  `userId` int(11) NOT NULL,
-  `nav_date` datetime NOT NULL,
+  `navId` varchar(30) NOT NULL,
   `locationDate` datetime NOT NULL,
   `ip` varchar(100) DEFAULT NULL,
   `status` varchar(20) NOT NULL,
@@ -1676,6 +1683,13 @@ CREATE TABLE `Locations` (
   `proxy` tinyint(1) DEFAULT NULL,
   `hosting` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Locations`
+--
+
+INSERT INTO `Locations` (`navId`, `locationDate`, `ip`, `status`, `message`, `continent`, `continentCode`, `country`, `countryCode`, `region`, `regionName`, `city`, `district`, `zip`, `lat`, `lon`, `timezone`, `offset`, `currency`, `isp`, `ispOrg`, `ispAs`, `asname`, `reverse`, `mobile`, `proxy`, `hosting`) VALUES
+('nav_yrja0311111ai0n1v22812633', '2020-11-28 11:33:37', '203.194.21.241', 'success', NULL, 'oceania', 'oc', 'australia', 'au', 'vic', 'victoria', 'forest hill', NULL, '3131', -37.8372, 145.173, 'australia/melbourne', 39600, 'aud', 'tpg internet pty ltd', 'tricon group', 'as7545 tpg telecom limited', 'tpg-internet-ap', '203-194-21-241.tpgi.com.au', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1744,6 +1758,7 @@ INSERT INTO `MeasureUnits` (`unitName`, `measureUnit`, `toSystUnit`) VALUES
 --
 
 CREATE TABLE `Navigations` (
+  `navID` varchar(30) NOT NULL,
   `userId` int(11) NOT NULL,
   `navDate` datetime NOT NULL,
   `url` varchar(1000) NOT NULL,
@@ -1756,9 +1771,15 @@ CREATE TABLE `Navigations` (
 -- Déchargement des données de la table `Navigations`
 --
 
-INSERT INTO `Navigations` (`userId`, `navDate`, `url`, `webroot`, `path`, `timeOn`) VALUES
-(3330090, '2020-11-26 01:01:22', 'https://3a1baf8702c4.eu.ngrok.io/versions/v0.2/mmbx/home/qr/test_Navigation?param1=A&param2=B', '/versions/v0.2/mmbx/', 'home/qr/test_Navigation', 53),
-(3330090, '2020-11-26 01:02:15', 'https://3a1baf8702c4.eu.ngrok.io/versions/v0.2/mmbx/home/qr/test_Navigation?param1=A&param2=B', '/versions/v0.2/mmbx/', 'home/qr/test_Navigation', NULL);
+INSERT INTO `Navigations` (`navID`, `userId`, `navDate`, `url`, `webroot`, `path`, `timeOn`) VALUES
+('nav_123102i48i0313614120w1g2w', 101311321, '2020-11-28 11:34:33', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/home/qr/signUp?xhr=true', '/versions/v0.2/mmbx/', 'home/qr/signUp', NULL),
+('nav_140t2181b05a32117pj2sic1k', 101311321, '2020-11-28 11:37:45', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout/address', '/versions/v0.2/mmbx/', 'checkout/address', 44),
+('nav_70431zc2m1x8mr4rn21t1210y', 101311321, '2020-11-28 11:37:44', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/home/qr/signUp?xhr=true', '/versions/v0.2/mmbx/', 'home/qr/signUp', NULL),
+('nav_f19q28r001221jy43117428zn', 101311321, '2020-11-28 11:37:44', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout/sign', '/versions/v0.2/mmbx/', 'checkout/sign', 1),
+('nav_o0w0ik123312v8c10s1r23181', 101311321, '2020-11-28 11:33:38', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout/sign', '/versions/v0.2/mmbx/', 'checkout/sign', 246),
+('nav_o39u1221e8s01281027002901', 101311321, '2020-11-28 11:38:29', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/dashboard/qr/addAddress?xhr=true', '/versions/v0.2/mmbx/', 'dashboard/qr/addAddress', NULL),
+('nav_s21082301t401a2122875ea10', 101311321, '2020-11-28 11:37:45', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout', '/versions/v0.2/mmbx/', 'checkout', 0),
+('nav_yrja0311111ai0n1v22812633', 101311321, '2020-11-28 11:33:36', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout', '/versions/v0.2/mmbx/', 'checkout', 2);
 
 -- --------------------------------------------------------
 
@@ -1767,13 +1788,14 @@ INSERT INTO `Navigations` (`userId`, `navDate`, `url`, `webroot`, `path`, `timeO
 --
 
 CREATE TABLE `Navigations-Actions` (
-  `userId` int(11) NOT NULL,
-  `nav_date` datetime NOT NULL,
-  `actionDate` datetime NOT NULL,
+  `navId` varchar(30) NOT NULL,
+  `actionID` varchar(30) NOT NULL,
   `action_` varchar(50) NOT NULL,
-  `actionOn` varchar(50) NOT NULL,
-  `onID` varchar(100) NOT NULL,
-  `response` varchar(100) DEFAULT NULL
+  `element` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `result` varchar(100) NOT NULL,
+  `datas` json DEFAULT NULL,
+  `actionDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1783,19 +1805,19 @@ CREATE TABLE `Navigations-Actions` (
 --
 
 CREATE TABLE `NavigationsParameters` (
-  `userId` int(11) NOT NULL,
-  `nav_date` datetime NOT NULL,
+  `navId` varchar(30) NOT NULL,
   `paramKey` varchar(100) NOT NULL,
-  `paramData` varchar(100) NOT NULL
+  `paramValue` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `NavigationsParameters`
 --
 
-INSERT INTO `NavigationsParameters` (`userId`, `nav_date`, `paramKey`, `paramData`) VALUES
-(3330090, '2020-11-26 01:02:15', 'param1', 'A'),
-(3330090, '2020-11-26 01:02:15', 'param2', 'B');
+INSERT INTO `NavigationsParameters` (`navId`, `paramKey`, `paramValue`) VALUES
+('nav_123102i48i0313614120w1g2w', 'xhr', 'true'),
+('nav_70431zc2m1x8mr4rn21t1210y', 'xhr', 'true'),
+('nav_o39u1221e8s01281027002901', 'xhr', 'true');
 
 -- --------------------------------------------------------
 
@@ -3393,10 +3415,9 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`userID`, `lang_`, `country_`, `iso_currency`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
 (1, NULL, 'belgium', 'jpy', 'system@mail.domain', 'no password', 'system', 'system', '2019-09-01', NULL, 'other', '2020-10-09 18:42:45'),
-(3330090, 'fr', 'belgium', 'eur', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
-(11112250, 'fr', 'belgium', 'eur', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-11-25 01:01:53'),
+(3330090, 'en', 'belgium', 'eur', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
+(101311321, 'fr', 'australia', 'aud', 'rukefiwoh-5422@yopmail.com', '$2y$10$1pSUt0BMHJGqsVNfSbuGbe2/X5Nr12ktC1qc1s.gKKVXBKeE3IOGG', 'bob', 'makinson', NULL, 1, 'other', '2020-11-28 11:33:37'),
 (651853948, 'fr', 'belgium', 'jpy', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
-(666200808, 'en', 'belgium', 'jpy', 'rukefiwoh-5422@yopmail.com', 'qffrzrrfzfzfqcrzvrv', 'bob', 'makinson', '1995-02-27', 0, 'other', '2020-01-05 15:00:05'),
 (846470517, 'fr', 'belgium', 'jpy', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'lady', '2020-01-08 15:00:05'),
 (934967739, 'en', 'belgium', 'jpy', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'sir', '2020-02-27 18:02:20'),
 (997763060, 'es', 'belgium', 'jpy', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'lady', '2020-01-07 15:00:05');
@@ -3426,9 +3447,10 @@ INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `pat
 (1, 'CLT', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 31536000),
 (1, 'VIS', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 94608000),
 (3330090, 'ADRS', '\"place royale 4|1640abc|belgium\"', 'f744012b323f.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-22 13:29:01', 86400),
-(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '3a1baf8702c4.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-26 01:25:21', 31536000),
-(3330090, 'VIS', '100d1sq639120hby303243a50', '3a1baf8702c4.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-26 01:25:21', 94608000),
-(11112250, 'VIS', 'd4540c13121v2z051yoq00712', '3a1baf8702c4.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-25 01:04:26', 94608000),
+(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 03:57:01', 31536000),
+(3330090, 'VIS', '100d1sq639120hby303243a50', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 03:57:01', 94608000),
+(101311321, 'CLT', '2uu14bz8m42182j030w11e73j', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 11:38:29', 31536000),
+(101311321, 'VIS', '102142p81gs3xl223bvf20318', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 11:38:29', 94608000),
 (651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
 
 -- --------------------------------------------------------
@@ -3688,7 +3710,7 @@ ALTER TABLE `Details`
 -- Index pour la table `Devices`
 --
 ALTER TABLE `Devices`
-  ADD PRIMARY KEY (`userId`,`nav_date`) USING BTREE;
+  ADD KEY `fk_navId.Devices-FROM-Navigations` (`navId`);
 
 --
 -- Index pour la table `DiscountCodes`
@@ -3746,7 +3768,7 @@ ALTER TABLE `Languages`
 -- Index pour la table `Locations`
 --
 ALTER TABLE `Locations`
-  ADD PRIMARY KEY (`userId`,`nav_date`);
+  ADD PRIMARY KEY (`navId`) USING BTREE;
 
 --
 -- Index pour la table `Mailers`
@@ -3770,21 +3792,21 @@ ALTER TABLE `MeasureUnits`
 -- Index pour la table `Navigations`
 --
 ALTER TABLE `Navigations`
-  ADD PRIMARY KEY (`userId`,`navDate`);
+  ADD PRIMARY KEY (`navID`) USING BTREE,
+  ADD KEY `fk_userId.Pages-FROM-Users` (`userId`);
 
 --
 -- Index pour la table `Navigations-Actions`
 --
 ALTER TABLE `Navigations-Actions`
-  ADD PRIMARY KEY (`userId`,`nav_date`,`actionDate`) USING BTREE,
+  ADD PRIMARY KEY (`navId`,`actionID`) USING BTREE,
   ADD KEY `fk_action_.Navigations-Actions-FROM-Actions` (`action_`);
 
 --
 -- Index pour la table `NavigationsParameters`
 --
 ALTER TABLE `NavigationsParameters`
-  ADD PRIMARY KEY (`userId`,`nav_date`,`paramKey`) USING BTREE,
-  ADD KEY `userId` (`userId`,`nav_date`) USING BTREE;
+  ADD PRIMARY KEY (`navId`,`paramKey`) USING BTREE;
 
 --
 -- Index pour la table `Orders`
@@ -4192,7 +4214,7 @@ ALTER TABLE `Details`
 -- Contraintes pour la table `Devices`
 --
 ALTER TABLE `Devices`
-  ADD CONSTRAINT `fk_userId.nav_dateDevices-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_navId.Devices-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `DiscountCodes`
@@ -4229,7 +4251,7 @@ ALTER TABLE `EmailsTags`
 -- Contraintes pour la table `Locations`
 --
 ALTER TABLE `Locations`
-  ADD CONSTRAINT `fk-userId.nav_date.Locations-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk-navId.Locations-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Navigations`
@@ -4241,14 +4263,14 @@ ALTER TABLE `Navigations`
 -- Contraintes pour la table `Navigations-Actions`
 --
 ALTER TABLE `Navigations-Actions`
-  ADD CONSTRAINT `fk-userId..nav_date.Navigations-Actions-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk-navId.Navigations-Actions-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_action_.Navigations-Actions-FROM-Actions` FOREIGN KEY (`action_`) REFERENCES `Actions` (`action`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `NavigationsParameters`
 --
 ALTER TABLE `NavigationsParameters`
-  ADD CONSTRAINT `fk-userId.nav_date.NavigationsParameters-FROM-Navigations` FOREIGN KEY (`userId`,`nav_date`) REFERENCES `Navigations` (`userId`, `navDate`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk-navId.NavigationsParameters-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Orders`
