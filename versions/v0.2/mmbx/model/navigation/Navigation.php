@@ -169,7 +169,6 @@ class Navigation extends ModelFunctionality
     {
         $userID = $this->getUserID();
         $currentPage = $this->getCurrentPage();
-        // $response = new Response();
         $response = $this->getResponse();
 
         $pageType = $currentPage->getPageType($session);
@@ -179,10 +178,10 @@ class Navigation extends ModelFunctionality
                 try {
                     $pageID = $session->get(Page::KEY_LAST_LOAD);
                     $lastPage = Page::retreivePage($pageID);
-                    $lastPage->updatePage($response, $userID);
+                    $lastPage->updatePage($response);
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
-                    $currentPageID = $currentPage->generatePageID($userID);
+                    $currentPageID = $currentPage->getPageID();
                     $session->set(Page::KEY_LAST_LOAD, $currentPageID);
                 }
                 break;
@@ -191,17 +190,17 @@ class Navigation extends ModelFunctionality
                 try {
                     $pageID = $session->get(Page::KEY_LAST_LOAD);
                     $lastPage = Page::retreivePage($pageID);
-                    $lastPage->updatePage($response, $userID);
+                    $lastPage->updatePage($response);
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                 }
                 /** Update last Page in session */
-                $currentPageID = $currentPage->generatePageID($userID);
+                $currentPageID = $currentPage->getPageID();
                 $session->set(Page::KEY_LAST_LOAD, $currentPageID);
                 break;
             case Page::TYPE_NEWCOMER:
                 /** Update last Page in session */
-                $currentPageID = $currentPage->generatePageID($userID);
+                $currentPageID = $currentPage->getPageID();
                 $session->set(Page::KEY_LAST_LOAD, $currentPageID);
                 break;
             default:
@@ -249,5 +248,23 @@ class Navigation extends ModelFunctionality
         $currentDevice->insertDevice($response, $userID, $navDate);
         // var_dump("currentDevice:", $currentDevice);
         // var_dump("response:", $response->getAttributs());
+    }
+
+        /**
+     * To save Response returned in a file
+     * @param Response $response the response to save
+     */
+    // private function saveResponseInFile($file, Response $response)
+    public function saveResponseInFile()
+    {
+        $file = 'model/navigation/responses.json';
+        $response = $this->getResponse();
+        $array = json_decode(file_get_contents($file), true);
+        $arrayMap = new Map($array);
+        $saveDate = time();
+        $arrayMap->put($response->getAttributs(), $saveDate);
+        $arrayMap->sortKeyAsc();
+        $json = json_encode($arrayMap->getMap());
+        file_put_contents($file, $json);
     }
 }
