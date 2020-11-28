@@ -8,6 +8,12 @@ require_once 'model/navigation/Action.php';
 class Page extends ModelFunctionality
 {
     /**
+     * Holds Page's id
+     * @var string
+     */
+    private $pageID;
+
+    /**
      * Holds Page's url
      * + url format: https://my.domain.com/my/webroot/my/path?my=param
      * @var string
@@ -55,6 +61,8 @@ class Page extends ModelFunctionality
      */
     private $actions;
 
+    private const PREFIX_ID = "nav_";
+
     /**
      * Holds path used to send XHR request
      * @var string
@@ -82,7 +90,7 @@ class Page extends ModelFunctionality
      * Holds Page's type
      * @var string
      */
-    public const TYPE_XHR = "type_xhr";
+    public const TYPE_XHR = "qr_xhr";
     public const TYPE_NAVIGATOR = "type_navigator";
     public const TYPE_NEWCOMER = "type_newcomer";
 
@@ -91,10 +99,11 @@ class Page extends ModelFunctionality
      * @param $url  Page's url
      *              + url format: https://my.domain.com/my/webroot/my/path?my=param
      */
-    public function __construct($url, $setDate = null)
+    public function __construct($url)
     {
         $this->url = $url;
-        $this->setDate = (isset($setDate)) ? $setDate : $this->getDateTime();
+        $this->pageID = self::PREFIX_ID . $this->generateDateCode(25);
+        $this->setDate = $this->getDateTime();
     }
 
     /**
@@ -102,7 +111,7 @@ class Page extends ModelFunctionality
      */
     private function setWebroot()
     {
-        $this->getWebroot = Configuration::getWebRoot();
+        $this->webroot = Configuration::getWebRoot();
     }
 
     /**
@@ -124,12 +133,12 @@ class Page extends ModelFunctionality
     }
 
     /**
-     * To set timeOn
-     * @param int $timeOn time passed on the page
+     * To generate id for the Page
+     * @return string id for the Page
      */
-    private function setTimeOn(int $timeOn = null)
+    public function getPageID()
     {
-        $this->timeOn = $timeOn;
+        return $this->pageID;
     }
 
     /**
@@ -147,8 +156,8 @@ class Page extends ModelFunctionality
      */
     private function getWebroot()
     {
-        (!isset($this->getWebroot)) ? $this->setWebroot() : null;
-        return $this->getWebroot;
+        (!isset($this->webroot)) ? $this->setWebroot() : null;
+        return $this->webroot;
     }
 
     /**
@@ -182,7 +191,7 @@ class Page extends ModelFunctionality
         return $this->timeOn;
     }
 
-    public function getSetDate()
+    private function getSetDate()
     {
         return $this->setDate;
     }
@@ -207,27 +216,14 @@ class Page extends ModelFunctionality
         $pageID = $session->get(Page::KEY_LAST_LOAD);
         $hasLast = isset($pageID);
         $isXHR = $this->isXHR();
-        if($hasLast && $isXHR){
+        if ($hasLast && $isXHR) {
             $pageType = self::TYPE_XHR;
-        } else if($hasLast && (!$isXHR)){
+        } else if ($hasLast && (!$isXHR)) {
             $pageType = self::TYPE_NAVIGATOR;
-        } else if((!$hasLast) && (!$isXHR)){
+        } else if ((!$hasLast) && (!$isXHR)) {
             $pageType = self::TYPE_NEWCOMER;
         }
         return $pageType;
-    }
-
-    /**
-     * To generate id for the Page
-     * @param string    $userID     Visitor's id
-     * @return string id for the Page
-     */
-    public function generatePageID($userID)
-    {
-        if (!isset($userID)) {
-            throw new Exception("Visitor's id can't be unsetted");
-        }
-        return $userID . self::SEPARATOR . $this->getSetDate();
     }
 
     /**
@@ -240,16 +236,6 @@ class Page extends ModelFunctionality
         $params = $this->getParams();
         return key_exists(self::KEY_XHR, $params);
     }
-
-    // /**
-    //  * To save Page in database
-    //  * @param Response  $response   where to strore results
-    //  * @param string    $userID     Visitor's id
-    //  */
-    // public function savePage(Response $response, $userID)
-    // {
-    //     $this->insertPage($response, $userID);
-    // }
 
     /**
      * To extract url from the current request
@@ -270,45 +256,41 @@ class Page extends ModelFunctionality
     }
 
     /**
-     * To extract userID and setDate from Page's id
-     * @param string $pageID id of a page
-     * @return Map map that contain userID and a Page's setDate
-     * + Map[Map::userID]   => id of a Visitor
-     * + Map[Map::setDate]  => a Page's setDate
-     */
-    private static function explodePageID($pageID)
-    {
-        $exploded = explode(self::SEPARATOR, $pageID);
-        $pageIDMap = new Map();
-        $pageIDMap->put($exploded[0], Map::userID);
-        $pageIDMap->put($exploded[1], Map::setDate);
-        return $pageIDMap;
-    }
-
-    /**
      * To get a Page in database
      * @param string $pageID id of a page
      * @return Page
      */
     public static function retreivePage($pageID)
     {
-        $pageIDMap = self::explodePageID($pageID);
-        $userID = $pageIDMap->get(Map::userID);
-        $setDate = $pageIDMap->get(Map::setDate);
-        $sql = "SELECT * FROM `Navigations` WHERE `userId`='$userID' AND `navDate`='$setDate'";
+        // $pageIDMap = self::explodePageID($pageID);
+        // $userID = $pageIDMap->get(Map::userID);
+        // $setDate = $pageIDMap->get(Map::setDate);
+        // $sql = "SELECT * FROM `Navigations` WHERE `userId`='$userID' AND `navDate`='$setDate'";
+        $sql =
+            "SELECT * FROM `Navigations` n
+            LEFT JOIN `NavigationsParameters` np ON n.`navID`=np.`navId`
+            WHERE n.`navID`='$pageID'";
         $tab = parent::select($sql);
         if (empty($tab)) {
-            throw new Exception("There is no page visited by user '$userID' at this time '$setDate'");
-        }
-        if (count($tab) != 1) {
-            throw new Exception("A user '$userID' can visit one page only at a given time '$setDate'");
+            throw new Exception("This page id '$pageID' is not valid");
         }
         $tabLine = $tab[0];
-        $url = $tabLine["userId"];
-        $navDate = $tabLine["navDate"];
-        $page = new Page($url, $navDate);
-        $timeOn = (empty($tabLine["timeOn"])) ? ((int) $tabLine["timeOn"]) : null;
-        $page->setTimeOn($timeOn);
+        // $this->pageID = $pageID;
+        $url = $tabLine["url"];
+        $page = new Page($url);
+        $page->pageID = $pageID;
+        $page->webroot = $tabLine["webroot"];
+        $page->path = $tabLine["path"];
+        $page->setDate = $tabLine["navDate"];
+        $page->timeOn = (!empty($tabLine["timeOn"])) ? ((int) $tabLine["timeOn"]) : null;
+        $page->params = [];
+        foreach ($tab as $tabLine) {
+            if (isset($tabLine["paramKey"])) {
+                $key = $tabLine["paramKey"];
+                $page->params[$key] = $tabLine["paramValue"];
+            }
+        }
+        // $page->setTimeOn($timeOn);
         return $page;
     }
 
@@ -321,12 +303,13 @@ class Page extends ModelFunctionality
      */
     public function insertPage(Response $response, $userID)
     {
-        $bracket = "(?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Navigations`(`userId`, `navDate`, `url`, `webroot`, `path`, `timeOn`)
+        $bracket = "(?,?,?,?,?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `Navigations`(`navID`, `userId`, `navDate`, `url`, `webroot`, `path`, `timeOn`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
         array_push(
             $values,
+            $this->getPageID(),
             $userID,
             $this->getSetDate(),
             $this->getUrl(),
@@ -336,25 +319,24 @@ class Page extends ModelFunctionality
         );
         $this->insert($response, $sql, $values);
         if (!$response->containError() && (!empty($this->getParams()))) {
-            $this->insertParams($response, $userID);
+            $this->insertParams($response);
         }
     }
 
     /**
      * To update Page
      * @param Response  $response   where to strore results
-     * @param string    $userID     Visitor's id
      * @param string    $timeOn     the time Visitor spent on the Page
      */
-    public function updatePage($response, $userID, $timeOn = null)
+    public function updatePage($response, $timeOn = null)
     {
         $navDate = $this->getSetDate();
         $timeOn = (empty($timeOn)) ? (time() - strtotime($navDate)) : $timeOn;
+        $pageID = $this->getPageID();
         $sql =
             "UPDATE `Navigations` SET
             `timeOn`= ? 
-            WHERE `userId`= '$userID' 
-            AND `navDate`= '$navDate'";
+            WHERE `navID`= '$pageID'";
         $values = [];
         array_push(
             $values,
@@ -366,22 +348,20 @@ class Page extends ModelFunctionality
     /**
      * To insert Page's params in database
      * @param Response  $response   where to strore results
-     * @param string    $userID     Visitor's id
      */
-    public function insertParams(Response $response, $userID)
+    public function insertParams(Response $response)
     {
         $params = $this->getParams();
         $nb = count($params);
-        $bracket = "(?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `NavigationsParameters`(`userId`, `nav_date`, `paramKey`, `paramData`)
+        $bracket = "(?,?,?)"; // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `NavigationsParameters`(`navId`, `paramKey`, `paramValue`)
             VALUES " . $this->buildBracketInsert($nb, $bracket);
         $values = [];
-        $setDate = $this->getSetDate();
+        $pageID = $this->getPageID();
         foreach ($params as $param => $value) {
             array_push(
                 $values,
-                $userID,
-                $setDate,
+                $pageID,
                 $param,
                 $value
             );
