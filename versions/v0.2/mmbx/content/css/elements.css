@@ -3250,7 +3250,10 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-measure-block .checkbox-label::first-letter {
     text-transform: capitalize;
 }
-
+.product-datas-block .product-data-line, .product-size-dropdown-container {
+    position: relative;
+    margin-bottom: 40px;
+}
 .product-size-customize-container button, .product-size-dropdown-container button {
     box-shadow: none;
 }

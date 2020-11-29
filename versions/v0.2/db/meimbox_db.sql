@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  sam. 28 nov. 2020 à 11:41
+-- Généré le :  Dim 29 nov. 2020 à 03:00
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -15,16 +15,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `meimbox` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `meimbox`;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `Actions`
---
-
-CREATE TABLE `Actions` (
-  `action` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -52,6 +42,7 @@ INSERT INTO `Addresses` (`userId`, `address`, `zipcode`, `country_`, `appartemen
 (3330090, 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38'),
 (3330090, 'place royale 4', '1640abc', 'belgium', 'studio', 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
 (3330090, 'rue royale 67', '1000', 'belgium', 'house', 'bruxelles', 'bruxelles', '472174210', '2020-11-15 20:52:51'),
+(101311321, '4 bandal', 'zipsamere', 'australia', 'suite', 'ngaliema', 'kinshasa', NULL, '2020-11-28 12:16:13'),
 (651853948, 'place royale 4', '1640', 'canada', 'app', 'state', 'rhode-saint-genese', '472174210', '2020-10-03 16:06:58'),
 (651853948, 'place royele 4', '1640', 'belgium', NULL, 'Brabant-flamand', 'rhode-saint-genese', '32472274210', '2020-02-28 00:00:00'),
 (651853948, 'rue des bargeo 4', '4780', 'canada', 'boite 17', 'ma province perdu', 'ma ville perdu', '428284890', '2020-02-27 00:00:00'),
@@ -1464,13 +1455,6 @@ CREATE TABLE `Devices` (
   `deviceModel` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Déchargement des données de la table `Devices`
---
-
-INSERT INTO `Devices` (`navId`, `deviceDate`, `deviceDatas`, `userAgent`, `isBot`, `botInfo`, `osName`, `osVersion`, `osPlateform`, `driverType`, `driverName`, `driverVersion`, `driverEngine`, `driverEngineVersion`, `deviceType`, `deviceBrand`, `deviceModel`) VALUES
-('nav_yrja0311111ai0n1v22812633', '2020-11-28 11:33:38', '{\"os\": {\"name\": \"Mac\", \"version\": \"10.15.7\", \"platform\": \"\", \"short_name\": \"MAC\"}, \"brand\": \"Apple\", \"model\": \"\", \"device\": \"desktop\", \"clientInfo\": {\"name\": \"Chrome\", \"type\": \"browser\", \"engine\": \"Blink\", \"version\": \"87.0.4280.67\", \"short_name\": \"CH\", \"engine_version\": \"\"}}', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36', 0, 'null', 'mac', '10.15.7', NULL, 'browser', 'chrome', '87.0.4280.67', 'blink', NULL, 'desktop', 'apple', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -1630,6 +1614,32 @@ CREATE TABLE `EmailsTags` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Events`
+--
+
+CREATE TABLE `Events` (
+  `eventCode` varchar(50) NOT NULL,
+  `event` varchar(30) NOT NULL,
+  `element` varchar(30) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `result` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `EventsDatas`
+--
+
+CREATE TABLE `EventsDatas` (
+  `eventId` varchar(30) NOT NULL,
+  `dataKey` varchar(100) NOT NULL,
+  `dataValue` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Languages`
 --
 
@@ -1683,13 +1693,6 @@ CREATE TABLE `Locations` (
   `proxy` tinyint(1) DEFAULT NULL,
   `hosting` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `Locations`
---
-
-INSERT INTO `Locations` (`navId`, `locationDate`, `ip`, `status`, `message`, `continent`, `continentCode`, `country`, `countryCode`, `region`, `regionName`, `city`, `district`, `zip`, `lat`, `lon`, `timezone`, `offset`, `currency`, `isp`, `ispOrg`, `ispAs`, `asname`, `reverse`, `mobile`, `proxy`, `hosting`) VALUES
-('nav_yrja0311111ai0n1v22812633', '2020-11-28 11:33:37', '203.194.21.241', 'success', NULL, 'oceania', 'oc', 'australia', 'au', 'vic', 'victoria', 'forest hill', NULL, '3131', -37.8372, 145.173, 'australia/melbourne', 39600, 'aud', 'tpg internet pty ltd', 'tricon group', 'as7545 tpg telecom limited', 'tpg-internet-ap', '203-194-21-241.tpgi.com.au', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1767,35 +1770,17 @@ CREATE TABLE `Navigations` (
   `timeOn` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Déchargement des données de la table `Navigations`
---
-
-INSERT INTO `Navigations` (`navID`, `userId`, `navDate`, `url`, `webroot`, `path`, `timeOn`) VALUES
-('nav_123102i48i0313614120w1g2w', 101311321, '2020-11-28 11:34:33', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/home/qr/signUp?xhr=true', '/versions/v0.2/mmbx/', 'home/qr/signUp', NULL),
-('nav_140t2181b05a32117pj2sic1k', 101311321, '2020-11-28 11:37:45', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout/address', '/versions/v0.2/mmbx/', 'checkout/address', 44),
-('nav_70431zc2m1x8mr4rn21t1210y', 101311321, '2020-11-28 11:37:44', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/home/qr/signUp?xhr=true', '/versions/v0.2/mmbx/', 'home/qr/signUp', NULL),
-('nav_f19q28r001221jy43117428zn', 101311321, '2020-11-28 11:37:44', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout/sign', '/versions/v0.2/mmbx/', 'checkout/sign', 1),
-('nav_o0w0ik123312v8c10s1r23181', 101311321, '2020-11-28 11:33:38', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout/sign', '/versions/v0.2/mmbx/', 'checkout/sign', 246),
-('nav_o39u1221e8s01281027002901', 101311321, '2020-11-28 11:38:29', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/dashboard/qr/addAddress?xhr=true', '/versions/v0.2/mmbx/', 'dashboard/qr/addAddress', NULL),
-('nav_s21082301t401a2122875ea10', 101311321, '2020-11-28 11:37:45', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout', '/versions/v0.2/mmbx/', 'checkout', 0),
-('nav_yrja0311111ai0n1v22812633', 101311321, '2020-11-28 11:33:36', 'https://7c4f9d8f1f8a.eu.ngrok.io/versions/v0.2/mmbx/checkout', '/versions/v0.2/mmbx/', 'checkout', 2);
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Navigations-Actions`
+-- Structure de la table `Navigations-Events`
 --
 
-CREATE TABLE `Navigations-Actions` (
+CREATE TABLE `Navigations-Events` (
   `navId` varchar(30) NOT NULL,
-  `actionID` varchar(30) NOT NULL,
-  `action_` varchar(50) NOT NULL,
-  `element` varchar(50) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `result` varchar(100) NOT NULL,
-  `datas` json DEFAULT NULL,
-  `actionDate` datetime NOT NULL
+  `eventID` varchar(30) NOT NULL,
+  `event_code` varchar(50) NOT NULL,
+  `eventDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1809,15 +1794,6 @@ CREATE TABLE `NavigationsParameters` (
   `paramKey` varchar(100) NOT NULL,
   `paramValue` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `NavigationsParameters`
---
-
-INSERT INTO `NavigationsParameters` (`navId`, `paramKey`, `paramValue`) VALUES
-('nav_123102i48i0313614120w1g2w', 'xhr', 'true'),
-('nav_70431zc2m1x8mr4rn21t1210y', 'xhr', 'true'),
-('nav_o39u1221e8s01281027002901', 'xhr', 'true');
 
 -- --------------------------------------------------------
 
@@ -3449,8 +3425,9 @@ INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `pat
 (3330090, 'ADRS', '\"place royale 4|1640abc|belgium\"', 'f744012b323f.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-22 13:29:01', 86400),
 (3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 03:57:01', 31536000),
 (3330090, 'VIS', '100d1sq639120hby303243a50', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 03:57:01', 94608000),
-(101311321, 'CLT', '2uu14bz8m42182j030w11e73j', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 11:38:29', 31536000),
-(101311321, 'VIS', '102142p81gs3xl223bvf20318', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 11:38:29', 94608000),
+(101311321, 'ADRS', '\"4 bandal|zipsamere|australia\"', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 13:48:56', 86400),
+(101311321, 'CLT', '2uu14bz8m42182j030w11e73j', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 13:48:56', 31536000),
+(101311321, 'VIS', '102142p81gs3xl223bvf20318', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 13:48:56', 94608000),
 (651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
 
 -- --------------------------------------------------------
@@ -3509,12 +3486,6 @@ INSERT INTO `UsersMeasures` (`userId`, `measureID`, `measureName`, `userBust`, `
 --
 -- Index pour les tables déchargées
 --
-
---
--- Index pour la table `Actions`
---
-ALTER TABLE `Actions`
-  ADD PRIMARY KEY (`action`);
 
 --
 -- Index pour la table `Addresses`
@@ -3759,6 +3730,18 @@ ALTER TABLE `EmailsTags`
   ADD PRIMARY KEY (`messageId`,`tag`);
 
 --
+-- Index pour la table `Events`
+--
+ALTER TABLE `Events`
+  ADD PRIMARY KEY (`eventCode`);
+
+--
+-- Index pour la table `EventsDatas`
+--
+ALTER TABLE `EventsDatas`
+  ADD PRIMARY KEY (`eventId`,`dataKey`);
+
+--
 -- Index pour la table `Languages`
 --
 ALTER TABLE `Languages`
@@ -3796,11 +3779,12 @@ ALTER TABLE `Navigations`
   ADD KEY `fk_userId.Pages-FROM-Users` (`userId`);
 
 --
--- Index pour la table `Navigations-Actions`
+-- Index pour la table `Navigations-Events`
 --
-ALTER TABLE `Navigations-Actions`
-  ADD PRIMARY KEY (`navId`,`actionID`) USING BTREE,
-  ADD KEY `fk_action_.Navigations-Actions-FROM-Actions` (`action_`);
+ALTER TABLE `Navigations-Events`
+  ADD PRIMARY KEY (`navId`,`eventID`),
+  ADD UNIQUE KEY `eventID` (`eventID`) USING BTREE,
+  ADD KEY `event_code` (`event_code`);
 
 --
 -- Index pour la table `NavigationsParameters`
@@ -4248,6 +4232,12 @@ ALTER TABLE `EmailsTags`
   ADD CONSTRAINT `fk-messageId.EmailsTags-FROM-EmailsSent` FOREIGN KEY (`messageId`) REFERENCES `EmailsSent` (`messageID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `EventsDatas`
+--
+ALTER TABLE `EventsDatas`
+  ADD CONSTRAINT `fk-eventId.EventsDatas-FROM-Navigations-Events` FOREIGN KEY (`eventId`) REFERENCES `Navigations-Events` (`eventID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `Locations`
 --
 ALTER TABLE `Locations`
@@ -4260,11 +4250,11 @@ ALTER TABLE `Navigations`
   ADD CONSTRAINT `fk_userId.Pages-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `Navigations-Actions`
+-- Contraintes pour la table `Navigations-Events`
 --
-ALTER TABLE `Navigations-Actions`
-  ADD CONSTRAINT `fk-navId.Navigations-Actions-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_action_.Navigations-Actions-FROM-Actions` FOREIGN KEY (`action_`) REFERENCES `Actions` (`action`) ON UPDATE CASCADE;
+ALTER TABLE `Navigations-Events`
+  ADD CONSTRAINT `fk-event_code.Navigations-Events-FROM-Events` FOREIGN KEY (`event_code`) REFERENCES `Events` (`eventCode`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk-navId.Navigations-Events-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `NavigationsParameters`

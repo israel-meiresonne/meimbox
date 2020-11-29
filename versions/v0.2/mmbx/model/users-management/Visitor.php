@@ -127,11 +127,6 @@ class Visitor extends ModelFunctionality
                 }
                 $this->trackNavigation($VIS_VAL);
                 break;
-                // $navigation = $this->getNavigation();
-                // $session = $this->getSession();
-                // $navigation->handleRequest($session);
-                // $navigation->locate($session);
-                // (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
             case Administrator::class:
             case Client::class:
                 break;
@@ -153,6 +148,7 @@ class Visitor extends ModelFunctionality
         $navigation->handleRequest($session);
         $navigation->locate($session);
         (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
+        $navigation->saveResponseInFile();
     }
 
     /**
@@ -164,7 +160,7 @@ class Visitor extends ModelFunctionality
         $navigation = $this->getNavigation();
         $location = $navigation->getCurrentLocation();
         // $navigation->detectDevice();
-        $this->location = new Location();
+        // $this->location = new Location();
         $this->lang = new Language();
         $localIsoCurrency = $location->getIsoCurrency();
         $this->currency = ($this->existCurrency($localIsoCurrency))

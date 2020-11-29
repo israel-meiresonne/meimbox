@@ -52,10 +52,10 @@
     .product-details-inner {
         margin: 0 auto;
     }
-    .product-datas-block .product-data-line, .product-size-dropdown-container {
+    /* .product-datas-block .product-data-line, .product-size-dropdown-container {
         position: relative;
         margin-bottom: 40px;
-    }
+    } */
     .product-size-dropdown-container .brand-custom-container {
         display: none;
     }
@@ -157,10 +157,10 @@
         max-width: 520px;
         margin: 0 auto;
     }
-    .product-datas-block .product-data-line, .product-size-dropdown-container {
+    /* .product-datas-block .product-data-line, .product-size-dropdown-container {
         position: relative;
         margin-bottom: 25px;
-    }
+    } */
     .product-size-dropdown-container .brand-custom-container {
         display: none;
     }
