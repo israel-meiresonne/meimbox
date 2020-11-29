@@ -1090,6 +1090,21 @@
 												},
 												{
 													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2FJsdUq3FmhE=",
+													"_parent": {
+														"$ref": "AAAAAAFwOtfPH8sxG44="
+													},
+													"model": {
+														"$ref": "AAAAAAF2FJsdK63CSiQ="
+													},
+													"font": "Arial;13;0",
+													"left": 1925,
+													"top": 3826,
+													"width": 216.22509765625,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
 													"_id": "AAAAAAFwOub+ZsuKEC8=",
 													"_parent": {
 														"$ref": "AAAAAAFwOtfPH8sxG44="
@@ -1099,7 +1114,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1925,
-													"top": 3826,
+													"top": 3841,
 													"width": 216.22509765625,
 													"height": 13
 												},
@@ -1114,7 +1129,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1925,
-													"top": 3841,
+													"top": 3856,
 													"width": 216.22509765625,
 													"height": 13
 												},
@@ -1129,7 +1144,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1925,
-													"top": 3856,
+													"top": 3871,
 													"width": 216.22509765625,
 													"height": 13
 												},
@@ -1144,7 +1159,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1925,
-													"top": 3871,
+													"top": 3886,
 													"width": 216.22509765625,
 													"height": 13
 												},
@@ -1159,7 +1174,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 1925,
-													"top": 3886,
+													"top": 3901,
 													"width": 216.22509765625,
 													"height": 13
 												}
@@ -1168,14 +1183,14 @@
 											"left": 1920,
 											"top": 3791,
 											"width": 226.22509765625,
-											"height": 113
+											"height": 128
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1920,
 									"top": 3768,
 									"width": 226.22509765625,
-									"height": 136,
+									"height": 151,
 									"nameLabel": {
 										"$ref": "AAAAAAFwOtfPH8swCbs="
 									},
@@ -20821,8 +20836,8 @@
 									},
 									"name": "navId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -21181,8 +21196,8 @@
 										"$ref": "AAAAAAFwOtfPHsstOGk="
 									},
 									"name": "navID",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true
 								},
 								{
@@ -21199,6 +21214,18 @@
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
 									}
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2FJsdK63CSiQ=",
+									"_parent": {
+										"$ref": "AAAAAAFwOtfPHsstOGk="
+									},
+									"name": "xhrFrom",
+									"documentation": "# Definition\n\nHolds the navID of the page where the xhr request had been send",
+									"type": "VARCHAR",
+									"length": "50",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -21273,8 +21300,8 @@
 									},
 									"name": "navId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -26071,8 +26098,8 @@
 									},
 									"name": "navId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -26086,8 +26113,8 @@
 										"$ref": "AAAAAAFwh4nfLvu3Ac8="
 									},
 									"name": "eventID",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true
 								},
 								{
@@ -28618,8 +28645,8 @@
 									},
 									"name": "navId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -28948,8 +28975,8 @@
 									},
 									"name": "eventId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "CHAR",
-									"length": "30",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {

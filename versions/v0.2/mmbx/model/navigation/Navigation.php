@@ -16,10 +16,16 @@ class Navigation extends ModelFunctionality
     private $userID;
 
     /**
-     * Holds the current pages
+     * Holds the Page using the submited url
      * @var Page
      */
-    private static $currentPage;
+    private static $urlPage;
+
+    // /**
+    //  * Holds the last pages
+    //  * @var Page
+    //  */
+    // private static $lastPage;
 
     /**
      * Holds pages visited by the Visitor
@@ -93,7 +99,7 @@ class Navigation extends ModelFunctionality
     private function setCurrentPage()
     {
         $url = Page::extractUrl();
-        self::$currentPage = new Page($url);
+        self::$urlPage = new Page($url);
     }
 
     /**
@@ -101,7 +107,7 @@ class Navigation extends ModelFunctionality
      */
     private function setCurrentDevice()
     {
-        $pageID = $this->getCurrentPage()->getPageID();
+        $pageID = $this->getUrlPage()->getPageID();
         self::$currentDevice = new Device($pageID);
     }
 
@@ -110,7 +116,7 @@ class Navigation extends ModelFunctionality
      */
     private function setCurrentLocation()
     {
-        $pageID = $this->getCurrentPage()->getPageID();
+        $pageID = $this->getUrlPage()->getPageID();
         self::$currentLocation = new Location($pageID);
     }
 
@@ -127,11 +133,21 @@ class Navigation extends ModelFunctionality
      * To get the current Pages
      * @return Page current Page
      */
-    private function getCurrentPage()
+    public function getUrlPage()
     {
-        (!isset(self::$currentPage)) ? $this->setCurrentPage() : null;
-        return self::$currentPage;
+        (!isset(self::$urlPage)) ? $this->setCurrentPage() : null;
+        return self::$urlPage;
     }
+
+    // /**
+    //  * To get the current Pages
+    //  * @return Page current Page
+    //  */
+    // public function getLastPage()
+    // {
+    //     (!isset(self::$currentPage)) ? $this->setCurrentPage() : null;
+    //     return self::$currentPage;
+    // }
 
     /**
      * To get current Device
@@ -169,21 +185,25 @@ class Navigation extends ModelFunctionality
     public function handleRequest(Session $session)
     {
         $userID = $this->getUserID();
-        $currentPage = $this->getCurrentPage();
+        $urlPage = $this->getUrlPage();
         $response = $this->getResponse();
 
-        $pageType = $currentPage->getPageType($session);
+        $pageType = $urlPage->getPageType($session);
         // var_dump($pageType);
         switch ($pageType) {
             case Page::TYPE_XHR:
-                /** Update Time on last Page */
                 try {
-                    $pageID = $session->get(Page::KEY_LAST_LOAD);
-                    $lastPage = Page::retreivePage($pageID);
+                    /** Update Time on last Page */
+                    $url = $urlPage->getUrl();
+                    $xhr = new Xhr($url);
+                    $currentPageID = $xhr->getParam(Page::KEY_XHR);
+                    $lastPage = Page::retreivePage($currentPageID);
                     $lastPage->updatePage($response);
+                    /** insert the current url */
+                    $xhr->insertXhr($response, $userID, $currentPageID);
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
-                    $currentPageID = $currentPage->getPageID();
+                    $currentPageID = $urlPage->getPageID();
                     $session->set(Page::KEY_LAST_LOAD, $currentPageID);
                 }
                 break;
@@ -196,20 +216,24 @@ class Navigation extends ModelFunctionality
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                 }
+                /** insert the current url */
+                $urlPage->insertPage($response, $userID);
                 /** Update last Page in session */
-                $currentPageID = $currentPage->getPageID();
+                $currentPageID = $urlPage->getPageID();
                 $session->set(Page::KEY_LAST_LOAD, $currentPageID);
                 break;
             case Page::TYPE_NEWCOMER:
+                /** insert the current url */
+                $urlPage->insertPage($response, $userID);
                 /** Update last Page in session */
-                $currentPageID = $currentPage->getPageID();
+                $currentPageID = $urlPage->getPageID();
                 $session->set(Page::KEY_LAST_LOAD, $currentPageID);
                 break;
             default:
                 throw new Exception("Unknow Page type '$pageType'");
                 break;
         }
-        self::$currentPage->insertPage($response, $userID);
+        // $urlPage->insertPage($response, $userID);
     }
 
     /**

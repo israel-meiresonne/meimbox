@@ -8,6 +8,7 @@ class ControllerHome extends ControllerSecure
     public const A_SIGN_IN = "home/signIn";
     public const QR_LOG_OUT = "home/logOut";
     public const QR_UPDATE_COUNTRY = "home/updateCountry";
+    public const QR_EVENT = "home/event";
 
     /**
      * The index layout
@@ -201,7 +202,25 @@ class ControllerHome extends ControllerSecure
     {
         $response = new Response();
         $person = $this->person;
-        if()
+        if (empty(Query::getParam(Event::KEY_EVENT))) {
+            $errorMsg = "empty event sent";
+            $response->addError($errorMsg, MyError::ADMIN_ERROR);
+        } else {
+            $eventCode = Query::getParam(Event::KEY_EVENT);
+            $datas = json_decode(Query::getParam(Event::KEY_DATA), true, 2);
+            $datasMap = (!empty($datas)) ? new  Map($datas) : null;
+            $navigation = $person->getNavigation();
+            $currentPage = $navigation->getCurrentPage();
+            if (empty(Event::retreiveEventLine($eventCode))) {
+                $errorMsg = "Unkow event code '$eventCode'";
+                $response->addError($errorMsg, MyError::ADMIN_ERROR);
+            } else {
+                (!empty($datasMap)) ? $currentPage->addEvent($response, $eventCode, $datasMap) : $currentPage->addEvent($response, $eventCode);
+                if (!$response->containError()) {
+                    $response->addResult(self::QR_EVENT, true);
+                }
+            }
+        }
         $this->generateJsonView([], $response, $person);
     }
 
@@ -210,22 +229,43 @@ class ControllerHome extends ControllerSecure
     public function test()
     {
         header('content-type: application/json');
-        $person = $this->person;
-        $userID = $person->getUserID();
-        // var_dump($_SESSION);
-        // var_dump($_GET);
-        // $session = $person->getSession();
-        // $session->destroy();
-        // $date = date(ModelFunctionality::DATE_FORMAT.":u");
-        // var_dump()
-        // echo str_repeat("-", 50)." _SERVER ".str_repeat("-", 50);
-        // var_dump($_SERVER);
-        echo str_repeat("-", 50)." _SESSION ".str_repeat("-", 50);
-        var_dump($_SESSION);
-        echo str_repeat("-", 50)." _GET ".str_repeat("-", 50);
-        var_dump($_GET);
+        // $person = $this->person;
+        // $response = new Response();
+        // $userID = $person->getUserID();
+        // $pageID = "nav_z1065911j7102942j2az0z1l9";
+        // $datasMap = new Map();
+        // $datasMap->put("value1", "key1");
+        // $datasMap->put("", "key2");
+        // $event = new Event("01", $datasMap);
+        // var_dump($event);
+        // $event->insertEvent($response, $pageID);
+        // var_dump($response->getAttributs());
+
+        // $a = ["a"=>[1,2,3]];
+        // $a = ["a"=>1];
+        $a = "https://52c033d81cbe.eu.ngrok.io/versions/v0.2/mmbx/grid";
+        var_dump(parse_url($a));
+        parse_str(null, $params);
+        var_dump($params);
     }
 
+    public function test_xhr()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $response = new Response();
+        $userID = $person->getUserID();
+        // $pageID = "nav_52c033d81cbe";
+        $pageID = "nav_52c033d81cbe";
+        $url = "https://52c033d81cbe.eu.ngrok.io/versions/v0.2/mmbx/grid?xhr=nav_52c033d81cbe";
+        $datasMap = new Map(["k1" => "v1", 1 => 2, "k3" => null]);
+        $event = new Event("01", $datasMap);
+        $xhr = new Xhr($url, $event);
+        $xhr->insertXhr($response, $userID, $pageID);
+        // $xhr->addEvent($response, $event);
+        // var_dump($xhr);
+        var_dump($response->getAttributs());
+    }
     public function test_redirector_sign()
     {
         header('content-type: application/json');
@@ -241,19 +281,28 @@ class ControllerHome extends ControllerSecure
         $this->redirect($ctr, "qr/test");
     }
 
-    public function test_Navigation(){
+    public function test_Navigation()
+    {
         header('content-type: application/json');
         $person = $this->person;
         $userID = $person->getUserID();
         $session = $person->getSession();
         $nav = new Navigation($userID);
+        echo str_repeat("-", 50) . " _SESSION " . str_repeat("-", 50);
+        echo "\n";
         var_dump($_SESSION);
+        echo str_repeat("-", 50) . " _GET " . str_repeat("-", 50);
+        echo "\n";
         var_dump($_GET);
-        // $nav->handleRequest($session);
+        $nav->handleRequest($session);
         // $nav->locate($session);
-        // $nav->detectDevice();
+        // $nav->detectDevice(); nav_080t2d09b1e115p12112l23m2
         // $session->destroy();
+        echo str_repeat("-", 50) . " _SESSION " . str_repeat("-", 50);
+        echo "\n";
         var_dump($_SESSION);
+        echo str_repeat("-", 50) . " _GET " . str_repeat("-", 50);
+        echo "\n";
         var_dump($_GET);
     }
 
@@ -300,13 +349,21 @@ class ControllerHome extends ControllerSecure
 
         // $nav =  new Navigation();
         $userID = $person->getUserID();
-        $session = $person->getSession();
+        // $session = $person->getSession();
         $response = new Response;
-        // $page = new Page(Page::extractUrl());
-        $page = Page::retreivePage("nav_ip21049o3iz202u02u3s821z1");
-        $page->updatePage($response);
+        $page = new Page(Page::extractUrl());
+        $pageID = $page->getPageID();
+        // $page = Page::retreivePage("nav_ip21049o3iz202u02u3s821z1");
+        // $page->updatePage($response);
         // var_dump(Page::retreivePage("nav_ip21049o3iz202u02u3s821z1"));
         // $page->insertPage($response, $userID);
+        $url = "https://52c033d81cbe.eu.ngrok.io/versions/v0.2/mmbx/grid?xhr=$pageID";
+        $datasMap = new Map(["k1" => "v1", 1 => 2, "k3" => null]);
+        $event = new Event("01", $datasMap);
+        $xhr = new Xhr($url, $event);
+        // $xhr->insertXhr($response, $userID, $pageID);
+        $page->addXhr($xhr);
+        var_dump($page->insertPage($response, $userID));
         var_dump($response->getAttributs());
         // $page = new Page("3330090", "2020-11-25 20:40:30");
         // $session->unset(Page::KEY_LAST_LOAD);
@@ -315,8 +372,8 @@ class ControllerHome extends ControllerSecure
         // $page->updatePage($response, $userID);
         // $pageID = $page->generatePageID($userID);
         // var_dump($page->getPageType($session));
-        var_dump($_SESSION);
-        var_dump($_GET);
+        // var_dump($_SESSION);
+        // var_dump($_GET);
         // var_dump($pageID);
         // var_dump(Page::explodePageID($pageID));
         // var_dump($page->isXHR());
