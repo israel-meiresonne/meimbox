@@ -125,7 +125,7 @@ class Visitor extends ModelFunctionality
                 } else {
                     $this->setKnownVisitor($VIS_VAL);
                 }
-                $this->trackNavigation($VIS_VAL);
+                // $this->trackNavigation($VIS_VAL);
                 break;
             case Administrator::class:
             case Client::class:
@@ -360,18 +360,11 @@ class Visitor extends ModelFunctionality
         $this->cookies = new Map();
         $userID = $this->getUserID();
         $usersCookiesMap = $this->getUsersCookiesMap($userID);
-        // echo str_repeat("—", 50);
-        // echo "\n";
-        // var_dump("userID:", $userID);
-        // var_dump("usersCookiesMap:", $usersCookiesMap);
         $cookieIDs = $usersCookiesMap->getKeys();
         if (!empty($cookieIDs)) {
             foreach ($cookieIDs as $cookieID) {
                 $holdsCookieValue = Cookie::getCookieValue($cookieID);
                 $value = $usersCookiesMap->get($cookieID, Map::value);
-                // var_dump("cookieID: $cookieID");
-                // var_dump("holdsCookieValue: $holdsCookieValue");
-                // var_dump("value: $value");
                 if ((!empty($holdsCookieValue)) && ($holdsCookieValue == $value)) {
                     $setDate = $usersCookiesMap->get($cookieID, Map::setDate);
                     $settedPeriod = $usersCookiesMap->get($cookieID, Map::settedPeriod);
@@ -485,7 +478,7 @@ class Visitor extends ModelFunctionality
      * To get Visitor's navigation datas
      * @return Navigation Visitor's navigation datas
      */
-    protected function getNavigation()
+    public function getNavigation()
     {
         (!isset($this->navigation)) ? $this->setNavigation() : null;
         return $this->navigation;

@@ -113,6 +113,10 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const A_SIGN_IN = "<?= ControllerHome::A_SIGN_IN ?>";
         const QR_LOG_OUT = "<?= ControllerHome::QR_LOG_OUT ?>";
         const QR_UPDATE_COUNTRY = "<?= ControllerHome::QR_UPDATE_COUNTRY ?>";
+        const QR_EVENT = "<?= ControllerHome::QR_EVENT ?>";
+        const EVT_K = "<?= Event::KEY_EVENT ?>";
+        const EVT_D = "<?= Event::KEY_DATA ?>";
+
 
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
         const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
@@ -252,6 +256,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
     <link rel="stylesheet" href="<?= self::$PATH_CSS . 'root.css' ?>">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>header.css">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
+    <script src="<?= self::$PATH_JS ?>evt.js"></script>
     <script src="<?= self::$PATH_JS ?>elements.js"></script>
     <script src="<?= self::$PATH_JS ?>pop.js"></script>
     <script src="<?= self::$PATH_JS ?>qr.js"></script>

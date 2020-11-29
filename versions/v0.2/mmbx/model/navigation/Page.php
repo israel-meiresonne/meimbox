@@ -1,6 +1,7 @@
 <?php
 require_once 'model/ModelFunctionality.php';
-require_once 'model/navigation/Event.php';
+// require_once 'model/navigation/Event.php';
+require_once 'model/navigation/Xhr.php';
 
 /**
  * This class represente a web page visited by the Visitor
@@ -18,7 +19,7 @@ class Page extends ModelFunctionality
      * + url format: https://my.domain.com/my/webroot/my/path?my=param
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * Holds Page's web root
@@ -26,7 +27,7 @@ class Page extends ModelFunctionality
      * + Note: begin and end with slash
      * @var string
      */
-    private $webroot;
+    protected $webroot;
 
     /**
      * Holds Page's path
@@ -34,13 +35,13 @@ class Page extends ModelFunctionality
      * + Note: don't begin with slash
      * @var string
      */
-    private $path;
+    protected $path;
 
     /**
      * Holds url's $_GET parameters
-     * @var string[]
+     * @var Map
      */
-    private $params;
+    protected $paramsMap;
 
     /**
      * Holds the time that the Visitor spent on the Page in second
@@ -52,14 +53,13 @@ class Page extends ModelFunctionality
      * Holds the date Visitor visited this Page
      * @var string
      */
-    private $setDate;
+    protected $setDate;
 
     /**
-     * Holds Visitor's behavior on the Page
-     * + Note: Event are ordered from new to hold
-     * @var Event[]
+     * Holds request done in this Page
+     * @var Map
      */
-    private $event;
+    private $xhrMap;
 
     private const PREFIX_ID = "nav_";
 
@@ -85,6 +85,7 @@ class Page extends ModelFunctionality
      * @var string
      */
     public const KEY_LAST_LOAD = "last_load";
+    public const KEY_CURRENT_LOAD = "current_load";
 
     /**
      * Holds Page's type
@@ -109,7 +110,7 @@ class Page extends ModelFunctionality
     /**
      * To set webroot
      */
-    private function setWebroot()
+    protected function setWebroot()
     {
         $this->webroot = Configuration::getWebRoot();
     }
@@ -117,8 +118,7 @@ class Page extends ModelFunctionality
     /**
      * To set path
      */
-    private function parseUrl()
-    // private function setPath()
+    protected function parseUrl()
     {
         $url = $this->getUrl();
         $webroot = $this->getWebroot();
@@ -129,7 +129,7 @@ class Page extends ModelFunctionality
 
         $query = $parsedMap->get(Map::query);
         parse_str($query, $params);
-        $this->params = $params;
+        $this->paramsMap = new Map($params);
     }
 
     /**
@@ -145,7 +145,7 @@ class Page extends ModelFunctionality
      * To get Page's url
      * @return string Page's url
      */
-    private function getUrl()
+    public function getUrl()
     {
         return $this->url;
     }
@@ -154,7 +154,7 @@ class Page extends ModelFunctionality
      * To get Page's web root
      * @return string Page's web root
      */
-    private function getWebroot()
+    protected function getWebroot()
     {
         (!isset($this->webroot)) ? $this->setWebroot() : null;
         return $this->webroot;
@@ -162,13 +162,24 @@ class Page extends ModelFunctionality
 
     /**
      * To get Page's params
-     * @return string[] Page's params
+     * @return Map Page's params
      */
-    // public function getParams()
-    private function getParams()
+    protected function getParamsMap()
     {
-        (!isset($this->params)) ? $this->parseUrl() : null;
-        return $this->params;
+        (!isset($this->paramsMap)) ? $this->parseUrl() : null;
+        return $this->paramsMap;
+    }
+
+    /**
+     * To get param at the given key
+     * @param mixed key of the param to get
+     * @return string|null param at the given key
+     */
+    // public function getParamsMap()
+    public function getParam($key)
+    {
+        $paramsMap = $this->getParamsMap();
+        return $paramsMap->get($key);
     }
 
     /**
@@ -176,7 +187,7 @@ class Page extends ModelFunctionality
      * @return string Page's path
      */
     // public function getPath()
-    private function getPath()
+    protected function getPath()
     {
         (!isset($this->path)) ? $this->parseUrl() : null;
         return $this->path;
@@ -191,7 +202,29 @@ class Page extends ModelFunctionality
         return $this->timeOn;
     }
 
-    private function getSetDate()
+    /**
+     * To get xhrMap
+     * @return Map xhrMap
+     */
+    private function getXhrMap()
+    {
+        (!isset($this->xhrMap)) ? $this->xhrMap = new Map() : null;
+        return $this->xhrMap;
+    }
+
+    /**
+     * To get xhrMap
+     * @return Xhr|null the last Xhr request added
+     */
+    private function getCurrentXhr()
+    {
+        // (!isset($this->xhrMap)) ? $this->xhrMap = new Map() : null;
+        $xhrMap = $this->getXhrMap();
+        $keys = $xhrMap->getKeys();
+        return (!empty($keys)) ? $xhrMap->get($keys[0]): null;
+    }
+
+    protected function getSetDate()
     {
         return $this->setDate;
     }
@@ -227,14 +260,52 @@ class Page extends ModelFunctionality
     }
 
     /**
+     * To add a new Xhr request on the Page
+     * @param Xhr   $xhr    Xhr to add
+     */
+    public function addXhr(Xhr $xhr)
+    {
+        // $xhr = new Xhr($url);
+        $xhrMap = $this->getXhrMap();
+        $unix = $xhr->getDateInSec();
+        $xhrMap->put($xhr, $unix);
+        $xhrMap->sortKeyDesc();
+        // $pageID = $this->getPageID();
+        // $xhr->insertXhr($response, $userID, $pageID);
+    }
+
+    // /**
+    //  * To add a new Event occured on the Page
+    //  * + Note: also insert the Event in the database
+    //  * @param Response  $response   where to strore results
+    //  * @param string $eventCode code that refer to a Event
+    //  * @param Map       $datasMap   holds datas submeted with the event
+    //  *                              + Note: must be list of key value, so deep must be of 1
+    //  */
+    // public function addEvent(Response $response, $eventCode, Map $datasMap = null)
+    // {
+    //     // $event = (!empty($datasMap)) ? new Event($eventCode, $datasMap) : new Event($eventCode);
+    //     // $unix = $event->getDateInSec();
+    //     // $eventsMap = $this->getEvents();
+    //     // $eventsMap->put($event, $unix);
+    //     // $eventsMap->sortKeyDesc();
+    //     // $pageID = $this->getPageID();
+    //     // $event->insertEvent($response, $pageID);
+    //     $xhr = $this->getCurrentXhr();
+    //     (!empty($datasMap)) ? $xhr->addEvent($response, $eventCode, $datasMap) : $xhr->addEvent( $response, $eventCode);
+    // }
+
+    /**
      * Check if Page is a XHR request
      * + will check if Page has the param Page::KEY_XHR
      * @return bool true if Page is a XHR request else false
      */
     public function isXHR()
     {
-        $params = $this->getParams();
-        return key_exists(self::KEY_XHR, $params);
+        $paramsMap = $this->getParamsMap();
+        // return key_exists(self::KEY_XHR, $params);
+        $keys = $paramsMap->getKeys();
+        return in_array(self::KEY_XHR, $keys);
     }
 
     /**
@@ -283,11 +354,13 @@ class Page extends ModelFunctionality
         $page->path = $tabLine["path"];
         $page->setDate = $tabLine["navDate"];
         $page->timeOn = (!empty($tabLine["timeOn"])) ? ((int) $tabLine["timeOn"]) : null;
-        $page->params = [];
+        $page->paramsMap = new Map();
         foreach ($tab as $tabLine) {
             if (isset($tabLine["paramKey"])) {
                 $key = $tabLine["paramKey"];
-                $page->params[$key] = $tabLine["paramValue"];
+                $value = $tabLine["paramValue"];
+                // $page->params[$key] = $tabLine["paramValue"];
+                $page->paramsMap->put($value, $key);
             }
         }
         // $page->setTimeOn($timeOn);
@@ -307,9 +380,10 @@ class Page extends ModelFunctionality
         $sql = "INSERT INTO `Navigations`(`navID`, `userId`, `navDate`, `url`, `webroot`, `path`, `timeOn`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
+        $pageID = $this->getPageID();
         array_push(
             $values,
-            $this->getPageID(),
+            $pageID,
             $userID,
             $this->getSetDate(),
             $this->getUrl(),
@@ -318,8 +392,10 @@ class Page extends ModelFunctionality
             $this->getTimeOn()
         );
         $this->insert($response, $sql, $values);
-        if (!$response->containError() && (!empty($this->getParams()))) {
-            $this->insertParams($response);
+        if (!$response->containError()) {
+            (!empty($this->getParamsMap()->getKeys())) ? $this->insertParams($response) : null;
+            $xhr = $this->getCurrentXhr();
+            (!empty($xhr)) ? $xhr->insertXhr($response, $userID, $pageID) : null;
         }
     }
 
@@ -351,7 +427,7 @@ class Page extends ModelFunctionality
      */
     public function insertParams(Response $response)
     {
-        $params = $this->getParams();
+        $params = $this->getParamsMap()->getMap();
         $nb = count($params);
         $bracket = "(?,?,?)"; // regex \[value-[0-9]*\]
         $sql = "INSERT INTO `NavigationsParameters`(`navId`, `paramKey`, `paramValue`)
