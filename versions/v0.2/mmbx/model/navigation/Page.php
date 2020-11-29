@@ -1,6 +1,6 @@
 <?php
 require_once 'model/ModelFunctionality.php';
-require_once 'model/navigation/Action.php';
+require_once 'model/navigation/Event.php';
 
 /**
  * This class represente a web page visited by the Visitor
@@ -56,10 +56,10 @@ class Page extends ModelFunctionality
 
     /**
      * Holds Visitor's behavior on the Page
-     * + Note: Action are ordered from new to hold
-     * @var Action[]
+     * + Note: Event are ordered from new to hold
+     * @var Event[]
      */
-    private $actions;
+    private $event;
 
     private const PREFIX_ID = "nav_";
 

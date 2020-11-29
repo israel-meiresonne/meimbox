@@ -33,9 +33,9 @@ class ControllerCheckout extends ControllerSecure
          * @var User */
         $person = $this->person;
         $address = $person->getSelectedAddress();
-        if (empty($address)) {
-            $this->redirect(self::extractController(get_class($this)), self::ACTION_ADDRESS);
-        }
+        // if (empty($address)) {
+            // $this->redirect(self::extractController(get_class($this)), self::ACTION_ADDRESS);
+        // }
         $datasView = [
             "address" => $address
         ];
@@ -90,6 +90,7 @@ class ControllerCheckout extends ControllerSecure
             if (!$response->containError()) {
                 $ctrName = self::extractController(ControllerCheckout::class);
                 $response->addResult(self::QR_SELECT_ADRS, $ctrName);
+                // $response->addResult(self::QR_SELECT_ADRS, true);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -111,7 +112,7 @@ class ControllerCheckout extends ControllerSecure
             $payMethod = Query::getParam(CheckoutSession::KEY_STRP_MTD);
             $sessionId = $person->createNewCheckout($response, $payMethod);
             if (!$response->containError()) {
-                $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
+                // $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -125,14 +126,18 @@ class ControllerCheckout extends ControllerSecure
      */
     public function rootController()
     {
+        /**
+         * @var User */
+        $person = $this->person;
         $ctrClass = get_class($this);
         $action = $this->getAction();
+        // $this->debug();
         switch ($action) {
             case ControllerCheckout::ACTION_INDEX:
                 if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
                     $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr, ControllerCheckout::ACTION_SIGN);
-                } else if (!$this->person->hasCookie(Cookie::COOKIE_ADRS)) {
+                } else if ((!$this->person->hasCookie(Cookie::COOKIE_ADRS)) || empty($person->getSelectedAddress())) {
                     $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr, ControllerCheckout::ACTION_ADDRESS);
                 }
@@ -147,6 +152,7 @@ class ControllerCheckout extends ControllerSecure
                 if ($this->person->hasCookie(Cookie::COOKIE_CLT)) {
                     $ctr = self::extractController($ctrClass);
                     $this->redirect($ctr);
+                    // $this->redirect($ctr, ControllerCheckout::ACTION_ADDRESS);
                 }
                 break;
             default:
@@ -155,5 +161,21 @@ class ControllerCheckout extends ControllerSecure
                 }
                 break;
         }
+    }
+
+    private function debug()
+    {
+        $hasCLT = $this->person->hasCookie(Cookie::COOKIE_CLT);
+        $ctr = $this->extractController(get_class($this));
+        $action = $this->getAction();
+        var_dump("action: $action");
+        echo "<hr>";
+        var_dump("hasCLT:", $hasCLT);
+        echo "<hr>";
+        var_dump("ctr: $ctr");
+        echo "<hr>";
+        var_dump($_SESSION);
+        echo "<hr>";
+        var_dump($_SERVER);
     }
 }

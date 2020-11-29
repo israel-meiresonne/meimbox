@@ -1222,7 +1222,8 @@ abstract class ModelFunctionality extends Model
      */
     protected static function getDateTime()
     {
-        return date('Y-m-d H:i:s');
+        // return date('Y-m-d H:i:s');
+        return date(self::DATE_FORMAT);
     }
 
     /**
@@ -1359,62 +1360,6 @@ abstract class ModelFunctionality extends Model
     }
     /*———————————————————————————— SHORTCUT UP ——————————————————————————————*/
     /*———————————————————————————— COMMON DOWN ——————————————————————————————*/
-
-    // /**
-    //  * To get a protected copy of a instance
-    //  * @return object copy of the Country instance
-    //  */
-    // protected function getCopy()
-    // {
-    //     // $map = get_object_vars($this);
-    //     $copy = clone $this;
-    //     // foreach ($map as $attr => $value) {
-    //     //     // var_dump(gettype($this->{$attr}));
-    //     //     // echo "<br>";
-    //     //     switch (gettype($this->{$attr})) {
-    //     //         case "array":
-    //     //             $copy->{$attr} = $this->cloneMap($this->{$attr});
-    //     //             break;
-    //     //         case "object":
-    //     //             $copy->{$attr} = $value->getCopy();
-    //     //             break;
-    //     //         default:
-    //     //             $copy->{$attr} = $value;
-    //     //             break;
-    //     //     }
-    //     // }
-    //     // $this->copyDebug($this, $copy);
-    //     return $copy;
-    // }
-
-    // /**
-    //  * To get A copy of the currrent instance
-    //  * @return Instance
-    //  */
-    // public function getCopy()
-    // {
-    //     $map = get_object_vars($this);
-    //     $attributs = array_keys($map);
-    //     $class = get_class($this);
-    //     $copy = new $class();
-    //     if($class == Size::class){
-    //     var_dump($this->size);
-    //     echo "<br>";
-    //     var_dump($attributs);
-    //     echo "<hr>";
-    // }
-    //     foreach ($attributs as $attribut) {
-    //         switch (gettype($this->{$attribut})) {
-    //                 // case 'object':
-    //                 //     $copy->{$attribut} = $this->{$attribut}->getCopy();
-    //                 //     break;
-    //             default:
-    //                 $copy->{$attribut} = $this->{$attribut};
-    //                 break;
-    //         }
-    //     }
-    //     return $copy;
-    // }
 
     private function copyDebug($obj, $copy)
     {

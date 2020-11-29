@@ -87,8 +87,8 @@ abstract class ControllerSecure extends Controller
         date_default_timezone_set('Europe/Paris');
         $this->setAction($action);
         $this->setPerson();
-        $this->person->unlockStock();
         $this->root();
+        $this->person->unlockStock();
     }
 
     /**

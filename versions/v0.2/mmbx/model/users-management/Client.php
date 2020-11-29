@@ -46,6 +46,7 @@ class Client extends User
         $session = $this->getSession();
         $navigation->handleRequest($session);
         $navigation->locate($session);
+        $navigation->saveResponseInFile();
         // (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
     }
 

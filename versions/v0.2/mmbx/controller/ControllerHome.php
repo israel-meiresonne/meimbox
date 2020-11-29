@@ -194,6 +194,17 @@ class ControllerHome extends ControllerSecure
         $this->generateJsonView($datasView, $response, $person);
     }
 
+    /**
+     * To handle Events
+     */
+    public function event()
+    {
+        $response = new Response();
+        $person = $this->person;
+        if()
+        $this->generateJsonView([], $response, $person);
+    }
+
     /*———————————————————————————— TESTS DOWN ———————————————————————————————*/
 
     public function test()
@@ -205,8 +216,29 @@ class ControllerHome extends ControllerSecure
         // var_dump($_GET);
         // $session = $person->getSession();
         // $session->destroy();
+        // $date = date(ModelFunctionality::DATE_FORMAT.":u");
+        // var_dump()
+        // echo str_repeat("-", 50)." _SERVER ".str_repeat("-", 50);
+        // var_dump($_SERVER);
+        echo str_repeat("-", 50)." _SESSION ".str_repeat("-", 50);
         var_dump($_SESSION);
+        echo str_repeat("-", 50)." _GET ".str_repeat("-", 50);
         var_dump($_GET);
+    }
+
+    public function test_redirector_sign()
+    {
+        header('content-type: application/json');
+        // sleep(5);
+        $ctr = $this->extractController(get_class($this));
+        $this->redirect($ctr, "qr/test_redirector_checkout");
+    }
+    public function test_redirector_checkout()
+    {
+        header('content-type: application/json');
+        // sleep(5);
+        $ctr = $this->extractController(get_class($this));
+        $this->redirect($ctr, "qr/test");
     }
 
     public function test_Navigation(){
@@ -231,18 +263,30 @@ class ControllerHome extends ControllerSecure
         $person = $this->person;
         $userID = $person->getUserID();
         $session = $person->getSession();
+        $response = new Response();
         // $session->destroy();
-        $localtion = new Location();
-        var_dump($localtion->generateLocationID($userID));
-        // var_dump($localtion);
+        $localtion = new Location("nav_ip21049o3iz202u02u3s821z1");
+        var_dump($localtion);
+        $localtion->insertLocation($response);
+        var_dump($response->getAttributs());
         var_dump($_SESSION);
         var_dump($_GET);
-        // $response = new Response();
         // $navDate = "2020-11-26 01:01:22";
         // $localtion->insertLocation($response, $userID, $navDate);
-        // var_dump($response->getAttributs());
     }
 
+    public function test_Device()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $response = new Response;
+        $device = new Device("nav_ip21049o3iz202u02u3s821z1");
+        var_dump($device);
+        $device->insertDevice($response);
+        var_dump($response->getAttributs());
+        var_dump($_SESSION);
+        var_dump($_GET);
+    }
     public function test_Page()
     {
         header('content-type: application/json');
@@ -251,22 +295,26 @@ class ControllerHome extends ControllerSecure
         // var_dump(Page::extractUrl());
         // require_once 'model/navigation/Device.php';
         // require_once 'model/navigation/Location.php';
-        // var_dump(new Device());
         // var_dump(Configuration::getEnvironement());
         // var_dump(new Location());
 
         // $nav =  new Navigation();
         $userID = $person->getUserID();
-        $page = new Page(Page::extractUrl(), date(ModelFunctionality::DATE_FORMAT, time()));
-        // $page = new Page("3330090", "2020-11-25 20:40:30");
         $session = $person->getSession();
-        $session->unset(Page::KEY_LAST_LOAD);
-        // $session->set(Page::KEY_LAST_LOAD, $page->generatePageID($userID));
+        $response = new Response;
+        // $page = new Page(Page::extractUrl());
+        $page = Page::retreivePage("nav_ip21049o3iz202u02u3s821z1");
+        $page->updatePage($response);
+        // var_dump(Page::retreivePage("nav_ip21049o3iz202u02u3s821z1"));
+        // $page->insertPage($response, $userID);
+        var_dump($response->getAttributs());
+        // $page = new Page("3330090", "2020-11-25 20:40:30");
+        // $session->unset(Page::KEY_LAST_LOAD);
+        // $session->set(Page::KEY_LAST_LOAD, $page->getPageID($userID));
         // $session->destroy();
-        // $response = new Response;
         // $page->updatePage($response, $userID);
         // $pageID = $page->generatePageID($userID);
-        var_dump($page->getPageType($session));
+        // var_dump($page->getPageType($session));
         var_dump($_SESSION);
         var_dump($_GET);
         // var_dump($pageID);
