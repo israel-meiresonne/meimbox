@@ -202,22 +202,41 @@ class ControllerHome extends ControllerSecure
     {
         $response = new Response();
         $person = $this->person;
-        if (empty(Query::getParam(Event::KEY_EVENT))) {
-            $errorMsg = "empty event sent";
+        $navigation = $person->getNavigation();
+        /**
+         * @var Xhr */
+        $xhr = $navigation->getUrlPage();
+        $holdsEvent = $xhr->getEvent();
+        if (!empty($holdsEvent)) {
+            $xhrID = $xhr->getXhrID();
+            $eventID = $holdsEvent->getEventID();
+            $errorMsg = "This Xhr '$xhrID' request already holds a Event '$eventID'";
             $response->addError($errorMsg, MyError::ADMIN_ERROR);
         } else {
-            $eventCode = Query::getParam(Event::KEY_EVENT);
-            $datas = json_decode(Query::getParam(Event::KEY_DATA), true, 2);
-            $datasMap = (!empty($datas)) ? new  Map($datas) : null;
-            $navigation = $person->getNavigation();
-            $currentPage = $navigation->getCurrentPage();
-            if (empty(Event::retreiveEventLine($eventCode))) {
-                $errorMsg = "Unkow event code '$eventCode'";
+            if (empty(Query::getParam(Event::KEY_EVENT))) {
+                $errorMsg = "empty event sent";
                 $response->addError($errorMsg, MyError::ADMIN_ERROR);
             } else {
-                (!empty($datasMap)) ? $currentPage->addEvent($response, $eventCode, $datasMap) : $currentPage->addEvent($response, $eventCode);
-                if (!$response->containError()) {
-                    $response->addResult(self::QR_EVENT, true);
+                $eventCode = Query::getParam(Event::KEY_EVENT);
+                if (empty(Event::retreiveEventLine($eventCode))) {
+                    $errorMsg = "Unkow event code '$eventCode'";
+                    $response->addError($errorMsg, MyError::ADMIN_ERROR);
+                } else {
+                    $json = htmlspecialchars_decode(Query::getParam(Event::KEY_DATA));
+                    var_dump($json);
+                    $datas = json_decode($json, true, 2);
+                    if ((isset($json)) && ($datas == false)) {
+                        $errorMsg = "The json submited is invalid '$json'";
+                        $response->addError($errorMsg, MyError::ADMIN_ERROR);
+                    } else {
+                        $userID = $person->getUserID();
+                        $datasMap = (!empty($datas)) ? new  Map($datas) : null;
+                        $event = new Event($eventCode, $datasMap);
+                        $xhr->handleEvent($response, $userID, $event);
+                        if (!$response->containError()) {
+                            $response->addResult(self::QR_EVENT, true);
+                        }
+                    }
                 }
             }
         }
@@ -229,7 +248,8 @@ class ControllerHome extends ControllerSecure
     public function test()
     {
         header('content-type: application/json');
-        // $person = $this->person;
+        $person = $this->person;
+        $person->getSession()->destroy();
         // $response = new Response();
         // $userID = $person->getUserID();
         // $pageID = "nav_z1065911j7102942j2az0z1l9";
@@ -243,10 +263,11 @@ class ControllerHome extends ControllerSecure
 
         // $a = ["a"=>[1,2,3]];
         // $a = ["a"=>1];
-        $a = "https://52c033d81cbe.eu.ngrok.io/versions/v0.2/mmbx/grid";
-        var_dump(parse_url($a));
-        parse_str(null, $params);
-        var_dump($params);
+        // $a = "https://52c033d81cbe.eu.ngrok.io/versions/v0.2/mmbx/grid";
+        // var_dump(parse_url($a));
+        // parse_str(null, $params);
+        // var_dump($params);
+        var_dump($_SESSION);
     }
 
     public function test_xhr()

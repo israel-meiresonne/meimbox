@@ -16,16 +16,22 @@ class Navigation extends ModelFunctionality
     private $userID;
 
     /**
+     * Holds Visitor's session from $_SESSION
+     * @var Session
+     */
+    private $session;
+
+    /**
      * Holds the Page using the submited url
-     * @var Page
+     * @var Page|Xhr
      */
     private static $urlPage;
 
-    // /**
-    //  * Holds the last pages
-    //  * @var Page
-    //  */
-    // private static $lastPage;
+    /**
+     * Holds the last pages
+     * @var Page
+     */
+    private static $lastPage;
 
     /**
      * Holds pages visited by the Visitor
@@ -81,33 +87,51 @@ class Navigation extends ModelFunctionality
     /**
      * Constructor
      * @param string    $userID     Visitor's id
+     * @param Session   $session    Visitor's Sesssion
      * @param int       $minTime    min time in second from today to get history in database
      * @param int       $maxTime    max time in second from today to get history in database
      */
-    public function __construct($userID, int $minTime = null, int $maxTime = null)
+    public function __construct($userID, Session $session, int $minTime = null, int $maxTime = null)
     {
         if (!isset($userID)) {
             throw new Exception("The Visitor's id must be setted");
         }
         $this->userID = $userID;
+        $this->session = $session;
         $this->response = new Response();
+        // $this->setLastPage();
     }
 
     /**
      * To set current Pages
      */
-    private function setCurrentPage()
+    private function setUrlPage()
     {
         $url = Page::extractUrl();
-        self::$urlPage = new Page($url);
+        $page = new Page($url);
+        self::$urlPage = ($page->isXHR()) ? new Xhr($url) : $page;
     }
+
+    // /**
+    //  * To set last page visited befored it be replaced with the current url request
+    //  */
+    // private function setLastPage()
+    // {
+    //     $session = $this->getSession();
+    //     $pageID = $session->get(Page::KEY_LAST_LOAD);
+    //     self::$lastPage = Page::retreivePage($pageID);
+    // }
 
     /**
      * To set current Device
      */
     private function setCurrentDevice()
     {
-        $pageID = $this->getUrlPage()->getPageID();
+        $page = $this->getUrlPage();
+        if ($page->isXHR()) {
+            throw new Exception("Device can't be initialized with a xhr request");
+        }
+        $pageID = $page->getPageID();
         self::$currentDevice = new Device($pageID);
     }
 
@@ -116,7 +140,12 @@ class Navigation extends ModelFunctionality
      */
     private function setCurrentLocation()
     {
-        $pageID = $this->getUrlPage()->getPageID();
+        // $pageID = $this->getUrlPage()->getPageID();
+        $page = $this->getUrlPage();
+        if ($page->isXHR()) {
+            throw new Exception("Location can't be initialized with a xhr request");
+        }
+        $pageID = $page->getPageID();
         self::$currentLocation = new Location($pageID);
     }
 
@@ -130,23 +159,48 @@ class Navigation extends ModelFunctionality
     }
 
     /**
+     * To get Visitor's session
+     * @return Session Visitor's session
+     */
+    private function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
      * To get the current Pages
-     * @return Page current Page
+     * + Note: return a Xhr object if the current url is a xhr request else return a Page object
+     * @return Page|Xhr current Page
      */
     public function getUrlPage()
     {
-        (!isset(self::$urlPage)) ? $this->setCurrentPage() : null;
+        (!isset(self::$urlPage)) ? $this->setUrlPage() : null;
         return self::$urlPage;
     }
 
     // /**
-    //  * To get the current Pages
-    //  * @return Page current Page
+    //  * To get the last Pages visited by the Visitor
+    //  * @return Page last Pages visited by the Visitor
     //  */
     // public function getLastPage()
     // {
-    //     (!isset(self::$currentPage)) ? $this->setCurrentPage() : null;
-    //     return self::$currentPage;
+    //     // (!isset(self::$lastPage)) ? $this->setLastPage() : null;
+    //     return self::$lastPage;
+    // }
+
+    // /**
+    //  * To convert the Page to Xhr if the url request is a xhr request
+    //  * @return Xhr          if the url request is a xhr request
+    //  * @throws Exception    if the url request is not a xhr request
+    //  */
+    // public function getXhr()
+    // {
+    //     $urlPage = $this->getUrlPage();
+    //     $url = $urlPage->getUrl();
+    //     if(!$urlPage->isXHR()){
+    //         throw new Exception("The current url '$url' request is not a xhr request");
+    //     }
+    //     return Xhr::PageToXhr($urlPage);
     // }
 
     /**
@@ -180,22 +234,26 @@ class Navigation extends ModelFunctionality
 
     /**
      * To handle submited request
-     * @param Session $session Visitor's Sesssion
      */
-    public function handleRequest(Session $session)
+    public function handleRequest()
     {
+        $session = $this->getSession();
+        // $this->getLastPage();
         $userID = $this->getUserID();
         $urlPage = $this->getUrlPage();
         $response = $this->getResponse();
 
         $pageType = $urlPage->getPageType($session);
-        // var_dump($pageType);
+        // var_dump($urlPage);
         switch ($pageType) {
             case Page::TYPE_XHR:
                 try {
-                    /** Update Time on last Page */
-                    $url = $urlPage->getUrl();
-                    $xhr = new Xhr($url);
+                    if (!$urlPage->isXHR()) {
+                        throw new Exception("Page url must be a Xhr request when the Page type is xhr");
+                    }
+                    /**
+                     * @var Xhr  */
+                    $xhr = $urlPage;
                     $currentPageID = $xhr->getParam(Page::KEY_XHR);
                     $lastPage = Page::retreivePage($currentPageID);
                     $lastPage->updatePage($response);
@@ -238,12 +296,13 @@ class Navigation extends ModelFunctionality
 
     /**
      * To locate Visitor
-     * @param Session $session Visitor's Sesssion
      */
-    public function locate(Session $session)
+    public function locate()
     {
+        $session = $this->getSession();
         $locationID = $session->get(Location::KEY_LOCATED);
-        if (!isset($locationID)) {
+        $urlPage = $this->getUrlPage();
+        if ((!isset($locationID)) && (!$urlPage->isXHR())) {
             $currentLocation = $this->getCurrentLocation();
             $response = $this->getResponse();
             $currentLocation->insertLocation($response);
@@ -254,9 +313,7 @@ class Navigation extends ModelFunctionality
 
     /**
      * To detect Visitor's Device
-     * @param Session $session Visitor's Sesssion
      */
-    // public function detectDevice(Session $session)
     public function detectDevice()
     {
         $currentDevice = $this->getCurrentDevice();

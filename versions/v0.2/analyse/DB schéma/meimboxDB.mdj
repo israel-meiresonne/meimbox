@@ -26096,8 +26096,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFwh4nfLvu3Ac8="
 									},
-									"name": "navId",
-									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
+									"name": "xhrId",
+									"documentation": "# Definition\n\nId of the xhr request that bring the event\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
 									"type": "VARCHAR",
 									"length": "50",
 									"primaryKey": true,

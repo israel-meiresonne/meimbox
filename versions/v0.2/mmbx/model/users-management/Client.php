@@ -33,7 +33,7 @@ class Client extends User
         $this->newsletter = (bool) $this->userLine["newsletter"];
         // $this->setMeasure();
         $this->manageCookie(Cookie::COOKIE_CLT, true);
-        // ($track) ? $this->trackNavigation() : null;
+        ($track) ? $this->trackNavigation() : null;
     }
 
     /**
@@ -42,10 +42,10 @@ class Client extends User
      */
     protected function trackNavigation($VIS_VAL = null)
     {
+        // $session = $this->getSession();
         $navigation = $this->getNavigation();
-        $session = $this->getSession();
-        $navigation->handleRequest($session);
-        $navigation->locate($session);
+        $navigation->handleRequest();
+        $navigation->locate();
         $navigation->saveResponseInFile();
         // (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
     }

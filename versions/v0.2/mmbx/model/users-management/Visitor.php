@@ -125,7 +125,7 @@ class Visitor extends ModelFunctionality
                 } else {
                     $this->setKnownVisitor($VIS_VAL);
                 }
-                // $this->trackNavigation($VIS_VAL);
+                $this->trackNavigation($VIS_VAL);
                 break;
             case Administrator::class:
             case Client::class:
@@ -144,9 +144,9 @@ class Visitor extends ModelFunctionality
     protected function trackNavigation($VIS_VAL = null)
     {
         $navigation = $this->getNavigation();
-        $session = $this->getSession();
-        $navigation->handleRequest($session);
-        $navigation->locate($session);
+        // $session = $this->getSession();
+        $navigation->handleRequest();
+        $navigation->locate();
         (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
         $navigation->saveResponseInFile();
     }
@@ -207,7 +207,8 @@ class Visitor extends ModelFunctionality
     private function setNavigation()
     {
         $userID = $this->getUserID();
-        $this->navigation = new Navigation($userID);
+        $session = $this->getSession();
+        $this->navigation = new Navigation($userID, $session);
     }
 
     /**

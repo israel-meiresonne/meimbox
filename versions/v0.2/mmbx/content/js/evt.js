@@ -1,6 +1,6 @@
 (function(){
     evt = (e, j) => {
-        var map = { [EVT_K]: e, EVT_D: j};
+        var map = { [EVT_K]: e, [EVT_D]: j};
         var p = mapToParam(map);
         var d = {
             "a": QR_EVENT,
