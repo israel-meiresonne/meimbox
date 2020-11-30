@@ -61,9 +61,37 @@ class Xhr extends Page
      * To get Event
      * @return Event event occured on the page
      */
-    private function getEvent()
+    public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * To handle a Event by insert it into database
+     * @param Response  $response   where to strore results
+     * @param string    $userID     Visitor's id
+     * @param Event     $event      the Event to handle
+     */
+    public function handleEvent(Response $response, $userID, Event $event)
+    {
+        $holdsEvent = $this->getEvent();
+        if (!empty($holdsEvent)) {
+            $eventID = $holdsEvent->getEventID();
+            throw new Exception("This xhr request already holds a Event '$eventID'");
+        }
+        $xhrID = $this->getXhrID();
+        $sql =
+            "SELECT * 
+        FROM `Navigations`n
+        LEFT JOIN `Navigations-Events`ne ON n.`navID`=ne.`xhrId`
+        WHERE n.`navID`='$xhrID'";
+        $tab = $this->select($sql);
+        if (empty($tab)) { // mean that Xhr didn't be inserted already
+            $currentPageID = $this->getParam(Page::KEY_XHR);
+            $this->insertXhr($response, $userID, $currentPageID);
+        } else { // mean that Xhr have been inserted already but dont holds any event
+            $event->insertEvent($response, $xhrID);
+        }
     }
 
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/

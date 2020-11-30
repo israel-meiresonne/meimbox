@@ -96,7 +96,7 @@ class Event extends ModelFunctionality
      * To get Event's eventID
      * @return string Event's eventID
      */
-    private function getEventID()
+    public function getEventID()
     {
         return $this->eventID;
     }
@@ -162,7 +162,7 @@ class Event extends ModelFunctionality
     public function insertEvent(Response $response, $xhrID)
     {
         $bracket = "(?,?,?,?)"; // regex \[value-[0-9]*\]
-        $sql = "INSERT INTO `Navigations-Events`(`navId`, `eventID`, `event_code`, `eventDate`)
+        $sql = "INSERT INTO `Navigations-Events`(`xhrId`, `eventID`, `event_code`, `eventDate`)
             VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
         array_push(

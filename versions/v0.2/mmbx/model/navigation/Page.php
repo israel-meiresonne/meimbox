@@ -85,7 +85,7 @@ class Page extends ModelFunctionality
      * @var string
      */
     public const KEY_LAST_LOAD = "last_load";
-    public const KEY_CURRENT_LOAD = "current_load";
+    // public const KEY_CURRENT_LOAD = "current_load";
 
     /**
      * Holds Page's type
@@ -246,9 +246,14 @@ class Page extends ModelFunctionality
     public function getPageType(Session $session)
     {
         $pageType = null;
-        $pageID = $session->get(Page::KEY_LAST_LOAD);
-        $hasLast = isset($pageID);
         $isXHR = $this->isXHR();
+        if($isXHR){
+            $pageID = $this->getParam(self::KEY_XHR);
+            $hasLast = isset($pageID);
+        } else {
+            $pageID = $session->get(Page::KEY_LAST_LOAD);
+            $hasLast = isset($pageID);
+        }
         if ($hasLast && $isXHR) {
             $pageType = self::TYPE_XHR;
         } else if ($hasLast && (!$isXHR)) {

@@ -28,6 +28,9 @@ require_once 'model/special/Response.php';
  */
 $person = $person;
 $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
+$navigation = $person->getNavigation();
+$pageID = $navigation->getUrlPage()->getPageID();
+// $lastPageID = $navigation->getLastPage()->getPageID();
 ?>
 <!DOCTYPE html>
 <html lang="<?= $isoLang ?>">
@@ -117,7 +120,6 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const EVT_K = "<?= Event::KEY_EVENT ?>";
         const EVT_D = "<?= Event::KEY_DATA ?>";
 
-
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
         const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
         const GRID_STICKERS_KEY = "<?= ControllerGrid::GRID_STICKERS_KEY ?>";
@@ -191,7 +193,7 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
         const BNR = 1000000;
         const XHR = "<?= Page::PATH_XHR ?>";
         const LANG = "lang=" + $("html").attr("lang");
-        const QR_XHR = "?<?= Page::KEY_XHR ?>=true";
+        const QR_XHR = "?<?= Page::KEY_XHR ?>=<?= $pageID ?>";
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
         const ER_TYPE_COMMENT = "<?= self::ER_TYPE_COMMENT ?>";
@@ -265,7 +267,6 @@ $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 
 <body>
     <?= $this->generateFbPixel() ?>
-
     <?php
     $file = 'view/Template/files/headers/' . $this->header;
     $company = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
