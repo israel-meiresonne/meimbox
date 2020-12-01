@@ -80,9 +80,12 @@ $brandsMeasures = $brandsMeasures;
                         $elements[$index] = $element;
                     }
                     $sliderClass = "showed_product_slider";
+                    $buttonDatasMap = new Map();
+
                     $datas = [
                         "elements" => $elements,
-                        "sliderClass" => $sliderClass
+                        "sliderClass" => $sliderClass,
+                        "name" => "product pictures"
                     ];
                     echo $this->generateFile("view/elements/slider.php", $datas);
                     ?>
@@ -181,13 +184,14 @@ $brandsMeasures = $brandsMeasures;
                                 <ul class="remove-ul-default-att">
                                     <li class="remove-li-default-att">
                                         <div class="collapse-div">
-                                            <div class="collapse-title-div">
-                                                <?php
-                                                $descriptionTitle = $translator->translateStation("US29");
-                                                $description = $product->getDescription();
-                                                $shippingTitle = $translator->translateStation("US30");
-                                                $shippingTxt = $translator->translateStation("US31");
-                                                ?>
+                                            <?php
+                                            $descriptionTitle = $translator->translateStation("US29");
+                                            $description = $product->getDescription();
+                                            $eventJson = htmlentities(json_encode(["prodID" => $prodID]));
+                                            $shippingTitle = $translator->translateStation("US30");
+                                            $shippingTxt = $translator->translateStation("US31");
+                                            ?>
+                                            <div class="collapse-title-div" data-evtopen="evt_cd_11" data-evtclose="evt_cd_12" data-evtj="<?= $eventJson ?>">
                                                 <div class="collapse-title"><?= $descriptionTitle ?></div>
                                                 <div class="collapse-symbol">
                                                     <div class="plus_symbol-container">
@@ -207,7 +211,7 @@ $brandsMeasures = $brandsMeasures;
                                     </li>
                                     <li class="remove-li-default-att">
                                         <div class="collapse-div">
-                                            <div class="collapse-title-div">
+                                            <div class="collapse-title-div" data-evtopen="evt_cd_13" data-evtclose="evt_cd_14">
                                                 <div class="collapse-title"><?= $shippingTitle ?></div>
                                                 <div class="collapse-symbol">
                                                     <div class="plus_symbol-container">

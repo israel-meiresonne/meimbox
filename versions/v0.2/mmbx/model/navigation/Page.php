@@ -8,6 +8,13 @@ require_once 'model/navigation/Xhr.php';
  */
 class Page extends ModelFunctionality
 {
+
+    /**
+     * Holds the type of the Page
+     * @var string
+     */
+    private static $pageType;
+
     /**
      * Holds Page's id
      * @var string
@@ -221,7 +228,7 @@ class Page extends ModelFunctionality
         // (!isset($this->xhrMap)) ? $this->xhrMap = new Map() : null;
         $xhrMap = $this->getXhrMap();
         $keys = $xhrMap->getKeys();
-        return (!empty($keys)) ? $xhrMap->get($keys[0]): null;
+        return (!empty($keys)) ? $xhrMap->get($keys[0]) : null;
     }
 
     protected function getSetDate()
@@ -245,23 +252,29 @@ class Page extends ModelFunctionality
      */
     public function getPageType(Session $session)
     {
-        $pageType = null;
-        $isXHR = $this->isXHR();
-        if($isXHR){
-            $pageID = $this->getParam(self::KEY_XHR);
-            $hasLast = isset($pageID);
-        } else {
-            $pageID = $session->get(Page::KEY_LAST_LOAD);
-            $hasLast = isset($pageID);
+        // $pageType = null;
+        if (!isset(self::$pageType)) {
+            $isXHR = $this->isXHR();
+            if ($isXHR) {
+                $pageID = $this->getParam(self::KEY_XHR);
+                $hasLast = isset($pageID);
+            } else {
+                $pageID = $session->get(Page::KEY_LAST_LOAD);
+                $hasLast = isset($pageID);
+            }
+            if ($hasLast && $isXHR) {
+                // $pageType = self::TYPE_XHR;
+                self::$pageType = self::TYPE_XHR;
+            } else if ($hasLast && (!$isXHR)) {
+                // $pageType = self::TYPE_NAVIGATOR;
+                self::$pageType = self::TYPE_NAVIGATOR;
+            } else if ((!$hasLast) && (!$isXHR)) {
+                // $pageType = self::TYPE_NEWCOMER;
+                self::$pageType = self::TYPE_NEWCOMER;
+            }
         }
-        if ($hasLast && $isXHR) {
-            $pageType = self::TYPE_XHR;
-        } else if ($hasLast && (!$isXHR)) {
-            $pageType = self::TYPE_NAVIGATOR;
-        } else if ((!$hasLast) && (!$isXHR)) {
-            $pageType = self::TYPE_NEWCOMER;
-        }
-        return $pageType;
+        // return $pageType;
+        return self::$pageType;
     }
 
     /**

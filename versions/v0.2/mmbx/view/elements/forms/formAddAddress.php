@@ -83,31 +83,29 @@ $translator = $translator;
             </div>
             <div class="form-input-block form-double-input-block">
                 <div class="form-input-container">
-                    <div class="form-input-dropdown-container">
-                        <?php
-                        $countriesMap = Country::getCountriesPriced();
-                        $isoCountries = $countriesMap->getKeys();
-                        $inputMap = new Map();
-                        foreach ($isoCountries as $isoCountry) {
-                            $label = $countriesMap->get($isoCountry, Map::countryName);
-                            if ($label != $country->getCountryNameDefault()) {
-                                $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                // $inputMap->put(Country::INPUT_ISO_COUNTRY.Country::INPUT_EXT_ADRS, $label, Map::inputName);
-                                $inputMap->put(Country::INPUT_ISO_COUNTRY_ADRS, $label, Map::inputName);
-                                $inputMap->put($isoCountry, $label, Map::inputValue);
-                                $inputMap->put($isChecked, $label, Map::isChecked);
-                                $inputMap->put(null, $label, Map::inputFunc);
-                            }
+                    <?php
+                    $frmId = ModelFunctionality::generateDateCode(25);
+                    $frmIdx = "#$frmId";
+
+                    $countriesMap = Country::getCountriesPriced();
+                    $isoCountries = $countriesMap->getKeys();
+                    $inputMap = new Map();
+                    foreach ($isoCountries as $isoCountry) {
+                        $label = $countriesMap->get($isoCountry, Map::countryName);
+                        if ($label != $country->getCountryNameDefault()) {
+                            $isChecked = ($country->getIsoCountry() == $isoCountry);
+                            $inputMap->put(Country::INPUT_ISO_COUNTRY_ADRS, $label, Map::inputName);
+                            $inputMap->put($isoCountry, $label, Map::inputValue);
+                            $inputMap->put($isChecked, $label, Map::isChecked);
                         }
-                        $datas = [
-                            "title" => $translator->translateStation("US65"),
-                            "inputMap" => $inputMap,
-                            "func" => null,
-                            "isRadio" => true,
-                            "isDisplayed" => false
-                        ];
-                        echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
-                        ?>
+                    }
+                    $title = $translator->translateStation("US65");
+                    $isRadio = true;
+                    $isDisplayed = false;
+                    $countryDpd = new DropDown($title, $inputMap, $isRadio, $isDisplayed);
+                    ?>
+                    <div id="<?= $frmId ?>" class="form-input-dropdown-container">
+                        <?= $countryDpd; ?>
                         <p class="comment"></p>
                     </div>
                 </div>

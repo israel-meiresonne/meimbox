@@ -56,7 +56,7 @@ $address = (!empty($address)) ? $address : null;
             endif;
             ?>
         </div>
-        <div <?= $Tagbodyid ?> class="summary-detail-inner">
+        <div <?= $Tagbodyid ?> data-evtopen="evt_cd_17" data-evtclose="evt_cd_18" class="summary-detail-inner">
             <hr class="hr-summary">
             <div class="summary-detail-property-div">
                 <ul class="summary-detail-property-lu remove-ul-default-att">
@@ -78,24 +78,24 @@ $address = (!empty($address)) ? $address : null;
                                         $label = $countriesMap->get($isoCountry, Map::countryName);
                                         if ($label != $country->getCountryNameDefault()) {
                                             $isChecked = ($country->getIsoCountry() == $isoCountry);
-                                            // $inputMap->put(Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR, $label, Map::inputName);
                                             $inputMap->put(Country::INPUT_ISO_COUNTRY_VISITOR, $label, Map::inputName);
                                             $inputMap->put($isoCountry, $label, Map::inputValue);
                                             $inputMap->put($isChecked, $label, Map::isChecked);
-                                            $inputMap->put("updateCountry('$frmIdx')", $label, Map::inputFunc);
+                                            $inputJson = htmlentities(json_encode(["iso_country"=>$isoCountry]));
+                                            $inputAttr = "onclick=\"updateCountry('$frmIdx');evt('evt_cd_21', '$inputJson');\"";
+                                            $inputMap->put($inputAttr, $label, Map::attribut);
                                         }
                                     }
-                                    $datas = [
-                                        "title" => $translator->translateStation("US65"),
-                                        "inputMap" => $inputMap,
-                                        "func" => null,
-                                        "isRadio" => true,
-                                        "isDisplayed" => false
-                                    ];
-                                    // echo $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
+                                    $title = $translator->translateStation("US65");
+                                    $isRadio = true;
+                                    $isDisplayed = false;
+                                    $eventMap = new Map();
+                                    $eventMap->put("evt_cd_19", Map::open);
+                                    $eventMap->put("evt_cd_20", Map::close);
+                                    $countryDpd = new DropDown($title, $inputMap, $isRadio, $isDisplayed, $eventMap);
                                     ?>
                                     <div id="<?= $frmId ?>" class="dropdown-container">
-                                        <?= $this->generateFile('view/elements/dropdown/dropdown2.php', $datas); ?>
+                                        <?= $countryDpd ?>
                                     </div>
                                 </div>
                             <?php
@@ -127,7 +127,6 @@ $address = (!empty($address)) ? $address : null;
                         <div class="summary-detail-property-shipping-div">
                             <div class="data-key_value-opposite-wrap">
                                 <span class="data-key_value-key">shipping: </span>
-                                <!-- <span class="info-style data-key_value-value">(Select a country)</span> -->
                                 <span class="data-key_value-value" data-basket="shipping"><?= $basket->getShipping()->getFormated() ?></span>
                             </div>
                         </div>
@@ -137,7 +136,6 @@ $address = (!empty($address)) ? $address : null;
                         <div class="data-key_value-opposite-wrap">
                             <span class="data-key_value-key">
                                 <span style="text-transform: uppercase;">VAT</span>
-                                <!-- <span style="text-transform: lowercase">(included): </span> -->
                                 <span style="text-transform: lowercase">(<?= $country->getVatDisplayable() ?>): </span>
                             </span>
                             <span class="data-key_value-value" data-basket="vat"><?= $basket->getVatAmount()->getFormated(); ?></span>
@@ -160,7 +158,6 @@ $address = (!empty($address)) ? $address : null;
             </div>
             <div class="summary-detail-button-div">
                 <?php
-
                 switch ($conf) {
                     case self::CONF_SOMMARY_CHECKOUT:
                         $sbtnid = ModelFunctionality::generateDateCode(25);
@@ -178,7 +175,6 @@ $address = (!empty($address)) ? $address : null;
                         </div>
                     <?php
                         break;
-
                     case self::CONF_SOMMARY_SHOPBAG:
                     ?>
                         <div class="summary-detail-button-inner">
@@ -193,7 +189,6 @@ $address = (!empty($address)) ? $address : null;
                         break;
                 }
                 ?>
-
             </div>
             <div class="summary-payement">
                 <ul class="payement-ul remove-ul-default-att">
@@ -264,19 +259,6 @@ $address = (!empty($address)) ? $address : null;
                                     </div>
                                 </div>
                             </li>
-                            <!-- <li class="safe_info-li remove-li-default-att">
-                                <div class="img_text_down-wrap">
-                                    <div class="img_text_down-img-div">
-                                        <div class="img_text_down-img-inner">
-                                            <img src="<?= "" //self::$DIR_STATIC_FILES 
-                                                        ?>icons8-headset-96.png">
-                                        </div>
-                                    </div>
-                                    <div class="img_text_down-text-div">
-                                        <span>customer service 24h/7 <br> response in 1h</span>
-                                    </div>
-                                </div>
-                            </li> -->
                             <li class="safe_info-li remove-li-default-att">
                                 <div class="img_text_down-wrap">
                                     <div class="img_text_down-img-div">
@@ -312,7 +294,7 @@ $address = (!empty($address)) ? $address : null;
                         <ul class="remove-ul-default-att">
                             <li class="remove-li-default-att">
                                 <div class="collapse-div">
-                                    <div class="collapse-title-div">
+                                    <div class="collapse-title-div" data-evtopen="evt_cd_23" data-evtclose="evt_cd_24">
                                         <div class="collapse-title">contact us</div>
                                         <div class="collapse-symbol">
                                             <div class="plus_symbol-container">

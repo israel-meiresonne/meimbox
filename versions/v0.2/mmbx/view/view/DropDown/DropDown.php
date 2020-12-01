@@ -16,7 +16,7 @@ class DropDown extends View
      * + $inputMap[label][Map::inputName]   =>  string,
      * + $inputMap[label][Map::inputValue]  =>  string,
      * + $inputMap[label][Map::isChecked]   =>  boolean,    set true to check input else false
-     * + $inputMap[label][Map::inputFunc]   =>  string|null function to place on the input
+     * + $inputMap[label][Map::attribut]    =>  string|null attribut to add on input tag
      */
     private $inputMap;
 
@@ -39,6 +39,14 @@ class DropDown extends View
     private $isDisplayed;
 
     /**
+     * Holds event data tag
+     * + Map[Map::open] => eventCode{string}
+     * + Map[Map::close] => eventCode{string}
+     * @var Map
+     */
+    private $eventMap;
+
+    /**
      * Constructor
      * @param string    $title          the name of the dropdown that will be displayed
      * @param Map       $inputMap       all datas required to build inputs
@@ -49,14 +57,17 @@ class DropDown extends View
      * @param string    $commonFunc     function that will be placed on all input
      * @param bool      $isRadio        set true if it's radio else false
      * @param bool      $isDisplayed    set true to display content else set false
+     * @param Map       $eventMap       event to place  on dropdown to detect open and close event
+     *                                  + Map[Map::open] => eventCode{string}
+     *                                  + Map[Map::close] => eventCode{string}
      */
-    public function __construct($title, $inputMap, $commonFunc, $isRadio, $isDisplayed)
+    public function __construct($title, $inputMap, $isRadio, $isDisplayed, Map $eventMap = null)
     {
         $this->title = $title;
         $this->inputMap = $inputMap;
-        $this->commonFunc = $commonFunc;
         $this->isRadio = (bool) $isRadio;
         $this->isDisplayed = (bool) $isDisplayed;
+        $this->eventMap = $eventMap;
     }
 
     /**
@@ -78,12 +89,12 @@ class DropDown extends View
     }
 
     /**
-     * To get CommonFunc
-     * @return string
+     * To get eventMap
+     * @return Map
      */
-    private function getCommonFunc()
+    private function getEventMap()
     {
-        return $this->commonFunc;
+        return $this->eventMap;
     }
 
     /**
@@ -109,10 +120,10 @@ class DropDown extends View
         $datas = [
             "title" => $this->getTitle(),
             "inputMap" => $this->getInputMap(),
-            "func" => $this->getCommonFunc(),
             "isRadio" => $this->isRadio(),
             "isDisplayed" => $this->isDisplayed(),
+            "eventMap" => $this->getEventMap()
         ];
-        return $this->generateFile('view/elements/dropdown/dropdown2.php', $datas);
+        return $this->generateFile('view/view/DropDown/files/dropdown2.php', $datas);
     }
 }

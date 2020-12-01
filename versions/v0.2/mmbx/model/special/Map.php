@@ -18,6 +18,9 @@ class Map
     public const side = "side";
     public const vertical = "vertical";
     public const error = "error";
+    public const attribut = "attribut";
+    public const open = "open";
+    public const close = "close";
 
     /**
      * Keys for Mosaic
