@@ -25,18 +25,25 @@
     //———————————————————————————— SHORTCUT DOWN ——————————————————————————————————————————————————
 
     popAlert = function (m) {
+        var mp = { "alert": m };
+        var j = json_encode(mp);
+        evt('evt_cd_10', j);
         window.alert(m);
     }
 
     popAsk = function (m) {
-        return window.confirm(m);
+        var rsp = window.confirm(m);
+        var r = (rsp) ? "true" : "false";
+        var mp = { "ask": m, "response": r };
+        var j = json_encode(mp);
+        evt('evt_cd_9', j);
+        return rsp;
     }
 
     setArticleHeight = function () {
         var textes = $(".detail-text-div");
         var prices = $(".detail-price-div");
         var color = $(".detail-color-div");
-        // console.log($(prices[0]).height(500));
         var maxTextes = maxHeight(textes);
         var maxPrices = maxHeight(prices);
         var maxColor = maxHeight(color);
@@ -133,10 +140,12 @@
             $(bodyx).slideUp(TS);
             $(headx).addClass("dropdown-arrow-close");
             $(headx).removeClass("dropdown-arrow-open");
+            evtClose(headx);
         } else {
             $(bodyx).slideDown(TS);
             $(headx).addClass("dropdown-arrow-open");
             $(headx).removeClass("dropdown-arrow-close");
+            evtOpen(headx);
         }
     }
 
@@ -157,9 +166,11 @@
         if (isDisplayed(bodyx)) {
             $(bodyx).slideUp(TS);
             $(arrowx).removeClass("arrow-element-open");
+            evtClose(bodyx);
         } else {
             $(bodyx).slideDown(TS);
             $(arrowx).addClass("arrow-element-open");
+            evtOpen(bodyx);
         }
     }
 
@@ -188,8 +199,8 @@
         }
     }
 
-    var animateCollapse = function (selector) {
-        var collapseDiv = selector.parentNode
+    animateCollapse = function (x) {
+        var collapseDiv = x.parentNode
         var collapseId = "collapse_" + randomInt(BNR);
         collapseDiv.setAttribute("id", collapseId);
 
@@ -204,9 +215,11 @@
         if (isDisplayed) {
             $(textDivSelector).slideUp(TS);
             $(verticalBarSelector)[0].className = $(verticalBarSelector)[0].className.replace(/ remove-vertical/g, "");
+            evtClose(x);
         } else {
             $(textDivSelector).slideDown(TS);
             $(verticalBarSelector).addClass("remove-vertical");
+            evtOpen(x)
         }
         collapseDiv.removeAttribute("id");
         wrapper.removeAttribute("id");
@@ -457,15 +470,18 @@
         //—— MEASUREMENT INPUT UP ——//
         /*—————————————————— SIZE CUSTOMISER UP —————————————————————————————*/
         /*———————————————————————————————— SIDE_MENU DOWN ———————————————————————————*/
-        $("#header_burger").click(()=>{
-            var x = $(".side_menu");
-            if(isDisplayed(x)){
-                $(x).animate({"left":"-100vw"}, TS, () => {
-                    $(x).css("display", "none");
+        $("#header_burger").click((o) => {
+            var x = o.currentTarget;
+            var m = $(".side_menu");
+            if (isDisplayed(m)) {
+                $(m).animate({ "left": "-100vw" }, TS, () => {
+                    $(m).css("display", "none");
                 });
+                $(x).attr("onclick", "evt('evt_cd_2')");
             } else {
-                $(x).css("display", "block");
-                $(x).animate({"left":0}, TS);
+                $(m).css("display", "block");
+                $(m).animate({ "left": 0 }, TS);
+                $(x).attr("onclick", "evt('evt_cd_4')");
             }
         });
         /*———————————————————————————————— SIDE_MENU UP —————————————————————————————*/

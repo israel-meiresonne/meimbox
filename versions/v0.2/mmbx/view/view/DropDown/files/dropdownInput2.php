@@ -6,12 +6,11 @@
  * + $inputMap[label] =>[
  *          Map::inputName => string,
  *          Map::inputValue => string,
- *          Map::isChecked => boolean,  // set true to check input else false
- *          Map::inputFunc => string|null,   // function to place on the input
- *          Map::tag => string|null     // to add set additional tag
+ *          Map::isChecked => boolean,      // set true to check input else false
+ *          Map::attribut => string|null    // attribut to add on input tag
  *      ]
  * + 🚨only one input of $inputMap can has Map::isChecked = true
- * @param string $func function placed on all input
+//  * @param string $func function placed on all input
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
  */
@@ -25,20 +24,12 @@ $labels = $inputMap->getKeys();
 $inputType = ($isRadio) ? "radio" : "checkbox";
 foreach ($labels as $label) :
     $Tagchecked = ($inputMap->get($label, Map::isChecked)) ? 'checked="true"' : null;
-    $inputFunc = $inputMap->get($label, Map::inputFunc);
-
-    if (!empty($func)) {
-        $Tagfunc = 'onclick="' . $func . ";" . $inputFunc . '"';
-    } else if (!empty($inputFunc)) {
-        $Tagfunc = 'onclick="' . $inputFunc . '";';
-    } else {
-        $Tagfunc = null;
-    }
+    $TagAttr = $inputMap->get($label, Map::attribut);
     $inpid = ModelFunctionality::generateDateCode(25);
 ?>
     <div class="dropdown-checkbox-block">
-        <label class="checkbox-label" for="<?= $inpid ?>"><?= $translator->translateString($label) ?>
-            <input id="<?= $inpid ?>" <?= $Tagfunc ?> type="<?= $inputType ?>" name="<?= $inputMap->get($label, Map::inputName) ?>" value="<?= $inputMap->get($label, Map::inputValue) ?>" <?= $Tagchecked ?>>
+        <label class="checkbox-label" for="<?= $inpid ?>"><?= $label ?>
+            <input id="<?= $inpid ?>" <?= $Tagchecked ?> <?= $TagAttr ?> type="<?= $inputType ?>" name="<?= $inputMap->get($label, Map::inputName) ?>" value="<?= $inputMap->get($label, Map::inputValue) ?>">
             <span class="checkbox-checkmark"></span>
         </label>
     </div>

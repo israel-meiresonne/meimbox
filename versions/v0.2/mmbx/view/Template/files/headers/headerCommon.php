@@ -16,7 +16,9 @@ $brandName = strtoupper($company->get(Map::brand));
 $homeLink = "";
 $gridLink = ControllerSecure::extractController(ControllerGrid::class);
 
-$TagAddBoxFunc = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);\"";
+// $TagAddBoxFunc = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);\"";
+$TagAddBoxFunc_sideMenu = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);evt('evt_cd_3');\"";
+$TagAddBoxFunc_header = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);evt('evt_cd_5');\"";
 
 $positionMap = new Map();
 $positionMap->put(self::DIRECTION_TOP, Map::vertical);
@@ -62,11 +64,10 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                         </a>
                     </li>
                     <li class="navbar-li remove-li-default-att center-block-li">
-                        <!-- <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#box_pricing_window', setAddBoxAfter)"> -->
-                        <div class="header-button grey-tag-button standard-tag-button img-text-block" <?= $TagAddBoxFunc ?>>
+                        <div class="header-button grey-tag-button standard-tag-button img-text-block" <?= $TagAddBoxFunc_header ?>>
                             <div class="img-text-wrap">
                                 <div class="img-text-img">
-                                    <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png" alt="">
+                                    <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png">
                                 </div>
                                 <span class="img-text-span">add box</span>
                             </div>
@@ -98,7 +99,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                         </li>
                     <?php else : ?>
                         <li class="navbar-li remove-li-default-att">
-                            <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop')">
+                            <div class="header-button grey-tag-button standard-tag-button img-text-block" onclick="openPopUp('#sign_form_pop');evt('evt_cd_7');">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>icons8-contacts-96.png">
@@ -130,9 +131,8 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
         <div class="navbar-inner">
             <div class="navbar-burger-block navbar-left-block flex-row">
                 <div class="burger-container">
-                    <!-- <button id="header_burger" class="header_burger remove-button-default-att"> -->
                     <input type="checkbox" id="checkbox2" class="checkbox2 visuallyHidden">
-                    <label id="header_burger" class="burger-label" for="checkbox2">
+                    <label id="header_burger" class="burger-label" for="checkbox2" onclick="evt('evt_cd_2')">
                         <div class="hamburger hamburger2">
                             <span class="bar bar1"></span>
                             <span class="bar bar2"></span>
@@ -199,7 +199,8 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                             ];
                             $addBoxImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $addBoxDatas);
                             $addBoxTouch = new Touch($addBoxImg, 0, $positionMap);
-                            $addBoxTouch->setTagParams($TagAddBoxFunc);
+                            // $addBoxTouch->setTagParams($TagAddBoxFunc);
+                            $addBoxTouch->setTagParams($TagAddBoxFunc_sideMenu);
                             ?>
                             <?= $addBoxTouch ?>
                         </li>
@@ -211,7 +212,6 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                             ];
                             $newDropImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $newDropDatas);
                             $newDropTouch = new Touch($newDropImg, 0, $positionMap);
-                            // $addBoxTouch->setTagParams($TagAddBoxFunc);
                             ?>
                             <a href="<?= $gridLink ?>" class="remove-a-default-att">
                                 <?= $newDropTouch ?>
@@ -230,7 +230,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                                 ];
                                 $signInImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $signInDatas);
                                 $signInTouch = new Touch($signInImg, 0, $positionMap);
-                                $signInTouch->setTagParams("onclick=\"openPopUp('#sign_form_pop');\"");
+                                $signInTouch->setTagParams("onclick=\"openPopUp('#sign_form_pop');evt('evt_cd_8')\"");
                                 ?>
                                 <?= $signInTouch ?>
                             </li>

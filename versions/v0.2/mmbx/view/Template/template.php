@@ -28,9 +28,20 @@ require_once 'model/special/Response.php';
  */
 $person = $person;
 $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
+/** Navigation */
 $navigation = $person->getNavigation();
-$pageID = $navigation->getUrlPage()->getPageID();
-// $lastPageID = $navigation->getLastPage()->getPageID();
+$urlPage = $navigation->getUrlPage();
+$pageID = $urlPage->getPageID();
+$session = $person->getSession();
+$pageType = $urlPage->getPageType($session);
+/** Header */
+$headerFile = 'view/Template/files/headers/' . $this->header;
+$company = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
+$companyMap = new Map($company);
+$headerDatas = [
+    "person" => $person,
+    "companyMap" => $companyMap
+];
 ?>
 <!DOCTYPE html>
 <html lang="<?= $isoLang ?>">
@@ -117,8 +128,10 @@ $pageID = $navigation->getUrlPage()->getPageID();
         const QR_LOG_OUT = "<?= ControllerHome::QR_LOG_OUT ?>";
         const QR_UPDATE_COUNTRY = "<?= ControllerHome::QR_UPDATE_COUNTRY ?>";
         const QR_EVENT = "<?= ControllerHome::QR_EVENT ?>";
+
         const EVT_K = "<?= Event::KEY_EVENT ?>";
         const EVT_D = "<?= Event::KEY_DATA ?>";
+        const EVT_SCROLL = "<?= Event::EVT_SCROLL ?>";
 
         const QR_FILTER = "<?= ControllerGrid::QR_FILTER ?>";
         const GRID_CONTENT_KEY = "<?= ControllerGrid::GRID_CONTENT_KEY ?>";
@@ -266,20 +279,16 @@ $pageID = $navigation->getUrlPage()->getPageID();
 </head>
 
 <body>
-    <?= $this->generateFbPixel() ?>
-    <?php
-    $file = 'view/Template/files/headers/' . $this->header;
-    $company = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
-    $companyMap = new Map($company);
-    $headerDatas = [
-        "person" => $person,
-        "companyMap" => $companyMap
-    ];
-    echo $this->generateFile($file, $headerDatas);
-    ?>
+    <?= $this->generateFile($headerFile, $headerDatas) ?>
     <div class="template-content">
+        <?= $this->generateFbPixel() ?>
         <?= $content ?>
         <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
+        <script id="evt">
+            <?php
+            echo ($pageType == Page::TYPE_NEWCOMER) ? Event::getEventFile(Event::FILE_DEVICE_SIZE) : null;
+            ?>
+        </script>
     </div>
 </body>
 

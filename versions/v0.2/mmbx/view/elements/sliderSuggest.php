@@ -16,7 +16,8 @@
     <?php 
     $datas = [
         "elements" => $elements,
-        "sliderClass" => null
+        "sliderClass" => null,
+        "name" => "product suggestions"
     ];
     echo $this->generateFile("view/elements/slider.php", $datas);
     ?>

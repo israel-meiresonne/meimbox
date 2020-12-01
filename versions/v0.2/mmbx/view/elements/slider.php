@@ -3,14 +3,16 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * Builds a complete displayable slider
- * @param string[] $elements list element to display in slider
- * @param string $sliderClass CSS class for the slider
+ * @param string[]  $elements       list element to display in slider
+ * @param string    $sliderClass    CSS class for the slider
+ * @param string    $name           name of the carrousel
  */
+$eventJson = htmlentities(json_encode(["carrousel" => $name]));
 $sliderClass = (!empty($sliderClass)) ? $sliderClass : "suggest_slider_nb_window_wrapper";
 ?>
 
 <div class="slider-wrap <?= $sliderClass ?>">
-    <button class="slider-left-button remove-button-default-att"></button>
+    <button onclick="evt('evt_cd_16', '<?= $eventJson ?>')" class="slider-left-button remove-button-default-att"></button>
     <div class="slider-window">
         <div class="item-set">
             <div class="slider-nb_acticle-width_indicator"></div>
@@ -23,5 +25,5 @@ $sliderClass = (!empty($sliderClass)) ? $sliderClass : "suggest_slider_nb_window
             </ul>
         </div>
     </div>
-    <button class="slider-right-button remove-button-default-att"></button>
+    <button onclick="evt('evt_cd_15', '<?= $eventJson ?>')" class="slider-right-button remove-button-default-att"></button>
 </div>

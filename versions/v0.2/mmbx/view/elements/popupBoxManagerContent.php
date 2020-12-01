@@ -44,7 +44,7 @@ $contentDatas = [
     "content" => $cart,
     "btnTxt" => "new box",
     "btnId" => "box_manager_open_princing",
-    "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window')"
+    "btnFunc" => "switchPopUp('#box_manager_window','#box_pricing_window');evt('evt_cd_6');"
     // "btnDataAttr" => 
 ];
 echo $this->generateFile('view/elements/popupContent.php', $contentDatas);

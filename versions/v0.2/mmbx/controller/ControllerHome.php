@@ -189,6 +189,14 @@ class ControllerHome extends ControllerSecure
             $newIsoCountry = Query::getParam($inputName);
             $person->updateCountry($response, $newIsoCountry);
             if (!$response->containError()) {
+                /**
+                 * @var Xhr */
+                $urlPage = $person->getNavigation()->getUrlPage();
+                $datasMap = new Map();
+                $datasMap->put($newIsoCountry, "iso_country");
+                $event = new Event("evt_cd_22", $datasMap);
+                $userID = $person->getUserID();
+                $urlPage->handleEvent($response, $userID, $event);
                 $person->addSummaryPrices($response);
             }
         }
@@ -222,8 +230,7 @@ class ControllerHome extends ControllerSecure
                     $errorMsg = "Unkow event code '$eventCode'";
                     $response->addError($errorMsg, MyError::ADMIN_ERROR);
                 } else {
-                    $json = htmlspecialchars_decode(Query::getParam(Event::KEY_DATA));
-                    var_dump($json);
+                    $json = (!is_null(Query::getParam(Event::KEY_DATA))) ? htmlspecialchars_decode(Query::getParam(Event::KEY_DATA)) : null;
                     $datas = json_decode($json, true, 2);
                     if ((isset($json)) && ($datas == false)) {
                         $errorMsg = "The json submited is invalid '$json'";
@@ -249,25 +256,8 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        $person->getSession()->destroy();
-        // $response = new Response();
-        // $userID = $person->getUserID();
-        // $pageID = "nav_z1065911j7102942j2az0z1l9";
-        // $datasMap = new Map();
-        // $datasMap->put("value1", "key1");
-        // $datasMap->put("", "key2");
-        // $event = new Event("01", $datasMap);
-        // var_dump($event);
-        // $event->insertEvent($response, $pageID);
-        // var_dump($response->getAttributs());
-
-        // $a = ["a"=>[1,2,3]];
-        // $a = ["a"=>1];
-        // $a = "https://52c033d81cbe.eu.ngrok.io/versions/v0.2/mmbx/grid";
-        // var_dump(parse_url($a));
-        // parse_str(null, $params);
-        // var_dump($params);
-        var_dump($_SESSION);
+        
+        echo (true) ? "hello" : null;
     }
 
     public function test_xhr()

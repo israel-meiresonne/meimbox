@@ -6,12 +6,6 @@ require_once 'model/ModelFunctionality.php';
  */
 class Event extends ModelFunctionality
 {
-    // /**
-    //  * Holds id of the Page where the Event happen
-    //  * @var string
-    //  */
-    // private $pageID;
-
     /**
      * Holds Event's id
      * @var string
@@ -53,6 +47,11 @@ class Event extends ModelFunctionality
      */
     private $setDate;
 
+    // /**
+    //  * @var Map
+    //  */
+    // private static $eventMap;
+
     private const PREFIX_ID = "evt_id_";
 
     /**
@@ -61,6 +60,18 @@ class Event extends ModelFunctionality
      */
     public const KEY_EVENT = "evt_k";
     public const KEY_DATA = "evt_d";
+
+    /**
+     * Holds access key to get Event from request
+     * @var string
+     */
+    public const EVT_SCROLL = "scroll_rate";
+
+    /**
+     * Holds file used to get js event code
+     * @var string
+     */
+    public const FILE_DEVICE_SIZE = "model/navigation/files/events/deviceSize.js";
 
     /**
      * Constructor
@@ -79,9 +90,6 @@ class Event extends ModelFunctionality
                 }
             }
         }
-        // $eventCode = strtolower($eventCode);
-        // $sql = "SELECT `eventCode` FROM `Events` WHERE `eventCode`='$eventCode'";
-        // $tab = $this->select($sql);
         $tab = self::retreiveEventLine($eventCode);
         if (count($tab) != 1) {
             throw new Exception("This event code '$eventCode' is invalid");
@@ -91,6 +99,15 @@ class Event extends ModelFunctionality
         $this->datasMap = (!empty($datasMap)) ? $datasMap : null;
         $this->setDate = $this->getDateTime();
     }
+
+    // /**
+    //  * To set eventMap
+    //  */
+    // private function setEventMap()
+    // {
+    //     self::$eventMap = new Map();
+    //     $
+    // }
 
     /**
      * To get Event's eventID
@@ -138,6 +155,31 @@ class Event extends ModelFunctionality
     {
         return strtotime($this->setDate);
     }
+
+    // public static function getEventMap()
+    // {
+    //     (!isset(self::$eventMap)) ? self::setEventMap() : null;
+    //     return self::$eventMap;
+    // }
+
+    /**
+     * To get js code of a Event
+     * @return string js code of a Event
+     */
+    public static function getEventFile(string $file)
+    {
+        ob_start();
+        require $file;
+        return ob_get_clean();
+    }
+
+    // /**
+    //  * To get event code
+    //  */
+    // public static function generateEventJs($eventCode)
+    // {
+    //     self::getEventMap();
+    // }
 
     /**
      * To get datas of the event with the given code
