@@ -52,7 +52,7 @@ $language = $person->getLanguage();
         echo $this->generateFile('view/elements/popupBoxManager.php', $datas);
         ?>
     </div>
-    <div id="box_pricing_window" class="pricing-container pop_up-container">
+    <div id="box_pricing_window" class="pricing-container pop_up-container" data-evtclose="evt_cd_53">
         <?php
         $datas = [
             "language" => $language,
@@ -77,7 +77,7 @@ $language = $person->getLanguage();
     <?php
     if (!$person->hasCookie(Cookie::COOKIE_CLT)) :
     ?>
-        <div id="sign_form_pop" class="pop_up-container">
+        <div id="sign_form_pop" class="pop_up-container" data-evtclose="evt_cd_50">
             <?= $this->generateFile('view/elements/popup/popupFormSign.php', []); ?>
         </div>
     <?php

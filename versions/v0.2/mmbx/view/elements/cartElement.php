@@ -24,12 +24,15 @@
  * + i.e: "#mydadid"
  * @param string $brotherx selector of the brother (used only if $dadx is set)
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
+ * @param array $eventDatas
  */
 $showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
 $TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
 
 $TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : null;
 
+/** Event */
+$eventJson = htmlentities(json_encode($eventDatas));
 
 if (!empty($dadx)) {
     $launch = ModelFunctionality::generateDateCode(25);
@@ -101,7 +104,7 @@ if (!empty($dadx)) {
         ?>
             <div class="cart-element-arrow-block">
                 <div class="cart-element-arrow-inner">
-                    <button class="cart-element-arrow-button remove-button-default-att" onclick="toggleShutter('<?= $boxBodyx ?>', '<?= $arrowx ?>')">
+                    <button class="cart-element-arrow-button remove-button-default-att" data-evtopen="evt_cd_59" data-evtclose="evt_cd_60" data-evtj="<?= $eventJson ?>" onclick="toggleShutter(this,'<?= $boxBodyx ?>', '<?= $arrowx ?>')">
                         <div id="<?= $arrowId ?>" class="arrow-element-wrap">
                             <span class="arrow-span"></span>
                         </div>

@@ -24,6 +24,18 @@ require_once 'model/boxes-management/BoxProduct.php';
 $product = $product;
 
 /**
+ * @var Box */
+$box = $box;
+
+/** Event */
+$eventDatas = [
+    Product::KEY_PROD_ID => $product->getProdID(),
+    Box::KEY_BOX_ID => $box->getBoxID(),
+    Size::KEY_SEQUENCE => $product->getSelectedSize()->getSequence()
+];
+$eventJson = htmlentities(json_encode($eventDatas));
+
+/**
  * @var Price
  */
 $price = null;
@@ -64,16 +76,14 @@ switch ($product->getType()) {
         /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
         $spanid = ModelFunctionality::generateDateCode(25);
         $spanidx = "#" . $spanid;
+        $miniPopEvent = "evt('evt_cd_63','$eventJson')";
+        $movingEvent = "evt('evt_cd_64','$eventJson')";
         switch ($containerId):
-                // case 'box_manager_window':
-                //     $editFunc = null;
-                //     $miniPopEdit = null;
-                //     break;
             case 'shopping_bag':
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
-                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="openPopUp('#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="<?= $movingEvent ?>;openPopUp('#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
                     </li>
                     <li class="remove-li-default-att">
                         <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{openPopUp('#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
@@ -84,14 +94,14 @@ switch ($product->getType()) {
                 $miniPopEdit = new MiniPopUp(self::DIRECTION_LEFT, $miniPopContent);
                 $miniPopId = $miniPopEdit->getId();
                 $miniPopIdx = "#" . $miniPopId;
-                $editFunc = "openMiniPop('$miniPopIdx')";
+                $editFunc = "$miniPopEvent;openMiniPop('$miniPopIdx');";
                 break;
 
             case 'basket_pop':
                 ob_start(); ?>
                 <ul class="remove-ul-default-att">
                     <li class="remove-li-default-att">
-                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
+                        <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="<?= $movingEvent ?>;switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
                     </li>
                     <li class="remove-li-default-att">
                         <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{switchPopUp('<?= $containerIdx ?>','#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
@@ -102,7 +112,7 @@ switch ($product->getType()) {
                 $miniPopEdit = new MiniPopUp(self::DIRECTION_LEFT, $miniPopContent);
                 $miniPopId = $miniPopEdit->getId();
                 $miniPopIdx = "#" . $miniPopId;
-                $editFunc = "openMiniPop('$miniPopIdx')";
+                $editFunc = "$miniPopEvent;openMiniPop('$miniPopIdx')";
                 break;
             default:
                 $editFunc = null;
@@ -144,7 +154,8 @@ $size = $product->getSelectedSize();
         "showArrow" => $showArrow,
         "dadx" => $dadx,
         "brotherx" => $brotherx,
-        "submitdata" => $submitdata
+        "submitdata" => $submitdata,
+        "eventDatas" => $eventDatas
     ];
     echo $this->generateFile('view/elements/cartElement.php', $datas);
     ?>

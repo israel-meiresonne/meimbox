@@ -612,10 +612,12 @@
     }
     removeBox = (bxid, x) => {
         if (popAsk(ALERT_DELETE_BOX)) {
-            var params = mapToParam({ [KEY_BOX_ID]: bxid });
+            var o = { [KEY_BOX_ID]: bxid };
+            var p = mapToParam(o);
+            evt('evt_cd_57', json_encode(o));
             var d = {
                 "a": A_DELETE_BOX,
-                "d": params,
+                "d": p,
                 "r": removeBoxRSP,
                 "l": ".basket_pop_loading",
                 "x": x,
@@ -747,13 +749,14 @@
     moveBoxProduct = (bxid, pid, seq) => {
         var targetx = $("#sumbit_box_manager").attr(datatarget);
         var newbxid = $(targetx).attr(submitdata);
-        var map = {
+        var o = {
             [KEY_BOX_ID]: bxid,
             [KEY_NEW_BOX_ID]: newbxid,
             [KEY_PROD_ID]: pid,
             [KEY_SEQUENCE]: seq,
         }
-        var params = mapToParam(map);
+        var params = mapToParam(o);
+        evt('evt_cd_66',json_encode(o));
         var d = {
             "a": A_MV_BXPROD,
             "d": params,
@@ -779,12 +782,13 @@
     }
     removeBoxProduct = (bxid, pid, seq, bxelx, elx) => {
         if (popAsk(ALERT_DLT_BXPROD)) {
-            var map = {
+            var o = {
                 [KEY_BOX_ID]: bxid,
                 [KEY_PROD_ID]: pid,
                 [KEY_SEQUENCE]: seq,
             }
-            var params = mapToParam(map);
+            var params = mapToParam(o);
+            evt('evt_cd_61', json_encode(o));
             var d = {
                 "a": A_DLT_BXPROD,
                 "d": params,

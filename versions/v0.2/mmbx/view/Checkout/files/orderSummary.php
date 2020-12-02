@@ -32,14 +32,14 @@ $address = (!empty($address)) ? $address : null;
                 $arraowid = ModelFunctionality::generateDateCode(25);
                 $arraowx = "#$arraowid";
                 $Tagarraowid = "id='$arraowid'";
-                $TAGtoggleShutter =  "onclick=\"toggleShutter('$bodyx','$arraowx')\"";
+                $TAGtoggleShutter =  "onclick=\"toggleShutter(this, '$bodyx','$arraowx')\"";
             } else {
                 $Tagbodyid =  null;
                 $Tagarraowid =  null;
                 $TAGtoggleShutter = null;
             }
             ?>
-            <div class="summary-detail-title-div" <?= $TAGtoggleShutter ?>>
+            <div class="summary-detail-title-div" <?= $TAGtoggleShutter ?> data-evtopen="evt_cd_17" data-evtclose="evt_cd_18">
                 <span class="summary-title">Order Summary</span>
             </div>
             <?php
@@ -56,7 +56,7 @@ $address = (!empty($address)) ? $address : null;
             endif;
             ?>
         </div>
-        <div <?= $Tagbodyid ?> data-evtopen="evt_cd_17" data-evtclose="evt_cd_18" class="summary-detail-inner">
+        <div <?= $Tagbodyid ?> class="summary-detail-inner">
             <hr class="hr-summary">
             <div class="summary-detail-property-div">
                 <ul class="summary-detail-property-lu remove-ul-default-att">

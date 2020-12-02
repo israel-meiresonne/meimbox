@@ -161,16 +161,16 @@
         }
     }
 
-    toggleShutter = (bodyx, arrowx = null) => {
+    toggleShutter = (x, bodyx, arrowx = null) => {
         var arrowx = (!empty(arrowx)) ? arrowx : $(bodyx).attr(dataarrow);
         if (isDisplayed(bodyx)) {
             $(bodyx).slideUp(TS);
             $(arrowx).removeClass("arrow-element-open");
-            evtClose(bodyx);
+            evtClose(x);
         } else {
             $(bodyx).slideDown(TS);
             $(arrowx).addClass("arrow-element-open");
-            evtOpen(bodyx);
+            evtOpen(x);
         }
     }
 

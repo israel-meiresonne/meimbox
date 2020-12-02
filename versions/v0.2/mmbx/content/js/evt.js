@@ -45,7 +45,6 @@
         evt(evtcd, j);
     }
     retreiveEvt = (x) => {
-        console.log("x", x);
         var evtcd = $(x).attr(dataevtcd);
         var j = $(x).attr(dataevtj);
         (!empty(evtcd)) ? evt(evtcd, j) : null;

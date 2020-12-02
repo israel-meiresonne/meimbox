@@ -27,6 +27,9 @@ $containerIdx = "#" . $containerId;
 $boxID = $box->getBoxID();
 $elementIdx = "#" . $elementId;
 
+/** Event */
+$eventDatas = [Box::KEY_BOX_ID=>$box->getBoxID()];
+
 /**
  * @var Price
  */
@@ -60,7 +63,8 @@ $price = $box->getPriceFormated();
             "boxBodyId" => $boxBodyId,
             "dadx" => $dadx,
             "brotherx" => $brotherx,
-            "submitdata" => $submitdata
+            "submitdata" => $submitdata,
+            "eventDatas" => $eventDatas
         ];
         echo $this->generateFile('view/elements/cartElement.php', $datas);
         ?>

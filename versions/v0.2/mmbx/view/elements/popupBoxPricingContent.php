@@ -26,6 +26,9 @@ $boxes = Box::getSamples($language, $country, $currency);
                 $popx = "#box_pricing_window";
                 $sbtn = ModelFunctionality::generateDateCode(25);
                 $sbtnx = "#". $sbtn;
+
+                $boxColor = $box->getColor();
+                $boxEventJson = htmlentities(json_encode([Box::KEY_BOX_COLOR => $boxColor]));
             ?>
                 <li class="box_price-box-set-li remove-li-default-att">
                     <div class="pricing-wrap">
@@ -40,13 +43,13 @@ $boxes = Box::getSamples($language, $country, $currency);
                                                 </div>
                                             </div>
                                             <div class="img_text_down-text-div">
-                                                <span><span class="box-color-name"><?= $translator->translateString($box->getColor()) ?></span> <?= $translator->translateStation("US55") ?></span>
+                                                <span><span class="box-color-name"><?= $translator->translateString($boxColor) ?></span> <?= $translator->translateStation("US55") ?></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="product_add-button-block">
-                                    <button id="<?= $sbtn ?>" class="submit_btn_cls green-button standard-button remove-button-default-att" onclick="addBox('<?= $box->getColorCode() ?>','<?= $popx ?>','<?= $sbtnx ?>')">
+                                    <button id="<?= $sbtn ?>" class="submit_btn_cls green-button standard-button remove-button-default-att" onclick="evt('evt_cd_51','<?= $boxEventJson ?>');addBox('<?= $box->getColorCode() ?>','<?= $popx ?>','<?= $sbtnx ?>')">
                                         <?= $translator->translateStation("US24") ?>
                                     </button>
                                 </div>

@@ -114,6 +114,15 @@ abstract class ControllerSecure extends Controller
     }
 
     /**
+     * To get the current Visitor
+     * @return Visitor|User|Client|Administrator the current Visitor
+     */
+    protected function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
      * To root controllers
      */
     private function root()

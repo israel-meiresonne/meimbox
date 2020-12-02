@@ -53,7 +53,7 @@ class ControllerDashboard extends ControllerSecure
         $response = new Response();
         /**
          * @var User */
-        $person = $this->person;
+        $person = $this->getPerson();
         $datasView = [];
         $country = Query::getParam(Country::INPUT_ISO_COUNTRY_ADRS);
         $address = $this->checkInput(
@@ -113,10 +113,11 @@ class ControllerDashboard extends ControllerSecure
             if (!$response->containError()) {
                 $response->addResult(self::QR_ADD_ADRS, true);
 
-                $datasMap = new Map();
-                $datasMap->put(Address::buildSequence($address, $zipcode, $country), Address::KEY_ADRS_SEQUENCE);
+                $eventDatasMap = new Map();
+                $eventDatasMap->put(Address::buildSequence($address, $zipcode, $country), Address::KEY_ADRS_SEQUENCE);
                 $eventCode = "evt_cd_39";
-                $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
+                // $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -128,11 +129,14 @@ class ControllerDashboard extends ControllerSecure
     public function getAddressesSet()
     {
         $response = new Response();
+        /**
+         * @var User */
+        $person = $this->getPerson();
         $datasView = [];
-        if (!$this->person->hasCookie(Cookie::COOKIE_CLT)) {
+        if (!$person->hasCookie(Cookie::COOKIE_CLT)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $addressMap = $this->person->getAddresses();
+            $addressMap = $person->getAddresses();
             if (empty($addressMap->getKeys())) {
                 $response->addErrorStation("ER1", MyError::FATAL_ERROR);
             } else {
@@ -142,6 +146,6 @@ class ControllerDashboard extends ControllerSecure
                 $response->addFiles(self::QR_GET_ADRS_SET, 'view/Dashboard/files/addressSet.php');
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 }
