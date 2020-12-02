@@ -1,5 +1,5 @@
 <?php
-require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+// require_once 'model/orders-management/payement/stripe/StripeAPI.php';
 $this->title = "checkout";
 $this->description = "checkout";
 $pk = Configuration::get(Configuration::STRIPE_PK);
@@ -55,7 +55,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
                                         </div>
                                     </div>
                                 </div>
-                                <div id="checkout_cart">
+                                <div id="checkout_cart" data-evtopen="evt_cd_29" data-evtclose="evt_cd_30">
                                     <hr class="hr-summary">
                                     <?php
                                     $boxDatas = [
@@ -92,10 +92,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
 </div>
 
 <script type="text/javascript">
-    // Create an instance of the Stripe object with your publishable API key
-    // var stripe = Stripe('pk_test_8HwJewfvv4FN1hQJwhcaHaJy00N1xbUFjD');
     var stripe = Stripe('<?= $pk ?>');
-    // var checkoutButton = document.getElementById('checkout-button');
     const KEY_STRP_MTD = '<?= CheckoutSession::KEY_STRP_MTD ?>';
     const QR_NW_CHCKT_SS = '<?= ControllerCheckout::QR_NW_CHCKT_SS ?>';
     checkout = (mtd, sbtnx) => {
@@ -105,6 +102,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
             [KEY_STRP_MTD]: mtd
         }
         var params = mapToParam(map);
+        evt('evt_cd_31', json_encode(map));
         var d = {
             "a": QR_NW_CHCKT_SS,
             "d": params,

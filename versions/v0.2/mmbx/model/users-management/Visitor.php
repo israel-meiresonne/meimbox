@@ -846,6 +846,7 @@ class Visitor extends ModelFunctionality
      * + $inMap[Map::email] holds email submited
      * + $inMap[Map::password] holds password submited
      * + $inMap[Map::newsletter] holds if remember has been checked
+     * @return Client the Visitor's Client account
      */
     public function signIn(Response $response, Map $inMap)
     {
@@ -860,12 +861,10 @@ class Visitor extends ModelFunctionality
             if (!$this->passMatchHash($password, $hashcode)) {
                 $response->addErrorStation("ER26", self::INPUT_PASSWORD);
             } else {
-                // $this->manageCookie(Cookie::COOKIE_CLT); // Allure_homme97
-                // $client = $this->getClient($response, $email);
                 $client = Client::visitorToClient($response, $this, $email);
-                // $this->visitorToClient($response, $client);
-                if ($response->containError()) {
-                }
+                return $client;
+                // if (!$response->containError()) {
+                // }
             }
         }
     }

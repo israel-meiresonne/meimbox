@@ -159,6 +159,9 @@
         $(x).removeClass(rmv);
         $(x).addClass(add);
     }
+    paramToObj = (p) => {
+        return JSON.parse('{"' + decodeURI(p).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+    }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/
     openMiniPop = (x, before = () => { }, after = () => { }) => {
@@ -179,10 +182,7 @@
         var xbtn = $(x).find("." + closebtnCls);
         var idx = getX(x);
         $(xbtn).attr(onclickattr, "closePopUp('" + idx + "')");
-        // var stack = json_encode([]);
-        // $(xbtn).attr(popstack, stack);
         setStack(xbtn, []);
-
         $(FCID).fadeIn(TS, function () {
             displayFlexOn(x);
         });
@@ -197,13 +197,12 @@
         var ftag = getTag(f);
 
         var bs = $(d).find(ftag + "[" + databrotherx + "='" + a + "']");
-        console.log(bs);
         $(bs).removeClass(selected);
         $(f).addClass(selected);
 
         $(sbtnx).attr(datatarget, f);
         enable(sbtnx);
-        console.log(sbtnx);
+        retreiveEvt(launchx);
         after(launchx);
     }
     switchCloseNext = (fromx, tox, before = () => { }, after = () => { }) => {
@@ -211,8 +210,6 @@
         var tbtn = $(tox).find("." + closebtnCls);
         var idx = getX(tox);
         $(tbtn).attr(onclickattr, "closePopUp('" + idx + "')");
-        // var stack = json_encode([]);
-        // $(tbtn).attr(popstack, stack);
         setStack(tbtn, []);
 
         switcher(fromx, tox);
@@ -270,6 +267,7 @@
         $(x).fadeOut(TS, function () {
             $(FCID).fadeOut(TS / 2);
         });
+        evtClose(x);
         after(x);
     }
     /*—————————————————— POPUP BEHAVIOR UP ——————————————————————————————————*/

@@ -25,17 +25,8 @@ class ControllerHome extends ControllerSecure
     public function signUp()
     {
         $response = new Response();
+        $person = $this->person;
         $datasView = [];
-        // $newsletter = Query::getParam(Visitor::INPUT_NEWSLETTER);
-        // $condition = Query::getParam(Visitor::INPUT_CONDITION);
-        // $link = Query::getParam(self::INPUT_REDIRECT);
-        // $link = $this->checkInput(
-        //     $response,
-        //     self::INPUT_REDIRECT,
-        //     Query::getParam(self::INPUT_REDIRECT),
-        //     [self::TYPE_LINK],
-        //     $this->person->getDataLength("Users", "password")
-        // );
         $newsletter = $this->checkInput(
             $response,
             Visitor::INPUT_NEWSLETTER,
@@ -63,30 +54,29 @@ class ControllerHome extends ControllerSecure
             Visitor::INPUT_FIRSTNAME,
             Query::getParam(Visitor::INPUT_FIRSTNAME),
             [self::NAME],
-            $this->person->getDataLength("Users", "firstname")
+            $person->getDataLength("Users", "firstname")
         );
         $lastname = $this->checkInput(
             $response,
             Visitor::INPUT_LASTNAME,
             Query::getParam(Visitor::INPUT_LASTNAME),
             [self::NAME],
-            $this->person->getDataLength("Users", "lastname")
+            $person->getDataLength("Users", "lastname")
         );
         $email = $this->checkInput(
             $response,
             Visitor::INPUT_EMAIL,
             Query::getParam(Visitor::INPUT_EMAIL),
             [self::EMAIL],
-            $this->person->getDataLength("Users", "mail")
+            $person->getDataLength("Users", "mail")
         );
         $password = $this->checkInput(
             $response,
             Visitor::INPUT_PASSWORD,
             Query::getParam(Visitor::INPUT_PASSWORD),
             [self::PASSWORD],
-            $this->person->getDataLength("Users", "password")
+            $person->getDataLength("Users", "password")
         );
-        // $confirmPassword = Query::getParam(Visitor::INPUT_CONFIRM_PASSWORD);
         $confirmPassword = $this->checkInput(
             $response,
             Visitor::INPUT_CONFIRM_PASSWORD,
@@ -95,7 +85,6 @@ class ControllerHome extends ControllerSecure
             null,
             true
         );
-
         if (!$response->containError()) {
             $upMap = new Map();
             $upMap->put($sex, Map::sex);
@@ -109,6 +98,10 @@ class ControllerHome extends ControllerSecure
             $this->person->signUp($response, $upMap);
             if (!$response->containError()) {
                 $response->addResult(self::A_SIGN_UP, true);
+
+                $userID = $person->getUserID();
+                $eventCode = "evt_cd_47";
+                $person->getNavigation()->handleEvent((new Response), $userID, $eventCode);
             }
         }
         $this->generateJsonView($datasView, $response, $this->person);
@@ -120,6 +113,7 @@ class ControllerHome extends ControllerSecure
     public function signIn()
     {
         $response = new Response();
+        $person = $this->person;
         $datasView = [];
         $remember = $this->checkInput(
             $response,
@@ -143,7 +137,6 @@ class ControllerHome extends ControllerSecure
             [],
             null
         );
-
         if (!$response->containError()) {
             $email = Query::getParam(Visitor::INPUT_EMAIL);
             $password = Query::getParam(Visitor::INPUT_PASSWORD);
@@ -151,12 +144,16 @@ class ControllerHome extends ControllerSecure
             $inMap->put($email, Map::email);
             $inMap->put($password, Map::password);
             $inMap->put($remember, Map::remember);
-            $this->person->signIn($response, $inMap);
+            $client = $person->signIn($response, $inMap);
             if (!$response->containError()) {
                 $response->addResult(self::A_SIGN_IN, true);
+
+                $eventCode = "evt_cd_49";
+                $eventRsp = new Response();
+                $client->getNavigation()->handleEvent(($eventRsp), $client->getUserID(), $eventCode);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -181,23 +178,22 @@ class ControllerHome extends ControllerSecure
         $response = new Response();
         $person = $this->person;
         $datasView = [];
-        // $inputName = Country::INPUT_ISO_COUNTRY . Country::INPUT_EXT_VISITOR;
-        $inputName = Country::INPUT_ISO_COUNTRY_VISITOR;
+
+        $inputName = (Query::existParam(Country::INPUT_ISO_COUNTRY_VISITOR)) ? Country::INPUT_ISO_COUNTRY_VISITOR : null;
+        $inputName = (empty($inputName) && Query::existParam(Country::INPUT_ISO_COUNTRY_ADRS)) ? Country::INPUT_ISO_COUNTRY_ADRS : $inputName;
+
         if (empty(Query::getParam($inputName))) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $newIsoCountry = Query::getParam($inputName);
             $person->updateCountry($response, $newIsoCountry);
             if (!$response->containError()) {
-                /**
-                 * @var Xhr */
-                $urlPage = $person->getNavigation()->getUrlPage();
-                $datasMap = new Map();
-                $datasMap->put($newIsoCountry, "iso_country");
-                $event = new Event("evt_cd_22", $datasMap);
-                $userID = $person->getUserID();
-                $urlPage->handleEvent($response, $userID, $event);
                 $person->addSummaryPrices($response);
+
+                $datasMap = new Map();
+                $datasMap->put($newIsoCountry, Country::KEY_ISO_CODE);
+                $eventCode = "evt_cd_22";
+                $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -238,6 +234,12 @@ class ControllerHome extends ControllerSecure
                     } else {
                         $userID = $person->getUserID();
                         $datasMap = (!empty($datas)) ? new  Map($datas) : null;
+                        if (!empty($datasMap)) {
+                            $keys = $datasMap->getKeys();
+                            $hide = str_repeat("*", 5);
+                            (in_array(Visitor::INPUT_PASSWORD, $keys)) ? $datasMap->put($hide, Visitor::INPUT_PASSWORD) : null;
+                            (in_array(Visitor::INPUT_CONFIRM_PASSWORD, $keys)) ? $datasMap->put($hide, Visitor::INPUT_CONFIRM_PASSWORD) : null;
+                        }
                         $event = new Event($eventCode, $datasMap);
                         $xhr->handleEvent($response, $userID, $event);
                         if (!$response->containError()) {
@@ -256,7 +258,7 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        
+
         echo (true) ? "hello" : null;
     }
 

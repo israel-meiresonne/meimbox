@@ -86,7 +86,7 @@ $language = $person->getLanguage();
     <?php
     if ($person->hasCookie(Cookie::COOKIE_CLT) && (!empty($person->getAddresses()))) :
     ?>
-        <div id="address_adder_pop" class="pop_up-container">
+        <div id="address_adder_pop" class="pop_up-container" data-evtclose="evt_cd_33">
             <?= $this->generateFile('view/elements/popup/popupFormAddAddress.php', ["country" => $country]); ?>
         </div>
     <?php

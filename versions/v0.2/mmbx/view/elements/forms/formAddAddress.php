@@ -12,6 +12,7 @@
 /**
  * @var Translator */
 $translator = $translator;
+$inpEventCode = 'evt_cd_34';
 ?>
 
 <div class="form-wrap">
@@ -38,6 +39,7 @@ $translator = $translator;
                         "inpName" => Address::INPUT_ADDRESS,
                         "inpTxt" => $translator->translateStation("US96"),
                         "errortype" => self::ER_TYPE_COMMENT,
+                        "inpAttr" => "onblur=\"evtInp(this, '$inpEventCode')\""
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
                     ?>
@@ -50,6 +52,7 @@ $translator = $translator;
                         "inpName" => Address::INPUT_APPARTEMENT,
                         "inpTxt" => $translator->translateStation("US97"),
                         "errortype" => self::ER_TYPE_COMMENT,
+                        "inpAttr" => "onblur=\"evtInp(this, '$inpEventCode')\""
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
                     ?>
@@ -64,6 +67,7 @@ $translator = $translator;
                         "inpName" => Address::INPUT_PROVINCE,
                         "inpTxt" => $translator->translateStation("US98"),
                         "errortype" => self::ER_TYPE_COMMENT,
+                        "inpAttr" => "onblur=\"evtInp(this, '$inpEventCode')\""
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
                     ?>
@@ -76,6 +80,7 @@ $translator = $translator;
                         "inpName" => Address::INPUT_CITY,
                         "inpTxt" => $translator->translateStation("US99"),
                         "errortype" => self::ER_TYPE_COMMENT,
+                        "inpAttr" => "onblur=\"evtInp(this, '$inpEventCode')\""
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
                     ?>
@@ -97,12 +102,18 @@ $translator = $translator;
                             $inputMap->put(Country::INPUT_ISO_COUNTRY_ADRS, $label, Map::inputName);
                             $inputMap->put($isoCountry, $label, Map::inputValue);
                             $inputMap->put($isChecked, $label, Map::isChecked);
+                            $inputJson = htmlentities(json_encode([Country::KEY_ISO_CODE => $isoCountry]));
+                            $inputAttr = "onclick=\"evt('evt_cd_37', '$inputJson');updateCountry('$frmIdx');\"";
+                            $inputMap->put($inputAttr, $label, Map::attribut);
                         }
                     }
                     $title = $translator->translateStation("US65");
                     $isRadio = true;
                     $isDisplayed = false;
-                    $countryDpd = new DropDown($title, $inputMap, $isRadio, $isDisplayed);
+                    $countryEventMap = new Map();
+                    $countryEventMap->put("evt_cd_35", Map::open);
+                    $countryEventMap->put("evt_cd_36", Map::close);
+                    $countryDpd = new DropDown($title, $inputMap, $isRadio, $isDisplayed, $countryEventMap);
                     ?>
                     <div id="<?= $frmId ?>" class="form-input-dropdown-container">
                         <?= $countryDpd; ?>
@@ -117,6 +128,7 @@ $translator = $translator;
                         "inpName" => Address::INPUT_ZIPCODE,
                         "inpTxt" => $translator->translateStation("US100"),
                         "errortype" => self::ER_TYPE_COMMENT,
+                        "inpAttr" => "onblur=\"evtInp(this, '$inpEventCode')\""
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
                     ?>
@@ -131,6 +143,7 @@ $translator = $translator;
                         "inpName" => Address::INPUT_PHONE,
                         "inpTxt" => $translator->translateStation("US101"),
                         "errortype" => self::ER_TYPE_COMMENT,
+                        "inpAttr" => "onblur=\"evtInp(this, '$inpEventCode')\""
                     ];
                     echo $this->generateFile('view/elements/inputs/input.php', $datas);
                     ?>

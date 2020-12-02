@@ -90,7 +90,12 @@ class ControllerCheckout extends ControllerSecure
             if (!$response->containError()) {
                 $ctrName = self::extractController(ControllerCheckout::class);
                 $response->addResult(self::QR_SELECT_ADRS, $ctrName);
-                // $response->addResult(self::QR_SELECT_ADRS, true);
+                
+                $datasMap = new Map();
+                $datasMap->put($sequence, Address::KEY_ADRS_SEQUENCE);
+                $eventCode = "evt_cd_28";
+                $userID = $person->getUserID();
+                $person->getNavigation()->handleEvent((new Response()), $userID, $eventCode, $datasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -112,7 +117,12 @@ class ControllerCheckout extends ControllerSecure
             $payMethod = Query::getParam(CheckoutSession::KEY_STRP_MTD);
             $sessionId = $person->createNewCheckout($response, $payMethod);
             if (!$response->containError()) {
-                // $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
+                $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
+                
+                $datasMap = new Map();
+                $datasMap->put($sessionId, CheckoutSession::KEY_SESSION_ID);
+                $eventCode = "evt_cd_32";
+                $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);

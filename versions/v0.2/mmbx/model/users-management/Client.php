@@ -61,6 +61,7 @@ class Client extends User
     {
         $client = self::retreiveClient($email);
         self::transferToClient($response, $visitor, $client);
+        return $client;
     }
 
     /**
