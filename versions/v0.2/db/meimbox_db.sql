@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  Dim 29 nov. 2020 à 03:00
+-- Généré le :  mer. 02 déc. 2020 à 16:54
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -39,14 +39,8 @@ CREATE TABLE `Addresses` (
 --
 
 INSERT INTO `Addresses` (`userId`, `address`, `zipcode`, `country_`, `appartement`, `province`, `city`, `phoneNumber`, `setDate`) VALUES
-(3330090, 'my address', 'my zip0192', 'belgium', 'my appart', 'my stae', 'my city', '472174210', '2020-10-04 20:52:38'),
-(3330090, 'place royale 4', '1640abc', 'belgium', 'studio', 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54'),
-(3330090, 'rue royale 67', '1000', 'belgium', 'house', 'bruxelles', 'bruxelles', '472174210', '2020-11-15 20:52:51'),
-(101311321, '4 bandal', 'zipsamere', 'australia', 'suite', 'ngaliema', 'kinshasa', NULL, '2020-11-28 12:16:13'),
-(651853948, 'place royale 4', '1640', 'canada', 'app', 'state', 'rhode-saint-genese', '472174210', '2020-10-03 16:06:58'),
-(651853948, 'place royele 4', '1640', 'belgium', NULL, 'Brabant-flamand', 'rhode-saint-genese', '32472274210', '2020-02-28 00:00:00'),
-(651853948, 'rue des bargeo 4', '4780', 'canada', 'boite 17', 'ma province perdu', 'ma ville perdu', '428284890', '2020-02-27 00:00:00'),
-(651853948, 'rue royale 67', '1000', 'canada', NULL, 'bruxelles', 'bruxelles', '472174210', '2020-10-03 16:09:44');
+(3330090, 'place royale 4', '1640', 'belgium', 'villa', 'miami', 'rodeo drive', '472174210', '2020-12-01 23:18:03'),
+(3330090, 'place royale 4', '1640abc', 'belgium', 'studio', 'bruxelles', 'rhode-saint-genese', '472174210', '2020-10-02 16:14:54');
 
 -- --------------------------------------------------------
 
@@ -87,7 +81,7 @@ CREATE TABLE `Baskets-Box` (
 INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
 ('002ju101v150c24oad32102a4', 3330090),
 ('221251413024ql01301424n3x', 3330090),
-('421cgh2o222160508a51v0nk9', 3330090),
+('4010cb5272256g095m1402hxu', 3330090),
 ('h0r21wf0k6v4110442162112h', 3330090),
 ('0860g1009tn0i31s2s6b24112', 651853948),
 ('120p222c5150ym3wt2308y193', 651853948),
@@ -160,12 +154,9 @@ CREATE TABLE `Box-Products` (
 --
 
 INSERT INTO `Box-Products` (`boxId`, `prodId`, `sequenceID`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`) VALUES
-('002ju101v150c24oad32102a4', 1, 's-null-null-null', 's', NULL, NULL, NULL, 1, '2020-11-27 01:23:22'),
-('221251413024ql01301424n3x', 2, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-11-22 13:34:37'),
+('221251413024ql01301424n3x', 1, 'l-null-null-null', 'l', NULL, NULL, NULL, 1, '2020-12-02 12:18:35'),
+('221251413024ql01301424n3x', 1, 'xxl-null-null-null', 'xxl', NULL, NULL, NULL, 1, '2020-12-02 12:19:00'),
 ('70r904v2240t0292ko1514055', 3, 'null-null-1001nq54od2c002o903219929-fit', NULL, NULL, '1001nq54od2c002o903219929', 'fit', 4, '2020-09-24 18:38:20'),
-('h0r21wf0k6v4110442162112h', 1, 'm-null-null-null', 'm', NULL, NULL, NULL, 7, '2020-11-21 17:01:11'),
-('h0r21wf0k6v4110442162112h', 1, 'xxs-null-null-null', 'xxs', NULL, NULL, NULL, 1, '2020-11-22 21:07:44'),
-('h0r21wf0k6v4110442162112h', 2, 'm-null-null-null', 'm', NULL, NULL, NULL, 1, '2020-11-22 13:35:14'),
 ('mf1550920290g92f0261m60i2', 3, 's-the north face-null-null', 's', 'the north face', NULL, NULL, 1, '2020-09-25 19:06:42');
 
 -- --------------------------------------------------------
@@ -339,15 +330,22 @@ CREATE TABLE `Boxes` (
 
 INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('002ju101v150c24oad32102a4', 'regular', '2020-11-23 01:44:25'),
+('0102nn102ok08f0s034581022', 'silver', '2020-12-02 10:00:58'),
+('0220310516202mz488fk1ks12', 'gold', '2020-12-02 10:18:51'),
 ('022i90x55y3013ue680l10125', 'gold', '2020-10-13 09:58:50'),
+('02em0u14832203jsc15810220', 'regular', '2020-12-02 08:52:01'),
 ('02hm75350n91q2000042my115', 'regular', '2020-11-20 05:30:50'),
+('05y028021l4503zt2094a121f', 'regular', '2020-12-02 09:05:51'),
 ('0782s02x110n1n3v327i7y10h', 'silver', '2020-10-07 17:33:27'),
 ('07ev531313rul51o25220p12m', 'gold', '2020-11-17 23:35:55'),
 ('0860g1009tn0i31s2s6b24112', 'gold', '2020-09-16 21:40:10'),
 ('0ca4ie800824k256i21011m1v', 'regular', '2020-10-20 18:58:41'),
 ('0gi1031159y53i7209g2o2r40', 'gold', '2020-09-15 13:20:53'),
 ('0n57q1k1902082n05n9ug5280', 'silver', '2020-09-17 09:50:58'),
+('0oh7351vn2i97209i0044922u', 'regular', '2020-12-02 09:53:49'),
+('0scu6021211229002d1x42bq7', 'gold', '2020-12-02 10:19:21'),
 ('0uj18003912412m142z1l16sl', 'silver', '2020-10-13 14:19:28'),
+('0vqd2r4629d8126l00103120p', 'silver', '2020-12-02 10:16:08'),
 ('101222k1f1s02e0m43237171e', 'silver', '2020-11-20 17:24:11'),
 ('1015q398el203w025f0012211', 'gold', '2020-10-10 18:20:35'),
 ('102901079c41fcg2mtw96t40d', 'regular', '2020-09-17 09:49:41'),
@@ -367,9 +365,11 @@ INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('1g84sa23913n2o5011w014041', 'silver', '2020-10-13 14:38:45'),
 ('200e2001142d00916f4kjecbs', 'regular', '2020-09-16 21:40:04'),
 ('20341003s1w013ky47va1s422', 'regular', '2020-10-13 14:40:33'),
+('204120c99yizfw202s2pe400x', 'regular', '2020-12-02 09:02:49'),
 ('204j10d1410q212cn22qv1198', 'gold', '2020-11-04 12:12:19'),
 ('20a31i02ev20lc1122pzi1501', 'silver', '2020-10-21 12:25:31'),
 ('20g111t2323sd39gus5000020', 'silver', '2020-11-20 05:33:09'),
+('20wl02120p92304x6p0l0ff12', 'regular', '2020-12-02 10:00:29'),
 ('210e40ty12v1e2m101271z273', 'silver', '2020-11-04 12:12:12'),
 ('21rta90q0o5j9120230182424', 'regular', '2020-10-13 09:45:24'),
 ('22062fl1210dddu0101lj0243', 'gold', '2020-10-11 22:03:42'),
@@ -386,9 +386,12 @@ INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('319001s1sf2h4y02822x12oc4', 'silver', '2020-11-21 02:43:28'),
 ('336210a021090uq4210117p4n', 'gold', '2020-11-21 03:01:40'),
 ('35020w41820k0sj10025v44h1', 'gold', '2020-11-20 05:34:48'),
+('4010cb5272256g095m1402hxu', 'regular', '2020-12-02 15:56:40'),
 ('402i3x316hr4021df1p014u12', 'regular', '2020-11-16 10:34:42'),
 ('421cgh2o222160508a51v0nk9', 'regular', '2020-11-26 20:59:54'),
 ('43012119426c1b0jy02xt21j1', 'silver', '2020-11-21 10:34:19'),
+('4k2501t22229nm0u4c50ets01', 'regular', '2020-12-02 09:25:14'),
+('525gp5h596a001246i2160052', 'regular', '2020-12-02 09:55:15'),
 ('607029oh2y1x0j1zj41101x05', 'silver', '2020-10-11 15:40:07'),
 ('611026076001h2su60044z19i', 'regular', '2020-10-06 17:19:04'),
 ('6724nwr140i12120gm0115er1', 'gold', '2020-11-20 16:47:14'),
@@ -1436,7 +1439,7 @@ CREATE TABLE `Details` (
 --
 
 CREATE TABLE `Devices` (
-  `navId` varchar(30) NOT NULL,
+  `navId` varchar(50) NOT NULL,
   `deviceDate` datetime NOT NULL,
   `deviceDatas` json NOT NULL,
   `userAgent` varchar(250) NOT NULL,
@@ -1454,6 +1457,14 @@ CREATE TABLE `Devices` (
   `deviceBrand` varchar(50) DEFAULT NULL,
   `deviceModel` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Devices`
+--
+
+INSERT INTO `Devices` (`navId`, `deviceDate`, `deviceDatas`, `userAgent`, `isBot`, `botInfo`, `osName`, `osVersion`, `osPlateform`, `driverType`, `driverName`, `driverVersion`, `driverEngine`, `driverEngineVersion`, `deviceType`, `deviceBrand`, `deviceModel`) VALUES
+('nav_041ziz02gp26l801i47125329', '2020-12-02 15:49:38', '{\"os\": {\"name\": \"iOS\", \"version\": \"7.1.2\", \"platform\": \"\", \"short_name\": \"IOS\"}, \"brand\": \"Apple\", \"model\": \"iPhone\", \"device\": \"smartphone\", \"clientInfo\": {\"name\": \"Mobile Safari\", \"type\": \"browser\", \"engine\": \"WebKit\", \"version\": \"7.0\", \"short_name\": \"MF\", \"engine_version\": \"537.51.2\"}}', 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53', 0, 'null', 'ios', '7.1.2', NULL, 'browser', 'mobile safari', '7.0', 'webkit', '537.51.2', 'smartphone', 'apple', 'iphone'),
+('nav_4v1l120261qsns1290322h000', '2020-12-02 16:09:33', '{\"os\": {\"name\": \"Mac\", \"version\": \"10.15.7\", \"platform\": \"\", \"short_name\": \"MAC\"}, \"brand\": \"Apple\", \"model\": \"\", \"device\": \"desktop\", \"clientInfo\": {\"name\": \"Safari\", \"type\": \"browser\", \"engine\": \"WebKit\", \"version\": \"14.0\", \"short_name\": \"SF\", \"engine_version\": \"605.1.15\"}}', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15', 0, 'null', 'mac', '10.15.7', NULL, 'browser', 'safari', '14.0', 'webkit', '605.1.15', 'desktop', 'apple', NULL);
 
 -- --------------------------------------------------------
 
@@ -1625,6 +1636,81 @@ CREATE TABLE `Events` (
   `result` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `Events`
+--
+
+INSERT INTO `Events` (`eventCode`, `event`, `element`, `name`, `result`) VALUES
+('01', 'click', 'button', 'opener of asshole', 'open ass hole'),
+('evt_cd_0', 'scroll', 'scroller', 'current page', 'scroll the page'),
+('evt_cd_1', 'laod', 'page', 'device size', 'get width and height of device'),
+('evt_cd_10', 'launch', 'alert', 'alert pop', 'display alert message'),
+('evt_cd_11', 'click', 'collapse', 'product description', 'open collapse'),
+('evt_cd_12', 'click', 'collapse', 'product description', 'close collapse'),
+('evt_cd_13', 'click', 'collapse', 'shipping infos', 'open collapse'),
+('evt_cd_14', 'click', 'collapse', 'shipping infos', 'close collapse'),
+('evt_cd_15', 'click', 'button', 'carrousel', 'slide right'),
+('evt_cd_16', 'click', 'button', 'carrousel', 'slide left'),
+('evt_cd_17', 'click', 'dropdown', 'order summary container', 'open'),
+('evt_cd_18', 'click', 'dropdown', 'order summary container', 'close'),
+('evt_cd_19', 'click', 'dropdown', 'country from order summary', 'open'),
+('evt_cd_2', 'click', 'button', 'burger from header', 'open side menu'),
+('evt_cd_20', 'click', 'dropdown', 'country from order summary', 'close'),
+('evt_cd_21', 'click', 'checkbox', 'one country of the countries dropdown from order summary', 'request to select country'),
+('evt_cd_22', 'response', 'json', 'request select country', 'select country'),
+('evt_cd_23', 'click', 'collapse', 'support contacts from order summary', 'open'),
+('evt_cd_24', 'click', 'collapse', 'support contacts from order summary', 'close'),
+('evt_cd_25', 'click', 'button', 'new address adder from address selector form', 'open address editor popup'),
+('evt_cd_26', 'click', 'button', 'address block from address selector form', 'focus address'),
+('evt_cd_27', 'click', 'button', 'submit focus address', 'request to select address'),
+('evt_cd_28', 'response', 'json', 'request to select address', 'select address'),
+('evt_cd_29', 'click', 'dropdown', 'checkout cart', 'open'),
+('evt_cd_3', 'click', 'button', 'opener for box adder from side menu', 'open boxes pricing popup'),
+('evt_cd_30', 'click', 'dropdown', 'checkout cart', 'close'),
+('evt_cd_31', 'click', 'button', 'submit checkout summary', 'request to launch checkout'),
+('evt_cd_32', 'response', 'json', 'request to launch checkout', 'launch checkout'),
+('evt_cd_33', 'click', 'button', 'closer of address editor popup', 'close address editor popup'),
+('evt_cd_34', 'blur', 'input', 'from address form', 'finished typing'),
+('evt_cd_35', 'click', 'dropdown', 'country from address form', 'open'),
+('evt_cd_36', 'click', 'dropdown', 'country from address form', 'close'),
+('evt_cd_37', 'click', 'checkbox', 'country of the country dropdown from address form', 'request to select country'),
+('evt_cd_38', 'click', 'button', 'submit address form', 'request to add new address'),
+('evt_cd_39', 'response', 'json', 'request add new address', 'add new address'),
+('evt_cd_4', 'click', 'button', 'burger from header', 'close side menu'),
+('evt_cd_40', 'click', 'button', 'sign up switcher from sign form', 'switch to sign up form'),
+('evt_cd_41', 'click', 'button', 'sign in switcher from sign form', 'switch to sign in form'),
+('evt_cd_42', 'click', 'checkbox', 'from sign up form', 'check or uncheck'),
+('evt_cd_43', 'blur', 'input', 'from sign up form', 'finished typing'),
+('evt_cd_44', 'click', 'checkbox', 'from sign in forrm', 'check or uncheck'),
+('evt_cd_45', 'blur', 'input', 'from sign in forrm', 'finished typing'),
+('evt_cd_46', 'click', 'button', 'submit sign up form', 'request to sign up'),
+('evt_cd_47', 'response', 'json', 'request to sign up', 'sign up'),
+('evt_cd_48', 'click', 'button', 'submit sign in form', 'request to sign in'),
+('evt_cd_49', 'response', 'json', 'request to sign in', 'sign in'),
+('evt_cd_5', 'click', 'button', 'opener for box adder from header', 'open boxes pricing popup'),
+('evt_cd_50', 'click', 'button', 'closer of sign popup', 'close sign popup'),
+('evt_cd_51', 'click', 'button', 'add a new box from boxes pricing popup', 'request to add a new box'),
+('evt_cd_52', 'response', 'json', 'request add box', 'add new box in cart'),
+('evt_cd_53', 'click', 'button', 'closer of boxes pricing popup', 'close boxes pricing popup'),
+('evt_cd_54', 'click', 'button', 'cart logo from mobile header', 'request cart popup'),
+('evt_cd_55', 'click', 'button', 'cart logo from computer header', 'request cart popup'),
+('evt_cd_56', 'response', 'json', 'request cart popup', 'open cart popup'),
+('evt_cd_57', 'click', 'button', 'deleter of box', 'request to delete box'),
+('evt_cd_58', 'response', 'json', 'request to delete box', 'delete box'),
+('evt_cd_59', 'click', 'button', 'arrow of box', 'open box content'),
+('evt_cd_6', 'click', 'button', 'opener for box adder from box manager popup', 'open boxes pricing popup'),
+('evt_cd_60', 'click', 'button', 'arrow of box', 'close box content'),
+('evt_cd_61', 'click', 'button', 'deleter of product in box', 'request to delete product from box'),
+('evt_cd_62', 'response', 'json', 'request to delete product from box', 'delete product from box'),
+('evt_cd_63', 'click', 'button', 'updater of product in box', 'open mini-pop of product'),
+('evt_cd_64', 'click', 'button', 'mover of product in mini-pop of product in box', 'request box manager popup'),
+('evt_cd_65', 'response', 'json', 'request box manager popup', 'open box manager popup'),
+('evt_cd_66', 'click', 'button', 'submit focussed destination box', 'request to move product to focussed box'),
+('evt_cd_67', 'response', 'json', 'request to move product to focussed box', 'move product to other box'),
+('evt_cd_7', 'click', 'button', 'sign logo from header', 'open sign popup'),
+('evt_cd_8', 'click', 'button', 'sign logo from side menu', 'open sign popup'),
+('evt_cd_9', 'launch', 'alert', 'ask pop', 'display ask message');
+
 -- --------------------------------------------------------
 
 --
@@ -1632,10 +1718,17 @@ CREATE TABLE `Events` (
 --
 
 CREATE TABLE `EventsDatas` (
-  `eventId` varchar(30) NOT NULL,
+  `eventId` varchar(50) NOT NULL,
   `dataKey` varchar(100) NOT NULL,
   `dataValue` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `EventsDatas`
+--
+
+INSERT INTO `EventsDatas` (`eventId`, `dataKey`, `dataValue`) VALUES
+('evt_id_4xjs670v2135251p202221502', 'boxid', '4010cb5272256g095m1402hxu');
 
 -- --------------------------------------------------------
 
@@ -1665,7 +1758,7 @@ INSERT INTO `Languages` (`langIsoCode`, `langName`, `langLocalName`) VALUES
 --
 
 CREATE TABLE `Locations` (
-  `navId` varchar(30) NOT NULL,
+  `navId` varchar(50) NOT NULL,
   `locationDate` datetime NOT NULL,
   `ip` varchar(100) DEFAULT NULL,
   `status` varchar(20) NOT NULL,
@@ -1693,6 +1786,13 @@ CREATE TABLE `Locations` (
   `proxy` tinyint(1) DEFAULT NULL,
   `hosting` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Locations`
+--
+
+INSERT INTO `Locations` (`navId`, `locationDate`, `ip`, `status`, `message`, `continent`, `continentCode`, `country`, `countryCode`, `region`, `regionName`, `city`, `district`, `zip`, `lat`, `lon`, `timezone`, `offset`, `currency`, `isp`, `ispOrg`, `ispAs`, `asname`, `reverse`, `mobile`, `proxy`, `hosting`) VALUES
+('nav_041ziz02gp26l801i47125329', '2020-12-02 15:49:38', '203.194.21.241', 'success', NULL, 'oceania', 'oc', 'australia', 'au', 'vic', 'victoria', 'forest hill', NULL, '3131', -37.8372, 145.173, 'australia/melbourne', 39600, 'aud', 'tpg internet pty ltd', 'tricon group', 'as7545 tpg telecom limited', 'tpg-internet-ap', '203-194-21-241.tpgi.com.au', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1761,14 +1861,52 @@ INSERT INTO `MeasureUnits` (`unitName`, `measureUnit`, `toSystUnit`) VALUES
 --
 
 CREATE TABLE `Navigations` (
-  `navID` varchar(30) NOT NULL,
+  `navID` varchar(50) NOT NULL,
   `userId` int(11) NOT NULL,
+  `xhrFrom` varchar(50) DEFAULT NULL,
   `navDate` datetime NOT NULL,
   `url` varchar(1000) NOT NULL,
   `webroot` varchar(50) NOT NULL,
   `path` varchar(100) NOT NULL,
   `timeOn` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Navigations`
+--
+
+INSERT INTO `Navigations` (`navID`, `userId`, `xhrFrom`, `navDate`, `url`, `webroot`, `path`, `timeOn`) VALUES
+('nav_041ziz02gp26l801i47125329', 3330090, NULL, '2020-12-02 15:49:37', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/dashboard/shopbag', '/versions/v0.2/mmbx/', 'dashboard/shopbag', 310),
+('nav_456ls122b00j33011226f0610', 3330090, NULL, '2020-12-02 16:00:56', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/dashboard/shopbag', '/versions/v0.2/mmbx/', 'dashboard/shopbag', 2281),
+('nav_4v1l120261qsns1290322h000', 2322322, NULL, '2020-12-02 16:09:32', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/test', '/versions/v0.2/mmbx/', 'home/qr/test', NULL),
+('nav_825g40r00j2t2j61073g15142', 3330090, NULL, '2020-12-02 16:38:57', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/dashboard/shopbag', '/versions/v0.2/mmbx/', 'dashboard/shopbag', 836),
+('nav_h14701221b5220ezk401m529o', 3330090, NULL, '2020-12-02 15:54:47', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/dashboard/shopbag', '/versions/v0.2/mmbx/', 'dashboard/shopbag', 369),
+('xhr_00108x459100g2j1aw3229522', 3330090, 'nav_041ziz02gp26l801i47125329', '2020-12-02 15:50:49', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_041ziz02gp26l801i47125329&k_xhr_sdt=1606920581', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_192035222od2j580gi24g01y2', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:59:23', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/item/qr/getBasketPop?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921163', '/versions/v0.2/mmbx/', 'item/qr/getBasketPop', NULL),
+('xhr_20026ju22e1wq9w52m21yo350', 3330090, 'nav_825g40r00j2t2j61073g15142', '2020-12-02 16:52:53', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_825g40r00j2t2j61073g15142&k_xhr_sdt=1606924373642', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_20042h612y251u203272c8k75', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:56:38', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606920998', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_20h220060421yifa7j022qt12', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 16:00:42', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921242', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_2261aezwj20010d2q0402v12i', 3330090, 'nav_456ls122b00j33011226f0610', '2020-12-02 16:01:04', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_456ls122b00j33011226f0610&k_xhr_sdt=1606921264', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_22i205p31b0616912jzpwb002', 3330090, 'nav_825g40r00j2t2j61073g15142', '2020-12-02 16:51:36', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_825g40r00j2t2j61073g15142&k_xhr_sdt=1606924296314', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_25x051s0212301o260h77bo52', 3330090, 'nav_041ziz02gp26l801i47125329', '2020-12-02 15:51:05', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_041ziz02gp26l801i47125329&k_xhr_sdt=1606920581', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_26515r02r22r069in210208u0', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 16:00:55', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921255', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_280w2u129dwo5u2f15w201110', 3330090, 'nav_041ziz02gp26l801i47125329', '2020-12-02 15:51:18', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_041ziz02gp26l801i47125329&k_xhr_sdt=1606920581', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_2h4xg1260v024w2051105co72', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:56:40', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/item/qr/addBox?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921000', '/versions/v0.2/mmbx/', 'item/qr/addBox', NULL),
+('xhr_370bw50272l10h0q1l62215m2', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:56:37', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606920997', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_37y22o22jm505q6ac100j02w1', 3330090, 'nav_456ls122b00j33011226f0610', '2020-12-02 16:35:57', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_456ls122b00j33011226f0610&k_xhr_sdt=1606923356', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_42215203212g80z025bxmy5n2', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:55:32', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606920933', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_542yh0k32r211c492201ial00', 3330090, 'nav_041ziz02gp26l801i47125329', '2020-12-02 15:49:41', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_041ziz02gp26l801i47125329&k_xhr_sdt=1606920581', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_60li0z2e25b0s22001211060a', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 16:00:50', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921250', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_7oi6m221jv2a69250w2009310', 3330090, 'nav_825g40r00j2t2j61073g15142', '2020-12-02 16:39:09', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_825g40r00j2t2j61073g15142&k_xhr_sdt=1606923548978', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_81w109205i2x5102l2bq00j12', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:59:01', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921141', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_e251eip06krv2052200w61m02', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 16:00:55', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/signIn?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921255', '/versions/v0.2/mmbx/', 'home/qr/signIn', NULL),
+('xhr_el8225822o17103222z0505rq', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:55:38', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606920939', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_g0222r1i1a2g0fk60201uv420', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 16:00:41', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921241', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_hwi11p022p1r5s02530c2205k', 3330090, 'nav_041ziz02gp26l801i47125329', '2020-12-02 15:51:03', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_041ziz02gp26l801i47125329&k_xhr_sdt=1606920581', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_l0610m2202hbd90w2215r4i25', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:59:24', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921163', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_n290x115up502k262204v00a4', 3330090, 'nav_825g40r00j2t2j61073g15142', '2020-12-02 16:40:55', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_825g40r00j2t2j61073g15142&k_xhr_sdt=1606923654837', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_x82605h62x1e0t24l0r12250u', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 15:56:40', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921000', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_z32t2g6001520wx102dr02247', 3330090, 'nav_h14701221b5220ezk401m529o', '2020-12-02 16:00:52', 'https://7111ae2d23a3.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_h14701221b5220ezk401m529o&k_xhr_sdt=1606921252', '/versions/v0.2/mmbx/', 'home/qr/event', NULL);
 
 -- --------------------------------------------------------
 
@@ -1777,11 +1915,18 @@ CREATE TABLE `Navigations` (
 --
 
 CREATE TABLE `Navigations-Events` (
-  `navId` varchar(30) NOT NULL,
-  `eventID` varchar(30) NOT NULL,
+  `xhrId` varchar(50) NOT NULL,
+  `eventID` varchar(50) NOT NULL,
   `event_code` varchar(50) NOT NULL,
-  `eventDate` datetime NOT NULL
+  `eventDate` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Navigations-Events`
+--
+
+INSERT INTO `Navigations-Events` (`xhrId`, `eventID`, `event_code`, `eventDate`) VALUES
+('xhr_20026ju22e1wq9w52m21yo350', 'evt_id_4xjs670v2135251p202221502', 'evt_cd_60', 1606924373642);
 
 -- --------------------------------------------------------
 
@@ -1790,10 +1935,68 @@ CREATE TABLE `Navigations-Events` (
 --
 
 CREATE TABLE `NavigationsParameters` (
-  `navId` varchar(30) NOT NULL,
+  `navId` varchar(50) NOT NULL,
   `paramKey` varchar(100) NOT NULL,
   `paramValue` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `NavigationsParameters`
+--
+
+INSERT INTO `NavigationsParameters` (`navId`, `paramKey`, `paramValue`) VALUES
+('xhr_00108x459100g2j1aw3229522', 'k_xhr_sdt', '1606920581'),
+('xhr_00108x459100g2j1aw3229522', 'xhr', 'nav_041ziz02gp26l801i47125329'),
+('xhr_192035222od2j580gi24g01y2', 'k_xhr_sdt', '1606921163'),
+('xhr_192035222od2j580gi24g01y2', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_20026ju22e1wq9w52m21yo350', 'k_xhr_sdt', '1606924373642'),
+('xhr_20026ju22e1wq9w52m21yo350', 'xhr', 'nav_825g40r00j2t2j61073g15142'),
+('xhr_20042h612y251u203272c8k75', 'k_xhr_sdt', '1606920998'),
+('xhr_20042h612y251u203272c8k75', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_20h220060421yifa7j022qt12', 'k_xhr_sdt', '1606921242'),
+('xhr_20h220060421yifa7j022qt12', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_2261aezwj20010d2q0402v12i', 'k_xhr_sdt', '1606921264'),
+('xhr_2261aezwj20010d2q0402v12i', 'xhr', 'nav_456ls122b00j33011226f0610'),
+('xhr_22i205p31b0616912jzpwb002', 'k_xhr_sdt', '1606924296314'),
+('xhr_22i205p31b0616912jzpwb002', 'xhr', 'nav_825g40r00j2t2j61073g15142'),
+('xhr_25x051s0212301o260h77bo52', 'k_xhr_sdt', '1606920581'),
+('xhr_25x051s0212301o260h77bo52', 'xhr', 'nav_041ziz02gp26l801i47125329'),
+('xhr_26515r02r22r069in210208u0', 'k_xhr_sdt', '1606921255'),
+('xhr_26515r02r22r069in210208u0', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_280w2u129dwo5u2f15w201110', 'k_xhr_sdt', '1606920581'),
+('xhr_280w2u129dwo5u2f15w201110', 'xhr', 'nav_041ziz02gp26l801i47125329'),
+('xhr_2h4xg1260v024w2051105co72', 'k_xhr_sdt', '1606921000'),
+('xhr_2h4xg1260v024w2051105co72', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_370bw50272l10h0q1l62215m2', 'k_xhr_sdt', '1606920997'),
+('xhr_370bw50272l10h0q1l62215m2', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_37y22o22jm505q6ac100j02w1', 'k_xhr_sdt', '1606923356'),
+('xhr_37y22o22jm505q6ac100j02w1', 'xhr', 'nav_456ls122b00j33011226f0610'),
+('xhr_42215203212g80z025bxmy5n2', 'k_xhr_sdt', '1606920933'),
+('xhr_42215203212g80z025bxmy5n2', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_542yh0k32r211c492201ial00', 'k_xhr_sdt', '1606920581'),
+('xhr_542yh0k32r211c492201ial00', 'xhr', 'nav_041ziz02gp26l801i47125329'),
+('xhr_60li0z2e25b0s22001211060a', 'k_xhr_sdt', '1606921250'),
+('xhr_60li0z2e25b0s22001211060a', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_7oi6m221jv2a69250w2009310', 'k_xhr_sdt', '1606923548978'),
+('xhr_7oi6m221jv2a69250w2009310', 'xhr', 'nav_825g40r00j2t2j61073g15142'),
+('xhr_81w109205i2x5102l2bq00j12', 'k_xhr_sdt', '1606921141'),
+('xhr_81w109205i2x5102l2bq00j12', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_e251eip06krv2052200w61m02', 'k_xhr_sdt', '1606921255'),
+('xhr_e251eip06krv2052200w61m02', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_el8225822o17103222z0505rq', 'k_xhr_sdt', '1606920939'),
+('xhr_el8225822o17103222z0505rq', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_g0222r1i1a2g0fk60201uv420', 'k_xhr_sdt', '1606921241'),
+('xhr_g0222r1i1a2g0fk60201uv420', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_hwi11p022p1r5s02530c2205k', 'k_xhr_sdt', '1606920581'),
+('xhr_hwi11p022p1r5s02530c2205k', 'xhr', 'nav_041ziz02gp26l801i47125329'),
+('xhr_l0610m2202hbd90w2215r4i25', 'k_xhr_sdt', '1606921163'),
+('xhr_l0610m2202hbd90w2215r4i25', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_n290x115up502k262204v00a4', 'k_xhr_sdt', '1606923654837'),
+('xhr_n290x115up502k262204v00a4', 'xhr', 'nav_825g40r00j2t2j61073g15142'),
+('xhr_x82605h62x1e0t24l0r12250u', 'k_xhr_sdt', '1606921000'),
+('xhr_x82605h62x1e0t24l0r12250u', 'xhr', 'nav_h14701221b5220ezk401m529o'),
+('xhr_z32t2g6001520wx102dr02247', 'k_xhr_sdt', '1606921252'),
+('xhr_z32t2g6001520wx102dr02247', 'xhr', 'nav_h14701221b5220ezk401m529o');
 
 -- --------------------------------------------------------
 
@@ -3033,6 +3236,7 @@ INSERT INTO `StripeCheckoutSessions` (`sessionID`, `payId`, `userId`, `custoID`,
 ('cs_test_b1Gj3Z79jP4h7F5uV98By15m3hza645nROwmiuoC2LEEFXxbhsA7jnCgxl', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 16:59:28'),
 ('cs_test_b1lrnTASPCQsRsVOnKtRdHmlQUg76ydKBwESxi7MzVLPoFIFkzD9orNaf5', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 14:14:38'),
 ('cs_test_b1MXnENfjtduz5ZbqfowfainkP3WqR4qJQZUDC2rrnk0jkeWCwG6UnnYBI', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-22 14:03:30'),
+('cs_test_b1N9b8DwQJlzCRnJFrtTjXPdorOZEP5tMYfh4pBjiZPvJvYeWBHJ5pBSAj', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-12-01 16:21:24'),
 ('cs_test_b1pJ1AcUrlK8ruLpTAHwGK388oauopFCw5kXtr0dHXAkuTtUncoT37HNFz', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'paid', '2020-11-20 06:21:36'),
 ('cs_test_b1qBOqEwArQNlIoF25ZKdO4BP2G8n4DW0D8rxP9hvaf3DVQhsHwp1BZYZc', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 21:52:41'),
 ('cs_test_b1rXVMsdB36NekEtadlRTnpUsIwUunNBiQWNAXUPUHBSw7wGQWJYyW9mxb', 'card', 3330090, 'cus_I9zCrpUKKrvSbx', 'unpaid', '2020-11-21 12:53:04'),
@@ -3391,8 +3595,8 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`userID`, `lang_`, `country_`, `iso_currency`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
 (1, NULL, 'belgium', 'jpy', 'system@mail.domain', 'no password', 'system', 'system', '2019-09-01', NULL, 'other', '2020-10-09 18:42:45'),
+(2322322, 'fr', 'australia', 'aud', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-12-02 16:09:32'),
 (3330090, 'en', 'belgium', 'eur', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
-(101311321, 'fr', 'australia', 'aud', 'rukefiwoh-5422@yopmail.com', '$2y$10$1pSUt0BMHJGqsVNfSbuGbe2/X5Nr12ktC1qc1s.gKKVXBKeE3IOGG', 'bob', 'makinson', NULL, 1, 'other', '2020-11-28 11:33:37'),
 (651853948, 'fr', 'belgium', 'jpy', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
 (846470517, 'fr', 'belgium', 'jpy', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'lady', '2020-01-08 15:00:05'),
 (934967739, 'en', 'belgium', 'jpy', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'sir', '2020-02-27 18:02:20'),
@@ -3422,12 +3626,10 @@ INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `pat
 (1, 'ADM', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 10800),
 (1, 'CLT', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 31536000),
 (1, 'VIS', '1', '2329e692a084.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-20 06:43:12', 94608000),
-(3330090, 'ADRS', '\"place royale 4|1640abc|belgium\"', 'f744012b323f.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-22 13:29:01', 86400),
-(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 03:57:01', 31536000),
-(3330090, 'VIS', '100d1sq639120hby303243a50', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 03:57:01', 94608000),
-(101311321, 'ADRS', '\"4 bandal|zipsamere|australia\"', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 13:48:56', 86400),
-(101311321, 'CLT', '2uu14bz8m42182j030w11e73j', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 13:48:56', 31536000),
-(101311321, 'VIS', '102142p81gs3xl223bvf20318', '7c4f9d8f1f8a.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-11-28 13:48:56', 94608000),
+(2322322, 'VIS', '0636wx126126c0l9300222dr0', '7111ae2d23a3.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-02 16:09:33', 94608000),
+(3330090, 'ADRS', '\"place royale 4|1640|belgium\"', 'e3369f7dbb1e.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-02 11:32:26', 86400),
+(3330090, 'CLT', 'm9140j8q2rwds0x5332002110', '7111ae2d23a3.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-02 16:52:53', 31536000),
+(3330090, 'VIS', '100d1sq639120hby303243a50', '7111ae2d23a3.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-02 16:52:53', 94608000),
 (651853948, 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
 
 -- --------------------------------------------------------
@@ -3782,7 +3984,7 @@ ALTER TABLE `Navigations`
 -- Index pour la table `Navigations-Events`
 --
 ALTER TABLE `Navigations-Events`
-  ADD PRIMARY KEY (`navId`,`eventID`),
+  ADD PRIMARY KEY (`xhrId`) USING BTREE,
   ADD UNIQUE KEY `eventID` (`eventID`) USING BTREE,
   ADD KEY `event_code` (`event_code`);
 
@@ -4254,7 +4456,7 @@ ALTER TABLE `Navigations`
 --
 ALTER TABLE `Navigations-Events`
   ADD CONSTRAINT `fk-event_code.Navigations-Events-FROM-Events` FOREIGN KEY (`event_code`) REFERENCES `Events` (`eventCode`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk-navId.Navigations-Events-FROM-Navigations` FOREIGN KEY (`navId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk-navId.Navigations-Events-FROM-Navigations` FOREIGN KEY (`xhrId`) REFERENCES `Navigations` (`navID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `NavigationsParameters`

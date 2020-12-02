@@ -26136,7 +26136,9 @@
 										"$ref": "AAAAAAFwh4nfLvu3Ac8="
 									},
 									"name": "eventDate",
-									"type": "DATETIME"
+									"documentation": "# Definition\n\nHolds the date when the Event happen in unix milliseconds ",
+									"type": "BIGINT",
+									"length": "20"
 								}
 							]
 						},
