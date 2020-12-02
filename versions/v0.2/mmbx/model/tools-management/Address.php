@@ -99,23 +99,6 @@ class Address extends ModelFunctionality
     }
 
     /**
-     * To build a id for an address
-     * + sequence = "address|zipcode|country"
-     * @param string $address address
-     * @param string $zipcode address's  zipcode
-     * @param string $country country where is located the address
-     * @return string a sequence for an address
-     */
-    public static function buildSequence(string $address, string $zipcode, string $country)
-    {
-        if (empty($address) || empty($zipcode) || empty($country)) {
-            throw new Exception("The param address, zipcode and country can't be empty,  address:'$address', zipcode:'$zipcode', country:'$country',");
-        }
-        $sequence = $address . self::SEQUENCE_SEPARATOR . $zipcode . self::SEQUENCE_SEPARATOR . $country;
-        return $sequence;
-    }
-
-    /**
      * to throw error when field is empty
      * @param string $field name of the empty field
      */
@@ -196,6 +179,31 @@ class Address extends ModelFunctionality
         return $this->setDate;
     }
 
+    /**
+     * To get Address's sequence
+     * @return string Address's sequence
+     */
+    public function getSequence()
+    {
+        return self::buildSequence($this->getAddress(), $this->getZipcode(), $this->getCountry()->getCountryName());
+    }
+
+    /**
+     * To build a id for an address
+     * + sequence = "address|zipcode|country"
+     * @param string $address address
+     * @param string $zipcode address's  zipcode
+     * @param string $country country where is located the address
+     * @return string a sequence for an address
+     */
+    public static function buildSequence(string $address, string $zipcode, string $country)
+    {
+        if (empty($address) || empty($zipcode) || empty($country)) {
+            throw new Exception("The param address, zipcode and country can't be empty,  address:'$address', zipcode:'$zipcode', country:'$country',");
+        }
+        $sequence = $address . self::SEQUENCE_SEPARATOR . $zipcode . self::SEQUENCE_SEPARATOR . $country;
+        return $sequence;
+    }
 
     /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/
 

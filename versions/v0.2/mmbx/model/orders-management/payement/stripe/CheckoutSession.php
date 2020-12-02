@@ -51,6 +51,7 @@ class CheckoutSession extends ModelFunctionality
      * Key for attribut
      */
     public const KEY_STRP_MTD = "key_strp_mtd";
+    public const KEY_SESSION_ID = "key_strp_session_id";
 
     /**
      * Holds image for shipping cost

@@ -2160,7 +2160,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .form-wrap .form-wrap-inner .dropdown-wrap {
     box-shadow: none;
     position: relative;
-    bottom: -10px;
+    /* bottom: -10px; */
 }
 
 .form-input-dropdown-container .comment {

@@ -10,7 +10,6 @@
  *          Map::attribut => string|null    // attribut to add on input tag
  *      ]
  * + 🚨only one input of $inputMap can has Map::isChecked = true
-//  * @param string $func function placed on all input
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
  */

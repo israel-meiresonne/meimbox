@@ -19,6 +19,16 @@
  */
 $address = $address;
 
+/** Event */
+// $eventDatas = [
+//     Address::INPUT_ADDRESS => $address->getAddress(),
+//     Address::INPUT_ZIPCODE => $address->getZipcode(),
+//     Country::KEY_ISO_CODE => $address->getCountry()->getCountryName()
+// ];
+$eventDatas = [Address::KEY_ADRS_SEQUENCE => $address->getSequence()];
+$eventJson = htmlentities(json_encode($eventDatas));
+
+
 $elementIdx = "#" . $elementId;
 $containerIdx = "#" . $containerId;
 $TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
@@ -66,7 +76,7 @@ if (!empty($dadx)) {
         <?php
         endif;
         ?>
-        <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?>>
+        <div <?= $Taglaunch ?> class="cart-element-detail-block" data-evtcd="evt_cd_26" data-evtj="<?= $eventJson ?>" <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?>>
             <div class="cart-element-property-set box-property-set">
                 <?php
                 if (!empty($title)) :

@@ -1,5 +1,5 @@
 <?php
-require_once 'controller/ControllerCheckout.php';
+// require_once 'controller/ControllerCheckout.php';
 // require_once 'model/special/Map.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
@@ -28,13 +28,23 @@ $inFormid  = ModelFunctionality::generateDateCode(25);
 $inFormx  = "#$inFormid";
 $inSbtnid = ModelFunctionality::generateDateCode(25);
 $inSbtnx = "#$inSbtnid";
+
+/** Event */
+$upCheckboxRadioEvent = "onclick=\"evtInp(this, 'evt_cd_42')\"";
+// $upCheckboxEvent = "onclick=\"evtCheck($(this).find('input'), 'evt_cd_42')\"";
+$upCheckboxEvent = "onclick=\"evtCheck(this, 'evt_cd_42')\"";
+$upInputEvent = "onblur=\"evtInp(this, 'evt_cd_43')\"";
+
+$inCheckboxEvent = "onclick=\"evtCheck(this, 'evt_cd_44')\"";
+$inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
+
 ?>
 <div class="sign-head">
     <div id="<?= $upHeadId ?>" class="sign-head-button-div sign-head-button-selected <?= $headsCls ?>">
-        <button class="sign-up-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $upHeadx ?>' , '<?= $upBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>')">new member</button>
+        <button class="sign-up-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $upHeadx ?>' , '<?= $upBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>');evt('evt_cd_40')">new member</button>
     </div>
     <div id="<?= $inHeadId ?>" class="sign-head-button-div <?= $headsCls ?>">
-        <button class="sign-in-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $inHeadx ?>' , '<?= $inBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>')">sign in</button>
+        <button class="sign-in-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $inHeadx ?>' , '<?= $inBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>');evt('evt_cd_41')">sign in</button>
     </div>
 </div>
 <div class="sign-bodies">
@@ -50,19 +60,19 @@ $inSbtnx = "#$inSbtnid";
                         <div class="signup-sexe-inner">
                             <div class="connection-input-container signup-input-container">
                                 <label class="checkbox-label">lady
-                                    <input type="radio" name="<?= Visitor::INPUT_SEX ?>" value="lady" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input type="radio" <?= $upCheckboxRadioEvent ?> name="<?= Visitor::INPUT_SEX ?>" value="lady" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                 </label>
                             </div>
                             <div class="connection-input-container signup-input-container">
                                 <label class="checkbox-label">sir
-                                    <input type="radio" name="<?= Visitor::INPUT_SEX ?>" value="sir" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input type="radio" <?= $upCheckboxRadioEvent ?> name="<?= Visitor::INPUT_SEX ?>" value="sir" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                 </label>
                             </div>
                             <div class="connection-input-container signup-input-container">
                                 <label class="checkbox-label">other
-                                    <input type="radio" name="<?= Visitor::INPUT_SEX ?>" value="other" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input type="radio" <?= $upCheckboxRadioEvent ?> name="<?= Visitor::INPUT_SEX ?>" value="other" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                 </label>
                             </div>
@@ -80,6 +90,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_FIRSTNAME,
                                 "inpTxt" => "first name",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => $upInputEvent
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -92,6 +103,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_LASTNAME,
                                 "inpTxt" => "last name",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => $upInputEvent
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -106,6 +118,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_EMAIL,
                                 "inpTxt" => "email",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => $upInputEvent
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -120,6 +133,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_PASSWORD,
                                 "inpTxt" => "password",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => null
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -132,6 +146,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_CONFIRM_PASSWORD,
                                 "inpTxt" => "password confirmation",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => null
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -147,7 +162,7 @@ $inSbtnx = "#$inSbtnid";
                                 <label class="checkbox-label">I confirm that I have read and I agree to
                                     I&Meim's terms and conditions including
                                     its privacy notice.
-                                    <input type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input <?= $upCheckboxEvent ?> type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <p id="<?= $errorid ?>" class="comment"></p>
                                 </label>
@@ -160,10 +175,10 @@ $inSbtnx = "#$inSbtnid";
                                 $errorx = "#$errorid";
                                 ?>
                                 <label class="checkbox-label">Sign up for newsletter
-                                    <input class="newletter-input" type="checkbox" name="<?= Visitor::INPUT_NEWSLETTER ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
+                                    <input class="newletter-input" <?= $upCheckboxEvent ?> type="checkbox" name="<?= Visitor::INPUT_NEWSLETTER ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <div class="connection-checkbox-text-div">
-                                        By subscribing to I&Meim’s newsletter, I understand
+                                        by subscribing to I&Meim’s newsletter, I understand
                                         and accept to receive emails from I&Meim’s with the
                                         latest deals, sales, and updates by multiple form of
                                         communication like email, phone and/or post.
@@ -181,6 +196,7 @@ $inSbtnx = "#$inSbtnid";
             </div>
         </div>
     </div>
+
     <div id="<?= $inBodyId ?>" class="sign-body login-block <?= $bodiesCls ?>">
         <div class="login-wrap">
             <div class="connection-wrap-inner login-wrap-inner">
@@ -194,6 +210,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_EMAIL,
                                 "inpTxt" => "email",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => $inInputEvent
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -206,6 +223,7 @@ $inSbtnx = "#$inSbtnid";
                                 "inpName" => Visitor::INPUT_PASSWORD,
                                 "inpTxt" => "password",
                                 "errortype" => self::ER_TYPE_COMMENT,
+                                "inpAttr" => null
                             ];
                             echo $this->generateFile('view/elements/inputs/input.php', $datas);
                             ?>
@@ -215,7 +233,7 @@ $inSbtnx = "#$inSbtnid";
                         <div class="connection-input-container login-remember-block">
                             <div class="connection-chcekbox-div">
                                 <label for="login_remember" class="checkbox-label">remember me
-                                    <input id="login_remember" type="checkbox" name="remember">
+                                    <input id="login_remember" <?= $inCheckboxEvent ?> type="checkbox" name="remember">
                                     <span class="checkbox-checkmark"></span>
                                     <p class="comment"></p>
                                 </label>

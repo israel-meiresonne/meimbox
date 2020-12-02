@@ -102,6 +102,7 @@
     signUp = (formx, sbtnx) => {
         var frm = $(formx).find("input");
         var l = ".sign_form-loading";
+        evtFrm("evt_cd_46", frm);
         var d = {
             "frm": frm,
             "frmCbk": () => { },
@@ -126,10 +127,10 @@
             handleErr(r, x.formx);
         }
     }
-
     signIn = (formx, sbtnx) => {
         var frm = $(formx).find("input");
         var l = ".sign_form-loading";
+        evtFrm("evt_cd_48", frm);
         var d = {
             "frm": frm,
             "frmCbk": () => { },
@@ -141,7 +142,7 @@
                 displayFlexOn(d.l, TS / 10);
                 disable(sbtnx);
             },
-            "rc": () => {}
+            "rc": () => { }
         };
         frmSND(d);
     }
@@ -195,6 +196,7 @@
     }
     addAddress = (formx, sbtnx, conf) => {
         var frm = $(formx).find("input");
+        evtFrm("evt_cd_38", frm);
         var d = {
             "frm": frm,
             "frmCbk": () => { },
@@ -240,6 +242,7 @@
         var val = $(x).attr(submitdata);
         var map = { [KEY_ADRS_SEQUENCE]: val }
         var params = mapToParam(map);
+        evt("evt_cd_27", json_encode(map));
         var d = {
             "a": QR_SELECT_ADRS,
             "d": params,
@@ -260,7 +263,7 @@
     }
     /*———————————————————————————— ADDRESS UP ———————————————————————————————*/
     /*———————————————————————————— COUNTTRY DOWN ————————————————————————————*/
-    updateCountry = (frmx) => {
+    updateCountry = (frmx, af = () => { }) => {
         var frm = $(frmx).find("input");
         var d = {
             "frm": frm,
@@ -268,7 +271,7 @@
             "a": QR_UPDATE_COUNTRY,
             "r": updateCountryRSP,
             "l": "#nada",
-            "x": null,
+            "x": { "af": af },
             "sc": () => {
                 displayFlexOn(d.l, TS / 10);
             },
@@ -278,13 +281,12 @@
         };
         frmSND(d);
     }
-    const updateCountryRSP = (r) => {
+    const updateCountryRSP = (r, x) => {
         if (r.isSuccess) {
-            getBasketPop();
+            x.af();
         } else {
             handleErr(r);
         }
-
     }
     /*———————————————————————————— COUNTTRY UP ——————————————————————————————*/
     $(document).ready(function () {

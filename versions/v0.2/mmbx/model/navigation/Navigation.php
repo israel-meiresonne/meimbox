@@ -295,6 +295,27 @@ class Navigation extends ModelFunctionality
     }
 
     /**
+     * To handle Event occured with Xhr request
+     * @param Response  $response   where to strore results
+     * @param string    $userID     Visitor's id
+     * @param string    $eventCode  code that refer to a Event
+     * @param Map|null  $datasMap   holds datas submeted with the event
+     *                              + Note: must be list of key value, so deep must be of 1
+     */
+    public function handleEvent($response, $userID, $eventCode, Map $datasMap = null)
+    {
+        $urlPage = $this->getUrlPage();
+        if (!$urlPage->isXHR()) {
+            throw new Exception("Url request must be a Xhr request to handle event");
+        }
+        /**
+         * @var Xhr */
+        $xhr = $urlPage;
+        $event = new Event($eventCode, $datasMap);
+        $xhr->handleEvent($response, $userID, $event);
+    }
+
+    /**
      * To locate Visitor
      */
     public function locate()

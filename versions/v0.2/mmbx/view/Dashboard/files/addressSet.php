@@ -39,7 +39,7 @@ $translator = $translator;
         </div>
         <div class="address-set-static">
             <div class="center-btn-div">
-                <button class="green-button standard-button remove-button-default-att" onclick="openPopUp('#address_adder_pop')">
+                <button class="green-button standard-button remove-button-default-att" onclick="openPopUp('#address_adder_pop');evt('evt_cd_25')">
                     <?= $translator->translateStation("US94") ?>
                 </button>
             </div>

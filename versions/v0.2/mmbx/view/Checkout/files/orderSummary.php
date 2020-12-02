@@ -81,8 +81,8 @@ $address = (!empty($address)) ? $address : null;
                                             $inputMap->put(Country::INPUT_ISO_COUNTRY_VISITOR, $label, Map::inputName);
                                             $inputMap->put($isoCountry, $label, Map::inputValue);
                                             $inputMap->put($isChecked, $label, Map::isChecked);
-                                            $inputJson = htmlentities(json_encode(["iso_country"=>$isoCountry]));
-                                            $inputAttr = "onclick=\"updateCountry('$frmIdx');evt('evt_cd_21', '$inputJson');\"";
+                                            $inputJson = htmlentities(json_encode([Country::KEY_ISO_CODE => $isoCountry]));
+                                            $inputAttr = "onclick=\"evt('evt_cd_21', '$inputJson');updateCountry('$frmIdx', getBasketPop);\"";
                                             $inputMap->put($inputAttr, $label, Map::attribut);
                                         }
                                     }
@@ -329,77 +329,6 @@ $address = (!empty($address)) ? $address : null;
                                     </div>
                                 </div>
                             </li>
-                            <!-- <li class="remove-li-default-att">
-                                <div class="collapse-div">
-                                    <div class="collapse-title-div">
-                                        <div class="collapse-title">payement options</div>
-                                        <div class="collapse-symbol">
-                                            <div class="plus_symbol-container">
-                                                <div class="plus_symbol-wrap">
-                                                    <span class="plus_symbol-vertical"></span>
-                                                    <span class="plus_symbol-horizontal"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="collapse-text-div collapse-text-hidded">
-                                        <div class="collapse-text-inner">
-
-                                            <ul class="payement-ul remove-ul-default-att">
-                                                <li class="payement-li remove-li-default-att">
-                                                    <div class="img-text-wrap">
-                                                        <div class="img-text-img">
-                                                            <img src="<?= self::$DIR_STATIC_FILES ?>visa-logo.png">
-                                                        </div>
-                                                        <span class="img-text-span">visa</span>
-                                                    </div>
-                                                </li>
-                                                <li class="payement-li remove-li-default-att">
-                                                    <div class="img-text-wrap">
-                                                        <div class="img-text-img">
-                                                            <img src="<?= self::$DIR_STATIC_FILES ?>apple-pay-logo.png">
-                                                        </div>
-                                                        <span class="img-text-span">pay</span>
-                                                    </div>
-                                                </li>
-                                                <li class="payement-li remove-li-default-att">
-                                                    <div class="img-text-wrap">
-                                                        <div class="img-text-img">
-                                                            <img src="<?= self::$DIR_STATIC_FILES ?>paypal.png">
-                                                        </div>
-                                                        <span class="img-text-span">paypal</span>
-                                                    </div>
-                                                </li>
-                                                <li class="payement-li remove-li-default-att">
-                                                    <div class="img-text-wrap">
-                                                        <div class="img-text-img">
-                                                            <img src="<?= self::$DIR_STATIC_FILES ?>master-card.png">
-                                                        </div>
-                                                        <span class="img-text-span">masterCard</span>
-                                                    </div>
-                                                </li>
-                                                <li class="payement-li remove-li-default-att">
-                                                    <div class="img-text-wrap">
-                                                        <div class="img-text-img">
-                                                            <img src="<?= self::$DIR_STATIC_FILES ?>maestro.png">
-                                                        </div>
-                                                        <span class="img-text-span">maestro</span>
-                                                    </div>
-                                                </li>
-                                                <li class="payement-li remove-li-default-att">
-                                                    <div class="img-text-wrap">
-                                                        <div class="img-text-img">
-                                                            <img src="<?= self::$DIR_STATIC_FILES ?>amex.png">
-                                                        </div>
-                                                        <span class="img-text-span">american express</span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </li> -->
                         </ul>
                     </div>
 

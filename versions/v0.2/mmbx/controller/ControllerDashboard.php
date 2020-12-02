@@ -51,22 +51,24 @@ class ControllerDashboard extends ControllerSecure
     public function addAddress()
     {
         $response = new Response();
+        /**
+         * @var User */
+        $person = $this->person;
         $datasView = [];
-        // $country = Query::getParam(Country::INPUT_ISO_COUNTRY.Country::INPUT_EXT_ADRS);
         $country = Query::getParam(Country::INPUT_ISO_COUNTRY_ADRS);
         $address = $this->checkInput(
             $response,
             Address::INPUT_ADDRESS,
             Query::getParam(Address::INPUT_ADDRESS),
             [self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER],
-            $this->person->getDataLength("Addresses", "address")
+            $person->getDataLength("Addresses", "address")
         );
         $appartement = $this->checkInput(
             $response,
             Address::INPUT_APPARTEMENT,
             Query::getParam(Address::INPUT_APPARTEMENT),
             [self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER],
-            $this->person->getDataLength("Addresses", "appartement"),
+            $person->getDataLength("Addresses", "appartement"),
             false
         );
         $province = $this->checkInput(
@@ -74,31 +76,30 @@ class ControllerDashboard extends ControllerSecure
             Address::INPUT_PROVINCE,
             Query::getParam(Address::INPUT_PROVINCE),
             [self::TYPE_STRING_SPACE_HYPHEN_UNDER],
-            $this->person->getDataLength("Addresses", "province")
+            $person->getDataLength("Addresses", "province")
         );
         $city = $this->checkInput(
             $response,
             Address::INPUT_CITY,
             Query::getParam(Address::INPUT_CITY),
             [self::TYPE_STRING_SPACE_HYPHEN_UNDER],
-            $this->person->getDataLength("Addresses", "city")
+            $person->getDataLength("Addresses", "city")
         );
         $zipcode = $this->checkInput(
             $response,
             Address::INPUT_ZIPCODE,
             Query::getParam(Address::INPUT_ZIPCODE),
             [self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER],
-            $this->person->getDataLength("Addresses", "zipcode")
+            $person->getDataLength("Addresses", "zipcode")
         );
         $phone = $this->checkInput(
             $response,
             Address::INPUT_PHONE,
             Query::getParam(Address::INPUT_PHONE),
             [self::NUMBER_INT],
-            $this->person->getDataLength("Addresses", "phoneNumber"),
+            $person->getDataLength("Addresses", "phoneNumber"),
             false
         );
-
         if (!$response->containError()) {
             $addressMap = new Map();
             $addressMap->put($address, Map::address);
@@ -108,12 +109,19 @@ class ControllerDashboard extends ControllerSecure
             $addressMap->put($zipcode, Map::zipcode);
             $addressMap->put($country, Map::isoCountry);
             $addressMap->put($phone, Map::phone);
-            $this->person->addAddress($response, $addressMap);
-            (!$response->containError()) ? $response->addResult(self::QR_ADD_ADRS, true) : null;
-        }
-        $this->generateJsonView($datasView, $response, $this->person);
-    }
+            $person->addAddress($response, $addressMap);
+            if (!$response->containError()) {
+                $response->addResult(self::QR_ADD_ADRS, true);
 
+                $datasMap = new Map();
+                $datasMap->put(Address::buildSequence($address, $zipcode, $country), Address::KEY_ADRS_SEQUENCE);
+                $eventCode = "evt_cd_39";
+                $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
+            }
+        }
+        $this->generateJsonView($datasView, $response, $person);
+    }
+    
     /**
      * To get address set element
      */

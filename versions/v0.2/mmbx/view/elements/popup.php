@@ -3,7 +3,8 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * Build a complete pop up (with all its attribut and content)
- * @param string[] $datas map of attrribut needed to build a pop up
+ * @param string    $closeEventCode     event code to track popup's closure
+ * @param string[]  $datas              map of attrribut needed to build a pop up
  *  $datas = [
  *      index => [
  *          "windowId" => string,
@@ -20,6 +21,9 @@
  *      ]
  *  ];
  */
+// $closeEventCode = (!empty($closeEventCode)) ? $closeEventCode : null;
+/** Event */
+
 ?>
 
 <div class="pop_up-wrap">

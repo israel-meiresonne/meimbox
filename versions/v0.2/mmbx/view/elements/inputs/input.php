@@ -7,7 +7,9 @@
      * @param string $inpName input's name
      * @param string $inpTxt input's displayed message and placeholder
      * @param string $errortype View::ER_TYPE_[...]
+     * @param string $inpAttr   attribut to place on input tag
      */
+    // $inpAttr = (!empty($inpAttr)) ? $inpAttr : null;
     $inpTypes = new Map();
     $inpTypes->put("color", Map::color);
     $inpTypes->put("date", Map::date);
@@ -45,6 +47,6 @@
     ?>
     <div class="input-wrap">
         <label class="input-label" <?= $TagLabelFor ?> ><?= $inpTxt ?></label>
-        <input <?= $TagInpId ?> class="input-tag" <?= $Taginptype ?> name="<?= $inpName ?>" placeholder="<?= $inpTxt ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= $errortype?>">
+        <input <?= $TagInpId ?> class="input-tag"  <?= $inpAttr ?> <?= $Taginptype ?> name="<?= $inpName ?>" placeholder="<?= $inpTxt ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= $errortype?>">
         <p id="<?= $errorid ?>" class="comment"></p>
     </div>
