@@ -22,12 +22,19 @@ class Xhr extends Page
     private const PREFIX_ID = "xhr_";
 
     /**
+     * Holds access key for Xhr's attributs
+     * @var string
+     */
+    public const KEY_SET_DATE = "k_xhr_sdt";
+
+    /**
      * Constructor
      * @param string    $url    Page's url
      *                          + url format: https://my.domain.com/my/webroot/my/path?my=param
      * @param Event     $event  sent with the Xhr request
      */
-    public function __construct($url, Event $event = null)
+    // public function __construct($url, Event $event = null)
+    public function __construct($url)
     {
         $this->url = $url;
         if (!$this->isXHR()) {
@@ -35,7 +42,7 @@ class Xhr extends Page
         }
         $this->xhrID = self::PREFIX_ID . $this->generateDateCode(25);
         $this->setDate = $this->getDateTime();
-        $this->event = $event;
+        // $this->event = $event;
     }
 
     /**
@@ -67,18 +74,49 @@ class Xhr extends Page
     }
 
     /**
-     * To handle a Event by insert it into database
-     * @param Response  $response   where to strore results
-     * @param string    $userID     Visitor's id
-     * @param Event     $event      the Event to handle
+     * To get Xhr's set date
+     * @return string
      */
-    public function handleEvent(Response $response, $userID, Event $event)
+    protected function getSetDate()
+    {
+        if (!isset($this->setDate)) {
+            $setDate = (int) $this->getParam(self::KEY_SET_DATE);
+            $this->setDate = $setDate;
+        }
+        return $this->setDate;
+    }
+
+    /**
+     * To set Xhr's event
+     * @param string    $eventCode  code that refer to a Event
+     * @param Map       $datasMap   holds datas submeted with the event
+     *                              + Note: must be list of key value, so deep must be of 1
+     */
+    private function setEvent(string $eventCode, Map $eventDatasMap = null)
     {
         $holdsEvent = $this->getEvent();
         if (!empty($holdsEvent)) {
             $eventID = $holdsEvent->getEventID();
             throw new Exception("This xhr request already holds a Event '$eventID'");
         }
+        $setDate = (int) $this->getParam(self::KEY_SET_DATE);
+        if (empty($setDate)) {
+            throw new Exception("The set date of a Xhr Event can't be empty '$setDate'");
+        }
+        $this->event = new Event($eventCode, $setDate, $eventDatasMap);
+    }
+
+    /**
+     * To handle a Event by insert it into database
+     * @param Response  $response   where to strore results
+     * @param string    $userID     Visitor's id
+     * @param string    $eventCode  code that refer to a Event
+     * @param Map       $datasMap   holds datas submeted with the event
+     *                              + Note: must be list of key value, so deep must be of 1
+     */
+    public function handleEvent(Response $response, $userID, string $eventCode, Map $eventDatasMap = null)
+    {
+        $this->setEvent($eventCode, $eventDatasMap);
         $xhrID = $this->getXhrID();
         $sql =
             "SELECT * 
@@ -90,6 +128,7 @@ class Xhr extends Page
             $currentPageID = $this->getParam(Page::KEY_XHR);
             $this->insertXhr($response, $userID, $currentPageID);
         } else { // mean that Xhr have been inserted already but dont holds any event
+            $event = $this->getEvent();
             $event->insertEvent($response, $xhrID);
         }
     }

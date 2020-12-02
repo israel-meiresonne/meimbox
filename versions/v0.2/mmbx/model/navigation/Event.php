@@ -43,7 +43,8 @@ class Event extends ModelFunctionality
     private $datasMap;
 
     /**
-     * @var string
+     * Holds the set date of the Event in unix second
+     * @var int
      */
     private $setDate;
 
@@ -79,7 +80,7 @@ class Event extends ModelFunctionality
      * @param Map       $datasMap   holds datas submeted with the event
      *                              + Note: must be list of key value, so deep must be of 1
      */
-    public function __construct($eventCode, Map $datasMap = null)
+    public function __construct($eventCode, int $setDate, Map $datasMap = null)
     {
         if ((!empty($datasMap)) && (!empty($datasMap->getMap()))) {
             $keys = $datasMap->getKeys();
@@ -97,7 +98,9 @@ class Event extends ModelFunctionality
         $this->eventID = self::PREFIX_ID . $this->generateDateCode(25);
         $this->eventCode = $eventCode;
         $this->datasMap = (!empty($datasMap)) ? $datasMap : null;
-        $this->setDate = $this->getDateTime();
+        // $this->setDate = $this->getDateTime();
+        // $this->setDate = date(ModelFunctionality::DATE_FORMAT, $setDate);
+        $this->setDate = $setDate;
     }
 
     // /**
@@ -139,7 +142,7 @@ class Event extends ModelFunctionality
 
     /**
      * To get Event's setDate
-     * @return string Event's setDate
+     * @return int Event's setDate
      */
     private function getSetDate()
     {
@@ -147,14 +150,14 @@ class Event extends ModelFunctionality
     }
 
 
-    /**
-     * Convert setDate to seconde from UNIX.
-     * @return int seconde from UNIX
-     */
-    public function getDateInSec()
-    {
-        return strtotime($this->setDate);
-    }
+    // /**
+    //  * Convert setDate to seconde from UNIX.
+    //  * @return int seconde from UNIX
+    //  */
+    // public function getDateInSec()
+    // {
+    //     return $this->getSetDate();
+    // }
 
     // public static function getEventMap()
     // {

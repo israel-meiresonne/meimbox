@@ -112,16 +112,6 @@ class Navigation extends ModelFunctionality
         self::$urlPage = ($page->isXHR()) ? new Xhr($url) : $page;
     }
 
-    // /**
-    //  * To set last page visited befored it be replaced with the current url request
-    //  */
-    // private function setLastPage()
-    // {
-    //     $session = $this->getSession();
-    //     $pageID = $session->get(Page::KEY_LAST_LOAD);
-    //     self::$lastPage = Page::retreivePage($pageID);
-    // }
-
     /**
      * To set current Device
      */
@@ -302,7 +292,7 @@ class Navigation extends ModelFunctionality
      * @param Map|null  $datasMap   holds datas submeted with the event
      *                              + Note: must be list of key value, so deep must be of 1
      */
-    public function handleEvent($response, $userID, $eventCode, Map $datasMap = null)
+    public function handleEvent($response, $userID, $eventCode, Map $eventDatasMap = null)
     {
         $urlPage = $this->getUrlPage();
         if (!$urlPage->isXHR()) {
@@ -311,8 +301,9 @@ class Navigation extends ModelFunctionality
         /**
          * @var Xhr */
         $xhr = $urlPage;
-        $event = new Event($eventCode, $datasMap);
-        $xhr->handleEvent($response, $userID, $event);
+        // $event = new Event($eventCode, $eventDatasMap);
+        // $xhr->handleEvent($response, $userID, $event);
+        $xhr->handleEvent($response, $userID, $eventCode, $eventDatasMap);
     }
 
     /**
