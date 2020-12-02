@@ -63,7 +63,7 @@
             // animateCart(this);
             var arrowx = $(this).find(".arrow-element-wrap");
             var shutterx = $("#checkout_cart");
-            toggleShutter(shutterx, arrowx);
+            toggleShutter(this, shutterx, arrowx);
         });
         //—————————————————— CART UP ————————————————————————
         //—————————————————— DISCOUNT_WINDOW DOWN ————————————————
@@ -71,7 +71,7 @@
             // animateDiscount(this);
             var arrowx = $(this).find(".arrow-element-wrap");
             var shutterx = $("#discount_body");
-            toggleShutter(shutterx, arrowx);
+            toggleShutter(this, shutterx, arrowx);
         });
         //—————————————————— DISCOUNT_WINDOW UP ————————————————————————
     });

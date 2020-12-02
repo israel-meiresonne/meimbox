@@ -43,7 +43,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
                     <div class="summary_cart-inner">
                         <div class="cart-block">
                             <div class="cart-inner">
-                                <div class="form-title-block cart-title-block">
+                                <div class="form-title-block cart-title-block" data-evtopen="evt_cd_29" data-evtclose="evt_cd_30">
                                     <div class="form-title-div">
                                         <span class="form-title">cart</span>
                                     </div>
@@ -55,7 +55,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
                                         </div>
                                     </div>
                                 </div>
-                                <div id="checkout_cart" data-evtopen="evt_cd_29" data-evtclose="evt_cd_30">
+                                <div id="checkout_cart">
                                     <hr class="hr-summary">
                                     <?php
                                     $boxDatas = [

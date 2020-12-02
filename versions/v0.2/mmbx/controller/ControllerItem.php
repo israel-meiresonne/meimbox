@@ -494,19 +494,19 @@ class ControllerItem extends ControllerSecure
     public function getBoxManager()
     {
         // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         $conf = Query::getParam(self::A_GET_BX_MNGR);
         if (empty($conf)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $boxID = Query::getParam(Box::KEY_BOX_ID);
-            $basket = $this->person->getBasket();
+            $basket = $person->getBasket();
             (!empty($boxID)) ? $basket->unsetBox($boxID) : null;
             $boxes = $basket->getBoxes();
-            $country = $this->person->getCountry();
-            $currency = $this->person->getCurrency();
+            $country = $person->getCountry();
+            $currency = $person->getCurrency();
             switch ($conf) {
                 case Box::CONF_ADD_BXPROD:
                     $datasView = [
@@ -530,8 +530,11 @@ class ControllerItem extends ControllerSecure
                     $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                     break;
             }
+
+            $eventCode = "evt_cd_65";
+            $person->handleEvent($eventCode);
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -539,18 +542,18 @@ class ControllerItem extends ControllerSecure
      */
     public function addBox()
     {
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         if (!Query::existParam(Box::KEY_BOX_COLOR)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $colorCode = Query::getParam(Box::KEY_BOX_COLOR);
-            $this->person->addBox($response, $colorCode);
+            $person->addBox($response, $colorCode);
             if (!$response->containError()) {
-                $boxes = $this->person->getBasket()->getBoxes();
-                $country = $this->person->getCountry();
-                $currency = $this->person->getCurrency();
+                $boxes = $person->getBasket()->getBoxes();
+                $country = $person->getCountry();
+                $currency = $person->getCurrency();
                 $datasView = [
                     "boxes" => $boxes,
                     "country" => $country,
@@ -558,9 +561,19 @@ class ControllerItem extends ControllerSecure
                     "conf" => Box::CONF_ADD_BXPROD
                 ];
                 $response->addFiles(self::A_ADD_BOX, 'view/elements/popupBoxManagerContent.php');
+
+                $eventCode = "evt_cd_52";
+                $eventDatasMap = new Map();
+                $keys = array_keys($boxes);
+                $lastBox = $boxes[$keys[0]];
+                $eventDatasMap->put($lastBox->getColor(), Box::KEY_BOX_COLOR);
+                $eventDatasMap->put($lastBox->getBoxID(), Box::KEY_BOX_ID);
+                // $eventRsp = new Response();
+                // $person->getNavigation()->handleEvent(($eventRsp), $person->getUserID(), $eventCode, $eventDatasMap);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -578,6 +591,11 @@ class ControllerItem extends ControllerSecure
             $this->person->deleteBox($response, $boxID);
             if (!$response->containError()) {
                 $person->addSummaryPrices($response);
+
+                $eventCode = "evt_cd_58";
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -661,6 +679,7 @@ class ControllerItem extends ControllerSecure
     public function moveBoxProduct()
     {
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         $boxID = Query::getParam(Box::KEY_BOX_ID);
         $newBoxID = Query::getParam(Box::KEY_NEW_BOX_ID);
@@ -669,10 +688,20 @@ class ControllerItem extends ControllerSecure
         if (empty($boxID) || empty($newBoxID) || empty($prodID) || empty($sequence)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
-            $this->person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
-            (!$response->containError()) ? $response->addResult(self::A_MV_BXPROD, true) : null;
+            $person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
+            if(!$response->containError()){
+                $response->addResult(self::A_MV_BXPROD, true);
+                
+                $eventCode = "evt_cd_67";
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
+                $eventDatasMap->put($newBoxID, Box::KEY_NEW_BOX_ID);
+                $eventDatasMap->put($prodID, Product::KEY_PROD_ID);
+                $eventDatasMap->put($sequence, Size::KEY_SEQUENCE);
+                $person->handleEvent($eventCode, $eventDatasMap);
+            }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -696,6 +725,13 @@ class ControllerItem extends ControllerSecure
                 $boxRate = $box->getQuantity() . "/" . $box->getSizeMax();
                 $response->addResult(Box::KEY_BOX_ID, $boxRate);
                 $person->addSummaryPrices($response);
+
+                $eventCode = "evt_cd_62";
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
+                $eventDatasMap->put($prodID, Product::KEY_PROD_ID);
+                $eventDatasMap->put($sequence, Size::KEY_SEQUENCE);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -706,7 +742,7 @@ class ControllerItem extends ControllerSecure
      */
     public function getBasketPop()
     {
-        $person = $this->person;
+        $person = $this->getPerson();
         $response = new Response();
         $datasView = [];
         if (!$response->containError()) {
@@ -723,6 +759,11 @@ class ControllerItem extends ControllerSecure
             $response->addFiles(self::A_GET_BSKT_POP, "view/elements/popupBasketContent.php");
             $response->addFiles(Basket::KEY_CART_FILE, 'view/elements/cart.php');
             $person->addSummaryPrices($response);
+
+            $eventCode = "evt_cd_56";
+            // $eventRsp = new Response();
+            // $person->getNavigation()->handleEvent($eventRsp, $person->getUserID(), $eventCode);
+            $person->handleEvent($eventCode);
         }
         $this->generateJsonView($datasView, $response, $person);
     }

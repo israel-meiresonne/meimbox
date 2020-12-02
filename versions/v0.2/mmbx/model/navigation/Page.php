@@ -242,7 +242,7 @@ class Page extends ModelFunctionality
      */
     public function getDateInSec()
     {
-        return strtotime($this->setDate);
+        return strtotime($this->getSetDate());
     }
 
     /**
@@ -283,13 +283,10 @@ class Page extends ModelFunctionality
      */
     public function addXhr(Xhr $xhr)
     {
-        // $xhr = new Xhr($url);
         $xhrMap = $this->getXhrMap();
         $unix = $xhr->getDateInSec();
         $xhrMap->put($xhr, $unix);
         $xhrMap->sortKeyDesc();
-        // $pageID = $this->getPageID();
-        // $xhr->insertXhr($response, $userID, $pageID);
     }
 
     // /**

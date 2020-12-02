@@ -80,7 +80,7 @@ class ControllerCheckout extends ControllerSecure
         $response = new Response();
         /**
          * @var User */
-        $person = $this->person;
+        $person = $this->getPerson();
         $datasView = [];
         if (!Query::existParam(Address::KEY_ADRS_SEQUENCE)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
@@ -91,11 +91,12 @@ class ControllerCheckout extends ControllerSecure
                 $ctrName = self::extractController(ControllerCheckout::class);
                 $response->addResult(self::QR_SELECT_ADRS, $ctrName);
                 
-                $datasMap = new Map();
-                $datasMap->put($sequence, Address::KEY_ADRS_SEQUENCE);
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($sequence, Address::KEY_ADRS_SEQUENCE);
                 $eventCode = "evt_cd_28";
                 $userID = $person->getUserID();
-                $person->getNavigation()->handleEvent((new Response()), $userID, $eventCode, $datasMap);
+                // $person->getNavigation()->handleEvent((new Response()), $userID, $eventCode, $datasMap);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -109,7 +110,7 @@ class ControllerCheckout extends ControllerSecure
         $response = new Response();
         /**
          * @var User */
-        $person = $this->person;
+        $person = $this->getPerson();
         $datasView = [];
         if (!Query::existParam(CheckoutSession::KEY_STRP_MTD)) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
@@ -119,10 +120,11 @@ class ControllerCheckout extends ControllerSecure
             if (!$response->containError()) {
                 $response->addResult(self::QR_NW_CHCKT_SS, $sessionId);
                 
-                $datasMap = new Map();
-                $datasMap->put($sessionId, CheckoutSession::KEY_SESSION_ID);
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($sessionId, CheckoutSession::KEY_SESSION_ID);
                 $eventCode = "evt_cd_32";
-                $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
+                // $person->getNavigation()->handleEvent((new Response()), $person->getUserID(), $eventCode, $datasMap);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
         $this->generateJsonView($datasView, $response, $person);

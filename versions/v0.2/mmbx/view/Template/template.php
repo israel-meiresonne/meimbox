@@ -70,7 +70,7 @@ $headerDatas = [
             sc();
             $.ajax({
                 type: 'POST',
-                url: a + QR_XHR,
+                url: a + QR_XHR+"&<?= Xhr::KEY_SET_DATE ?>=" + Date.now(),
                 data: d,
                 dataType: 'json',
                 success: function(j) {
@@ -205,7 +205,7 @@ $headerDatas = [
         const TS = 450;
         const BNR = 1000000;
         const XHR = "<?= Page::PATH_XHR ?>";
-        const LANG = "lang=" + $("html").attr("lang");
+        // const LANG = "lang=" + $("html").attr("lang");
         const QR_XHR = "?<?= Page::KEY_XHR ?>=<?= $pageID ?>";
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";

@@ -110,7 +110,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                         </li>
                     <?php endif; ?>
                     <li class="navbar-li remove-li-default-att">
-                        <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
+                        <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="evt('evt_cd_55');openPopUp('#basket_pop', getBasketPop)">
                             <div class="img-text-block  navbar-basket-wrap">
                                 <div class="img-text-wrap">
                                     <div class="img-text-img">
@@ -172,7 +172,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
             */
             ?>
             <div class="navbar-basket-block navbar-right-block flex-row">
-                <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="openPopUp('#basket_pop', getBasketPop)">
+                <div class="grey-tag-button standard-tag-button navbar-basket-block" onclick="evt('evt_cd_54');openPopUp('#basket_pop', getBasketPop)">
                     <div class="img-text-block">
                         <div class="img-text-wrap">
                             <div class="img-text-img">

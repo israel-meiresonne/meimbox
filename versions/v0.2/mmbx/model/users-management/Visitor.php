@@ -802,6 +802,28 @@ class Visitor extends ModelFunctionality
     /*———————————————————————————— ALTER VISITOR UP —————————————————————————*/
     /*———————————————————————————— ALTER MODEL DOWN —————————————————————————*/
 
+    /**
+     * To handle Event occured
+     * @param string    $eventCode  code that refer to a Event
+     * @param Map|null  $datasMap   holds datas submeted with the event
+     *                              + Note: must be list of key value, so deep must be of 1
+     */
+    public function handleEvent(string $eventCode, Map $eventDatasMap = null)
+    {
+        $eventRsp = new Response();
+        $env = Configuration::getEnvironement();
+        // if($env == Configuration::ENV_DEV){
+        if($env == Configuration::ENV_DEV){
+            $this->getNavigation()->handleEvent($eventRsp, $this->getUserID(), $eventCode, $eventDatasMap);
+        } else {
+            try {
+                $this->getNavigation()->handleEvent($eventRsp, $this->getUserID(), $eventCode, $eventDatasMap);
+            } catch (\Throwable $th) {
+                $eventRsp->addError($th->__toString(), MyError::ADMIN_ERROR);
+            }
+        }
+        // var_dump($eventRsp->getAttributs());
+    }
 
     /**
      * To sign up a user
