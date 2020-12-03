@@ -422,9 +422,9 @@
         /*—————————————————— ARTICLE UP —————————————————————————————————————*/
 
         //—————————————————— DOPDOWN DOWN ————————————————
-        $(".dropdown-head").click(function () {
-            // animateDropdown(this);
-        });
+        // $(".dropdown-head").click(function () {
+        //     // animateDropdown(this);
+        // });
         //——————————————————— DOPDOWN UP ————————————————————————
 
         /*——————————————————— DOPDOWN CHECKBOX DOWN —————————————————————————*/

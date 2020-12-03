@@ -1,13 +1,14 @@
 (function () {
     // var TS = 450;
-    var animateFilter = function (selector) {
-        // var wrapper = selector.parentNode.parentNode
+    var animateFilter = function (x) {
         var filterId = "filter_block";
         var isDisplayed = $("#" + filterId).css("display") == "block";
         if (isDisplayed) {
             $("#" + filterId).slideUp(TS);
+            evtClose(x);
         } else {
             $("#" + filterId).slideDown(TS);
+            evtOpen(x);
         }
     }
     $(document).ready(function () {
