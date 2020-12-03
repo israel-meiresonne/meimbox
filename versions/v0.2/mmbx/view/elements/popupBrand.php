@@ -33,10 +33,10 @@ ob_start();
             $dataBrand = [
                 SIze::KEY_BRAND_NAME => $brandName
             ];
-            $dataBrand_json = json_encode($dataBrand);
+            $dataBrand_json = htmlentities(json_encode($dataBrand));
             $launch = ModelFunctionality::generateDateCode(25);
             $launchx = "#" . $launch; ?>
-            <div id="<?= $launch ?>" class="brand_reference-grid-img-block" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $dataBrand_json ?>'>
+            <div id="<?= $launch ?>" class="brand_reference-grid-img-block" data-evtcd="evt_cd_89" data-evtj="<?= $dataBrand_json ?>" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata="<?= $dataBrand_json ?>">
                 <div class="first-img-div">
                     <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][1] ?>">
                 </div>

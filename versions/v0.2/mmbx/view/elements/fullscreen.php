@@ -18,13 +18,13 @@ $language = $person->getLanguage();
     <div id="full_screen_loading">
         <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
     </div>
-    <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container">
+    <div id="customize_brand_reference" class="customize-brand_reference-block pop_up-container" data-evtclose="evt_cd_88">
         <?php
         $datas = ["brandsMeasures" => $brandsMeasures];
         echo $this->generateFile("view/elements/popupBrand.php", $datas);
         ?>
     </div>
-    <div id="measure_manager" class="customize_measure-block pop_up-container">
+    <div id="measure_manager" class="customize_measure-block pop_up-container" data-evtclose="evt_cd_104">
         <?php
         $datas = [
             "measures" => $measures,
@@ -41,7 +41,7 @@ $language = $person->getLanguage();
         echo $this->generateFile("view/elements/popupMeasureAdder.php", $datas);
         ?>
     </div>
-    <div id="box_manager_window" class="box_manager-container pop_up-container">
+    <div id="box_manager_window" class="box_manager-container pop_up-container" data-evtclose="evt_cd_72">
         <?php
         $datas = [
             "boxes" => $basket->getBoxes(),
@@ -62,7 +62,7 @@ $language = $person->getLanguage();
         echo $this->generateFile('view/elements/popupBoxPricing.php', $datas);
         ?>
     </div>
-    <div id="basket_pop" class="pop_up-container">
+    <div id="basket_pop" class="pop_up-container" data-evtclose="evt_cd_70">
         <?php
         $datas = [
             "basket" => $basket,

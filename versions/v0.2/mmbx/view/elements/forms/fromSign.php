@@ -31,7 +31,6 @@ $inSbtnx = "#$inSbtnid";
 
 /** Event */
 $upCheckboxRadioEvent = "onclick=\"evtInp(this, 'evt_cd_42')\"";
-// $upCheckboxEvent = "onclick=\"evtCheck($(this).find('input'), 'evt_cd_42')\"";
 $upCheckboxEvent = "onclick=\"evtCheck(this, 'evt_cd_42')\"";
 $upInputEvent = "onblur=\"evtInp(this, 'evt_cd_43')\"";
 

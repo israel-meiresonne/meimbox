@@ -280,10 +280,11 @@
     }
     selectBrand = (sbtnx) => {
         var x = $(sbtnx).attr(datatarget);
-        var brandDatas = json_decode($(x).attr(submitdata));
-        var param = mapToParam(brandDatas);
+        var j = $(x).attr(submitdata);
+        var o = json_decode(j);
+        var param = mapToParam(o);
         var vx = $($(sbtnx).attr(datavase));
-        //build
+        evt('evt_cd_90',j);
         var d = {
             "a": A_SELECT_BRAND,
             "d": param,
@@ -336,9 +337,11 @@
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
     selectMeasure = (sbtnx) => {
         var x = $(sbtnx).attr(datatarget);
-        var brandDatas = json_decode($(x).attr(submitdata));
+        var j = $(x).attr(submitdata);
+        var brandDatas = json_decode(j);
         var param = mapToParam(brandDatas);
         var vx = $($(sbtnx).attr(datavase));
+        evt('evt_cd_102',j);
         var datasSND = {
             "a": A_SELECT_MEASURE,
             "d": param,
@@ -372,42 +375,41 @@
             disable("#measure_select_button");
         }
     }
-    removeMsr = function (msr_id) {
-        var selector = $("#mange_measure_window .close_button-wrap[data-measure_id='" + msr_id + "']");
-        var param_json = $(selector).attr("data-measure");
-        var param_map = json_decode(param_json);
-        var param = mapToParam(param_map);
+    removeMsr = function (x) {
+        var j = $(x).attr("data-measure");
+        var o = json_decode(j);
+        var p = mapToParam(o);
         removeMsrDatas = {
             "alert": DELETE_MEASURE_ALERT,
             "nbToWrapper": 4,
-            "d": param,
+            "d": p,
             "a": A_DELETE_MEASURE,
             "r": removeMsrRSP,
-            // "lds": "#measurePopUp_loading",
+            "x":{"x":x},
             "l": null,
             "sc": function () { },
             "rc": function () { }
         };
-        removeCartElement(selector, removeMsrDatas);
+        removeCartElement(x, removeMsrDatas);
     }
-    var removeCartElement = function (selector, datas) {
-        if (popAsk(datas.alert)) {
-            //build
-            var datasSND = {
-                "a": datas.a,
-                "d": datas.d,
-                "r": datas.r,
-                "l": datas.l,
-                "sc": datas.sc,
-                "rc": datas.rc
+    var removeCartElement = function (x, d) {
+        if (popAsk(d.alert)) {
+            evt('evt_cd_95',json_encode(paramToObj(d.d)));
+            var dSND = {
+                "a": d.a,
+                "d": d.d,
+                "r": d.r,
+                "x":{"x":x},
+                "l": d.l,
+                "sc": d.sc,
+                "rc": d.rc
             };
-            SND(datasSND);
+            SND(dSND);
         }
     }
-    var removeMsrRSP = function (r) {
+    var removeMsrRSP = function (r,x) {
         if (r.isSuccess) {
-            var selector = $("#mange_measure_window .close_button-wrap[data-measure_id='" + r.results[KEY_MEASURE_ID] + "']");
-            var wrapper = goToParentNode(selector, removeMsrDatas.nbToWrapper);
+            var wrapper = goToParentNode(x.x, removeMsrDatas.nbToWrapper);
             removeAnim(wrapper);
             $("#mange_measure_window .customize_measure-info-div").fadeOut(TS, function () {
                 $(this).html(r.results[TITLE_KEY]);
@@ -423,10 +425,6 @@
     }
     /*—————————————————— MEASURE MANAGER UP —————————————————————————————————*/
     /*—————————————————— MEASURE ADDER DOWN —————————————————————————————————*/
-    // ++++ shortcut down ++++
-    // setAddMsrSuccData = () => {
-    //     $("#save_measure_button").attr(datasuccess, 'setCbtnAdderMsr');
-    // }
     setCbtnAdderMsr = () => {
         datasuccess
         var cbtnx = getCloseButton("#measure_adder");
@@ -644,6 +642,8 @@
         var bxid = $(x).attr(submitdata);
         var param = mapToParam({ [KEY_BOX_ID]: bxid, [INPUT_PROD_ID]: prodID });
         var cbtnx = $(popx).find("." + closebtnCls);
+        var j = json_encode(paramToObj($(frm).serialize() + "&" + param));
+        evt('evt_cd_84', j);
         var d = {
             "frm": frm,
             "frmCbk": function () {
@@ -730,7 +730,7 @@
             "a": A_GET_BSKT_POP,
             "d": null,
             "r": getBasketPopRSP,
-            "l": ".basket_pop_loading",
+            "l": ".basket_pop_loading, .loading-img-wrap",
             // "x": cbtnx,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOff(d.l) }
@@ -756,7 +756,7 @@
             [KEY_SEQUENCE]: seq,
         }
         var params = mapToParam(o);
-        evt('evt_cd_66',json_encode(o));
+        evt('evt_cd_66', json_encode(o));
         var d = {
             "a": A_MV_BXPROD,
             "d": params,
@@ -824,10 +824,10 @@
             "a": A_GET_EDT_POP,
             "d": params,
             "r": getSizeEditorRSP,
-            "l": ".basket_pop_loading",
+            "l": ".basket_pop_loading, .loading-img-wrap",
             "x": popFunc,
-            "sc": () => { displayFadeIn(d.l) },
-            "rc": () => { displayFadeOut(d.l) }
+            "sc": () => { displayFlexOn(d.l) },
+            "rc": () => { displayFlexOn(d.l) }
         };
         SND(d);
     }
@@ -844,6 +844,7 @@
     updateBoxProduct = () => {
         var frmx = "#form_edit_prod_size";
         var frm = $(frmx).find("input");
+        evtFrm('evt_cd_80', frm);
         var d = {
             "frm": frm,
             "a": A_EDT_BXPROD,

@@ -374,22 +374,6 @@ class Size  extends ModelFunctionality
         return $this->size;
     }
 
-    // /**
-    //  * To extract the biggest size from a list
-    //  * @param mixed[] $sizes list of sizes
-    //  * + $sizes[index] => size{string|int}
-    //  * @return string the biggest size
-    //  */
-    // public static function extractBiggest(array $sizes)
-    // {
-    //     if (empty($sizes)) {
-    //         throw new Exception("Sizes can't be empty");
-    //     }
-    //     $orderedLH = self::orderSizes($sizes);
-    //     $orderedHL = array_reverse($orderedLH);
-    //     return $orderedHL[0];
-    // }
-
     /**
      * To order size from lower to hight
      * + Note: use order of supported size
@@ -543,7 +527,7 @@ class Size  extends ModelFunctionality
 
     /**
      * To get A copy of the currrent instance
-     * @return Instance
+     * @return Size
      */
     public function getCopy()
     {
@@ -565,4 +549,16 @@ class Size  extends ModelFunctionality
         }
         return $copy;
     }
+
+    /**
+     * To get Suppported cuts from database
+     * @return string[] Suppported cuts
+     */
+    public static function getSupportedCuts()
+    {
+        $tab = parent::getTableValues("cuts");
+        $cuts = array_keys($tab);
+        return $cuts;
+    }
+
 }

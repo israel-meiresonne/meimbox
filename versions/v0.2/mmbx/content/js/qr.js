@@ -77,6 +77,7 @@
     }
     checkBoxProductStock = (frmx) => {
         var frm = $(frmx).find("input");
+        evtFrm('evt_cd_82', frm);
         var d = {
             "frm": frm,
             "frmCbk": () => { },

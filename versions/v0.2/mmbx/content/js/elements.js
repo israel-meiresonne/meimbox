@@ -149,7 +149,7 @@
         }
     }
 
-    animateDropdownCheckbox = (inpx, bodyx) => {
+    animateDropdownCheckbox = (x,inpx, bodyx) => {
         var nm = $(inpx).attr(nameattr);
         var inpid = getId(inpx);
         var ys = $(".dropdown_checkbox-wrap [" + datainputname + "='" + nm + "'][" + dataheadid + "!='" + inpid + "']");
@@ -428,9 +428,9 @@
         //——————————————————— DOPDOWN UP ————————————————————————
 
         /*——————————————————— DOPDOWN CHECKBOX DOWN —————————————————————————*/
-        $('.dropdown_checkbox-head input[type="checkbox"], .dropdown_checkbox-head input[type="radio"]').click(function (e) {
-            // animateDropdownCheckbox(this);
-        });
+        // $('.dropdown_checkbox-head input[type="checkbox"], .dropdown_checkbox-head input[type="radio"]').click(function (e) {
+        //     // animateDropdownCheckbox(this);
+        // });
         /*——————————————————— DOPDOWN CHECKBOX UP ———————————————————————————*/
 
         //—————————————————— COLLAPSE DOWN ————————————————

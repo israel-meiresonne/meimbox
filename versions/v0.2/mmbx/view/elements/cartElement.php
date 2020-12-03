@@ -25,6 +25,7 @@
  * @param string $brotherx selector of the brother (used only if $dadx is set)
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  * @param array $eventDatas
+ * @param string $detailAttr  attribut to place on tag that contain element's properties
  */
 $showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
 $TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
@@ -33,6 +34,7 @@ $TagEditFunc = (!empty($editFunc)) ? 'onclick="' . $editFunc . '"' : null;
 
 /** Event */
 $eventJson = htmlentities(json_encode($eventDatas));
+$detailAttr = (!empty($detailAttr)) ? $detailAttr : null;
 
 if (!empty($dadx)) {
     $launch = ModelFunctionality::generateDateCode(25);
@@ -69,7 +71,7 @@ if (!empty($dadx)) {
                 </div>
             </button>
         </div>
-        <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?>>
+        <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $detailAttr ?> <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?>>
             <div class="cart-element-img-div">
                 <img src="<?= $pictureSrc ?>">
             </div>

@@ -29,7 +29,6 @@ $boxID = $box->getBoxID();
 
 $prodID = $product->getProdID();
 
-// $datas["submitButtonFunc"] = "updateBoxProduct('". $boxID ."','". $prodID ."','". $boxID ."')";
 $datas["submitButtonFunc"] = "updateBoxProduct()";
 
 $contentDatas = [
