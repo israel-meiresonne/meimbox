@@ -243,8 +243,6 @@ class ControllerHome extends ControllerSecure
                             (in_array(Visitor::INPUT_PASSWORD, $keys)) ? $eventDattasMap->put($hide, Visitor::INPUT_PASSWORD) : null;
                             (in_array(Visitor::INPUT_CONFIRM_PASSWORD, $keys)) ? $eventDattasMap->put($hide, Visitor::INPUT_CONFIRM_PASSWORD) : null;
                         }
-                        // $event = new Event($eventCode, $eventDattasMap);
-                        // $xhr->handleEvent($response, $userID, $event);
                         $person->handleEvent($eventCode, $eventDattasMap);
                         if (!$response->containError()) {
                             $response->addResult(self::QR_EVENT, true);

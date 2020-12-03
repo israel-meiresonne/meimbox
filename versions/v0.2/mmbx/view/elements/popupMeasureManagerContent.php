@@ -36,7 +36,7 @@ $waistTranslate = $translator->translateStation("US41");
                     $flag = ModelFunctionality::generateDateCode(25);
                     $flagx = "#" . $flag;
 
-                    $measure_id = $measure->getMeasureID();
+                    $measureID = $measure->getMeasureID();
                     $measureName = $measure->getMeasureName();
                     $bustVal = $measure->getbust()->getFormated();
                     $hipVal = $measure->gethip()->getFormated();
@@ -44,30 +44,24 @@ $waistTranslate = $translator->translateStation("US41");
                     $inseamVal = $measure->getInseam()->getFormated();
                     $waistVal = $measure->getwaist()->getFormated();
 
-                    $dataMeasure = [
-                        Measure::KEY_MEASURE_ID => $measure_id
-                    ];
-                    $dataMeasure_json = json_encode($dataMeasure);
-
-                    $measureSelector = 'onclick="selectMeasurement(\'' . $measure_id . '\')" data-measure_id="' . $measure_id . '"';
-
-                    $removeBtnFunc = 'onclick="removeMsr(\'' . $measure_id . '\')" data-measure_id=\'' . $measure_id . '\' data-measure=\'' . $dataMeasure_json . '\'';
-
-                    // $editBtnFunc = 'onclick="getMsrAdder(\'' . $measure_id . '\')" data-measure_id=\'' . $measure_id . '\' data-measure=\'' . $dataMeasure_json . '\'';
+                    $dataMeasure = [Measure::KEY_MEASURE_ID => $measureID];
+                    $measureDatasJson = htmlentities(json_encode($dataMeasure));
                 ?>
 
                     <li class="li-cart-element-container remove-li-default-att">
-                        <div id="<?= $flag ?>" class="cart-element-wrap" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $dataMeasure_json ?>'>
+                        <div id="<?= $flag ?>" class="cart-element-wrap" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $measureDatasJson ?>'>
                             <div class="cart-element-inner">
                                 <div class="cart-element-remove-button-block">
-                                    <button <?= $removeBtnFunc ?> class="close_button-wrap remove-button-default-att">
+                                    <!-- <button <?= "" //$removeBtnFunc 
+                                                    ?> class="close_button-wrap remove-button-default-att"> -->
+                                    <button onclick="removeMsr(this)" data-measure="<?= $measureDatasJson ?>" class="close_button-wrap remove-button-default-att">
                                         <div class="plus_symbol-wrap">
                                             <span class="plus_symbol-vertical"></span>
                                             <span class="plus_symbol-horizontal"></span>
                                         </div>
                                     </button>
                                 </div>
-                                <div id="<?= $launch ?>" class="cart-element-detail-block" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $flagx ?>" data-dadx="<?= $dadx ?>">
+                                <div id="<?= $launch ?>" class="cart-element-detail-block" data-evtcd="evt_cd_94" data-evtj="<?= $measureDatasJson ?>" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $flagx ?>" data-dadx="<?= $dadx ?>">
                                     <div class="cart-element-property-set">
                                         <div class="manager-measure-property-set">
                                             <div class="measure-property-title cart-element-property-div">
@@ -105,7 +99,7 @@ $waistTranslate = $translator->translateStation("US41");
 
                                 <div class="cart-element-edit-block no_price_block">
                                     <div class="cart-element-edit-inner">
-                                        <button class="cart-element-edit-button remove-button-default-att" onclick="getMsrAdder('<?= $measure_id ?>', () => {switchPopUp('#measure_manager','#measure_adder',()=>{},setUpdateMsr)})" data-measure_id="<?= $measure_id ?>" data-measure='<?= $dataMeasure_json ?>'>
+                                        <button class="cart-element-edit-button remove-button-default-att" onclick="evt('evt_cd_97','<?= $measureDatasJson ?>');getMsrAdder('<?= $measureID ?>', () => {switchPopUp('#measure_manager','#measure_adder',()=>{},setUpdateMsr)})" data-measure_id="<?= $measureID ?>" data-measure='<?= $measureDatasJson ?>'>
                                             <img src="<?= self::$DIR_STATIC_FILES ?>vertical-three-dot.png">
                                         </button>
                                     </div>

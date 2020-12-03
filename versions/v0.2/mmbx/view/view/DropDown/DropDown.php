@@ -115,6 +115,19 @@ class DropDown extends View
         return $this->isDisplayed;
     }
 
+    /**
+     * To get only input inside the dropdown
+     * @return string only input inside the dropdown
+     */
+    public function getInputs()
+    {
+        $datas = [
+            "inputMap" => $this->getInputMap(),
+            "isRadio" => $this->isRadio(),
+        ];
+        return $this->generateFile('view/view/DropDown/files/dropdownInput2.php', $datas); 
+    }
+
     public function __toString()
     {
         $datas = [

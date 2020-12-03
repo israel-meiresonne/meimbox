@@ -764,16 +764,16 @@ abstract class Product extends ModelFunctionality
      */
     public abstract function getFormatedPrice();
 
-    /**
-     * To get cuts available
-     * @return string[] cuts available
-     */
-    public function getCutsValueToValue()
-    {
-        $tab = $this->getTableValues("cuts");
-        $cuts = array_keys($tab);
-        return $this->arrayToMap($cuts);
-    }
+    // /**
+    //  * To get cuts available
+    //  * @return string[] cuts available
+    //  */
+    // public function getCutsValueToValue()
+    // {
+    //     $tab = $this->getTableValues("cuts");
+    //     $cuts = array_keys($tab);
+    //     return $this->arrayToMap($cuts);
+    // }
 
     // /**
     //  * Build a HTML displayable price

@@ -168,12 +168,10 @@ class ControllerItem extends ControllerSecure
      */
     public function selectBrand()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
-
-        $brandsMeasures = $this->person->getBrandMeasures();
+        $brandsMeasures = $person->getBrandMeasures();
         if ((!Query::existParam(Size::KEY_BRAND_NAME))
             || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
         ) {
@@ -184,8 +182,13 @@ class ControllerItem extends ControllerSecure
                 "brandName" => $brandName
             ];
             $response->addFiles(self::BRAND_STICKER_KEY, "view/Item/itemFiles/stickerBrand.php");
+
+            $eventCode = "evt_cd_91";
+            $eventDatasMap = new Map();
+            $eventDatasMap->put($brandName, Size::KEY_BRAND_NAME);
+            $person->handleEvent($eventCode, $eventDatasMap);
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -278,24 +281,27 @@ class ControllerItem extends ControllerSecure
      */
     public function selectMeasure()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
 
         if ((!Query::existParam(Measure::KEY_MEASURE_ID))
-            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
+            || (!$person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-            $measure = $this->person->getMeasure($measureID);
+            $measure = $person->getMeasure($measureID);
             $datasView = [
                 "measure" => $measure,
             ];
             $response->addFiles(Measure::MEASURRE_STICKER_KEY, "view/Item/itemFiles/stickerMeasure.php");
+
+            $eventCode = "evt_cd_103";
+            $eventDatasMap = new Map([Measure::KEY_MEASURE_ID => $measureID]);
+            $person->handleEvent($eventCode, $eventDatasMap);
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -401,29 +407,31 @@ class ControllerItem extends ControllerSecure
      */
     public function deleteMeasure()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
-
         if ((!Query::existParam(Measure::KEY_MEASURE_ID))
-            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
+            || (!$person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-            $this->person->deleteMeasure($response, $measureID);
+            $person->deleteMeasure($response, $measureID);
             if (!$response->containError()) {
-                $measures = $this->person->getMeasures();
+                $measures = $person->getMeasures();
                 $datasView = [
                     "measures" => $measures
                 ];
                 $response->addResult(Measure::KEY_MEASURE_ID, $measureID);
                 $response->addFiles(ControllerSecure::BUTTON_KEY, 'view/elements/popupMeasureManagerAddBtn.php');
                 $response->addFiles(ControllerSecure::TITLE_KEY, 'view/elements/popupMeasureManagerTitle.php');
+
+                $eventCode = "evt_cd_96";
+                $eventDatasMap = new Map([Measure::KEY_MEASURE_ID => $measureID]);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -431,26 +439,29 @@ class ControllerItem extends ControllerSecure
      */
     public function getMeasureAdder()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
 
         if ((!Query::existParam(Measure::KEY_MEASURE_ID))
-            || (!$this->person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
+            || (!$person->existMeasure(Query::getParam(Measure::KEY_MEASURE_ID)))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $measureID = Query::getParam(Measure::KEY_MEASURE_ID);
-            $measure = $this->person->getMeasure($measureID);
-            $measureUnits = $this->person->getUnits();
+            $measure = $person->getMeasure($measureID);
+            $measureUnits = $person->getUnits();
             $datasView = [
                 "measure" => $measure,
                 "measureUnits" => $measureUnits
             ];
             $response->addFiles(self::QR_GET_MEASURE_ADDER, 'view/elements/popupMeasureAdder.php');
+
+            $eventCode = "evt_cd_98";
+            $eventDatasMap = new Map([Measure::KEY_MEASURE_ID => $measureID]);
+            $person->handleEvent($eventCode, $eventDatasMap);
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -459,6 +470,7 @@ class ControllerItem extends ControllerSecure
     public function submitBoxProduct()
     {
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         $prodID = Query::getParam(Product::INPUT_PROD_ID);
         $sizeType = Query::getParam(Size::INPUT_SIZE_TYPE);
@@ -475,17 +487,27 @@ class ControllerItem extends ControllerSecure
             $sizeMap->put($brand, Map::brand);
             $sizeMap->put($measureID, Map::measureID);
             $sizeMap->put($cut, Map::cut);
-            $stillStock = $this->person->stillStock($response, $prodID, $sizeType, $sizeMap);
+            $stillStock = $person->stillStock($response, $prodID, $sizeType, $sizeMap);
             if (!$response->containError()) {
                 if ($stillStock) {
                     $response->addResult(self::A_SBMT_BXPROD, $stillStock);
+
+                    $eventCode = "evt_cd_83";
+                    $eventDatasMap = new Map();
+                    $eventDatasMap->put($prodID, Product::INPUT_PROD_ID);
+                    $eventDatasMap->put($sizeType, Size::INPUT_SIZE_TYPE);
+                    $eventDatasMap->put($size, Size::INPUT_ALPHANUM_SIZE);
+                    $eventDatasMap->put($brand, Size::INPUT_BRAND);
+                    $eventDatasMap->put($measureID, Measure::KEY_MEASURE_ID);
+                    $eventDatasMap->put($cut, Size::INPUT_CUT_ADDER);
+                    $person->handleEvent($eventCode, $eventDatasMap);
                 } else {
                     $errStation = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ?  "ER13" : "ER32";
                     $response->addErrorStation($errStation, Size::INPUT_SIZE_TYPE);
                 }
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -606,9 +628,8 @@ class ControllerItem extends ControllerSecure
      */
     public function addBoxProduct()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         $boxID = Query::getParam(Box::KEY_BOX_ID);
         $prodID = Query::getParam(Product::INPUT_PROD_ID);
@@ -626,10 +647,23 @@ class ControllerItem extends ControllerSecure
             $sizeMap->put($brand, Map::brand);
             $sizeMap->put($measureID, Map::measureID);
             $sizeMap->put($cut, Map::cut);
-            $this->person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
-            (!$response->containError()) ? $response->addResult(self::A_ADD_BXPROD, true) : null;
+            $person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
+            if (!$response->containError()) {
+                $response->addResult(self::A_ADD_BXPROD, true);
+
+                $eventCode = "evt_cd_85";
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
+                $eventDatasMap->put($prodID, Product::INPUT_PROD_ID);
+                $eventDatasMap->put($sizeType, Size::INPUT_SIZE_TYPE);
+                $eventDatasMap->put($size, Size::INPUT_ALPHANUM_SIZE);
+                $eventDatasMap->put($brand, Size::INPUT_BRAND);
+                $eventDatasMap->put($measureID, Measure::KEY_MEASURE_ID);
+                $eventDatasMap->put($cut, Size::INPUT_CUT_ADDER);
+                $person->handleEvent($eventCode, $eventDatasMap);
+            }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -638,13 +672,14 @@ class ControllerItem extends ControllerSecure
     public function updateBoxProduct()
     {
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         $quantity = $this->checkInput(
             $response,
             Size::INPUT_QUANTITY,
             Query::getParam(Size::INPUT_QUANTITY),
             [self::NUMBER_INT],
-            $this->person->getDataLength("`Box-Products`", "quantity")
+            $person->getDataLength("`Box-Products`", "quantity")
         );
         if (!$response->containError()) {
             $boxID = Query::getParam(Box::KEY_BOX_ID);
@@ -665,12 +700,25 @@ class ControllerItem extends ControllerSecure
                 $sizeMap->put($measureID, Map::measureID);
                 $sizeMap->put($cut, Map::cut);
                 $sizeMap->put($quantity, Map::quantity);
-                $this->person->updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap);
-                (!$response->containError()) ? $response->addResult(self::A_EDT_BXPROD, true) : null;
+                $person->updateBoxProduct($response, $boxID, $prodID, $sequence, $sizeType, $sizeMap);
+                if (!$response->containError()) {
+                    $response->addResult(self::A_EDT_BXPROD, true);
+
+                    $eventCode = "evt_cd_81";
+                    $eventDatasMap = new Map();
+                    $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
+                    $eventDatasMap->put($prodID, Product::INPUT_PROD_ID);
+                    $eventDatasMap->put($sequence, Size::KEY_SEQUENCE);
+                    $eventDatasMap->put($sizeType, Size::INPUT_SIZE_TYPE);
+                    $eventDatasMap->put($size, Size::INPUT_ALPHANUM_SIZE);
+                    $eventDatasMap->put($brand, Size::INPUT_BRAND);
+                    $eventDatasMap->put($measureID, Measure::KEY_MEASURE_ID);
+                    $person->handleEvent($eventCode, $eventDatasMap);
+                }
             }
         }
         ($response->containError() &&  (!$response->existErrorKey(Size::INPUT_SIZE_TYPE))) ? $response->addErrorStation("ER35", Size::INPUT_SIZE_TYPE) : null;
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -689,9 +737,9 @@ class ControllerItem extends ControllerSecure
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $person->moveBoxProduct($response, $boxID, $newBoxID, $prodID, $sequence);
-            if(!$response->containError()){
+            if (!$response->containError()) {
                 $response->addResult(self::A_MV_BXPROD, true);
-                
+
                 $eventCode = "evt_cd_67";
                 $eventDatasMap = new Map();
                 $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
@@ -774,6 +822,7 @@ class ControllerItem extends ControllerSecure
     public function getSizeEditor()
     {
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
         $prodID = Query::getParam(Product::KEY_PROD_ID);
         $sequence = Query::getParam(Size::KEY_SEQUENCE);
@@ -781,18 +830,25 @@ class ControllerItem extends ControllerSecure
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
             $boxID = Query::getParam(Box::KEY_BOX_ID);
-            $product = $this->person->getProduct($response, $prodID, $sequence, $boxID);
-            $box = ($product->getType() == BoxProduct::BOX_TYPE) ? $this->person->getBasket()->getBox($boxID) : null;
+            $product = $person->getProduct($response, $prodID, $sequence, $boxID);
+            $box = ($product->getType() == BoxProduct::BOX_TYPE) ? $person->getBasket()->getBox($boxID) : null;
             if ((!$response->containError()) && (!empty($product))) {
-                $measures = $this->person->getMeasures();
+                $measures = $person->getMeasures();
                 $datasView = [
                     "box" => $box,
                     "product" => $product,
                     "nbMeasure" => count($measures),
                 ];
                 $response->addFiles(self::A_GET_EDT_POP, 'view/elements/popupSizeForm.php');
+
+                $eventCode = "evt_cd_69";
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($boxID, Box::KEY_BOX_ID);
+                $eventDatasMap->put($prodID, Product::KEY_PROD_ID);
+                $eventDatasMap->put($sequence, Size::KEY_SEQUENCE);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 }

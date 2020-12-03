@@ -3,13 +3,11 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param Map $inputMap map with all necessary datas to build a input
- * + $inputMap[label] =>[
- *          Map::inputName => string,
- *          Map::inputValue => string,
- *          Map::isChecked => boolean,      // set true to check input else false
- *          Map::attribut => string|null    // attribut to add on input tag
- *      ]
- * + 🚨only one input of $inputMap can has Map::isChecked = true
+ *                      + $inputMap[label][Map::inputName]  =>  string,
+ *                      + $inputMap[label][Map::inputValue] =>  string,
+ *                      + $inputMap[label][Map::isChecked]  =>  boolean,    // set true to check input else false
+ *                      + $inputMap[label][Map::attribut]   =>  string|null // attribut to add on input tag (can place function, data-* etc...)
+ *                      + 🚨only one input of $inputMap can has Map::isChecked = true
  * @param boolean $isRadio indicate if the inputs are radio or just checkbox
  * + NOTE: set true if it radio else false
  */

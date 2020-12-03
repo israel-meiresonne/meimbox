@@ -29,7 +29,8 @@ $elementIdx = "#" . $elementId;
 
 /** Event */
 $eventDatas = [Box::KEY_BOX_ID=>$box->getBoxID()];
-
+$eventJson = htmlentities(json_encode($eventDatas));
+$detailAttr = "data-evtcd='evt_cd_71'  data-evtj='$eventJson'";
 /**
  * @var Price
  */
@@ -64,7 +65,8 @@ $price = $box->getPriceFormated();
             "dadx" => $dadx,
             "brotherx" => $brotherx,
             "submitdata" => $submitdata,
-            "eventDatas" => $eventDatas
+            "eventDatas" => $eventDatas,
+            "detailAttr" => $detailAttr
         ];
         echo $this->generateFile('view/elements/cartElement.php', $datas);
         ?>

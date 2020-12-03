@@ -70,7 +70,7 @@ $headerDatas = [
             sc();
             $.ajax({
                 type: 'POST',
-                url: a + QR_XHR+"&<?= Xhr::KEY_SET_DATE ?>=" + Date.now(),
+                url: a + QR_XHR + "&<?= Xhr::KEY_SET_DATE ?>=" + Date.now(),
                 data: d,
                 dataType: 'json',
                 success: function(j) {

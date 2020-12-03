@@ -11,6 +11,7 @@
  * + NOTE: set true if it radio else false
  * @param string $content the content of the dropdown
  * @param boolean|null $checked set true to display content and check checkbox else set on false or null
+ * @param string|null $onclick function to add in input's onclick function
  */
 
 $inputType = (isset($isRadio) && $isRadio) ? "radio" : "checkbox";
@@ -27,11 +28,14 @@ if (!empty($checked)) {
     $Tagdisplay = null;
 }
 
+/** Event */
+$onclick = (!empty($onclick)) ? $onclick : null;
+
 ?>
 <div class="dropdown_checkbox-wrap">
     <div class="dropdown_checkbox-head">
         <label class="checkbox-label" for="<?= $inp ?>"><?= $title ?>
-            <input id="<?= $inp ?>" <?= $dataAttributs ?> <?= $Tagchecked ?> onclick="animateDropdownCheckbox('<?= $inpx ?>', '<?= $bodyx ?>');animateCheckbox('#<?= $inp ?>');" type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $inputValue ?>">
+            <input id="<?= $inp ?>" <?= $dataAttributs ?> <?= $Tagchecked ?> onclick="<?= $onclick ?>;animateDropdownCheckbox(this,'<?= $inpx ?>', '<?= $bodyx ?>');animateCheckbox('#<?= $inp ?>');" type="<?= $inputType ?>" name="<?= $inputName ?>" value="<?= $inputValue ?>">
             <span class="checkbox-checkmark"></span>
         </label>
     </div>

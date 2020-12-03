@@ -34,17 +34,28 @@ $measureMinipopID = $measureMinipop->getId();
 $submitBtnID = ModelFunctionality::generateDateCode(25);
 $dataError = " data-errorx='#$submitBtnID' data-errortype='" . self::ER_TYPE_COMMENT . "'";
 
+// $typeRadioEvent = "onclick=\"evtInp(this, 'evt_cd_73')\"";
+// $typeCheckBoxEvent = "onclick=\"evtCheck(this, 'evt_cd_73')\"";
+// $typeInputEvent = "onblur=\"evtInp(this, 'evt_cd_43')\"";
 
 switch ($conf) {
     case Size::CONF_SIZE_ADD_PROD:
+        /** Event */
+        $typeRadioEvent = "evtInp(this, 'evt_cd_75')";
+        $typeCheckBoxEvent = "evtCheck(this, 'evt_cd_75')";
+
         $selectedSize = null;
         $sizeIsChecked = false;
         $measureIsChecked = false;
         $TagdisplayBrand = null;
         break;
     case Size::CONF_SIZE_EDITOR:
+        /** Event */
+        $typeRadioEvent = "evtInp(this, 'evt_cd_73')";
+        $typeCheckBoxEvent = "evtCheck(this, 'evt_cd_73')";
+        $typeInputEvent = "evtInp(this, 'evt_cd_74')";
+
         $selectedSize = $product->getSelectedSize();
-        // $selectedSize = new Size("null-null-0jj2g3rj131923p1560b90d01-fit", "2020-09-17 20:57:22");
         $sizeType = $selectedSize->getType();
         $brandName = $selectedSize->getbrandName();
         $measure = $selectedSize->getmeasure();
@@ -74,8 +85,7 @@ switch ($conf) {
                     $qid = ModelFunctionality::generateDateCode(25);
                     $qidx = "#" . $qid;
                     $quantity = $product->getQuantity();
-                    if (!empty($box)) :
-                ?>
+                    if (!empty($box)) : ?>
                         <input type="hidden" name="<?= Box::KEY_BOX_ID ?>" value="<?= $box->getBoxID() ?>">
                     <?php
                     endif; ?>
@@ -83,7 +93,7 @@ switch ($conf) {
                     <div class="product-quantity-container">
                         <div class="input-wrap">
                             <label class="input-label" for="<?= $qid ?>"><?= $translator->translateStation("US54") ?></label>
-                            <input id="<?= $qid ?>" data-errorx="#<?= $quantityMinipopID ?>" data-errortype="<?= self::ER_TYPE_MINIPOP ?>" class="input-tag" onchange="updateNumberInputValue('<?= $qidx ?>')" type="number" name="<?= Size::INPUT_QUANTITY ?>" value="<?= $quantity ?>" placeholder="<?= $translator->translateStation("US54") ?>">
+                            <input id="<?= $qid ?>" onblur="<?= $typeInputEvent ?>" data-errorx="#<?= $quantityMinipopID ?>" data-errortype="<?= self::ER_TYPE_MINIPOP ?>" class="input-tag" onchange="updateNumberInputValue('<?= $qidx ?>')" type="number" name="<?= Size::INPUT_QUANTITY ?>" value="<?= $quantity ?>" placeholder="<?= $translator->translateStation("US54") ?>">
                         </div>
                         <?= $quantityMinipop ?>
                     </div>
@@ -94,10 +104,10 @@ switch ($conf) {
                     /* ——————————————————————————————— SIZE CHAR & BRAND —————————————————————————————————————*/
                     switch ($conf) {
                         case Size::CONF_SIZE_ADD_PROD:
-                            $checkedLabels = [];
+                            $checkedSizes = [];
                             break;
                         case Size::CONF_SIZE_EDITOR:
-                            $checkedLabels = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ? [$selectedSize->getsize()] : [];
+                            $checkedSizes = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ? [$selectedSize->getsize()] : [];
                             break;
                     }
                     echo $alphaNumMinipop;
@@ -106,20 +116,24 @@ switch ($conf) {
                     <div class="size-set-container">
                         <?php
                         $brandCtnId = ModelFunctionality::generateDateCode(25);
-                        $title = $translator->translateStation("US9");
+                        $TagParams = " data-errorx='#$alphaNumMinipopID' data-errortype='" . self::ER_TYPE_MINIPOP . "'";
+                        $title = null;
+                        $inputMap = new Map();
                         $sizes = $product->getSizes();
-                        $labels = array_combine($sizes, $sizes);
-                        $TagParams = "data-errorx='#$alphaNumMinipopID' data-errortype='" . self::ER_TYPE_MINIPOP . "'";
-                        $datas = [
-                            "title" => $title,
-                            "checkedLabels" => $checkedLabels,
-                            "labels" => $labels,
-                            "isRadio" => true,
-                            "inputName" => Size::INPUT_ALPHANUM_SIZE,
-                            "func" => "$('#" . $brandCtnId . "').slideDown(TS);",
-                            "TagParams" => $TagParams
-                        ];
-                        echo $this->generateFile("view/elements/dropdownInput.php", $datas);
+                        foreach ($sizes as $size) {
+                            $label = $size;
+                            $isChecked = in_array($size, $checkedSizes);
+                            $SizeInpAttribut = "onclick=\"$typeRadioEvent;$('#$brandCtnId').slideDown(TS);\"" . $TagParams;
+                            $inputMap->put(Size::INPUT_ALPHANUM_SIZE, $label, Map::inputName);
+                            $inputMap->put($size, $label, Map::inputValue);
+                            $inputMap->put($isChecked, $label, Map::isChecked);
+                            $inputMap->put($SizeInpAttribut, $label, Map::attribut);
+                        }
+                        $isRadio = true;
+                        $isDisplayed = true;
+                        $eventMap = new Map();
+                        $alphanumDropdown = new DropDown($title, $inputMap, $isRadio, $isDisplayed, $eventMap);
+                        echo $alphanumDropdown->getInputs();
                         ?>
                     </div>
                     <div id="<?= $brandCtnId ?>" class="brand-custom-container" <?= $TagdisplayBrand ?>>
@@ -139,11 +153,11 @@ switch ($conf) {
                             <?php
                             switch ($conf) {
                                 case Size::CONF_SIZE_ADD_PROD:
-                                    $setBrandPopFunc = "onclick=\"openPopUp('#customize_brand_reference',setSelectBrandItemPage)\"";
+                                    $setBrandPopFunc = "onclick=\"evt('evt_cd_87');openPopUp('#customize_brand_reference',setSelectBrandItemPage)\"";
                                     break;
                                 case Size::CONF_SIZE_EDITOR:
                                     $setBrandPopFunc = "setSelectBrandSizeEditor";
-                                    $setBrandPopFunc = "onclick=\"switchPopUp('#size_editor_pop','#customize_brand_reference',setSelectBrandSizeEditor)\"";
+                                    $setBrandPopFunc = "onclick=\"evt('evt_cd_86');switchPopUp('#size_editor_pop','#customize_brand_reference',setSelectBrandSizeEditor)\"";
                                     break;
                             }
                             ?>
@@ -164,7 +178,8 @@ switch ($conf) {
                         "dataAttributs" => $dataAttributs,
                         "isRadio" => true,
                         "content" => $content,
-                        "checked" => $sizeIsChecked
+                        "checked" => $sizeIsChecked,
+                        "onclick" => $typeRadioEvent
                     ];
                     echo $this->generateFile("view/elements/dropdownCheckbox.php", $datas);
                     ?>
@@ -202,12 +217,12 @@ switch ($conf) {
                                     <?php
                                     switch ($conf) {
                                         case Size::CONF_SIZE_ADD_PROD:
-                                            $addMeasureBtnFunc = "onclick=\"openPopUp('#measure_adder')\"";
-                                            $manageMeasureBtnFunc = "onclick=\"openPopUp('#measure_manager',setSelectMeasureItemPage)\"";
+                                            $addMeasureBtnFunc = "onclick=\"evt('evt_cd_100');openPopUp('#measure_adder')\"";
+                                            $manageMeasureBtnFunc = "onclick=\"evt('evt_cd_93');openPopUp('#measure_manager',setSelectMeasureItemPage)\"";
                                             break;
                                         case Size::CONF_SIZE_EDITOR:
-                                            $addMeasureBtnFunc = "onclick=\"switchPopUp('#size_editor_pop','#measure_adder')\"";
-                                            $manageMeasureBtnFunc = "onclick=\"switchPopUp('#size_editor_pop','#measure_manager',setSelectMeasureSizeEditor)\"";
+                                            $addMeasureBtnFunc = "onclick=\"evt('evt_cd_99');switchPopUp('#size_editor_pop','#measure_adder')\"";
+                                            $manageMeasureBtnFunc = "onclick=\"evt('evt_cd_92');switchPopUp('#size_editor_pop','#measure_manager',setSelectMeasureSizeEditor)\"";
                                             break;
                                     }
                                     $addMsrBtnTxt = $translator->translateStation("US21");
@@ -228,30 +243,38 @@ switch ($conf) {
                         <div class="customize_choice-block">
                             <div class="customize-choice-cut">
                                 <?php
-                                $title = $translator->translateStation("US23");
-                                $labels = $product->getCutsValueToValue();
+                                $cutDpdEventMap = new Map();
                                 switch ($conf) {
                                     case Size::CONF_SIZE_ADD_PROD:
-                                        $checkedLabels = [Size::DEFAULT_CUT];
+                                        $checkedCuts = [Size::DEFAULT_CUT];
                                         $cutInputName = Size::INPUT_CUT_ADDER;
+                                        $cutDpdEventMap->put("evt_cd_78", Map::open);
+                                        $cutDpdEventMap->put("evt_cd_79", Map::close);
                                         break;
                                     case Size::CONF_SIZE_EDITOR:
-                                        $checkedLabels = ($sizeType == Size::SIZE_TYPE_MEASURE) ? [$selectedSize->getCut()] : [Size::DEFAULT_CUT];
+                                        $checkedCuts = ($sizeType == Size::SIZE_TYPE_MEASURE) ? [$selectedSize->getCut()] : [Size::DEFAULT_CUT];
                                         $cutInputName = Size::INPUT_CUT_EDITOR;
+                                        $cutDpdEventMap->put("evt_cd_76", Map::open);
+                                        $cutDpdEventMap->put("evt_cd_77", Map::close);
                                         break;
                                 }
-                                $datas = [
-                                    "title" => $title,
-                                    // "checkedLabels" => [Size::DEFAULT_CUT],
-                                    "checkedLabels" => $checkedLabels,
-                                    "labels" => $labels,
-                                    "isRadio" => true,
-                                    // "inputName" => Size::INPUT_CUT,
-                                    "inputName" => $cutInputName,
-                                    "isDisplayed" => $measureIsChecked,
-                                ];
-                                echo $this->generateFile("view/elements/dropdown.php", $datas);
+                                $title = $translator->translateStation("US23");
+                                $inputMap = new Map();
+                                $cuts = Size::getSupportedCuts();
+                                foreach ($cuts as $cut) {
+                                    $label = $cut;
+                                    $isChecked = in_array($cut, $checkedCuts);
+                                    $SizeInpAttribut = "onclick=\"$typeRadioEvent;\"";
+                                    $inputMap->put($cutInputName, $label, Map::inputName);
+                                    $inputMap->put($cut, $label, Map::inputValue);
+                                    $inputMap->put($isChecked, $label, Map::isChecked);
+                                    $inputMap->put($SizeInpAttribut, $label, Map::attribut);
+                                }
+                                $isRadio = true;
+                                $isDisplayed = $measureIsChecked;
+                                $cutDropdown = new DropDown($title, $inputMap, $isRadio, $isDisplayed, $cutDpdEventMap);
                                 ?>
+                                <?= $cutDropdown ?>
                             </div>
                         </div>
                         <?php
@@ -267,7 +290,8 @@ switch ($conf) {
                             "dataAttributs" => $dataAttributs,
                             "isRadio" => true,
                             "content" => $content,
-                            "checked" => $measureIsChecked
+                            "checked" => $measureIsChecked,
+                            "onclick" => $typeRadioEvent
                         ];
                         echo $this->generateFile("view/elements/dropdownCheckbox.php", $datas);
                         ?>

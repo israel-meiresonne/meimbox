@@ -78,6 +78,7 @@ switch ($product->getType()) {
         $spanidx = "#" . $spanid;
         $miniPopEvent = "evt('evt_cd_63','$eventJson')";
         $movingEvent = "evt('evt_cd_64','$eventJson')";
+        $editorEvent = "evt('evt_cd_68', '$eventJson')";
         switch ($containerId):
             case 'shopping_bag':
                 ob_start(); ?>
@@ -86,7 +87,7 @@ switch ($product->getType()) {
                         <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="<?= $movingEvent ?>;openPopUp('#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
                     </li>
                     <li class="remove-li-default-att">
-                        <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{openPopUp('#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
+                        <span class="grey-tag-button standard-tag-button" onclick="<?= $editorEvent ?>;getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{openPopUp('#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
                     </li>
                 </ul>
             <?php
@@ -104,7 +105,7 @@ switch ($product->getType()) {
                         <span id="<?= $spanid ?>" class="grey-tag-button standard-tag-button" data-onclick="moveBoxProduct('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>')" onclick="<?= $movingEvent ?>;switchPopUp('<?= $containerIdx ?>','#box_manager_window',()=>{getBoxMngr('<?= Box::CONF_MV_BXPROD ?>', '<?= $boxID ?>')},()=>{setMoveBoxProduct('<?= $spanidx ?>','<?= $boxID ?>')});"><?= $translator->translateStation("US63") ?></span>
                     </li>
                     <li class="remove-li-default-att">
-                        <span class="grey-tag-button standard-tag-button" onclick="getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{switchPopUp('<?= $containerIdx ?>','#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
+                        <span class="grey-tag-button standard-tag-button" onclick="<?= $editorEvent ?>;getSizeEditor('<?= $boxID ?>','<?= $prodID ?>','<?= $sequence ?>',()=>{switchPopUp('<?= $containerIdx ?>','#size_editor_pop')})"><?= $translator->translateStation("US62") ?></span>
                     </li>
                 </ul>
 <?php
