@@ -60,13 +60,25 @@
     --border-radius-selcted-element: 10px;
     /*———————————————————————————————— BODER UP —————————————————————————————*/
     /*———————————————————————————————— Z-INDEX DOWN —————————————————————————*/
-    --z-index-header-fixed: 100;
-    --z-index-body: -5;
+    /* --z-index-header-fixed: 100; */
+    /* --z-index-body: -5; */
+    /* 31-40 */
+    --z-index-alert_31: 31;
+    /* 21-30 */
+    --z-index-popup_21: 21;
+    /* 11-20 */
+    --z-index-header_11: 11;
+    /* 0-10 */
+    --z-index-body_4: 4;
+    --z-index-body_3: 3;
+    --z-index-body_2: 2;
+    --z-index-body_1: 1;
+    --z-index-body_0: 0;
     /*———————————————————————————————— Z-INDEX UP ———————————————————————————*/
     /*———————————————————————————————— POSITION DOWN ————————————————————————*/
     /* --body-top-computer: 145px; */
     --body-top-computer: 120px;
-    --body-top-mobile: 70px;
+    --header-mobile-height: 70px;
     /* --body-initial-top-computer: -145px; */
     --body-initial-top-computer: -120px;
     /* --body-initial-top-mobile: -100px; */
@@ -126,10 +138,10 @@
     letter-spacing: 1.5px;
 }
 
-.selected_element_shadow {
+/* .selected_element_shadow {
     box-shadow: var(--selected-shadow) !important;
     z-index: 5;
-}
+} */
 
 .info-style {
     color: var(--color-text-05) !important;
@@ -145,13 +157,6 @@
 
 .title-first_letter::first-letter {
     text-transform: capitalize;
-}
-
-header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: var(--z-index-header-fixed);
 }
 
 /*—— DOWN ——*/

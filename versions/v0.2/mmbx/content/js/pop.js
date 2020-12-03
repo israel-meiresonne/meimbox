@@ -260,6 +260,7 @@
         setStack(tbtn, stack);
 
         switcher(fromx, tox);
+        evtClose(fromx);
         after(fromx, tox);
     }
     closePopUp = function (x, before = () => { }, after = () => { }) {
@@ -455,9 +456,11 @@
     }
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
     addMsr = (succFunc = () => { }) => {
+        var inps = $( "#add_measure_form input");
+        evtFrm('evt_cd_107',inps);
         var d = {
             "a": A_ADD_MEASURE,
-            "frm": "#add_measure_form input",
+            "frm":inps,
             "frmCbk": function () { return ""; },
             "r": addMeasureRSP,
             "l": "#add_measurePopUp_loading",
@@ -492,9 +495,11 @@
         }
     }
     updateMsr = () => {
+        var inps = $("#add_measure_form input");
+        evtFrm('evt_cd_109',inps);
         var d = {
             "a": A_UPDATE_MEASURE,
-            "frm": "#add_measure_form input",
+            "frm": inps,
             "frmCbk": function () { return ""; },
             "r": updateMsrRSP,
             "l": "#add_measurePopUp_loading",

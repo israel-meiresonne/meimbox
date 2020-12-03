@@ -58,7 +58,7 @@ $this->head = $this->generateFile('view/Grid/gridFiles/head.php', []);
                 </div>
             </div>
             <div class="grid-item-container">
-                <div id="filter_block" class="filter-block">
+                <div id="filter_block" class="filter-block back_blur">
                     <p><?= $translator->translateStation("US1") ?></p>
                     <from id="grid_filter">
                         <?php

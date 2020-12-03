@@ -75,7 +75,7 @@ class ViewEmail extends View
             "--z-index-header-fixed" => "100",
             "--z-index-body" => "-5",
             "--body-top-computer" => "145px",
-            "--body-top-mobile" => "100px",
+            "--header-mobile-height" => "100px",
             "--body-initial-top-computer" => "-145px",
             "--body-initial-top-mobile" => "-100px",
             "--cartelement-margin-bottom" => "15px",

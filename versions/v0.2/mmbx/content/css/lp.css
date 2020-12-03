@@ -159,7 +159,8 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 991px) {
     .vp_content-vp {
         position: absolute;
-        z-index: 1;
+        /* z-index: 1; */
+        z-index: var(--z-index-body_1);
         height: 100%;
         padding: 10% 0;
         display: flex;
@@ -212,7 +213,8 @@ h1, h2, h3, h4, h5, h6 {
 .tuto_content-features-container {
     display: flex;
     position: relative;
-    z-index: 1;
+    /* z-index: 1; */
+    z-index: var(--z-index-body_1);
 }
 
 .tuto_content-features-container .feature {
@@ -255,7 +257,8 @@ h1, h2, h3, h4, h5, h6 {
         position: absolute;
         width: 100%;
         top: 25px;
-        z-index: 0;
+        /* z-index: 0; */
+        z-index: var(--z-index-body_0);
     }
     .tuto_content-features-barre-barre {
         border-bottom: var(--color-text-08) 1px solid;
@@ -388,7 +391,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .feature_content-features-inner {
-    z-index: 1;
+    /* z-index: 1; */
+    z-index: var(--z-index-body_1);
     position: relative;
     background-color: var(--color-blue-wave);
 }
