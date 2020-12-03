@@ -50,6 +50,11 @@
         $inputMeasureID = null;
         $getUnitSymbol = null;
     }
+
+    /** Event */
+    $clickRadioEvent = "onclick=\"evtInp(this,'evt_cd_105')\"";
+    $blurInputEvent = "onblur=\"evtInp(this,'evt_cd_106')\"";
+
     ob_start();
     ?>
     <div class="customize_measure-content">
@@ -77,7 +82,7 @@
                                             ?>
                                                 <div class="checkbox-container">
                                                     <label class="checkbox-label" for="measure_unit_<?= $unitName ?>"><?= $measureUnit ?>
-                                                        <input id="measure_unit_<?= $unitName ?>" data-unit="<?= $measureUnit ?>" type="radio" name="<?= MeasureUnit::INPUT_MEASURE_UNIT ?>" value="<?= $unitName ?>" <?= $unitNameChecked ?>>
+                                                        <input id="measure_unit_<?= $unitName ?>" <?= $clickRadioEvent ?> data-unit="<?= $measureUnit ?>" type="radio" name="<?= MeasureUnit::INPUT_MEASURE_UNIT ?>" value="<?= $unitName ?>" <?= $unitNameChecked ?>>
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
@@ -95,7 +100,7 @@
                                         <div class="input-wrap">
                                             <label class="input-label" for=""><?= $measurreNameTranslate ?></label>
                                             <span class="input-unit"></span>
-                                            <input class="input-tag" type="text" <?= $measureName ?> name="<?= Measure::INPUT_MEASURE_NAME ?>" placeholder="<?= $measurreNameTranslate ?>">
+                                            <input class="input-tag" <?= $blurInputEvent ?> type="text" <?= $measureName ?> name="<?= Measure::INPUT_MEASURE_NAME ?>" placeholder="<?= $measurreNameTranslate ?>">
                                             <p class="comment"></p>
                                         </div>
                                     </div>
@@ -105,7 +110,7 @@
                                         <div class="input-wrap">
                                             <label class="input-label" for=""><?= $bustTranslate ?></label>
                                             <span class="input-unit"><?= $getUnitSymbol ?></span>
-                                            <input class="input-tag" type="text" <?= $bustVal ?> name="<?= Measure::INPUT_BUST ?>" placeholder="<?= $bustTranslate ?>">
+                                            <input class="input-tag" <?= $blurInputEvent ?> type="text" <?= $bustVal ?> name="<?= Measure::INPUT_BUST ?>" placeholder="<?= $bustTranslate ?>">
                                             <p class="comment"></p>
                                         </div>
                                     </div>
@@ -113,7 +118,7 @@
                                         <div class="input-wrap">
                                             <label class="input-label" for=""><?= $armTranslate ?></label>
                                             <span class="input-unit"><?= $getUnitSymbol ?></span>
-                                            <input class="input-tag" type="text" <?= $armVal ?> name="<?= Measure::INPUT_ARM ?>" placeholder="<?= $armTranslate ?>">
+                                            <input class="input-tag" <?= $blurInputEvent ?> type="text" <?= $armVal ?> name="<?= Measure::INPUT_ARM ?>" placeholder="<?= $armTranslate ?>">
                                             <p class="comment"></p>
                                         </div>
                                     </div>
@@ -125,7 +130,7 @@
                                         <div class="input-wrap">
                                             <label class="input-label" for=""><?= $waistTranslate ?></label>
                                             <span class="input-unit"><?= $getUnitSymbol ?></span>
-                                            <input class="input-tag" type="text" <?= $waistVal ?> name="<?= Measure::INPUT_WAIST ?>" placeholder="<?= $waistTranslate ?>">
+                                            <input class="input-tag" <?= $blurInputEvent ?> type="text" <?= $waistVal ?> name="<?= Measure::INPUT_WAIST ?>" placeholder="<?= $waistTranslate ?>">
                                             <p class="comment"></p>
                                         </div>
                                     </div>
@@ -133,7 +138,7 @@
                                         <div class="input-wrap">
                                             <label class="input-label" for=""><?= $hipTranslate ?></label>
                                             <span class="input-unit"><?= $getUnitSymbol ?></span>
-                                            <input class="input-tag" type="text" <?= $hipVal  ?> name="<?= Measure::INPUT_HIP ?>" placeholder="<?= $hipTranslate ?>">
+                                            <input class="input-tag" <?= $blurInputEvent ?> type="text" <?= $hipVal  ?> name="<?= Measure::INPUT_HIP ?>" placeholder="<?= $hipTranslate ?>">
                                             <p class="comment"></p>
                                         </div>
                                     </div>
@@ -144,7 +149,7 @@
                                     <div class="input-wrap">
                                         <label class="input-label" for=""><?= $inseamTranslate ?></label>
                                         <span class="input-unit"><?= $getUnitSymbol ?></span>
-                                        <input class="input-tag" type="text" <?= $inseamVal ?> name="<?= Measure::INPUT_INSEAM ?>" placeholder="<?= $inseamTranslate ?>">
+                                        <input class="input-tag" <?= $blurInputEvent ?> type="text" <?= $inseamVal ?> name="<?= Measure::INPUT_INSEAM ?>" placeholder="<?= $inseamTranslate ?>">
                                         <p class="comment"></p>
                                     </div>
                                 </div>

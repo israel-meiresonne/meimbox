@@ -138,11 +138,6 @@
     letter-spacing: 1.5px;
 }
 
-/* .selected_element_shadow {
-    box-shadow: var(--selected-shadow) !important;
-    z-index: 5;
-} */
-
 .info-style {
     color: var(--color-text-05) !important;
     text-transform: initial !important;

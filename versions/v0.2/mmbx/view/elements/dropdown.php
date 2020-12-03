@@ -15,8 +15,9 @@
  * + NOTE: set true if it radio else false
  * @param string $inputName the input's name
  * @param boolean $isDisplayed set true to display content else set false or empty
+ * @param string $dpdAttr attribut to place on dropdown
  */
-
+$dpdAttr = (!empty($dpdAttr)) ? $dpdAttr : null;
 // $additional = (isset($additional)) ? $additional : "";
 // $inputName = (isset($inputName)) ? $inputName : "";
 // $isRadio = isset($isRadio);
@@ -31,7 +32,7 @@ $Tagdisplay = (!empty($isDisplayed)) ? 'style="display:block;"' : null;
 
 <div class="dropdown-wrap">
     <div class="dropdown-inner">
-        <div id="<?= $head ?>" class="dropdown-head dropdown-arrow-close" onclick="animateDropdown('<?= $headx ?>', '<?= $bodyx ?>');">
+        <div id="<?= $head ?>" <?= $dpdAttr ?> class="dropdown-head dropdown-arrow-close" onclick="animateDropdown('<?= $headx ?>', '<?= $bodyx ?>');">
             <span class="dropdown-title"><?= $title ?></span>
         </div>
         <div id="<?= $body ?>" class="dropdown-checkbox-list" <?= $Tagdisplay ?>>

@@ -196,8 +196,8 @@ class ControllerItem extends ControllerSecure
      */
     public function addMeasure()
     {
-        // $this->secureSession();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
 
         $table = "UsersMeasures";
@@ -206,51 +206,50 @@ class ControllerItem extends ControllerSecure
             MeasureUnit::INPUT_MEASURE_UNIT,
             Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT),
             [self::CHECKBOX, self::STRING_TYPE],
-            $this->person->getDataLength($table, "unit_name")
+            $person->getDataLength($table, "unit_name")
         );
         $measureName = $this->checkInput(
             $response,
             Measure::INPUT_MEASURE_NAME,
             Query::getParam(Measure::INPUT_MEASURE_NAME),
             [self::PSEUDO],
-            $this->person->getDataLength($table, "measureName")
+            $person->getDataLength($table, "measureName")
         );
         $userBust = $this->checkInput(
             $response,
             Measure::INPUT_BUST,
             Query::getParam(Measure::INPUT_BUST),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userBust")
+            $person->getDataLength($table, "userBust")
         );
         $userArm = $this->checkInput(
             $response,
             Measure::INPUT_ARM,
             Query::getParam(Measure::INPUT_ARM),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userArm")
+            $person->getDataLength($table, "userArm")
         );
         $userWaist = $this->checkInput(
             $response,
             Measure::INPUT_WAIST,
             Query::getParam(Measure::INPUT_WAIST),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userWaist")
+            $person->getDataLength($table, "userWaist")
         );
         $userHip = $this->checkInput(
             $response,
             Measure::INPUT_HIP,
             Query::getParam(Measure::INPUT_HIP),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userHip")
+            $person->getDataLength($table, "userHip")
         );
         $userInseam = $this->checkInput(
             $response,
             Measure::INPUT_INSEAM,
             Query::getParam(Measure::INPUT_INSEAM),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userInseam")
+            $person->getDataLength($table, "userInseam")
         );
-
         if (!$response->containError()) {
             $measureMap = new Map();
             // $measureMap->put($measureID, Map::measureID);
@@ -261,19 +260,29 @@ class ControllerItem extends ControllerSecure
             $measureMap->put($userWaist, Map::waist);
             $measureMap->put($userHip, Map::hip);
             $measureMap->put($userInseam, Map::inseam);
-            $this->person->addMeasure($response, $measureMap);
+            $person->addMeasure($response, $measureMap);
             if (!$response->containError()) {
                 $measures = $response->getResult(self::QR_MEASURE_CONTENT);
-                $measureUnits = $this->person->getUnits();
+                $measureUnits = $person->getUnits();
                 $datasView = [
                     "measures" => $measures,
                     "measureUnits" => $measureUnits,
                 ];
-                // $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManagerContent.php");
                 $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManager.php");
+
+                $eventCode = "evt_cd_108";
+                $eventDatasMap = new Map();
+                $eventDatasMap->put($unitName, MeasureUnit::INPUT_MEASURE_UNIT);
+                $eventDatasMap->put($measureName, Measure::INPUT_MEASURE_NAME);
+                $eventDatasMap->put($userBust, Measure::INPUT_BUST);
+                $eventDatasMap->put($userArm, Measure::INPUT_ARM);
+                $eventDatasMap->put($userWaist, Measure::INPUT_WAIST);
+                $eventDatasMap->put($userHip, Measure::INPUT_HIP);
+                $eventDatasMap->put($userInseam, Measure::INPUT_INSEAM);
+                $person->handleEvent($eventCode, $eventDatasMap);
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**
@@ -309,9 +318,8 @@ class ControllerItem extends ControllerSecure
      */
     public function updateMeasure()
     {
-        // $this->secureSession();
-        $language = $this->person->getLanguage();
         $response = new Response();
+        $person = $this->getPerson();
         $datasView = [];
 
         $table = "UsersMeasures";
@@ -320,7 +328,7 @@ class ControllerItem extends ControllerSecure
             Measure::KEY_MEASURE_ID,
             Query::getParam(Measure::KEY_MEASURE_ID),
             [self::TYPE_ALPHANUM_SPACE_HYPHEN_UNDER],
-            $this->person->getDataLength($table, "measureID")/*,
+            $person->getDataLength($table, "measureID")/*,
             false*/
         );
         $unitName = $this->checkInput(
@@ -328,49 +336,49 @@ class ControllerItem extends ControllerSecure
             MeasureUnit::INPUT_MEASURE_UNIT,
             Query::getParam(MeasureUnit::INPUT_MEASURE_UNIT),
             [self::CHECKBOX, self::STRING_TYPE],
-            $this->person->getDataLength($table, "unit_name")
+            $person->getDataLength($table, "unit_name")
         );
         $measureName = $this->checkInput(
             $response,
             Measure::INPUT_MEASURE_NAME,
             Query::getParam(Measure::INPUT_MEASURE_NAME),
             [self::PSEUDO],
-            $this->person->getDataLength($table, "measureName")
+            $person->getDataLength($table, "measureName")
         );
         $userBust = $this->checkInput(
             $response,
             Measure::INPUT_BUST,
             Query::getParam(Measure::INPUT_BUST),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userBust")
+            $person->getDataLength($table, "userBust")
         );
         $userArm = $this->checkInput(
             $response,
             Measure::INPUT_ARM,
             Query::getParam(Measure::INPUT_ARM),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userArm")
+            $person->getDataLength($table, "userArm")
         );
         $userWaist = $this->checkInput(
             $response,
             Measure::INPUT_WAIST,
             Query::getParam(Measure::INPUT_WAIST),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userWaist")
+            $person->getDataLength($table, "userWaist")
         );
         $userHip = $this->checkInput(
             $response,
             Measure::INPUT_HIP,
             Query::getParam(Measure::INPUT_HIP),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userHip")
+            $person->getDataLength($table, "userHip")
         );
         $userInseam = $this->checkInput(
             $response,
             Measure::INPUT_INSEAM,
             Query::getParam(Measure::INPUT_INSEAM),
             [self::NUMBER_FLOAT],
-            $this->person->getDataLength($table, "userInseam")
+            $person->getDataLength($table, "userInseam")
         );
         if (!$response->containError()) {
             if (empty($measureID)) {
@@ -385,21 +393,31 @@ class ControllerItem extends ControllerSecure
                 $measureMap->put($userWaist, Map::waist);
                 $measureMap->put($userHip, Map::hip);
                 $measureMap->put($userInseam, Map::inseam);
-                // $this->person->updateMeasure($response, $measureID);
-                $this->person->updateMeasure($response, $measureMap);
+                $person->updateMeasure($response, $measureMap);
                 if (!$response->containError()) {
-                    $measures = $this->person->getMeasures();
-                    $measureUnits = $this->person->getUnits();
+                    $measures = $person->getMeasures();
+                    $measureUnits = $person->getUnits();
                     $datasView = [
                         "measures" => $measures,
                         "measureUnits" => $measureUnits
                     ];
-                    // $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManagerContent.php");
                     $response->addFiles(self::QR_MEASURE_CONTENT, "view/elements/popupMeasureManager.php");
+
+                    $eventCode = "evt_cd_110";
+                    $eventDatasMap = new Map();
+                    $eventDatasMap->put($measureID, Measure::KEY_MEASURE_ID);
+                    $eventDatasMap->put($unitName, MeasureUnit::INPUT_MEASURE_UNIT);
+                    $eventDatasMap->put($measureName, Measure::INPUT_MEASURE_NAME);
+                    $eventDatasMap->put($userBust, Measure::INPUT_BUST);
+                    $eventDatasMap->put($userArm, Measure::INPUT_ARM);
+                    $eventDatasMap->put($userWaist, Measure::INPUT_WAIST);
+                    $eventDatasMap->put($userHip, Measure::INPUT_HIP);
+                    $eventDatasMap->put($userInseam, Measure::INPUT_INSEAM);
+                    $person->handleEvent($eventCode, $eventDatasMap);
                 }
             }
         }
-        $this->generateJsonView($datasView, $response, $this->person);
+        $this->generateJsonView($datasView, $response, $person);
     }
 
     /**

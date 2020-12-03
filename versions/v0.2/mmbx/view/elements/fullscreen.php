@@ -33,7 +33,7 @@ $language = $person->getLanguage();
         echo $this->generateFile("view/elements/popupMeasureManager.php", $datas);
         ?>
     </div>
-    <div id="measure_adder" class="customize_measure-block pop_up-container">
+    <div id="measure_adder" class="customize_measure-block pop_up-container" data-evtclose="evt_cd_111">
         <?php
         $datas = [
             "measureUnits" => $measureUnits
@@ -72,7 +72,7 @@ $language = $person->getLanguage();
         echo $this->generateFile('view/elements/popupBasket.php', $datas);
         ?>
     </div>
-    <div id="size_editor_pop" class="pop_up-container">
+    <div id="size_editor_pop" class="pop_up-container" data-evtclose="evt_cd_112">
     </div>
     <?php
     if (!$person->hasCookie(Cookie::COOKIE_CLT)) :
