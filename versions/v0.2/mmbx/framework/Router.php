@@ -15,7 +15,8 @@ require_once 'Configuration.php';
  * (https://github.com/ndavison/Nathan-MVC)
  * 
  */
-class Router {
+class Router
+{
 
     /**
      * Méthode principale appelée par le contrôleur frontal
@@ -24,13 +25,14 @@ class Router {
      * rnvs : tout se passe ici : c'est la seule méthode invoquée dans index.php
      */
     // public function routerRequest() {    // rnvs : comm (static)
-    public static function routerRequest() {    // rnvs : ajout (static)
+    public static function routerRequest()
+    {    // rnvs : ajout (static)
         try {
             // rnvs : on arrive ici depuis index.php, qui ne fait en gros 
             //        qu'invoquer Router::routerRequest()
             //        c'est ici maintenant que commence le traitement 
             //        de la requête du client
-            
+
             // Fusion des paramètres GET et POST de la requête
             // Permet de gérer uniformément ces deux types de requête HTTP
             // rnvs : https://www.php.net/manual/en/function.array-merge
@@ -40,7 +42,7 @@ class Router {
             //        argument du ctor de Request : initialise paramètres de 
             //        Request donc les contenus de $_GET et $_POST sont 
             //        stockés dans l'attribut $parameters de $request
-            
+
             // rnvs : start
             $verboseRequest = Configuration::get("verboseRequest");
             if ($verboseRequest) {
@@ -74,7 +76,7 @@ class Router {
             //        sinon, par défaut, c'est ControllerHome
             // $controller = $this->createController($request); // rnvs : comm (static)
             $controller = self::createController($request, $action); // rnvs : ajout (static)
-            
+
             // rnvs : $action est une chaîne de caractères
             //        c'est via l'élément de clé 'action' du tableau
             //        $request que l'action du contrôleur effectif est 
@@ -90,12 +92,12 @@ class Router {
             //        pour le moment, on a instancié le contrôleur effectif
             //        et produit une string qui contient son action
             $controller->executeAction($action);
-            
+
             // rnvs : ici on retourne à index.php qui termine
             //        donc ici le script ne fait plus rien : la page (réponse)
             //        a été envoyée au client, le traitement de la requête
             //        du client est terminé 
-            
+
         } catch (Exception $e) {
             // rnvs : on peut arriver ici depuis :
             //          + Router::createController() :
@@ -106,10 +108,10 @@ class Router {
             //          + Controller::executeAction(), si l'action n'existe
             //            pas ou lors de l'exécution de l'action, p. ex.
             //            lors de la récupération des données du modèle
-            
+
             // $this->handleError($e);  // rnvs : comm (static)
             self::handleError($e); // rnvs : ajout (static)
-            
+
             // rnvs : Router::handleError() termine par View::generate()
             //        qui termine par la « fonction » echo qui envoie
             //        la réponse au serveur => on peut retourner à
@@ -135,7 +137,8 @@ class Router {
      * @throws Exception Si la création du contrôleur échoue
      */
     // private function createController(Request $request) {    // rnvs : comm (static)
-    private static function createController(Request $request, $action) {    // rnvs : ajout (static)
+    private static function createController(Request $request, $action)
+    {    // rnvs : ajout (static)
         // Grâce à la redirection, toutes les URL entrantes sont du type :
         // index.php?controller=XXX&action=YYY&id=ZZZ
         // rnvs : redirection : voir webRoot/.htaccess
@@ -153,7 +156,7 @@ class Router {
         // rnvs : si pas de $_GET['controller'] ni de $_POST['controller']
         //        dans la requête http, alors pas de paramètre 'controller'
         //        dans $request et donc $controller vaut "Home"
-        
+
         // Création (rnvs : construction) du nom du fichier du contrôleur
         // La convention de nommage des fichiers controllers est : 
         //          controller/Controller<$controller>.php
@@ -164,11 +167,11 @@ class Router {
         //        $controller vaut "Home", 
         //        donc $classController vaut "ControllerHome"
         $classController = "Controller" . $controller;
-        
+
         // rnvs : chemin complet vers le fichier où la classe du contrôleur
         //        est implémentée : chemin relatif + nom classe + extension
         $fileController = "controller/" . $classController . ".php";
-        
+
         if (file_exists($fileController)) {
             // Instanciation du contrôleur adapté à la requête
             // rnvs : inclusion du fichier dont le nom vient d'être 
@@ -176,19 +179,19 @@ class Router {
             // rnvs : $fileController vaut "controller/ControllerHome.php"
             //        par défaut 
             require_once $fileController;
-            
+
             // rnvs : instanciation d'un objet du type du contrôleur
             //        dont le nom a été construit dynamiquement sur base
             //        de la requête GET ou POST
             // rnvs : rappel $classController vaut "ControllerHome" par défaut
             $controller = new $classController($action);
-            
+
             $controller->setRequest($request);
-            
+
             return $controller;
         } else {
             throw new Exception("Fichier '$fileController' introuvable");
-            
+
             // rnvs : cette exception est catchée dans Router::routerRequest()
         }
     }
@@ -209,15 +212,16 @@ class Router {
      * @return string Action à exécuter
      */
     // private function createAction(Request $request) {    // rnvs : comm (static)
-    private static function createAction(Request $request) {    // rnvs : ajout (static)
+    private static function createAction(Request $request)
+    {    // rnvs : ajout (static)
         $action = "index";  // Action par défaut
-        
+
         if ($request->existingParameter('action')) {
             $action = $request->getParameter('action');
         }
         // rnvs : si $_GET['action'] ou $_POST['action'] existe alors $action
         //        n'est pas "index" (action par défaut)
-        
+
         return $action;
     }
 
@@ -228,24 +232,39 @@ class Router {
      * 
      * @param Exception $exception Exception qui s'est produite
      */
-    // private function handleError(Exception $exception) { // rnvs : comm (static)
-    private static function handleError(Exception $exception) { // rnvs : ajout (static)
-        
-        // rnvs : on a ici une vue non attachée à un contrôleur effectif
-        //        comme l'action est 'error', le fichier associé à cette
-        //        action de cette vue est : view/error.php
-        // $view = new View('error');
-        
-        // rnvs : c'est dans View::generate que la page réponse à la requête
-        //        est construite et envoyée au client
-        // $view->generate(array('msgError' => $exception->getMessage()));
+    private static function handleError(Exception $exception)
+    {
+        $env = Configuration::getEnvironement();
+        // $env = "prod.ini";
+        $view = new View('Template/files/message');
+        $translator = $view->getTranslator();
+        switch ($env) {
+            case Configuration::ENV_DEV:
+                // throw $exception;
+                $datas = [
+                    "title" => "dev error occured",
+                    "content" => $exception->getMessage(),
+                    // "content" => $exception->__toString(),
+                    "btnText" => "reload",
+                    "btnLink" => ".",
+                ];
+                $view->generate($datas, View::TEMPLATE_ERROR);
+                break;
 
-        throw $exception;
-        
-        
-        // rnvs : View::generate termine par la « fonction » echo qui envoie
-        //        la réponse au client => on n'a plus rien à faire que retourner 
-        //        retourner à index.php via Router::routerRequest()
+            case Configuration::ENV_PROD:
+            default:
+                $brand = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY)))->get(Map::brand);
+                $btnLink = ControllerSecure::extractController(ControllerGrid::class) . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . time();
+                $datas = [
+                    "title" => $translator->translateStation("US106"),
+                    "content" => $translator->translateStation("US107", new Map([Map::brand => strtoupper($brand)])),
+                    "btnText" => $translator->translateStation("US105"),
+                    "btnLink" => $btnLink,
+                ];
+                $view->generate($datas, View::TEMPLATE_ERROR);
+                $rsp = new Response();
+                $rsp->addError($exception->__toString(), MyError::ADMIN_ERROR);
+                break;
+        }
     }
-
 }

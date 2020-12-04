@@ -164,6 +164,12 @@ class View
     private static $PATH_EMAIL;
 
     /**
+     * Holds tamplate available
+     * @var string
+     */
+    public const TEMPLATE_ERROR = "error.php";
+
+    /**
      * Error type
      */
     private const ER_TYPE_MINIPOP = "minipop";
@@ -205,22 +211,14 @@ class View
         switch (func_num_args()) {
             case 1:
                 $this->__construct1_3($args[0]);
+                break;
             case 2:
                 $this->__construct1_3($args[0], $args[1]);
+                break;
             case 3:
                 $this->__construct1_3($args[0], $args[1], $args[2]);
                 break;
         }
-        // $this->fbPixelsMap = new Map();
-        // $this->person = $person;
-        // $language = (!empty($person)) ? $person->getLanguage() : null;
-        // $this->translator = isset($language) ? new Translator($language) : new Translator();
-
-        // $file = "view/";
-        // if ($controller != "") {
-        //     $file = $file . $controller . "/";
-        // }
-        // $this->file = $file . $action . ".php";
     }
 
     /**
@@ -260,59 +258,27 @@ class View
     }
 
     /**
-     * Génère et affiche la vue
-     * 
-     * rnvs : cette méthode envoie la réponse au client donc après elle,
-     *        il n'y a (probablement) plus rien à faire
-     * 
-     * rnvs : $datas est un tableau associatif : c'est le contenu qui doit
-     *        être envoyé au client en réponse à sa requête
-     *        ce tableau est utilisé par View::generateFile() pour mise en
-     *        forme html
-     * 
+     * To generate the finale view
      * @param array $datas Données nécessaires à la génération de la vue
      */
-    public function generate($datas)
+    // public function generate($datas, $template = 'view/Template/default.php')
+    public function generate($datas, $template = 'default.php')
     {
-        // Génération de la partie spécifique de la vue
         $content = $this->generateFile($this->file, $datas);
-
-        // rnvs : ici $content est une string dont le contenu est le corps
-        //        de la page web à retourner au client où le contenu du
-        //        tableau $datas a été inséré
-
-        // On définit une variable locale accessible par la vue pour la racine Web
-        // Il s'agit du chemin vers le site sur le serveur Web
-        // Nécessaire pour les URI de type controller/action/id
-        // rnvs : le chemin contenu par $webRoot termine par le caractère '/'
         $webRoot = Configuration::get("webRoot", "/");
-
-        // Génération du gabarit commun utilisant la partie spécifique
         $view = $this->generateFile(
-            'view/Template/template.php',
+            // $template,
+            "view/Template/".$template,
             array(
-                'person' => $this->person,
+                // 'person' => $this->person,
                 'webRoot' => $webRoot,
-                'title' => $this->title,
-                'description' => $this->description,
-                'head' => $this->head,
+                // 'title' => $this->title,
+                // 'description' => $this->description,
+                // 'head' => $this->head,
                 'content' => $content,
-                // 'language' => $this->language,
             )
         );
-
-        // Renvoi de la vue générée au navigateur
-        // rnvs : https://www.php.net/manual/en/function.echo.php
-        // rnvs : envoi de la réponse au client ici
         echo $view;
-
-        // rnvs : ici la réponse a été envoyée au client
-        //        on peut donc retourner à Controller::generateView
-        //        et retourner (dans la majorité des cas) à index.php  
-        //        via (dans la majorité des cas) 
-        //        la méthode de l'action du contrôleur effectif
-        //        appelée par Controller::executeAction 
-        //        appelée par Router::routerRequest
     }
 
     /**
@@ -431,6 +397,14 @@ class View
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
 
+    /**
+     * To get View's Translator
+     * @return Translator View's Translator
+     */
+    public function getTranslator() : Translator
+    {
+        return $this->translator;
+    }
 
 
     /**
