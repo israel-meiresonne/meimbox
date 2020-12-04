@@ -83,16 +83,20 @@ class Page extends ModelFunctionality
     public const SEPARATOR = "|";
 
     /**
-     * Holds access key to get XHR param
+     * Holds access key to get url param
      * @var string
      */
     public const KEY_XHR = "xhr";
     /**
-     * Holds access key to get XHR param
+     * Holds access key to get $_SESSION param
      * @var string
      */
     public const KEY_LAST_LOAD = "last_load";
-    // public const KEY_CURRENT_LOAD = "current_load";
+    /**
+     * Holds access key to get url param
+     * @var string
+     */
+    public const KEY_FROM_ERROR_PAGE = "from_erpg";
 
     /**
      * Holds Page's type

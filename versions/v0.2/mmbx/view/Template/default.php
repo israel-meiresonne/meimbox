@@ -26,7 +26,11 @@ require_once 'model/special/Response.php';
 /**
  * @var Visitor|Client|Administrator
  */
-$person = $person;
+$person = $this->person;
+$title = $this->title;
+$description = $this->description;
+$head = $this->head;
+$header = $this->header;
 $isoLang = (!empty($person)) ? $person->getLanguage()->getIsoLang() :  null;
 /** Navigation */
 $navigation = $person->getNavigation();
@@ -35,13 +39,14 @@ $pageID = $urlPage->getPageID();
 $session = $person->getSession();
 $pageType = $urlPage->getPageType($session);
 /** Header */
-$headerFile = 'view/Template/files/headers/' . $this->header;
+$headerFile = 'view/Template/files/headers/' . $header;
 $company = Configuration::getFromJson(Configuration::JSON_KEY_COMPANY);
 $companyMap = new Map($company);
 $headerDatas = [
     "person" => $person,
     "companyMap" => $companyMap
 ];
+$headerContent = $this->generateFile($headerFile, $headerDatas);
 ?>
 <!DOCTYPE html>
 <html lang="<?= $isoLang ?>">
@@ -51,10 +56,9 @@ $headerDatas = [
     <base href="<?= $webRoot ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="<?= $description ?>"> <!-- <meta name="description" content=""> -->
+    <meta name="description" content="<?= $description ?>">
     <title><?= $title ?></title>
 
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -268,7 +272,7 @@ $headerDatas = [
         }
     </script>
 
-    <link rel="stylesheet" href="<?= self::$PATH_CSS . 'root.css' ?>">
+    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>root.css">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>header.css">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
     <script src="<?= self::$PATH_JS ?>evt.js"></script>
@@ -279,7 +283,7 @@ $headerDatas = [
 </head>
 
 <body>
-    <?= $this->generateFile($headerFile, $headerDatas) ?>
+    <?= $headerContent ?>
     <div class="template-content">
         <?= $this->generateFbPixel() ?>
         <?= $content ?>

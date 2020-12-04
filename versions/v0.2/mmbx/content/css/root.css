@@ -20,6 +20,7 @@
     --color-yellow-07: rgba(255, 211, 0, 0.7);
     --color-blue: #4DA3F5;
     --color-blue-wave: #458ED3;
+    --color-blue-smooth: #AFD5F8;
     --color-blue-05: rgba(175, 213, 248, .5);
     --color-pink: #F0C7CB;
     /*———————————————————————————————— COLOR UP —————————————————————————————*/
@@ -33,6 +34,7 @@
     --big-font-size: 2em;
     --font-size-1_7em: 1.7em;
     --font-size-1_6em: 1.6em;
+    --font-size-1_4em: 1.4em;
     --middle-font-size: 1.2em;
     --little-font-size: .8em;
     --micro-font-size: .6em;
@@ -55,6 +57,7 @@
     --border-float: var(--color-shadow) 1px solid;
     --border-float-radius: 5px;
     --border-radius-10: 10px;
+    --big-border-radius-15: 15px;
     --big-border-radius: 20px;
     /* --border-radius-35: 35px; */
     --border-radius-selcted-element: 10px;

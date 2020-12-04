@@ -47,10 +47,6 @@ class Translator extends ModelFunctionality
      */
     public function __construct(Language $language = null)
     {
-        // if(isset(self::$nbInstance)){
-        //     throw new Exception("Traduction class can be instanciated one time only!");
-        // }
-        // self::$nbInstance++;
         $this->language = isset($language) ? $language : new Language();
         (!isset(self::$stationMap)) ? $this->setStationMap() : null;
         (!isset(self::$translateMap)) ? $this->setTranslateMap() : null;
@@ -139,5 +135,14 @@ class Translator extends ModelFunctionality
         return (key_exists($text, self::$translateMap) && (!empty(self::$translateMap[$text][$isoLang])))
             ? self::$translateMap[$text][$isoLang]
             : $text;
+    }
+
+    /**
+     * To get Translator's Language
+     * @return Language
+     */
+    public function getLanguage() : Language
+    {
+        return $this->language;
     }
 }
