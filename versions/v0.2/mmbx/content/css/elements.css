@@ -1744,6 +1744,33 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     box-shadow: none;
 }
 
+.summary-detail-button-notifs {
+    max-width: 500px;
+    margin: 15px auto;
+}
+
+.summary-detail-button-notif .img-text-img {
+    height: 20px;
+    margin: auto 5px auto 0;
+    padding: 3px;
+    /* background: var(--color-orange-clear); */
+    background: var(--color-shadow-08);
+    border-radius: 50%;
+}
+
+.summary-detail-button-notif .img-text-img img {
+    width: auto;
+    height: 100%;
+}
+
+.summary-detail-button-notif .img-text-span {
+    font-size: var(--little-font-size);
+    color: var(--color-text-08);
+}
+.summary-detail-button-notif .img-text-span::first-letter{
+    text-transform: capitalize;
+}
+
 .summary-detail-safe_info-div {
     margin: 50px 0 40px;
     color: var(--color-text);
@@ -3255,10 +3282,12 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-measure-block .checkbox-label::first-letter {
     text-transform: capitalize;
 }
+
 .product-datas-block .product-data-line, .product-size-dropdown-container {
     position: relative;
     margin-bottom: 40px;
 }
+
 .product-size-customize-container button, .product-size-dropdown-container button {
     box-shadow: none;
 }
