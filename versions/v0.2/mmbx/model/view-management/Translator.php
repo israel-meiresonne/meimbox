@@ -91,7 +91,7 @@ class Translator extends ModelFunctionality
      * @param string $station the id of the station where to get the translation
      * @param Map $replacements used to replace {key} in translation
      * + key => replacement
-     * + NOTE: the replacement have to be Understandable in all logage like number or brand name
+     * + NOTE: the replacement have to be Understandable in all language like number or brand name
      * @return string the translation at the station and into the language given in param
      */
     public function translateStation($station, Map $replacements = null)

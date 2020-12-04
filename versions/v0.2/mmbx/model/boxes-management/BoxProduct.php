@@ -549,7 +549,7 @@ class BoxProduct extends Product
         $sizesStock = $product->getSizeStock();
         $supported = Size::getSupportedSizes(array_keys($sizesStock)[0]);
 
-        $lockLimit = parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        $lockLimit = parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period); // replace with Order::getLockTime()
         $endTime = time() - $lockLimit;
         $endDate = date('Y-m-d H:i:s', $endTime);
         $sql = "SELECT * FROM `StockLocks`WHERE `prodId`='$prodID' AND `setDate`>='$endDate'";
@@ -949,7 +949,7 @@ class BoxProduct extends Product
      */
     private static function insertLocks(Response $response, $userID, $prodID, array $stockToLocks)
     {
-        $lockLimit = parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        $lockLimit = parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period); // replace with Order::getLockTime()
         $setDate = parent::getDateTime();
         $nbLine = count($stockToLocks);
         $bracket = "(?,?,?,?,?,?)"; // regex \[value-[0-9]*\]

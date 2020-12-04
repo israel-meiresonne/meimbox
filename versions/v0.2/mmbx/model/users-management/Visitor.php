@@ -570,16 +570,6 @@ class Visitor extends ModelFunctionality
         return $cookies->get($cookieID);
     }
 
-    // /**
-    //  * To check if Visitor holds a cookie in his session with the given id
-    //  * @param string $cookieID id of the cookie to look for
-    //  * @return boolean true if Visitor holds a cookie in his session else false
-    //  */
-    // private function existCookie($cookieID)
-    // {
-    //     return (!empty(Cookie::getCookieValue($cookieID)));
-    // }
-
     /**
      * Check if Visitor has a cookie on his driver
      * @param string $cookieID cookie to check
@@ -587,27 +577,8 @@ class Visitor extends ModelFunctionality
      */
     public function hasCookie($cookieID)
     {
-        // $cookieValue = Cookie::getCookieValue($cookieID);
-        // $hasCookie = isset($cookieValue);
         $cookie = $this->getCookie($cookieID);
         $hasCookie = isset($cookie);
-        // switch ($cookieID) {
-        //     case Cookie::COOKIE_CLT:
-        //         // $hasCookie = $this->existCookie(Cookie::COOKIE_CLT);
-        //         $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_CLT)));
-        //         break;
-        //     case Cookie::COOKIE_ADM:
-        //         // $hasCookie = $this->existCookie(Cookie::COOKIE_ADM);
-        //         $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADM)));
-        //         break;
-        //     case Cookie::COOKIE_ADRS:
-        //         // $hasCookie = $this->existCookie(Cookie::COOKIE_ADRS);
-        //         $hasCookie = (!empty($this->getCookie(Cookie::COOKIE_ADRS)));
-        //         break;
-        //     default:
-        //         throw new Exception("This id of cookie don't exist, cookieID:$cookieID");
-        //         break;
-        // }
         return $hasCookie;
     }
 

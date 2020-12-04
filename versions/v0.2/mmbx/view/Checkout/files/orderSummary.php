@@ -11,6 +11,10 @@
  */
 
 /**
+ * @var Translator */
+$translator = $translator;
+
+/**
  * @var Basket */
 $basket = $basket;
 /**
@@ -19,6 +23,9 @@ $country = $country;
 /**
  * @var Address */
 $address = (!empty($address)) ? $address : null;
+
+$lockTime = Order::getLockTime()/60;
+$lockTime = number_format($lockTime, 0, "", "");
 ?>
 
 <div class="summary-wrap">
@@ -171,6 +178,16 @@ $address = (!empty($address)) ? $address : null;
                             <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
                             <div id="<?= $lid ?>" class="btn-loading loading-img-wrap">
                                 <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
+                            </div>
+                        </div>
+                        <div class="summary-detail-button-notifs">
+                            <div class="summary-detail-button-notif">
+                                <div class="img-text-wrap">
+                                    <div class="img-text-img">
+                                        <img src="<?= self::$DIR_STATIC_FILES ?>padlock-outline-96.png">
+                                    </div>
+                                    <p class="img-text-span"><?= $translator->translateStation("US104", (new Map(["time" => $lockTime]))) ?></p>
+                                </div>
                             </div>
                         </div>
                     <?php

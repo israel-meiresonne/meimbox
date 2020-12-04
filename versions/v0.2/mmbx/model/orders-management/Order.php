@@ -53,10 +53,29 @@ class Order extends ModelFunctionality
     private $setDate;
 
     /**
+     * Holds the time during the stock will be reserved for Client's checkout
+     * + Note: time is in second
+     * @var int
+     */
+    private static $LOCK_TIME;
+
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        self::setConstants();
+    }
+
+    /**
+     * To set constants
+     */
+    private static function setConstants()
+    {
+        if(!isset(self::$LOCK_TIME)){
+            self::$LOCK_TIME = (int) parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        }
     }
 
     /**
@@ -150,6 +169,16 @@ class Order extends ModelFunctionality
     public function getDateInSec()
     {
         return strtotime($this->setDate);
+    }
+
+    /**
+     * To get the time during the product's stock will be lockeed
+     *  @return int time in second
+     */
+    public static function getLockTime()
+    {
+        (!isset(self::$LOCK_TIME)) ? self::setConstants() : null;
+        return self::$LOCK_TIME;
     }
 
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
