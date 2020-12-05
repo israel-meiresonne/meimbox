@@ -54,12 +54,10 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
 <head>
     <meta charset="UTF-8">
     <base href="<?= $webRoot ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="<?= $description ?>">
     <title><?= $title ?></title>
-
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta name="description" content="<?= $description ?>">
+    <?= self::META_DEVICE ?>
+    <?= self::STYLE_W3SCHOOL ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

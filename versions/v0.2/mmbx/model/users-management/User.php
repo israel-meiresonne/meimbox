@@ -435,6 +435,9 @@ abstract class User extends Visitor
                         $stripeAPI = $this->getStripeAPI();
                         $stripeAPI->initializeNewCheckout($payMethod, $this);
                         $id = $stripeAPI->getCheckoutSessionId();
+                        // $session = $this->getSession();
+                        // $session->set(Session::KEY_CHECKOUT_LAUNCH, time());
+                        $this->generateCookie(Cookie::COOKIE_CHKT_LNCHD, $this->generateDateCode(25));
                     } catch (\Throwable $th) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);
                         $response->addError($th->__toString(), MyError::ADMIN_ERROR);

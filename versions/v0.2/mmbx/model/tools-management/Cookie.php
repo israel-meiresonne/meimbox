@@ -85,6 +85,7 @@ class Cookie extends ModelFunctionality
     public const COOKIE_ADM = "ADM";
     public const COOKIE_ADRS = "ADRS";
     public const COOKIE_LCK = "LCK";
+    public const COOKIE_CHKT_LNCHD = "CHKT_LNCHD";
 
     /**
      * Holds cookies state

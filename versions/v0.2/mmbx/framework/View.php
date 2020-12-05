@@ -191,11 +191,14 @@ class View
     protected const DIRECTION_BOTTOM = "bottom";
 
     /**
-     * Holds font-family files
+     * Holds datas for head
      * @var string
      */
     protected const FONT_FAM_SPARTAN = '<link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">';
     protected const FONT_FAM_PT = '<link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">';
+    protected const STYLE_W3SCHOOL = '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
+    protected const META_DEVICE = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta http-equiv="X-UA-Compatible" content="ie=edge">';
+    protected const META_BOT_NO_INDEX = '<meta name="robots" content="noindex"><meta name="googlebot" content="noindex">';
 
     /**
      * Constructor
@@ -267,14 +270,9 @@ class View
         $content = $this->generateFile($this->file, $datas);
         $webRoot = Configuration::get("webRoot", "/");
         $view = $this->generateFile(
-            // $template,
             "view/Template/".$template,
             array(
-                // 'person' => $this->person,
                 'webRoot' => $webRoot,
-                // 'title' => $this->title,
-                // 'description' => $this->description,
-                // 'head' => $this->head,
                 'content' => $content,
             )
         );

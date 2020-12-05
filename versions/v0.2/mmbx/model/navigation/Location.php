@@ -187,11 +187,11 @@ class Location extends ModelFunctionality
      */
     public const SEPARATOR = "|";
 
-    /**
-     * Holds access key used to know if Visitor is located
-     * @var string
-     */
-    public const KEY_LOCATED = "located";
+    // /**
+    //  * Holds access key used to know if Visitor is located
+    //  * @var string
+    //  */
+    // public const KEY_LOCATED = "located";
 
     /**
      * Constructor

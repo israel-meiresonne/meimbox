@@ -16,13 +16,11 @@ $head = $this->head;
 
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="noindex">
-    <meta name="googlebot" content="noindex">
     <base href="<?= $webRoot ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $title ?></title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <?= self::META_BOT_NO_INDEX ?>
+    <?= self::META_DEVICE ?>
+    <?= self::STYLE_W3SCHOOL ?>
     <?= self::FONT_FAM_SPARTAN ?>
     <?= $head ?>
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>root.css">

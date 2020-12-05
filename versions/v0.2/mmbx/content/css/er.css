@@ -73,9 +73,9 @@ h1, h2, h3, h4, h5, h6 {
         border-radius: var(--border-float-radius);
     }
     .msg_content-head-title{
-        font-size: var(--big-font-size);
+        font-size: var(--font-size-1_4em);
     }
     .btn_content-btn{
-        font-size: var(--font-size-1_4em);
+        font-size: var(--middle-font-size);
     }
 }

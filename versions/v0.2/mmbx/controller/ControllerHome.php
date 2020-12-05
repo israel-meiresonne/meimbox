@@ -260,10 +260,15 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
+        $person->generateCookie(Cookie::COOKIE_CHKT_LNCHD, time());
+        // $session = $person->getSession();
+        // $session->unset(Session::KEY_CHECKOUT_LAUNCH);
+        // $session->set(Session::KEY_CHECKOUT_LAUNCH, time());
         $d = 1606920365;
         var_dump(date(ModelFunctionality::DATE_FORMAT, $d));
         $d = 1606921657905;
         var_dump(date("Y-m-d H:i:s.u", $d));
+        var_dump($_COOKIE);
     }
 
     public function test_xhr()
@@ -383,8 +388,8 @@ class ControllerHome extends ControllerSecure
         var_dump($page->insertPage($response, $userID));
         var_dump($response->getAttributs());
         // $page = new Page("3330090", "2020-11-25 20:40:30");
-        // $session->unset(Page::KEY_LAST_LOAD);
-        // $session->set(Page::KEY_LAST_LOAD, $page->getPageID($userID));
+        // $session->unset(Session::KEY_LAST_LOAD);
+        // $session->set(Session::KEY_LAST_LOAD, $page->getPageID($userID));
         // $session->destroy();
         // $page->updatePage($response, $userID);
         // $pageID = $page->generatePageID($userID);
