@@ -56,11 +56,12 @@
             isS = setTimeout(() => {
                 var pH = (parseInt($("body").height()) + $("body").offset().top);
                 var ofs = window.pageYOffset;
-                var mxOfs = window.pageYOffset + window.innerHeight;
+                var mxOfs = ofs + window.innerHeight;
                 if (ofs <= 0) {
                     s = 0;
-                } else if (mxOfs < pH) {
-                    s = window.pageYOffset + (window.innerHeight / 2);
+                    /*} else if (mxOfs < pH) {
+                        // s = window.pageYOffset + (window.innerHeight / 2);
+                        s = mxOfs;*/
                 } else {
                     s = mxOfs
                 }

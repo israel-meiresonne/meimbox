@@ -8,7 +8,7 @@ class ControllerDashboard extends ControllerSecure
      * Holds action function
      */
     private const ACTION_SHOPBAG = "shopbag";
-
+    public const ACTION_ORDERS = "orders";
 
     /**
      * Holds link (href)
@@ -41,8 +41,11 @@ class ControllerDashboard extends ControllerSecure
      */
     public function orders()
     {
-        var_dump("The layout for the orders page");
-        var_dump($_GET);
+        $person = $this->getPerson();
+        $datas = [
+            "btnLink" => self::extractController(ControllerGrid::class)
+        ];
+        $this->generateView($datas, $person, self::ACTION_ORDERS);
     }
 
     /**

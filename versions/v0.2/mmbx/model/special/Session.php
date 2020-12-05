@@ -10,12 +10,32 @@ class Session
      * Holds if session has been started
      */
     private static $isSet;
+
+    /**
+     * Holds access key to get the last page loaded
+     * @var string
+     */
+    public const KEY_LAST_LOAD = "last_load";
+    /**
+     * Holds access key used to know if Visitor is located with 
+     * the Location class
+     * @var string
+     */
+    public const KEY_LOCATED = "located";
+    // /**
+    //  * Holds access key used to know if Visitor is located with 
+    //  * the Location class
+    //  * @var string
+    //  */
+    // public const KEY_CHECKOUT_LAUNCH = "check_lauched";
+
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        if(!isset(self::$isSet)){
+        if (!isset(self::$isSet)) {
             session_start();
             self::$isSet = true;
         }
@@ -26,7 +46,7 @@ class Session
      */
     public function destroy()
     {
-        session_unset(); 
+        session_unset();
         session_destroy();
     }
 

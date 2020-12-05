@@ -123,7 +123,7 @@ abstract class Controller
      * @param string $action Action associée à la vue (permet à un contrôleur de générer une vue pour une action spécifique)
      */
     // protected function generateView($datasView = array(), Language $language, $action = null) {
-    protected function generateView($datasView = array(), Visitor $person, $action = null)
+    protected function generateView(array $datasView = array(), Visitor $person, $action = null)
     {
         // Utilisation de l'action actuelle par défaut
         // $actionView = $this->action;  // rnvs : comm

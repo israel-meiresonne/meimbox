@@ -168,31 +168,6 @@ class Navigation extends ModelFunctionality
         return self::$urlPage;
     }
 
-    // /**
-    //  * To get the last Pages visited by the Visitor
-    //  * @return Page last Pages visited by the Visitor
-    //  */
-    // public function getLastPage()
-    // {
-    //     // (!isset(self::$lastPage)) ? $this->setLastPage() : null;
-    //     return self::$lastPage;
-    // }
-
-    // /**
-    //  * To convert the Page to Xhr if the url request is a xhr request
-    //  * @return Xhr          if the url request is a xhr request
-    //  * @throws Exception    if the url request is not a xhr request
-    //  */
-    // public function getXhr()
-    // {
-    //     $urlPage = $this->getUrlPage();
-    //     $url = $urlPage->getUrl();
-    //     if(!$urlPage->isXHR()){
-    //         throw new Exception("The current url '$url' request is not a xhr request");
-    //     }
-    //     return Xhr::PageToXhr($urlPage);
-    // }
-
     /**
      * To get current Device
      * @return Device current Device
@@ -252,13 +227,13 @@ class Navigation extends ModelFunctionality
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                     $currentPageID = $urlPage->getPageID();
-                    $session->set(Page::KEY_LAST_LOAD, $currentPageID);
+                    $session->set(Session::KEY_LAST_LOAD, $currentPageID);
                 }
                 break;
             case Page::TYPE_NAVIGATOR:
                 /** Update Time on last Page */
                 try {
-                    $pageID = $session->get(Page::KEY_LAST_LOAD);
+                    $pageID = $session->get(Session::KEY_LAST_LOAD);
                     $lastPage = Page::retreivePage($pageID);
                     $lastPage->updatePage($response);
                 } catch (\Throwable $th) {
@@ -268,14 +243,14 @@ class Navigation extends ModelFunctionality
                 $urlPage->insertPage($response, $userID);
                 /** Update last Page in session */
                 $currentPageID = $urlPage->getPageID();
-                $session->set(Page::KEY_LAST_LOAD, $currentPageID);
+                $session->set(Session::KEY_LAST_LOAD, $currentPageID);
                 break;
             case Page::TYPE_NEWCOMER:
                 /** insert the current url */
                 $urlPage->insertPage($response, $userID);
                 /** Update last Page in session */
                 $currentPageID = $urlPage->getPageID();
-                $session->set(Page::KEY_LAST_LOAD, $currentPageID);
+                $session->set(Session::KEY_LAST_LOAD, $currentPageID);
                 break;
             default:
                 throw new Exception("Unknow Page type '$pageType'");
@@ -312,14 +287,14 @@ class Navigation extends ModelFunctionality
     public function locate()
     {
         $session = $this->getSession();
-        $locationID = $session->get(Location::KEY_LOCATED);
+        $locationID = $session->get(Session::KEY_LOCATED);
         $urlPage = $this->getUrlPage();
         if ((!isset($locationID)) && (!$urlPage->isXHR())) {
             $currentLocation = $this->getCurrentLocation();
             $response = $this->getResponse();
             $currentLocation->insertLocation($response);
             $newLocationID = $currentLocation->getLocationID();
-            $session->set(Location::KEY_LOCATED, $newLocationID);
+            $session->set(Session::KEY_LOCATED, $newLocationID);
         }
     }
 

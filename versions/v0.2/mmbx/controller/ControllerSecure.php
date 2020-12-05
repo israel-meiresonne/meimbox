@@ -1,6 +1,8 @@
 <?php
 
 require_once 'controller/ControllerCheckout.php';
+require_once 'controller/ControllerDashboard.php';
+require_once 'controller/ControllerGrid.php';
 require_once 'model/users-management/Visitor.php';
 require_once 'model/users-management/Client.php';
 require_once 'model/users-management/Administrator.php';

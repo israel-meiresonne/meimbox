@@ -8,9 +8,6 @@
  * @param string $btnLink           link to place in the button link
  */
 $this->title = $title;
-/**
- * @var Translator */
-$translator = $this->translator;
 ?>
 
 <div class="main_content">

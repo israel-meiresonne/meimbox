@@ -263,7 +263,7 @@ class Page extends ModelFunctionality
                 $pageID = $this->getParam(self::KEY_XHR);
                 $hasLast = isset($pageID);
             } else {
-                $pageID = $session->get(Page::KEY_LAST_LOAD);
+                $pageID = $session->get(Session::KEY_LAST_LOAD);
                 $hasLast = isset($pageID);
             }
             if ($hasLast && $isXHR) {

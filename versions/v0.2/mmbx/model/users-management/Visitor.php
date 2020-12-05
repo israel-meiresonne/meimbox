@@ -289,7 +289,7 @@ class Visitor extends ModelFunctionality
      * @param string $userID Visitor's id
      * @param boolean $deleteDb set true to delete cookie from db else false or nothing
      */
-    protected function destroyCookie($cookieID, $deleteDb = false)
+    public function destroyCookie($cookieID, $deleteDb = false)
     {
         $userID = $this->getUserID();
         return Cookie::destroyCookie($userID, $cookieID, $deleteDb);
@@ -345,11 +345,6 @@ class Visitor extends ModelFunctionality
         }
     }
 
-    // /**
-    //  * Setter for Visitor's cookies
-    //  * + check if cookie exist in db and $_COOKIE
-    //  * + check if value of the cookie from $_COOKIE match the value in db
-    //  */
     /**
      * Setter for Visitor's cookies
      * + get Visitor's cookies from db

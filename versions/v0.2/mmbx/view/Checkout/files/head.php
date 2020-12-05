@@ -2,7 +2,7 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $datas additional datas
+ * @param string[] $datas additional datas
  */
 if(!empty($additionals)){
     foreach($additionals as $additional){
