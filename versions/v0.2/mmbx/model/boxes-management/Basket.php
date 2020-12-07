@@ -337,6 +337,7 @@ class Basket extends ModelFunctionality
                 $sum += $box->getPrice()->getPrice();
             }
         }
+        $sum = 100; // ❌
         return new Price($sum, $this->getCurrency());
     }
 
@@ -345,11 +346,26 @@ class Basket extends ModelFunctionality
      * @return Price price of item in Basket excluding vat tax
      */
     // public function getHvat()
-    private function getHvat()
+    public function getHvat()
     {
         $vat = $this->getCountry()->getVat();
-        $hvat = $this->getSumProducts()->getPrice() / (1 + $vat);
+        $sumProd = $this->getSumProducts()->getPrice();
+        $discSumProd = $this->getDiscountSumProducts()->getPrice();
+        $total = $sumProd - $discSumProd;
+        $hvat = ($total) / (1 + $vat);
         return new Price($hvat, $this->getCurrency());
+    }
+
+    /**
+     * To get basket's subtotal amount
+     * @return Price basket's subtotal amount
+     */
+    public function getVat()
+    {
+        $vat = $this->getCountry()->getVat();
+        $hvat = $this->getHvat()->getPrice();
+        $vatAmount = $hvat * $vat;
+        return (new Price($vatAmount, $this->getCurrency()));
     }
 
     /**
@@ -376,24 +392,10 @@ class Basket extends ModelFunctionality
      */
     public function getSubTotal()
     {
-        $country = $this->getCountry();
-        $total = $this->getTotal()->getPrice() - $this->getShipping()->getPrice();
-        $vat = $country->getVat();
-        $subtotal = ($total / (1 + $vat));
-        $currency = $this->getCurrency();
-        return (new Price($subtotal, $currency));
-    }
-
-    /**
-     * To get basket's subtotal amount
-     * @return Price basket's subtotal amount
-     */
-    public function getVatAmount()
-    {
-        $hvat = $this->getHvat()->getPrice();
-        $sumProducts = $this->getSumProducts()->getPrice();
-        $vatAmount = $sumProducts - $hvat;
-        return (new Price($vatAmount, $this->getCurrency()));
+        $sumProd = $this->getSumProducts()->getPrice();
+        $sumProdDisc = $this->getDiscountSumProducts()->getPrice();
+        $subtotal = $sumProd - $sumProdDisc;
+        return (new Price($subtotal, $this->getCurrency()));
     }
 
     /**
@@ -410,6 +412,7 @@ class Basket extends ModelFunctionality
             }
         }
         /** INSERT CODE: function to get shipping from BasketProduct */
+        $shipping = 10; // ❌
         return new Price($shipping, $this->getCurrency());
     }
 
@@ -491,8 +494,8 @@ class Basket extends ModelFunctionality
         $minAmount = $discCode->getMinAmount();
         $maxAmount = $discCode->getMaxAmount();
         $reduction = (empty($minAmount) || ($activator >= $minAmount))
-        ? ($support * $discCode->getRate())
-        : 0;
+            ? ($support * $discCode->getRate())
+            : 0;
         $reduction = (isset($maxAmount) && ($reduction > $maxAmount)) ? $maxAmount : $reduction;
         return $reduction;
     }
