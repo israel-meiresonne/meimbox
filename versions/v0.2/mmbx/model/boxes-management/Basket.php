@@ -56,14 +56,16 @@ class Basket extends ModelFunctionality
     /**
      * Liste of discount code of the basket.
      * Use the code as access key like $discountCodes[code => DiscountCode]
-     * @var DiscountCode[] $discountCodes
+     * @var DiscountCode $discountCodes
      */
     protected $discountCodes;
 
     public const KEY_TOTAL = "basket_total";
     public const KEY_SUBTOTAL = "basket_subtotal";
+    public const KEY_SUBTOTAL_DISC = "basket_subtotal_disc";
     public const KEY_VAT = "basket_vat";
     public const KEY_SHIPPING = "basket_shipping";
+    public const KEY_SHIPPING_DISC = "basket_shipping_disc";
     public const KEY_BSKT_QUANTITY = "basket_quantity";
     public const KEY_CART_FILE = "cart_file";
 
@@ -75,27 +77,13 @@ class Basket extends ModelFunctionality
      */
     function __construct($userID, Language $language, Country $country, Currency $currency)
     {
-        // if (empty($userID)) {
-        //     throw new Exception("Param '\$userID' can't be empty");
-        // }
         if (empty($userID) || empty($language) || empty($country) || empty($currency)) {
             throw new Exception("The user's id, the language, the 'country' and the 'currency' can't be empty");
         }
-        // $this->boxes = [];
-        // $this->basketProducts = [];
-        // $this->discountCodes = [];
-
         $this->userID = $userID;
         $this->language = $language;
         $this->country = $country;
         $this->currency = $currency;
-
-        // $sql = "SELECT * FROM `Users` WHERE `userID` = '$userID'";
-        // $tab = $this->select($sql);
-        // if (count($tab) > 0) {
-        // $this->setBoxes($userID, $language, $country, $currency);
-        // $this->setBasketProducts($userID, $language, $country, $currency);
-        // }
     }
 
     /**
@@ -105,7 +93,6 @@ class Basket extends ModelFunctionality
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    // private function setBoxes($userID, Language $language, Country $country, Currency $currency)
     private function setBoxes()
     {
         $this->boxes = [];
@@ -133,7 +120,6 @@ class Basket extends ModelFunctionality
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
      */
-    // private function setBasketProducts($userID, Language $language, Country $country, Currency $currency)
     private function setBasketProducts()
     {
         $this->basketProducts = [];
@@ -164,6 +150,19 @@ class Basket extends ModelFunctionality
     private function setDiscountCodes()
     {
         $this->discountCodes = [];
+        $userID = $this->getUserID();
+        $sql = "SELECT * FROM `Basket-DiscountCodes` WHERE `userId`='$userID';";
+        $tab = parent::select($sql);
+        if (!empty($tab)) {
+            foreach ($tab as $tabLine) {
+                $code = $tabLine["discount_code"];
+                $country = $this->getCountry();
+                $setDate = $tabLine["setDate"];
+                $discCode = new DiscountCode($code, $country, $setDate);
+                // $this->discountCodes->put($discountCode, $code);
+                $this->discountCodes[$code] = $discCode;
+            }
+        }
     }
 
     /**
@@ -309,11 +308,19 @@ class Basket extends ModelFunctionality
         return $this->discountCodes;
     }
 
+    // public function getSortedDiscountCodes()
+    // {
+    //     $discCodes = $this->getDiscountCodes()->getMap();
+    //     if(!empty())
+
+    // }
+
     /**
-     * To get basket's total price
-     * @return Price basket's total price
+     * To get the sum of of BasketProducts and Boxes in Basket
+     * @return Price sum of of prices of BasketProducts and Boxes in Basket
      */
-    public function getTotal()
+    // public function getSumProducts()
+    public function getSumProducts()
     {
         $basketProducts = $this->getBasketProducts();
         $boxes = $this->getBoxes();
@@ -330,14 +337,41 @@ class Basket extends ModelFunctionality
                 $sum += $box->getPrice()->getPrice();
             }
         }
-        $sum += $this->getShipping()->getPrice();
-        $currency = $this->getCurrency();
-        return (new Price($sum, $currency));
-        // return (new Price(1819.41, $currency));
+        return new Price($sum, $this->getCurrency());
     }
 
     /**
-     * To get basket's subtotal amount
+     * To get price of item in Basket excluding vat tax
+     * @return Price price of item in Basket excluding vat tax
+     */
+    // public function getHvat()
+    private function getHvat()
+    {
+        $vat = $this->getCountry()->getVat();
+        $hvat = $this->getSumProducts()->getPrice() / (1 + $vat);
+        return new Price($hvat, $this->getCurrency());
+    }
+
+    /**
+     * To get basket's total price
+     * @return Price basket's total price
+     */
+    public function getTotal()
+    {
+        $sum = 0;
+        $sumProducts = $this->getSumProducts()->getPrice();
+        $reductSumProd = $this->getDiscountSumProducts()->getPrice();
+        $shipping = $this->getShipping()->getPrice();
+        $reductShip = $this->getDiscountShipping()->getPrice();
+        $sum += ($sumProducts - $reductSumProd);
+        $sum += ($shipping - $reductShip);
+        $currency = $this->getCurrency();
+        return (new Price($sum, $currency));
+    }
+
+    /**
+     * To get basket's subtotal amount following the given config
+     * @param $conf to config the subtotal returned
      * @return Price basket's subtotal amount
      */
     public function getSubTotal()
@@ -356,11 +390,10 @@ class Basket extends ModelFunctionality
      */
     public function getVatAmount()
     {
-        $total = $this->getTotal()->getPrice() - $this->getShipping()->getPrice();
-        $subtotal = $this->getSubTotal()->getPrice();
-        $vatAmount = $total - $subtotal;
-        $currency = $this->getCurrency();
-        return (new Price($vatAmount, $currency));
+        $hvat = $this->getHvat()->getPrice();
+        $sumProducts = $this->getSumProducts()->getPrice();
+        $vatAmount = $sumProducts - $hvat;
+        return (new Price($vatAmount, $this->getCurrency()));
     }
 
     /**
@@ -369,10 +402,117 @@ class Basket extends ModelFunctionality
      */
     public function getShipping()
     {
-        $currency = $this->getCurrency();
-        $bag = $this->getMerge();
-        return (!empty($bag)) ? (new Price(7.97, $currency)) : (new Price(0, $currency));
-        // return (new Price(0, $currency));
+        $boxes = $this->getBoxes();
+        $shipping = 0;
+        if (!empty($boxes)) {
+            foreach ($boxes as $box) {
+                $shipping += $box->getShipping()->getPrice();
+            }
+        }
+        /** INSERT CODE: function to get shipping from BasketProduct */
+        return new Price($shipping, $this->getCurrency());
+    }
+
+    /**
+     * To get the amount of the discount for the sum of products in Bakste
+     * @return Price the amount of the discount
+     */
+    public function getDiscountSumProducts()
+    {
+        $discountCodes = $this->getDiscountCodes();
+        $prodReduct = 0;
+        $nb = count($discountCodes);
+        if ($nb > 0) {
+            $sumProducts = $this->getSumProducts()->getPrice();
+            foreach ($discountCodes as $discCode) {
+                $hasDiscount = $this->hasDiscount();
+                $isCumulable = $discCode->isCumulable();
+                $hasMutipleDiscCode = ($nb > 0);
+                if ($discCode->isActive()) {
+                    if ($isCumulable || (!($hasDiscount || $hasMutipleDiscCode))) {
+                        $newSumProd = $sumProducts - $prodReduct;
+                        switch ($discCode->getType()) {
+                            case DiscountCode::TYPE_SUM_PRODS:
+                                $prodReduct += $this->getReduction($discCode, $newSumProd, $newSumProd);
+                                $prodReduct = ($prodReduct > $sumProducts) ? $sumProducts : $prodReduct;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        return new Price($prodReduct, $this->getCurrency());
+    }
+
+    /**
+     * To get the amount of the discount for the shipping
+     * @return Price the amount of the discount for the shipping
+     */
+    public function getDiscountShipping()
+    {
+        $discCodes = $this->getDiscountCodes();
+        $shipReduct = 0;
+        $nb = count($discCodes);
+        if ($nb > 0) {
+            $sumProducts = $this->getSumProducts()->getPrice();
+            $prodReduct = $this->getDiscountSumProducts()->getPrice();
+            $finalSumProducts = $sumProducts - $prodReduct;
+            $shipping = $this->getShipping()->getPrice();
+            foreach ($discCodes as $discCode) {
+                $hasDiscount = $this->hasDiscount();
+                $isCumulable = $discCode->isCumulable();
+                $hasMutipleDiscCode = ($nb > 0);
+                if ($discCode->isActive()) {
+                    if ($isCumulable || (!($hasDiscount || $hasMutipleDiscCode))) {
+                        switch ($discCode->getType()) {
+                            case DiscountCode::TYPE_SHIPPING:
+                                $newShipping = $shipping - $shipReduct;
+                                $shipReduct += $this->getReduction($discCode, $finalSumProducts, $newShipping);
+                                $shipReduct = ($shipReduct > $shipping) ? $shipping : $shipReduct;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        return new Price($shipReduct, $this->getCurrency());
+    }
+
+    /**
+     * To increase the sum of discount
+     * @param DiscountCode  $discCode   the discount to use
+     * @param float         $activator  the amount used to activate the reduction
+     * @param float         $support    value to get reduct from
+     * @return float sum increased of rate of the given total
+     */
+    private function getReduction(DiscountCode $discCode, float $activator, float $support): float
+    {
+        $reduction = 0;
+        $minAmount = $discCode->getMinAmount();
+        $maxAmount = $discCode->getMaxAmount();
+        $reduction = (empty($minAmount) || ($activator >= $minAmount))
+        ? ($support * $discCode->getRate())
+        : 0;
+        $reduction = (isset($maxAmount) && ($reduction > $maxAmount)) ? $maxAmount : $reduction;
+        return $reduction;
+    }
+
+    /**
+     * To check if Basket holds at less one Product or Box with a active discount
+     * @return bool true if there's at less one else false
+     */
+    private function hasDiscount()
+    {
+        $hasDiscount = false;
+        $boxes = $this->getBoxes();
+        foreach ($boxes as $box) {
+            if ($box->getDiscount()->isActive()) {
+                $hasDiscount = true;
+                break;
+            }
+        }
+        /** check also all BasketProducts */
+        return $hasDiscount;
     }
 
     /**
@@ -487,77 +627,6 @@ class Basket extends ModelFunctionality
         }
         return $exist;
     }
-
-    // /**
-    //  * To generate a map of Boxproduct summaring selected size of all product with give id
-    //  * + generate a copy of product for each different Size
-    //  * + each product has his own size and quantity
-    //  * + the quantity of each product copy is the sum of quantity of all product with the same size
-    //  * @return Map of Boxproducts using sequence [prodID-SizeSequence]
-    //  * + Map[sequence] => BoxProduct
-    //  */
-    // public function extractBoxProductWithSameSize()
-    // {
-    //     $sameSizeProducts = new Map();
-    //     $boxes = $this->getBoxes();
-    //     if (!empty($boxes)) {
-    //         foreach ($boxes as $box) {
-    //             $products = $box->getProducts();
-    //             if (!empty($products)) {
-    //                 foreach ($products as $product) {
-    //                     // $realSizeSelected = $product->getRealSelectedSize();
-    //                     $sizeSelected = $product->getSelectedSize();
-    //                     $sequence = $product->generateSequence();
-    //                     // $size = $sizeSelected->getsize();
-    //                     // if(empty($size)){
-    //                     //     throw new Exception("Product's real size can't be empty");
-    //                     // }
-    //                     $sizes = $sameSizeProducts->getKeys();
-    //                     if (!in_array($sequence, $sizes)) {
-    //                         $copyProduct = $product->getCopy();
-    //                         $copySize = $sizeSelected->getCopy();
-    //                         $copyProduct->selecteSize($copySize);
-    //                         $sameSizeProducts->put($copyProduct, $sequence);
-    //                     } else {
-    //                         /**
-    //                          * @var Size*/
-    //                         $copySize = $sameSizeProducts->get($sizes)->getSelectedSize();
-    //                         $quantity = $sizeSelected->getQuantity();
-    //                         $copySize->addQuantity($quantity);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     return $sameSizeProducts;
-    // }
-
-    // /**
-    //  * To extract Boxproduct from all boxes
-    //  * @return Map
-    //  * + Map[prodID][index] => BoxProduct
-    //  */
-    // public function extractBoxProducts()
-    // // private function extractBoxProducts()
-    // {
-    //     $boxProductsMap = new Map();
-    //     $boxes = $this->getBoxes();
-    //     if (!empty($boxes)) {
-    //         foreach ($boxes as $box) {
-    //             $products = $box->getProducts();
-    //             if (!empty($products)) {
-    //                 foreach ($products as $product) {
-    //                     $prodID = $product->getProdID();
-    //                     $prodList = $boxProductsMap->get($prodID);
-    //                     (empty($prodList))
-    //                         ? $boxProductsMap->put([$product], $prodID)
-    //                         : $boxProductsMap->put($product, $prodID, count($prodList));
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     return $boxProductsMap;
-    // }
 
     /**
      * To add new box in basket

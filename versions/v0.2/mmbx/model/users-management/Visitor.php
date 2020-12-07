@@ -148,7 +148,7 @@ class Visitor extends ModelFunctionality
         $navigation->handleRequest();
         $navigation->locate();
         (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
-        $navigation->saveResponseInFile();
+        // $navigation->saveResponseInFile();
     }
 
     /**
@@ -1578,14 +1578,18 @@ class Visitor extends ModelFunctionality
     {
         $basket = $this->getBasket();
         $total = $basket->getTotal()->getFormated();
-        $subtotal = $basket->getSubTotal()->getFormated();
-        $vat = $basket->getVatAmount()->getFormated();
+        $sumProds = $basket->getSumProducts()->getFormated();
+        $reductSumProds = $basket->getDiscountSumProducts();
+
         $quantity = $basket->getQuantity();
         $shipping = $basket->getShipping()->getFormated();
+        $reductShip = $basket->getDiscountShipping();
+        
         $response->addResult(Basket::KEY_TOTAL, $total);
-        $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
-        $response->addResult(Basket::KEY_VAT, $vat);
+        $response->addResult(Basket::KEY_SUBTOTAL, $sumProds);
+        ($reductSumProds->getPrice() > 0) ? $response->addResult(Basket::KEY_SUBTOTAL_DISC, $reductSumProds->getReverse()->getFormated()) : null;
         $response->addResult(Basket::KEY_SHIPPING, $shipping);
+        ($reductShip->getPrice() > 0) ? $response->addResult(Basket::KEY_SHIPPING_DISC, $reductShip->getReverse()->getFormated()) : null;
         $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
     }
 

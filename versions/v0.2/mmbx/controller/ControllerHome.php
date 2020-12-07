@@ -260,15 +260,30 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        $person->generateCookie(Cookie::COOKIE_CHKT_LNCHD, time());
-        // $session = $person->getSession();
-        // $session->unset(Session::KEY_CHECKOUT_LAUNCH);
-        // $session->set(Session::KEY_CHECKOUT_LAUNCH, time());
-        $d = 1606920365;
-        var_dump(date(ModelFunctionality::DATE_FORMAT, $d));
-        $d = 1606921657905;
-        var_dump(date("Y-m-d H:i:s.u", $d));
-        var_dump($_COOKIE);
+        $price = new Shipping(2.4, (new Currency("usd")), 4);
+        var_dump($price);
+        var_dump($price->getReverse());
+        $copy = $price->getCopy();
+        var_dump($copy);
+    }
+
+    public function test_DiscountCode()
+    {
+        header('content-type: application/json');
+        $person = $this->person;
+        $basket = $person->getBasket();
+        // $code = "blackfriday25";
+        // $country = new Country("belgium");
+        // $discCode = new DiscountCode($code, $country);
+        // $total = 100;
+        $discCodes = $basket->getDiscountCodes();
+        // $discount = $basket->getDiscount()->getPrice();
+        // var_dump("discount: $discount");
+        $reduction = $basket->getDiscountShipping()->getPrice();
+        echo "\n";
+        var_dump("final: $reduction");
+        echo "\n";
+        var_dump("discCodes", $discCodes);
     }
 
     public function test_xhr()

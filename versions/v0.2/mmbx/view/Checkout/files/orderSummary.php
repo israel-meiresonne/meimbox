@@ -24,10 +24,17 @@ $country = $country;
  * @var Address */
 $address = (!empty($address)) ? $address : null;
 
-$lockTime = Order::getLockTime()/60;
+$lockTime = Order::getLockTime() / 60;
 $lockTime = number_format($lockTime, 0, "", "");
-?>
 
+/** Prices */
+$shipping = $basket->getShipping()->getFormated();
+$reductShip = $basket->getDiscountShipping();
+$sumProds = $basket->getSumProducts()->getFormated();
+$reductSumProd = $basket->getDiscountSumProducts();
+$finalPice = $basket->getTotal()->getFormated();
+
+?>
 <div class="summary-wrap">
     <div class="summary-detail-block">
         <div class="summary-detail-title-block">
@@ -71,8 +78,7 @@ $lockTime = number_format($lockTime, 0, "", "");
                         <div class="summary-detail-property-shipping-div">
                             <?php
                             switch ($conf):
-                                case self::CONF_SOMMARY_SHOPBAG
-                            ?>
+                                case self::CONF_SOMMARY_SHOPBAG ?>
                                 <div class="summary-detail-property-country">
                                     <?php
                                     $frmId = ModelFunctionality::generateDateCode(25);
@@ -105,10 +111,8 @@ $lockTime = number_format($lockTime, 0, "", "");
                                         <?= $countryDpd ?>
                                     </div>
                                 </div>
-                            <?php
-                                    break;
-                                case self::CONF_SOMMARY_CHECKOUT:
-                            ?>
+                            <?php break;
+                                case self::CONF_SOMMARY_CHECKOUT: ?>
                                 <div id="order_summary_address" class="summary-detail-address">
                                     <?php
                                     $title = "your shipping address:";
@@ -125,40 +129,53 @@ $lockTime = number_format($lockTime, 0, "", "");
                                     echo $this->generateFile('view/elements/cart/address/cartElementAddress.php', $datas);
                                     ?>
                                 </div>
-                        <?php
-                                    break;
+                        <?php break;
                                 default:
                                     break;
-                            endswitch;
-                        ?>
+                            endswitch; ?>
+                        </div>
+                    </li>
+                    <li class="summary-detail-property-li remove-li-default-att">
+                        <div class="data-key_value-opposite-wrap">
+                            <span class="data-key_value-key"><?= $translator->translateStation("US81") ?>: </span>
+                            <span class="data-key_value-value" data-basket="subtotal"><?= $sumProds ?></span>
+                        </div>
+                    </li>
+                    <?php
+                    $style = ($reductSumProd->getPrice() == 0) ? 'style="display: none;"' : null;
+                    $reductSumProdValue = $reductSumProd->getReverse()->getFormated();
+                    $dad = ModelFunctionality::generateDateCode(25);
+                    ?>
+                    <li id="<?= $dad ?>" class="summary-detail-property-li remove-li-default-att" <?= $style ?>>
+                        <div class="data-key_value-opposite-wrap">
+                            <span class="data-key_value-key"><?= $translator->translateStation("US116") ?>: </span>
+                            <span class="data-key_value-value" data-dadx="#<?= $dad ?>" data-basket="prod_discount"><?= $reductSumProdValue ?></span>
+                        </div>
+                    </li>
+                    <li class="summary-detail-property-li remove-li-default-att">
                         <div class="summary-detail-property-shipping-div">
                             <div class="data-key_value-opposite-wrap">
-                                <span class="data-key_value-key">shipping: </span>
-                                <span class="data-key_value-value" data-basket="shipping"><?= $basket->getShipping()->getFormated() ?></span>
+                                <span class="data-key_value-key"><?= $translator->translateStation("US79") ?>: </span>
+                                <span class="data-key_value-value" data-basket="shipping"><?= $shipping ?></span>
                             </div>
                         </div>
-                        </div>
                     </li>
-                    <li class="summary-detail-property-li remove-li-default-att">
+                    <?php
+                    $style = ($reductShip->getPrice() == 0) ? 'style="display: none;"' : null;
+                    $reductShipValue = $reductShip->getReverse()->getFormated();
+                    $dad = ModelFunctionality::generateDateCode(25);
+                    ?>
+                    <li id="<?= $dad ?>" class="summary-detail-property-li remove-li-default-att" <?= $style ?> >
                         <div class="data-key_value-opposite-wrap">
-                            <span class="data-key_value-key">
-                                <span style="text-transform: uppercase;">VAT</span>
-                                <span style="text-transform: lowercase">(<?= $country->getVatDisplayable() ?>): </span>
-                            </span>
-                            <span class="data-key_value-value" data-basket="vat"><?= $basket->getVatAmount()->getFormated(); ?></span>
-                        </div>
-                    </li>
-                    <li class="summary-detail-property-li remove-li-default-att">
-                        <div class="data-key_value-opposite-wrap">
-                            <span class="data-key_value-key">subtotal: </span>
-                            <span class="data-key_value-value" data-basket="subtotal"><?= $basket->getSubTotal()->getFormated(); ?></span>
+                            <span class="data-key_value-key"><?= $translator->translateStation("US115") ?>: </span>
+                            <span class="data-key_value-value" data-dadx="#<?= $dad ?>" data-basket="ship_discount"><?= $reductShipValue ?></span>
                         </div>
                     </li>
                     <hr class="hr-summary">
                     <li class="summary-detail-property-li remove-li-default-att">
                         <div class="data-key_value-opposite-wrap">
-                            <span class="data-key_value-key">total: </span>
-                            <span class="data-key_value-value" data-basket="total"><?= $basket->getTotal()->getFormated(); ?></span>
+                            <span class="data-key_value-key"><?= $translator->translateStation("US82") ?>: </span>
+                            <span class="data-key_value-value" data-basket="total"><?= $finalPice ?></span>
                         </div>
                     </li>
                 </ul>

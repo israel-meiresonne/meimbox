@@ -46,7 +46,7 @@ class Client extends User
         $navigation = $this->getNavigation();
         $navigation->handleRequest();
         $navigation->locate();
-        $navigation->saveResponseInFile();
+        // $navigation->saveResponseInFile();
         // (!isset($VIS_VAL)) ? $navigation->detectDevice() : null;
     }
 

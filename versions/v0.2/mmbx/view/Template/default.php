@@ -174,8 +174,10 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const KEY_CART_FILE = "<?= Basket::KEY_CART_FILE ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
+        const KEY_SUB_DISC = "<?= Basket::KEY_SUBTOTAL_DISC ?>";
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
         const KEY_SHIPPING = "<?= Basket::KEY_SHIPPING ?>";
+        const KEY_SHIP_DISC = "<?= Basket::KEY_SHIPPING_DISC ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
 
 
