@@ -1382,6 +1382,17 @@ abstract class ModelFunctionality extends Model
     }
 
     /**
+     * Convert value to stable float value
+     * @param mixed $value      value to convert
+     * @param int $precision    number of decimal
+     * @return float value converted to stable float value
+     */
+    public static function toFloat($value, int $precision = 5)
+    {
+        return round(((float)$value), $precision);
+    }
+
+    /**
      * Encrypt a string
      * @param string $str string to encrypt
      * @return string string encrypted
@@ -1428,6 +1439,7 @@ abstract class ModelFunctionality extends Model
         }
         return $code;
     }
+
     /**
      * Decrypt a string encrypted with encryptString()
      * @param string $code string to encrypt

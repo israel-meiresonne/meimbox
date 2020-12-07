@@ -1,59 +1,94 @@
 <?php
+// require_once 'boxes-management/DiscountCode.php';
 
-class Discount
+class Discount extends ModelFunctionality
 {
     /**
-     * Value of the discount between 0 and 1 ([0,1])
-     * @var double
+     * Rate of the discount between 0 and 1 ([0,1])
+     * @var float
      */
-    private $value;
+    protected $rate;
 
     /**
      * Date of the begin of the discount into format YYYY-MM-DD HH:MM:SS
      * @var string
      */
-    private $beginDate;
+    protected $beginDate;
 
     /**
      * Date of the end of the discount into format YYYY-MM-DD HH:MM:SS
      * @var string
      */
-    private $endDate;
+    protected $endDate;
 
-    public function __construct($value, $beginDate, $endDate)
+    public function __construct($rate, $beginDate, $endDate)
     {
-        $this->value = $value;
+        $this->rate = $rate;
         $this->beginDate = $beginDate;
         $this->endDate = $endDate;
     }
 
     /**
-     * @return string the iso code 2 of the country of the price
+     * To get Discount's discount rate
+     * @return string Discount's discount rate
      */
-    public function getIsoCountry()
+    public function getRate()
     {
-        return $this->country->getIsoCountry();
+        return $this->rate;
     }
 
     /**
-     * To get a protected copy of a Discount instance
-     * @return Discount a protected copy of the Discount instance
+     * To get Discount's begin date of availability
+     * @return string Discount's begin date of availability
      */
-    // public function getCopy()
-    // {
-    //     $copy = new Discount();
-    //     $copy->value = $this->value;
-    //     $copy->beginDate = $this->beginDate;
-    //     $copy->endDate = $this->endDate;
-    //     $copy->country = (!empty($this->country)) ? $this->country->getCopy() : null;
-    //     return $copy;
-    // }
-
-    public function __toString()
+    protected function getBeginDate()
     {
-        Helper::printLabelValue("value", $this->value);
-        Helper::printLabelValue("beginDate", $this->beginDate);
-        Helper::printLabelValue("endDate", $this->endDate);
-        $this->country->__toString();
+        return $this->beginDate;
+    }
+
+    /**
+     * To get Discount's end date of availability
+     * @return string Discount's end date of availability
+     */
+    protected function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * To check if the discount code is available for usage
+     * + check if current date is between the begin and end date of the DiscountCodedate
+     * + check if number of use is over zero
+     */
+    public function isActive()
+    {
+        // $nbUse = $this->getNbUse();
+        // $stillUsage = (is_null($nbUse) || ($nbUse > 0));
+        // return ($stillUsage && $this->isBetween());
+        return false;
+    }
+
+    /**
+     * To get if time if between the begin and the end avalability date of the DiscountCode
+     * @param int|null $time the time to compare
+     *                  + if not given the current time will be used
+     * @return bool true if the time if between else false
+     */
+    protected function isBetween(int $time = null)
+    {
+        $isBetween = true;
+        $time = (isset($time)) ? $time : time();
+        $beginDate = $this->getBeginDate();
+        $endDate = $this->getEndDate();
+        $beginUnix = strtotime($beginDate);
+        $endUnix = strtotime($endDate);
+        if (isset($beginDate) && isset($endDate)) {
+            $isBetween = (($beginUnix <= $time) && ($time < $endUnix));
+        } else if (isset($beginDate)) {
+            $isBetween = ($beginUnix <= $time);
+        } else if (isset($endDate)) {
+            $isBetween = ($time < $endUnix);
+        }
+        return $isBetween;
     }
 }

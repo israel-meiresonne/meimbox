@@ -1,37 +1,33 @@
 <?php
+require_once 'model/boxes-management/Discount.php';
 
-class DiscountCode
+class DiscountCode extends Discount
 {
     /**
-     * Code of the discount
+     * Holds the  discount code
      * @var string
      */
-    private $discountCode;
+    private $code;
 
     /**
-     * Date and hour of the creation of the discount code into format YYYY-MM-DD HH:MM:SS
+     * Holds indication of how the discount have to be treated
      * @var string
      */
-    private $setDate;
+    private $type;
 
     /**
-     * Indicate how the discount have to be treated
-     * @var string
-     */
-    private $discountType;
-
-    /**
-     * Holds the value of the discount.
-     * The value is between 0 and 1 ([0,1])
-     * @var double
-     */
-    private $value;
-
-    /**
-     * Holds the minimal subtotal of the basket for the code work
-     * @var double
+     * Holds the minimal amount that the total amount have to  be tto be able 
+     * to use the DiscountCode
+     * @var float
      */
     private $minAmount;
+
+    /**
+     * Holds the maximum amount that can be deducted from a total amount
+     * + Note: combine this attribut with a rate of 1 to make a discount of a certain amount
+     * @var float
+     */
+    private $maxAmount;
 
     /**
      * Holds the limise of use of the code in an order before the code become inactive.
@@ -42,189 +38,106 @@ class DiscountCode
 
     /**
      * Indicate if an code can be used with other code
-     * @var boolean
+     * @var bool
      */
-    private $isCombinable;
+    private $isCumulable;
 
     /**
-     * List of available date for each country.
-     * Use country as access key like $dates = [iso_country => ["beginDate"=>string, "endiDate"=>string]]
-     * @var string[]
+     * Holds the date of when the code have been added in Basket
+     * @var string
      */
-    private $dates;
+    private $setDate;
+
+    public const TYPE_SUM_PRODS = "on_sum_prods";
+    public const TYPE_SHIPPING = "on_shipping";
 
     /**
-     * Liste of country where the code is available.
-     * This code can work in a country witch is not inside. 
-     * @var Country[] $countries like $countries = [iso_country => Country]
+     * Constructor
+     * @param string    $userID     Visitor's id
+     * @param string    $disCode    the discount code to retrieve from database
+     * @param string    $setDate    add date of the discount countt in Visitor's Basket
      */
-    private $countries;
-
-
-    function __construct()
+    public function __construct(string $code, Country $country, $setDate = null)
     {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-            case 2:
-                self::__construct2($argv[0], $argv[1]);
-                break;
+        $countryName = $country->getCountryName();
+        $sql = "SELECT *
+                FROM `DiscountCodes` d
+                JOIN `DiscountCodes-Countries` dc ON d.`discountCode`=dc.`discount_code`
+                WHERE d.`discountCode`='$code' AND dc.`country_`='$countryName'";
+        $tab = parent::select($sql);
+        if (empty($tab)) {
+            throw new Exception("This discount code '$code' don't exist for this country '$countryName'");
         }
-    }
-
-    private function __construct0()
-    {
-    }
-
-    private function __construct2($code, $dbMap)
-    {
-        $discount = $dbMap["discountCodeMap"][$code];
-        $this->discountCode = $code;
-        $this->setDate = $discount["setDate"];
-        $this->discountType = $discount["discount_type"];
-        $this->value = $discount["value"];
-        $this->minAmount = $discount["minAmount"];
-        $this->nbUse = $discount["nbUse"];
-        $this->isCombinable = $discount["isCombinable"];
-        self::initCountriesDates($discount["availableCountries"], $dbMap);
-    }
-
-    private function initCountriesDates($availableCountries, $dbMap)
-    {
-        foreach ($availableCountries as $countryName => $beginEndDate) {
-            $country = new Country($countryName, $dbMap);
-            $iso_country = $country->getIsoCountry();
-            $this->countries[$iso_country] = $country;
-            $this->dates[$iso_country] = $beginEndDate;  // ["beginDate"=>string, "endiDate"=>string]]
-        }
+        $tabLine = $tab[0];
+        $this->code = $tabLine["discountCode"];
+        $this->type = $tabLine["discount_type"];
+        $this->rate = (float) $tabLine["rate"];
+        $maxAmount = $tabLine["maxAmount"];
+        $this->maxAmount =  (isset($maxAmount)) ? (float) $maxAmount : null;
+        $this->minAmount = (float) $tabLine["minAmount"];
+        $nbUse = $tabLine["nbUse"];
+        $this->nbUse = (isset($nbUse)) ? (int) $nbUse : null;
+        $this->isCumulable = (bool) $tabLine["isCumulable"];
+        $this->beginDate = $tabLine["beginDate"];
+        $this->endDate = $tabLine["endDate"];
+        $this->setDate = (!empty($setDate)) ? $setDate : $this->getDateTime();
     }
 
     /**
-     * Change the value of the attribute $discountCode with the value passed in param
-     * @param string $discountCode
+     * To get DiscountCode's type
+     * @return string 
      */
-    private function setDiscountCode($discountCode)
+    public function getType()
     {
-        $this->discountCode = $discountCode;
+        return $this->type;
     }
 
     /**
-     * Change the value of the attribute $setDate with the value passed in param
-     * @param string $setDate
+     * To get DiscountCode's max amount of availability
+     * @return float DiscountCode's max amount of availability
      */
-    private function setSetDate($setDate)
+    public function getMaxAmount()
     {
-        $this->setDate = $setDate;
+        return $this->maxAmount;
     }
 
     /**
-     * Change the value of the attribute $discountType with the value passed in param
-     * @param string $discountType
+     * To get DiscountCode's min amount of availability
+     * @return float DiscountCode's min amount of availability
      */
-    private function setDiscountType($discountType)
+    public function getMinAmount()
     {
-        $this->discountType = $discountType;
+        return $this->minAmount;
     }
 
     /**
-     * Change the value of the attribute $value with the value passed in param
-     * @param double $value
+     * To get DiscountCode's number of use available
+     * @return int DiscountCode's number of use available
      */
-    private function setValue($value)
+    private function getNbUse()
     {
-        $this->value = $value;
+        return $this->nbUse;
     }
 
     /**
-     * Change the value of the attribute $minAmount with the value passed in param
-     * @param double $minAmount
+     * To get if the discount code is cummulable with other discount
+     * + other discount include Discount on Product and DiscountCode on Basket
+     * @return bool true if the discount code is cumulable else false
      */
-    private function setMinAmount($minAmount)
+    public function isCumulable()
     {
-        $this->minAmount = $minAmount;
+        return $this->isCumulable;
     }
 
     /**
-     * Change the value of the attribute $nbUse with the value passed in param
-     * @param int $nbUse
+     * To check if the discount code is available for usage
+     * + check if current date is between the begin and end date of the DiscountCodedate
+     * + check if number of use is over zero
      */
-    private function setNbUse($nbUse)
+    public function isActive()
     {
-        $this->nbUse = $nbUse;
-    }
-
-    /**
-     * Change the value of the attribute $isCombinable with the value passed in param
-     * @param boolean $isCombinable
-     */
-    private function setIsCombinable($isCombinable)
-    {
-        $this->isCombinable = $isCombinable;
-    }
-
-    /**
-     * Change the value of the attribute $dates with the value passed in param
-     * @param string[] $dates like $dates = [iso_country => ["beginDate"=>string, "endiDate"=>string]]
-     */
-    private function setDates($dates)
-    {
-        $this->dates = $dates;
-    }
-
-    /**
-     * Change the value of the attribute $countries with the value passed in param
-     * @param  Country[] $countries like $countries = [iso_country => Country]
-     */
-    private function setCountries($countries)
-    {
-        $this->countries = $countries;
-    }
-
-    // /**
-    //  * @return BasketProduct[] a protected copy of the $basketProduct attribute
-    //  */
-    // public function getCopyCountries()
-    // {
-    //     $copy = [];
-    //     foreach ($this->countries as $iso_country => $country) {
-    //         // $copy[$iso_country] = $country->getCopy();
-    //         $copy[$iso_country] = $country;
-    //     }
-    //     return $copy;
-    // }
-
-
-    // /**
-    //  * To get a protected copy of a DiscountCode instance
-    //  * @return DiscountCode a protected copy of the DiscountCode instance
-    //  */
-    // public function getCopy()
-    // {
-    //     $copy = new DiscountCode();
-    //     $copy->discountCode = $this->discountCode;
-    //     $copy->setDate = $this->setDate;
-    //     $copy->discountType = $this->discountType;
-    //     $copy->value = $this->value;
-    //     $copy->minAmount = $this->minAmount;
-    //     $copy->nbUse = $this->nbUse;
-    //     $copy->isCombinable = $this->isCombinable;
-    //     $copy->dates = $this->dates;
-    //     $copy->countries = $this->getCopyCountries();
-    //     return $copy;
-    // }
-
-
-    public function __toString()
-    {
-        Helper::printLabelValue("discountCode", $this->discountCode);
-        Helper::printLabelValue("setDate", $this->setDate);
-        Helper::printLabelValue("discountType", $this->discountType);
-        Helper::printLabelValue("value", $this->value);
-        Helper::printLabelValue("minAmount", $this->minAmount);
-        Helper::printLabelValue("nbUse", $this->nbUse);
-        Helper::printLabelValue("isCombinable", $this->isCombinable);
-        Helper::printLabelValue("dates", $this->dates);
+        $nbUse = $this->getNbUse();
+        $stillUsage = (is_null($nbUse) || ($nbUse > 0));
+        return ($stillUsage && $this->isBetween());
     }
 }

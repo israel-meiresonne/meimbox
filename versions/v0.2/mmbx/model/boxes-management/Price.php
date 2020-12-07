@@ -1,29 +1,30 @@
 <?php
+require_once 'model/ModelFunctionality.php';
 
 class Price
 {
     /**
-     * @var double
+     * @var float
      */
-    private $price;
+    protected $price;
 
     /**
      * The currency of the price
      * @var Currency
      */
-    private $currency;
+    protected $currency;
 
     /**
      * The textual value to display a price with a textual minimum indication
      * @var string
      */
-    const TEXTUAL_MIN = "min";
+    public const TEXTUAL_MIN = "min";
 
     /**
      * The textual value to display a price with a textual minimum indication
      * @var string
      */
-    const TEXTUAL_MAX = "max";
+    public const TEXTUAL_MAX = "max";
 
     /**
      * @param float $price 
@@ -31,12 +32,8 @@ class Price
      */
     public function __construct(float $price, Currency $currency)
     {
-        $this->price = $price;
+        $this->price = ModelFunctionality::toFloat($price);
         $this->currency = $currency;
-    }
-
-    protected function __construct0()
-    {
     }
 
     /**
@@ -79,17 +76,16 @@ class Price
     }
 
     /**
-     * To get a protected copy of a Price instance
-     * @return Price a protected copy of the Price instance
+     * To reverse the price
+     * @return Price
      */
-    // public function getCopy()
-    // {
-    //     $copy = new Price();
-    //     $copy->price = $this->price;
-    //     $copy->country = (!empty($this->country)) ? $this->country->getCopy() : null;
-    //     $copy->currency = (!empty($this->currency)) ? $this->currency->getCopy() : null;
-    //     return $copy;
-    // }
+    public function getReverse()
+    {
+        $this->price = -$this->getPrice();
+        $copy = $this->getCopy();
+        $this->price = -$this->getPrice();
+        return $copy;
+    }
 
     /**
      * Format the price to make it into a displayable format for Visitor
@@ -102,7 +98,7 @@ class Price
         $price = ($this->price != 0) ? number_format($this->price, 2, ",", " ") : 0;
         // return  ($symbol != $isoCurrency) ? $symbol . "" . $price . " " . $isoCurrency
         //     : $price . " " . $isoCurrency;
-        return  $symbol . " ". $price;
+        return  $symbol . " " . $price;
     }
 
     /**
@@ -143,5 +139,21 @@ class Price
     public function getPriceKey()
     {
         return number_format($this->getPrice() * 100, 2, "", "");
+    }
+
+    /**
+     * To get A copy of the currrent instance
+     * @return Size
+     */
+    public function getCopy()
+    {
+        $map = get_object_vars($this);
+        $attributs = array_keys($map);
+        $class = get_class($this);
+        $copy = new $class($this->price, $this->currency);
+        foreach ($attributs as $attribut) {
+            $copy->{$attribut} = $this->{$attribut};
+        }
+        return $copy;
     }
 }

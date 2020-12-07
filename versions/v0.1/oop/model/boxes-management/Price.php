@@ -3,7 +3,7 @@
 class Price
 {
     /**
-     * @var double
+     * @var float
      */
     private $price;
 
@@ -39,16 +39,16 @@ class Price
      */
     function __construct()
     {
-        $argv = func_get_args();
+        $args = func_get_args();
         switch (func_num_args()) {
             case 0:
-                self::__construct0();
+                $this->__construct0();
                 break;
             case 2:
-                self::__construct2($argv[0], $argv[1]);
+                $this->__construct2($args[0], $args[1]);
                 break;
             case 4:
-                self::__construct4($argv[0], $argv[1], $argv[2], $argv[3]);
+                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
                 break;
         }
     }

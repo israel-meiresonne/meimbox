@@ -12,9 +12,4 @@ class Shipping extends Price{
         parent::__construct($price, $countryName, $isoCurrency, $dbMap);
         $this->time = $time;
     }
-
-    // public function __toString()
-    // {
-    //     parent::__toString();
-    // }
 }

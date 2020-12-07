@@ -2,8 +2,10 @@
     // ++++ val down ++++
     const baskettotal = "total";
     const basketsubtotal = "subtotal";
+    const basketproddiscount = "prod_discount";
     const basketvat = "vat";
     const basketshipping = "shipping";
+    const basketshipdiscount = "ship_discount";
     const basketquantity = "quantity";
     const basketboxrate = "boxrate";
     // ++++ class down ++++
@@ -83,7 +85,7 @@
         var newxf = xf + ";" + f;
         $(x).attr(onclickattr, newxf);
     }
-    removeAnim = function (x) {
+    removeAnim = (x) => {
         $(x).css("overflow", "hidden");
         var h = $(x).height();
         $(x).height(h);
@@ -285,7 +287,7 @@
         var o = json_decode(j);
         var param = mapToParam(o);
         var vx = $($(sbtnx).attr(datavase));
-        evt('evt_cd_90',j);
+        evt('evt_cd_90', j);
         var d = {
             "a": A_SELECT_BRAND,
             "d": param,
@@ -342,7 +344,7 @@
         var brandDatas = json_decode(j);
         var param = mapToParam(brandDatas);
         var vx = $($(sbtnx).attr(datavase));
-        evt('evt_cd_102',j);
+        evt('evt_cd_102', j);
         var datasSND = {
             "a": A_SELECT_MEASURE,
             "d": param,
@@ -386,7 +388,7 @@
             "d": p,
             "a": A_DELETE_MEASURE,
             "r": removeMsrRSP,
-            "x":{"x":x},
+            "x": { "x": x },
             "l": null,
             "sc": function () { },
             "rc": function () { }
@@ -395,12 +397,12 @@
     }
     var removeCartElement = function (x, d) {
         if (popAsk(d.alert)) {
-            evt('evt_cd_95',json_encode(paramToObj(d.d)));
+            evt('evt_cd_95', json_encode(paramToObj(d.d)));
             var dSND = {
                 "a": d.a,
                 "d": d.d,
                 "r": d.r,
-                "x":{"x":x},
+                "x": { "x": x },
                 "l": d.l,
                 "sc": d.sc,
                 "rc": d.rc
@@ -408,7 +410,7 @@
             SND(dSND);
         }
     }
-    var removeMsrRSP = function (r,x) {
+    var removeMsrRSP = function (r, x) {
         if (r.isSuccess) {
             var wrapper = goToParentNode(x.x, removeMsrDatas.nbToWrapper);
             removeAnim(wrapper);
@@ -456,11 +458,11 @@
     }
     // +++++++++++++++++ qr down ++++++++++++++++++++++++++++++++++++++++++++//
     addMsr = (succFunc = () => { }) => {
-        var inps = $( "#add_measure_form input");
-        evtFrm('evt_cd_107',inps);
+        var inps = $("#add_measure_form input");
+        evtFrm('evt_cd_107', inps);
         var d = {
             "a": A_ADD_MEASURE,
-            "frm":inps,
+            "frm": inps,
             "frmCbk": function () { return ""; },
             "r": addMeasureRSP,
             "l": "#add_measurePopUp_loading",
@@ -496,7 +498,7 @@
     }
     updateMsr = () => {
         var inps = $("#add_measure_form input");
-        evtFrm('evt_cd_109',inps);
+        evtFrm('evt_cd_109', inps);
         var d = {
             "a": A_UPDATE_MEASURE,
             "frm": inps,
@@ -694,9 +696,9 @@
             var sbtv = r.results[KEY_SUBTOTAL];
             fadeValue(sbtx, sbtv);
 
-            var vatx = $("[" + basketdata + "='" + basketvat + "']");
-            var vatv = r.results[KEY_VAT];
-            fadeValue(vatx, vatv);
+            // var vatx = $("[" + basketdata + "='" + basketvat + "']");
+            // var vatv = r.results[KEY_VAT];
+            // fadeValue(vatx, vatv);
 
             var shipx = $("[" + basketdata + "='" + basketshipping + "']");
             var shipv = r.results[KEY_SHIPPING];
@@ -705,6 +707,24 @@
             var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
             var qtyv = r.results[KEY_BSKT_QUANTITY];
             fadeValue(qtyx, qtyv);
+
+            var proddiscx = $("[" + basketdata + "='" + basketproddiscount + "']");
+            var proddiscdadx = $(proddiscx).attr(dadx);
+            if (KEY_SUB_DISC in r.results) {
+                fadeValue(proddiscx, r.results[KEY_SUB_DISC]);
+                $(proddiscdadx).slideDown(TS);
+            } else {
+                $(proddiscdadx).slideUp(TS);
+            };
+
+            var shipdiscx = $("[" + basketdata + "='" + basketshipdiscount + "']");
+            var shipdiscdadx = $(shipdiscx).attr(dadx);
+            if (KEY_SHIP_DISC in r.results) {
+                fadeValue(shipdiscx, r.results[KEY_SHIP_DISC]);
+                $(shipdiscdadx).slideDown(TS);
+            } else {
+                $(shipdiscdadx).slideUp(TS);
+            };
         }
     }
     setMoveBoxProduct = (btnx, bxid) => {

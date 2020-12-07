@@ -589,11 +589,20 @@ class Box extends ModelFunctionality
 
     /**
      * Getter for box's shipping cost
-     * @return Price box's shipping cost
+     * @return Shipping box's shipping cost
      */
     public function getShipping()
     {
         return $this->shipping;
+    }
+
+    /**
+     * Getter for box's Discount
+     * @return Discount box's Discount
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 
     /**
