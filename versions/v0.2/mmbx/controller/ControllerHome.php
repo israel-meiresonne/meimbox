@@ -260,11 +260,18 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        $price = new Shipping(2.4, (new Currency("usd")), 4);
-        var_dump($price);
-        var_dump($price->getReverse());
-        $copy = $price->getCopy();
-        var_dump($copy);
+        $basket = $person->getBasket();
+        $country = $person->getCountry();
+        $vat = $country->getVat();
+        var_dump("vat: " . $vat);
+        var_dump("sum prod: " . $basket->getSumProducts()->getPrice());
+        var_dump("hvat: " . $basket->getHvat()->getPrice());
+        var_dump("subtotal: " . $basket->getSubTotal()->getPrice());
+        var_dump("vat: " . $basket->getVat()->getPrice());
+        var_dump("total: " . $basket->getTotal()->getPrice());
+        var_dump("shipping: " . $basket->getShipping()->getPrice());
+        var_dump("prod  discount: " . $basket->getDiscountSumProducts()->getPrice());
+        var_dump("shipping discount: " . $basket->getDiscountShipping()->getPrice());
     }
 
     public function test_DiscountCode()

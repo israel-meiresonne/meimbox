@@ -17,15 +17,15 @@ $translator = $translator;
 /**
  * @var Order */
 $order = $order;
-$basketOrdered = $order->getBasketOrdered();    //🔋
+// $basketOrdered = $order->getBasketOrdered();    //🔋
 /**
  * @var BasketOrdered*/
-// $basketOrdered = $order;         //🚨to delete cause delivery addres is  already in order
+$basketOrdered = $order;         //🚨to delete cause delivery addres is  already in order
 
 /**
  * @var AddressDelivery */
-$address = $order->getDelivery();   //🔋
-// $address = $address;             //🚨to delete cause delivery addres is  already in order
+// $address = $order->getDelivery();   //🔋
+$address = $address;             //🚨to delete cause delivery addres is  already in order
 $appartement = (!empty($address->getAppartement())) ? " (" . $address->getAppartement() . ")" : null;
 $province = $address->getProvince();
 $zipcode = $address->getZipcode();
@@ -44,8 +44,18 @@ $city = " " . $company->get(Map::address, Map::city);
 $state = ", " . $company->get(Map::address, Map::state);
 $CompanyCountry = " " . $company->get(Map::address, Map::country);
 $companyAddress = $zipcode . $city . $state . $CompanyCountry;
-
+/** Company */
 $medias = $company->get(Map::media);
+
+/** Prices */
+$sumProd = $basketOrdered->getSumProducts()->getFormated();
+$discSumProd = $basketOrdered->getDiscountSumProducts();
+$vat = $basketOrdered->getCountry()->getVatDisplayable();
+$vatAmount = $basketOrdered->getVat()->getFormated();
+$subTotal = $basketOrdered->getSubTotal()->getFormated();
+$shipping = $basketOrdered->getShipping()->getFormated();
+$discShip = $basketOrdered->getDiscountShipping();
+$total = $basketOrdered->getTotal()->getFormated();
 ?>
 <html>
 
@@ -239,35 +249,74 @@ $medias = $company->get(Map::media);
                                     <td>
                                         <table class="body_content-summary body_content-child">
                                             <tr class="body_content-summary-price">
-                                                <td class="sentence secondary_field_dark"><?= $translator->translateStation("US79") ?></td>
+                                                <td class="sentence secondary_field_dark"><?= $translator->translateStation("US118") ?></td>
                                                 <td class="nada_60"></td>
-                                                <td class="secondary_field_dark price_field"><?= $basketOrdered->getShipping()->getFormated() ?></td>
+                                                <td class="secondary_field_dark price_field"><?= $sumProd ?></td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="table_separator-td-space"></div>
                                                 </td>
                                             </tr>
-                                            <tr class="body_content-summary-price">
-                                                <td class="sentence secondary_field_dark"><?= strtoupper($translator->translateStation("US80")) ?></td>
-                                                <td class="nada_60"></td>
-                                                <td class="secondary_field_dark price_field"><?= $basketOrdered->getVatAmount()->getFormated() ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="table_separator-td-space"></div>
-                                                </td>
-                                            </tr>
+                                            <?php
+                                            if ($discSumProd->getPrice() > 0) :
+                                                $copyDiscSumProd = $discSumProd->getReverse()->getFormated();
+                                            ?>
+                                                <tr class="body_content-summary-price">
+                                                    <td class="sentence secondary_field_dark"><?= $translator->translateStation("US116") ?></td>
+                                                    <td class="nada_60"></td>
+                                                    <td class="secondary_field_dark price_field"><?= $copyDiscSumProd ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="table_separator-td-space"></div>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
                                             <tr class="body_content-summary-price">
                                                 <td class="sentence secondary_field_dark"><?= $translator->translateStation("US81") ?></td>
                                                 <td class="nada_60"></td>
-                                                <td class="secondary_field_dark price_field"><?= $basketOrdered->getSubTotal()->getFormated() ?></td>
+                                                <td class="secondary_field_dark price_field"><?= $subTotal ?></td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="table_separator-td-space"></div>
                                                 </td>
                                             </tr>
+                                            <tr class="body_content-summary-price">
+                                                <td class="sentence secondary_field_dark"><?= strtoupper($translator->translateStation("US80")) . "($vat)" ?></td>
+                                                <td class="nada_60"></td>
+                                                <td class="secondary_field_dark price_field"><?= $vatAmount ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="table_separator-td-space"></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="body_content-summary-price">
+                                                <td class="sentence secondary_field_dark"><?= $translator->translateStation("US79") ?></td>
+                                                <td class="nada_60"></td>
+                                                <td class="secondary_field_dark price_field"><?= $shipping ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="table_separator-td-space"></div>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            if ($discShip->getPrice() > 0) :
+                                                $copyDiscShip = $discShip->getReverse()->getFormated(); ?>
+                                                <tr class="body_content-summary-price">
+                                                    <td class="sentence secondary_field_dark"><?= $translator->translateStation("US115") ?></td>
+                                                    <td class="nada_60"></td>
+                                                    <td class="secondary_field_dark price_field"><?= $copyDiscShip ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="table_separator-td-space"></div>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
                                             <tr class="body_content-summary-price">
                                                 <td class="sentence"><?= $translator->translateStation("US82") ?></td>
                                                 <td class="nada_60"></td>
