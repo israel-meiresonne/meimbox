@@ -59,6 +59,7 @@ class Order extends ModelFunctionality
      */
     private static $LOCK_TIME;
 
+    private const PREFIX_ID = "ord_";
 
     /**
      * Constructor
@@ -88,7 +89,7 @@ class Order extends ModelFunctionality
      */
     public function create(Response $response, $userID, $stripeCheckoutID, Address $address, Basket  $basket)
     {
-        $this->orderID = $this->generateDateCode(25);
+        $this->orderID = self::PREFIX_ID.$this->generateDateCode(25);
         $this->stripeCheckoutID = $stripeCheckoutID;
         $this->setDate =  $this->getDateTime();
         $country =  $address->getCountry();

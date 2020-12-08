@@ -260,9 +260,9 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        $basket = $person->getBasket();
-        $country = $person->getCountry();
-        $vat = $country->getVat();
+        // $basket = $person->getBasket();
+        // $country = $person->getCountry();
+        // $vat = $country->getVat();
         // var_dump("vat: " . $vat);
         // var_dump("sum prod: " . $basket->getSumProducts()->getPrice());
         // var_dump("hvat: " . $basket->getHvat()->getPrice());
@@ -273,27 +273,33 @@ class ControllerHome extends ControllerSecure
         // var_dump("time: " . $basket->getShipping()->getTime());
         // var_dump("prod  discount: " . $basket->getDiscountSumProducts()->getPrice());
         // var_dump("shipping discount: " . $basket->getDiscountShipping()->getPrice());
-        $m = strtolower(date('D, jS  F', strtotime('+365days')));
-        var_dump($m);
     }
 
     public function test_DiscountCode()
     {
         header('content-type: application/json');
         $person = $this->person;
-        $basket = $person->getBasket();
-        // $code = "blackfriday25";
-        // $country = new Country("belgium");
-        // $discCode = new DiscountCode($code, $country);
-        // $total = 100;
-        $discCodes = $basket->getDiscountCodes();
-        // $discount = $basket->getDiscount()->getPrice();
-        // var_dump("discount: $discount");
-        $reduction = $basket->getDiscountShipping()->getPrice();
-        echo "\n";
-        var_dump("final: $reduction");
-        echo "\n";
-        var_dump("discCodes", $discCodes);
+        // $basket = $person->getBasket();
+        $response = new Response();
+        $country  = new Country("belgium");
+        $orderID = "test";
+        $codes = [
+            "blackfriday25",
+            "free_shipping_be",
+            "free_shipping_ca",
+            "summer20",
+            "winter30"
+        ];
+        $discCodes = [];
+        foreach($codes as $code){
+            $discCodes[$code] = new DiscountCode($code, $country);
+        }
+        DiscountCode::insertDiscounts($response, $discCodes, $orderID);
+
+        echo str_repeat("-", 50)." Response ".str_repeat("-", 50);
+        var_dump("response: ", $response->getAttributs());
+        echo str_repeat("-", 50)." DiscountCode ".str_repeat("-", 50);
+        var_dump($discCodes);
     }
 
     public function test_xhr()

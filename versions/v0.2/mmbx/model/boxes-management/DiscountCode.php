@@ -167,4 +167,56 @@ class DiscountCode extends Discount
         $code = $constantsMap->get(Map::discountCodes, $codeName, $isoCountry);
         return $code;
     }
+
+    /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
+
+    /**
+     * To insert discounts code used for a order
+     * @param Response          $response   to push in result or accured error
+     * @param DiscountCode[]    $discCodes  discount code to insert
+     * @param string            $orderID    the id of the order for with the Status is for
+     */
+    public static function insertDiscounts(Response $response, $discCodes, $orderID)
+    {
+        $bracket = "(?,?,?,?,?,?,?,?,?,?)"; // \[value-[0-9]*\]
+        $sql = "INSERT INTO `Orders-DiscountCodes`(`orderId`, `discount_code`, `discount_type`, `rate`, `maxAmount`, `minAmount`, `nbUse`, `beginDate`, `endDate`, `isCombinable`)
+                VALUES " . parent::buildBracketInsert(count($discCodes), $bracket);
+        $values = [];
+        $toDecrease = [];
+        foreach ($discCodes as $discCode) {
+            $nbUse = $discCode->getNbUse();
+            array_push(
+                $values,
+                $orderID,
+                $discCode->getCode(),
+                $discCode->getType(),
+                $discCode->getRate(),
+                $discCode->getMaxAmount(),
+                $discCode->getMinAmount(),
+                $nbUse,
+                $discCode->getBeginDate(),
+                $discCode->getEndDate(),
+                (int) $discCode->isCumulable()
+            );
+            var_dump($nbUse);
+            ($nbUse > 0) ? array_push($toDecrease, $discCode) : null;
+        }
+        parent::insert($response, $sql, $values);
+        (!empty($toDecrease)) ? self::decreaseDiscounts($response, $toDecrease) : null;
+    }
+
+    /**
+     * To insert discounts code used for a order
+     * @param Response          $response   to push in result or accured error
+     * @param DiscountCode[]    $discCodes  discount code to deacrease
+     */
+    private static function decreaseDiscounts(Response $response, $discCodes)
+    {
+        $sql = "";
+        foreach ($discCodes as $discCode) {
+            $code = $discCode->getCode();
+            $sql .= "UPDATE `DiscountCodes` SET `nbUse` = `nbUse`-1 WHERE `DiscountCodes`.`discountCode` = '$code';";
+        }
+        parent::update($response, $sql, []);
+    }
 }

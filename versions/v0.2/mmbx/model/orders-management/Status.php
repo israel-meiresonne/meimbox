@@ -175,9 +175,9 @@ class Status extends ModelFunctionality
      * @param Response $response to push in results or accured errors
      * @param string $orderID the id of the order for with the Status is for
      */
-    private function insertStatus($response, $orderID) // \[value-[0-9]*\]
+    private function insertStatus($response, $orderID)
     {
-        $bracket = "(?,?,?,?,?,?,?)";
+        $bracket = "(?,?,?,?,?,?,?)"; // \[value-[0-9]*\]
         $sql = "INSERT INTO `OrdersStatus`(`orderId`, `status`, `trackingNumber`, `adminId`, `deliveryMin`, `deliveryMax`, `setDate`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [

@@ -8296,6 +8296,21 @@
 												},
 												{
 													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2QBBfySx4g9Q=",
+													"_parent": {
+														"$ref": "AAAAAAFwSmh8Landv3o="
+													},
+													"model": {
+														"$ref": "AAAAAAF2QBBfsSx13T8="
+													},
+													"font": "Arial;13;0",
+													"left": 965,
+													"top": 1512,
+													"width": 245.11962890625,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
 													"_id": "AAAAAAFweS1c/4Cf7Yg=",
 													"_parent": {
 														"$ref": "AAAAAAFwSmh8Landv3o="
@@ -8305,7 +8320,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 965,
-													"top": 1512,
+													"top": 1527,
 													"width": 245.11962890625,
 													"height": 13
 												},
@@ -8320,7 +8335,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 965,
-													"top": 1527,
+													"top": 1542,
 													"width": 245.11962890625,
 													"height": 13
 												},
@@ -8335,7 +8350,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 965,
-													"top": 1542,
+													"top": 1557,
 													"width": 245.11962890625,
 													"height": 13
 												},
@@ -8350,7 +8365,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 965,
-													"top": 1557,
+													"top": 1572,
 													"width": 245.11962890625,
 													"height": 13
 												},
@@ -8365,7 +8380,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 965,
-													"top": 1572,
+													"top": 1587,
 													"width": 245.11962890625,
 													"height": 13
 												}
@@ -8374,14 +8389,14 @@
 											"left": 960,
 											"top": 1447,
 											"width": 255.11962890625,
-											"height": 143
+											"height": 158
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 960,
 									"top": 1424,
 									"width": 255.11962890625,
-									"height": 166,
+									"height": 181,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSmh8LancaxE="
 									},
@@ -24949,9 +24964,20 @@
 									"_parent": {
 										"$ref": "AAAAAAFwSmh8LKnZa6k="
 									},
-									"name": "value",
+									"name": "rate",
 									"documentation": "# Description\n\nNombre compris entre [0,1]",
-									"type": "DOUBLE"
+									"type": "FLOAT"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2QBBfsSx13T8=",
+									"_parent": {
+										"$ref": "AAAAAAFwSmh8LKnZa6k="
+									},
+									"name": "maxAmount",
+									"documentation": "# Definition\n\nThe maximum amount that can be reducted from the total price (sum of item or shipping)\nIf it's null it means that there's no maximum.\nCombin this value with a rate of 1 to make a discount of on a certain amount like 20 or 30 etc...",
+									"type": "FLOAT",
+									"nullable": true
 								},
 								{
 									"_type": "ERDColumn",
@@ -24960,7 +24986,7 @@
 										"$ref": "AAAAAAFwSmh8LKnZa6k="
 									},
 									"name": "minAmount",
-									"type": "DOUBLE"
+									"type": "FLOAT"
 								},
 								{
 									"_type": "ERDColumn",
