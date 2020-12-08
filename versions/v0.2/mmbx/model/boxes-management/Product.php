@@ -45,6 +45,12 @@ abstract class Product extends ModelFunctionality
     protected $isAvailable;
 
     /**
+     * Holds id shared by same Product
+     * @var boolean
+     */
+    protected $groupID;
+
+    /**
      * Holds the date of creation of the product in database
      * @var string
      */
@@ -249,6 +255,7 @@ abstract class Product extends ModelFunctionality
         $this->currency = $currency;
         $this->prodName = $productLine["prodName"];
         $this->isAvailable = $productLine["isAvailable"];
+        $this->groupID = $productLine["groupID"];
         $this->addedDate = $productLine["addedDate"];
         $this->colorName = $productLine["colorName"];
         $this->colorRGB = $productLine["colorRGB"];
@@ -278,6 +285,103 @@ abstract class Product extends ModelFunctionality
         self::$PATH_PRODUCT = (!isset(self::$PATH_PRODUCT))
             ? Configuration::get(Configuration::PATH_PRODUCT)
             : self::$PATH_PRODUCT;
+    }
+
+    /**
+     * Setter for product's collections
+     */
+    protected function setCollections()
+    {
+        $this->collections  = [];
+        $sql = "SELECT * 
+        FROM `Products-Collections`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                $this->collections[$tabLine["collection_name"]]["beginDate"] = $tabLine["beginDate"];
+                $this->collections[$tabLine["collection_name"]]["endDate"] = $tabLine["endDate"];
+            }
+        }
+    }
+
+    /**
+     * Setter for product's functions
+     */
+    protected function setProdFunctions()
+    {
+        $this->prodFunctions  = [];
+        $sql = "SELECT * 
+        FROM `Products-ProductFunctions`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                array_push($this->prodFunctions, $tabLine["function_name"]);
+            }
+        }
+    }
+
+    /**
+     * Setter for product's categories
+     */
+    protected function setCategories()
+    {
+        $this->categories  = [];
+        $sql = "SELECT * 
+        FROM `Products-Categories`
+        WHERE `prodId` = '$this->prodID'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            foreach ($tab as $tabLine) {
+                array_push($this->categories, $tabLine["category_name"]);
+            }
+        }
+    }
+
+    /**
+     * Setter for product's description
+     */
+    protected function setDescriptions()
+    {
+        $language = $this->getLanguage();
+        $isoLang = $language->getIsoLang();
+        $sql = "SELECT * 
+        FROM `ProductsDescriptions`
+        WHERE `prodId` = '$this->prodID' AND `lang_` = '$isoLang'";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            $tabLine = $tab[0];
+            $this->description = $tabLine["description"];
+            $this->richDescription = $tabLine["richDescription"];
+        }
+    }
+
+    /**
+     * Fill the same product list with product sharing the same name that the 
+     * current product.
+     */
+    protected function setSameProducts()
+    {
+        $this->sameProducts = [];
+        $prodID = $this->getProdID();
+        $groupID = $this->getGroupID();
+        $language = $this->getLanguage();
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
+        $sql = "SELECT `prodID` 
+        FROM `Products` 
+        WHERE isAvailable = 1 AND `prodID`!='$prodID' AND `groupID` = '$groupID'  
+        ORDER BY `Products`.`prodID` ASC";
+        $tab = $this->select($sql);
+        if (count($tab) > 0) {
+            $class = get_class($this);
+            foreach ($tab as $tabLine) {
+                $sameProdID = $tabLine["prodID"];
+                $product = new $class($sameProdID, $language, $country, $currency);
+                $this->sameProducts[$product->getProdID()] = $product;
+            }
+        }
     }
 
     // /**
@@ -392,76 +496,6 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
-     * Setter for product's collections
-     */
-    protected function setCollections()
-    {
-        $this->collections  = [];
-        $sql = "SELECT * 
-        FROM `Products-Collections`
-        WHERE `prodId` = '$this->prodID'";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            foreach ($tab as $tabLine) {
-                $this->collections[$tabLine["collection_name"]]["beginDate"] = $tabLine["beginDate"];
-                $this->collections[$tabLine["collection_name"]]["endDate"] = $tabLine["endDate"];
-            }
-        }
-    }
-
-    /**
-     * Setter for product's functions
-     */
-    protected function setProdFunctions()
-    {
-        $this->prodFunctions  = [];
-        $sql = "SELECT * 
-        FROM `Products-ProductFunctions`
-        WHERE `prodId` = '$this->prodID'";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            foreach ($tab as $tabLine) {
-                array_push($this->prodFunctions, $tabLine["function_name"]);
-            }
-        }
-    }
-
-    /**
-     * Setter for product's categories
-     */
-    protected function setCategories()
-    {
-        $this->categories  = [];
-        $sql = "SELECT * 
-        FROM `Products-Categories`
-        WHERE `prodId` = '$this->prodID'";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            foreach ($tab as $tabLine) {
-                array_push($this->categories, $tabLine["category_name"]);
-            }
-        }
-    }
-
-    /**
-     * Setter for product's description
-     */
-    protected function setDescriptions()
-    {
-        $language = $this->getLanguage();
-        $isoLang = $language->getIsoLang();
-        $sql = "SELECT * 
-        FROM `ProductsDescriptions`
-        WHERE `prodId` = '$this->prodID' AND `lang_` = '$isoLang'";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            $tabLine = $tab[0];
-            $this->description = $tabLine["description"];
-            $this->richDescription = $tabLine["richDescription"];
-        }
-    }
-
-    /**
      * To increase or decrease the quantity of product holds by container
      * @param int $quantity product's quantity
      */
@@ -505,6 +539,15 @@ abstract class Product extends ModelFunctionality
     public function isAvailable()
     {
         return $this->isAvailable;
+    }
+
+    /**
+     * To get Product's group id
+     * @return string Product's group id
+     */
+    public function getGroupID()
+    {
+        return $this->groupID;
     }
 
     /**

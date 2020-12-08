@@ -116,28 +116,28 @@ class BasketProduct extends Product
         }
     }
 
-    /**
-     * Fill the same product list with product sharing the same name that the 
-     * current product
-     */
-    private function setSameProducts()
-    {
-        $this->sameProducts = [];
-        $language = $this->getLanguage();
-        $country = $this->getCountry();
-        $currency = $this->getCurrency();
-        $sql = "SELECT `prodID` 
-        FROM `Products` 
-        WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
-        ORDER BY `Products`.`prodID` ASC";
-        $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            foreach ($tab as $tabLine) {
-                $product = new BasketProduct($tabLine["prodID"], $language, $country, $currency);
-                $this->sameProducts[$product->getProdID()] = $product;
-            }
-        }
-    }
+    // /**
+    //  * Fill the same product list with product sharing the same name that the 
+    //  * current product
+    //  */
+    // private function setSameProducts()
+    // {
+    //     $this->sameProducts = [];
+    //     $language = $this->getLanguage();
+    //     $country = $this->getCountry();
+    //     $currency = $this->getCurrency();
+    //     $sql = "SELECT `prodID` 
+    //     FROM `Products` 
+    //     WHERE isAvailable = 1 AND `prodID`!= '$this->prodID' AND `prodName` = '$this->prodName'  
+    //     ORDER BY `Products`.`prodID` ASC";
+    //     $tab = $this->select($sql);
+    //     if (count($tab) > 0) {
+    //         foreach ($tab as $tabLine) {
+    //             $product = new BasketProduct($tabLine["prodID"], $language, $country, $currency);
+    //             $this->sameProducts[$product->getProdID()] = $product;
+    //         }
+    //     }
+    // }
 
     /**
      * Getter of $BASKET_TYPE
