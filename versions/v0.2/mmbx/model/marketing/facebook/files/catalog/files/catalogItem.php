@@ -38,7 +38,7 @@ if (count($picPaths) > 1) {
     }
 }
 $color = $product->getColorName();
-$item_group_id = $product->getProdName();
+$item_group_id = $product->getGroupID();
 $category = (!empty($product->getCategories())) ? $product->getCategories()[0] : null;
 $product_type = (!empty($category)) ? "<g:product_type>$category</g:product_type>" : null;
 $size = implode(", ", $product->getSizes());

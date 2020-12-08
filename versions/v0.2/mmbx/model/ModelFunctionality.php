@@ -959,9 +959,6 @@ abstract class ModelFunctionality extends Model
                 throw new Exception("This product don't exist!");
             }
         }
-        // if (!$this->existProductInDb($prodID)) {
-        //     throw new Exception("This product don't exist!");
-        // }
         return self::$productMap[$prodID];
     }
 
@@ -976,6 +973,7 @@ abstract class ModelFunctionality extends Model
             foreach ($tab as $tabLine) {
                 self::$productMap[$tabLine["prodID"]]["prodName"] = $tabLine["prodName"];
                 self::$productMap[$tabLine["prodID"]]["isAvailable"] = ($tabLine["isAvailable"] == 1);
+                self::$productMap[$tabLine["prodID"]]["groupID"] = $tabLine["groupID"];
                 self::$productMap[$tabLine["prodID"]]["product_type"] = $tabLine["product_type"];
                 self::$productMap[$tabLine["prodID"]]["addedDate"] = $tabLine["addedDate"];
                 self::$productMap[$tabLine["prodID"]]["colorName"] = $tabLine["colorName"];

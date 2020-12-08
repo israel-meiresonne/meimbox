@@ -2935,6 +2935,21 @@
 												},
 												{
 													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2QaiUHqOzHiM=",
+													"_parent": {
+														"$ref": "AAAAAAFwSQPiWZ+ERhM="
+													},
+													"model": {
+														"$ref": "AAAAAAF2QaiUCKOwX90="
+													},
+													"font": "Arial;13;0",
+													"left": 4157,
+													"top": 1913,
+													"width": 723.0283203125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
 													"_id": "AAAAAAFwbHTDaLhDQtw=",
 													"_parent": {
 														"$ref": "AAAAAAFwSQPiWZ+ERhM="
@@ -2944,7 +2959,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1913,
+													"top": 1928,
 													"width": 723.0283203125,
 													"height": 13
 												},
@@ -2959,7 +2974,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1928,
+													"top": 1943,
 													"width": 723.0283203125,
 													"height": 13
 												},
@@ -2974,7 +2989,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1943,
+													"top": 1958,
 													"width": 723.0283203125,
 													"height": 13
 												},
@@ -2989,7 +3004,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1958,
+													"top": 1973,
 													"width": 723.0283203125,
 													"height": 13
 												},
@@ -3004,7 +3019,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1973,
+													"top": 1988,
 													"width": 723.0283203125,
 													"height": 13
 												},
@@ -3019,7 +3034,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1988,
+													"top": 2003,
 													"width": 723.0283203125,
 													"height": 13
 												}
@@ -3028,14 +3043,14 @@
 											"left": 4152,
 											"top": 1863,
 											"width": 733.0283203125,
-											"height": 143
+											"height": 158
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4152,
 									"top": 1840,
 									"width": 733.0283203125,
-									"height": 166,
+									"height": 181,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSQPiWZ+DVpY="
 									},
@@ -21792,6 +21807,17 @@
 									"name": "isAvailable",
 									"type": "BOOLEAN",
 									"length": 0
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2QaiUCKOwX90=",
+									"_parent": {
+										"$ref": "AAAAAAFwSQPiWJ+AyGk="
+									},
+									"name": "groupID",
+									"documentation": "# Definition\n\nID shared by same products",
+									"type": "VARCHAR",
+									"length": "50"
 								},
 								{
 									"_type": "ERDColumn",
