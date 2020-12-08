@@ -53,9 +53,15 @@ $discSumProd = $basketOrdered->getDiscountSumProducts();
 $vat = $basketOrdered->getCountry()->getVatDisplayable();
 $vatAmount = $basketOrdered->getVat()->getFormated();
 $subTotal = $basketOrdered->getSubTotal()->getFormated();
-$shipping = $basketOrdered->getShipping()->getFormated();
+$shippingObj = $basketOrdered->getShipping();
+$shipping = $shippingObj->getFormated();
+$minTime = $shippingObj->getMinTime();
+$maxTime = $shippingObj->getMaxTime();
 $discShip = $basketOrdered->getDiscountShipping();
 $total = $basketOrdered->getTotal()->getFormated();
+
+$dayConv = 3600 * 24;
+$date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time() + $maxTime * $dayConv);
 ?>
 <html>
 
@@ -165,7 +171,7 @@ $total = $basketOrdered->getTotal()->getFormated();
                                                         <tr>
                                                             <td>
                                                                 <h4 class="delivery_date unbold_field secondary_field_dark no_margin">
-                                                                    20-22 september
+                                                                    <?= $date ?>
                                                                 </h4>
                                                             </td>
                                                         </tr>

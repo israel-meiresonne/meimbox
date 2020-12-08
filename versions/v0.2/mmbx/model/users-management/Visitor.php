@@ -779,7 +779,7 @@ class Visitor extends ModelFunctionality
         $eventRsp = new Response();
         $env = Configuration::getEnvironement();
         // if($env == Configuration::ENV_DEV){
-        if($env == Configuration::ENV_DEV){
+        if ($env == Configuration::ENV_DEV) {
             $this->getNavigation()->handleEvent($eventRsp, $this->getUserID(), $eventCode, $eventDatasMap);
         } else {
             try {
@@ -1576,21 +1576,43 @@ class Visitor extends ModelFunctionality
      */
     public function addSummaryPrices(Response $response)
     {
+        $country = $this->getCountry();
+        $currency = $this->getCurrency();
+        $translator = new Translator($this->getLanguage());
+
         $basket = $this->getBasket();
         $total = $basket->getTotal()->getFormated();
-        $sumProds = $basket->getSumProducts()->getFormated();
+        $sumProdsObj = $basket->getSumProducts();
+        $sumProds = $sumProdsObj->getFormated();
         $reductSumProds = $basket->getDiscountSumProducts();
 
         $quantity = $basket->getQuantity();
-        $shipping = $basket->getShipping()->getFormated();
+        $shippingObj = $basket->getShipping();
+        $shipping = $shippingObj->getFormated();
         $reductShip = $basket->getDiscountShipping();
-        
+
+        $minTime = $shippingObj->getMinTime();
+        $maxTime = $shippingObj->getMaxTime();
+        $dayConv = 3600 * 24;
+        $date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time() + $maxTime * $dayConv);
+
+        $freeShipCode = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
+        $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
+        $minPrice = null;
+        if ((!empty($freeShipCodeObj)) &&  ($basket->getSubTotal()->getPrice() < $freeShipCodeObj->getMinAmount())) {
+            $minAmount = $freeShipCodeObj->getMinAmount();
+            $minPrice = (new Price($minAmount, $currency))->getFormated();
+            $freeShipMsg = $translator->translateStation("US117", (new Map(["price" => $minPrice])));
+        }
+
         $response->addResult(Basket::KEY_TOTAL, $total);
         $response->addResult(Basket::KEY_SUBTOTAL, $sumProds);
         ($reductSumProds->getPrice() > 0) ? $response->addResult(Basket::KEY_SUBTOTAL_DISC, $reductSumProds->getReverse()->getFormated()) : null;
         $response->addResult(Basket::KEY_SHIPPING, $shipping);
         ($reductShip->getPrice() > 0) ? $response->addResult(Basket::KEY_SHIPPING_DISC, $reductShip->getReverse()->getFormated()) : null;
         $response->addResult(Basket::KEY_BSKT_QUANTITY, $quantity);
+        $response->addResult(Basket::KEY_DELIVERY, $date);
+        (isset($freeShipMsg)) ? $response->addResult(Basket::KEY_FREE_SHIPPING, $freeShipMsg) : null;
     }
 
     /*———————————————————————————— ALTER MODEL UP ———————————————————————————*/

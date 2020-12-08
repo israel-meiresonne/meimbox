@@ -48,6 +48,12 @@ class DiscountCode extends Discount
      */
     private $setDate;
 
+    /**
+     * Holds acces key to get codes in json config file
+     * @var  string
+     */
+    public const KEY_FREE_SHIPPING = "free_shipping";
+
     public const TYPE_SUM_PRODS = "on_sum_prods";
     public const TYPE_SHIPPING = "on_shipping";
 
@@ -81,6 +87,15 @@ class DiscountCode extends Discount
         $this->beginDate = $tabLine["beginDate"];
         $this->endDate = $tabLine["endDate"];
         $this->setDate = (!empty($setDate)) ? $setDate : $this->getDateTime();
+    }
+
+    /**
+     * To get DiscountCode's code
+     * @return string DiscountCode's code
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**
@@ -139,5 +154,17 @@ class DiscountCode extends Discount
         $nbUse = $this->getNbUse();
         $stillUsage = (is_null($nbUse) || ($nbUse > 0));
         return ($stillUsage && $this->isBetween());
+    }
+
+    /**
+     * To get a discount code for the given country
+     * @return string a discount code
+     */
+    public static function getCodeForCountry(Country $country, $codeName)
+    {
+        $constantsMap = new Map(Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS));
+        $isoCountry = $country->getIsoCountry();
+        $code = $constantsMap->get(Map::discountCodes, $codeName, $isoCountry);
+        return $code;
     }
 }

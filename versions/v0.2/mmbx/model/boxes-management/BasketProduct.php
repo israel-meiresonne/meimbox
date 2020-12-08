@@ -88,9 +88,10 @@ class BasketProduct extends Product
         }
         $tabLine = $tab[0];
         $price = (float) $tabLine["price"];
-        $time = (int) $tabLine["time"];
-        // $this->shipping = new Shipping($price, $currency->getCopy(), $time);
-        $this->shipping = new Shipping($price, $currency, $time);
+        // $time = (int) $tabLine["time"];
+        $minTime = (int) $tabLine["minTime"];
+        $maxTime = (int) $tabLine["maxTime"];
+        $this->shipping = new Shipping($price, $currency, $minTime, $maxTime);
     }
 
     /**

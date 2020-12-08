@@ -270,7 +270,7 @@ class View
         $content = $this->generateFile($this->file, $datas);
         $webRoot = Configuration::get("webRoot", "/");
         $view = $this->generateFile(
-            "view/Template/".$template,
+            "view/Template/" . $template,
             array(
                 'webRoot' => $webRoot,
                 'content' => $content,
@@ -399,9 +399,34 @@ class View
      * To get View's Translator
      * @return Translator View's Translator
      */
-    public function getTranslator() : Translator
+    public function getTranslator(): Translator
     {
         return $this->translator;
+    }
+
+    /**
+     * To convet unix time into displayable date
+     * @return string displayable date
+     */
+    public static function getDateDisplayable(Translator $translator, int $minTime, int $maxTime = null)
+    {
+        // $translator = $this->getTranslator();
+        $language = $translator->getLanguage();
+        switch ($language->getIsoLang()) {
+            case Language::ISO_EN:
+                $day = date('jS', $minTime);
+                $day .= (isset($maxTime)) ? "—" . date('jS', $maxTime) : null;
+                break;
+            default:
+                $day = date('j', $minTime);
+                $day .= (isset($maxTime)) ? "—" . date('j', $maxTime) : null;
+                break;
+        }
+        $time = (isset($maxTime)) ? $maxTime : $minTime;
+        $month = strtolower(date('F', $time));
+        $month = $translator->translateString($month);
+        $date = "$day $month";
+        return $date;
     }
 
 

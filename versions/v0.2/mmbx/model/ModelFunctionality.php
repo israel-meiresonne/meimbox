@@ -567,7 +567,8 @@ abstract class ModelFunctionality extends Model
             self::$boxMap[$tabLine["boxColor"]]["stock"] = (int) $tabLine["stock"];
             self::$boxMap[$tabLine["boxColor"]]["price"] = (float) $tabLine["price"];
             self::$boxMap[$tabLine["boxColor"]]["shipping"]["shipPrice"] = (float) $tabLine["shipPrice"];
-            self::$boxMap[$tabLine["boxColor"]]["shipping"]["time"] = (int) $tabLine["time"];
+            self::$boxMap[$tabLine["boxColor"]]["shipping"]["minTime"] = (int) $tabLine["minTime"];
+            self::$boxMap[$tabLine["boxColor"]]["shipping"]["maxTime"] = (int) $tabLine["maxTime"];
             self::$boxMap[$tabLine["boxColor"]]["discount"]["value"] = (float) $tabLine["discount_value"];
             self::$boxMap[$tabLine["boxColor"]]["discount"]["beginDate"] = $tabLine["beginDate"];
             self::$boxMap[$tabLine["boxColor"]]["discount"]["endDate"] = $tabLine["endDate"];

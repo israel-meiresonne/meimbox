@@ -66,6 +66,8 @@ class Basket extends ModelFunctionality
     public const KEY_VAT = "basket_vat";
     public const KEY_SHIPPING = "basket_shipping";
     public const KEY_SHIPPING_DISC = "basket_shipping_disc";
+    public const KEY_DELIVERY = "basket_delivery";
+    public const KEY_FREE_SHIPPING = "basket_free_shipping";
     public const KEY_BSKT_QUANTITY = "basket_quantity";
     public const KEY_CART_FILE = "cart_file";
 
@@ -308,12 +310,25 @@ class Basket extends ModelFunctionality
         return $this->discountCodes;
     }
 
-    // public function getSortedDiscountCodes()
-    // {
-    //     $discCodes = $this->getDiscountCodes()->getMap();
-    //     if(!empty())
-
-    // }
+    /**
+     * To get a discount code  applied on basket
+     * @param string $code a discount code  applied on basket
+     * @return DiscountCode|null a discount code  applied on basket
+     */
+    public function getDiscountCode($code)
+    {
+        $foundCode = null;
+        $discCodes = $this->getDiscountCodes();
+        if (!empty($discCodes)) {
+            foreach ($discCodes as $discCode) {
+                if ($discCode->getCode() == $code) {
+                    $foundCode = $discCode;
+                    break;
+                }
+            }
+        }
+        return $foundCode;
+    }
 
     /**
      * To get the sum of of BasketProducts and Boxes in Basket
@@ -400,20 +415,27 @@ class Basket extends ModelFunctionality
 
     /**
      * To get Basket's shipping cost
-     * @return Price Basket's shipping cost
+     * @return Shipping Basket's shipping cost
      */
     public function getShipping()
     {
         $boxes = $this->getBoxes();
-        $shipping = 0;
+        $price = 0;
+        $max = -1;
+        $min = 365;
         if (!empty($boxes)) {
             foreach ($boxes as $box) {
-                $shipping += $box->getShipping()->getPrice();
+                $shipping = $box->getShipping();
+                $price += $shipping->getPrice();
+                $maxTime = $shipping->getMaxTime();
+                $max = ($maxTime > $max) ? $maxTime : $max;
+                $minTime = $shipping->getMinTime();
+                $min = ($minTime < $min) ? $minTime : $min;
             }
         }
         /** INSERT CODE: function to get shipping from BasketProduct */
-        $shipping = 10; // ❌
-        return new Price($shipping, $this->getCurrency());
+        $price = 10; // ❌
+        return new Shipping($price, $this->getCurrency(), $min, $max);
     }
 
     /**
