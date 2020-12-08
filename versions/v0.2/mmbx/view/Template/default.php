@@ -178,6 +178,8 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const KEY_VAT = "<?= Basket::KEY_VAT ?>";
         const KEY_SHIPPING = "<?= Basket::KEY_SHIPPING ?>";
         const KEY_SHIP_DISC = "<?= Basket::KEY_SHIPPING_DISC ?>";
+        const KEY_DELIVERY = "<?= Basket::KEY_DELIVERY ?>";
+        const KEY_FREE_SHIPPING = "<?= Basket::KEY_FREE_SHIPPING ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
 
 

@@ -112,6 +112,7 @@ class Map
 
     /**
      * Key for sign forrm
+     * @var string
      */
     public const sex = "sex";
     public const condition = "condition";
@@ -125,6 +126,7 @@ class Map
 
     /**
      * Keys for input type
+     * @var string
      */
     public const color = "color";
     public const date = "date";
@@ -146,6 +148,7 @@ class Map
 
     /**
      * Keys for Address
+     * @var string
      */
     public const address = "address";
     public const appartement = "appartement";
@@ -158,11 +161,13 @@ class Map
 
     /**
      * Keys for Order
+     * @var string
      */
     public const order = "order";
 
     /**
      * Keys for Payements
+     * @var string
      */
     public const payMethod = "payMethod";
     public const company = "company";
@@ -171,6 +176,7 @@ class Map
 
     /**
      * Keys for StripeProduct
+     * @var string
      */
     public  const name = "name";
     public  const currency = "currency";
@@ -180,6 +186,7 @@ class Map
 
     /**
      * Keys for ViewEmail
+     * @var string
      */
     public const template = "template";
     public const templateFile = "templateFile";
@@ -189,6 +196,7 @@ class Map
 
     /**
      * Keys for SendinBlue's mail sender
+     * @var string
      */
     public const sender = "sender";
     public const to = "to";
@@ -209,17 +217,20 @@ class Map
 
     /**
      * Keys for company datas
+     * @var string
      */
     public const media = "media";
     public const logo = "logo";
 
     /**
      * Keys for mailing from datas.json
+     * @var string
      */
     public const order_confirmation = "order_confirmation";
 
     /**
      * Keys for Sendinblue event
+     * @var string
      */
     public const message_id = "message-id";
     public const event = "event";
@@ -231,6 +242,7 @@ class Map
 
     /**
      * Keys for Facebook's Pixel
+     * @var string
      */
     public const json = "json";
     public const func = "func";
@@ -251,6 +263,7 @@ class Map
 
     /**
      * Keys for Device
+     * @var string
      */
     public const os = "os";
     public const clientInfo = "clientInfo";
@@ -260,8 +273,15 @@ class Map
 
     /**
      * Keys for Page
+     * @var string
      */
     public const query = "query";
+
+    /**
+     * Keys for DiscountCode
+     * @var string
+     */
+    public const discountCodes = "discountCodes";
 
 
 

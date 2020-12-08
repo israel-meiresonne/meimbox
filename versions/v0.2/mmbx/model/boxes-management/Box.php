@@ -206,7 +206,12 @@ class Box extends ModelFunctionality
         $this->picture = $boxMap[$boxColor]["boxPicture"];
         $this->stock = $boxMap[$boxColor]["stock"];
         $this->price = new Price($boxMap[$boxColor]["price"], $currency);
-        $this->shipping = new Shipping($boxMap[$boxColor]["shipping"]["shipPrice"], $currency, $boxMap[$boxColor]["shipping"]["time"]);
+        $minTime = $boxMap[$boxColor]["minTime"];
+        $maxTime = $boxMap[$boxColor]["maxTime"];
+        $shipPrice = $boxMap[$boxColor]["shipping"]["shipPrice"];
+        // $this->shipping = new Shipping($price, $currency->getCopy(), $time);
+        $this->shipping = new Shipping($shipPrice, $currency, $minTime, $maxTime);
+        // $this->shipping = new Shipping($boxMap[$boxColor]["shipping"]["shipPrice"], $currency, $boxMap[$boxColor]["shipping"]["time"]);
         if (!empty($boxMap[$boxColor]["discount"]["value"])) {
             $this->discount = new Discount($boxMap[$boxColor]["discount"]["value"], $boxMap[$boxColor]["discount"]["beginDate"], $boxMap[$boxColor]["discount"]["endDate"]);
         }
@@ -260,8 +265,15 @@ class Box extends ModelFunctionality
         $this->price = new Price($price, $currency);
 
         $shipPrice = (float) $tabLine["shipPrice"];
-        $time = (int) $tabLine["time"];
-        $this->shipping = new Shipping($shipPrice, $currency, $time);
+        // $time = (int) $tabLine["time"];
+
+        $minTime = (int) $tabLine["minTime"];
+        $maxTime = (int) $tabLine["maxTime"];
+        // $this->shipping = new Shipping($price, $currency->getCopy(), $time);
+        $this->shipping = new Shipping($shipPrice, $currency, $minTime, $maxTime);
+        // $this->shipping = new Shipping($shipPrice, $currency, $time);
+
+
 
         if (!empty($tabLine["discount_value"])) {
             $value = $tabLine["discount_value"];

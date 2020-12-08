@@ -21,6 +21,12 @@ class Language extends ModelFunctionality
     private $langLocalName;
 
     /**
+     * Holds iso code
+     * @var string
+     */
+    public const ISO_EN = "en";
+
+    /**
      * Holds key to get lang in $_GET
      * @var string
      */

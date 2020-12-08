@@ -263,15 +263,18 @@ class ControllerHome extends ControllerSecure
         $basket = $person->getBasket();
         $country = $person->getCountry();
         $vat = $country->getVat();
-        var_dump("vat: " . $vat);
-        var_dump("sum prod: " . $basket->getSumProducts()->getPrice());
-        var_dump("hvat: " . $basket->getHvat()->getPrice());
-        var_dump("subtotal: " . $basket->getSubTotal()->getPrice());
-        var_dump("vat: " . $basket->getVat()->getPrice());
-        var_dump("total: " . $basket->getTotal()->getPrice());
-        var_dump("shipping: " . $basket->getShipping()->getPrice());
-        var_dump("prod  discount: " . $basket->getDiscountSumProducts()->getPrice());
-        var_dump("shipping discount: " . $basket->getDiscountShipping()->getPrice());
+        // var_dump("vat: " . $vat);
+        // var_dump("sum prod: " . $basket->getSumProducts()->getPrice());
+        // var_dump("hvat: " . $basket->getHvat()->getPrice());
+        // var_dump("subtotal: " . $basket->getSubTotal()->getPrice());
+        // var_dump("vat: " . $basket->getVat()->getPrice());
+        // var_dump("total: " . $basket->getTotal()->getPrice());
+        // var_dump("shipping: " . $basket->getShipping()->getPrice());
+        // var_dump("time: " . $basket->getShipping()->getTime());
+        // var_dump("prod  discount: " . $basket->getDiscountSumProducts()->getPrice());
+        // var_dump("shipping discount: " . $basket->getDiscountShipping()->getPrice());
+        $m = strtolower(date('D, jS  F', strtotime('+365days')));
+        var_dump($m);
     }
 
     public function test_DiscountCode()

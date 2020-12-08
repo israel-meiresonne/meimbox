@@ -1754,7 +1754,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     margin: auto 5px auto 0;
     padding: 3px;
     /* background: var(--color-orange-clear); */
-    background: var(--color-shadow-08);
+    /* background: var(--color-shadow-08); */
     border-radius: 50%;
 }
 

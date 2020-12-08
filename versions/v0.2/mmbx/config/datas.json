@@ -99,6 +99,16 @@
                 55,
                 56
             ]
+        },
+        "discountCodes":{
+            "free_shipping":{
+                "au":"free_shipping_au",
+                "be":"free_shipping_be",
+                "ca":"free_shipping_ca",
+                "fr":"free_shipping_fr",
+                "o":"free_shipping_o",
+                "ch":"free_shipping_ch"
+            }
         }
     }
 }

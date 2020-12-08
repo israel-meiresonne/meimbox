@@ -6557,20 +6557,35 @@
 													"top": 2315,
 													"width": 234.31591796875,
 													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2Pnif+yxt03k=",
+													"_parent": {
+														"$ref": "AAAAAAFwScoSuaYZRn0="
+													},
+													"model": {
+														"$ref": "AAAAAAF2Pnif5Cxqpq4="
+													},
+													"font": "Arial;13;0",
+													"left": 1919,
+													"top": 2330,
+													"width": 234.31591796875,
+													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 1914,
 											"top": 2250,
 											"width": 244.31591796875,
-											"height": 83
+											"height": 98
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1914,
 									"top": 2227,
 									"width": 244.31591796875,
-									"height": 106,
+									"height": 121,
 									"nameLabel": {
 										"$ref": "AAAAAAFwScoSuaYYxII="
 									},
@@ -24035,7 +24050,19 @@
 									"_parent": {
 										"$ref": "AAAAAAFwScm4v6YKSf4="
 									},
-									"name": "time",
+									"name": "minTime",
+									"documentation": "# Definition\n\nMin delivery date",
+									"type": "INTEGER",
+									"length": "11"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2Pnif5Cxqpq4=",
+									"_parent": {
+										"$ref": "AAAAAAFwScm4v6YKSf4="
+									},
+									"name": "maxTime",
+									"documentation": "# Definition\n\nMax delivery date",
 									"type": "INTEGER",
 									"length": "11"
 								}

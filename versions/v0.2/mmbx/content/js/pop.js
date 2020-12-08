@@ -6,6 +6,8 @@
     const basketvat = "vat";
     const basketshipping = "shipping";
     const basketshipdiscount = "ship_discount";
+    const basketdelivery = "delivery";
+    const basketfreeshipping = "free_shipping";
     const basketquantity = "quantity";
     const basketboxrate = "boxrate";
     // ++++ class down ++++
@@ -696,10 +698,6 @@
             var sbtv = r.results[KEY_SUBTOTAL];
             fadeValue(sbtx, sbtv);
 
-            // var vatx = $("[" + basketdata + "='" + basketvat + "']");
-            // var vatv = r.results[KEY_VAT];
-            // fadeValue(vatx, vatv);
-
             var shipx = $("[" + basketdata + "='" + basketshipping + "']");
             var shipv = r.results[KEY_SHIPPING];
             fadeValue(shipx, shipv);
@@ -707,6 +705,10 @@
             var qtyx = $("[" + basketdata + "='" + basketquantity + "']");
             var qtyv = r.results[KEY_BSKT_QUANTITY];
             fadeValue(qtyx, qtyv);
+
+            var dlvrx = $("[" + basketdata + "='" + basketdelivery + "']");
+            var dlvrv = r.results[KEY_DELIVERY];
+            fadeValue(dlvrx, dlvrv);
 
             var proddiscx = $("[" + basketdata + "='" + basketproddiscount + "']");
             var proddiscdadx = $(proddiscx).attr(dadx);
@@ -724,6 +726,15 @@
                 $(shipdiscdadx).slideDown(TS);
             } else {
                 $(shipdiscdadx).slideUp(TS);
+            };
+
+            var freeshipx = $("[" + basketdata + "='" + basketfreeshipping + "']");
+            var freeshipdadx = $(freeshipx).attr(dadx);
+            if (KEY_FREE_SHIPPING in r.results) {
+                fadeValue(freeshipx, r.results[KEY_FREE_SHIPPING]);
+                $(freeshipdadx).slideDown(TS);
+            } else {
+                $(freeshipdadx).slideUp(TS);
             };
         }
     }

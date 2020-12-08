@@ -21,6 +21,9 @@ $basket = $basket;
  * @var Country */
 $country = $country;
 /**
+ * @var Currency */
+$currency = $basket->getCurrency();
+/**
  * @var Address */
 $address = (!empty($address)) ? $address : null;
 
@@ -28,12 +31,22 @@ $lockTime = Order::getLockTime() / 60;
 $lockTime = number_format($lockTime, 0, "", "");
 
 /** Prices */
-$shipping = $basket->getShipping()->getFormated();
+$shippingObj = $basket->getShipping();
+$shipping = $shippingObj->getFormated();
 $reductShip = $basket->getDiscountShipping();
-$sumProds = $basket->getSumProducts()->getFormated();
+$sumProdsObj = $basket->getSumProducts();
+$sumProds = $sumProdsObj->getFormated();
 $reductSumProd = $basket->getDiscountSumProducts();
 $finalPice = $basket->getTotal()->getFormated();
 
+/** Delivery */
+$minTime = $shippingObj->getMinTime();
+$maxTime = $shippingObj->getMaxTime();
+$dayConv = 3600 * 24;
+$date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time() + $maxTime * $dayConv);
+/** Free shipping */
+$freeShipCode = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
+$freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
 ?>
 <div class="summary-wrap">
     <div class="summary-detail-block">
@@ -74,6 +87,12 @@ $finalPice = $basket->getTotal()->getFormated();
             <hr class="hr-summary">
             <div class="summary-detail-property-div">
                 <ul class="summary-detail-property-lu remove-ul-default-att">
+                    <li class="summary-detail-property-li remove-li-default-att">
+                        <div class="data-key_value-opposite-wrap">
+                            <span class="data-key_value-key"><?= $translator->translateStation("US77") ?>: </span>
+                            <span class="data-key_value-value" style="text-transform: inherit;" data-basket="delivery"><?= $date ?></span>
+                        </div>
+                    </li>
                     <li class="summary-detail-property-li remove-li-default-att">
                         <div class="summary-detail-property-shipping-div">
                             <?php
@@ -165,7 +184,7 @@ $finalPice = $basket->getTotal()->getFormated();
                     $reductShipValue = $reductShip->getReverse()->getFormated();
                     $dad = ModelFunctionality::generateDateCode(25);
                     ?>
-                    <li id="<?= $dad ?>" class="summary-detail-property-li remove-li-default-att" <?= $style ?> >
+                    <li id="<?= $dad ?>" class="summary-detail-property-li remove-li-default-att" <?= $style ?>>
                         <div class="data-key_value-opposite-wrap">
                             <span class="data-key_value-key"><?= $translator->translateStation("US115") ?>: </span>
                             <span class="data-key_value-value" data-dadx="#<?= $dad ?>" data-basket="ship_discount"><?= $reductShipValue ?></span>
@@ -178,21 +197,42 @@ $finalPice = $basket->getTotal()->getFormated();
                             <span class="data-key_value-value" data-basket="total"><?= $finalPice ?></span>
                         </div>
                     </li>
+                    <?php
+                    $style = 'style="display: none;"';
+                    $minPrice = -1;
+                    if ((!empty($freeShipCodeObj)) && ($basket->getSubTotal()->getPrice() < $freeShipCodeObj->getMinAmount())) {
+                        $minAmount = $freeShipCodeObj->getMinAmount();
+                        $minPrice = (new Price($minAmount, $currency))->getFormated();
+                        $style = null;
+                    }
+                    $dad = ModelFunctionality::generateDateCode(25);
+                    ?>
+                    <li id="<?= $dad ?>" class="summary-detail-property-li remove-li-default-att" <?= $style ?>>
+                        <div class="summary-detail-button-notifs">
+                            <div class="summary-detail-button-notif">
+                                <div class="img-text-wrap">
+                                    <div class="img-text-img">
+                                        <img src="<?= self::$DIR_STATIC_FILES ?>i-logo-100-2.png">
+                                    </div>
+                                    <p class="img-text-span" style="color: var(--color-red);" data-dadx="#<?= $dad ?>" data-basket="free_shipping"><?= $translator->translateStation("US117", (new Map(["price" => $minPrice]))) ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="summary-detail-button-div">
                 <?php
-                switch ($conf) {
+                switch ($conf):
                     case self::CONF_SOMMARY_CHECKOUT:
                         $sbtnid = ModelFunctionality::generateDateCode(25);
                         $sbtnx = "#$sbtnid";
                         $brotCls = ModelFunctionality::generateDateCode(25);
                         $brotx = ".$brotCls";
                         $lid = ModelFunctionality::generateDateCode(25);
-                        $lx = "#$lid";
-                ?>
+                        $lx = "#$lid"; ?>
                         <div class="summary-detail-button-inner">
-                            <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')">checkout</button>
+                            <button id="<?= $sbtnid ?>" class="<?= $brotCls ?> green-button standard-button remove-button-default-att" data-loadingx="<?= $lx ?>" data-brotherx="<?= $brotx ?>" onclick="checkout('card', '<?= $sbtnx ?>')"><?= $translator->translateStation("US102") ?></button>
                             <div id="<?= $lid ?>" class="btn-loading loading-img-wrap">
                                 <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
                             </div>
@@ -200,15 +240,14 @@ $finalPice = $basket->getTotal()->getFormated();
                         <div class="summary-detail-button-notifs">
                             <div class="summary-detail-button-notif">
                                 <div class="img-text-wrap">
-                                    <div class="img-text-img">
+                                    <div class="img-text-img" style="background: var(--color-shadow-08);">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>padlock-outline-96.png">
                                     </div>
                                     <p class="img-text-span"><?= $translator->translateStation("US104", (new Map(["time" => $lockTime]))) ?></p>
                                 </div>
                             </div>
                         </div>
-                    <?php
-                        break;
+                    <?php break;
                     case self::CONF_SOMMARY_SHOPBAG:
                     ?>
                         <div class="summary-detail-button-inner">
@@ -219,10 +258,8 @@ $finalPice = $basket->getTotal()->getFormated();
                                 <img src="<?= self::$DIR_STATIC_FILES ?>mini-loading.gif">
                             </div>
                         </div>
-                <?php
-                        break;
-                }
-                ?>
+                <?php break;
+                endswitch; ?>
             </div>
             <div class="summary-payement">
                 <ul class="payement-ul remove-ul-default-att">
