@@ -152,8 +152,10 @@ abstract class User extends Visitor
     private function setCustoID()
     {
         $userID = $this->getUserID();
-        $sql = "SELECT * FROM `StripeCheckoutSessions` WHERE `userId` = '$userID' 
-                AND `custoID` IS NOT NULL 
+        $isoCurrency = $this->getCurrency()->getIsoCurrency();
+        $sql = "SELECT * FROM `StripeCheckoutSessions` WHERE `userId`='$userID'
+                AND `iso_currency`='$isoCurrency'
+                AND `custoID` IS NOT NULL
                 ORDER BY `setDate` DESC";
         $tab = $this->select($sql);
         if (!empty($tab)) {
@@ -179,8 +181,10 @@ abstract class User extends Visitor
     public function getCustoIDStripe()
     {
         (!isset($this->custoID)) ? $this->setCustoID() : null;
-        /* checking  custoID with empty() cause it's can be setted with an 
-        empty string if this function has already be called */
+        /* 
+        Note: must check  custoID with empty() cause it's can be setted with an 
+        empty string if this function has already be called 
+        */
         return (!empty($this->custoID)) ? $this->custoID : null;
     }
 

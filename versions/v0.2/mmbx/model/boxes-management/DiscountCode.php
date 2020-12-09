@@ -198,7 +198,6 @@ class DiscountCode extends Discount
                 $discCode->getEndDate(),
                 (int) $discCode->isCumulable()
             );
-            var_dump($nbUse);
             ($nbUse > 0) ? array_push($toDecrease, $discCode) : null;
         }
         parent::insert($response, $sql, $values);

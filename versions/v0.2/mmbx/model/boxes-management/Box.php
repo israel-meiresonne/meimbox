@@ -206,8 +206,8 @@ class Box extends ModelFunctionality
         $this->picture = $boxMap[$boxColor]["boxPicture"];
         $this->stock = $boxMap[$boxColor]["stock"];
         $this->price = new Price($boxMap[$boxColor]["price"], $currency);
-        $minTime = $boxMap[$boxColor]["minTime"];
-        $maxTime = $boxMap[$boxColor]["maxTime"];
+        $minTime = $boxMap[$boxColor]["shipping"]["minTime"];
+        $maxTime = $boxMap[$boxColor]["shipping"]["maxTime"];
         $shipPrice = $boxMap[$boxColor]["shipping"]["shipPrice"];
         // $this->shipping = new Shipping($price, $currency->getCopy(), $time);
         $this->shipping = new Shipping($shipPrice, $currency, $minTime, $maxTime);

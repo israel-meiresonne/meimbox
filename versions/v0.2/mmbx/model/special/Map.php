@@ -21,6 +21,7 @@ class Map
     public const attribut = "attribut";
     public const open = "open";
     public const close = "close";
+    public const duration = "duration";
 
     /**
      * Keys for Mosaic

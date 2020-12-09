@@ -36,6 +36,7 @@ $shipping = $shippingObj->getFormated();
 $reductShip = $basket->getDiscountShipping();
 $sumProdsObj = $basket->getSumProducts();
 $sumProds = $sumProdsObj->getFormated();
+$subtotal = $basket->getSubTotal()->getFormated();
 $reductSumProd = $basket->getDiscountSumProducts();
 $finalPice = $basket->getTotal()->getFormated();
 
@@ -156,8 +157,8 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                     </li>
                     <li class="summary-detail-property-li remove-li-default-att">
                         <div class="data-key_value-opposite-wrap">
-                            <span class="data-key_value-key"><?= $translator->translateStation("US81") ?>: </span>
-                            <span class="data-key_value-value" data-basket="subtotal"><?= $sumProds ?></span>
+                            <span class="data-key_value-key"><?= $translator->translateStation("US118") ?>: </span>
+                            <span class="data-key_value-value" data-basket="sum_prods"><?= $sumProds ?></span>
                         </div>
                     </li>
                     <?php
@@ -171,6 +172,13 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                             <span class="data-key_value-value" data-dadx="#<?= $dad ?>" data-basket="prod_discount"><?= $reductSumProdValue ?></span>
                         </div>
                     </li>
+                    <li class="summary-detail-property-li remove-li-default-att">
+                        <div class="data-key_value-opposite-wrap">
+                            <span class="data-key_value-key"><?= $translator->translateStation("US81") ?>: </span>
+                            <span class="data-key_value-value" data-basket="subtotal"><?= $subtotal ?></span>
+                        </div>
+                    </li>
+                    <hr class="hr-summary">
                     <li class="summary-detail-property-li remove-li-default-att">
                         <div class="summary-detail-property-shipping-div">
                             <div class="data-key_value-opposite-wrap">

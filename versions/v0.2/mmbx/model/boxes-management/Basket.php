@@ -60,6 +60,7 @@ class Basket extends ModelFunctionality
      */
     protected $discountCodes;
 
+    public const KEY_SUM_PRODS = "basket_sum_prods";
     public const KEY_TOTAL = "basket_total";
     public const KEY_SUBTOTAL = "basket_subtotal";
     public const KEY_SUBTOTAL_DISC = "basket_subtotal_disc";
@@ -352,7 +353,7 @@ class Basket extends ModelFunctionality
                 $sum += $box->getPrice()->getPrice();
             }
         }
-        $sum = 100; // ❌
+        // $sum = 100; // ❌
         return new Price($sum, $this->getCurrency());
     }
 
@@ -434,7 +435,7 @@ class Basket extends ModelFunctionality
             }
         }
         /** INSERT CODE: function to get shipping from BasketProduct */
-        $price = 10; // ❌
+        // $price = 10; // ❌
         return new Shipping($price, $this->getCurrency(), $min, $max);
     }
 

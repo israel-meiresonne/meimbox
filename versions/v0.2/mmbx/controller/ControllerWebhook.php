@@ -24,6 +24,7 @@ class ControllerWebhook extends ControllerSecure
     public function initController()
     {
         $action = $this->getAction();
+        $person = $this->getPerson();
         switch ($action) {
             case ControllerWebhook::ACTION_STRIPEWEBHOOK:
                 $stripeAPI = new StripeAPI();

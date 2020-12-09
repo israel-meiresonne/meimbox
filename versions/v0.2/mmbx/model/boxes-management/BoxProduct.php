@@ -643,6 +643,7 @@ class BoxProduct extends Product
         // var_dump("stockToLocks:", $stockToLocks);   // ❌
         // var_dump("notifAdmin:", $notifAdmin);       // ❌
         self::insertLocks($response, $userID, $prodID, $stockToLocks);
+        // var_dump("response:", $response);           // ❌
     }
 
     /**
