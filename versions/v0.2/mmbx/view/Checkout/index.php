@@ -1,33 +1,37 @@
 <?php
 // require_once 'model/API/Stripe/StripeAPI.php';
-$this->title = "checkout";
-$this->description = "checkout";
 $pk = Configuration::get(Configuration::STRIPE_PK);
-
 /**
  * @var Translator
  */
 $translator = $translator;
-
 /**
  * @var User|Client|Administrator
  */
 $person = $this->person;
-
 /**
  * @var Address
  */
 $address = $address;
-
 $language = $person->getLanguage();
 $country = $person->getCountry();
 $currency = $person->getCurrency();
 $basket = $person->getBasket();
 $addressMap = $person->getAddresses();
-$datas = [
+
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+$this->title = "checkout";
+$this->description = "checkout";
+$headDatas = [
     "additionals" => ['<script src="https://js.stripe.com/v3/"></script>']
 ];
-$this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
+$this->head = $this->generateFile('view/Checkout/files/head.php', $headDatas);
+
+$pixelDatasMap = new Map([Map::basket => $basket]);
+$this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_INIT_CHECKOUT, $pixelDatasMap);
+
+/*————————————————————————————— Config View UP ——————————————————————————————*/
+
 ?>
 
 <div class="checkout_page-container">

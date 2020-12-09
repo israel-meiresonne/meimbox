@@ -1390,9 +1390,11 @@ class Visitor extends ModelFunctionality
      * + $sizeMap[Map::brand] holds a brand name
      * + $sizeMap[Map::measureID] holds a measure id
      * + $sizeMap[Map::cut] holds a measure's cut
+     * @return Size|null the Size of the product added
      */
     public function addBoxProduct(Response $response, $boxID, $prodID, $sizeType, Map $sizeMap)
     {
+        $sizeObj = null;
         $basket = $this->getBasket();
         $box = $basket->getBox($boxID);
         $existProd = $this->existProductInDb($prodID);
@@ -1414,6 +1416,7 @@ class Visitor extends ModelFunctionality
                 }
             }
         }
+        return $sizeObj;
     }
 
     /**

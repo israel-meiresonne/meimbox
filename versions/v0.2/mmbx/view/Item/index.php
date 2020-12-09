@@ -61,7 +61,7 @@ $this->description = "item page";
  */
 $translator = $translator;
 $pixelDatasMap = new Map([Map::product => $product]);
-$this->addFbPixel(Pixel::TYPE_TRACK, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMap);
+$this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMap);
 /*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 

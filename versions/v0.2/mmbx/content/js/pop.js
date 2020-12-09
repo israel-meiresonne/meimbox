@@ -138,6 +138,9 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
+    handleFbPxl = (r) => {
+        eval(r.results[KEY_FB_PXL]);
+    }
     replaceFade = function (x, y, t = TS) {
         $(y).css("display", "none");
         $(x).fadeOut(t / 2, function () {
@@ -679,8 +682,8 @@
     }
     var addBoxProductRSP = (r, cbtnx) => {
         if (r.isSuccess) {
-            // $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BXPROD]);
             switchCloseNext($("#box_manager_window"), $("#basket_pop"), getBasketPop);
+            handleFbPxl(r);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[A_ADD_BXPROD] != null && r.errors[A_ADD_BXPROD] != "") {

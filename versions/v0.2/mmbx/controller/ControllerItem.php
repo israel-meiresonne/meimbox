@@ -665,7 +665,7 @@ class ControllerItem extends ControllerSecure
             $sizeMap->put($brand, Map::brand);
             $sizeMap->put($measureID, Map::measureID);
             $sizeMap->put($cut, Map::cut);
-            $person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
+            $selectedSize = $person->addBoxProduct($response, $boxID, $prodID, $sizeType, $sizeMap);
             if (!$response->containError()) {
                 $response->addResult(self::A_ADD_BXPROD, true);
 
@@ -679,6 +679,13 @@ class ControllerItem extends ControllerSecure
                 $eventDatasMap->put($measureID, Measure::KEY_MEASURE_ID);
                 $eventDatasMap->put($cut, Size::INPUT_CUT_ADDER);
                 $person->handleEvent($eventCode, $eventDatasMap);
+
+                // var_dump($cut);
+                // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
+                // $selectedSize = new Size($sequence);
+                $product = $person->getBasket()->getBox($boxID)->getProduct($prodID, $selectedSize);
+                $pixelDatasMap = new Map([Map::product => $product]);
+                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_ADD_TO_CART, $pixelDatasMap) . ";console.log('evalued')");
             }
         }
         $this->generateJsonView($datasView, $response, $person);
