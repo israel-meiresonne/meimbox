@@ -79,7 +79,7 @@ class Status extends ModelFunctionality
      * @param Response $response to push in result or accured error
      * @param string $orderID the id of the order for with the Status is for
      */
-    public function create(Response $response, $orderID, $status = null)
+    public function create(Response $response, $orderID, int $minDate, int $maxDate, $status = null)
     {
         $this->adminID = self::$SYSTEM_ID;
         switch ($status) {
@@ -91,6 +91,8 @@ class Status extends ModelFunctionality
                 break;
         }
         $this->setDate = $this->getDateTime();
+        $this->deliveryMin = date(self::DATE_FORMAT, $minDate);
+        $this->deliveryMax = date(self::DATE_FORMAT, $maxDate);
         $this->insertStatus($response, $orderID);
     }
 

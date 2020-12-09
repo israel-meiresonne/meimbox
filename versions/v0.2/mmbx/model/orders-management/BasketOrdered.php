@@ -53,7 +53,7 @@ class BasketOrdered extends Basket
         $boxes = $this->getBoxes();
         Box::orderBoxes($response, $boxes, $orderID);
         $discCodes = $this->getDiscountCodes();
-        (!empty($discCodes)) ? DiscountCode::insertDiscounts($response, $discCodes, $orderID) : null;
+        (!empty($discCodes)) ? DiscountCode::applyDiscountCodes($response, $discCodes, $orderID) : null;
         /** Insert basketProducts + decrease sttock */
     }
 
@@ -75,4 +75,14 @@ class BasketOrdered extends Basket
 
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
 
+    /**
+     * To delete all discount code from Basket
+     * @param Response $response where to strore results
+     * @param string $userID id of the Client
+     */
+    public function dropDiscountCodes(Response $response, $userID)
+    {
+        $sql = "DELETE FROM `Basket-DiscountCodes` WHERE `userId`='$userID'";
+        $this->delete($response, $sql);
+    }
 }
