@@ -1,7 +1,6 @@
 <?php
 require_once 'model/ModelFunctionality.php';
 require_once 'model/API/Facebook/Pixel.php';
-require_once 'model/special/Map.php';
 
 class Facebook extends ModelFunctionality
 {
@@ -9,25 +8,6 @@ class Facebook extends ModelFunctionality
      * Key to get catalog's file name from $_GET
      */
     public const GET_CATALOG = "file_catalog";
-
-    /**
-     * Execute file with datas given and return the result
-     * @param string $file Chemin du fichier vue à générer
-     * @param array $datas Données nécessaires à la génération de la vue
-     * @return string Résultat de la génération de la vue
-     * @throws Exception Si le fichier vue est introuvable
-     */
-    protected static function generateFile($file, $datas)
-    {
-        if (file_exists($file)) {
-            extract($datas);
-            ob_start();
-            require $file;
-            return ob_get_clean();
-        } else {
-            throw new Exception("Fichier '$file' introuvable");
-        }
-    }
 
     /**
      * To get pixel's base code

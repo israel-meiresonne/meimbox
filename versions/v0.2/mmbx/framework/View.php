@@ -6,6 +6,7 @@ require_once 'model/special/Response.php';
 require_once 'model/special/Map.php';
 require_once 'framework/Configuration.php';
 require_once 'model/API/Facebook/Facebook.php';
+require_once 'model/API/Google/Google.php';
 
 // View Elements
 require_once 'view/view/Touch/Touch.php';
@@ -441,14 +442,11 @@ class View
 
     /**
      * To get Facebook's base code for pixel
-     * @return string|null Facebook's base code for pixel
+     * @return string Facebook's base code for pixel
      */
     private function getFbPixelBaseCode()
     {
-        $fbPixelsMap = $this->getFbPixelsMap();
-        // $indexes = $fbPixelsMap->getKeys();
-        // $nb = count($indexes);
-        // return ($nb > 0) ? Facebook::getBaseCode() : null;
+        // $fbPixelsMap = $this->getFbPixelsMap();
         return Facebook::getBaseCode();
     }
 
@@ -499,5 +497,14 @@ class View
             $script .= "</script>";
         }
         return $script;
+    }
+
+    /**
+     * To get Google's base code
+     * @return string Google's base code
+     */
+    private function getGoogleBaseCode()
+    {
+        return Google::getBaseCode();
     }
 }

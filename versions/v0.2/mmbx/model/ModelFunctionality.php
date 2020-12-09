@@ -1482,5 +1482,24 @@ abstract class ModelFunctionality extends Model
         }
         return $word;
     }
+
+    /**
+     * Execute file with datas given and return the result
+     * @param string $file Chemin du fichier vue à générer
+     * @param array $datas Données nécessaires à la génération de la vue
+     * @return string Résultat de la génération de la vue
+     * @throws Exception Si le fichier vue est introuvable
+     */
+    protected static function generateFile($file, $datas)
+    {
+        if (file_exists($file)) {
+            extract($datas);
+            ob_start();
+            require $file;
+            return ob_get_clean();
+        } else {
+            throw new Exception("Fichier '$file' introuvable");
+        }
+    }
     /*———————————————————————————— COMMON UP ————————————————————————————————*/
 }

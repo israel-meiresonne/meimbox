@@ -22,10 +22,10 @@ class Pixel extends Facebook
      * Holds standard pixel event
      * @var string
      */
+    public const EVENT_VIEW_CONTENT = "ViewContent";
     public const EVENT_ADD_TO_CART = "AddToCart";
     public const EVENT_INIT_CHECKOUT = "InitiateCheckout";
     public const EVENT_PURCHASE = "Purchase";
-    public const EVENT_VIEW_CONTENT = "ViewContent";
 
     /**
      * Holds custom pixel event
@@ -267,7 +267,7 @@ class Pixel extends Facebook
     /**
      * To generate Pixel's datas for product seen
      * @param Map $datasMap Product's datas
-     * + $datasMap[Map::product]    {Product}   product seen
+     *                      + $datasMap[Map::product] => {Product}   product seen
      * @return Map Pixel's datas product seen
      */
     private static function ViewContent(Map $datasMap)

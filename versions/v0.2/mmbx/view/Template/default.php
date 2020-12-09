@@ -283,6 +283,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
     <script src="<?= self::$PATH_JS ?>pop.js"></script>
     <script src="<?= self::$PATH_JS ?>qr.js"></script>
     <?= $this->getFbPixelBaseCode() ?>
+    <?= $this->getGoogleBaseCode() ?>
 </head>
 
 <body>
