@@ -62,6 +62,12 @@ class Configuration
     public const FB_PIXEL_ID = "facebook_pixel_id";
 
     /**
+     * Keys for Google datas
+     * @var string
+     */
+    public const GOOGLE_MEASURE_ID = "measure_id";
+
+    /**
      * Keys for json datas
      */
     public const JSON_KEY_COMPANY = "company";
