@@ -145,6 +145,15 @@ class DiscountCode extends Discount
     }
 
     /**
+     * To get DiscountCode's creation date
+     * @return string DiscountCode's creation date
+     */
+    private function getSetDate()
+    {
+        return $this->setDate;
+    }
+
+    /**
      * To check if the discount code is available for usage
      * + check if current date is between the begin and end date of the DiscountCodedate
      * + check if number of use is over zero
@@ -171,12 +180,32 @@ class DiscountCode extends Discount
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
 
     /**
+     * To insert a new DiscountCode to a Visitor
+     * @param Response  $response   to push in result or accured error
+     * @param string    $userID     Visitor's id
+     */
+    public function insertDiscountCode(Response $response, $userID)
+    {
+        $bracket = "(?,?,?)"; // \[value-[0-9]*\]
+        $sql = "INSERT INTO `Basket-DiscountCodes`(`userId`, `discount_code`, `setDate`)
+                VALUES " . parent::buildBracketInsert(1, $bracket);
+        $values = [];
+            array_push(
+                $values,
+                $userID,
+                $this->getCode(),
+                $this->getSetDate()
+            );
+        $this->insert($response, $sql, $values);
+    }
+
+    /**
      * To insert discounts code used for a order
      * @param Response          $response   to push in result or accured error
      * @param DiscountCode[]    $discCodes  discount code to insert
      * @param string            $orderID    the id of the order for with the Status is for
      */
-    public static function insertDiscounts(Response $response, $discCodes, $orderID)
+    public static function applyDiscountCodes(Response $response, $discCodes, $orderID)
     {
         $bracket = "(?,?,?,?,?,?,?,?,?,?)"; // \[value-[0-9]*\]
         $sql = "INSERT INTO `Orders-DiscountCodes`(`orderId`, `discount_code`, `discount_type`, `rate`, `maxAmount`, `minAmount`, `nbUse`, `beginDate`, `endDate`, `isCombinable`)

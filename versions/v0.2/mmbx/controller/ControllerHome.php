@@ -260,7 +260,13 @@ class ControllerHome extends ControllerSecure
     {
         header('content-type: application/json');
         $person = $this->person;
-        // $basket = $person->getBasket();
+        $userID = $person->getUserID();
+        // $response = new Response();
+        // $basketOrdered = new BasketOrdered();
+        // $basketOrdered->dropDiscountCodes($response, $userID);
+        // var_dump($response->getAttributs());
+        $basket = $person->getBasket();
+        var_dump("discount codes", $basket->getDiscountCodes());
         // $country = $person->getCountry();
         // $vat = $country->getVat();
         // var_dump("vat: " . $vat);

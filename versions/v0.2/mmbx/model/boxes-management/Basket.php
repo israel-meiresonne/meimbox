@@ -154,18 +154,24 @@ class Basket extends ModelFunctionality
     {
         $this->discountCodes = [];
         $userID = $this->getUserID();
-        $sql = "SELECT * FROM `Basket-DiscountCodes` WHERE `userId`='$userID';";
+        $country = $this->getCountry();
+        $countryName = $country->getCountryName();
+        $sql = "SELECT *
+                FROM `Basket-DiscountCodes` bd
+                JOIN `DiscountCodes-Countries` dc ON bd.`discount_code`=dc.`discount_code`
+                WHERE bd.`userId`='$userID' AND dc.`country_`='$countryName';";
         $tab = parent::select($sql);
         if (!empty($tab)) {
             foreach ($tab as $tabLine) {
                 $code = $tabLine["discount_code"];
-                $country = $this->getCountry();
+                // $country = $this->getCountry();
                 $setDate = $tabLine["setDate"];
                 $discCode = new DiscountCode($code, $country, $setDate);
                 // $this->discountCodes->put($discountCode, $code);
                 $this->discountCodes[$code] = $discCode;
             }
         }
+
     }
 
     /**
@@ -308,7 +314,23 @@ class Basket extends ModelFunctionality
     public function getDiscountCodes()
     {
         (!isset($this->discountCodes)) ? $this->setDiscountCodes() : null;
+        $this->addFreeShippingCode();
         return $this->discountCodes;
+    }
+
+    /**
+     * To give the free shipping code to Visitor
+     */
+    private function addFreeShippingCode()
+    {
+        $country = $this->getCountry();
+        $code = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
+        $discountCodesMap = new Map($this->discountCodes);
+        $freeShipDiscCode = $discountCodesMap->get($code);
+        if(empty($freeShipDiscCode)){
+            $response = new Response();
+            $this->addDiscountCode($response, $code, $country);
+        }
     }
 
     /**
@@ -539,6 +561,19 @@ class Basket extends ModelFunctionality
         }
         /** check also all BasketProducts */
         return $hasDiscount;
+    }
+
+    /**
+     * To insert to Visitor a new DiscountCode
+     * @param Response  $response   where to strore results
+     * @param string    $code       code to add
+     * @param Country   $country    Visitor's country
+     */
+    public function addDiscountCode(Response $response, $code, Country $country)
+    {
+        $discCode = new DiscountCode($code, $country);
+        $discCode->insertDiscountCode($response, $this->getUserID());
+        (!$response->containError()) ? $this->discountCodes[$code] = $discCode : null;
     }
 
     /**

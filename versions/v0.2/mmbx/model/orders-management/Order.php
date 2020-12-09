@@ -74,7 +74,7 @@ class Order extends ModelFunctionality
      */
     private static function setConstants()
     {
-        if(!isset(self::$LOCK_TIME)){
+        if (!isset(self::$LOCK_TIME)) {
             self::$LOCK_TIME = (int) parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
         }
     }
@@ -89,7 +89,7 @@ class Order extends ModelFunctionality
      */
     public function create(Response $response, $userID, $stripeCheckoutID, Address $address, Basket  $basket)
     {
-        $this->orderID = self::PREFIX_ID.$this->generateDateCode(25);
+        $this->orderID = self::PREFIX_ID . $this->generateDateCode(25);
         $this->stripeCheckoutID = $stripeCheckoutID;
         $this->setDate =  $this->getDateTime();
         $country =  $address->getCountry();
@@ -100,11 +100,16 @@ class Order extends ModelFunctionality
 
         $this->basketOrdered = new BasketOrdered();
         $this->basketOrdered->create($response, $basket, $this->orderID);
-        
+        $shipping = $this->basketOrdered->getShipping();
+        $dayConv = 3600 * 24;
+        $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
+        $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
+
         $this->status = new Status();
         $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
-        $this->status->create($response, $this->orderID, $status);
-        
+        $this->status->create($response, $this->orderID, $minDate, $maxDate, $status);
+
+        $this->basketOrdered->dropDiscountCodes($response, $userID);
         $this->basketOrdered->unlock($response, $userID);
         // $this->basketOrdered->empty($response);
     }
