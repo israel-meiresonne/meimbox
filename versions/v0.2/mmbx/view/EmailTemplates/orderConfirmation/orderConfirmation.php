@@ -19,7 +19,7 @@ $templateDatas = [
     "firstname" => $firstname,
     "lastname" => $lastname,
     "order" => $order,
-    "address" => $address   //🚨to delete cause delivery addres is  already in order
+    // "address" => $address   //🚨to delete cause delivery addres is  already in order
 ];
 
 $html = $this->generateFile('view/EmailTemplates/orderConfirmation/orderConfirmationContent.php', $templateDatas);

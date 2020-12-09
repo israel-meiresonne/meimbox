@@ -1,10 +1,19 @@
 <?php
-require_once 'model/special/Response.php';
-require_once 'model/tools-management/Cookie.php';
-require_once 'model/view-management/Translator.php';
+require_once 'model/orders-management/payement/stripe/StripeCoupon.php';
 
 class CheckoutSession extends ModelFunctionality
 {
+    /**
+     * Holds Client that holds the checkoutSession
+     * @var Client
+     */
+    private $client;
+
+    /**
+     * Holds contact with Stripe's api
+     * @var \Stripe\StripeClient
+     */
+    private static $stripeAPI;
 
     /**
      * Holds holds Stripe's checkout session
@@ -71,10 +80,12 @@ class CheckoutSession extends ModelFunctionality
     //  */
     /**
      * Constructor
+     * @param \Stripe\StripeClient $stripe access to the stripe API
      */
-    public function __construct()
+    public function __construct(\Stripe\StripeClient $stripeAPI)
     {
         $this->setConstants();
+        self::$stripeAPI = $stripeAPI;
     }
 
     /**
@@ -90,11 +101,11 @@ class CheckoutSession extends ModelFunctionality
 
     /**
      * To create a new CheckoutSession
-     * @param \Stripe\StripeClient $stripe access to the stripe API
      * @param Client $client Client that holds the CheckoutSession
      */
-    public function create(\Stripe\StripeClient $stripe, Client $client, string $payMethod)
+    public function create(string $payMethod, Client $client)
     {
+        $this->client = $client;
         // $this->checkoutSession = $checkoutSession;
         $payementMap = $this->getPayementMap();
         $payIDs = $payementMap->getKeys();
@@ -106,10 +117,10 @@ class CheckoutSession extends ModelFunctionality
             }
         }
         if (empty($payID)) {
-            throw new Exception("This payement method ('$payMethod') is not supported");
+            throw new Exception("This payement method '$payMethod' with payID '$payID' is not supported");
         }
-        $this->client = $client;
-        $basket = $this->client->getBasket();
+        // $client = $this->getClient();
+        $basket = $client->getBasket();
         if ($basket->getQuantity() <= 0) {
             throw new Exception("Basket can't be empty");
         }
@@ -118,7 +129,7 @@ class CheckoutSession extends ModelFunctionality
         $this->successPath = $payementMap->get($payID, Map::successPath);
         $this->domain = Configuration::get(Configuration::URL_DOMAIN);
 
-        $this->setCheckoutSession($stripe, $client);
+        $this->setCheckoutSession();
         $this->setDate = $this->getDateTime();
         $response = new Response();
         $userID = $client->getUserID();
@@ -129,12 +140,12 @@ class CheckoutSession extends ModelFunctionality
      * To retreive CheckoutSession from Stripe's event
      * @param Stripe\Event $event event send by Stripee to the webhook
      */
-    public function retreive(Stripe\Event $event)
+    public function handleEvent(Stripe\Event $event)
     {
         // if ($event->type != 'checkout.session.completed') {
         if ($event->type != StripeAPI::EVENT_CHECKOUT_COMPLETED) {
             // throw new Exception("The Stripe Event to retreive is not of type 'checkout.session.completed', event->type:$event->type");
-            throw new Exception("The Stripe Event to retreive is not of type '". StripeAPI::EVENT_CHECKOUT_COMPLETED ."', event->type:".$event->type);
+            throw new Exception("The Stripe Event to retreive is not of type '" . StripeAPI::EVENT_CHECKOUT_COMPLETED . "', event->type:" . $event->type);
         }
         $this->checkoutSession = $event->data->object;
         $response = new Response();
@@ -146,8 +157,11 @@ class CheckoutSession extends ModelFunctionality
      * @param \Stripe\StripeClient $stripe access to the stripe API
      * @param Client $client Client that holds the CheckoutSession
      */
-    private function setCheckoutSession($stripe, Client $client)
+    // private function setCheckoutSession($stripe, Client $client)
+    private function setCheckoutSession()
     {
+        $stripeAPI = $this->getStripeAPI();
+        $client = $this->getClient();
         /** NOTE metadat contraints
          * - max 50 keys
          * - key max 40 characters 
@@ -159,8 +173,11 @@ class CheckoutSession extends ModelFunctionality
         $domain = $this->getDomain();
         $success_url = $domain . $webRoot . $this->getsuccessPath();
         $cancel_url = $domain  . $webRoot . $this->getcancelPath();
+
         $line_items = $this->extractLineItems($basket, $client->getCurrency());
         $payementIntent = $this->extractPayementIntent($client->getSelectedAddress(), $client->getLastname());
+
+        $coupon = $this->createCoupon();
 
         $datas["payment_method_types"] = [$this->getPayMethod()]; // 'payment_method_types' => ['card']
         $datas["client_reference_id"] = $client->getUserID();
@@ -174,10 +191,29 @@ class CheckoutSession extends ModelFunctionality
         $datas["metadata"][Cookie::COOKIE_CLT] = $client->getCookie(Cookie::COOKIE_CLT)->getValue();
         $datas["payment_intent_data"] = $payementIntent;
         $datas["mode"] = self::CHECKOUT_MODE_PAYEMENT;
+        (!empty($coupon)) ? $datas["discounts"] = [['coupon' => $coupon->getId()]] : null;
         $datas["success_url"] = $success_url;
         $datas["cancel_url"] = $cancel_url;
 
-        $this->checkoutSession = $stripe->checkout->sessions->create($datas);
+        $this->checkoutSession = $stripeAPI->checkout->sessions->create($datas);
+    }
+
+    /**
+     * To get the Client that holds the CheckoutSession
+     * @return User Client that holds the CheckoutSession
+     */
+    private function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * To get the access to Stripe's API
+     * @return \Stripe\StripeClient access to Stripe's API
+     */
+    private function getStripeAPI()
+    {
+        return self::$stripeAPI;
     }
 
     /**
@@ -262,10 +298,23 @@ class CheckoutSession extends ModelFunctionality
     }
 
     /**
+     * To get translator
+     * @return Translator translator
+     */
+    private function getTranslator()
+    {
+        if(!isset($this->translator)) {
+            $language = $this->getClient()->getLanguage();
+            $this->translator = new Translator($language);
+        }
+        return $this->translator;
+    }
+
+    /**
      * To get creation date of the CheckoutSession
      * @return string the creation date of the CheckoutSession
      */
-    public function getSetDate()
+    private function getSetDate()
     {
         return $this->setDate;
     }
@@ -277,6 +326,42 @@ class CheckoutSession extends ModelFunctionality
     private function getSTRIPE_MAX_PROD_IMG()
     {
         return self::$STRIPE_MAX_PROD_IMG;
+    }
+
+    /**
+     * To convert shipping discount into a Stripe coupon
+     * @return StripeCoupon|null the shipping discount converted into a Stripe coupon
+     */
+    private function createCoupon()
+    {
+        $coupon = null;
+        $stripeAPI = $this->getStripeAPI();
+        $translator = $this->getTranslator();
+        
+        $basket = $this->getClient()->getBasket();
+        $translator = $this->getTranslator();
+        $discCodes = $basket->getDiscountCodes();
+        $couponID = implode("-", array_keys($discCodes))."-".time();
+        
+        // $shipCouponID = DiscountCode::TYPE_SUM_PRODS."_".$couponSequence;
+        $shipDiscount = $basket->getDiscountShipping();
+        $sumProdDiscount = $basket->getDiscountSumProducts();
+        $sum = $shipDiscount->getPrice() + $sumProdDiscount->getPrice();
+        $finalDiscount = new Shipping($sum, $basket->getCurrency(), 0, 0);
+        if($finalDiscount->getPrice() > 0){
+            $nameSumProdDisc = $translator->translateStation("US116");//." ".$translator->translateStation("US118");
+            $name = "";
+            $name .= ($sumProdDiscount->getPrice() == $sum) ? $nameSumProdDisc: null;
+            $name .= ($shipDiscount->getPrice() == $sum) ? $translator->translateStation("US115"): null;
+            $name .= (empty($name)) ? $nameSumProdDisc." + ".$translator->translateStation("US115"): null;
+            $couponMap = new Map();
+            $couponMap->put($couponID, Map::id);
+            $couponMap->put($name, Map::name);
+            $couponMap->put(StripeCoupon::DURATION_ONCE, Map::duration);
+            $coupon = new StripeCoupon($stripeAPI, $finalDiscount, $couponMap);
+            $coupon->create();
+        }
+        return $coupon;
     }
 
     /**
@@ -345,19 +430,20 @@ class CheckoutSession extends ModelFunctionality
 
     /**
      * To convert shipping cost into a StripeProduct
-     * @param Price $price total shipping cost
+     * @param Shipping $price total shipping cost
      * @param Currency $language Client's language
      * @return string[] Stripe product
      */
-    private function extractShipping(Price $price, Language $language)
+    private function extractShipping(Shipping $shipping, Language $language)
     {
         $shipMap = new Map();
-        $translator  = new Translator($language);
-        $description = ($price->getPrice() == 0) ? $translator->translateStation("US67") : null;
+        // $translator  = new Translator($language);
+        $translator  = $this->getTranslator();
+        $description = ($shipping->getPrice() == 0) ? $translator->translateStation("US67") : null;
         $images = [Configuration::get(Configuration::DIR_STATIC_FILES) . self::SHIPPING_IMG];
         $shipMap->put($translator->translateStation("US66"), Map::name);
-        $shipMap->put($price->getCurrency(), Map::currency);
-        $shipMap->put($price, Map::unit_amount);
+        $shipMap->put($shipping->getCurrency(), Map::currency);
+        $shipMap->put($shipping, Map::unit_amount);
         $shipMap->put($description, Map::description);
         $shipMap->put($images, Map::images);
         $shipMap->put(1, Map::quantity);
@@ -464,19 +550,26 @@ class CheckoutSession extends ModelFunctionality
     private function insertCheckoutSession(Response $response, $userID)
     {
         // $client = $this->getClient();
-        $bracket = "(?,?,?,?,?,?)";
-        $sql = "INSERT INTO `StripeCheckoutSessions`(`sessionID`, `payId`, `userId`, `custoID`, `payStatus`, `setDate`) 
+        $bracket = "(?,?,?,?,?,?,?)";  // regex \[value-[0-9]*\]
+        $sql = "INSERT INTO `StripeCheckoutSessions`(`sessionID`, `payId`, `userId`, `iso_currency`, `custoID`, `payStatus`, `setDate`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [];
-        array_push($values, $this->getSessionID());
-        array_push($values, $this->getPaymentMethod());     // with Stripe the payId = payMethod
-        array_push($values, $userID);
-        array_push($values, $this->getCustomerID());
-        array_push($values, $this->getPaymentStatus());
-        array_push($values, $this->getSetDate());
+        array_push(
+            $values,
+            $this->getSessionID(),
+            $this->getPaymentMethod(),     // with Stripe the payId = payMeth
+            $userID,
+            $this->getClient()->getCurrency()->getIsoCurrency(),
+            $this->getCustomerID(),
+            $this->getPaymentStatus(),
+            $this->getSetDate()
+        );
         $this->insert($response, $sql, $values);
     }
 
+    /**
+     * To update Client's Stripe customer ID and payement status
+     */
     private function updateCheckoutSession(Response $response) // regex \[value-[0-9]*\]
     {
         $sessionID = $this->getSessionID();
@@ -485,8 +578,11 @@ class CheckoutSession extends ModelFunctionality
                 `payStatus`=?
                 WHERE `sessionID` = '$sessionID'";
         $values = [];
-        array_push($values, $this->getCustomerID());
-        array_push($values, $this->getPaymentStatus());
+        array_push(
+            $values,
+            $this->getCustomerID(),
+            $this->getPaymentStatus()
+        );
         $this->update($response, $sql, $values);
     }
 }

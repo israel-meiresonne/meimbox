@@ -711,7 +711,9 @@ class Visitor extends ModelFunctionality
      */
     public function unlockStock()
     {
-        if (get_class($this) != Visitor::class) {
+        $isXHR = $this->getNavigation()->getUrlPage()->isXHR();
+        $isVisitor = get_class($this) == Visitor::class;
+        if ((!$isVisitor) && (!$isXHR)) {
             $userID = $this->getUserID();
             $usersCookiesMap = $this->getUsersCookiesMap($userID);
             if (!empty($usersCookiesMap->get(Cookie::COOKIE_LCK))) {
@@ -720,7 +722,6 @@ class Visitor extends ModelFunctionality
                 $this->getBasket()->unlock($response, $userID);
             }
         }
-        // var_dump($response);
     }
 
     /*———————————————————————————— MANAGE CLASS UP ——————————————————————————*/
@@ -1582,11 +1583,15 @@ class Visitor extends ModelFunctionality
 
         $basket = $this->getBasket();
         $total = $basket->getTotal()->getFormated();
+        $quantity = $basket->getQuantity();
+
+        $subtotalObj = $basket->getSubTotal();
+        $subtotal = $subtotalObj->getFormated();
+
         $sumProdsObj = $basket->getSumProducts();
         $sumProds = $sumProdsObj->getFormated();
         $reductSumProds = $basket->getDiscountSumProducts();
 
-        $quantity = $basket->getQuantity();
         $shippingObj = $basket->getShipping();
         $shipping = $shippingObj->getFormated();
         $reductShip = $basket->getDiscountShipping();
@@ -1599,14 +1604,15 @@ class Visitor extends ModelFunctionality
         $freeShipCode = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
         $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
         $minPrice = null;
-        if ((!empty($freeShipCodeObj)) &&  ($basket->getSubTotal()->getPrice() < $freeShipCodeObj->getMinAmount())) {
+        if ((!empty($freeShipCodeObj)) &&  ($subtotalObj->getPrice() < $freeShipCodeObj->getMinAmount())) {
             $minAmount = $freeShipCodeObj->getMinAmount();
             $minPrice = (new Price($minAmount, $currency))->getFormated();
             $freeShipMsg = $translator->translateStation("US117", (new Map(["price" => $minPrice])));
         }
 
         $response->addResult(Basket::KEY_TOTAL, $total);
-        $response->addResult(Basket::KEY_SUBTOTAL, $sumProds);
+        $response->addResult(Basket::KEY_SUM_PRODS, $sumProds);
+        $response->addResult(Basket::KEY_SUBTOTAL, $subtotal);
         ($reductSumProds->getPrice() > 0) ? $response->addResult(Basket::KEY_SUBTOTAL_DISC, $reductSumProds->getReverse()->getFormated()) : null;
         $response->addResult(Basket::KEY_SHIPPING, $shipping);
         ($reductShip->getPrice() > 0) ? $response->addResult(Basket::KEY_SHIPPING_DISC, $reductShip->getReverse()->getFormated()) : null;

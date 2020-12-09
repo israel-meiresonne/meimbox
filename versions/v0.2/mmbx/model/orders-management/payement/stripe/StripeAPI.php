@@ -1,19 +1,28 @@
 <?php
-require_once 'framework/Configuration.php';
 require_once 'model/library/payement/stripe-php/init.php';
+require_once 'model/orders-management/payement/stripe/CheckoutSession.php';
+
+require_once 'framework/Configuration.php';
 require_once 'model/ModelFunctionality.php';
 require_once 'model/boxes-management/Basket.php';
 require_once 'model/boxes-management/Box.php';
 require_once 'model/boxes-management/BasketProduct.php';
 require_once 'model/boxes-management/BoxProduct.php';
 require_once 'model/special/Map.php';
-require_once 'model/orders-management/payement/stripe/CheckoutSession.php';
-
+require_once 'model/special/Response.php';
+require_once 'model/tools-management/Cookie.php';
+require_once 'model/view-management/Translator.php';
 /**
- * This class provide an access to the Stripe's API
+ * This class used as a facade and provide an access to the Stripe's API
  */
 class StripeAPI extends ModelFunctionality
 {
+    /**
+     * Holds Client that holds the checkoutSession
+     * @var Client
+     */
+    private $client;
+
     /**
      * Holds contact with Stripe's api
      * @var \Stripe\StripeClient
@@ -31,12 +40,6 @@ class StripeAPI extends ModelFunctionality
      * @var CheckoutSession
      */
     private static $event;
-
-    /**
-     * Holds Client that holds the checkoutSession
-     * @var Client
-     */
-    private $client;
 
     /**
      * Holds type of event
@@ -75,8 +78,17 @@ class StripeAPI extends ModelFunctionality
     {
         $stripeAPI = $this->getStripeAPI();
         $client = $this->getClient();
-        self::$checkoutSession = new CheckoutSession();
-        self::$checkoutSession->create($stripeAPI, $client, $payMethod);
+        self::$checkoutSession = new CheckoutSession($stripeAPI);
+        self::$checkoutSession->create($payMethod, $client);
+    }
+
+    /**
+     * To get the Client that holds the CheckoutSession
+     * @return User Client that holds the CheckoutSession
+     */
+    private function getClient()
+    {
+        return $this->client;
     }
 
     /**
@@ -120,15 +132,6 @@ class StripeAPI extends ModelFunctionality
     }
 
     /**
-     * To get the Client that holds the CheckoutSession
-     * @return User Client that holds the CheckoutSession
-     */
-    private function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
      * To handle Stripe's events
      */
     public function handleEvents()
@@ -162,11 +165,13 @@ class StripeAPI extends ModelFunctionality
 
         // Handle the event
         switch ($event->type) {
-            // case 'checkout.session.completed':
+                // case 'checkout.session.completed':
             case self::EVENT_CHECKOUT_COMPLETED:
+                $client = $this->getClient();
+                $stripeAPI = $this->getStripeAPI();
                 self::$event = $event->type;
-                self::$checkoutSession = new CheckoutSession();
-                self::$checkoutSession->retreive($event);
+                self::$checkoutSession = new CheckoutSession($stripeAPI);
+                self::$checkoutSession->handleEvent($event);
                 break;
             default:
                 echo 'Received unknown event type ' . $event->type;

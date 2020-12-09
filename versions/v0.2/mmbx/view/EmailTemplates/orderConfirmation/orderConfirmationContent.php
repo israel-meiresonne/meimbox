@@ -17,15 +17,15 @@ $translator = $translator;
 /**
  * @var Order */
 $order = $order;
-// $basketOrdered = $order->getBasketOrdered();    //🔋
+$basketOrdered = $order->getBasketOrdered();    //🔋
 /**
  * @var BasketOrdered*/
-$basketOrdered = $order;         //🚨to delete cause delivery addres is  already in order
+// $basketOrdered = $order;         //🚨to delete cause delivery addres is  already in order
 
 /**
  * @var AddressDelivery */
-// $address = $order->getDelivery();   //🔋
-$address = $address;             //🚨to delete cause delivery addres is  already in order
+$address = $order->getDelivery();   //🔋
+// $address = $address;             //🚨to delete cause delivery addres is  already in order
 $appartement = (!empty($address->getAppartement())) ? " (" . $address->getAppartement() . ")" : null;
 $province = $address->getProvince();
 $zipcode = $address->getZipcode();

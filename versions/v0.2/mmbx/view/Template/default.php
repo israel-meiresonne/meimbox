@@ -172,6 +172,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const QR_SELECT_ADRS = "<?= ControllerCheckout::QR_SELECT_ADRS ?>";
 
         const KEY_CART_FILE = "<?= Basket::KEY_CART_FILE ?>";
+        const KEY_SUM_PRODS = "<?= Basket::KEY_SUM_PRODS ?>";
         const KEY_TOTAL = "<?= Basket::KEY_TOTAL ?>";
         const KEY_SUBTOTAL = "<?= Basket::KEY_SUBTOTAL ?>";
         const KEY_SUB_DISC = "<?= Basket::KEY_SUBTOTAL_DISC ?>";

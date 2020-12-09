@@ -1,5 +1,6 @@
 (() => {
     // ++++ val down ++++
+    const basketsumprods = "sum_prods";
     const baskettotal = "total";
     const basketsubtotal = "subtotal";
     const basketproddiscount = "prod_discount";
@@ -688,8 +689,16 @@
     }
     /*—————————————————— PRICING MANAGER UP —————————————————————————————————*/
     /*—————————————————— BASKET MANAGER DOWN ————————————————————————————————*/
+    basketUpdateData = (r, d, k) => {
+        var x = $("[" + basketdata + "='" + d + "']");
+        var v = r.results[k];
+        fadeValue(x, v);
+    }
     basketUpdateDatas = (r) => {
         if (r.isSuccess) {
+
+            basketUpdateData(r, basketsumprods, KEY_SUM_PRODS);
+
             var ttx = $("[" + basketdata + "='" + baskettotal + "']");
             var ttv = r.results[KEY_TOTAL];
             fadeValue(ttx, ttv);

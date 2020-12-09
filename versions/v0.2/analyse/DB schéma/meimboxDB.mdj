@@ -16890,6 +16890,21 @@
 												},
 												{
 													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2Qg0ifaPGbIo=",
+													"_parent": {
+														"$ref": "AAAAAAF0+IbxmC8ARA8="
+													},
+													"model": {
+														"$ref": "AAAAAAF2Qg0iVaPD9oo="
+													},
+													"font": "Arial;13;0",
+													"left": 2677,
+													"top": 497,
+													"width": 222.72509765625,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
 													"_id": "AAAAAAF0+IwTVi9QLUU=",
 													"_parent": {
 														"$ref": "AAAAAAF0+IbxmC8ARA8="
@@ -16899,7 +16914,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2677,
-													"top": 497,
+													"top": 512,
 													"width": 222.72509765625,
 													"height": 13
 												},
@@ -16914,7 +16929,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2677,
-													"top": 512,
+													"top": 527,
 													"width": 222.72509765625,
 													"height": 13
 												},
@@ -16929,7 +16944,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 2677,
-													"top": 527,
+													"top": 542,
 													"width": 222.72509765625,
 													"height": 13
 												}
@@ -16938,14 +16953,14 @@
 											"left": 2672,
 											"top": 447,
 											"width": 232.72509765625,
-											"height": 98
+											"height": 113
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2672,
 									"top": 424,
 									"width": 232.72509765625,
-									"height": 121,
+									"height": 136,
 									"nameLabel": {
 										"$ref": "AAAAAAF0+IbxmC7/4vc="
 									},
@@ -27910,6 +27925,21 @@
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
+									}
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2Qg0iVaPD9oo=",
+									"_parent": {
+										"$ref": "AAAAAAF0+Ibxly78CfY="
+									},
+									"name": "iso_currency",
+									"documentation": "# Description \n\ncurrency Iso Code\n\n# Contraint\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
+									"type": "VARCHAR",
+									"length": "10",
+									"foreignKey": true,
+									"referenceTo": {
+										"$ref": "AAAAAAFwSXn8vaUnvDw="
 									}
 								},
 								{
