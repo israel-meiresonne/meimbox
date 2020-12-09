@@ -1,7 +1,6 @@
 <?php
 require_once('vendor/autoload.php');
-require_once 'model/tools-management/mailers/Mailer.php';
-require_once 'model/tools-management/mailers/BlueAPI/BlueMessage.php';
+require_once 'model/API/BlueAPI/BlueMessage.php';
 
 require_once 'framework/Configuration.php';
 require_once 'model/ModelFunctionality.php';
