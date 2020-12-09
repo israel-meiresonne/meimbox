@@ -37,6 +37,11 @@ class Pixel extends Facebook
     // public const EVENT_VIEW_PRODUCT_GRID = "view_product_grid";
 
     /**
+     * Holds acces key to get Pixel
+     */
+    public const KEY_FB_PXL = "key_fb_pxl";
+
+    /**
      * To set pixelsMap
      */
     private static function setPixelsMap()
@@ -131,10 +136,49 @@ class Pixel extends Facebook
     }
 
     /**
+     * To generate Pixel's datas for product seen
+     * @param Map $datasMap Product's datas
+     *                      + $datasMap[Map::product] => {Product}   product seen
+     * @return Map Pixel's datas product seen
+     */
+    private static function ViewContent(Map $datasMap)
+    {
+        /**
+         * @var Product */
+        $product = $datasMap->get(Map::product);
+        if (empty($product)) {
+            throw new Exception("The product can't be empty");
+        }
+        $paramsMap = new Map();
+        /*  id of similar products => ['ABC123', 'XYZ789'] */
+        $paramsMap->put([$product->getProdID()], Map::content_ids);
+        /** product's category */
+        $paramsMap->put($product->getForeignCategory(Product::CATEGORY_GOOGLE), Map::content_category);
+        /*  product's name */
+        $paramsMap->put($product->getProdName(), Map::content_name);
+        /*  product or product_group */
+        $paramsMap->put(Map::product, Map::content_type);
+        /*  [{'id': 'ABC123', 'quantity': 2}, {'id': 'XYZ789', 'quantity': 2}] */
+        $stock = $product->getSizeStock();
+        $quantity = array_sum($stock);
+        $contents = [
+            // [Map::id => $product->getProdID(), Map::quantity => $product->getQuantity()]
+            [Map::id => $product->getProdID(), Map::quantity => $quantity]
+        ];
+        $paramsMap->put($contents, Map::contents);
+        /*  currency */
+        $price = $product->getPrice();
+        $paramsMap->put($price->getCurrency()->getIsoCurrency(), Map::currency);
+        /*  price {int|float} */
+        $paramsMap->put($price->getPrice(), Map::value);
+        return $paramsMap;
+    }
+
+    /**
      * To generate Pixel's datas for product added in cart
      * + Note: required datas => content_type and contents, or content_ids
      * @param Map $datasMap holds the product added in basket
-     * + $datasMap[Map::product]
+     *                      + $datasMap[Map::product] => {Product}
      * @return Map Pixel's datas for product added in cart
      */
     private static function AddToCart(Map $datasMap)
@@ -261,43 +305,6 @@ class Pixel extends Facebook
         /*  price {int|float} */
         $paramsMap->put($value, Map::value);
 
-        return $paramsMap;
-    }
-
-    /**
-     * To generate Pixel's datas for product seen
-     * @param Map $datasMap Product's datas
-     *                      + $datasMap[Map::product] => {Product}   product seen
-     * @return Map Pixel's datas product seen
-     */
-    private static function ViewContent(Map $datasMap)
-    {
-        /**
-         * @var Product */
-        $product = $datasMap->get(Map::product);
-        if (empty($product)) {
-            throw new Exception("The product can't be empty");
-        }
-
-        $paramsMap = new Map();
-        /*  id of similar products => ['ABC123', 'XYZ789'] */
-        $paramsMap->put([$product->getProdID()], Map::content_ids);
-        /** product's category */
-        $paramsMap->put($product->getCategories()[0], Map::content_category);
-        /*  product's name */
-        $paramsMap->put($product->getProdName(), Map::content_name);
-        /*  product or product_group */
-        $paramsMap->put(Map::product, Map::content_type);
-        $contents = [
-            [Map::id => $product->getProdID(), Map::quantity => $product->getQuantity()]
-        ];
-        /*  [{'id': 'ABC123', 'quantity': 2}, {'id': 'XYZ789', 'quantity': 2}] */
-        $paramsMap->put($contents, Map::contents);
-        $price = $product->getPrice();
-        /*  currency */
-        $paramsMap->put($price->getCurrency()->getIsoCurrency(), Map::currency);
-        /*  price {int|float} */
-        $paramsMap->put($price->getPrice(), Map::value);
         return $paramsMap;
     }
 }

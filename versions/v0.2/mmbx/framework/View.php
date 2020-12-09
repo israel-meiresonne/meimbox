@@ -486,7 +486,7 @@ class View
         $script = null;
         $nb = count($indexes);
         if ($nb > 0) {
-            $script = "<script>\n";
+            $script = "<script id=\"fbpxl\" type=\"text/javascript\">\n";
             foreach ($indexes as $index) {
                 $type = $fbPixelsMap->get($index, Map::type);
                 $event = $fbPixelsMap->get($index, Map::event);

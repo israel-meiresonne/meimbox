@@ -1,18 +1,6 @@
 <?php
 
 /**
- * @var array
- */
-$measureUnits = $measureUnits;
-
-$this->title = "item";
-$this->description = "item page";
-/**
- * @var Translator
- */
-$translator = $translator;
-
-/**
  * @var BoxProduct|BasketProduct
  */
 $product = $product;
@@ -50,17 +38,31 @@ switch (get_class($person)) {
         $measures = [];
         break;
 }
-
 $language = $person->getLanguage();
 $country = $person->getCountry();
 $currency = $person->getCurrency();
 $measures = $person->getMeasures();
 $basket = $person->getBasket();
-
 /**
  * @var array
  */
 $brandsMeasures = $brandsMeasures;
+/**
+ * @var array
+ */
+$measureUnits = $measureUnits;
+
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+
+$this->title = "item";
+$this->description = "item page";
+/**
+ * @var Translator
+ */
+$translator = $translator;
+$pixelDatasMap = new Map([Map::product => $product]);
+$this->addFbPixel(Pixel::TYPE_TRACK, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMap);
+/*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 
 <div class="item_page-inner">
