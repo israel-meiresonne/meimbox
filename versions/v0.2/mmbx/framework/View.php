@@ -5,7 +5,7 @@ require_once 'model/tools-management/Language.php';
 require_once 'model/special/Response.php';
 require_once 'model/special/Map.php';
 require_once 'framework/Configuration.php';
-require_once 'model/marketing/facebook/Facebook.php';
+require_once 'model/API/Facebook/Facebook.php';
 
 // View Elements
 require_once 'view/view/Touch/Touch.php';

@@ -1,5 +1,5 @@
 <?php
-require_once 'model/marketing/facebook/Facebook.php';
+require_once 'model/API/Facebook/Facebook.php';
 
 class Pixel extends Facebook
 {
@@ -98,7 +98,7 @@ class Pixel extends Facebook
         $datas = [
             "pixelID" => $pixelID
         ];
-        return parent::generateFile('model/marketing/facebook/files/content/pixelBaseCode.php', $datas);
+        return parent::generateFile('model/API/Facebook/files/content/pixelBaseCode.php', $datas);
     }
 
     /**
