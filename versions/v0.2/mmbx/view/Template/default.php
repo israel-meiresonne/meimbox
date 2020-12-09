@@ -204,6 +204,8 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const BUTTON_KEY = "<?= ControllerSecure::BUTTON_KEY ?>";
         const FAT_ERR = "<?= MyError::FATAL_ERROR ?>";
 
+        const KEY_FB_PXL = "<?= Pixel::KEY_FB_PXL ?>";
+
         const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";
         const ALERT_DLT_BXPROD = "<?= $translator->translateStation("US64") ?>";

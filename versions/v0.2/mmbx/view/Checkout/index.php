@@ -91,7 +91,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
     </div>
 </div>
 
-<script type="text/javascript">
+<script id="lnchchkt" type="text/javascript">
     <?php
     if (isset($deletedBoxesStation)) : ?>
         alert("<?= $translator->translateStation($deletedBoxesStation) ?>");
