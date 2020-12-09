@@ -1,5 +1,5 @@
 <?php
-// require_once 'model/orders-management/payement/stripe/Coupon.php';
+// require_once 'model/API/Stripe/Coupon.php';
 
 class StripeCoupon /* extends ModelFunctionality */
 {

@@ -1,5 +1,5 @@
 <?php
-// require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+// require_once 'model/API/Stripe/StripeAPI.php';
 $this->title = "checkout";
 $this->description = "checkout";
 $pk = Configuration::get(Configuration::STRIPE_PK);
