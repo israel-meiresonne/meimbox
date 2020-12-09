@@ -1,6 +1,6 @@
 <?php
 require_once 'ControllerSecure.php';
-require_once 'model/orders-management/payement/stripe/StripeAPI.php';
+require_once 'model/API/Stripe/StripeAPI.php';
 require_once 'model/API/Facebook/Facebook.php';
 
 class ControllerWebhook extends ControllerSecure

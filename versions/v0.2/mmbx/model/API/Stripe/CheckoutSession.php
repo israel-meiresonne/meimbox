@@ -1,5 +1,5 @@
 <?php
-require_once 'model/orders-management/payement/stripe/StripeCoupon.php';
+require_once 'model/API/Stripe/StripeCoupon.php';
 
 class CheckoutSession extends ModelFunctionality
 {
