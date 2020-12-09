@@ -23,7 +23,7 @@
                 "product" => $product,
                 "company" => $company
             ];
-            echo self::generateFile('model/marketing/facebook/files/catalog/files/catalogItem.php', $datas);
+            echo self::generateFile('model/API/Facebook/files/catalog/files/catalogItem.php', $datas);
         }
         ?>
 

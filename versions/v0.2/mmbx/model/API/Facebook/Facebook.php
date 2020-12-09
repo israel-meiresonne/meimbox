@@ -1,6 +1,6 @@
 <?php
 require_once 'model/ModelFunctionality.php';
-require_once 'model/marketing/facebook/Pixel.php';
+require_once 'model/API/Facebook/Pixel.php';
 require_once 'model/special/Map.php';
 
 class Facebook extends ModelFunctionality
@@ -87,7 +87,7 @@ class Facebook extends ModelFunctionality
             "products" => $products,
             "company" => $company
         ];
-        $xml = self::generateFile("model/marketing/facebook/files/catalog/$file", $datas);
+        $xml = self::generateFile("model/API/Facebook/files/catalog/$file", $datas);
         return self::cleanXML($xml);
     }
 
