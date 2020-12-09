@@ -13,7 +13,6 @@
 /**
  * @var Translator */
 $translator = $translator;
-
 /**
  * @var Basket */
 $basket = $basket;

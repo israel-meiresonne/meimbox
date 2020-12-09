@@ -92,6 +92,10 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
 </div>
 
 <script type="text/javascript">
+    <?php
+    if (isset($deletedBoxesStation)) : ?>
+        alert("<?= $translator->translateStation($deletedBoxesStation) ?>");
+    <?php endif; ?>
     var stripe = Stripe('<?= $pk ?>');
     const KEY_STRP_MTD = '<?= CheckoutSession::KEY_STRP_MTD ?>';
     const QR_NW_CHCKT_SS = '<?= ControllerCheckout::QR_NW_CHCKT_SS ?>';
@@ -108,24 +112,29 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $datas);
             "d": params,
             "r": checkoutRSP,
             "l": lx,
-            // "x": cbtnx,
+            "x": {
+                "l": lx,
+                "brotx": brotx
+            },
             "sc": () => {
                 displayFlexOn(d.l);
                 disable(brotx)
             },
             "rc": () => {
-                displayFlexOff(d.l);
-                enable(brotx);
+                // displayFlexOff(d.l);
+                // enable(brotx);
             }
         };
         SND(d);
     }
-    const checkoutRSP = (r) => {
+    const checkoutRSP = (r, x) => {
         if (r.isSuccess) {
             // console.log("success");
             lunchCheckout(r.results[QR_NW_CHCKT_SS]);
         } else {
             // console.log("error");
+            displayFlexOff(x.l);
+            enable(x.brotx);
             handleErr(r);
         }
     }

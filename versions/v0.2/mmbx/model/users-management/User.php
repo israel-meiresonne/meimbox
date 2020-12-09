@@ -430,8 +430,8 @@ abstract class User extends Visitor
                     $userID = $this->getUserID();
                     $basket->lock($response, $userID);
 
-                    $haveDelete = $basket->deleteEmptyBoxes($response);
-                    (!empty($haveDelete)) ? $response->addResultStation(Response::RSP_NOTIFICATION, "US69") : null;
+                    // $haveDelete = $basket->deleteEmptyBoxes($response);
+                    // (!empty($haveDelete)) ? $response->addResultStation(Response::RSP_NOTIFICATION, "US69") : null;
 
                     $cookieValue = $this->generateDateCode(25);
                     $this->generateCookie(Cookie::COOKIE_LCK, $cookieValue);

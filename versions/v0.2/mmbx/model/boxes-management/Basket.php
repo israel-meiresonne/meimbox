@@ -171,7 +171,6 @@ class Basket extends ModelFunctionality
                 $this->discountCodes[$code] = $discCode;
             }
         }
-
     }
 
     /**
@@ -327,7 +326,7 @@ class Basket extends ModelFunctionality
         $code = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
         $discountCodesMap = new Map($this->discountCodes);
         $freeShipDiscCode = $discountCodesMap->get($code);
-        if(empty($freeShipDiscCode)){
+        if (empty($freeShipDiscCode)) {
             $response = new Response();
             $this->addDiscountCode($response, $code, $country);
         }
@@ -744,6 +743,7 @@ class Basket extends ModelFunctionality
                 if ($box->getQuantity() <= 0) {
                     $box->deleteBox($response);
                     $haveDelete = (!$haveDelete) ? true : $haveDelete;
+                    $this->unsetBox($box->getBoxID());
                 }
             }
         }
