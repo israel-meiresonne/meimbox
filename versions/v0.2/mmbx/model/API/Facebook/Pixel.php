@@ -15,7 +15,7 @@ class Pixel extends Facebook
      * Holds pixel type of event
      * @var string
      */
-    public const TYPE_TRACK = "track";
+    public const TYPE_STANDARD = "track";
     public const TYPE_CUSTOM = "trackCustom";
 
     /**
@@ -49,19 +49,19 @@ class Pixel extends Facebook
         self::$pixelsMap = new Map();
 
         /** AddToCart */
-        self::$pixelsMap->put(self::TYPE_TRACK, self::EVENT_ADD_TO_CART, Map::type);
+        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_ADD_TO_CART, Map::type);
         self::$pixelsMap->put(self::EVENT_ADD_TO_CART, self::EVENT_ADD_TO_CART, Map::func);
 
         /** InitiateCheckout */
-        self::$pixelsMap->put(self::TYPE_TRACK, self::EVENT_INIT_CHECKOUT, Map::type);
+        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_INIT_CHECKOUT, Map::type);
         self::$pixelsMap->put(self::EVENT_INIT_CHECKOUT, self::EVENT_INIT_CHECKOUT, Map::func);
 
         /** Purchase */
-        self::$pixelsMap->put(self::TYPE_TRACK, self::EVENT_PURCHASE, Map::type);
+        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_PURCHASE, Map::type);
         self::$pixelsMap->put(self::EVENT_PURCHASE, self::EVENT_PURCHASE, Map::func);
 
         /** ViewContent */
-        self::$pixelsMap->put(self::TYPE_TRACK, self::EVENT_VIEW_CONTENT, Map::type);
+        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_VIEW_CONTENT, Map::type);
         self::$pixelsMap->put(self::EVENT_VIEW_CONTENT, self::EVENT_VIEW_CONTENT, Map::func);
 
         /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
@@ -214,7 +214,7 @@ class Pixel extends Facebook
     /**
      * To generate Pixel's datas for checkout initiated
      * @param Map $datasMap Basket's datas
-     * + $datasMap[Map::basket] {Basket}    Visitor's Basket
+     *                      + $datasMap[Map::basket] => {Basket}   Visitor's Basket
      * @return Map Pixel's datas for checkout initiated
      */
     private static function InitiateCheckout(Map $datasMap)
@@ -247,6 +247,7 @@ class Pixel extends Facebook
         $isoCurrency = $total->getCurrency()->getIsoCurrency();
         $value = $total->getPrice();
 
+        $paramsMap->put(Map::product, Map::content_type);
         $paramsMap->put($content_ids->getMap(), Map::content_ids);
         $paramsMap->put($contents->getMap(), Map::contents);
         $paramsMap->put($tr, Map::num_items);
@@ -258,7 +259,7 @@ class Pixel extends Facebook
     /**
      * To generate Pixel's datas for purchase done
      * @param Map $datasMap Order's datas
-     * + $datasMap[Map::order] {Order}  Visitor's Order purchased
+     *                      + $datasMap[Map::order] {Order}  Visitor's Order purchased
      * @return Map Pixel's datas for purchase done
      */
     private static function Purchase(Map $datasMap)
