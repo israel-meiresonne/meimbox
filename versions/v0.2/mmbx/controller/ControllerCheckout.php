@@ -32,10 +32,16 @@ class ControllerCheckout extends ControllerSecure
     {
         /**
          * @var User */
-        $person = $this->person;
+        $person = $this->getPerson();
         $address = $person->getSelectedAddress();
+        $basket = $person->getBasket();
+        $response = new Response();
+        $deleted = $basket->deleteEmptyBoxes($response);
+        // (!empty($haveDelete)) ? $response->addResultStation(Response::RSP_NOTIFICATION, "US69") : null;
+
         $datasView = [
-            "address" => $address
+            "address" => $address,
+            "deletedBoxesStation" => (($deleted) ? "US69" : null)
         ];
         $this->generateView($datasView, $person);
     }
