@@ -1,5 +1,5 @@
 <?php
-require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
+require_once 'model/API/BlueAPI/BlueAPI.php';
 
 /**
  * This class represente a message created with Sendinblue's API

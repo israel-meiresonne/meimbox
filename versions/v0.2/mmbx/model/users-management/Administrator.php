@@ -1,6 +1,6 @@
 <?php
 require_once 'model/users-management/Client.php';
-require_once 'model/tools-management/mailers/BlueAPI/BlueEvent.php';
+require_once 'model/API/BlueAPI/BlueEvent.php';
 
 class Administrator extends Client
 {

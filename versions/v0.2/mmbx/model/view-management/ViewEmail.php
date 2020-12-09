@@ -4,7 +4,7 @@ require_once('vendor/autoload.php');
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 require_once 'framework/View.php';
-require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
+require_once 'model/API/BlueAPI/BlueAPI.php';
 
 class ViewEmail extends View
 {
@@ -113,7 +113,7 @@ class ViewEmail extends View
      */
     public function sendEmail(Response $response, string $mailerClass, string $mailerFunc, Map $emailDatasMap)
     {
-        $classFile = "model/tools-management/mailers/" . $mailerClass . "/" . $mailerClass . ".php";
+        $classFile = "model/API/$mailerClass/$mailerClass.php";
         if (!file_exists($classFile)) {
             throw new Exception("This class $mailerClass don't exist, classFile:'$classFile'");
         }

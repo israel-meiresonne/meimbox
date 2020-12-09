@@ -1,5 +1,5 @@
 <?php
-require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
+require_once 'model/API/BlueAPI/BlueAPI.php';
 
 class BlueEvent extends BlueAPI
 {
@@ -85,7 +85,7 @@ class BlueEvent extends BlueAPI
      */
     private function saveEventInFile(array $event)
     {
-        $file = 'model/tools-management/mailers/BlueAPI/files/event.json';
+        $file = 'model/API/BlueAPI/files/event.json';
         $events = json_decode(file_get_contents($file), true);
         $eventsMap = new Map($events);
         $email = $this->getEmail();

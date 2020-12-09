@@ -1,6 +1,5 @@
 <?php
 require_once 'ControllerSecure.php';
-// require_once 'model/tools-management/mailers/BlueAPI/BlueAPI.php';
 
 class ControllerCheckout extends ControllerSecure
 {
