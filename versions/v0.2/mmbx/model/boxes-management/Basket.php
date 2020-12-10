@@ -15,7 +15,7 @@ class Basket extends ModelFunctionality
      * Holds Visitor's id
      * @var string
      */
-    private $userID;
+    protected $userID;
 
     /**
      * the Visitor's language
@@ -318,21 +318,6 @@ class Basket extends ModelFunctionality
     }
 
     /**
-     * To give the free shipping code to Visitor
-     */
-    private function addFreeShippingCode()
-    {
-        $country = $this->getCountry();
-        $code = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
-        $discountCodesMap = new Map($this->discountCodes);
-        $freeShipDiscCode = $discountCodesMap->get($code);
-        if (empty($freeShipDiscCode)) {
-            $response = new Response();
-            $this->addDiscountCode($response, $code, $country);
-        }
-    }
-
-    /**
      * To get a discount code  applied on basket
      * @param string $code a discount code  applied on basket
      * @return DiscountCode|null a discount code  applied on basket
@@ -350,6 +335,34 @@ class Basket extends ModelFunctionality
             }
         }
         return $foundCode;
+    }
+
+    /**
+     * To insert to Visitor a new DiscountCode
+     * @param Response  $response   where to strore results
+     * @param string    $code       code to add
+     * @param Country   $country    Visitor's country
+     */
+    public function addDiscountCode(Response $response, $code, Country $country)
+    {
+        $discCode = new DiscountCode($code, $country);
+        $discCode->insertDiscountCode($response, $this->getUserID());
+        (!$response->containError()) ? $this->discountCodes[$code] = $discCode : null;
+    }
+
+    /**
+     * To give the free shipping code to Visitor
+     */
+    private function addFreeShippingCode()
+    {
+        $country = $this->getCountry();
+        $code = DiscountCode::getCodeForCountry($country, DiscountCode::KEY_FREE_SHIPPING);
+        $discountCodesMap = new Map($this->discountCodes);
+        $freeShipDiscCode = $discountCodesMap->get($code);
+        if (empty($freeShipDiscCode)) {
+            $response = new Response();
+            $this->addDiscountCode($response, $code, $country);
+        }
     }
 
     /**
@@ -560,19 +573,6 @@ class Basket extends ModelFunctionality
         }
         /** check also all BasketProducts */
         return $hasDiscount;
-    }
-
-    /**
-     * To insert to Visitor a new DiscountCode
-     * @param Response  $response   where to strore results
-     * @param string    $code       code to add
-     * @param Country   $country    Visitor's country
-     */
-    public function addDiscountCode(Response $response, $code, Country $country)
-    {
-        $discCode = new DiscountCode($code, $country);
-        $discCode->insertDiscountCode($response, $this->getUserID());
-        (!$response->containError()) ? $this->discountCodes[$code] = $discCode : null;
     }
 
     /**
@@ -912,5 +912,68 @@ class Basket extends ModelFunctionality
         Product::deleteLocks($response, $userID);
     }
 
-    /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
+
+    /**
+     * Create a new BasketOrdered
+     * @param Response  $response to push   in result or accured error
+     * @param string    $stripeCheckoutID   id of Stripe's session used to paid the order
+     * @param Address   $address Client's   delivery address for this order
+     * @return Order the order of the Basket
+     */
+    public function orderBasket(Response $response, $stripeCheckoutID, Address $address)
+    {
+        $userID = $this->getUserID();
+        $order = new Order();
+        $order->create($response, $userID, $stripeCheckoutID, $address, $this);
+        $orderID = $order->getOrderID();
+        
+        $this->insertContent($response, $orderID);
+
+        $this->dropDiscountCodes($response, $userID);
+        $this->unlock($response, $userID);
+        return $order;
+    }
+
+    /**
+     * To save the order
+     * @param string $orderID id of an order
+     */
+    private function insertContent(Response $response, $orderID)
+    {
+        // insert boxes
+        $boxes = $this->getBoxes();
+        Box::orderBoxes($response, $boxes, $orderID);
+        $discCodes = $this->getDiscountCodes();
+        (!empty($discCodes)) ? DiscountCode::applyDiscountCodes($response, $discCodes, $orderID) : null;
+        /** Insert basketProducts + decrease sttock */
+    }
+
+    /**
+     * To empty the basket by deleting basketProducts, boxproducts and boxes
+     * @param Response $response to push in result or accured error
+     */
+    public function empty(Response $response)
+    {
+        $boxes = $this->getBoxes();
+        if(!empty($boxes)){
+            foreach($boxes as $box){
+                $boxID = $box->getBoxID();
+                $this->deleteBox($response, $boxID);
+            }
+        }
+        /** delete basketproduct */
+    }
+
+    /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/
+
+    /**
+     * To delete all discount code from Basket
+     * @param Response $response where to strore results
+     * @param string $userID id of the Client
+     */
+    public function dropDiscountCodes(Response $response, $userID)
+    {
+        $sql = "DELETE FROM `Basket-DiscountCodes` WHERE `userId`='$userID'";
+        $this->delete($response, $sql);
+    }
 }

@@ -464,6 +464,28 @@ abstract class User extends Visitor
         return $stripeAPI->getEvent();
     }
 
+    // /**
+    //  * To convert User's basket into a order
+    //  * @param Response $response to push in result or accured error
+    //  * @param string $stripeCheckoutID id of Stripe's session used to paid the order
+    //  */
+    // private  function createOrder(Response $response, $stripeCheckoutID)
+    // {
+    //     $userID = $this->getUserID();
+    //     $basket = $this->getBasket();
+    //     $this->manageCookie(Cookie::COOKIE_ADRS, false);
+    //     $address = $this->getSelectedAddress();
+    //     $order = new Order();
+    //     $order->orderBasket($response, $userID, $stripeCheckoutID, $address, $basket);
+    //     $this->destroyCookie(Cookie::COOKIE_LCK, true);
+    //     $key = $order->getDateInSec();
+    //     // $this->orders[$key] = $order;
+    //     $orders = $this->getOrders();
+    //     $orders->put($order, $key);
+    //     $orders->sortKeyDesc();
+    //     // krsort($this->orders);
+    // }
+
     /**
      * To convert User's basket into a order
      * @param Response $response to push in result or accured error
@@ -472,11 +494,12 @@ abstract class User extends Visitor
     private  function createOrder(Response $response, $stripeCheckoutID)
     {
         $userID = $this->getUserID();
-        $basket = $this->getBasket();
+        // $basket = $this->getBasket();
         $this->manageCookie(Cookie::COOKIE_ADRS, false);
         $address = $this->getSelectedAddress();
-        $order = new Order();
-        $order->create($response, $userID, $stripeCheckoutID, $address, $basket);
+        $order = $this->getBasket()->orderBasket($response, $stripeCheckoutID, $address);
+        // $order = new Order();
+        // $order->orderBasket($response, $userID, $stripeCheckoutID, $address, $basket);
         $this->destroyCookie(Cookie::COOKIE_LCK, true);
         $key = $order->getDateInSec();
         // $this->orders[$key] = $order;
