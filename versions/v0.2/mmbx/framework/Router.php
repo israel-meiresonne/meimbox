@@ -243,7 +243,7 @@ class Router
                 // throw $exception;
                 $datas = [
                     "title" => "dev error occured",
-                    "content" => $exception->getMessage(),
+                    "content" => $exception->getMessage() . "<span style=\"display:none;\">" . $exception->__toString() . "</span>",
                     // "content" => $exception->__toString(),
                     "btnText" => "reload",
                     "btnLink" => ".",

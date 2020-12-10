@@ -79,6 +79,49 @@ class Order extends ModelFunctionality
         }
     }
 
+    // /**
+    //  * To create a new Order
+    //  * @param Response $response to push in result or accured error
+    //  * @param string $userID id of the Client that own this Order
+    //  * @param string $stripeCheckoutID id of Stripe's session used to paid the order
+    //  * @param Address $address Client's delivery address for this order
+    //  * @param Basket $basket Client's basket
+    //  */
+    // public function orderBasket(Response $response, $userID, $stripeCheckoutID, Address $address, Basket  $basket)
+    // {
+    //     $this->orderID = self::PREFIX_ID . $this->generateDateCode(25);
+    //     $this->stripeCheckoutID = $stripeCheckoutID;
+    //     $this->setDate =  $this->getDateTime();
+    //     $country =  $address->getCountry();
+    //     $this->insertOrder($response, $userID, $basket, $country);
+
+    //     $this->delivery = new AddressDelivery();
+    //     $this->delivery->create($response, $address, $this->orderID);
+
+    //     // $this->basketOrdered = new BasketOrdered();
+    //     // $this->basketOrdered->create($response, $basket, $this->orderID);
+    //     // $shipping = $basket->getShipping();
+    //     // $dayConv = 3600 * 24;
+    //     // $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
+    //     // $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
+        
+    //     // $this->basketOrdered = new BasketOrdered();
+    //     // $this->basketOrdered->create($response, $basket, $this->orderID);
+    //     $basket->orderBasket($response, $this->orderID);
+    //     $shipping = $basket->getShipping();
+    //     $dayConv = 3600 * 24;
+    //     $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
+    //     $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
+
+    //     $this->status = new Status();
+    //     $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
+    //     $this->status->create($response, $this->orderID, $minDate, $maxDate, $status);
+
+    //     // $this->basketOrdered->dropDiscountCodes($response, $userID);
+    //     // $this->basketOrdered->unlock($response, $userID);
+    //     $basket->dropDiscountCodes($response, $userID);
+    //     $basket->unlock($response, $userID);
+    // }
     /**
      * To create a new Order
      * @param Response $response to push in result or accured error
@@ -87,7 +130,7 @@ class Order extends ModelFunctionality
      * @param Address $address Client's delivery address for this order
      * @param Basket $basket Client's basket
      */
-    public function create(Response $response, $userID, $stripeCheckoutID, Address $address, Basket  $basket)
+    public function create(Response $response, $userID, $stripeCheckoutID, Address $address, Basket $basket)
     {
         $this->orderID = self::PREFIX_ID . $this->generateDateCode(25);
         $this->stripeCheckoutID = $stripeCheckoutID;
@@ -98,27 +141,39 @@ class Order extends ModelFunctionality
         $this->delivery = new AddressDelivery();
         $this->delivery->create($response, $address, $this->orderID);
 
-        $this->basketOrdered = new BasketOrdered();
-        $this->basketOrdered->create($response, $basket, $this->orderID);
-        $shipping = $this->basketOrdered->getShipping();
+        // $this->basketOrdered = new BasketOrdered();
+        // $this->basketOrdered->create($response, $basket, $this->orderID);
+        // $shipping = $basket->getShipping();
+        // $dayConv = 3600 * 24;
+        // $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
+        // $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
+        
+        // $this->basketOrdered = new BasketOrdered();
+        // $this->basketOrdered->create($response, $basket, $this->orderID);
+
+        // $basket->orderBasket($response, $this->orderID);
+        $this->basketOrdered = $basket; // ❌
+        $shipping = $basket->getShipping();
         $dayConv = 3600 * 24;
         $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
         $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
 
         $this->status = new Status();
-        $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
+        // $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
+        $status = (!empty($basket->stillStock()->getKeys())) ?  MyError::ERROR_STILL_STOCK : null;
         $this->status->create($response, $this->orderID, $minDate, $maxDate, $status);
 
-        $this->basketOrdered->dropDiscountCodes($response, $userID);
-        $this->basketOrdered->unlock($response, $userID);
-        // $this->basketOrdered->empty($response);
+        // $this->basketOrdered->dropDiscountCodes($response, $userID);
+        // $this->basketOrdered->unlock($response, $userID);
+        // $basket->dropDiscountCodes($response, $userID);
+        // $basket->unlock($response, $userID);
     }
 
     /**
      * To get order's id
      * @return string 
      */
-    private function getOrderID()
+    public function getOrderID()
     {
         return $this->orderID;
     }
@@ -196,19 +251,25 @@ class Order extends ModelFunctionality
      * @param Basket $basket Client's paid basket
      * @param Country $country the delivery country
      */
-    private function insertOrder(Response $response, $userID, Basket  $basket, Country $country) // \[value-[0-9]*\]
+    private function insertOrder(Response $response, $userID, Basket  $basket, Country $country)
     {
-        $bracket = "(?,?,?,?,?,?,?,?)";
-        $sql = "INSERT INTO `Orders`(`orderID`, `userId`, `stripeCheckoutId`, `vat`, `paidAmount`, `shippingCost`, `iso_currency`, `setDate`) 
+        $bracket = "(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // \[value-[0-9]*\]
+        $sql = "INSERT INTO `Orders`(`orderID`, `userId`, `stripeCheckoutId`, `iso_currency`, `vatRate`, `vat`, `hvat`, `sellPrice`, `discount`, `subtotal`, `shipping`, `shipDiscount`, `total`, `setDate`) 
                 VALUES " . $this->buildBracketInsert(1, $bracket);
         $values = [
             $this->getOrderID(),
             $userID,
             $this->getStripeCheckoutId(),
-            $country->getVat(),
-            $basket->getTotal()->getPrice(),
-            $basket->getShipping()->getPrice(),
             $basket->getCurrency()->getIsoCurrency(),
+            $country->getVat(),
+            $basket->getVat()->getPrice(),
+            $basket->getHvat()->getPrice(),
+            $basket->getSumProducts()->getPrice(),
+            $basket->getDiscountSumProducts()->getPrice(),
+            $basket->getSubTotal()->getPrice(),
+            $basket->getShipping()->getPrice(),
+            $basket->getDiscountShipping()->getPrice(),
+            $basket->getTotal()->getPrice(),
             $this->getSetDate()
         ];
         $this->insert($response, $sql, $values);

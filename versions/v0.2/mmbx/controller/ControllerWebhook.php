@@ -78,7 +78,8 @@ class ControllerWebhook extends ControllerSecure
                 $datasViewMap->put($order, Map::order);
                 try {
                     $this->sendEmail($response, $person, BlueAPI::class, BlueAPI::FUNC_ORDER_CONFIRM, $datasViewMap);
-                    $order->getBasketOrdered()->empty($response);        //🔋enable
+                    // $order->getBasketOrdered()->empty($response);        //🔋enable
+                    $person->getBasket()->empty($response);        //🔋enable
                 } catch (\Throwable $th) {
                     $response->addError($th->__toString(), MyError::ADMIN_ERROR);
                 }
