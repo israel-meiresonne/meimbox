@@ -43,11 +43,11 @@ class BoxProduct extends Product
         $args = func_get_args();
         $nb = func_num_args();
         switch ($nb) {
-            case 4:
-                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
-                break;
             case 0:
                 $this->__construct0();
+                break;
+            case 4:
+                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
                 break;
 
             default:
@@ -66,40 +66,6 @@ class BoxProduct extends Product
     {
         parent::__construct($prodID, $language, $country, $currency);
     }
-
-    // /**
-    //  * Setter for BoxProduct's measure
-    //  */
-    // private function setMeasure()
-    // {
-    //     $prodID = $this->getProdID();
-    //     // $sql = "SELECT * FROM `ProductsMeasures` WHERE `prodId` = '$this->prodID'";
-    //     $sql = "SELECT * FROM `ProductsMeasures` 
-    //             WHERE `prodId` = '$prodID'
-    //             AND `value` IN	(SELECT MAX(`value`) FROM `ProductsMeasures` 
-    //                             WHERE `prodId` = '$prodID'
-    //                             GROUP BY `body_part` ASC)";
-    //     $tab = $this->select($sql);
-    //     if (count($tab) == 0) {
-    //         throw new Exception("This product has any measure: id=$prodID");
-    //     }
-    //     $measureDatas  = [];
-    //     foreach ($tab as $tabLine) {
-    //         if (!isset($measureDatas["unitName"])) {
-    //             $measureDatas["unitName"] = $tabLine["unit_name"];
-    //         }
-    //         if ($measureDatas["unitName"] != $tabLine["unit_name"]) {
-    //             throw new Exception("Product unit measure must be the same for all its measures: id=$prodID, " . $measureDatas['unit_name'] . "!=" . $tabLine["unit_name"]);
-    //         }
-    //         // $bodyPart = "user" . ucfirst($tabLine["body_part"]);
-    //         $bodyPart = $tabLine["body_part"];
-    //         $measureDatas[$bodyPart] = (float) $tabLine["value"];
-    //     }
-    //     $measureMap = Measure::getDatas4Measure($measureDatas);
-
-    //     // $this->measure = new Measure($measureDatas);
-    //     $this->measure = new Measure($measureMap);
-    // }
 
     /**
      * Set virtualSizeStock by decupling stock for each size
@@ -535,6 +501,29 @@ class BoxProduct extends Product
     }
 
     /**
+     * To get A copy of the currrent instance
+     * @return BasketProduct
+     */
+    public function getCopy()
+    {
+        $map = get_object_vars($this);
+        $attributs = array_keys($map);
+        $class = get_class($this);
+        $copy = new $class();
+        foreach ($attributs as $attribut) {
+            switch (gettype($this->{$attribut})) {
+                    // case 'object':
+                    //     $copy->{$attribut} = $this->{$attribut}->getCopy();
+                    //     break;
+                default:
+                    $copy->{$attribut} = $this->{$attribut};
+                    break;
+            }
+        }
+        return $copy;
+    }
+
+    /**
      * Check if there's enought stock after removing locked stock from stock
      * + Note: use this function after checked if still stock with BoxProduct::stillStock()
      * @param BoxProduct[]  $products set of product to decrease
@@ -722,26 +711,31 @@ class BoxProduct extends Product
     }
 
     /**
-     * To get A copy of the currrent instance
-     * @return BasketProduct
+     * To get boxproducts of a ordered box
+     * @param string $boxID id of a ordered box
+     * @return BoxProduct[] boxproducts of a ordered box
      */
-    public function getCopy()
+    public static function getOrderedProducts($boxID)
     {
-        $map = get_object_vars($this);
-        $attributs = array_keys($map);
-        $class = get_class($this);
-        $copy = new $class();
-        foreach ($attributs as $attribut) {
-            switch (gettype($this->{$attribut})) {
-                    // case 'object':
-                    //     $copy->{$attribut} = $this->{$attribut}->getCopy();
-                    //     break;
-                default:
-                    $copy->{$attribut} = $this->{$attribut};
-                    break;
+        $products = [];
+        $sql = "SELECT * FROM `Orders-BoxProducts`WHERE`boxId`='$boxID'";
+        $tab = parent::select($sql);
+        if(!empty($tab)){
+            foreach($tab as $tabLine){
+                $product = new BoxProduct();
+                $product->prodID = $tabLine["prodId"];
+                $realSize = $tabLine["realSize"];
+                $setDate = $tabLine["setDate"];
+                $quantity = (int) $tabLine["quantity"];
+                $sequence = Size::buildSequence($realSize, null, null, null);
+                $selectedSize = new Size($sequence, $setDate);
+                $selectedSize->setQuantity($quantity);
+                $product->selectedSize = $selectedSize;
+                $unix = $product->getDateInSec();
+                $products[$unix] = $product;
             }
         }
-        return $copy;
+        return $products;
     }
 
     /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/

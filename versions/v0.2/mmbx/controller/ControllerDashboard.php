@@ -7,7 +7,7 @@ class ControllerDashboard extends ControllerSecure
     /**
      * Holds action function
      */
-    private const ACTION_SHOPBAG = "shopbag";
+    public const ACTION_SHOPBAG = "shopbag";
     public const ACTION_ORDERS = "orders";
 
     /**

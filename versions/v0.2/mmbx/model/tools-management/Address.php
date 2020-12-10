@@ -205,26 +205,6 @@ class Address extends ModelFunctionality
         return $sequence;
     }
 
-    // /**
-    //  * To create and save a new delivery address
-    //  * @param Response $response to push in results or accured error
-    //  * @param Address $addess Client's delivery address for this order
-    //  * @param string $orderID the id of the order for with the BasketOrderd is for
-    //  */
-    // public function create(Response $response, Address $address, $orderID)
-    // {
-    //     // $this->address = $address->getAddress();
-    //     // $this->appartement = $address->getAppartement();
-    //     // $this->province = $address->getProvince();
-    //     // $this->zipcode = $address->getZipcode();
-    //     // $this->city = $address->getCity();
-    //     // $this->country = $address->getCountry();
-    //     // $this->phone = $address->getPhone();
-    //     // $this->setDate = $address->getSetDate();
-    //     // $response = new Response();
-    //     $this->insertDelivery($response, $orderID);
-    // }
-
     /*———————————————————————————— SCRUD DOWN —————————————————————————————————————————*/
 
     /**

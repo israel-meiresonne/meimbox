@@ -68,12 +68,14 @@ class ControllerCheckout extends ControllerSecure
      */
     public function success()
     {
+        /**
+         * @var User */
         $person = $this->getPerson();
         $person->destroyCookie(Cookie::COOKIE_CHKT_LNCHD, true);
         $datas = [
-            "btnLink" => self::extractController(ControllerDashboard::class) . "/" . ControllerDashboard::ACTION_ORDERS
+            "btnLink" => self::extractController(ControllerDashboard::class) . "/" . ControllerDashboard::ACTION_ORDERS,
         ];
-        $this->generateView($datas, $person, self::ACTION_SUCCESS);
+        $this->generateView($datas, $person);
     }
 
     /*———————————————————————————— LAYOUT UP ——————————————————————————————————*/
@@ -172,7 +174,9 @@ class ControllerCheckout extends ControllerSecure
                 break;
             case ControllerCheckout::ACTION_SUCCESS:
                 if (!$person->hasCookie(Cookie::COOKIE_CHKT_LNCHD)) {
-                    $ctr = self::extractController($ctrClass);
+                    // $ctr = self::extractController($ctrClass);
+                    // $this->redirect($ctr);
+                    $ctr = self::extractController(ControllerGrid::class);
                     $this->redirect($ctr);
                 }
                 break;
