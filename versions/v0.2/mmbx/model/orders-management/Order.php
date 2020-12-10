@@ -138,20 +138,11 @@ class Order extends ModelFunctionality
         $country =  $address->getCountry();
         $this->insertOrder($response, $userID, $basket, $country);
 
-        $this->delivery = new AddressDelivery();
-        $this->delivery->create($response, $address, $this->orderID);
+        // $this->delivery = new AddressDelivery();
+        // $this->delivery->create($response, $address, $this->orderID);
+        $this->delivery = $address;     // ❌
+        $address->insertDelivery($response, $this->orderID);
 
-        // $this->basketOrdered = new BasketOrdered();
-        // $this->basketOrdered->create($response, $basket, $this->orderID);
-        // $shipping = $basket->getShipping();
-        // $dayConv = 3600 * 24;
-        // $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
-        // $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
-        
-        // $this->basketOrdered = new BasketOrdered();
-        // $this->basketOrdered->create($response, $basket, $this->orderID);
-
-        // $basket->orderBasket($response, $this->orderID);
         $this->basketOrdered = $basket; // ❌
         $shipping = $basket->getShipping();
         $dayConv = 3600 * 24;
