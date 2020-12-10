@@ -259,14 +259,28 @@ class ControllerHome extends ControllerSecure
     public function test()
     {
         header('content-type: application/json');
+        /**
+         * @var User */
         $person = $this->person;
-        $userID = $person->getUserID();
+        $person->manageCookie(Cookie::COOKIE_CHKT_LNCHD, true);
+        // $currency = $person->getCurrency();
+        // $userID = $person->getUserID();
+        // $ordersMap = Order::getOrdersMap($userID);
+        // $orderID = "ord_o12fl0m0v2010042923010358";
+        // $order = new Order("ord_o12fl0m0v2010042923010358");
+        var_dump($_COOKIE);
+        var_dump($person->getOrders());
+        // var_dump(Box::getOrderedBoxesMap($orderID));
+        // $boxID = "w04p04022420q12m1omw31a0n";
+        // var_dump(Box::getOrderedBoxes($orderID, $currency));
+        // var_dump($ordersMap);
+        // var_dump($ordersMap);
         // $response = new Response();
         // $basketOrdered = new BasketOrdered();
         // $basketOrdered->dropDiscountCodes($response, $userID);
         // var_dump($response->getAttributs());
-        $basket = $person->getBasket();
-        var_dump("discount codes", $basket->getDiscountCodes());
+        // $basket = $person->getBasket();
+        // var_dump("discount codes", $basket->getDiscountCodes());
         // $country = $person->getCountry();
         // $vat = $country->getVat();
         // var_dump("vat: " . $vat);

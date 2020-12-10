@@ -143,6 +143,17 @@ abstract class User extends Visitor
     private function setOrders()
     {
         $this->orders = new Map();
+        $userID = $this->getUserID();
+        $ordersMap = Order::getOrdersMap($userID);
+        $orderIDs = $ordersMap->getKeys();
+        if(!empty($orderIDs)){
+            foreach($orderIDs as $orderID){
+                $order = new Order($orderID);
+                $unix = $order->getDateInSec();
+                $this->orders->put($order, $unix);
+            }
+            $this->orders->sortKeyDesc();
+        }
     }
 
     /**
@@ -463,28 +474,6 @@ abstract class User extends Visitor
         $this->createOrder($response, $stripeCheckoutID);
         return $stripeAPI->getEvent();
     }
-
-    // /**
-    //  * To convert User's basket into a order
-    //  * @param Response $response to push in result or accured error
-    //  * @param string $stripeCheckoutID id of Stripe's session used to paid the order
-    //  */
-    // private  function createOrder(Response $response, $stripeCheckoutID)
-    // {
-    //     $userID = $this->getUserID();
-    //     $basket = $this->getBasket();
-    //     $this->manageCookie(Cookie::COOKIE_ADRS, false);
-    //     $address = $this->getSelectedAddress();
-    //     $order = new Order();
-    //     $order->orderBasket($response, $userID, $stripeCheckoutID, $address, $basket);
-    //     $this->destroyCookie(Cookie::COOKIE_LCK, true);
-    //     $key = $order->getDateInSec();
-    //     // $this->orders[$key] = $order;
-    //     $orders = $this->getOrders();
-    //     $orders->put($order, $key);
-    //     $orders->sortKeyDesc();
-    //     // krsort($this->orders);
-    // }
 
     /**
      * To convert User's basket into a order

@@ -885,30 +885,6 @@ abstract class ModelFunctionality extends Model
     /*———————————————————————————— STATIC TABLES ACCESS UP ——————————————————*/
     /*———————————————————————————— PRODUCT ACCESS DOWN ——————————————————————*/
 
-    // /**
-    //  * To get products with the ids given
-    //  * @param string[] $prodIDs list of id of product to look for
-    //  * @return array map with all product line from db else a empty array
-    //  */
-    // protected function getProductMap($prodIDs)
-    // {
-    //     if(count($prodIDs) <= 0){
-    //         throw new Exception("List of product id (\$prodIDs) can't be empty");
-    //     }
-    //     if(!isset(self::$productMap)){
-    //         $sql = "SELECT * FROM `Products` WHERE "; //`prodID` = '$prodID'"
-    //         $nbID = count($prodIDs);
-    //         for($i = 0; $i < $nbID; $i++){
-    //             $prodID = $prodIDs[$i];
-    //             $sql .= ($i < ($nbID-1)) ? " `prodID` = '$prodID' OR " : " `prodID` = '$prodID'";
-    //         }
-    //         $this->setProductMap($sql);
-    //         if(count(self::$productMap) != $nbID){
-    //             throw new Exception("");
-    //         }
-    //     }
-    // }
-
     /**
      * Check if a product exist in db's Products table
      * @param string $prodID Product's id

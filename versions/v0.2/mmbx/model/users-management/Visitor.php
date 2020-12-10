@@ -218,6 +218,7 @@ class Visitor extends ModelFunctionality
      * + a secued cookie is a cookie that will not be generated when it exist 
      * on Visitorr but not in db
      */
+    // public function manageCookie($cookieID, $isSecure)
     protected function manageCookie($cookieID, $isSecure)
     {
         $cookieState = null;
@@ -244,12 +245,11 @@ class Visitor extends ModelFunctionality
             // --- cookie don't exist
             $cookieState = Cookie::STATE_GENERATE;
         }
-
+        // var_dump($cookieID, $cookieState);
         $cookies = $this->getCookies();
         switch ($cookieState) {
             case Cookie::STATE_GENERATE:
                 $cookieValue = $this->generateDateCode(25);
-                // $newCookie = Cookie::generateCookie($this->userID, $cookieID, $cookieValue);
                 $newCookie = $this->generateCookie($cookieID, $cookieValue);
                 $cookies->put($newCookie, $cookieID);
                 break;
@@ -260,8 +260,6 @@ class Visitor extends ModelFunctionality
                 $cookies->put($newCookie, $cookieID);
                 break;
             case Cookie::STATE_GIVE:
-                // $holdCookie = $this->getCookie($cookieID);
-                // $cookieValue = $holdCookie->getValue();
                 $cookieValue = $usersCookiesMap->get($cookieID, Map::value);
                 $newCookie = $this->generateCookie($cookieID, $cookieValue);
                 $cookies->put($newCookie, $cookieID);

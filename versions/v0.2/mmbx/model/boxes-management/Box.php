@@ -104,6 +104,20 @@ class Box extends ModelFunctionality
     private $discount;
 
     /**
+     * Holds Map of database's table of odered Boxes
+     * + Map[boxID{string}][Map::box_color]         => {string}
+     * + Map[boxID{string}][Map::sizeMax]           => {int}
+     * + Map[boxID{string}][Map::weight]            => {float}
+     * + Map[boxID{string}][Map::boxPicture]        => {string}
+     * + Map[boxID{string}][Map::sellPrice]         => {float}
+     * + Map[boxID{string}][Map::shipping]          => {float}
+     * + Map[boxID{string}][Map::discount_value]    => {float}
+     * + Map[boxID{string}][Map::setDate]           => {string}
+     * @var Map
+     */
+    private static $orderedBoxesMap;
+
+    /**
      * Length of the box's id
      * @var string
      */
@@ -167,6 +181,9 @@ class Box extends ModelFunctionality
         $this->setConstant();
         $args = func_get_args();
         switch (func_num_args()) {
+            case 0:
+                $this->__construct0();
+                break;
             case 4:
                 $this->__construct4($args[0], $args[1], $args[2], $args[3]);
                 break;
@@ -175,6 +192,13 @@ class Box extends ModelFunctionality
                 $this->__construct5($args[0], $args[1], $args[2], $args[3], $args[4]);
                 break;
         }
+    }
+
+    /**
+     * Constructor
+     */
+    private function __construct0()
+    {
     }
 
     /**
@@ -638,53 +662,6 @@ class Box extends ModelFunctionality
         return $boxes;
     }
 
-    // /**
-    //  * To check if stock still available for product in the box
-    //  * + the stock checked don't include locked products
-    //  * @return Map map of product out of stock
-    //  */
-    // public function stillStock()
-    // {
-    //     $lockedProd = new Map();
-    //     $products = $this->getProducts();
-    //     if (!empty($products)) {
-    //         foreach ($products as $product) {
-    //             $selectedSize = $product->getSelectedSize();
-    //             if (!$product->stillStock($selectedSize)) {
-    //                 $key = $product->getDateInSec();
-    //                 $lockedProd->put($product, $key);
-    //             }
-    //         }
-    //     }
-    //     // (!empty($lockedProd)) ? krsort($lockedProd) : null;
-    //     $lockedProd->sortKeyDesc();
-    //     return $lockedProd;
-    // }
-
-    // /**
-    //  * To check if still stock for product in the box including locked stock
-    //  * + this function combine stock available and stock locked to deduct the 
-    //  * stilling stock
-    //  * @return Map map of product out of stock
-    //  */
-    // public function stillUnlockedStock()
-    // {
-    //     $lockedProd = new Map();
-    //     $products = $this->getProducts();
-    //     if (!empty($products)) {
-    //         foreach ($products as $product) {
-    //             if (!$product->stillUnlockedStock()) {
-    //                 $key = $product->getDateInSec();
-    //                 // $lockedProd[$key] = $product;
-    //                 $lockedProd->put($product, $key);
-    //             }
-    //         }
-    //     }
-    //     // (!empty($lockedProd)) ? krsort($lockedProd) : null;
-    //     $lockedProd->sortKeyDesc();
-    //     return $lockedProd;
-    // }
-
     /**
      * To add new product in box
      * + also add product in db
@@ -753,20 +730,78 @@ class Box extends ModelFunctionality
         }
     }
 
-    // /**
-    //  * To reserve ,for a duration, the stock of all products in the box
-    //  * @param Response $response where to strore results
-    //  * @param string $userID Client's id
-    //  */
-    // public function lock(Response $response, $userID)
-    // {
-    //     $products = $this->getProducts();
-    //     if(!empty($products)){
-    //         foreach($products as $product){
-    //             $product->lock($response, $userID);
-    //         }
-    //     }
-    // }
+    /**
+     * To get boxes ordered
+     * @param string|null $orderID id of the order
+     * @return Map boxes ordered
+     * + Map[boxID{string}][Map::box_color]         => {string}
+     * + Map[boxID{string}][Map::sizeMax]           => {int}
+     * + Map[boxID{string}][Map::weight]            => {float}
+     * + Map[boxID{string}][Map::boxPicture]        => {string}
+     * + Map[boxID{string}][Map::sellPrice]         => {float}
+     * + Map[boxID{string}][Map::shipping]          => {float}
+     * + Map[boxID{string}][Map::discount_value]    => {float}
+     * + Map[boxID{string}][Map::setDate]           => {string}
+     */
+    private static function getOrderedBoxesMap($orderID)
+    {
+        if(!isset(self::$orderedBoxesMap)){
+            if(!isset($orderID)){
+                throw new Exception("The order id must be setted");
+            }
+            self::$orderedBoxesMap = new Map();
+            $sql = "SELECT * FROM `Orders-Boxes`WHERE`orderId`='$orderID'";
+            $tab = parent::select($sql);
+            if(!empty($tab)){
+                foreach($tab as $tabLine){
+                    $boxID = $tabLine["boxId"];
+                    self::$orderedBoxesMap->put($tabLine["box_color"], $boxID, Map::box_color);
+                    self::$orderedBoxesMap->put((int)$tabLine["sizeMax"], $boxID, Map::sizeMax);
+                    self::$orderedBoxesMap->put(self::toFloat($tabLine["weight"]), $boxID, Map::weight);
+                    self::$orderedBoxesMap->put($tabLine["boxPicture"], $boxID, Map::boxPicture);
+                    self::$orderedBoxesMap->put(self::toFloat($tabLine["sellPrice"]), $boxID, Map::sellPrice);
+                    self::$orderedBoxesMap->put(self::toFloat($tabLine["shipping"]), $boxID, Map::shipping);
+                    self::$orderedBoxesMap->put(self::toFloat($tabLine["discount_value"]), $boxID, Map::discount_value);
+                    self::$orderedBoxesMap->put($tabLine["setDate"], $boxID, Map::setDate);
+                }
+            }
+        }
+        return self::$orderedBoxesMap;
+    }
+
+    /**
+     * To retrieve boxes ordered from database
+     * @param string|null $orderID id of the order
+     * @return Box[] boxes ordered
+     * @param Currency $currency Visitor's current Currency
+     */
+    public static function getOrderedBoxes($orderID, Currency $currency)
+    {
+        $boxes = [];
+        $orderedBoxesMap = self::getOrderedBoxesMap($orderID);
+        $boxIDs = $orderedBoxesMap->getKeys();
+        if(!empty($boxIDs)){
+            foreach($boxIDs as $boxID){
+                $box = new Box();
+                $box->boxID = $boxID;
+                $box->color = $orderedBoxesMap->get($boxID, Map::box_color);
+                $box->sizeMax = $orderedBoxesMap->get($boxID, Map::sizeMax);
+                $box->weight = $orderedBoxesMap->get($boxID, Map::weight);
+                $box->picture = $orderedBoxesMap->get($boxID, Map::boxPicture);
+                $sellPrice = $orderedBoxesMap->get($boxID, Map::sellPrice);
+                $box->price = new Price($sellPrice, $currency);
+                $shipping = $orderedBoxesMap->get($boxID, Map::shipping);
+                $box->shipping = new Price($shipping, $currency);
+                $box->setDate = $orderedBoxesMap->get($boxID, Map::setDate);
+                $boxProductsMap = new Map(BoxProduct::getOrderedProducts($boxID));
+                $boxProductsMap->sortKeyDesc();
+                $box->boxProducts = $boxProductsMap->getMap();
+                $unix = $box->getDateInSec();
+                $boxes[$unix] = $box;
+            }
+        }
+        return $boxes;
+    }
 
     /*—————————————————— SCRUD DOWN —————————————————————————————————————————*/
     /**

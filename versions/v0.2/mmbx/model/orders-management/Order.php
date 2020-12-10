@@ -53,6 +53,24 @@ class Order extends ModelFunctionality
     private $setDate;
 
     /**
+     * Holds database's Orders table
+     * @var Map
+     * + Map[Map::orderID][Map::stripeCheckoutId]   => {string}
+     * + Map[Map::orderID][Map::iso_currency]       => {string}
+     * + Map[Map::orderID][Map::vatRate]            => {floatt}
+     * + Map[Map::orderID][Map::vat]                => {floatt}
+     * + Map[Map::orderID][Map::hvat]               => {floatt}
+     * + Map[Map::orderID][Map::sellPrice]          => {floatt}
+     * + Map[Map::orderID][Map::discount]           => {floatt}
+     * + Map[Map::orderID][Map::subtotal]           => {floatt}
+     * + Map[Map::orderID][Map::shipping]           => {floatt}
+     * + Map[Map::orderID][Map::shipDiscount]       => {floatt}
+     * + Map[Map::orderID][Map::total]              => {floatt}
+     * + Map[Map::orderID][Map::setDate]            => {string}
+     */
+    private static $ordersMap;
+
+    /**
      * Holds the time during the stock will be reserved for Client's checkout
      * + Note: time is in second
      * @var int
@@ -63,65 +81,24 @@ class Order extends ModelFunctionality
 
     /**
      * Constructor
+     * @param string $orderID id of the order
      */
-    public function __construct()
+    public function __construct($orderID = null)
     {
         self::setConstants();
-    }
-
-    /**
-     * To set constants
-     */
-    private static function setConstants()
-    {
-        if (!isset(self::$LOCK_TIME)) {
-            self::$LOCK_TIME = (int) parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        if (isset($orderID)) {
+            $ordersMap = self::$ordersMap;
+            $orderIDs = $ordersMap->getKeys();
+            if (!in_array($orderID, $orderIDs)) {
+                throw new Exception("This order id '$orderID' don't existt in orders map");
+            }
+            $this->orderID = $orderID;
+            $this->stripeCheckoutID = $ordersMap->get($orderID, Map::stripeCheckoutId);
+            $this->setDate = $ordersMap->get($orderID, Map::setDate);
+            $this->basketOrdered = new BasketOrdered($orderID);
         }
     }
 
-    // /**
-    //  * To create a new Order
-    //  * @param Response $response to push in result or accured error
-    //  * @param string $userID id of the Client that own this Order
-    //  * @param string $stripeCheckoutID id of Stripe's session used to paid the order
-    //  * @param Address $address Client's delivery address for this order
-    //  * @param Basket $basket Client's basket
-    //  */
-    // public function orderBasket(Response $response, $userID, $stripeCheckoutID, Address $address, Basket  $basket)
-    // {
-    //     $this->orderID = self::PREFIX_ID . $this->generateDateCode(25);
-    //     $this->stripeCheckoutID = $stripeCheckoutID;
-    //     $this->setDate =  $this->getDateTime();
-    //     $country =  $address->getCountry();
-    //     $this->insertOrder($response, $userID, $basket, $country);
-
-    //     $this->delivery = new AddressDelivery();
-    //     $this->delivery->create($response, $address, $this->orderID);
-
-    //     // $this->basketOrdered = new BasketOrdered();
-    //     // $this->basketOrdered->create($response, $basket, $this->orderID);
-    //     // $shipping = $basket->getShipping();
-    //     // $dayConv = 3600 * 24;
-    //     // $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
-    //     // $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
-        
-    //     // $this->basketOrdered = new BasketOrdered();
-    //     // $this->basketOrdered->create($response, $basket, $this->orderID);
-    //     $basket->orderBasket($response, $this->orderID);
-    //     $shipping = $basket->getShipping();
-    //     $dayConv = 3600 * 24;
-    //     $minDate = strtotime($this->setDate) + $shipping->getMinTime() * $dayConv;
-    //     $maxDate = strtotime($this->setDate) + $shipping->getMaxTime() * $dayConv;
-
-    //     $this->status = new Status();
-    //     $status = ($response->existErrorKey(MyError::ERROR_STILL_STOCK)) ?  MyError::ERROR_STILL_STOCK : null;
-    //     $this->status->create($response, $this->orderID, $minDate, $maxDate, $status);
-
-    //     // $this->basketOrdered->dropDiscountCodes($response, $userID);
-    //     // $this->basketOrdered->unlock($response, $userID);
-    //     $basket->dropDiscountCodes($response, $userID);
-    //     $basket->unlock($response, $userID);
-    // }
     /**
      * To create a new Order
      * @param Response $response to push in result or accured error
@@ -158,6 +135,16 @@ class Order extends ModelFunctionality
         // $this->basketOrdered->unlock($response, $userID);
         // $basket->dropDiscountCodes($response, $userID);
         // $basket->unlock($response, $userID);
+    }
+
+    /**
+     * To set constants
+     */
+    private static function setConstants()
+    {
+        if (!isset(self::$LOCK_TIME)) {
+            self::$LOCK_TIME = (int) parent::getCookiesMap()->get(Cookie::COOKIE_LCK, Map::period);
+        }
     }
 
     /**
@@ -202,6 +189,7 @@ class Order extends ModelFunctionality
      */
     public function getBasketOrdered()
     {
+        // (!isset($this->basketOrdered)) ? $this->setBasketOrdered() : null;
         return $this->basketOrdered;
     }
 
@@ -231,6 +219,41 @@ class Order extends ModelFunctionality
     {
         (!isset(self::$LOCK_TIME)) ? self::setConstants() : null;
         return self::$LOCK_TIME;
+    }
+
+    /**
+     * To get Map of Client's Orders from dattabase
+     * @param string|null $userID Client's id
+     */
+    public static function getOrdersMap($userID = null)
+    {
+        self::setConstants();
+        if (!isset(self::$ordersMap)) {
+            if (!isset($userID)) {
+                throw new Exception("User id must be setted");
+            }
+            self::$ordersMap = new Map();
+            $sql = "SELECT * FROM `Orders` WHERE `userId`='$userID' ORDER BY `setDate` DESC";
+            $tab = parent::select($sql);
+            if (!empty($tab)) {
+                foreach ($tab as $tabLine) {
+                    $orderID = $tabLine["orderID"];
+                    self::$ordersMap->put($tabLine["stripeCheckoutId"], $orderID, Map::stripeCheckoutId);
+                    self::$ordersMap->put($tabLine["iso_currency"], $orderID, Map::iso_currency);
+                    self::$ordersMap->put(self::toFloat($tabLine["vatRate"]), $orderID, Map::vatRate);
+                    self::$ordersMap->put(self::toFloat($tabLine["vat"]), $orderID, Map::vat);
+                    self::$ordersMap->put(self::toFloat($tabLine["hvat"]), $orderID, Map::hvat);
+                    self::$ordersMap->put(self::toFloat($tabLine["sellPrice"]), $orderID, Map::sellPrice);
+                    self::$ordersMap->put(self::toFloat($tabLine["discount"]), $orderID, Map::discount);
+                    self::$ordersMap->put(self::toFloat($tabLine["subtotal"]), $orderID, Map::subtotal);
+                    self::$ordersMap->put(self::toFloat($tabLine["shipping"]), $orderID, Map::shipping);
+                    self::$ordersMap->put(self::toFloat($tabLine["shipDiscount"]), $orderID, Map::shipDiscount);
+                    self::$ordersMap->put(self::toFloat($tabLine["total"]), $orderID, Map::total);
+                    self::$ordersMap->put($tabLine["setDate"], $orderID, Map::setDate);
+                }
+            }
+        }
+        return self::$ordersMap;
     }
 
     /*———————————————————————————— SCRUD DOWN ———————————————————————————————*/

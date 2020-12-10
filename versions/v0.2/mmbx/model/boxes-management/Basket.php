@@ -91,10 +91,6 @@ class Basket extends ModelFunctionality
 
     /**
      * Setter for boxes
-     * @var string $userID Visitor's id
-     * @param Language $language Visitor's language
-     * @param Country $country Visitor's current Country
-     * @param Currency $currency Visitor's current Currency
      */
     private function setBoxes()
     {

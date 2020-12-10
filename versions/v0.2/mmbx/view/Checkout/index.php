@@ -20,6 +20,7 @@ $basket = $person->getBasket();
 $addressMap = $person->getAddresses();
 
 /*————————————————————————————— Config View DOWN ————————————————————————————*/
+
 $this->title = "checkout";
 $this->description = "checkout";
 $headDatas = [

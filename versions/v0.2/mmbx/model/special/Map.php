@@ -161,10 +161,27 @@ class Map
     public const state = "state";
 
     /**
-     * Keys for Order
+     * Keys for Order class
      * @var string
      */
     public const order = "order";
+
+    /**
+     * Keys for Order Table
+     * @var string
+     */
+    public const stripeCheckoutId = "stripeCheckoutId";
+    public const iso_currency = "iso_currency";
+    public const vatRate = "vatRate";
+    // public const vat = "vat";
+    public const hvat = "hvat";
+    public const sellPrice = "sellPrice";
+    public const discount = "discount";
+    public const subtotal = "subtotal";
+    public const shipping = "shipping";
+    public const shipDiscount = "shipDiscount";
+    public const total = "total";
+    // public const setDate = "setDate";
 
     /**
      * Keys for Payements
@@ -283,6 +300,16 @@ class Map
      * @var string
      */
     public const discountCodes = "discountCodes";
+
+    /**
+     * Keys for table of boxes ordered
+     * @var string
+     */
+    public const box_color = "box_color";
+    public const sizeMax = "sizeMax";
+    public const weight = "weight";
+    public const boxPicture = "boxPicture";
+    public const discount_value = "discount_value";
 
 
 
