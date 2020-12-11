@@ -476,7 +476,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
         lp = () => {
             var s = scrollRate();
             if (s >= mxs) {
-                fbpxl('<?= $pxlEvnt ?>');
+                fbpxl('<?= $pxlEvnt ?>', '<?= $pxlJson ?>');
                 lp = null;
             }
         }

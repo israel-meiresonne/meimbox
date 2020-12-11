@@ -50,7 +50,7 @@
     }
     /*————————————————————————— FB PXL DOWN —————————————————————————————————*/
     fbpxl = (e, j = null) => {
-        var map = (empty(j)) ? { [KEY_FB_PXL]: e } : { [KEY_FB_PXL]: e, [EVT_D]: j };
+        var map = (empty(j)) ? { [KEY_FB_PXL]: e } : { [KEY_FB_PXL]: e, [KEY_FB_PXL_DT]: j };
         var p = mapToParam(map);
         var d = {
             "a": QR_FBPXL,

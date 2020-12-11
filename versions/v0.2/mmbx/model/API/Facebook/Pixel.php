@@ -33,13 +33,14 @@ class Pixel extends Facebook
      */
     public const EVENT_FRIPPERY_STORES = "frippery_stores";
     public const EVENT_USED_FRIPPERY = "used_frippery";
-    public const EVENT_LP_TIME_UP = "lp_time_up";
-    // public const EVENT_VIEW_PRODUCT_GRID = "view_product_grid";
+    public const EVENT_SCROLL_OVER = "scroll_over";
 
     /**
      * Holds acces key to get Pixel
      */
     public const KEY_FB_PXL = "key_fb_pxl";
+    public const KEY_FB_PXL_DT = "key_fb_pxl_dt";
+    // public const KEY_PAGE = "page";
 
     /**
      * To set pixelsMap
@@ -73,10 +74,7 @@ class Pixel extends Facebook
         self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_USED_FRIPPERY, Map::type);
 
         /** lp_time_up */
-        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_LP_TIME_UP, Map::type);
-
-        /** view_product_grid */
-        // self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_LP_TIME_UP, Map::type);
+        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_SCROLL_OVER, Map::type);
     }
 
     /**

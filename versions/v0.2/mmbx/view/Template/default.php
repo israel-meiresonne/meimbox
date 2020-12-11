@@ -206,6 +206,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const FAT_ERR = "<?= MyError::FATAL_ERROR ?>";
 
         const KEY_FB_PXL = "<?= Pixel::KEY_FB_PXL ?>";
+        const KEY_FB_PXL_DT = "<?= Pixel::KEY_FB_PXL_DT ?>";
 
         const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";

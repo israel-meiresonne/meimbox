@@ -111,7 +111,7 @@
             }
         },
         "ad_config": {
-            "max_scroll": 40
+            "scroll_up": 40
         }
     }
 }
