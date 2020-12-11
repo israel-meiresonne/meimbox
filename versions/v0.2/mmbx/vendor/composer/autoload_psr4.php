@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'TijsVerkoyen\\CssToInlineStyles\\' => array($vendorDir . '/tijsverkoyen/css-to-inline-styles/src'),
     'Symfony\\Component\\CssSelector\\' => array($vendorDir . '/symfony/css-selector'),
+    'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib'),
     'SendinBlue\\Client\\' => array($vendorDir . '/sendinblue/api-v3-sdk/lib'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
