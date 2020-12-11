@@ -8,7 +8,7 @@
 
 $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_FRIPPERY_STORES);
 $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_USED_FRIPPERY);
-$this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_LP_TIME_UP);
+$this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_SCROLL_OVER);
 ?>
 <!DOCTYPE html>
 <html>

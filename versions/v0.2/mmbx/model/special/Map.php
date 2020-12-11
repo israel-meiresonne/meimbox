@@ -316,7 +316,7 @@ class Map
      * @var string
      */
     public const ad_config = "ad_config";
-    public const max_scroll = "max_scroll";
+    public const scroll_up = "scroll_up";
 
 
 

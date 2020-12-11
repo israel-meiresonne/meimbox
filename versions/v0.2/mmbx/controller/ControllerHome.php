@@ -268,11 +268,13 @@ class ControllerHome extends ControllerSecure
             $response->addError($errorMsg, MyError::ADMIN_ERROR);
         } else {
             switch ($pxlEvent) {
-                case Pixel::EVENT_LP_TIME_UP:
-                    $pxl = Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_LP_TIME_UP);
+                case Pixel::EVENT_SCROLL_OVER:
+                    $datasJson = htmlspecialchars_decode(Query::getParam(Pixel::KEY_FB_PXL_DT));
+                    $datas = json_decode($datasJson, true);
+                    $datasMap = new Map($datas);
+                    $pxl = Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_SCROLL_OVER, $datasMap);
                     $response->addResult(Pixel::KEY_FB_PXL, $pxl);
                     break;
-
                 default:
                     $errorMsg = "Unknow facebook pixel event '$pxlEvent'";
                     $response->addError($errorMsg, MyError::ADMIN_ERROR);
