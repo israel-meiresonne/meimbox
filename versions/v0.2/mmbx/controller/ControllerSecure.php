@@ -183,7 +183,8 @@ abstract class ControllerSecure extends Controller
     // public function checkInput($input, $dataTypes, Response $response, $length = null, $required = true)
     public function checkInput(Response $response, $input, $data, array $dataTypes, int $length = null, bool $required = true)
     {
-        if ($required && (!isset($data))) {
+        // if ($required && (!isset($data))) {
+        if ($required && (empty($data))) {
             $errorStation = (!empty($dataTypes) && $dataTypes[0] == self::CHECKBOX) ? "ER5" : "ER2";
             $response->addErrorStation($errorStation, $input);
             // return $response->isSuccess();
