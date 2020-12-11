@@ -1,5 +1,6 @@
 <?php
-require_once 'model/library/payement/stripe-php/init.php';
+// require_once 'model/library/payement/stripe-php/init.php';
+require_once('vendor/autoload.php');
 require_once 'model/API/Stripe/CheckoutSession.php';
 
 require_once 'framework/Configuration.php';

@@ -22,6 +22,7 @@ class ComposerStaticInita2b3f1029c4242a2a3c4571d35363704
         'S' => 
         array (
             'Symfony\\Component\\CssSelector\\' => 30,
+            'Stripe\\' => 7,
             'SendinBlue\\Client\\' => 18,
         ),
         'P' => 
@@ -49,6 +50,10 @@ class ComposerStaticInita2b3f1029c4242a2a3c4571d35363704
         'Symfony\\Component\\CssSelector\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/css-selector',
+        ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
         ),
         'SendinBlue\\Client\\' => 
         array (
