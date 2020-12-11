@@ -9,6 +9,7 @@ class ControllerHome extends ControllerSecure
     public const QR_LOG_OUT = "home/logOut";
     public const QR_UPDATE_COUNTRY = "home/updateCountry";
     public const QR_EVENT = "home/event";
+    public const QR_GET_FB_PIXEL = "home/fbpxl";
 
     /**
      * The index layout
@@ -254,22 +255,49 @@ class ControllerHome extends ControllerSecure
         $this->generateJsonView([], $response, $person);
     }
 
+    /**
+     * To get Facebook's pixel
+     */
+    public function fbpxl()
+    {
+        $response = new Response();
+        $person = $this->getPerson();
+        $pxlEvent = Query::getParam(Pixel::KEY_FB_PXL);
+        if (empty($pxlEvent)) {
+            $errorMsg = "Empty facebook pixel '$pxlEvent'";
+            $response->addError($errorMsg, MyError::ADMIN_ERROR);
+        } else {
+            switch ($pxlEvent) {
+                case Pixel::EVENT_LP_TIME_UP:
+                    $pxl = Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_LP_TIME_UP);
+                    $response->addResult(Pixel::KEY_FB_PXL, $pxl);
+                    break;
+
+                default:
+                    $errorMsg = "Unknow facebook pixel event '$pxlEvent'";
+                    $response->addError($errorMsg, MyError::ADMIN_ERROR);
+                    break;
+            }
+        }
+        $this->generateJsonView([], $response, $person);
+    }
+
     /*———————————————————————————— TESTS DOWN ———————————————————————————————*/
 
     public function test()
     {
-        header('content-type: application/json');
+        // header('content-type: application/json');
         /**
          * @var User */
         $person = $this->person;
-        $person->manageCookie(Cookie::COOKIE_CHKT_LNCHD, true);
+        // $person->manageCookie(Cookie::COOKIE_CHKT_LNCHD, true);
         // $currency = $person->getCurrency();
         // $userID = $person->getUserID();
         // $ordersMap = Order::getOrdersMap($userID);
         // $orderID = "ord_o12fl0m0v2010042923010358";
         // $order = new Order("ord_o12fl0m0v2010042923010358");
-        var_dump($_COOKIE);
-        var_dump($person->getOrders());
+        // var_dump($_COOKIE);
+        // var_dump($person->getOrders());
         // var_dump(Box::getOrderedBoxesMap($orderID));
         // $boxID = "w04p04022420q12m1omw31a0n";
         // var_dump(Box::getOrderedBoxes($orderID, $currency));
@@ -293,6 +321,7 @@ class ControllerHome extends ControllerSecure
         // var_dump("time: " . $basket->getShipping()->getTime());
         // var_dump("prod  discount: " . $basket->getDiscountSumProducts()->getPrice());
         // var_dump("shipping discount: " . $basket->getDiscountShipping()->getPrice());
+        $this->generateView([], $person);
     }
 
     public function test_DiscountCode()
@@ -311,14 +340,14 @@ class ControllerHome extends ControllerSecure
             "winter30"
         ];
         $discCodes = [];
-        foreach($codes as $code){
+        foreach ($codes as $code) {
             $discCodes[$code] = new DiscountCode($code, $country);
         }
         DiscountCode::insertDiscounts($response, $discCodes, $orderID);
 
-        echo str_repeat("-", 50)." Response ".str_repeat("-", 50);
+        echo str_repeat("-", 50) . " Response " . str_repeat("-", 50);
         var_dump("response: ", $response->getAttributs());
-        echo str_repeat("-", 50)." DiscountCode ".str_repeat("-", 50);
+        echo str_repeat("-", 50) . " DiscountCode " . str_repeat("-", 50);
         var_dump($discCodes);
     }
 

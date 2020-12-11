@@ -130,6 +130,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const QR_LOG_OUT = "<?= ControllerHome::QR_LOG_OUT ?>";
         const QR_UPDATE_COUNTRY = "<?= ControllerHome::QR_UPDATE_COUNTRY ?>";
         const QR_EVENT = "<?= ControllerHome::QR_EVENT ?>";
+        const QR_FBPXL = "<?= ControllerHome::QR_GET_FB_PIXEL ?>";
 
         const EVT_K = "<?= Event::KEY_EVENT ?>";
         const EVT_D = "<?= Event::KEY_DATA ?>";
@@ -294,7 +295,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         <?= $this->generateFbPixel() ?>
         <?= $content ?>
         <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
-        <script id="evt">
+        <script id="evt" type="text/javascript">
             <?php
             echo ($pageType == Page::TYPE_NEWCOMER) ? Event::getEventFile(Event::FILE_DEVICE_SIZE) : null;
             ?>

@@ -11,7 +11,6 @@
             "d": p,
             "r": () => { },
             "l": "",
-            // "x": cbtnx,
             "sc": () => { },
             "rc": () => { }
         };
@@ -49,28 +48,48 @@
         var j = $(x).attr(dataevtj);
         (!empty(evtcd)) ? evt(evtcd, j) : null;
     }
+    /*————————————————————————— FB PXL DOWN —————————————————————————————————*/
+    fbpxl = (e, j = null) => {
+        var map = (empty(j)) ? { [KEY_FB_PXL]: e } : { [KEY_FB_PXL]: e, [EVT_D]: j };
+        var p = mapToParam(map);
+        var d = {
+            "a": QR_FBPXL,
+            "d": p,
+            "r": fbpxlRSP,
+            "l": "",
+            "sc": () => { },
+            "rc": () => { }
+        };
+        SND(d);
+    }
+    fbpxlRSP = (r) => {
+        if (r.isSuccess) { handleFbPxl(r) }
+    }
+    scrollRate = () => {
+        var pH = (parseInt($("body").height()) + $("body").offset().top);
+        var ofs = window.pageYOffset;
+        var mxOfs = ofs + window.innerHeight;
+        if (ofs <= 0) {
+            s = 0;
+        } else {
+            s = mxOfs
+        }
+        var r = (s / pH * 100).toFixed(2);
+        return r;
+    }
+    /*————————————————————————— FB PXL UP ———————————————————————————————————*/
     $(document).ready(function () {
         var isS;
         window.addEventListener('scroll', (event) => {
             window.clearTimeout(isS);
             isS = setTimeout(() => {
-                var pH = (parseInt($("body").height()) + $("body").offset().top);
-                var ofs = window.pageYOffset;
-                var mxOfs = ofs + window.innerHeight;
-                if (ofs <= 0) {
-                    s = 0;
-                    /*} else if (mxOfs < pH) {
-                        // s = window.pageYOffset + (window.innerHeight / 2);
-                        s = mxOfs;*/
-                } else {
-                    s = mxOfs
-                }
-                var r = (s / pH * 100).toFixed(2);
+                var r = scrollRate();
                 var d = { [EVT_SCROLL]: r };
                 var j = json_encode(d);
                 evt("evt_cd_0", j);
                 console.log(d);
             }, 1000);
+            ((typeof lp!="undefined") && (!empty(lp))) ? lp() : null;
         }, false);
 
     });

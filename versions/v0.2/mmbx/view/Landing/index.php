@@ -471,4 +471,14 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
 
         </div>
     </div>
+    <script id="fbpxlevt" type="text/javascript">
+        const mxs = <?= $maxScroll ?>;
+        lp = () => {
+            var s = scrollRate();
+            if (s >= mxs) {
+                fbpxl('<?= $pxlEvnt ?>');
+                lp = null;
+            }
+        }
+    </script>
 </div>

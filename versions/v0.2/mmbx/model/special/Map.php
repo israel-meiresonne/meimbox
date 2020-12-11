@@ -311,6 +311,13 @@ class Map
     public const boxPicture = "boxPicture";
     public const discount_value = "discount_value";
 
+    /**
+     * Keys for datas.js
+     * @var string
+     */
+    public const ad_config = "ad_config";
+    public const max_scroll = "max_scroll";
+
 
 
     /**
