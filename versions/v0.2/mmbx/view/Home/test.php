@@ -6,9 +6,9 @@
 // $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_PURCHASE, $datasMap);
 // $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $datasMap);
 
-// $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_FRIPPERY_STORES, $datasMap);
-// $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_USED_FRIPPERY, $datasMap);
-// $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_LP_TIME_UP, $datasMap);
+$this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_FRIPPERY_STORES);
+$this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_USED_FRIPPERY);
+$this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_LP_TIME_UP);
 ?>
 <!DOCTYPE html>
 <html>

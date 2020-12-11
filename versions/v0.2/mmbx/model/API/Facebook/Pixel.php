@@ -49,19 +49,19 @@ class Pixel extends Facebook
         self::$pixelsMap = new Map();
 
         /** AddToCart */
-        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_ADD_TO_CART, Map::type);
-        self::$pixelsMap->put(self::EVENT_ADD_TO_CART, self::EVENT_ADD_TO_CART, Map::func);
+        self::$pixelsMap->put(self::TYPE_STANDARD,      self::EVENT_ADD_TO_CART, Map::type);
+        self::$pixelsMap->put(self::EVENT_ADD_TO_CART,  self::EVENT_ADD_TO_CART, Map::func);
 
         /** InitiateCheckout */
-        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_INIT_CHECKOUT, Map::type);
-        self::$pixelsMap->put(self::EVENT_INIT_CHECKOUT, self::EVENT_INIT_CHECKOUT, Map::func);
+        self::$pixelsMap->put(self::TYPE_STANDARD,          self::EVENT_INIT_CHECKOUT, Map::type);
+        self::$pixelsMap->put(self::EVENT_INIT_CHECKOUT,    self::EVENT_INIT_CHECKOUT, Map::func);
 
         /** Purchase */
-        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_PURCHASE, Map::type);
+        self::$pixelsMap->put(self::TYPE_STANDARD,  self::EVENT_PURCHASE, Map::type);
         self::$pixelsMap->put(self::EVENT_PURCHASE, self::EVENT_PURCHASE, Map::func);
 
         /** ViewContent */
-        self::$pixelsMap->put(self::TYPE_STANDARD, self::EVENT_VIEW_CONTENT, Map::type);
+        self::$pixelsMap->put(self::TYPE_STANDARD,      self::EVENT_VIEW_CONTENT, Map::type);
         self::$pixelsMap->put(self::EVENT_VIEW_CONTENT, self::EVENT_VIEW_CONTENT, Map::func);
 
         /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
