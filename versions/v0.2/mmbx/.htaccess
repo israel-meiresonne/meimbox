@@ -1,5 +1,11 @@
 RewriteEngine on
 
+# RewriteCond %{HTTP_HOST} ^iandmeim\.com [NC]
+# RewriteRule ^(.*) https://www.iandmeim.com/$1 [QSA,R=301]
+
+# RewriteCond %{SERVER_PORT} 80
+# RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+
 # Grid
 RewriteRule ^grid/qr/+([A-z]+)/*$                   index.php?controller=grid&action=$1 [QSA,NC,L]
 RewriteRule ^grid/?$                                index.php?controller=grid&action=index [QSA,NC,L]
