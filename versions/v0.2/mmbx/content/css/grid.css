@@ -118,7 +118,7 @@
         font-family: var(--main-font-family);
     }
     .grid-inner {
-        padding: 20px 5px 0;
+        padding: 20px 0 0;
     }
     .filter-block-mobile {
         display: flex;
@@ -167,10 +167,8 @@
         display: none;
         position: fixed;
         width: 100%;
-        /* top: 135px; */
         top: calc(var(--header-mobile-height) + var(--filter-mobile-h));
-        /* background-color: var(--color-white); */
-        /* z-index: 100; */
+        /* top: 105px; */
         z-index: var(--z-index-body_3);
     }
     .filter-block p {

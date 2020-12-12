@@ -21029,9 +21029,9 @@
 									"_parent": {
 										"$ref": "AAAAAAFwOr4NesqcJkA="
 									},
-									"name": "ddData",
+									"name": "deviceDatas",
 									"documentation": "# Description\n\nContain all data detected into json format",
-									"type": "JSON",
+									"type": "TEXT",
 									"length": 0
 								},
 								{
@@ -21061,7 +21061,7 @@
 										"$ref": "AAAAAAFwOr4NesqcJkA="
 									},
 									"name": "botInfo",
-									"type": "JSON",
+									"type": "TEXT",
 									"length": 0,
 									"nullable": true
 								},
@@ -25800,7 +25800,7 @@
 										"$ref": "AAAAAAFwaVOD4rfcBPY="
 									},
 									"name": "jsonValue",
-									"type": "JSON",
+									"type": "TEXT",
 									"nullable": true
 								},
 								{
@@ -27613,7 +27613,7 @@
 									},
 									"name": "cookieValue",
 									"type": "VARCHAR",
-									"length": "512"
+									"length": "200"
 								},
 								{
 									"_type": "ERDColumn",
