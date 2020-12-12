@@ -75,9 +75,11 @@
         var stack = json_encode(tab);
         $(x).attr(popstack, stack);
     }
-    enable = function (x) {
-        $(x).removeClass(disableCls);
-        $(x).attr("disabled", false);
+    enable = function (x, t = 0) {
+        setTimeout(() => {
+            $(x).removeClass(disableCls);
+            $(x).attr("disabled", false);
+        }, t * 1000);
     }
     disable = function (x) {
         $(x).addClass(disableCls);
@@ -169,6 +171,11 @@
     }
     paramToObj = (p) => {
         return JSON.parse('{"' + decodeURI(p).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+    }
+    myTimeOut = (f, t = 1) => {
+        setTimeout(() => {
+            f();
+        }, t * 1000);
     }
     /*—————————————————— SHORTCUT UP ————————————————————————————————————————*/
     /*—————————————————— MINI_POPUP BEHAVIOR DOWN ———————————————————————————*/

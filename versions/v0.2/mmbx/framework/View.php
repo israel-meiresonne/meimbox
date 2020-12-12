@@ -202,6 +202,17 @@ class View
     protected const META_BOT_NO_INDEX = '<meta name="robots" content="noindex"><meta name="googlebot" content="noindex">';
 
     /**
+     * Holds desable time for luncher
+     * @var int
+     */
+    protected const LUNCHER_DESABLE_TIME = 1;
+    /**
+     * Holds waiting time between each XHR request
+     * @var int
+     */
+    protected const XHR_TIME_OUT = 1;
+
+    /**
      * Constructor
      * @param string $action Action à laquelle la vue est associée
      * @param string $controller Nom du contrôleur auquel la vue est associée

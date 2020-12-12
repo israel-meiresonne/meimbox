@@ -67,18 +67,42 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
     <?= $head ?>
 
     <script>
-        const jx = function(a, d, r, l, x = null, sc = () => {}, rc = () => {}) {
-            $(l).css("display", "block");
-            sc();
+        var jxq = [];
+        var jxzzz = true;
+
+        // const jx = function(a, d, r, l, x = null, sc = () => {}, rc = () => {}) {
+        //     $(l).css("display", "block");
+        //     sc();
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: a + QR_XHR + "&<?= Xhr::KEY_SET_DATE ?>=" + Date.now(),
+        //         data: d,
+        //         dataType: 'json',
+        //         success: function(j) {
+        //             $(l).fadeOut(TS, rc());
+        //             console.log("response: ", j);
+        //             r(j, x);
+        //         }
+        //     });
+        // }
+
+        const jx = function(ds) {
             $.ajax({
                 type: 'POST',
-                url: a + QR_XHR + "&<?= Xhr::KEY_SET_DATE ?>=" + Date.now(),
-                data: d,
+                url: ds.a,
+                data: ds.d,
                 dataType: 'json',
-                success: function(j) {
-                    $(l).fadeOut(TS, rc());
+                success: (j) => {
+                    ds.rc();
+                    ds.r(j, ds.x);
                     console.log("response: ", j);
-                    r(j, x);
+                    // jxp();
+                    myTimeOut(jxp, XHR_T);
+                },
+                error: () => {
+                    ds.rc();
+                    // jxp();
+                    myTimeOut(jxp, XHR_T);
                 }
             });
         }
@@ -109,17 +133,36 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
             SND(datasSND);
         }
 
-        const SND = function(datas) {
-            var a = rburl(datas.a);
-            var d = datas.d;
-            var r = datas.r;
-            var l = datas.l;
-            var x = datas.x;
-            var sc = datas.sc;
-            var rc = datas.rc;
-            console.log("send: ", d);
-            console.log("to: ", a);
-            jx(a, d, r, l, x, sc, rc);
+        // const SND = function(datas) {
+        //     var a = rburl(datas.a);
+        //     var d = datas.d;
+        //     var r = datas.r;
+        //     var l = datas.l;
+        //     var x = datas.x;
+        //     var sc = datas.sc;
+        //     var rc = datas.rc;
+        //     console.log("send: ", d);
+        //     console.log("to: ", a);
+        //     jx(a, d, r, l, x, sc, rc);
+        // }
+
+        const SND = (ds) => {
+            ds.a = rburl(ds.a) + QR_XHR + "&<?= Xhr::KEY_SET_DATE ?>=" + Date.now();
+            ds.sc();
+            jxq.push(ds);
+            if (jxzzz) {
+                jxzzz = false;
+                jxp();
+            }
+        }
+
+        jxp = () => {
+            if (jxq.length > 0) {
+                ds = jxq.shift();
+                    jx(ds);
+            } else {
+                jxzzz = true;
+            }
         }
     </script>
 
@@ -214,6 +257,8 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const ALERT_LOG_OUT = "<?= $translator->translateStation("US103") ?>";
 
         const TS = 450;
+        const DT = <?= self::LUNCHER_DESABLE_TIME ?>;
+        const XHR_T = <?= self::XHR_TIME_OUT ?>;
         const BNR = 1000000;
         const XHR = "<?= Page::PATH_XHR ?>";
         // const LANG = "lang=" + $("html").attr("lang");
