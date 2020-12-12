@@ -42,7 +42,6 @@ class ControllerGrid extends ControllerSecure
      */
     public function filter()
     {
-        // sleep(5);
         $response = new Response();
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();

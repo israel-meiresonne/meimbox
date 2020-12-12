@@ -480,10 +480,13 @@
             "r": addMeasureRSP,
             "l": "#add_measurePopUp_loading",
             "x": succFunc,
-            "sc": function () {
+            "sc": () => {
                 $(d.lds).css("display", "flex");
+                disable($("#save_measure_button"));
             },
-            "rc": function () { }
+            "rc": () => {
+                enable($("#save_measure_button"), DT);
+            }
         };
         frmSND(d);
     }
@@ -512,19 +515,22 @@
     updateMsr = () => {
         var inps = $("#add_measure_form input");
         evtFrm('evt_cd_109', inps);
-        var d = {
+        var ds = {
             "a": A_UPDATE_MEASURE,
             "frm": inps,
             "frmCbk": function () { return ""; },
             "r": updateMsrRSP,
             "l": "#add_measurePopUp_loading",
-            // "x": popFunc,
-            "sc": function () {
-                $(d.lds).css("display", "flex");
+            "sc": () => {
+                displayFadeIn(ds.l);
+                disable($("#save_measure_button"));
             },
-            "rc": function () { }
+            "rc": () => { 
+                displayFadeOut(ds.l);
+                enable($("#save_measure_button"), DT);
+            }
         };
-        frmSND(d);
+        frmSND(ds);
     }
     var updateMsrRSP = function (r) {
         addMeasureRSP(r);
@@ -534,33 +540,31 @@
         var param_json = $(selector).attr("data-measure");
         var param_map = json_decode(param_json);
         var param = mapToParam(param_map);
-        getMsrAdderDts = {
-            // "alert": DELETE_MEASURE_ALERT,
+        ds = {
             "nbToWrapper": 5,
             "d": param,
             "a": QR_GET_MEASURE_ADDER,
             "r": getMsrAdderRSP,
             "l": "#measurePopUp_loading",
             "x": popFunc,
-            "sc": msrMangerLoading_on,
-            "rc": msrMangerLoading_off
+            "sc": () => {
+                displayFadeIn(ds.l);
+            },
+            "rc": () => {
+                displayFadeOut(ds.l);
+            }
         };
-        SND(getMsrAdderDts);
+        SND(ds);
     }
     var getMsrAdderRSP = function (r, popFunc) {
         if (r.isSuccess) {
             $("#measure_adder").html(r.results[QR_GET_MEASURE_ADDER]);
-            // var before = () => { $("#save_measure_button").attr("onclick", 'addMsr()'); }
-            // switchPopUp($("#measure_manager"), $("#measure_adder"));
             var btn = $("#save_measure_button");
-            // var btnCls = "standard-button-desabled";
             disable(btn);
             reactivate_AnimateInput_Elements();
             reactivate_ChangeInputUnit_Elements();
             reactivate_AnableMsrBtn_QR();
             eval(popFunc)();
-            // $("#save_measure_button").attr("onclick", 'updateMsr()');
-            // $("#save_measure_button").removeAttr("onclick");
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }
