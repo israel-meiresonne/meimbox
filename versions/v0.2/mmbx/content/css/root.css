@@ -204,7 +204,7 @@
 .back_blur {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background-image: url('/versions/v0.2/mmbx/content/brain/prod/blur-background.png');
+    /* background-image: url('/versions/v0.2/mmbx/content/brain/prod/blur-background.png'); */
 }
 .transition_time{
     transition: var(--transition-time);
