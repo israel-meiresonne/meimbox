@@ -305,8 +305,18 @@
             "a": QR_FILTER,
             "r": filterRSP,
             "l": "#prodGrid_loading",
-            "sc": function () { },
-            "rc": function () { }
+            "sc": () => {
+                var lb = $("#grid_filter .checkbox-label");
+                displayFadeIn(filterDatas.l);
+                disable(filterDatas.frm);
+                disable(lb);
+            },
+            "rc": () => {
+                var lb = $("#grid_filter .checkbox-label");
+                displayFadeOut(filterDatas.l);
+                enable(filterDatas.frm, DT);
+                enable(lb, DT);
+            }
         }
         /*———————————————————————— FILTER POST UP ———————————————————————————*/
     });
