@@ -1,0 +1,28 @@
+"constName","stringValue","jsonValue","setDate","description"
+"BASKET_TYPE","basketproduct",NULL,"2020-02-27 00:00:00","Type of prroduct witch go to basket only."
+"BOX_TYPE","boxproduct",NULL,"2020-02-27 00:00:00","Type of prroduct witch go to boxes only."
+"COLOR_TEXT_05","rgba(14, 36, 57, 0.5)",NULL,"2020-04-17 00:00:00","A css variable color. This color is used as remplacement color for white colors."
+"COLOR_TEXT_08","rgba(14, 36, 57, 0.8)",NULL,"2020-04-09 00:00:00","A css variable color. This color is used as remplacement color for white colors."
+"DB_TYPES_LENGTH",NULL,"{""date"": 15, ""enum"": -1, ""json"": 16776192, ""text"": 2147483647, ""double"": 11, ""tinyint"": 5, ""datetime"": 25}","2020-07-12 00:00:00","Holds the length of the database type. that the length can't be extracted with the table description. "
+"DEFAULT_COUNTRY_NAME","other",NULL,"2020-03-29 00:00:00","The default country of a user if his localisation is not supported by the System."
+"DEFAULT_ISO_CURRENCY","usd",NULL,"2020-05-02 00:00:00","The default currency iso code 2 of a user if his localcurrency is not supported by the System."
+"DEFAULT_LANGUAGE","en",NULL,"2020-02-28 00:00:00","Default language given to the visitor if his driver language is not supported by the web site."
+"GRID_USED_INSIDE","grid.php",NULL,"2020-03-30 00:00:00","Indicate the value of the attribut ""inside"" in TranslationStation table. Used to get the translation to the ""inside"" indicated.
+Its the file name of the method name where the translation is used."
+"INFOS_COMPANY",NULL,"{""brand"": ""i&meim"", ""media"": {""faceboock"": {""link"": ""https://www.facebook.com/iandmeimofficial/"", ""logo"": ""facebook2x.png""}, ""instagram"": {""link"": ""https://www.instagram.com/iandmeim/"", ""logo"": ""instagram2x.png""}}, ""address"": {""city"": ""sint-genesius-rode"", ""door"": null, ""phone"": ""32"", ""state"": ""flemish brabant"", ""street"": null, ""country"": ""belgium"", ""zipcode"": ""1640""}}","2020-10-18 20:35:28","Holds all datas about the company."
+"MAX_MEASURE","4",NULL,"2020-04-23 00:00:00","Indicate how much measure can be holded by a user."
+"MAX_PRODUCT_CUBE_DISPLAYABLE","3",NULL,"2020-04-02 00:00:00","The maximum of product's cubes displayable before to display the plus symbol including the plus symbole in the count of cube to display.
+ex: MAX_PRODUCT_CUBE_DISPLAYABLE = 4
+will display: 3 color cube + 1 symbole cube = 4 cubes
+
+This number of cube must avoid to display cubes in multiple ligne and disturbe the grid arrangement.
+NOTE: the number of cube displayed exactly MAX_PRODUCT_CUBE_DISPLAYABLE cause this constante include already the plus symbole"
+"NB_DAYS_BEFORE","15",NULL,"2020-02-21 21:28:28","The number of days to go back in navigation history."
+"ORDER_DEFAULT_STATUS","US68",NULL,"2020-02-26 21:37:00","The default value given to a new order's status."
+"ORDER_STATUS_STOCK_ERROR","ER30",NULL,"2020-10-11 12:30:54","Holds the status of an order when the order has an product out of stock."
+"PRICE_MESSAGE","free with meimbox",NULL,"2020-04-01 00:00:00","message to display instead of boxproduct's price because a boxProduct hasn't any price"
+"STRIPE_MAX_PROD_IMG","8",NULL,"2020-10-07 13:15:57","Holds max images allowed in Stripe product"
+"SUPPORTED_SIZES",NULL,"{""alpha"": [""4xl"", ""3xl"", ""xxl"", ""xl"", ""l"", ""m"", ""s"", ""xs"", ""xxs""], ""numeric"": [56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32]}","2020-07-18 21:17:12","List of system's supported sizes."
+"SUPPORTED_UNIT",NULL,"[""centimeter"", ""inch""]","2020-04-24 00:00:00","List of measure unit available for user's input"
+"SYSTEM_ID","1",NULL,"2020-02-26 21:27:40","The ID of the system used as author to update order status."
+"WHITE_RGB","#ffffff",NULL,"2020-04-09 00:00:00","The white color's rbg code."

@@ -2874,7 +2874,7 @@
 											"font": "Arial;13;1",
 											"left": 4152,
 											"top": 1845,
-											"width": 733.0283203125,
+											"width": 727.2392578125,
 											"height": 13,
 											"text": "Products"
 										},
@@ -2900,22 +2900,7 @@
 													"font": "Arial;13;0",
 													"left": 4157,
 													"top": 1868,
-													"width": 723.0283203125,
-													"height": 13
-												},
-												{
-													"_type": "ERDColumnView",
-													"_id": "AAAAAAFwSQcb7Z+hWZU=",
-													"_parent": {
-														"$ref": "AAAAAAFwSQPiWZ+ERhM="
-													},
-													"model": {
-														"$ref": "AAAAAAFwSQcbw5+eG+4="
-													},
-													"font": "Arial;13;0",
-													"left": 4157,
-													"top": 1883,
-													"width": 723.0283203125,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -2929,8 +2914,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1898,
-													"width": 723.0283203125,
+													"top": 1883,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -2944,8 +2929,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1913,
-													"width": 723.0283203125,
+													"top": 1898,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -2959,8 +2944,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1928,
-													"width": 723.0283203125,
+													"top": 1913,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -2974,8 +2959,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1943,
-													"width": 723.0283203125,
+													"top": 1928,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -2989,8 +2974,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1958,
-													"width": 723.0283203125,
+													"top": 1943,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -3004,8 +2989,8 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1973,
-													"width": 723.0283203125,
+													"top": 1958,
+													"width": 717.2392578125,
 													"height": 13
 												},
 												{
@@ -3019,37 +3004,22 @@
 													},
 													"font": "Arial;13;0",
 													"left": 4157,
-													"top": 1988,
-													"width": 723.0283203125,
-													"height": 13
-												},
-												{
-													"_type": "ERDColumnView",
-													"_id": "AAAAAAF1t+t/5bdJwFA=",
-													"_parent": {
-														"$ref": "AAAAAAFwSQPiWZ+ERhM="
-													},
-													"model": {
-														"$ref": "AAAAAAF1t+t/uLdGpps="
-													},
-													"font": "Arial;13;0",
-													"left": 4157,
-													"top": 2003,
-													"width": 723.0283203125,
+													"top": 1973,
+													"width": 717.2392578125,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4152,
 											"top": 1863,
-											"width": 733.0283203125,
-											"height": 158
+											"width": 727.2392578125,
+											"height": 128
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4152,
 									"top": 1840,
-									"width": 733.0283203125,
+									"width": 727.2392578125,
 									"height": 181,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSQPiWZ+DVpY="
@@ -3240,7 +3210,7 @@
 											"font": "Arial;13;1",
 											"left": 3440,
 											"top": 557,
-											"width": 238.4951171875,
+											"width": 245.72509765625,
 											"height": 13,
 											"text": "Products-ProductsTypes"
 										},
@@ -3267,7 +3237,7 @@
 													"font": "Arial;13;0",
 													"left": 3445,
 													"top": 580,
-													"width": 228.4951171875,
+													"width": 235.72509765625,
 													"height": 13
 												},
 												{
@@ -3283,7 +3253,7 @@
 													"font": "Arial;13;0",
 													"left": 3445,
 													"top": 595,
-													"width": 228.4951171875,
+													"width": 235.72509765625,
 													"height": 13
 												}
 											],
@@ -3291,7 +3261,7 @@
 											"font": "Arial;13;0",
 											"left": 3440,
 											"top": 575,
-											"width": 238.4951171875,
+											"width": 245.72509765625,
 											"height": 38
 										}
 									],
@@ -3299,7 +3269,7 @@
 									"font": "Arial;13;0",
 									"left": 3440,
 									"top": 552,
-									"width": 238.4951171875,
+									"width": 245.72509765625,
 									"height": 61,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSRuBTKA9Gio="
@@ -3409,7 +3379,7 @@
 											"font": "Arial;13;1",
 											"left": 4296,
 											"top": 2717,
-											"width": 219.72509765625,
+											"width": 238.4697265625,
 											"height": 13,
 											"text": "ProductsPictures"
 										},
@@ -3435,7 +3405,7 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2740,
-													"width": 209.72509765625,
+													"width": 228.4697265625,
 													"height": 13
 												},
 												{
@@ -3450,7 +3420,7 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2755,
-													"width": 209.72509765625,
+													"width": 228.4697265625,
 													"height": 13
 												},
 												{
@@ -3465,21 +3435,21 @@
 													"font": "Arial;13;0",
 													"left": 4301,
 													"top": 2770,
-													"width": 209.72509765625,
+													"width": 228.4697265625,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4296,
 											"top": 2735,
-											"width": 219.72509765625,
+											"width": 238.4697265625,
 											"height": 53
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4296,
 									"top": 2712,
-									"width": 219.72509765625,
+									"width": 238.4697265625,
 									"height": 76,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSR+KdqB6Q/c="
@@ -3588,7 +3558,7 @@
 											"font": "Arial;13;1",
 											"left": 4290,
 											"top": 2845,
-											"width": 229.14501953125,
+											"width": 247.8896484375,
 											"height": 13,
 											"text": "Products-Sizes"
 										},
@@ -3614,7 +3584,7 @@
 													"font": "Arial;13;0",
 													"left": 4295,
 													"top": 2868,
-													"width": 219.14501953125,
+													"width": 237.8896484375,
 													"height": 13
 												},
 												{
@@ -3629,7 +3599,7 @@
 													"font": "Arial;13;0",
 													"left": 4295,
 													"top": 2883,
-													"width": 219.14501953125,
+													"width": 237.8896484375,
 													"height": 13
 												},
 												{
@@ -3644,21 +3614,21 @@
 													"font": "Arial;13;0",
 													"left": 4295,
 													"top": 2898,
-													"width": 219.14501953125,
+													"width": 237.8896484375,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4290,
 											"top": 2863,
-											"width": 229.14501953125,
+											"width": 247.8896484375,
 											"height": 53
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4290,
 									"top": 2840,
-									"width": 229.14501953125,
+									"width": 247.8896484375,
 									"height": 76,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSSLorqC9tTg="
@@ -3787,7 +3757,7 @@
 												"$ref": "AAAAAAFwSSVKyaEEMFA="
 											},
 											"font": "Arial;13;0",
-											"left": 4543,
+											"left": 4562,
 											"top": 2896,
 											"height": 13,
 											"alpha": -0.5235987755982988,
@@ -3805,7 +3775,7 @@
 										"$ref": "AAAAAAFwSSPApqDQEi4="
 									},
 									"lineStyle": 2,
-									"points": "4672:2816;4600:2816;4600:2888;4518:2888",
+									"points": "4672:2816;4600:2816;4600:2888;4537:2888",
 									"nameLabel": {
 										"$ref": "AAAAAAFwSSVKyaEF3WA="
 									},
@@ -4817,7 +4787,7 @@
 											"font": "Arial;13;1",
 											"left": 4680,
 											"top": 3117,
-											"width": 232.03955078125,
+											"width": 234.88330078125,
 											"height": 13,
 											"text": "Categories"
 										},
@@ -4843,22 +4813,52 @@
 													"font": "Arial;13;0",
 													"left": 4685,
 													"top": 3140,
-													"width": 222.03955078125,
+													"width": 224.88330078125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2W7ZIqcTrQzU=",
+													"_parent": {
+														"$ref": "AAAAAAFwSTcd9qMeOi8="
+													},
+													"model": {
+														"$ref": "AAAAAAF2W7ZIesToYnY="
+													},
+													"font": "Arial;13;0",
+													"left": 4685,
+													"top": 3155,
+													"width": 224.88330078125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2W7aOPMTysok=",
+													"_parent": {
+														"$ref": "AAAAAAFwSTcd9qMeOi8="
+													},
+													"model": {
+														"$ref": "AAAAAAF2W7aOD8Tvo4A="
+													},
+													"font": "Arial;13;0",
+													"left": 4685,
+													"top": 3170,
+													"width": 224.88330078125,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4680,
 											"top": 3135,
-											"width": 232.03955078125,
-											"height": 23
+											"width": 234.88330078125,
+											"height": 53
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4680,
 									"top": 3112,
-									"width": 232.03955078125,
-									"height": 46,
+									"width": 234.88330078125,
+									"height": 76,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSTcd9qMdZXM="
 									},
@@ -7232,7 +7232,7 @@
 											"font": "Arial;13;1",
 											"left": 4304,
 											"top": 2533,
-											"width": 258.0205078125,
+											"width": 276.76513671875,
 											"height": 13,
 											"text": "ProductsDiscounts"
 										},
@@ -7258,7 +7258,7 @@
 													"font": "Arial;13;0",
 													"left": 4309,
 													"top": 2556,
-													"width": 248.0205078125,
+													"width": 266.76513671875,
 													"height": 13
 												},
 												{
@@ -7273,7 +7273,7 @@
 													"font": "Arial;13;0",
 													"left": 4309,
 													"top": 2571,
-													"width": 248.0205078125,
+													"width": 266.76513671875,
 													"height": 13
 												},
 												{
@@ -7288,7 +7288,7 @@
 													"font": "Arial;13;0",
 													"left": 4309,
 													"top": 2586,
-													"width": 248.0205078125,
+													"width": 266.76513671875,
 													"height": 13
 												},
 												{
@@ -7303,7 +7303,7 @@
 													"font": "Arial;13;0",
 													"left": 4309,
 													"top": 2601,
-													"width": 248.0205078125,
+													"width": 266.76513671875,
 													"height": 13
 												},
 												{
@@ -7318,21 +7318,21 @@
 													"font": "Arial;13;0",
 													"left": 4309,
 													"top": 2616,
-													"width": 248.0205078125,
+													"width": 266.76513671875,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4304,
 											"top": 2551,
-											"width": 258.0205078125,
+											"width": 276.76513671875,
 											"height": 83
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 4304,
 									"top": 2528,
-									"width": 258.0205078125,
+									"width": 276.76513671875,
 									"height": 106,
 									"nameLabel": {
 										"$ref": "AAAAAAFwSd9UV6eHF14="
@@ -10787,7 +10787,7 @@
 												"$ref": "AAAAAAFwXV148BPLp+A="
 											},
 											"font": "Arial;13;0",
-											"left": 4586,
+											"left": 4605,
 											"top": 2584,
 											"height": 13,
 											"alpha": -0.5235987755982988,
@@ -10806,7 +10806,7 @@
 										"$ref": "AAAAAAFwSW8E2aSjWUQ="
 									},
 									"lineStyle": 2,
-									"points": "2739:3504;5088:3504;5088:2576;4561:2576",
+									"points": "2739:3504;5088:3504;5088:2576;4580:2576",
 									"nameLabel": {
 										"$ref": "AAAAAAFwXV148BPMuqI="
 									},
@@ -11207,6 +11207,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFwbILCtriEF/o="
 											},
+											"fillColor": "#ff0000",
 											"font": "Arial;13;1",
 											"left": 2488,
 											"top": 1861,
@@ -11233,6 +11234,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbIWLF7i/R3g="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 1884,
@@ -11248,6 +11250,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbIQyuLi3/m8="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 1899,
@@ -11255,6 +11258,7 @@
 													"height": 13
 												}
 											],
+											"fillColor": "#ff0000",
 											"font": "Arial;13;0",
 											"left": 2488,
 											"top": 1879,
@@ -11262,6 +11266,7 @@
 											"height": 38
 										}
 									],
+									"fillColor": "#ff0000",
 									"font": "Arial;13;0",
 									"left": 2488,
 									"top": 1856,
@@ -11453,6 +11458,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFwbTJVCrlg3vY="
 											},
+											"fillColor": "#ff0000",
 											"font": "Arial;13;1",
 											"left": 2488,
 											"top": 1973,
@@ -11479,6 +11485,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbTVB3LluSyU="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 1996,
@@ -11494,6 +11501,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbT5BRLmSTqo="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2011,
@@ -11509,6 +11517,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbcryVLnX0sk="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2026,
@@ -11524,6 +11533,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbTZmjLmIdM8="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2041,
@@ -11539,6 +11549,7 @@
 													"model": {
 														"$ref": "AAAAAAFwbTW1Zbl4XPI="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2056,
@@ -11554,6 +11565,7 @@
 													"model": {
 														"$ref": "AAAAAAFwi3RhDA9RQAE="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 2493,
 													"top": 2071,
@@ -11561,6 +11573,7 @@
 													"height": 13
 												}
 											],
+											"fillColor": "#ff0000",
 											"font": "Arial;13;0",
 											"left": 2488,
 											"top": 1991,
@@ -11568,6 +11581,7 @@
 											"height": 98
 										}
 									],
+									"fillColor": "#ff0000",
 									"font": "Arial;13;0",
 									"left": 2488,
 									"top": 1968,
@@ -12059,6 +12073,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFwd/gzC7qqKsw="
 											},
+											"fillColor": "#ff0000",
 											"font": "Arial;13;1",
 											"left": 3536,
 											"top": 1701,
@@ -12085,6 +12100,7 @@
 													"model": {
 														"$ref": "AAAAAAFwd/nmNLrG1jg="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 3541,
 													"top": 1724,
@@ -12100,6 +12116,7 @@
 													"model": {
 														"$ref": "AAAAAAFwd/fyNbqezV0="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 3541,
 													"top": 1739,
@@ -12115,6 +12132,7 @@
 													"model": {
 														"$ref": "AAAAAAFwd/fyNbqfWYk="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 3541,
 													"top": 1754,
@@ -12130,6 +12148,7 @@
 													"model": {
 														"$ref": "AAAAAAFwd/fyNbqg/r4="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 3541,
 													"top": 1769,
@@ -12145,6 +12164,7 @@
 													"model": {
 														"$ref": "AAAAAAFwd/fyNbqhrwg="
 													},
+													"fillColor": "#ff0000",
 													"font": "Arial;13;0",
 													"left": 3541,
 													"top": 1784,
@@ -12152,6 +12172,7 @@
 													"height": 13
 												}
 											],
+											"fillColor": "#ff0000",
 											"font": "Arial;13;0",
 											"left": 3536,
 											"top": 1719,
@@ -12159,6 +12180,7 @@
 											"height": 83
 										}
 									],
+									"fillColor": "#ff0000",
 									"font": "Arial;13;0",
 									"left": 3536,
 									"top": 1696,
@@ -13392,7 +13414,7 @@
 												"$ref": "AAAAAAFxFmOJTMr4foY="
 											},
 											"font": "Arial;13;0",
-											"left": 4909,
+											"left": 4903,
 											"top": 1851,
 											"height": 13,
 											"alpha": 0.5235987755982988,
@@ -13427,7 +13449,7 @@
 										"$ref": "AAAAAAFwSQPiWZ+Chvc="
 									},
 									"lineStyle": 2,
-									"points": "4884:1872;4944:1872;4944:1765;5256:1765",
+									"points": "4878:1872;4944:1872;4944:1765;5256:1765",
 									"nameLabel": {
 										"$ref": "AAAAAAFxFmOJTMr5JeM="
 									},
@@ -15566,7 +15588,7 @@
 												"$ref": "AAAAAAFzYn5ekOjtPP4="
 											},
 											"font": "Arial;13;0",
-											"left": 4543,
+											"left": 4562,
 											"top": 2859,
 											"height": 13,
 											"alpha": 0.5235987755982988,
@@ -15601,7 +15623,7 @@
 										"$ref": "AAAAAAFwSSLorqC87Y0="
 									},
 									"lineStyle": 2,
-									"points": "4518:2880;5184:2880;5184:2016;5278:2016",
+									"points": "4537:2880;5184:2880;5184:2016;5278:2016",
 									"nameLabel": {
 										"$ref": "AAAAAAFzYn5ekOjuBg4="
 									},
@@ -18093,7 +18115,7 @@
 												"$ref": "AAAAAAF1G/O4/gjIC1g="
 											},
 											"font": "Arial;13;0",
-											"left": 4543,
+											"left": 4562,
 											"top": 2859,
 											"height": 13,
 											"alpha": 0.5235987755982988,
@@ -18128,7 +18150,7 @@
 										"$ref": "AAAAAAFwSSLorqC87Y0="
 									},
 									"lineStyle": 2,
-									"points": "4518:2880;5000:2880;5000:3328;4516:3328",
+									"points": "4537:2880;5000:2880;5000:3328;4516:3328",
 									"nameLabel": {
 										"$ref": "AAAAAAF1G/O4/gjJaJQ="
 									},
@@ -20437,6 +20459,104 @@
 									"headNameLabel": {
 										"$ref": "AAAAAAF2EZNgF61/Jvg="
 									}
+								},
+								{
+									"_type": "ERDEntityView",
+									"_id": "AAAAAAF2WpErd8STPnY=",
+									"_parent": {
+										"$ref": "AAAAAAFwMOVQBW51pT4="
+									},
+									"model": {
+										"$ref": "AAAAAAF2WpErdsSRIOQ="
+									},
+									"subViews": [
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAF2WpErd8SUujg=",
+											"_parent": {
+												"$ref": "AAAAAAF2WpErd8STPnY="
+											},
+											"font": "Arial;13;1",
+											"left": 4080,
+											"top": 1397,
+											"width": 227.67236328125,
+											"height": 13,
+											"text": "ProductsNames"
+										},
+										{
+											"_type": "ERDColumnCompartmentView",
+											"_id": "AAAAAAF2WpErd8SVUUI=",
+											"_parent": {
+												"$ref": "AAAAAAF2WpErd8STPnY="
+											},
+											"model": {
+												"$ref": "AAAAAAF2WpErdsSRIOQ="
+											},
+											"subViews": [
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2Wp73isTNBZ4=",
+													"_parent": {
+														"$ref": "AAAAAAF2WpErd8SVUUI="
+													},
+													"model": {
+														"$ref": "AAAAAAF2Wp73OcTKIfw="
+													},
+													"font": "Arial;13;0",
+													"left": 4085,
+													"top": 1420,
+													"width": 217.67236328125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2WqE3mcTUFWA=",
+													"_parent": {
+														"$ref": "AAAAAAF2WpErd8SVUUI="
+													},
+													"model": {
+														"$ref": "AAAAAAF2WqE3QcTRM7w="
+													},
+													"font": "Arial;13;0",
+													"left": 4085,
+													"top": 1435,
+													"width": 217.67236328125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2WqF5BcTe3QY=",
+													"_parent": {
+														"$ref": "AAAAAAF2WpErd8SVUUI="
+													},
+													"model": {
+														"$ref": "AAAAAAF2WqF4vcTbCnQ="
+													},
+													"font": "Arial;13;0",
+													"left": 4085,
+													"top": 1450,
+													"width": 217.67236328125,
+													"height": 13
+												}
+											],
+											"font": "Arial;13;0",
+											"left": 4080,
+											"top": 1415,
+											"width": 227.67236328125,
+											"height": 53
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 4080,
+									"top": 1392,
+									"width": 227.67236328125,
+									"height": 76,
+									"nameLabel": {
+										"$ref": "AAAAAAF2WpErd8SUujg="
+									},
+									"columnCompartment": {
+										"$ref": "AAAAAAF2WpErd8SVUUI="
+									}
 								}
 							]
 						},
@@ -21893,20 +22013,10 @@
 									},
 									"name": "prodID",
 									"documentation": "# Description\n\nId d'un produit",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"nullable": true
-								},
-								{
-									"_type": "ERDColumn",
-									"_id": "AAAAAAFwSQcbw5+eG+4=",
-									"_parent": {
-										"$ref": "AAAAAAFwSQPiWJ+AyGk="
-									},
-									"name": "prodName",
-									"type": "VARCHAR",
-									"length": "100"
 								},
 								{
 									"_type": "ERDColumn",
@@ -21983,17 +22093,6 @@
 									"name": "weight",
 									"documentation": "# Définition\n\nPoids du produit en kg",
 									"type": "DOUBLE"
-								},
-								{
-									"_type": "ERDColumn",
-									"_id": "AAAAAAF1t+t/uLdGpps=",
-									"_parent": {
-										"$ref": "AAAAAAFwSQPiWJ+AyGk="
-									},
-									"name": "googleCat",
-									"documentation": "# Definition\n\nPoduct's google category",
-									"type": "VARCHAR",
-									"length": "500"
 								}
 							]
 						},
@@ -22064,8 +22163,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22132,8 +22231,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22340,8 +22439,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22410,8 +22509,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22519,8 +22618,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "prodId",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22619,8 +22718,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "prodId",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22759,8 +22858,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -22889,8 +22988,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -23059,8 +23158,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -23209,8 +23308,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -23283,6 +23382,28 @@
 									"type": "VARCHAR",
 									"length": "100",
 									"primaryKey": true
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2W7ZIesToYnY=",
+									"_parent": {
+										"$ref": "AAAAAAFwSTbR6qMN244="
+									},
+									"name": "googleCatNum",
+									"documentation": "# Definition\n\nPoduct's google category",
+									"type": "INTEGER",
+									"length": "30"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2W7aOD8Tvo4A=",
+									"_parent": {
+										"$ref": "AAAAAAFwSTbR6qMN244="
+									},
+									"name": "googleCat",
+									"documentation": "# Definition\n\nPoduct's google category",
+									"type": "VARCHAR",
+									"length": "500"
 								}
 							]
 						},
@@ -23402,8 +23523,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un boxProd (produit qui peut aller directement dans le panier (basket) sans box)\n\n# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -24485,8 +24606,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un boxProd (produit qui peut aller directement dans le panier (basket) sans box)\n\n# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true
 								},
@@ -25479,8 +25600,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un boxProd (produit qui ne peut pas aller directement dans le panier (basket) sans box)\n\n# Contraintes\n\nUne fois un produit commandé il devient impossible de le supprrimer.\n\n- DELETE RESTRICT\n- UDATE CASCADE\n",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"nullable": true
@@ -25656,8 +25777,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un boxProd (produit qui peut aller directement dans le panier (basket) sans box)\n\n# Contraintes\n\nUne fois un produit commandé il devient impossible de le supprrimer.\n\n- DELETE RESTRICT\n- UDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true
 								},
@@ -25871,8 +25992,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -26151,8 +26272,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -26645,8 +26766,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -27244,8 +27365,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Description\n\nId d'un produit\n\n# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -28368,8 +28489,8 @@
 									},
 									"name": "prodId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "100",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -29297,6 +29418,55 @@
 									"type": "VARCHAR",
 									"length": "100",
 									"nullable": true
+								}
+							]
+						},
+						{
+							"_type": "ERDEntity",
+							"_id": "AAAAAAF2WpErdsSRIOQ=",
+							"_parent": {
+								"$ref": "AAAAAAFwMOVQBW50mmo="
+							},
+							"name": "ProductsNames",
+							"columns": [
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2Wp73OcTKIfw=",
+									"_parent": {
+										"$ref": "AAAAAAF2WpErdsSRIOQ="
+									},
+									"name": "prodId",
+									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
+									"type": "VARCHAR",
+									"length": "100",
+									"primaryKey": true,
+									"foreignKey": true,
+									"referenceTo": {
+										"$ref": "AAAAAAFwSQWcCp+UezE="
+									}
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2WqE3QcTRM7w=",
+									"_parent": {
+										"$ref": "AAAAAAF2WpErdsSRIOQ="
+									},
+									"name": "lang_",
+									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
+									"type": "VARCHAR",
+									"length": "10",
+									"primaryKey": true,
+									"foreignKey": true
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2WqF4vcTbCnQ=",
+									"_parent": {
+										"$ref": "AAAAAAF2WpErdsSRIOQ="
+									},
+									"name": "prodName",
+									"type": "VARCHAR",
+									"length": "100"
 								}
 							]
 						}

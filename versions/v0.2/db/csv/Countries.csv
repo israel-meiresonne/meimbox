@@ -1,0 +1,7 @@
+"country","isoCountry","iso_currency","isUE","vat"
+"australia","au","aud","0","0.1"
+"belgium","be","eur","1","0.21"
+"canada","ca","cad","0","0.05"
+"france","fr","eur","1","0.2"
+"other","o","eur","0","0"
+"switzerland","ch","chf","0","0.077"

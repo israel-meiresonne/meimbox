@@ -1,0 +1,6 @@
+"payID","payMethod","company_","cancelPath","successPath"
+"alipay","alipay","stripe","checkout","checkout/success"
+"bancontact","bancontact","stripe","checkout","checkout/success"
+"card","card","stripe","checkout","checkout/success"
+"giropay","giropay","stripe","checkout","checkout/success"
+"ideal","ideal","stripe","checkout","checkout/success"
