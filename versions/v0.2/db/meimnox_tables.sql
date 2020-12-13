@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  Dim 13 déc. 2020 à 00:32
+-- Généré le :  Dim 13 déc. 2020 à 01:34
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -11,7 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Base de données :  `TEST`
+-- Base de données :  `meimbox`
 --
 
 -- --------------------------------------------------------
@@ -79,7 +79,7 @@ CREATE TABLE `Baskets-Box` (
 
 CREATE TABLE `Baskets-Products` (
   `userId` varchar(50) NOT NULL,
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `size_name` varchar(100) NOT NULL,
   `quantity` int(11) NOT NULL,
   `setDate` datetime NOT NULL
@@ -114,7 +114,7 @@ INSERT INTO `BodyParts` (`bodyPart`) VALUES
 
 CREATE TABLE `Box-Products` (
   `boxId` varchar(100) NOT NULL,
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `sequenceID` varchar(100) NOT NULL,
   `size_name` varchar(100) DEFAULT NULL,
   `brand_name` varchar(100) DEFAULT NULL,
@@ -221,7 +221,7 @@ INSERT INTO `BoxColors` (`boxColor`, `sizeMax`, `weight`, `boxColorRGB`, `priceR
 --
 
 CREATE TABLE `BoxColors-Products` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `box_color` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -230,20 +230,20 @@ CREATE TABLE `BoxColors-Products` (
 --
 
 INSERT INTO `BoxColors-Products` (`prodId`, `box_color`) VALUES
-(1, 'gold'),
-(1, 'silver'),
-(2, 'gold'),
-(2, 'regular'),
-(2, 'silver'),
-(3, 'gold'),
-(3, 'regular'),
-(3, 'silver'),
-(4, 'gold'),
-(4, 'regular'),
-(4, 'silver'),
-(5, 'gold'),
-(5, 'regular'),
-(5, 'silver');
+('2', 'gold'),
+('2', 'regular'),
+('2', 'silver'),
+('3', 'gold'),
+('3', 'regular'),
+('3', 'silver'),
+('4', 'gold'),
+('4', 'regular'),
+('4', 'silver'),
+('5', 'gold'),
+('5', 'regular'),
+('5', 'silver'),
+('a1', 'gold'),
+('a1', 'silver');
 
 -- --------------------------------------------------------
 
@@ -544,7 +544,7 @@ INSERT INTO `BoxPrices` (`box_color`, `country_`, `iso_currency`, `price`) VALUE
 --
 
 CREATE TABLE `BoxProducts-Sizes` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `size_name` varchar(100) NOT NULL,
   `stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -554,21 +554,21 @@ CREATE TABLE `BoxProducts-Sizes` (
 --
 
 INSERT INTO `BoxProducts-Sizes` (`prodId`, `size_name`, `stock`) VALUES
-(1, 'l', 6),
-(1, 'm', 4),
-(1, 's', 3),
-(2, 'l', 3),
-(2, 'm', 6),
-(2, 's', 10),
-(3, 'l', 9),
-(3, 'm', 1),
-(3, 's', 1),
-(4, 'l', 3),
-(4, 'm', 8),
-(4, 's', 3),
-(5, 'l', 3),
-(5, 'm', 2),
-(5, 's', 2);
+('2', 'l', 3),
+('2', 'm', 6),
+('2', 's', 10),
+('3', 'l', 9),
+('3', 'm', 1),
+('3', 's', 1),
+('4', 'l', 3),
+('4', 'm', 8),
+('4', 's', 3),
+('5', 'l', 3),
+('5', 'm', 2),
+('5', 's', 2),
+('a1', 'l', 6),
+('a1', 'm', 4),
+('a1', 's', 3);
 
 -- --------------------------------------------------------
 
@@ -1428,7 +1428,7 @@ INSERT INTO `Cuts` (`cutName`, `cutMeasure`, `unit_name`) VALUES
 
 CREATE TABLE `Details` (
   `orderId` varchar(100) NOT NULL,
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `product_type` varchar(50) NOT NULL,
   `size_name` varchar(100) NOT NULL,
   `weight` double NOT NULL,
@@ -1465,6 +1465,13 @@ CREATE TABLE `Devices` (
   `deviceBrand` varchar(50) DEFAULT NULL,
   `deviceModel` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Devices`
+--
+
+INSERT INTO `Devices` (`navId`, `deviceDate`, `deviceDatas`, `userAgent`, `isBot`, `botInfo`, `osName`, `osVersion`, `osPlateform`, `driverType`, `driverName`, `driverVersion`, `driverEngine`, `driverEngineVersion`, `deviceType`, `deviceBrand`, `deviceModel`) VALUES
+('nav_528262cp02r8010er31g31903', '2020-12-13 01:30:38', '{\"os\":{\"name\":\"Mac\",\"short_name\":\"MAC\",\"version\":\"10.15.7\",\"platform\":\"\"},\"clientInfo\":{\"type\":\"browser\",\"name\":\"Safari\",\"short_name\":\"SF\",\"version\":\"14.0\",\"engine\":\"WebKit\",\"engine_version\":\"605.1.15\"},\"device\":\"desktop\",\"brand\":\"Apple\",\"model\":\"\"}', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15', 0, 'null', 'mac', '10.15.7', NULL, 'browser', 'safari', '14.0', 'webkit', '605.1.15', 'desktop', 'apple', NULL);
 
 -- --------------------------------------------------------
 
@@ -1852,6 +1859,13 @@ CREATE TABLE `Locations` (
   `hosting` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `Locations`
+--
+
+INSERT INTO `Locations` (`navId`, `locationDate`, `ip`, `status`, `message`, `continent`, `continentCode`, `country`, `countryCode`, `region`, `regionName`, `city`, `district`, `zip`, `lat`, `lon`, `timezone`, `offset`, `currency`, `isp`, `ispOrg`, `ispAs`, `asname`, `reverse`, `mobile`, `proxy`, `hosting`) VALUES
+('nav_528262cp02r8010er31g31903', '2020-12-13 01:30:37', '203.194.21.241', 'success', NULL, 'oceania', 'oc', 'australia', 'au', 'vic', 'victoria', 'forest hill', NULL, '3131', -37.8372, 145.173, 'australia/melbourne', 39600, 'aud', 'tpg internet pty ltd', 'tricon group', 'as7545 tpg telecom limited', 'tpg-internet-ap', '203-194-21-241.tpgi.com.au', 0, 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -1928,6 +1942,13 @@ CREATE TABLE `Navigations` (
   `path` varchar(100) NOT NULL,
   `timeOn` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Navigations`
+--
+
+INSERT INTO `Navigations` (`navID`, `userId`, `xhrFrom`, `navDate`, `url`, `webroot`, `path`, `timeOn`) VALUES
+('nav_528262cp02r8010er31g31903', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:30:36', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', NULL);
 
 -- --------------------------------------------------------
 
@@ -2044,7 +2065,7 @@ INSERT INTO `Orders-Boxes` (`orderId`, `boxId`, `box_color`, `sizeMax`, `weight`
 
 CREATE TABLE `Orders-BoxProducts` (
   `boxId` varchar(100) NOT NULL,
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `sequenceID` varchar(100) NOT NULL,
   `product_type` varchar(50) NOT NULL,
   `realSize` varchar(100) NOT NULL,
@@ -2063,7 +2084,7 @@ CREATE TABLE `Orders-BoxProducts` (
 --
 
 INSERT INTO `Orders-BoxProducts` (`boxId`, `prodId`, `sequenceID`, `product_type`, `realSize`, `weight`, `size_name`, `brand_name`, `measureId`, `cut_name`, `quantity`, `setDate`, `stillStock`) VALUES
-('w04p04022420q12m1omw31a0n', 1, 'xxs-null-null-null', 'boxproduct', 's', 0.54, 'xxs', NULL, NULL, NULL, 1, '2020-12-10 14:02:49', 1);
+('w04p04022420q12m1omw31a0n', 'a1', 'xxs-null-null-null', 'boxproduct', 's', 0.54, 'xxs', NULL, NULL, NULL, 1, '2020-12-10 14:02:49', 1);
 
 -- --------------------------------------------------------
 
@@ -2183,7 +2204,7 @@ INSERT INTO `Privileges` (`privID`, `description`) VALUES
 --
 
 CREATE TABLE `ProductBuyPrice` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `buyDate` datetime NOT NULL,
   `buy_country` varchar(100) NOT NULL,
   `iso_currency` varchar(10) NOT NULL,
@@ -2195,16 +2216,16 @@ CREATE TABLE `ProductBuyPrice` (
 --
 
 INSERT INTO `ProductBuyPrice` (`prodId`, `buyDate`, `buy_country`, `iso_currency`, `buyPrice`) VALUES
-(1, '2020-02-28 00:00:00', 'belgium', 'eur', 3.56),
-(2, '2019-12-06 18:02:20', 'belgium', 'eur', 381.59),
-(3, '2019-11-07 18:02:20', 'france', 'eur', 154.72),
-(4, '2019-10-09 18:02:20', 'belgium', 'eur', 451.09),
-(5, '2019-09-10 18:02:20', 'france', 'eur', 316.96),
-(6, '2019-08-12 18:02:20', 'belgium', 'eur', 80.01),
-(7, '2019-07-14 18:02:20', 'france', 'eur', 382.64),
-(8, '2019-06-15 18:02:20', 'belgium', 'eur', 189.59),
-(9, '2019-05-17 18:02:20', 'france', 'eur', 269.95),
-(10, '2019-04-18 18:02:20', 'france', 'eur', 405.81);
+('10', '2019-04-18 18:02:20', 'france', 'eur', 405.81),
+('2', '2019-12-06 18:02:20', 'belgium', 'eur', 381.59),
+('3', '2019-11-07 18:02:20', 'france', 'eur', 154.72),
+('4', '2019-10-09 18:02:20', 'belgium', 'eur', 451.09),
+('5', '2019-09-10 18:02:20', 'france', 'eur', 316.96),
+('6', '2019-08-12 18:02:20', 'belgium', 'eur', 80.01),
+('7', '2019-07-14 18:02:20', 'france', 'eur', 382.64),
+('8', '2019-06-15 18:02:20', 'belgium', 'eur', 189.59),
+('9', '2019-05-17 18:02:20', 'france', 'eur', 269.95),
+('a1', '2020-02-28 00:00:00', 'belgium', 'eur', 3.56);
 
 -- --------------------------------------------------------
 
@@ -2231,7 +2252,7 @@ INSERT INTO `ProductFunctions` (`functionName`) VALUES
 --
 
 CREATE TABLE `Products` (
-  `prodID` int(11) NOT NULL,
+  `prodID` varchar(100) NOT NULL,
   `prodName` varchar(100) NOT NULL,
   `isAvailable` tinyint(1) NOT NULL,
   `groupID` varchar(50) NOT NULL,
@@ -2248,24 +2269,24 @@ CREATE TABLE `Products` (
 --
 
 INSERT INTO `Products` (`prodID`, `prodName`, `isAvailable`, `groupID`, `product_type`, `addedDate`, `colorName`, `colorRGB`, `weight`, `googleCat`) VALUES
-(1, 'boxproduct1', 1, 'boxproduct2', 'boxproduct', '2020-01-08 15:00:05', 'green', '#33cc33', 0.54, 'Apparel & Accessories > Clothing > Sleepwear & Loungewear > Nightgowns'),
-(2, 'boxproduct2', 1, 'boxproduct2', 'boxproduct', '2020-01-09 15:00:05', 'blue', '#00ccff', 0.98, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Swimwear'),
-(3, 'boxproduct3', 1, 'boxproduct2', 'boxproduct', '2020-01-10 15:00:05', 'yellow', '#ffff00', 0.71, 'Apparel & Accessories > Clothing > Shirts & Tops'),
-(4, 'boxproduct4', 1, 'boxproduct2', 'boxproduct', '2020-01-11 15:00:05', 'red', '#ff3300', 0.71, 'Apparel & Accessories > Clothing > Shirts & Tops'),
-(5, 'boxproduct5', 1, 'boxproduct2', 'boxproduct', '2020-01-12 15:00:05', 'orange', '#ff9900', 0.34, 'Apparel & Accessories > Clothing > Shirts & Tops'),
-(6, 'basketproduct6', 1, 'basketproduct4', 'basketproduct', '2020-01-13 15:00:05', 'black', '#000000', 0.32, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
-(7, 'basketproduct7', 1, 'basketproduct4', 'basketproduct', '2020-01-14 15:00:05', 'green', '#33cc33', 0.65, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
-(8, 'basketproduct8', 1, 'basketproduct4', 'basketproduct', '2020-01-15 15:00:05', 'white', '#ffffff', 0.48, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
-(9, 'basketproduct9', 1, 'basketproduct5', 'basketproduct', '2020-01-16 15:00:05', 'yellow', '#ffff00', 0.73, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(10, 'basketproduct10', 1, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'red', '#ff3300', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(11, 'basketproduct11', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'blue', '#00ccff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(12, 'basketproduct12', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(13, 'basketproduct13', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'green', '#33cc33', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(14, 'basketproduct14', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'orange', '#ff9900', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(15, 'basketproduct15', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'black', '#000000', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(16, 'basketproduct16', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'white', '#ffffff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(17, 'basketproduct17', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'red', '#00ccff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
-(18, 'basketproduct18', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses');
+('10', 'basketproduct10', 1, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'red', '#ff3300', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('11', 'basketproduct11', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'blue', '#00ccff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('12', 'basketproduct12', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('13', 'basketproduct13', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'green', '#33cc33', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('14', 'basketproduct14', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'orange', '#ff9900', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('15', 'basketproduct15', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'black', '#000000', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('16', 'basketproduct16', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'white', '#ffffff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('17', 'basketproduct17', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'red', '#00ccff', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('18', 'basketproduct18', 0, 'basketproduct5', 'basketproduct', '2020-01-17 15:00:05', 'yellow', '#ffff00', 0.76, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('2', 'boxproduct2', 1, 'boxproduct2', 'boxproduct', '2020-01-09 15:00:05', 'blue', '#00ccff', 0.98, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Swimwear'),
+('3', 'boxproduct3', 1, 'boxproduct2', 'boxproduct', '2020-01-10 15:00:05', 'yellow', '#ffff00', 0.71, 'Apparel & Accessories > Clothing > Shirts & Tops'),
+('4', 'boxproduct4', 1, 'boxproduct2', 'boxproduct', '2020-01-11 15:00:05', 'red', '#ff3300', 0.71, 'Apparel & Accessories > Clothing > Shirts & Tops'),
+('5', 'boxproduct5', 1, 'boxproduct2', 'boxproduct', '2020-01-12 15:00:05', 'orange', '#ff9900', 0.34, 'Apparel & Accessories > Clothing > Shirts & Tops'),
+('6', 'basketproduct6', 1, 'basketproduct4', 'basketproduct', '2020-01-13 15:00:05', 'black', '#000000', 0.32, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
+('7', 'basketproduct7', 1, 'basketproduct4', 'basketproduct', '2020-01-14 15:00:05', 'green', '#33cc33', 0.65, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
+('8', 'basketproduct8', 1, 'basketproduct4', 'basketproduct', '2020-01-15 15:00:05', 'white', '#ffffff', 0.48, 'Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers'),
+('9', 'basketproduct9', 1, 'basketproduct5', 'basketproduct', '2020-01-16 15:00:05', 'yellow', '#ffff00', 0.73, 'Apparel & Accessories > Clothing > Baby & Toddler Clothing > Baby & Toddler Dresses'),
+('a1', 'boxproduct1', 1, 'boxproduct2', 'boxproduct', '2020-01-08 15:00:05', 'green', '#33cc33', 0.54, 'Apparel & Accessories > Clothing > Sleepwear & Loungewear > Nightgowns');
 
 -- --------------------------------------------------------
 
@@ -2274,7 +2295,7 @@ INSERT INTO `Products` (`prodID`, `prodName`, `isAvailable`, `groupID`, `product
 --
 
 CREATE TABLE `Products-Categories` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `category_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2283,36 +2304,36 @@ CREATE TABLE `Products-Categories` (
 --
 
 INSERT INTO `Products-Categories` (`prodId`, `category_name`) VALUES
-(1, 'jackets'),
-(2, 'jackets'),
-(4, 'jackets'),
-(5, 'jackets'),
-(6, 'jackets'),
-(8, 'jackets'),
-(9, 'jackets'),
-(10, 'jackets'),
-(2, 'scarfs'),
-(3, 'scarfs'),
-(4, 'scarfs'),
-(6, 'scarfs'),
-(7, 'scarfs'),
-(8, 'scarfs'),
-(10, 'scarfs'),
-(1, 'trousers'),
-(3, 'trousers'),
-(4, 'trousers'),
-(5, 'trousers'),
-(7, 'trousers'),
-(8, 'trousers'),
-(9, 'trousers'),
-(1, 'vests'),
-(2, 'vests'),
-(3, 'vests'),
-(5, 'vests'),
-(6, 'vests'),
-(7, 'vests'),
-(9, 'vests'),
-(10, 'vests');
+('10', 'jackets'),
+('2', 'jackets'),
+('4', 'jackets'),
+('5', 'jackets'),
+('6', 'jackets'),
+('8', 'jackets'),
+('9', 'jackets'),
+('a1', 'jackets'),
+('10', 'scarfs'),
+('2', 'scarfs'),
+('3', 'scarfs'),
+('4', 'scarfs'),
+('6', 'scarfs'),
+('7', 'scarfs'),
+('8', 'scarfs'),
+('3', 'trousers'),
+('4', 'trousers'),
+('5', 'trousers'),
+('7', 'trousers'),
+('8', 'trousers'),
+('9', 'trousers'),
+('a1', 'trousers'),
+('10', 'vests'),
+('2', 'vests'),
+('3', 'vests'),
+('5', 'vests'),
+('6', 'vests'),
+('7', 'vests'),
+('9', 'vests'),
+('a1', 'vests');
 
 -- --------------------------------------------------------
 
@@ -2321,7 +2342,7 @@ INSERT INTO `Products-Categories` (`prodId`, `category_name`) VALUES
 --
 
 CREATE TABLE `Products-Collections` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `collection_name` varchar(100) NOT NULL,
   `beginDate` datetime DEFAULT NULL,
   `endDate` datetime DEFAULT NULL
@@ -2332,26 +2353,26 @@ CREATE TABLE `Products-Collections` (
 --
 
 INSERT INTO `Products-Collections` (`prodId`, `collection_name`, `beginDate`, `endDate`) VALUES
-(1, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(1, 'women', NULL, NULL),
-(2, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(2, 'women', NULL, NULL),
-(3, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(3, 'women', NULL, NULL),
-(4, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(4, 'women', NULL, NULL),
-(5, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(5, 'women', NULL, NULL),
-(6, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(6, 'women', NULL, NULL),
-(7, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(7, 'women', NULL, NULL),
-(8, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(8, 'women', NULL, NULL),
-(9, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(9, 'women', NULL, NULL),
-(10, 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(10, 'women', NULL, NULL);
+('10', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('10', 'women', NULL, NULL),
+('2', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('2', 'women', NULL, NULL),
+('3', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('3', 'women', NULL, NULL),
+('4', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('4', 'women', NULL, NULL),
+('5', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('5', 'women', NULL, NULL),
+('6', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('6', 'women', NULL, NULL),
+('7', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('7', 'women', NULL, NULL),
+('8', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('8', 'women', NULL, NULL),
+('9', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('9', 'women', NULL, NULL),
+('a1', 'autumn', '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('a1', 'women', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2360,7 +2381,7 @@ INSERT INTO `Products-Collections` (`prodId`, `collection_name`, `beginDate`, `e
 --
 
 CREATE TABLE `Products-ProductFunctions` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `function_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2369,26 +2390,26 @@ CREATE TABLE `Products-ProductFunctions` (
 --
 
 INSERT INTO `Products-ProductFunctions` (`prodId`, `function_name`) VALUES
-(1, 'accessories'),
-(2, 'accessories'),
-(3, 'accessories'),
-(4, 'accessories'),
-(5, 'accessories'),
-(6, 'accessories'),
-(7, 'accessories'),
-(8, 'accessories'),
-(9, 'accessories'),
-(10, 'accessories'),
-(1, 'clothes'),
-(2, 'clothes'),
-(3, 'clothes'),
-(4, 'clothes'),
-(5, 'clothes'),
-(6, 'clothes'),
-(7, 'clothes'),
-(8, 'clothes'),
-(9, 'clothes'),
-(10, 'clothes');
+('10', 'accessories'),
+('2', 'accessories'),
+('3', 'accessories'),
+('4', 'accessories'),
+('5', 'accessories'),
+('6', 'accessories'),
+('7', 'accessories'),
+('8', 'accessories'),
+('9', 'accessories'),
+('a1', 'accessories'),
+('10', 'clothes'),
+('2', 'clothes'),
+('3', 'clothes'),
+('4', 'clothes'),
+('5', 'clothes'),
+('6', 'clothes'),
+('7', 'clothes'),
+('8', 'clothes'),
+('9', 'clothes'),
+('a1', 'clothes');
 
 -- --------------------------------------------------------
 
@@ -2397,7 +2418,7 @@ INSERT INTO `Products-ProductFunctions` (`prodId`, `function_name`) VALUES
 --
 
 CREATE TABLE `Products-Sizes` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `size_name` varchar(100) NOT NULL,
   `stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -2407,36 +2428,36 @@ CREATE TABLE `Products-Sizes` (
 --
 
 INSERT INTO `Products-Sizes` (`prodId`, `size_name`, `stock`) VALUES
-(1, '4xl', 5),
-(1, 'm', 5),
-(1, 's', 4),
-(2, 'l', 5),
-(2, 'm', 5),
-(2, 's', 5),
-(3, 'l', 9),
-(3, 'm', 1),
-(3, 's', 1),
-(4, 'l', 0),
-(4, 'm', 8),
-(4, 's', 3),
-(5, 'l', 3),
-(5, 'm', 2),
-(5, 's', 2),
-(6, 'l', 5),
-(6, 'm', 3),
-(6, 's', 5),
-(7, 'l', 7),
-(7, 'm', 8),
-(7, 's', 9),
-(8, 'l', 5),
-(8, 'm', 4),
-(8, 's', 7),
-(9, 'l', 2),
-(9, 'm', 9),
-(9, 's', 9),
-(10, 'l', 1),
-(10, 'm', 3),
-(10, 's', 7);
+('10', 'l', 1),
+('10', 'm', 3),
+('10', 's', 7),
+('2', 'l', 5),
+('2', 'm', 5),
+('2', 's', 5),
+('3', 'l', 9),
+('3', 'm', 1),
+('3', 's', 1),
+('4', 'l', 0),
+('4', 'm', 8),
+('4', 's', 3),
+('5', 'l', 3),
+('5', 'm', 2),
+('5', 's', 2),
+('6', 'l', 5),
+('6', 'm', 3),
+('6', 's', 5),
+('7', 'l', 7),
+('7', 'm', 8),
+('7', 's', 9),
+('8', 'l', 5),
+('8', 'm', 4),
+('8', 's', 7),
+('9', 'l', 2),
+('9', 'm', 9),
+('9', 's', 9),
+('a1', '4xl', 5),
+('a1', 'm', 5),
+('a1', 's', 4);
 
 -- --------------------------------------------------------
 
@@ -2445,7 +2466,7 @@ INSERT INTO `Products-Sizes` (`prodId`, `size_name`, `stock`) VALUES
 --
 
 CREATE TABLE `ProductsDescriptions` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `lang_` varchar(10) NOT NULL,
   `description` varchar(5000) NOT NULL,
   `richDescription` varchar(5000) NOT NULL
@@ -2456,36 +2477,36 @@ CREATE TABLE `ProductsDescriptions` (
 --
 
 INSERT INTO `ProductsDescriptions` (`prodId`, `lang_`, `description`, `richDescription`) VALUES
-(1, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(1, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(1, 'fr', 'cette description est en français', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(2, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(2, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(2, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(3, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(3, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(3, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(4, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(4, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(4, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(5, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(5, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(5, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(6, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(6, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(6, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(7, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(7, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(7, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(8, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(8, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(8, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(9, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(9, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(9, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
-(10, 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
-(10, 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
-(10, 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français');
+('10', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('10', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('10', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('2', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('2', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('2', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('3', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('3', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('3', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('4', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('4', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('4', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('5', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('5', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('5', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('6', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('6', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('6', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('7', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('7', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('7', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('8', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('8', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('8', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('9', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('9', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('9', 'fr', 'cette description est en français ', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français'),
+('a1', 'en', 'this description is in english', '<h1>my product</h1>hi! this description is in english <strong>this description is in english</strong>. this description is in english, this description is in english. this description is in english, this description is in english. this description is in english, this description is in english this description is in english <strong>this description is in english</strong> this description is in english'),
+('a1', 'es', 'esta descripción está en español', '<h1>mi producto</h1>¡hola! esta descripción está en español <strong> esta descripción está en español </strong>. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español. esta descripción está en español, esta descripción está en español esta descripción está en español <strong> esta descripción está en español </strong> esta descripción está en español'),
+('a1', 'fr', 'cette description est en français', '<h1>mon produit</h1>salut! cette description est en français<strong>cette description est en français</strong>. cette description est en français, cette description est en français. cette description est en français, cette description est en français. cette description est en français, cette description est en français cette description est en français<strong>cette description est en français</strong>cette description est en français');
 
 -- --------------------------------------------------------
 
@@ -2494,7 +2515,7 @@ INSERT INTO `ProductsDescriptions` (`prodId`, `lang_`, `description`, `richDescr
 --
 
 CREATE TABLE `ProductsDiscounts` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `country_` varchar(100) NOT NULL,
   `discount_value` double NOT NULL,
   `beginDate` datetime DEFAULT NULL,
@@ -2506,26 +2527,26 @@ CREATE TABLE `ProductsDiscounts` (
 --
 
 INSERT INTO `ProductsDiscounts` (`prodId`, `country_`, `discount_value`, `beginDate`, `endDate`) VALUES
-(6, 'australia', 0.16, '2020-01-27 18:02:20', '2020-02-27 18:02:20'),
-(6, 'belgium', 0.12, '2020-01-30 18:02:20', '2020-03-01 18:02:20'),
-(6, 'canada', 0.31, '2020-01-28 18:02:20', '2020-02-28 18:02:20'),
-(6, 'switzerland', 0.45, '2020-01-29 18:02:20', '2020-02-29 18:02:20'),
-(7, 'australia', 0.45, '2020-01-31 18:02:20', '2020-03-02 18:02:20'),
-(7, 'belgium', 0.45, '2020-02-03 18:02:20', '2020-03-05 18:02:20'),
-(7, 'canada', 0.16, '2020-02-01 18:02:20', '2020-03-03 18:02:20'),
-(7, 'switzerland', 0.31, '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
-(8, 'australia', 0.12, '2020-02-04 18:02:20', '2020-03-06 18:02:20'),
-(8, 'belgium', 0.31, '2020-02-07 18:02:20', '2020-03-09 18:02:20'),
-(8, 'canada', 0.45, '2020-02-05 18:02:20', '2020-03-07 18:02:20'),
-(8, 'switzerland', 0.16, '2020-02-06 18:02:20', '2020-03-08 18:02:20'),
-(9, 'australia', 0.45, '2020-02-08 18:02:20', '2020-03-10 18:02:20'),
-(9, 'belgium', 0.16, '2020-02-11 18:02:20', '2020-03-13 18:02:20'),
-(9, 'canada', 0.12, '2020-02-09 18:02:20', '2020-03-11 18:02:20'),
-(9, 'switzerland', 0.45, '2020-02-10 18:02:20', '2020-03-12 18:02:20'),
-(10, 'australia', 0.31, '2020-02-12 18:02:20', '2020-03-14 18:02:20'),
-(10, 'belgium', 0.45, '2020-02-15 18:02:20', '2020-03-17 18:02:20'),
-(10, 'canada', 0.45, '2020-02-13 18:02:20', '2020-03-15 18:02:20'),
-(10, 'switzerland', 0.12, '2020-02-14 18:02:20', '2020-03-16 18:02:20');
+('10', 'australia', 0.31, '2020-02-12 18:02:20', '2020-03-14 18:02:20'),
+('10', 'belgium', 0.45, '2020-02-15 18:02:20', '2020-03-17 18:02:20'),
+('10', 'canada', 0.45, '2020-02-13 18:02:20', '2020-03-15 18:02:20'),
+('10', 'switzerland', 0.12, '2020-02-14 18:02:20', '2020-03-16 18:02:20'),
+('6', 'australia', 0.16, '2020-01-27 18:02:20', '2020-02-27 18:02:20'),
+('6', 'belgium', 0.12, '2020-01-30 18:02:20', '2020-03-01 18:02:20'),
+('6', 'canada', 0.31, '2020-01-28 18:02:20', '2020-02-28 18:02:20'),
+('6', 'switzerland', 0.45, '2020-01-29 18:02:20', '2020-02-29 18:02:20'),
+('7', 'australia', 0.45, '2020-01-31 18:02:20', '2020-03-02 18:02:20'),
+('7', 'belgium', 0.45, '2020-02-03 18:02:20', '2020-03-05 18:02:20'),
+('7', 'canada', 0.16, '2020-02-01 18:02:20', '2020-03-03 18:02:20'),
+('7', 'switzerland', 0.31, '2020-02-02 18:02:20', '2020-03-04 18:02:20'),
+('8', 'australia', 0.12, '2020-02-04 18:02:20', '2020-03-06 18:02:20'),
+('8', 'belgium', 0.31, '2020-02-07 18:02:20', '2020-03-09 18:02:20'),
+('8', 'canada', 0.45, '2020-02-05 18:02:20', '2020-03-07 18:02:20'),
+('8', 'switzerland', 0.16, '2020-02-06 18:02:20', '2020-03-08 18:02:20'),
+('9', 'australia', 0.45, '2020-02-08 18:02:20', '2020-03-10 18:02:20'),
+('9', 'belgium', 0.16, '2020-02-11 18:02:20', '2020-03-13 18:02:20'),
+('9', 'canada', 0.12, '2020-02-09 18:02:20', '2020-03-11 18:02:20'),
+('9', 'switzerland', 0.45, '2020-02-10 18:02:20', '2020-03-12 18:02:20');
 
 -- --------------------------------------------------------
 
@@ -2534,7 +2555,7 @@ INSERT INTO `ProductsDiscounts` (`prodId`, `country_`, `discount_value`, `beginD
 --
 
 CREATE TABLE `ProductsPictures` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `pictureID` int(11) NOT NULL,
   `picture` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -2544,36 +2565,36 @@ CREATE TABLE `ProductsPictures` (
 --
 
 INSERT INTO `ProductsPictures` (`prodId`, `pictureID`, `picture`) VALUES
-(1, 1, 'picture01.jpeg'),
-(1, 2, 'picture02.jpeg'),
-(1, 3, 'picture03.jpeg'),
-(2, 1, 'picture01.jpeg'),
-(2, 2, 'picture02.jpeg'),
-(2, 3, 'picture03.jpeg'),
-(3, 1, 'picture01.jpeg'),
-(3, 2, 'picture02.jpeg'),
-(3, 3, 'picture03.jpeg'),
-(4, 1, 'picture01.jpeg'),
-(4, 2, 'picture02.jpeg'),
-(4, 3, 'picture03.jpeg'),
-(5, 1, 'picture01.jpeg'),
-(5, 2, 'picture02.jpeg'),
-(5, 3, 'picture03.jpeg'),
-(6, 1, 'picture01.jpeg'),
-(6, 2, 'picture02.jpeg'),
-(6, 3, 'picture03.jpeg'),
-(7, 1, 'picture01.jpeg'),
-(7, 2, 'picture02.jpeg'),
-(7, 3, 'picture03.jpeg'),
-(8, 1, 'picture01.jpeg'),
-(8, 2, 'picture02.jpeg'),
-(8, 3, 'picture03.jpeg'),
-(9, 1, 'picture01.jpeg'),
-(9, 2, 'picture02.jpeg'),
-(9, 3, 'picture03.jpeg'),
-(10, 1, 'picture01.jpeg'),
-(10, 2, 'picture02.jpeg'),
-(10, 3, 'picture03.jpeg');
+('10', 1, 'picture01.jpeg'),
+('10', 2, 'picture02.jpeg'),
+('10', 3, 'picture03.jpeg'),
+('2', 1, 'picture01.jpeg'),
+('2', 2, 'picture02.jpeg'),
+('2', 3, 'picture03.jpeg'),
+('3', 1, 'picture01.jpeg'),
+('3', 2, 'picture02.jpeg'),
+('3', 3, 'picture03.jpeg'),
+('4', 1, 'picture01.jpeg'),
+('4', 2, 'picture02.jpeg'),
+('4', 3, 'picture03.jpeg'),
+('5', 1, 'picture01.jpeg'),
+('5', 2, 'picture02.jpeg'),
+('5', 3, 'picture03.jpeg'),
+('6', 1, 'picture01.jpeg'),
+('6', 2, 'picture02.jpeg'),
+('6', 3, 'picture03.jpeg'),
+('7', 1, 'picture01.jpeg'),
+('7', 2, 'picture02.jpeg'),
+('7', 3, 'picture03.jpeg'),
+('8', 1, 'picture01.jpeg'),
+('8', 2, 'picture02.jpeg'),
+('8', 3, 'picture03.jpeg'),
+('9', 1, 'picture01.jpeg'),
+('9', 2, 'picture02.jpeg'),
+('9', 3, 'picture03.jpeg'),
+('a1', 1, 'picture01.jpeg'),
+('a1', 2, 'picture02.jpeg'),
+('a1', 3, 'picture03.jpeg');
 
 -- --------------------------------------------------------
 
@@ -2582,7 +2603,7 @@ INSERT INTO `ProductsPictures` (`prodId`, `pictureID`, `picture`) VALUES
 --
 
 CREATE TABLE `ProductsPrices` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `country_` varchar(100) NOT NULL,
   `iso_currency` varchar(10) NOT NULL,
   `price` double NOT NULL
@@ -2593,146 +2614,146 @@ CREATE TABLE `ProductsPrices` (
 --
 
 INSERT INTO `ProductsPrices` (`prodId`, `country_`, `iso_currency`, `price`) VALUES
-(6, 'australia', 'aud', 20.45),
-(6, 'australia', 'cad', 32.83),
-(6, 'australia', 'chf', 61.56),
-(6, 'australia', 'eur', 46.17),
-(6, 'australia', 'gbp', 13.3),
-(6, 'australia', 'jpy', 24.23),
-(6, 'australia', 'usd', 33.15),
-(6, 'belgium', 'aud', 94.22),
-(6, 'belgium', 'cad', 85.55),
-(6, 'belgium', 'chf', 41.17),
-(6, 'belgium', 'eur', 65.66),
-(6, 'belgium', 'gbp', 90.23),
-(6, 'belgium', 'jpy', 74),
-(6, 'belgium', 'usd', 33.25),
-(6, 'canada', 'aud', 73.38),
-(6, 'canada', 'cad', 84.25),
-(6, 'canada', 'chf', 52.06),
-(6, 'canada', 'eur', 47.32),
-(6, 'canada', 'gbp', 92.55),
-(6, 'canada', 'jpy', 36.55),
-(6, 'canada', 'usd', 99.4),
-(6, 'switzerland', 'aud', 27.45),
-(6, 'switzerland', 'cad', 12.21),
-(6, 'switzerland', 'chf', 83.04),
-(6, 'switzerland', 'eur', 74.14),
-(6, 'switzerland', 'gbp', 49.5),
-(6, 'switzerland', 'jpy', 19.08),
-(6, 'switzerland', 'usd', 77.17),
-(7, 'australia', 'aud', 97.95),
-(7, 'australia', 'cad', 88.7),
-(7, 'australia', 'chf', 67.49),
-(7, 'australia', 'eur', 65.09),
-(7, 'australia', 'gbp', 78.13),
-(7, 'australia', 'jpy', 38.45),
-(7, 'australia', 'usd', 80.81),
-(7, 'belgium', 'aud', 86.79),
-(7, 'belgium', 'cad', 43.31),
-(7, 'belgium', 'chf', 61.84),
-(7, 'belgium', 'eur', 90.19),
-(7, 'belgium', 'gbp', 63.46),
-(7, 'belgium', 'jpy', 13.06),
-(7, 'belgium', 'usd', 47.4),
-(7, 'canada', 'aud', 48.02),
-(7, 'canada', 'cad', 87.47),
-(7, 'canada', 'chf', 56.17),
-(7, 'canada', 'eur', 40.9),
-(7, 'canada', 'gbp', 33.21),
-(7, 'canada', 'jpy', 91.05),
-(7, 'canada', 'usd', 42.99),
-(7, 'switzerland', 'aud', 74.31),
-(7, 'switzerland', 'cad', 28.1),
-(7, 'switzerland', 'chf', 42.08),
-(7, 'switzerland', 'eur', 98.43),
-(7, 'switzerland', 'gbp', 41.25),
-(7, 'switzerland', 'jpy', 82.51),
-(7, 'switzerland', 'usd', 43.87),
-(8, 'australia', 'aud', 28.93),
-(8, 'australia', 'cad', 16.84),
-(8, 'australia', 'chf', 36.42),
-(8, 'australia', 'eur', 89.43),
-(8, 'australia', 'gbp', 66.92),
-(8, 'australia', 'jpy', 21.49),
-(8, 'australia', 'usd', 79.66),
-(8, 'belgium', 'aud', 66.15),
-(8, 'belgium', 'cad', 29.11),
-(8, 'belgium', 'chf', 91.52),
-(8, 'belgium', 'eur', 66.65),
-(8, 'belgium', 'gbp', 38.51),
-(8, 'belgium', 'jpy', 88.94),
-(8, 'belgium', 'usd', 15.38),
-(8, 'canada', 'aud', 80.65),
-(8, 'canada', 'cad', 80.75),
-(8, 'canada', 'chf', 97.17),
-(8, 'canada', 'eur', 51.68),
-(8, 'canada', 'gbp', 47.91),
-(8, 'canada', 'jpy', 85.06),
-(8, 'canada', 'usd', 75.08),
-(8, 'switzerland', 'aud', 14.74),
-(8, 'switzerland', 'cad', 63.97),
-(8, 'switzerland', 'chf', 80.2),
-(8, 'switzerland', 'eur', 91.13),
-(8, 'switzerland', 'gbp', 80.06),
-(8, 'switzerland', 'jpy', 60.09),
-(8, 'switzerland', 'usd', 14.48),
-(9, 'australia', 'aud', 24.01),
-(9, 'australia', 'cad', 83.58),
-(9, 'australia', 'chf', 39.9),
-(9, 'australia', 'eur', 64.3),
-(9, 'australia', 'gbp', 52.21),
-(9, 'australia', 'jpy', 19.36),
-(9, 'australia', 'usd', 81.34),
-(9, 'belgium', 'aud', 81.76),
-(9, 'belgium', 'cad', 95.61),
-(9, 'belgium', 'chf', 76.87),
-(9, 'belgium', 'eur', 35.28),
-(9, 'belgium', 'gbp', 67.18),
-(9, 'belgium', 'jpy', 19.32),
-(9, 'belgium', 'usd', 85.81),
-(9, 'canada', 'aud', 27.01),
-(9, 'canada', 'cad', 83.72),
-(9, 'canada', 'chf', 28.78),
-(9, 'canada', 'eur', 68.85),
-(9, 'canada', 'gbp', 37.11),
-(9, 'canada', 'jpy', 62.39),
-(9, 'canada', 'usd', 86.73),
-(9, 'switzerland', 'aud', 50.72),
-(9, 'switzerland', 'cad', 26.77),
-(9, 'switzerland', 'chf', 24.72),
-(9, 'switzerland', 'eur', 42.38),
-(9, 'switzerland', 'gbp', 90.09),
-(9, 'switzerland', 'jpy', 68.91),
-(9, 'switzerland', 'usd', 43.86),
-(10, 'australia', 'aud', 91.92),
-(10, 'australia', 'cad', 55.42),
-(10, 'australia', 'chf', 48.74),
-(10, 'australia', 'eur', 40.51),
-(10, 'australia', 'gbp', 23.81),
-(10, 'australia', 'jpy', 31.01),
-(10, 'australia', 'usd', 15.8),
-(10, 'belgium', 'aud', 32.78),
-(10, 'belgium', 'cad', 94.51),
-(10, 'belgium', 'chf', 83.3),
-(10, 'belgium', 'eur', 71.45),
-(10, 'belgium', 'gbp', 74.37),
-(10, 'belgium', 'jpy', 59.81),
-(10, 'belgium', 'usd', 69.87),
-(10, 'canada', 'aud', 47),
-(10, 'canada', 'cad', 38.41),
-(10, 'canada', 'chf', 93.64),
-(10, 'canada', 'eur', 77.86),
-(10, 'canada', 'gbp', 61.7),
-(10, 'canada', 'jpy', 67.46),
-(10, 'canada', 'usd', 20.01),
-(10, 'switzerland', 'aud', 37.15),
-(10, 'switzerland', 'cad', 80.74),
-(10, 'switzerland', 'chf', 73.1),
-(10, 'switzerland', 'eur', 99.71),
-(10, 'switzerland', 'gbp', 83.81),
-(10, 'switzerland', 'jpy', 82.69),
-(10, 'switzerland', 'usd', 35.46);
+('10', 'australia', 'aud', 91.92),
+('10', 'australia', 'cad', 55.42),
+('10', 'australia', 'chf', 48.74),
+('10', 'australia', 'eur', 40.51),
+('10', 'australia', 'gbp', 23.81),
+('10', 'australia', 'jpy', 31.01),
+('10', 'australia', 'usd', 15.8),
+('10', 'belgium', 'aud', 32.78),
+('10', 'belgium', 'cad', 94.51),
+('10', 'belgium', 'chf', 83.3),
+('10', 'belgium', 'eur', 71.45),
+('10', 'belgium', 'gbp', 74.37),
+('10', 'belgium', 'jpy', 59.81),
+('10', 'belgium', 'usd', 69.87),
+('10', 'canada', 'aud', 47),
+('10', 'canada', 'cad', 38.41),
+('10', 'canada', 'chf', 93.64),
+('10', 'canada', 'eur', 77.86),
+('10', 'canada', 'gbp', 61.7),
+('10', 'canada', 'jpy', 67.46),
+('10', 'canada', 'usd', 20.01),
+('10', 'switzerland', 'aud', 37.15),
+('10', 'switzerland', 'cad', 80.74),
+('10', 'switzerland', 'chf', 73.1),
+('10', 'switzerland', 'eur', 99.71),
+('10', 'switzerland', 'gbp', 83.81),
+('10', 'switzerland', 'jpy', 82.69),
+('10', 'switzerland', 'usd', 35.46),
+('6', 'australia', 'aud', 20.45),
+('6', 'australia', 'cad', 32.83),
+('6', 'australia', 'chf', 61.56),
+('6', 'australia', 'eur', 46.17),
+('6', 'australia', 'gbp', 13.3),
+('6', 'australia', 'jpy', 24.23),
+('6', 'australia', 'usd', 33.15),
+('6', 'belgium', 'aud', 94.22),
+('6', 'belgium', 'cad', 85.55),
+('6', 'belgium', 'chf', 41.17),
+('6', 'belgium', 'eur', 65.66),
+('6', 'belgium', 'gbp', 90.23),
+('6', 'belgium', 'jpy', 74),
+('6', 'belgium', 'usd', 33.25),
+('6', 'canada', 'aud', 73.38),
+('6', 'canada', 'cad', 84.25),
+('6', 'canada', 'chf', 52.06),
+('6', 'canada', 'eur', 47.32),
+('6', 'canada', 'gbp', 92.55),
+('6', 'canada', 'jpy', 36.55),
+('6', 'canada', 'usd', 99.4),
+('6', 'switzerland', 'aud', 27.45),
+('6', 'switzerland', 'cad', 12.21),
+('6', 'switzerland', 'chf', 83.04),
+('6', 'switzerland', 'eur', 74.14),
+('6', 'switzerland', 'gbp', 49.5),
+('6', 'switzerland', 'jpy', 19.08),
+('6', 'switzerland', 'usd', 77.17),
+('7', 'australia', 'aud', 97.95),
+('7', 'australia', 'cad', 88.7),
+('7', 'australia', 'chf', 67.49),
+('7', 'australia', 'eur', 65.09),
+('7', 'australia', 'gbp', 78.13),
+('7', 'australia', 'jpy', 38.45),
+('7', 'australia', 'usd', 80.81),
+('7', 'belgium', 'aud', 86.79),
+('7', 'belgium', 'cad', 43.31),
+('7', 'belgium', 'chf', 61.84),
+('7', 'belgium', 'eur', 90.19),
+('7', 'belgium', 'gbp', 63.46),
+('7', 'belgium', 'jpy', 13.06),
+('7', 'belgium', 'usd', 47.4),
+('7', 'canada', 'aud', 48.02),
+('7', 'canada', 'cad', 87.47),
+('7', 'canada', 'chf', 56.17),
+('7', 'canada', 'eur', 40.9),
+('7', 'canada', 'gbp', 33.21),
+('7', 'canada', 'jpy', 91.05),
+('7', 'canada', 'usd', 42.99),
+('7', 'switzerland', 'aud', 74.31),
+('7', 'switzerland', 'cad', 28.1),
+('7', 'switzerland', 'chf', 42.08),
+('7', 'switzerland', 'eur', 98.43),
+('7', 'switzerland', 'gbp', 41.25),
+('7', 'switzerland', 'jpy', 82.51),
+('7', 'switzerland', 'usd', 43.87),
+('8', 'australia', 'aud', 28.93),
+('8', 'australia', 'cad', 16.84),
+('8', 'australia', 'chf', 36.42),
+('8', 'australia', 'eur', 89.43),
+('8', 'australia', 'gbp', 66.92),
+('8', 'australia', 'jpy', 21.49),
+('8', 'australia', 'usd', 79.66),
+('8', 'belgium', 'aud', 66.15),
+('8', 'belgium', 'cad', 29.11),
+('8', 'belgium', 'chf', 91.52),
+('8', 'belgium', 'eur', 66.65),
+('8', 'belgium', 'gbp', 38.51),
+('8', 'belgium', 'jpy', 88.94),
+('8', 'belgium', 'usd', 15.38),
+('8', 'canada', 'aud', 80.65),
+('8', 'canada', 'cad', 80.75),
+('8', 'canada', 'chf', 97.17),
+('8', 'canada', 'eur', 51.68),
+('8', 'canada', 'gbp', 47.91),
+('8', 'canada', 'jpy', 85.06),
+('8', 'canada', 'usd', 75.08),
+('8', 'switzerland', 'aud', 14.74),
+('8', 'switzerland', 'cad', 63.97),
+('8', 'switzerland', 'chf', 80.2),
+('8', 'switzerland', 'eur', 91.13),
+('8', 'switzerland', 'gbp', 80.06),
+('8', 'switzerland', 'jpy', 60.09),
+('8', 'switzerland', 'usd', 14.48),
+('9', 'australia', 'aud', 24.01),
+('9', 'australia', 'cad', 83.58),
+('9', 'australia', 'chf', 39.9),
+('9', 'australia', 'eur', 64.3),
+('9', 'australia', 'gbp', 52.21),
+('9', 'australia', 'jpy', 19.36),
+('9', 'australia', 'usd', 81.34),
+('9', 'belgium', 'aud', 81.76),
+('9', 'belgium', 'cad', 95.61),
+('9', 'belgium', 'chf', 76.87),
+('9', 'belgium', 'eur', 35.28),
+('9', 'belgium', 'gbp', 67.18),
+('9', 'belgium', 'jpy', 19.32),
+('9', 'belgium', 'usd', 85.81),
+('9', 'canada', 'aud', 27.01),
+('9', 'canada', 'cad', 83.72),
+('9', 'canada', 'chf', 28.78),
+('9', 'canada', 'eur', 68.85),
+('9', 'canada', 'gbp', 37.11),
+('9', 'canada', 'jpy', 62.39),
+('9', 'canada', 'usd', 86.73),
+('9', 'switzerland', 'aud', 50.72),
+('9', 'switzerland', 'cad', 26.77),
+('9', 'switzerland', 'chf', 24.72),
+('9', 'switzerland', 'eur', 42.38),
+('9', 'switzerland', 'gbp', 90.09),
+('9', 'switzerland', 'jpy', 68.91),
+('9', 'switzerland', 'usd', 43.86);
 
 -- --------------------------------------------------------
 
@@ -2741,7 +2762,7 @@ INSERT INTO `ProductsPrices` (`prodId`, `country_`, `iso_currency`, `price`) VAL
 --
 
 CREATE TABLE `ProductsShippings` (
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `country_` varchar(100) NOT NULL,
   `iso_currency` varchar(10) NOT NULL,
   `price` double NOT NULL,
@@ -2753,286 +2774,286 @@ CREATE TABLE `ProductsShippings` (
 --
 
 INSERT INTO `ProductsShippings` (`prodId`, `country_`, `iso_currency`, `price`, `time`) VALUES
-(1, 'australia', 'aud', 2.59, 0),
-(1, 'belgium', 'aud', 4.58, 0),
-(1, 'canada', 'aud', 4.96, 0),
-(1, 'switzerland', 'aud', 3.62, 0),
-(1, 'australia', 'cad', 6.82, 0),
-(1, 'belgium', 'cad', 3.58, 0),
-(1, 'canada', 'cad', 7.52, 0),
-(1, 'switzerland', 'cad', 0.31, 0),
-(1, 'australia', 'chf', 1.43, 0),
-(1, 'belgium', 'chf', 1.8, 0),
-(1, 'canada', 'chf', 8.79, 0),
-(1, 'switzerland', 'chf', 0.26, 0),
-(1, 'australia', 'eur', 0.49, 0),
-(1, 'belgium', 'eur', 3.87, 0),
-(1, 'canada', 'eur', 2.04, 0),
-(1, 'switzerland', 'eur', 2.3, 0),
-(1, 'australia', 'gbp', 6.62, 0),
-(1, 'belgium', 'gbp', 0.95, 0),
-(1, 'canada', 'gbp', 9.25, 0),
-(1, 'switzerland', 'gbp', 4.46, 0),
-(1, 'australia', 'jpy', 0.07, 0),
-(1, 'belgium', 'jpy', 8.93, 0),
-(1, 'canada', 'jpy', 7.82, 0),
-(1, 'switzerland', 'jpy', 2.61, 0),
-(1, 'australia', 'usd', 6.85, 0),
-(1, 'belgium', 'usd', 6.75, 0),
-(1, 'canada', 'usd', 4.91, 0),
-(1, 'switzerland', 'usd', 9.32, 0),
-(2, 'australia', 'aud', 0.42, 0),
-(2, 'belgium', 'aud', 4.73, 0),
-(2, 'canada', 'aud', 1.95, 0),
-(2, 'switzerland', 'aud', 6.92, 0),
-(2, 'australia', 'cad', 9.44, 0),
-(2, 'belgium', 'cad', 6.16, 0),
-(2, 'canada', 'cad', 0.9, 0),
-(2, 'switzerland', 'cad', 8.91, 0),
-(2, 'australia', 'chf', 7.29, 0),
-(2, 'belgium', 'chf', 9.26, 0),
-(2, 'canada', 'chf', 3.61, 0),
-(2, 'switzerland', 'chf', 6.21, 0),
-(2, 'australia', 'eur', 2.06, 0),
-(2, 'belgium', 'eur', 0.62, 0),
-(2, 'canada', 'eur', 4.97, 0),
-(2, 'switzerland', 'eur', 9.07, 0),
-(2, 'australia', 'gbp', 9.87, 0),
-(2, 'belgium', 'gbp', 2.74, 0),
-(2, 'canada', 'gbp', 8.57, 0),
-(2, 'switzerland', 'gbp', 3.01, 0),
-(2, 'australia', 'jpy', 5.7, 0),
-(2, 'belgium', 'jpy', 9.11, 0),
-(2, 'canada', 'jpy', 7.12, 0),
-(2, 'switzerland', 'jpy', 7.89, 0),
-(2, 'australia', 'usd', 0.96, 0),
-(2, 'belgium', 'usd', 3.66, 0),
-(2, 'canada', 'usd', 7.9, 0),
-(2, 'switzerland', 'usd', 4.46, 0),
-(3, 'australia', 'aud', 3.64, 0),
-(3, 'belgium', 'aud', 0.66, 0),
-(3, 'canada', 'aud', 1.04, 0),
-(3, 'switzerland', 'aud', 5.2, 0),
-(3, 'australia', 'cad', 0.71, 0),
-(3, 'belgium', 'cad', 9.17, 0),
-(3, 'canada', 'cad', 6.37, 0),
-(3, 'switzerland', 'cad', 6.88, 0),
-(3, 'australia', 'chf', 7.16, 0),
-(3, 'belgium', 'chf', 5.67, 0),
-(3, 'canada', 'chf', 1.95, 0),
-(3, 'switzerland', 'chf', 9.9, 0),
-(3, 'australia', 'eur', 4.53, 0),
-(3, 'belgium', 'eur', 0.99, 0),
-(3, 'canada', 'eur', 6.18, 0),
-(3, 'switzerland', 'eur', 8.96, 0),
-(3, 'australia', 'gbp', 1.58, 0),
-(3, 'belgium', 'gbp', 1, 0),
-(3, 'canada', 'gbp', 6.49, 0),
-(3, 'switzerland', 'gbp', 2.37, 0),
-(3, 'australia', 'jpy', 7.88, 0),
-(3, 'belgium', 'jpy', 6.74, 0),
-(3, 'canada', 'jpy', 8.29, 0),
-(3, 'switzerland', 'jpy', 9.51, 0),
-(3, 'australia', 'usd', 5.3, 0),
-(3, 'belgium', 'usd', 0.83, 0),
-(3, 'canada', 'usd', 8.31, 0),
-(3, 'switzerland', 'usd', 3.02, 0),
-(4, 'australia', 'aud', 3.58, 0),
-(4, 'belgium', 'aud', 6.78, 0),
-(4, 'canada', 'aud', 9.05, 0),
-(4, 'switzerland', 'aud', 8.95, 0),
-(4, 'australia', 'cad', 0.55, 0),
-(4, 'belgium', 'cad', 9.85, 0),
-(4, 'canada', 'cad', 5.35, 0),
-(4, 'switzerland', 'cad', 7.64, 0),
-(4, 'australia', 'chf', 7.15, 0),
-(4, 'belgium', 'chf', 0.92, 0),
-(4, 'canada', 'chf', 2.64, 0),
-(4, 'switzerland', 'chf', 1.72, 0),
-(4, 'australia', 'eur', 2.34, 0),
-(4, 'belgium', 'eur', 9.53, 0),
-(4, 'canada', 'eur', 3.74, 0),
-(4, 'switzerland', 'eur', 7.93, 0),
-(4, 'australia', 'gbp', 3.27, 0),
-(4, 'belgium', 'gbp', 9.82, 0),
-(4, 'canada', 'gbp', 6.41, 0),
-(4, 'switzerland', 'gbp', 0.25, 0),
-(4, 'australia', 'jpy', 7.32, 0),
-(4, 'belgium', 'jpy', 6.4, 0),
-(4, 'canada', 'jpy', 1.47, 0),
-(4, 'switzerland', 'jpy', 3.61, 0),
-(4, 'australia', 'usd', 1.45, 0),
-(4, 'belgium', 'usd', 9.57, 0),
-(4, 'canada', 'usd', 7.81, 0),
-(4, 'switzerland', 'usd', 4.58, 0),
-(5, 'australia', 'aud', 7.19, 0),
-(5, 'belgium', 'aud', 0.18, 0),
-(5, 'canada', 'aud', 7.48, 0),
-(5, 'switzerland', 'aud', 4.16, 0),
-(5, 'australia', 'cad', 8.45, 0),
-(5, 'belgium', 'cad', 9.74, 0),
-(5, 'canada', 'cad', 0.3, 0),
-(5, 'switzerland', 'cad', 7.16, 0),
-(5, 'australia', 'chf', 4.4, 0),
-(5, 'belgium', 'chf', 2.32, 0),
-(5, 'canada', 'chf', 7.16, 0),
-(5, 'switzerland', 'chf', 0.48, 0),
-(5, 'australia', 'eur', 9.66, 0),
-(5, 'belgium', 'eur', 4.58, 0),
-(5, 'canada', 'eur', 8.62, 0),
-(5, 'switzerland', 'eur', 5.73, 0),
-(5, 'australia', 'gbp', 8.19, 0),
-(5, 'belgium', 'gbp', 5.41, 0),
-(5, 'canada', 'gbp', 2.54, 0),
-(5, 'switzerland', 'gbp', 5.37, 0),
-(5, 'australia', 'jpy', 2.78, 0),
-(5, 'belgium', 'jpy', 4.58, 0),
-(5, 'canada', 'jpy', 7.89, 0),
-(5, 'switzerland', 'jpy', 1.44, 0),
-(5, 'australia', 'usd', 4.47, 0),
-(5, 'belgium', 'usd', 4.61, 0),
-(5, 'canada', 'usd', 2.79, 0),
-(5, 'switzerland', 'usd', 0.09, 0),
-(6, 'australia', 'aud', 7.89, 0),
-(6, 'belgium', 'aud', 3.02, 0),
-(6, 'canada', 'aud', 8.15, 0),
-(6, 'switzerland', 'aud', 0.99, 0),
-(6, 'australia', 'cad', 0.06, 0),
-(6, 'belgium', 'cad', 3.4, 0),
-(6, 'canada', 'cad', 6.19, 0),
-(6, 'switzerland', 'cad', 6.52, 0),
-(6, 'australia', 'chf', 9.13, 0),
-(6, 'belgium', 'chf', 1.84, 0),
-(6, 'canada', 'chf', 4.82, 0),
-(6, 'switzerland', 'chf', 4.91, 0),
-(6, 'australia', 'eur', 9.83, 0),
-(6, 'belgium', 'eur', 5.16, 0),
-(6, 'canada', 'eur', 2.45, 0),
-(6, 'switzerland', 'eur', 1.11, 0),
-(6, 'australia', 'gbp', 9.41, 0),
-(6, 'belgium', 'gbp', 3.21, 0),
-(6, 'canada', 'gbp', 9.93, 0),
-(6, 'switzerland', 'gbp', 8.31, 0),
-(6, 'australia', 'jpy', 4.19, 0),
-(6, 'belgium', 'jpy', 3.42, 0),
-(6, 'canada', 'jpy', 3.09, 0),
-(6, 'switzerland', 'jpy', 7.92, 0),
-(6, 'australia', 'usd', 7.96, 0),
-(6, 'belgium', 'usd', 0.29, 0),
-(6, 'canada', 'usd', 9.45, 0),
-(6, 'switzerland', 'usd', 3.11, 0),
-(7, 'australia', 'aud', 1.69, 0),
-(7, 'belgium', 'aud', 1.15, 0),
-(7, 'canada', 'aud', 9.29, 0),
-(7, 'switzerland', 'aud', 4.51, 0),
-(7, 'australia', 'cad', 1.28, 0),
-(7, 'belgium', 'cad', 7.74, 0),
-(7, 'canada', 'cad', 9.63, 0),
-(7, 'switzerland', 'cad', 5.3, 0),
-(7, 'australia', 'chf', 4.69, 0),
-(7, 'belgium', 'chf', 4.1, 0),
-(7, 'canada', 'chf', 5.79, 0),
-(7, 'switzerland', 'chf', 7.93, 0),
-(7, 'australia', 'eur', 0.81, 0),
-(7, 'belgium', 'eur', 1.34, 0),
-(7, 'canada', 'eur', 0.11, 0),
-(7, 'switzerland', 'eur', 10, 0),
-(7, 'australia', 'gbp', 0.38, 0),
-(7, 'belgium', 'gbp', 5.42, 0),
-(7, 'canada', 'gbp', 2.59, 0),
-(7, 'switzerland', 'gbp', 5.55, 0),
-(7, 'australia', 'jpy', 5.23, 0),
-(7, 'belgium', 'jpy', 2.3, 0),
-(7, 'canada', 'jpy', 8.02, 0),
-(7, 'switzerland', 'jpy', 2.29, 0),
-(7, 'australia', 'usd', 1.37, 0),
-(7, 'belgium', 'usd', 3.78, 0),
-(7, 'canada', 'usd', 2.05, 0),
-(7, 'switzerland', 'usd', 3.22, 0),
-(8, 'australia', 'aud', 5.46, 0),
-(8, 'belgium', 'aud', 0.03, 0),
-(8, 'canada', 'aud', 8.1, 0),
-(8, 'switzerland', 'aud', 7.5, 0),
-(8, 'australia', 'cad', 7.6, 0),
-(8, 'belgium', 'cad', 6.59, 0),
-(8, 'canada', 'cad', 3.16, 0),
-(8, 'switzerland', 'cad', 1.69, 0),
-(8, 'australia', 'chf', 8.63, 0),
-(8, 'belgium', 'chf', 4.07, 0),
-(8, 'canada', 'chf', 8.71, 0),
-(8, 'switzerland', 'chf', 5.67, 0),
-(8, 'australia', 'eur', 6.32, 0),
-(8, 'belgium', 'eur', 0.12, 0),
-(8, 'canada', 'eur', 4.59, 0),
-(8, 'switzerland', 'eur', 2.81, 0),
-(8, 'australia', 'gbp', 1.3, 0),
-(8, 'belgium', 'gbp', 6.39, 0),
-(8, 'canada', 'gbp', 0.54, 0),
-(8, 'switzerland', 'gbp', 0.71, 0),
-(8, 'australia', 'jpy', 7.79, 0),
-(8, 'belgium', 'jpy', 5.51, 0),
-(8, 'canada', 'jpy', 5.48, 0),
-(8, 'switzerland', 'jpy', 2.69, 0),
-(8, 'australia', 'usd', 5.02, 0),
-(8, 'belgium', 'usd', 5.79, 0),
-(8, 'canada', 'usd', 9.04, 0),
-(8, 'switzerland', 'usd', 3.47, 0),
-(9, 'australia', 'aud', 7.01, 0),
-(9, 'belgium', 'aud', 4.35, 0),
-(9, 'canada', 'aud', 4.93, 0),
-(9, 'switzerland', 'aud', 3.01, 0),
-(9, 'australia', 'cad', 8.08, 0),
-(9, 'belgium', 'cad', 1.99, 0),
-(9, 'canada', 'cad', 7.41, 0),
-(9, 'switzerland', 'cad', 6.4, 0),
-(9, 'australia', 'chf', 3.34, 0),
-(9, 'belgium', 'chf', 0.46, 0),
-(9, 'canada', 'chf', 6.03, 0),
-(9, 'switzerland', 'chf', 9.69, 0),
-(9, 'australia', 'eur', 4.99, 0),
-(9, 'belgium', 'eur', 3.78, 0),
-(9, 'canada', 'eur', 3.09, 0),
-(9, 'switzerland', 'eur', 0.02, 0),
-(9, 'australia', 'gbp', 0.26, 0),
-(9, 'belgium', 'gbp', 0.99, 0),
-(9, 'canada', 'gbp', 9.76, 0),
-(9, 'switzerland', 'gbp', 2.04, 0),
-(9, 'australia', 'jpy', 0.2, 0),
-(9, 'belgium', 'jpy', 2.39, 0),
-(9, 'canada', 'jpy', 5.38, 0),
-(9, 'switzerland', 'jpy', 0.52, 0),
-(9, 'australia', 'usd', 8.67, 0),
-(9, 'belgium', 'usd', 1.73, 0),
-(9, 'canada', 'usd', 1.5, 0),
-(9, 'switzerland', 'usd', 9.64, 0),
-(10, 'australia', 'aud', 7.55, 0),
-(10, 'belgium', 'aud', 7.97, 0),
-(10, 'canada', 'aud', 2.92, 0),
-(10, 'switzerland', 'aud', 6.61, 0),
-(10, 'australia', 'cad', 7.26, 0),
-(10, 'belgium', 'cad', 1.11, 0),
-(10, 'canada', 'cad', 3.18, 0),
-(10, 'switzerland', 'cad', 8.51, 0),
-(10, 'australia', 'chf', 9.18, 0),
-(10, 'belgium', 'chf', 3.09, 0),
-(10, 'canada', 'chf', 0.24, 0),
-(10, 'switzerland', 'chf', 3.42, 0),
-(10, 'australia', 'eur', 4.72, 0),
-(10, 'belgium', 'eur', 7.7, 0),
-(10, 'canada', 'eur', 6.7, 0),
-(10, 'switzerland', 'eur', 8.53, 0),
-(10, 'australia', 'gbp', 1.74, 0),
-(10, 'belgium', 'gbp', 3.88, 0),
-(10, 'canada', 'gbp', 3.84, 0),
-(10, 'switzerland', 'gbp', 7.42, 0),
-(10, 'australia', 'jpy', 0.52, 0),
-(10, 'belgium', 'jpy', 6.33, 0),
-(10, 'canada', 'jpy', 9.56, 0),
-(10, 'switzerland', 'jpy', 4.79, 0),
-(10, 'australia', 'usd', 8.42, 0),
-(10, 'belgium', 'usd', 0.57, 0),
-(10, 'canada', 'usd', 9.03, 0),
-(10, 'switzerland', 'usd', 2.76, 0);
+('10', 'australia', 'aud', 7.55, 0),
+('10', 'belgium', 'aud', 7.97, 0),
+('10', 'canada', 'aud', 2.92, 0),
+('10', 'switzerland', 'aud', 6.61, 0),
+('10', 'australia', 'cad', 7.26, 0),
+('10', 'belgium', 'cad', 1.11, 0),
+('10', 'canada', 'cad', 3.18, 0),
+('10', 'switzerland', 'cad', 8.51, 0),
+('10', 'australia', 'chf', 9.18, 0),
+('10', 'belgium', 'chf', 3.09, 0),
+('10', 'canada', 'chf', 0.24, 0),
+('10', 'switzerland', 'chf', 3.42, 0),
+('10', 'australia', 'eur', 4.72, 0),
+('10', 'belgium', 'eur', 7.7, 0),
+('10', 'canada', 'eur', 6.7, 0),
+('10', 'switzerland', 'eur', 8.53, 0),
+('10', 'australia', 'gbp', 1.74, 0),
+('10', 'belgium', 'gbp', 3.88, 0),
+('10', 'canada', 'gbp', 3.84, 0),
+('10', 'switzerland', 'gbp', 7.42, 0),
+('10', 'australia', 'jpy', 0.52, 0),
+('10', 'belgium', 'jpy', 6.33, 0),
+('10', 'canada', 'jpy', 9.56, 0),
+('10', 'switzerland', 'jpy', 4.79, 0),
+('10', 'australia', 'usd', 8.42, 0),
+('10', 'belgium', 'usd', 0.57, 0),
+('10', 'canada', 'usd', 9.03, 0),
+('10', 'switzerland', 'usd', 2.76, 0),
+('2', 'australia', 'aud', 0.42, 0),
+('2', 'belgium', 'aud', 4.73, 0),
+('2', 'canada', 'aud', 1.95, 0),
+('2', 'switzerland', 'aud', 6.92, 0),
+('2', 'australia', 'cad', 9.44, 0),
+('2', 'belgium', 'cad', 6.16, 0),
+('2', 'canada', 'cad', 0.9, 0),
+('2', 'switzerland', 'cad', 8.91, 0),
+('2', 'australia', 'chf', 7.29, 0),
+('2', 'belgium', 'chf', 9.26, 0),
+('2', 'canada', 'chf', 3.61, 0),
+('2', 'switzerland', 'chf', 6.21, 0),
+('2', 'australia', 'eur', 2.06, 0),
+('2', 'belgium', 'eur', 0.62, 0),
+('2', 'canada', 'eur', 4.97, 0),
+('2', 'switzerland', 'eur', 9.07, 0),
+('2', 'australia', 'gbp', 9.87, 0),
+('2', 'belgium', 'gbp', 2.74, 0),
+('2', 'canada', 'gbp', 8.57, 0),
+('2', 'switzerland', 'gbp', 3.01, 0),
+('2', 'australia', 'jpy', 5.7, 0),
+('2', 'belgium', 'jpy', 9.11, 0),
+('2', 'canada', 'jpy', 7.12, 0),
+('2', 'switzerland', 'jpy', 7.89, 0),
+('2', 'australia', 'usd', 0.96, 0),
+('2', 'belgium', 'usd', 3.66, 0),
+('2', 'canada', 'usd', 7.9, 0),
+('2', 'switzerland', 'usd', 4.46, 0),
+('3', 'australia', 'aud', 3.64, 0),
+('3', 'belgium', 'aud', 0.66, 0),
+('3', 'canada', 'aud', 1.04, 0),
+('3', 'switzerland', 'aud', 5.2, 0),
+('3', 'australia', 'cad', 0.71, 0),
+('3', 'belgium', 'cad', 9.17, 0),
+('3', 'canada', 'cad', 6.37, 0),
+('3', 'switzerland', 'cad', 6.88, 0),
+('3', 'australia', 'chf', 7.16, 0),
+('3', 'belgium', 'chf', 5.67, 0),
+('3', 'canada', 'chf', 1.95, 0),
+('3', 'switzerland', 'chf', 9.9, 0),
+('3', 'australia', 'eur', 4.53, 0),
+('3', 'belgium', 'eur', 0.99, 0),
+('3', 'canada', 'eur', 6.18, 0),
+('3', 'switzerland', 'eur', 8.96, 0),
+('3', 'australia', 'gbp', 1.58, 0),
+('3', 'belgium', 'gbp', 1, 0),
+('3', 'canada', 'gbp', 6.49, 0),
+('3', 'switzerland', 'gbp', 2.37, 0),
+('3', 'australia', 'jpy', 7.88, 0),
+('3', 'belgium', 'jpy', 6.74, 0),
+('3', 'canada', 'jpy', 8.29, 0),
+('3', 'switzerland', 'jpy', 9.51, 0),
+('3', 'australia', 'usd', 5.3, 0),
+('3', 'belgium', 'usd', 0.83, 0),
+('3', 'canada', 'usd', 8.31, 0),
+('3', 'switzerland', 'usd', 3.02, 0),
+('4', 'australia', 'aud', 3.58, 0),
+('4', 'belgium', 'aud', 6.78, 0),
+('4', 'canada', 'aud', 9.05, 0),
+('4', 'switzerland', 'aud', 8.95, 0),
+('4', 'australia', 'cad', 0.55, 0),
+('4', 'belgium', 'cad', 9.85, 0),
+('4', 'canada', 'cad', 5.35, 0),
+('4', 'switzerland', 'cad', 7.64, 0),
+('4', 'australia', 'chf', 7.15, 0),
+('4', 'belgium', 'chf', 0.92, 0),
+('4', 'canada', 'chf', 2.64, 0),
+('4', 'switzerland', 'chf', 1.72, 0),
+('4', 'australia', 'eur', 2.34, 0),
+('4', 'belgium', 'eur', 9.53, 0),
+('4', 'canada', 'eur', 3.74, 0),
+('4', 'switzerland', 'eur', 7.93, 0),
+('4', 'australia', 'gbp', 3.27, 0),
+('4', 'belgium', 'gbp', 9.82, 0),
+('4', 'canada', 'gbp', 6.41, 0),
+('4', 'switzerland', 'gbp', 0.25, 0),
+('4', 'australia', 'jpy', 7.32, 0),
+('4', 'belgium', 'jpy', 6.4, 0),
+('4', 'canada', 'jpy', 1.47, 0),
+('4', 'switzerland', 'jpy', 3.61, 0),
+('4', 'australia', 'usd', 1.45, 0),
+('4', 'belgium', 'usd', 9.57, 0),
+('4', 'canada', 'usd', 7.81, 0),
+('4', 'switzerland', 'usd', 4.58, 0),
+('5', 'australia', 'aud', 7.19, 0),
+('5', 'belgium', 'aud', 0.18, 0),
+('5', 'canada', 'aud', 7.48, 0),
+('5', 'switzerland', 'aud', 4.16, 0),
+('5', 'australia', 'cad', 8.45, 0),
+('5', 'belgium', 'cad', 9.74, 0),
+('5', 'canada', 'cad', 0.3, 0),
+('5', 'switzerland', 'cad', 7.16, 0),
+('5', 'australia', 'chf', 4.4, 0),
+('5', 'belgium', 'chf', 2.32, 0),
+('5', 'canada', 'chf', 7.16, 0),
+('5', 'switzerland', 'chf', 0.48, 0),
+('5', 'australia', 'eur', 9.66, 0),
+('5', 'belgium', 'eur', 4.58, 0),
+('5', 'canada', 'eur', 8.62, 0),
+('5', 'switzerland', 'eur', 5.73, 0),
+('5', 'australia', 'gbp', 8.19, 0),
+('5', 'belgium', 'gbp', 5.41, 0),
+('5', 'canada', 'gbp', 2.54, 0),
+('5', 'switzerland', 'gbp', 5.37, 0),
+('5', 'australia', 'jpy', 2.78, 0),
+('5', 'belgium', 'jpy', 4.58, 0),
+('5', 'canada', 'jpy', 7.89, 0),
+('5', 'switzerland', 'jpy', 1.44, 0),
+('5', 'australia', 'usd', 4.47, 0),
+('5', 'belgium', 'usd', 4.61, 0),
+('5', 'canada', 'usd', 2.79, 0),
+('5', 'switzerland', 'usd', 0.09, 0),
+('6', 'australia', 'aud', 7.89, 0),
+('6', 'belgium', 'aud', 3.02, 0),
+('6', 'canada', 'aud', 8.15, 0),
+('6', 'switzerland', 'aud', 0.99, 0),
+('6', 'australia', 'cad', 0.06, 0),
+('6', 'belgium', 'cad', 3.4, 0),
+('6', 'canada', 'cad', 6.19, 0),
+('6', 'switzerland', 'cad', 6.52, 0),
+('6', 'australia', 'chf', 9.13, 0),
+('6', 'belgium', 'chf', 1.84, 0),
+('6', 'canada', 'chf', 4.82, 0),
+('6', 'switzerland', 'chf', 4.91, 0),
+('6', 'australia', 'eur', 9.83, 0),
+('6', 'belgium', 'eur', 5.16, 0),
+('6', 'canada', 'eur', 2.45, 0),
+('6', 'switzerland', 'eur', 1.11, 0),
+('6', 'australia', 'gbp', 9.41, 0),
+('6', 'belgium', 'gbp', 3.21, 0),
+('6', 'canada', 'gbp', 9.93, 0),
+('6', 'switzerland', 'gbp', 8.31, 0),
+('6', 'australia', 'jpy', 4.19, 0),
+('6', 'belgium', 'jpy', 3.42, 0),
+('6', 'canada', 'jpy', 3.09, 0),
+('6', 'switzerland', 'jpy', 7.92, 0),
+('6', 'australia', 'usd', 7.96, 0),
+('6', 'belgium', 'usd', 0.29, 0),
+('6', 'canada', 'usd', 9.45, 0),
+('6', 'switzerland', 'usd', 3.11, 0),
+('7', 'australia', 'aud', 1.69, 0),
+('7', 'belgium', 'aud', 1.15, 0),
+('7', 'canada', 'aud', 9.29, 0),
+('7', 'switzerland', 'aud', 4.51, 0),
+('7', 'australia', 'cad', 1.28, 0),
+('7', 'belgium', 'cad', 7.74, 0),
+('7', 'canada', 'cad', 9.63, 0),
+('7', 'switzerland', 'cad', 5.3, 0),
+('7', 'australia', 'chf', 4.69, 0),
+('7', 'belgium', 'chf', 4.1, 0),
+('7', 'canada', 'chf', 5.79, 0),
+('7', 'switzerland', 'chf', 7.93, 0),
+('7', 'australia', 'eur', 0.81, 0),
+('7', 'belgium', 'eur', 1.34, 0),
+('7', 'canada', 'eur', 0.11, 0),
+('7', 'switzerland', 'eur', 10, 0),
+('7', 'australia', 'gbp', 0.38, 0),
+('7', 'belgium', 'gbp', 5.42, 0),
+('7', 'canada', 'gbp', 2.59, 0),
+('7', 'switzerland', 'gbp', 5.55, 0),
+('7', 'australia', 'jpy', 5.23, 0),
+('7', 'belgium', 'jpy', 2.3, 0),
+('7', 'canada', 'jpy', 8.02, 0),
+('7', 'switzerland', 'jpy', 2.29, 0),
+('7', 'australia', 'usd', 1.37, 0),
+('7', 'belgium', 'usd', 3.78, 0),
+('7', 'canada', 'usd', 2.05, 0),
+('7', 'switzerland', 'usd', 3.22, 0),
+('8', 'australia', 'aud', 5.46, 0),
+('8', 'belgium', 'aud', 0.03, 0),
+('8', 'canada', 'aud', 8.1, 0),
+('8', 'switzerland', 'aud', 7.5, 0),
+('8', 'australia', 'cad', 7.6, 0),
+('8', 'belgium', 'cad', 6.59, 0),
+('8', 'canada', 'cad', 3.16, 0),
+('8', 'switzerland', 'cad', 1.69, 0),
+('8', 'australia', 'chf', 8.63, 0),
+('8', 'belgium', 'chf', 4.07, 0),
+('8', 'canada', 'chf', 8.71, 0),
+('8', 'switzerland', 'chf', 5.67, 0),
+('8', 'australia', 'eur', 6.32, 0),
+('8', 'belgium', 'eur', 0.12, 0),
+('8', 'canada', 'eur', 4.59, 0),
+('8', 'switzerland', 'eur', 2.81, 0),
+('8', 'australia', 'gbp', 1.3, 0),
+('8', 'belgium', 'gbp', 6.39, 0),
+('8', 'canada', 'gbp', 0.54, 0),
+('8', 'switzerland', 'gbp', 0.71, 0),
+('8', 'australia', 'jpy', 7.79, 0),
+('8', 'belgium', 'jpy', 5.51, 0),
+('8', 'canada', 'jpy', 5.48, 0),
+('8', 'switzerland', 'jpy', 2.69, 0),
+('8', 'australia', 'usd', 5.02, 0),
+('8', 'belgium', 'usd', 5.79, 0),
+('8', 'canada', 'usd', 9.04, 0),
+('8', 'switzerland', 'usd', 3.47, 0),
+('9', 'australia', 'aud', 7.01, 0),
+('9', 'belgium', 'aud', 4.35, 0),
+('9', 'canada', 'aud', 4.93, 0),
+('9', 'switzerland', 'aud', 3.01, 0),
+('9', 'australia', 'cad', 8.08, 0),
+('9', 'belgium', 'cad', 1.99, 0),
+('9', 'canada', 'cad', 7.41, 0),
+('9', 'switzerland', 'cad', 6.4, 0),
+('9', 'australia', 'chf', 3.34, 0),
+('9', 'belgium', 'chf', 0.46, 0),
+('9', 'canada', 'chf', 6.03, 0),
+('9', 'switzerland', 'chf', 9.69, 0),
+('9', 'australia', 'eur', 4.99, 0),
+('9', 'belgium', 'eur', 3.78, 0),
+('9', 'canada', 'eur', 3.09, 0),
+('9', 'switzerland', 'eur', 0.02, 0),
+('9', 'australia', 'gbp', 0.26, 0),
+('9', 'belgium', 'gbp', 0.99, 0),
+('9', 'canada', 'gbp', 9.76, 0),
+('9', 'switzerland', 'gbp', 2.04, 0),
+('9', 'australia', 'jpy', 0.2, 0),
+('9', 'belgium', 'jpy', 2.39, 0),
+('9', 'canada', 'jpy', 5.38, 0),
+('9', 'switzerland', 'jpy', 0.52, 0),
+('9', 'australia', 'usd', 8.67, 0),
+('9', 'belgium', 'usd', 1.73, 0),
+('9', 'canada', 'usd', 1.5, 0),
+('9', 'switzerland', 'usd', 9.64, 0),
+('a1', 'australia', 'aud', 2.59, 0),
+('a1', 'belgium', 'aud', 4.58, 0),
+('a1', 'canada', 'aud', 4.96, 0),
+('a1', 'switzerland', 'aud', 3.62, 0),
+('a1', 'australia', 'cad', 6.82, 0),
+('a1', 'belgium', 'cad', 3.58, 0),
+('a1', 'canada', 'cad', 7.52, 0),
+('a1', 'switzerland', 'cad', 0.31, 0),
+('a1', 'australia', 'chf', 1.43, 0),
+('a1', 'belgium', 'chf', 1.8, 0),
+('a1', 'canada', 'chf', 8.79, 0),
+('a1', 'switzerland', 'chf', 0.26, 0),
+('a1', 'australia', 'eur', 0.49, 0),
+('a1', 'belgium', 'eur', 3.87, 0),
+('a1', 'canada', 'eur', 2.04, 0),
+('a1', 'switzerland', 'eur', 2.3, 0),
+('a1', 'australia', 'gbp', 6.62, 0),
+('a1', 'belgium', 'gbp', 0.95, 0),
+('a1', 'canada', 'gbp', 9.25, 0),
+('a1', 'switzerland', 'gbp', 4.46, 0),
+('a1', 'australia', 'jpy', 0.07, 0),
+('a1', 'belgium', 'jpy', 8.93, 0),
+('a1', 'canada', 'jpy', 7.82, 0),
+('a1', 'switzerland', 'jpy', 2.61, 0),
+('a1', 'australia', 'usd', 6.85, 0),
+('a1', 'belgium', 'usd', 6.75, 0),
+('a1', 'canada', 'usd', 4.91, 0),
+('a1', 'switzerland', 'usd', 9.32, 0);
 
 -- --------------------------------------------------------
 
@@ -3193,7 +3214,7 @@ INSERT INTO `SizesMeasures` (`size_name`, `body_part`, `unit_name`, `value`) VAL
 
 CREATE TABLE `StockLocks` (
   `userId` varchar(50) NOT NULL,
-  `prodId` int(11) NOT NULL,
+  `prodId` varchar(100) NOT NULL,
   `size_name` varchar(100) NOT NULL,
   `quantity` int(11) NOT NULL,
   `lockTime` int(11) NOT NULL,
@@ -3635,7 +3656,7 @@ INSERT INTO `TranslationStations` (`station`, `iso_lang`, `translation`) VALUES
 --
 
 CREATE TABLE `Users` (
-  `userId` varchar(50) NOT NULL,
+  `userID` varchar(50) NOT NULL,
   `lang_` varchar(10) DEFAULT NULL,
   `country_` varchar(100) NOT NULL,
   `iso_currency` varchar(10) NOT NULL,
@@ -3653,13 +3674,14 @@ CREATE TABLE `Users` (
 -- Déchargement des données de la table `Users`
 --
 
-INSERT INTO `Users` (`userId`, `lang_`, `country_`, `iso_currency`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
+INSERT INTO `Users` (`userID`, `lang_`, `country_`, `iso_currency`, `mail`, `password`, `firstname`, `lastname`, `birthday`, `newsletter`, `sexe_`, `setDate`) VALUES
 ('1', NULL, 'belgium', 'eur', 'system@mail.domain', 'no password', 'system', 'system', '2019-09-01', NULL, 'other', '2020-10-09 18:42:45'),
 ('3330090', 'fr', 'belgium', 'eur', 'israelmeiresonne97@gmail.com', '$2y$10$SrV5kdvByXghgTuQgja7RelQamkMKklO/c0dzF2ouX51SfuEGOaD.', 'israel', 'meiresonne', NULL, 0, 'sir', '2020-09-30 13:13:46'),
 ('651853948', 'fr', 'belgium', 'jpy', 'tajarose-7163@yopmail.com', 'khbmahedbazhlec', 'many', 'koshbin', '1993-02-27', 1, 'sir', '2020-01-06 15:00:05'),
 ('846470517', 'fr', 'belgium', 'jpy', 'opoddimmuci-6274@yopmail.com', 'aefhzrbvcqzhm', 'segolen', 'royale', '1989-02-27', 1, 'lady', '2020-01-08 15:00:05'),
 ('934967739', 'en', 'belgium', 'jpy', 'ehewopuri-7678@yopmail.com', 'arrfraffqrfrfqrfcqf', 'elon', 'musk', '1997-02-27', 1, 'sir', '2020-02-27 18:02:20'),
-('997763060', 'es', 'belgium', 'jpy', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'lady', '2020-01-07 15:00:05');
+('997763060', 'es', 'belgium', 'jpy', 'annassubep-5363@yopmail.com', 'achbihzrzcrbhzcarc', 'victoria', 'secret', '1991-02-27', 0, 'lady', '2020-01-07 15:00:05'),
+('usr_27k316g6032yd20ab1m103100', 'fr', 'australia', 'aud', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-12-13 01:30:37');
 
 -- --------------------------------------------------------
 
@@ -3689,7 +3711,8 @@ INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `pat
 ('3330090', 'CHKT_LNCHD', '121k32t00221052m21yrdy172', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/checkout', '2020-12-11 22:21:27', 86400),
 ('3330090', 'CLT', 'm9140j8q2rwds0x5332002110', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 00:14:27', 31536000),
 ('3330090', 'VIS', '100d1sq639120hby303243a50', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 00:14:27', 94608000),
-('651853948', 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000);
+('651853948', 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000),
+('usr_27k316g6032yd20ab1m103100', 'VIS', 'zw0ylcj392v1231321d083003', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 01:30:38', 94608000);
 
 -- --------------------------------------------------------
 
@@ -4263,7 +4286,7 @@ ALTER TABLE `TranslationStations`
 -- Index pour la table `Users`
 --
 ALTER TABLE `Users`
-  ADD PRIMARY KEY (`userId`),
+  ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `mail` (`mail`),
   ADD KEY `fk_lang_FROM-Languages` (`lang_`),
   ADD KEY `fk_sexe_FROM-Sexes` (`sexe_`),
@@ -4298,12 +4321,6 @@ ALTER TABLE `UsersMeasures`
 --
 
 --
--- AUTO_INCREMENT pour la table `Products`
---
-ALTER TABLE `Products`
-  MODIFY `prodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
 -- AUTO_INCREMENT pour la table `Translations`
 --
 ALTER TABLE `Translations`
@@ -4318,21 +4335,21 @@ ALTER TABLE `Translations`
 --
 ALTER TABLE `Addresses`
   ADD CONSTRAINT `fk_country_.Addresses-FROM-Countries` FOREIGN KEY (`country_`) REFERENCES `Countries` (`country`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Addresses-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Addresses-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Basket-DiscountCodes`
 --
 ALTER TABLE `Basket-DiscountCodes`
   ADD CONSTRAINT `fk_discount_code.Basket-DiscountCodes-FROM-DiscountCodes` FOREIGN KEY (`discount_code`) REFERENCES `DiscountCodes` (`discountCode`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Basket-DiscountCodes-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Basket-DiscountCodes-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Baskets-Box`
 --
 ALTER TABLE `Baskets-Box`
   ADD CONSTRAINT `fk_boxId.Baskets-Box-FROM-Box` FOREIGN KEY (`boxId`) REFERENCES `Boxes` (`boxID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Baskets-Box-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Baskets-Box-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Baskets-Products`
@@ -4340,7 +4357,7 @@ ALTER TABLE `Baskets-Box`
 ALTER TABLE `Baskets-Products`
   ADD CONSTRAINT `fk_basketProdId.Baskets-Products-FROM-Products` FOREIGN KEY (`prodId`) REFERENCES `Products` (`prodID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_size_name.Baskets-Products-FROM-Sizes` FOREIGN KEY (`size_name`) REFERENCES `Sizes` (`sizeName`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Baskets-Products-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Baskets-Products-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Box-Products`
@@ -4503,7 +4520,7 @@ ALTER TABLE `Locations`
 -- Contraintes pour la table `Navigations`
 --
 ALTER TABLE `Navigations`
-  ADD CONSTRAINT `fk_userId.Pages-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Pages-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Navigations-Events`
@@ -4524,7 +4541,7 @@ ALTER TABLE `NavigationsParameters`
 ALTER TABLE `Orders`
   ADD CONSTRAINT `fk_iso_currency.Orders-FROM-Currencies` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_stripeSessionId.Orders-FROM-StripeCheckoutSessions` FOREIGN KEY (`stripeCheckoutId`) REFERENCES `StripeCheckoutSessions` (`sessionID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Orders-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Orders-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Orders-Addresses`
@@ -4669,7 +4686,7 @@ ALTER TABLE `SizesMeasures`
 --
 ALTER TABLE `StockLocks`
   ADD CONSTRAINT `fk_prodId.size_name.StockLocks-FROM-Products-Sizes` FOREIGN KEY (`prodId`,`size_name`) REFERENCES `Products-Sizes` (`prodId`, `size_name`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.StockLocks-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.StockLocks-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `StripeCheckoutSessions`
@@ -4677,7 +4694,7 @@ ALTER TABLE `StockLocks`
 ALTER TABLE `StripeCheckoutSessions`
   ADD CONSTRAINT `fk-iso_currency.StripeCheckoutSessions-FROM-Currencies` FOREIGN KEY (`iso_currency`) REFERENCES `Currencies` (`isoCurrency`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_pay_method.StripeCheckoutSessions-FROM-Payemsnts` FOREIGN KEY (`payId`) REFERENCES `Payements` (`payID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.StripeCheckoutSessions-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.StripeCheckoutSessions-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Translations`
@@ -4705,18 +4722,18 @@ ALTER TABLE `Users`
 --
 ALTER TABLE `Users-Cookies`
   ADD CONSTRAINT `FK_cookieId.Users-Cookies-FROM-Cookies` FOREIGN KEY (`cookieId`) REFERENCES `Cookies` (`cookieID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_userId.Users-Cookies-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_userId.Users-Cookies-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Users-Privileges`
 --
 ALTER TABLE `Users-Privileges`
   ADD CONSTRAINT `fk_privId.Users-Privileges-FROM-Users` FOREIGN KEY (`privId`) REFERENCES `Privileges` (`privID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_userId.Users-Privileges-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_userId.Users-Privileges-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `UsersMeasures`
 --
 ALTER TABLE `UsersMeasures`
   ADD CONSTRAINT `FK_unit_name.UsersMeasures-FROM-MeasureUnits` FOREIGN KEY (`unit_name`) REFERENCES `MeasureUnits` (`unitName`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_userId.UsersMeasures-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_userId.UsersMeasures-FROM-Users` FOREIGN KEY (`userId`) REFERENCES `Users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,6 +1,9 @@
 <?php
 
 // rnvs : https://www.php.net/manual/en/function.require-once.php
+
+use Stripe\ThreeDSecure;
+
 require_once 'Controller.php';
 require_once 'Request.php';
 require_once 'View.php';
@@ -98,7 +101,7 @@ class Router
             //        a été envoyée au client, le traitement de la requête
             //        du client est terminé 
 
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // rnvs : on peut arriver ici depuis :
             //          + Router::createController() :
             //            et aussi ensuite dans le ctor du contrôleur
@@ -232,7 +235,7 @@ class Router
      * 
      * @param Exception $exception Exception qui s'est produite
      */
-    private static function handleError(Exception $exception)
+    private static function handleError(Throwable $exception)
     {
         $env = Configuration::getEnvironement();
         // $env = "prod.ini";

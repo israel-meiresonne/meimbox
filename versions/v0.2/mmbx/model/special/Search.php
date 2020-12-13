@@ -136,7 +136,7 @@ class Search extends ModelFunctionality
                 $this->filterPOSTSearch($currency);
                 break;
             case self::PROD_ID_GET_SEARCH:
-                $prodId = Query::existParam("prodid") ? [(int)Query::getParam("prodid")] : [];
+                $prodId = Query::existParam("prodid") ? [Query::getParam("prodid")] : [];
                 $this->prodIdSearch($prodId);
                 break;
             case self::SYSTEM_SEARCH:

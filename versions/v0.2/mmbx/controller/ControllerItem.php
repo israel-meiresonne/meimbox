@@ -136,7 +136,6 @@ class ControllerItem extends ControllerSecure
         $currency = $this->person->getCurrency();
         $country = $this->person->getCountry();
         $language = $this->person->getLanguage();
-
         $search = new Search(Search::PROD_ID_GET_SEARCH);
         $search->setProducts($language, $country, $currency);
         $product = $search->getProducts()[0];
