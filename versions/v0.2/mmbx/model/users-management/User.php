@@ -273,25 +273,25 @@ abstract class User extends Visitor
         return $this->orders;
     }
 
-    /**
-     * To get User's order with the given id
-     * @param string $orderID id of a order
-     * + return the last order if id is empty
-     * @return Order|null order with the given id
-     */
-    public function getOrder($orderID)
-    {
-        // $order = null;
-        // $orders = $this->getOrders();
-        // $keys = $orders->getKeys();
-        // if (empty($orderID)) {
+    // /**
+    //  * To get User's order with the given id
+    //  * @param string $orderID id of a order
+    //  * + return the last order if id is empty
+    //  * @return Order|null order with the given id
+    //  */
+    // public function getOrder($orderID)
+    // {
+    //     // $order = null;
+    //     // $orders = $this->getOrders();
+    //     // $keys = $orders->getKeys();
+    //     // if (empty($orderID)) {
 
-        // } else if (!empty($keys)) {
-        //     foreach ($keys as $key) {
-        //         if ($orderID);
-        //     }
-        // }
-    }
+    //     // } else if (!empty($keys)) {
+    //     //     foreach ($keys as $key) {
+    //     //         if ($orderID);
+    //     //     }
+    //     // }
+    // }
 
     /**
      * To get User's last order

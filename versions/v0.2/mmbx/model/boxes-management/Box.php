@@ -117,6 +117,8 @@ class Box extends ModelFunctionality
      */
     private static $orderedBoxesMap;
 
+    private const PREFIX_ID = "box_";
+
     /**
      * Length of the box's id
      * @var string
@@ -221,7 +223,7 @@ class Box extends ModelFunctionality
         $this->country = $country;
         $this->currency = $currency;
 
-        $this->boxID = $this->generateDateCode(self::ID_LENGTH);
+        $this->boxID = self::PREFIX_ID.$this->generateDateCode(self::ID_LENGTH);
         $this->color = $boxColor;
         $this->setDate = $this->getDateTime();
 
@@ -854,7 +856,8 @@ class Box extends ModelFunctionality
     public function deleteBox(Response $response)
     {
         $boxID = $this->getBoxID();
-        $sql = "DELETE FROM `Baskets-Box` WHERE `Baskets-Box`.`boxId` = '$boxID';";
+        $sql = "DELETE FROM `Baskets-Box` WHERE `Baskets-Box`.`boxId` = '$boxID';
+                DELETE FROM `Boxes` WHERE `Boxes`.`boxID`='$boxID';";
         $this->delete($response, $sql);
     }
 

@@ -20703,8 +20703,8 @@
 										"$ref": "AAAAAAFwMOhm7255KHU="
 									},
 									"name": "userID",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true
 								},
 								{
@@ -21378,8 +21378,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
@@ -21546,8 +21546,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -23386,8 +23386,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -23464,8 +23464,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -23780,8 +23780,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
@@ -24640,8 +24640,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
@@ -25034,8 +25034,8 @@
 									},
 									"name": "adminId",
 									"documentation": "# Contraintes\n\n- À chaque nouveau status, une nouvelle ligne est crée \n- quand le status est mis-à-jour par le système, l'attribut admin prend l'id d'un compte systeme qui aura été crée au préalable\n\n# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"foreignKey": true
 								},
 								{
@@ -26698,8 +26698,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
@@ -27581,8 +27581,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -27806,8 +27806,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE CASCADE\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
@@ -28076,8 +28076,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"foreignKey": true,
 									"referenceTo": {
 										"$ref": "AAAAAAFwMOip8m6G7G4="
@@ -28352,8 +28352,8 @@
 									},
 									"name": "userId",
 									"documentation": "# Contrainte\n\n- ON DELETE RESTRICT\n- ON UPDATE CASCADE",
-									"type": "INTEGER",
-									"length": "11",
+									"type": "VARCHAR",
+									"length": "50",
 									"primaryKey": true,
 									"foreignKey": true,
 									"referenceTo": {
