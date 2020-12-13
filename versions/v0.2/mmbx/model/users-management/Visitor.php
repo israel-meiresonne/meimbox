@@ -85,6 +85,8 @@ class Visitor extends ModelFunctionality
      */
     protected $cookies;
 
+    private const PREFIX_ID = "usr_";
+
     /**
      * Holds how much measures can be holded
      * @var int
@@ -156,11 +158,9 @@ class Visitor extends ModelFunctionality
      */
     private function setNewVisitor()
     {
-        $this->userID = $this->generateCode(9, date("YmdHis")); // replacer par une sequance
+        $this->userID = self::PREFIX_ID . $this->generateDateCode(25);
         $navigation = $this->getNavigation();
         $location = $navigation->getCurrentLocation();
-        // $navigation->detectDevice();
-        // $this->location = new Location();
         $this->lang = new Language();
         $localIsoCurrency = $location->getIsoCurrency();
         $this->currency = ($this->existCurrency($localIsoCurrency))

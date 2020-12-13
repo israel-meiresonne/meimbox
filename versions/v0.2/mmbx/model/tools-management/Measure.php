@@ -58,6 +58,8 @@ class Measure extends ModelFunctionality
      */
     private const ID_LENGTH = 25;
 
+    private const PREFIX_ID = "msr_";
+
     /**
      * Input name for measure's name
      */
@@ -118,7 +120,7 @@ class Measure extends ModelFunctionality
     public function __construct(Map $measureMap)
     {
         $unitName = $measureMap->get(Map::unitName);
-        $this->measureID = (!empty($measureMap->get(Map::measureID))) ? $measureMap->get(Map::measureID) : $this->generateDateCode(self::ID_LENGTH);
+        $this->measureID = (!empty($measureMap->get(Map::measureID))) ? $measureMap->get(Map::measureID) : self::PREFIX_ID . $this->generateDateCode(self::ID_LENGTH);
         $this->measureName = (!empty($measureMap->get(Map::measureName))) ? $measureMap->get(Map::measureName) : $this->generateDateCode(self::ID_LENGTH);;
         $this->bust = (!empty($measureMap->get(Map::bust))) ? new MeasureUnit($measureMap->get(Map::bust), $unitName) : null;
         $this->arm = (!empty($measureMap->get(Map::arm))) ? new MeasureUnit($measureMap->get(Map::arm), $unitName) : null;
