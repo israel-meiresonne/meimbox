@@ -1,0 +1,8 @@
+"isoCurrency","currencyName","symbol","EURtoCurrency","isDefault"
+"aud","australian dollar","a$","1.63","0"
+"cad","canadian dollar","c$","1.43","0"
+"chf","swiss franc","CHF","1.06","0"
+"eur","euro","€","1","0"
+"gbp","great britain pound (sterling)","£","0.84","0"
+"jpy","japanese yen","¥","120.91","0"
+"usd","u.s. dollar","$","1.08","1"

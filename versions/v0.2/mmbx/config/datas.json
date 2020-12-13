@@ -74,40 +74,28 @@
             ],
             "numeric": [
                 32,
-                33,
                 34,
-                35,
                 36,
-                37,
                 38,
-                39,
                 40,
-                41,
                 42,
-                43,
                 44,
-                45,
                 46,
-                47,
                 48,
-                49,
                 50,
-                51,
                 52,
-                53,
                 54,
-                55,
-                56
+                56,
+                58,
+                60,
+                62
             ]
         },
         "discountCodes": {
             "free_shipping": {
-                "au": "free_shipping_au",
-                "be": "free_shipping_be",
-                "ca": "free_shipping_ca",
-                "fr": "free_shipping_fr",
                 "o": "free_shipping_o",
-                "ch": "free_shipping_ch"
+                "be": "free_shipping_be",
+                "fr": "free_shipping_fr"
             }
         },
         "ad_config": {

@@ -1,0 +1,7 @@
+"cookieID","cookiePeriod","cookieDomain","cookiePath","cookieSecure","cookieHttponly"
+"ADM","10800",NULL,NULL,"1","1"
+"ADRS","86400",NULL,NULL,"1","1"
+"CHKT_LNCHD","86400",NULL,"checkout","1","1"
+"CLT","31536000",NULL,NULL,"1","1"
+"LCK","120",NULL,NULL,"1","1"
+"VIS","94608000",NULL,NULL,"1","1"
