@@ -322,7 +322,6 @@ class Search extends ModelFunctionality
     public function setProducts(Language $language, Country $country, Currency $currency)
     {
         $sql = $this->getSql($country, $currency);
-        // $this->setProductMap($sql);
         $productMap = $this->searchProduct($sql);
         foreach ($productMap as $prodID => $datas) {
             switch ($datas["product_type"]) {
@@ -628,14 +627,11 @@ class Search extends ModelFunctionality
         $sql =
             'SELECT DISTINCT p.*, pp.price
         FROM `Products` p
-        LEFT JOIN `ProductBuyPrice` pbp ON p.prodID = pbp.prodId 
-        LEFT JOIN `BoxColors-Products` bcp ON p.prodID = bcp.prodId
         LEFT JOIN `Products-Collections` pco ON p.prodID = pco.prodId
         LEFT JOIN `Products-ProductFunctions` pf ON p.prodID = pf.prodId
         LEFT JOIN `Products-Categories` pca ON p.prodID = pca.prodId
         LEFT JOIN `Products-Sizes` ps ON p.prodID = ps.prodId
-        LEFT JOIN `ProductsPrices` pp ON p.prodID = pp.prodId
-        ';
+        LEFT JOIN `ProductsPrices` pp ON p.prodID = pp.prodId';
 
         $sql .= " WHERE p.isAvailable = 1 AND ";
         $sql .= '(pp.country_ = "' . $country->getCountryName() . '" AND pp.iso_currency = "' . $currency->getIsoCurrency() . '"  OR product_type = "' . BoxProduct::BOX_TYPE . '")';

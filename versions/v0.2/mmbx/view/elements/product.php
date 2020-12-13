@@ -22,7 +22,6 @@ $colorRGBText = $product->getColorRGBText();
 
 <article class="product-article-wrap">
     <div class="product-img-set">
-        <!-- <a href="/inside/item/?prodID=<?= $prodID ?>"> -->
         <a href="<?= $product->getUrlPath(Product::PAGE_ITEM) ?>">
             <?php
             $i = 0;
