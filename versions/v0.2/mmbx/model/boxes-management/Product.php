@@ -76,8 +76,8 @@ abstract class Product extends ModelFunctionality
 
     /**
      * Holds product's foreign System like Google's or Facebook's
-     * @var Map
-     * + $foreignCategory[SystemCategory{string}] => category{string}
+     * @var string
+    //  * + $foreignCategory[SystemCategory{string}] => category{string}
      */
     protected $foreignCategory;
 
@@ -253,16 +253,13 @@ abstract class Product extends ModelFunctionality
         $this->language = $language;
         $this->country = $country;
         $this->currency = $currency;
-        $this->prodName = $productLine["prodName"];
+        // $this->prodName = $productLine["prodName"];
         $this->isAvailable = $productLine["isAvailable"];
         $this->groupID = $productLine["groupID"];
         $this->addedDate = $productLine["addedDate"];
         $this->colorName = $productLine["colorName"];
         $this->colorRGB = $productLine["colorRGB"];
         $this->weight = $productLine["weight"];
-        $this->foreignCategory = new Map();
-        $googleCat = $productLine["googleCat"];
-        $this->foreignCategory->put($googleCat, self::CATEGORY_GOOGLE);
     }
 
     /**
@@ -328,14 +325,18 @@ abstract class Product extends ModelFunctionality
     protected function setCategories()
     {
         $this->categories  = [];
-        $sql = "SELECT * 
-        FROM `Products-Categories`
-        WHERE `prodId` = '$this->prodID'";
+        $prodID = $this->getProdID();
+        $sql = "SELECT *
+                FROM `Products-Categories` pc
+                JOIN `Categories` c ON pc.`category_name` = c.`categoryName`
+                WHERE pc.`prodId`='$prodID'";
         $tab = $this->select($sql);
-        if (count($tab) > 0) {
-            foreach ($tab as $tabLine) {
-                array_push($this->categories, $tabLine["category_name"]);
-            }
+        if (count($tab) <= 0) {
+            throw new Exception("There is no category for this product '$prodID'");
+        }
+        $this->foreignCategory = $tab[0]["googleCat"];
+        foreach ($tab as $tabLine) {
+            array_push($this->categories, $tabLine["category_name"]);
         }
     }
 
@@ -524,11 +525,28 @@ abstract class Product extends ModelFunctionality
     }
 
     /**
+     * To set Product's product name
+     */
+    private function setProdName()
+    {
+        $prodID = $this->getProdID();
+        $isoLang = $this->getLanguage()->getIsoLang();
+        $sql = "SELECT * FROM `ProductsNames` WHERE`prodId`='$prodID'&&`lang_`='$isoLang'";
+        $tab = $this->select($sql);
+        $nb = count($tab);
+        if ($nb != 1) {
+            throw new Exception("The product's name is invalid (number of line returned: $nb)");
+        }
+        $this->prodName = $tab[0]["prodName"];
+    }
+
+    /**
      * Getter for the product's name
      * @return string the product's name
      */
     public function getProdName()
     {
+        (!isset($this->prodName)) ? $this->setProdName() : null;
         return $this->prodName;
     }
 
@@ -594,13 +612,11 @@ abstract class Product extends ModelFunctionality
      * @param string $foreignSystKey to get category from this system
      * @return string product's foreaign category
      */
-    public function getForeignCategory(string $foreignSystKey)
+    // public function getForeignCategory(string $foreignSystKey)
+    public function getForeignCategory()
     {
-        $category = $this->foreignCategory->get($foreignSystKey);
-        if (empty($category)) {
-            throw new Exception("Product's foreign category can't be empty");
-        }
-        return $category;
+        (!isset($this->foreignCategory)) ? $this->setCategories() : null;
+        return $this->foreignCategory;
     }
 
     /**
@@ -646,12 +662,14 @@ abstract class Product extends ModelFunctionality
                 $color = $this->getColorName();
                 $datas = [];
                 array_push($datas, $prodName, $color);
+                // array_push($datas, $color);
                 $collections = $this->getCollections();
                 $functions  = $this->getProdFunctions();
                 $categories = $this->getCategories();
                 $datas = array_merge($datas, $collections, $functions, $categories);
                 $info = (count($datas) > 0) ? "/" . implode(self::GLUE, $datas) : "";
-                $url .= str_replace(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "", $info);
+                $path = str_replace(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "", $info);
+                $url .=str_replace(" ", self::GLUE, $path);
                 break;
             default:
                 throw new Exception("This url page don't exist, page:$page");

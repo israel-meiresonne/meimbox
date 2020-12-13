@@ -947,7 +947,6 @@ abstract class ModelFunctionality extends Model
         $tab = $this->select($sql);
         if (count($tab) > 0) {
             foreach ($tab as $tabLine) {
-                self::$productMap[$tabLine["prodID"]]["prodName"] = $tabLine["prodName"];
                 self::$productMap[$tabLine["prodID"]]["isAvailable"] = ($tabLine["isAvailable"] == 1);
                 self::$productMap[$tabLine["prodID"]]["groupID"] = $tabLine["groupID"];
                 self::$productMap[$tabLine["prodID"]]["product_type"] = $tabLine["product_type"];
@@ -956,131 +955,11 @@ abstract class ModelFunctionality extends Model
                 self::$productMap[$tabLine["prodID"]]["colorRGB"] = $tabLine["colorRGB"];
                 self::$productMap[$tabLine["prodID"]]["weight"] = empty($tabLine["weight"]) ? null : (float) $tabLine["weight"];
                 self::$productMap[$tabLine["prodID"]]["price"] = empty($tabLine["price"]) ? null : (float) $tabLine["price"];
-                self::$productMap[$tabLine["prodID"]]["googleCat"] = $tabLine["googleCat"];
             }
         }
     }
     /*———————————————————————————— PRODUCT ACCESS UP ————————————————————————*/
     /*———————————————————————————— CHECK DATAS DOWN —————————————————————————*/
-
-    // /**
-    //  * Check the input value passed in param and push error accured in Response
-    //  * @param string $key the name input to check (in $_POST, $_GET or $_SESSION)
-    //  * @param string[] $dataTypes the types of the filter to check input.
-    //  * + NOTE: combinaison available => 
-    //  *      [TYPE], 
-    //  *      [CHECKBOX, TYPE]
-    //  * @param boolean $required set true if value can be empty alse false
-    //  * @param Response $response to push in error accured
-    //  * @return boolean true if is success else false
-    //  */
-    // public function checkInput($key, $dataTypes, Response $response, $length = null, $required = true)
-    // {
-    //     $keyExist = Query::existParam($key);
-    //     if (($required) && (!$keyExist)) {
-    //         $errorStation = ($dataTypes[0] == self::CHECKBOX) ? "ER5"
-    //             : "ER2";
-    //         $response->addErrorStation($errorStation, $key);
-    //         return $response->isSuccess();
-    //     }
-    //     if (!$keyExist) {
-    //         return false;
-    //     }
-
-    //     $value = Query::getParam($key);
-    //     if (!empty($length) && (strlen($value) > $length)) {
-    //         $errorStationTxt = "ER6";
-    //         $errorStationTxt .= " " . $length; // translateError will split errorStation from the lenght
-    //         $response->addErrorStation($errorStationTxt, $key);
-    //         return $response->isSuccess();
-    //     }
-
-    //     switch ($dataTypes[0]) {
-    //         case self::NUMBER_FLOAT:
-    //             if (preg_match(self::FLOAT_REGEX, $value) != 1) {
-    //                 $errStation = "ER3";
-    //                 $response->addErrorStation($errStation, $key);
-    //             } else {
-    //                 Query::convertParam(self::NUMBER_FLOAT, $key);
-    //             }
-    //             break;
-
-    //         case self::PSEUDO:
-    //             if (preg_match(self::PSEUDO_REGEX, $value) != 1) {
-    //                 $errStation = "ER4";
-    //                 $response->addErrorStation($errStation, $key);
-    //             } else {
-    //                 Query::convertParam(self::PSEUDO, $key);
-    //             }
-    //             break;
-
-    //         case self::ALPHA_NUMERIC:
-    //             if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
-    //                 $errStation = "ER1";
-    //                 $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-    //             } else {
-    //                 Query::convertParam(self::ALPHA_NUMERIC, $key);
-    //             }
-    //             break;
-
-    //         case self::CHECKBOX:
-    //             $cbxType = $dataTypes[1];
-    //             switch ($cbxType) {
-    //                 case self::STRING_TYPE:
-    //                     if (preg_match(self::STRING_REGEX, $value) != 1) {
-    //                         $errStation = "ER1";
-    //                         $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-    //                     } else {
-    //                         Query::convertParam(self::STRING_TYPE, $key);
-    //                     }
-    //                     break;
-    //                 case self::SIZE:
-    //                     if ((preg_match(self::SIZE_REGEX, $value) != 1) || (preg_match(self::INT_REGEX, $value) != 1)) {
-    //                         $errStation = "ER1";
-    //                         $response->addErrorStation($errStation, MyError::FATAL_ERROR);
-    //                     } else {
-    //                         Query::convertParam(self::STRING_TYPE, $key);
-    //                     }
-    //                     break;
-    //             }
-    //             break;
-    //     }
-    //     return $response->isSuccess();
-    // }
-
-    // /**
-    //  * To check if data is in the correct format
-    //  * @param string|int|float|boolean $data the data to check
-    //  * @param string $data the regex format to match
-    //  * @return boolean true if  data is in correct format else false
-    //  */
-    // public function checkData($data, $format, $length = null)
-    // {
-    //     $data = strval($data);
-    //     if ((!empty($length)) && (strlen($data)) > $length) {
-    //         return false;
-    //     }
-    //     switch ($format) {
-    //         case self::NUMBER_FLOAT:
-    //             if (preg_match(self::FLOAT_REGEX, $data) == 1) {
-    //                 return true;
-    //             }
-
-    //         case self::PSEUDO:
-    //             if (preg_match(self::PSEUDO_REGEX, $data) == 1) {
-    //                 return true;
-    //             }
-    //             break;
-
-    //         case self::ALPHA_NUMERIC:
-    //             if (preg_match(self::PALPHA_NUMERIC_REGEX, $data) == 1) {
-    //                 return true;
-    //             }
-    //             break;
-    //         default:
-    //             throw new Exception("This data format don't exist");
-    //     }
-    // }
 
     /**
      * To get the column's length from db
