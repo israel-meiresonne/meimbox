@@ -1,6 +1,4 @@
 <?php
-$this->title = "sign";
-$this->description = "sign";
 
 /**
  * @var Translator
@@ -17,7 +15,12 @@ $currency = $person->getCurrency();
 $measures = $person->getMeasures();
 $basket = $person->getBasket();
 
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+$pageTitleTxt = $translator->translateStation("US121");
+$this->title = $pageTitleTxt;
+$this->description = $pageTitleTxt;
 $this->head = $this->generateFile('view/Checkout/files/head.php', []);
+/*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 
 <div class="checkout_page-container">

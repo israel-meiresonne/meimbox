@@ -7,6 +7,11 @@
  * @param Currency $currency Visitor's current Currency
  */
 
+ /**
+  * @var Translator
+  */
+ $translator = $translator;
+
 /**
  * @var BasketProduct|BoxProduct
  */
@@ -51,7 +56,7 @@ $colorRGBText = $product->getColorRGBText();
     <div class="product-detail-block">
         <div class="detail-text-div">
             <h4>
-                <span><?= $translator->translateString($product->getProdName()) ?> | <span style="color:<?= $colorRGBText ?>;"><?= $product->getColorName() ?></span></span>
+                <span><?= $product->getProdName() ?> | <span style="color:<?= $colorRGBText ?>;"><?= $translator->translateString($product->getColorName()) ?></span></span>
             </h4>
         </div>
         <div class="detail-price-div">

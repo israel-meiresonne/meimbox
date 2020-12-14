@@ -15,12 +15,12 @@ $search = $search;
  */
 $person = $person;
 
-$this->title = "grid";
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+$this->title = $translator->translateStation("US120");
 $this->lang = $person->getLanguage()->getIsoLang();
 $this->description = "grid page";
-// ob_start();
-// require 'view/Grid/gridFiles/head.php';
 $this->head = $this->generateFile('view/Grid/gridFiles/head.php', []);
+/*————————————————————————————— Config View UP ——————————————————————————————*/
 
 /** Event */
 $inpEvent = "evtInp(this,'evt_cd_125');";
@@ -42,7 +42,7 @@ $inpEvent = "evtInp(this,'evt_cd_125');";
             </div>
 
             <div class="directory-wrap">
-                <p>women \ collection \ category</p>
+                <!-- <p>women \ collection \ category</p> -->
                 <!-- <p>women \ collection1 \ collection2 \ category</p> -->
             </div>
 
@@ -96,7 +96,8 @@ $inpEvent = "evtInp(this,'evt_cd_125');";
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
-
+                                                <?php
+                                                /*
                                                 <div class="dropdown-checkbox-block">
                                                     <label class="checkbox-label"><?= $translator->translateStation("US6") ?>
                                                         <input onclick="<?= $inpEvent ?>" type="radio" name="order" value="<?= Search::LOW_TO_HIGHT ?>" <?= $orderIsChecked[2] ?>>
@@ -109,10 +110,14 @@ $inpEvent = "evtInp(this,'evt_cd_125');";
                                                         <span class="checkbox-checkmark"></span>
                                                     </label>
                                                 </div>
+                                                */
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <?php
+                                /*
                                 <div class="dropdown-container">
                                     <?php
                                     // $title = $translator->translateStation("US7"); // $dpdName
@@ -133,10 +138,10 @@ $inpEvent = "evtInp(this,'evt_cd_125');";
                                         "func" => $inpEvent
                                     ];
                                     echo $this->generateFile('view/elements/dropdown.php', $datas);
-                                   
                                     ?>
-
                                 </div>
+                                */
+                                ?>
                                 <div class="dropdown-container">
                                     <?php
                                     // $title = $translator->translateStation("US8"); // $dpdName

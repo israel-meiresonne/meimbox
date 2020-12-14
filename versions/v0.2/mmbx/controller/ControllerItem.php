@@ -172,7 +172,7 @@ class ControllerItem extends ControllerSecure
         $datasView = [];
         $brandsMeasures = $person->getBrandMeasures();
         if ((!Query::existParam(Size::KEY_BRAND_NAME))
-            || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
+        || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {

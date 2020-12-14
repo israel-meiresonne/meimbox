@@ -151,9 +151,10 @@ switch ($conf) {
                                 ?>
                             </div>
                             <?php
+                            $disableBtnFunc = "disable('#brand_validate_button')";
                             switch ($conf) {
                                 case Size::CONF_SIZE_ADD_PROD:
-                                    $setBrandPopFunc = "onclick=\"evt('evt_cd_87');openPopUp('#customize_brand_reference',setSelectBrandItemPage)\"";
+                                    $setBrandPopFunc = "onclick=\"evt('evt_cd_87');openPopUp('#customize_brand_reference',setSelectBrandItemPage,$disableBtnFunc)\"";
                                     break;
                                 case Size::CONF_SIZE_EDITOR:
                                     $setBrandPopFunc = "setSelectBrandSizeEditor";

@@ -52,12 +52,13 @@ $waistTranslate = $translator->translateStation("US41");
                         <div id="<?= $flag ?>" class="cart-element-wrap" data-brotherx="<?= $brotherx ?>" data-submitdata='<?= $measureDatasJson ?>'>
                             <div class="cart-element-inner">
                                 <div class="cart-element-remove-button-block">
-                                    <!-- <button <?= "" //$removeBtnFunc 
-                                                    ?> class="close_button-wrap remove-button-default-att"> -->
                                     <button onclick="removeMsr(this)" data-measure="<?= $measureDatasJson ?>" class="close_button-wrap remove-button-default-att">
                                         <div class="plus_symbol-wrap">
                                             <span class="plus_symbol-vertical"></span>
                                             <span class="plus_symbol-horizontal"></span>
+                                        </div>
+                                        <div class="btn-loading loading-img-wrap">
+                                            <img src="content/brain/permanent/mini-loading.gif">
                                         </div>
                                     </button>
                                 </div>

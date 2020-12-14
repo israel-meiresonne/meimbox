@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @var Translator
+ */
+$translator = $translator;
 /**
  * @var BoxProduct|BasketProduct
  */
@@ -53,13 +56,8 @@ $brandsMeasures = $brandsMeasures;
 $measureUnits = $measureUnits;
 
 /*————————————————————————————— Config View DOWN ————————————————————————————*/
-
-$this->title = "item";
-$this->description = "item page";
-/**
- * @var Translator
- */
-$translator = $translator;
+$this->title = $product->getProdName();
+$this->description = $product->getProdName() . ": " . $product->getDescription();
 $pixelDatasMap = new Map([Map::product => $product]);
 $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMap);
 /*————————————————————————————— Config View UP ——————————————————————————————*/
@@ -67,7 +65,7 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
 
 <div class="item_page-inner">
     <div class="directory-wrap">
-        <p>women \ collection \ coat \ essential double coat</p>
+        <!-- <p>women \ collection \ coat \ essential double coat</p> -->
     </div>
     <div class="product-block">
         <div class="product-block-inner">
@@ -95,11 +93,10 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
             </div>
             <div class="product-details-div">
                 <div class="product-details-inner">
-                    <!-- <div id="form_check_prod_stock" class="product-datas-block"> -->
                     <div class="product-datas-block">
                         <div class="product-name-div product-data-line">
                             <h3>
-                                <span><?= $translator->translateString($product->getProdName()) ?> | <span style="color:<?= $product->getColorRGBText() ?>;"><?= $product->getColorName() ?></span></span>
+                                <span><?= $product->getProdName() ?> | <span style="color:<?= $product->getColorRGBText() ?>;"><?= $translator->translateString($product->getColorName()) ?></span></span>
                             </h3>
                         </div>
                         <div class="product-price-div product-data-line">

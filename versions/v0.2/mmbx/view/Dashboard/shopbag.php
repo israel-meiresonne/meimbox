@@ -18,6 +18,12 @@ $measures = $person->getMeasures();
 $basket = $person->getBasket();
 
 $this->head = $this->generateFile('view/Dashboard/files/head.php', []);
+
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+$shopBagTxt = $translator->translateStation("US25");
+$this->title = $shopBagTxt;
+$this->description = $shopBagTxt;
+/*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 
 

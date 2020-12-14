@@ -20,9 +20,9 @@ $basket = $person->getBasket();
 $addressMap = $person->getAddresses();
 
 /*————————————————————————————— Config View DOWN ————————————————————————————*/
-
-$this->title = "checkout";
-$this->description = "checkout";
+$checkoutTitle = $translator->translateStation("US102");
+$this->title = $checkoutTitle;
+$this->description = $checkoutTitle;
 $headDatas = [
     "additionals" => ['<script src="https://js.stripe.com/v3/"></script>']
 ];
@@ -31,7 +31,6 @@ if ($basket->getQuantity() > 0) {
     $pixelDatasMap = new Map([Map::basket => $basket]);
     $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_INIT_CHECKOUT, $pixelDatasMap);
 }
-
 /*————————————————————————————— Config View UP ——————————————————————————————*/
 
 ?>

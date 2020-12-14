@@ -275,9 +275,13 @@
             "x": { "af": af },
             "sc": () => {
                 displayFlexOn(d.l, TS / 10);
+                disable(frm);
+                disable($(frmx).find(".checkbox-label"));
             },
             "rc": () => {
                 displayFlexOff(d.l, TS);
+                enable(frm, DT);
+                enable($(frmx).find(".checkbox-label"), DT);
             }
         };
         frmSND(d);
