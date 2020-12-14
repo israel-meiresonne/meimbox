@@ -22,6 +22,7 @@ class Map
     public const open = "open";
     public const close = "close";
     public const duration = "duration";
+    public const support = "support";
 
     /**
      * Keys for Mosaic

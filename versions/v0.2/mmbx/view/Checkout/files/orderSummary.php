@@ -39,6 +39,14 @@ $subtotal = $basket->getSubTotal()->getFormated();
 $reductSumProd = $basket->getDiscountSumProducts();
 $finalPice = $basket->getTotal()->getFormated();
 
+/** Translation */
+$orderSummaryTxt = ucfirst($translator->translateStation("US137"));
+$contactUsTxt = $translator->translateStation("US86");
+
+/* Files */
+$safeInfos = $this->generateFile('view/elements/safeInfos.php', []);
+$supportMail = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY)))->get(Map::email, Map::support, Map::email);
+
 /** Delivery */
 $minTime = $shippingObj->getMinTime();
 $maxTime = $shippingObj->getMaxTime();
@@ -67,7 +75,7 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
             }
             ?>
             <div class="summary-detail-title-div" <?= $TAGtoggleShutter ?> data-evtopen="evt_cd_17" data-evtclose="evt_cd_18">
-                <span class="summary-title">Order Summary</span>
+                <span class="summary-title"><?= $orderSummaryTxt ?></span>
             </div>
             <?php
             if ($showArrow) :
@@ -289,11 +297,23 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
+                                <img src="<?= self::$DIR_STATIC_FILES ?>google-pay-logo.png">
+                            </div>
+                            <span class="img-text-span">google pay</span>
+                        </div>
+                    </li>
+                    <?php
+                    /*
+                    <li class="payement-li remove-li-default-att">
+                        <div class="img-text-wrap">
+                            <div class="img-text-img">
                                 <img src="<?= self::$DIR_STATIC_FILES ?>paypal.png">
                             </div>
                             <span class="img-text-span">paypal</span>
                         </div>
                     </li>
+                    */
+                    ?>
                     <li class="payement-li remove-li-default-att">
                         <div class="img-text-wrap">
                             <div class="img-text-img">
@@ -323,7 +343,8 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
 
             <div class="summary-detail-safe_info-div">
                 <div class="summary-detail-safe_info-inner">
-                    <div class="safe_info-wrap">
+                    <?= $safeInfos ?>
+                    <!-- <div class="safe_info-wrap">
                         <ul class="safe_info-ul remove-ul-default-att">
                             <li class="safe_info-li remove-li-default-att">
                                 <div class="img_text_down-wrap">
@@ -362,7 +383,7 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -373,7 +394,7 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                             <li class="remove-li-default-att">
                                 <div class="collapse-div">
                                     <div class="collapse-title-div" data-evtopen="evt_cd_23" data-evtclose="evt_cd_24">
-                                        <div class="collapse-title">contact us</div>
+                                        <div class="collapse-title"><?= $contactUsTxt ?></div>
                                         <div class="collapse-symbol">
                                             <div class="plus_symbol-container">
                                                 <div class="plus_symbol-wrap">
@@ -386,6 +407,8 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                                     <div class="collapse-text-div collapse-text-hidded">
                                         <div class="collapse-text-inner">
                                             <ul class="contact-ul remove-ul-default-att">
+                                                <?php
+                                                /*
                                                 <li class="contact-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
@@ -394,12 +417,16 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                                                         <span class="img-text-span">+472 13 13 24</span>
                                                     </div>
                                                 </li>
+                                                */
+                                                ?>
                                                 <li class="contact-li remove-li-default-att">
                                                     <div class="img-text-wrap">
                                                         <div class="img-text-img">
                                                             <img src="<?= self::$DIR_STATIC_FILES ?>icons8-secured-letter-100.png">
                                                         </div>
-                                                        <span class="img-text-span">email@monsite.com</span>
+                                                        <span class="img-text-span">
+                                                            <?= $supportMail ?>
+                                                        </span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -409,7 +436,6 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>

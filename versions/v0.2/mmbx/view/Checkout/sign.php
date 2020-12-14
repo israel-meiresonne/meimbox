@@ -27,7 +27,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', []);
     <div class="checkout_page-inner">
         <div class="directory-container">
             <div class="directory-wrap">
-                <p>checkout</p>
+                <!-- <p>checkout</p> -->
             </div>
         </div>
         <div class="address_summary_cart-container">

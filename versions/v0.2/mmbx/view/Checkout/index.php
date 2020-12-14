@@ -1,5 +1,4 @@
 <?php
-// require_once 'model/API/Stripe/StripeAPI.php';
 $pk = Configuration::get(Configuration::STRIPE_PK);
 /**
  * @var Translator
@@ -19,10 +18,17 @@ $currency = $person->getCurrency();
 $basket = $person->getBasket();
 $addressMap = $person->getAddresses();
 
+/* Translation */
+$addressTxt = ucfirst($translator->translateStation("US93"));
+$shopBagTxt = ucfirst($translator->translateStation("US25"));
+
+/* Paths */
+$addressPath = ControllerSecure::generateActionPath(ControllerCheckout::class, ControllerCheckout::ACTION_ADDRESS);
+
 /*————————————————————————————— Config View DOWN ————————————————————————————*/
-$checkoutTitle = $translator->translateStation("US102");
-$this->title = $checkoutTitle;
-$this->description = $checkoutTitle;
+$pageTitleTxt = $translator->translateStation("US102");
+$this->title = $pageTitleTxt;
+$this->description = $pageTitleTxt;
 $headDatas = [
     "additionals" => ['<script src="https://js.stripe.com/v3/"></script>']
 ];
@@ -32,14 +38,13 @@ if ($basket->getQuantity() > 0) {
     $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_INIT_CHECKOUT, $pixelDatasMap);
 }
 /*————————————————————————————— Config View UP ——————————————————————————————*/
-
 ?>
 
 <div class="checkout_page-container">
     <div class="checkout_page-inner">
         <div class="directory-container">
             <div class="directory-wrap">
-                <p>checkout</p>
+                <p><a href="<?= $addressPath ?>"><?= $addressTxt ?></a> \ <?= ucfirst($pageTitleTxt) ?></p>
             </div>
         </div>
         <div class="address_summary_cart-container">
@@ -50,7 +55,7 @@ if ($basket->getQuantity() > 0) {
                             <div class="cart-inner">
                                 <div class="form-title-block cart-title-block" data-evtopen="evt_cd_29" data-evtclose="evt_cd_30">
                                     <div class="form-title-div">
-                                        <span class="form-title">cart</span>
+                                        <span class="form-title"><?= $shopBagTxt ?></span>
                                     </div>
                                     <div class="summary-detail-arrow-button-div">
                                         <div class="arrow-element-container">

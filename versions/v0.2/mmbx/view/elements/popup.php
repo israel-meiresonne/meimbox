@@ -44,7 +44,7 @@
         <div class="pop_up-inner">
             <div class="pop_up-title-block">
                 <div class="pop_up-title-div">
-                    <span class="form-title"><?= $datas["title"] ?></span>
+                    <span class="form-title"><?= ucfirst($datas["title"]) ?></span>
                 </div>
                 <div class="pop_up-close-button-div">
                     <button id="<?= $datas["closeButtonId"] ?>" class="close_button-wrap popup_close_btn remove-button-default-att">

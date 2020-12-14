@@ -27,18 +27,19 @@ $positionMap->put(self::DIRECTION_RIGHT, Map::side);
 
 $logOutDatas = [
     "src" => self::$DIR_STATIC_FILES . 'log-out-100.png',
-    "text" => "log out"
+    "text" => ucfirst($translator->translateStation("US139"))
 ];
 $logOutImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $logOutDatas);
 $logOutTouch = new Touch($logOutImg, 0, $positionMap);
 $logOutTouch->setTagParams("onclick='logOut();'");
 
-$homeImgDatas = [
-    "src" => self::$DIR_STATIC_FILES . 'home-144.png',
-    "text" => "menu"
-];
-$homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
-$homeTouch = new Touch($homeImg, 0, $positionMap);
+// $homeImgDatas = [
+//     "src" => self::$DIR_STATIC_FILES . 'home-144.png',
+//     "text" => ucfirst($translator->translateStation("US140"))
+// ];
+// $homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
+// $homeTouch = new Touch($homeImg, 0, $positionMap);
+$homeTouch = null;
 
 /** Translation */
 $addBoxTxt = ucfirst($translator->translateStation("US119"));
@@ -251,6 +252,8 @@ $signUpTxt = ucfirst($translator->translateStation("US121"));
             </div>
             <div class="side_menu_content-menu_bottom side_menu_content-childs">
                 <div class="menu_bottom_content">
+                    <?php
+                    /*
                     <ul class="menu_bottom_content-ul remove-ul-default-att">
                         <li class="menu_bottom_content-li remove-li-default-att">
                             <?php
@@ -262,28 +265,13 @@ $signUpTxt = ucfirst($translator->translateStation("US121"));
                             $supportTouch = new Touch($supportImg, 0, $positionMap);
                             ?>
                             <?= $supportTouch ?>
-                            <!-- <div class="touch-wrap transition_time">
-                                <div class="touch-notif">
-                                    <div class="notif-wrap notif_top notif_right">
-                                        <div class="notif_content back_blue">
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="touch-content">
-                                    <div class="img-text-wrap">
-                                        <div class="img-text-img">
-                                            <img src="<?= self::$DIR_STATIC_FILES ?>dashboard-chat-96.png">
-                                        </div>
-                                        <span class="img-text-span">chat & support</span>
-                                    </div>
-                                </div>
-                            </div> -->
                         </li>
                         <li class="menu_bottom_content-li remove-li-default-att">
                             <a href="" target="_blank">about</a>
                         </li>
                     </ul>
+                    */
+                    ?>
                 </div>
             </div>
         </div>
