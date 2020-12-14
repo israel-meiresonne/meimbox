@@ -2550,7 +2550,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .customize-brand_reference-block {
     display: none;
 }
-
+#customize_brand_reference .pop_up-content-block-inner{
+    overflow: hidden;
+}
 .brand_reference-info-div p, .customize_measure-info-div p {
     margin: 0;
 }
@@ -2572,6 +2574,12 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     width: 25%;
     cursor: pointer;
     border-radius: var(--border-radius-selcted-element);
+}
+.brand_reference-grid-container .popup-selected{
+    box-shadow: none !important;
+}
+.popup-selected .second-img-div{
+    opacity: 1 !important;
 }
 
 .brand_reference-grid-img-block .first-img-div, .brand_reference-grid-img-block .second-img-div {
@@ -2623,12 +2631,13 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 @media (min-width: 992px) {
     .brand_reference-grid-container {
-        max-height: 450px;
+        /* max-height: 450px; */
+        max-height: 400px;
         padding: 10px;
     }
     .brand_reference-grid-img-block .second-img-div:hover {
         opacity: 1;
-        box-shadow: var(--selected-shadow);
+        /* box-shadow: var(--selected-shadow); */
         transition: var(--transition-time-picture);
         -moz-transition: var(--transition-time-picture);
     }

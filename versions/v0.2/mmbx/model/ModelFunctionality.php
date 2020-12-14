@@ -263,7 +263,7 @@ abstract class ModelFunctionality extends Model
     {
         !isset(self::$constants) ? self::setConstantsMap() : null;
         if (!key_exists($key, self::$constants)) {
-            throw new Exception("This constante don't exist!");
+            throw new Exception("This constante '$key' don't exist!");
         }
         return self::$constants[$key];
     }
@@ -548,15 +548,15 @@ abstract class ModelFunctionality extends Model
         self::$boxMap = [];
         $countryName = $country->getCountryName();
         $isocurrency = $currency->getIsoCurrency();
-        $query = "SELECT * 
+        $sql = "SELECT * 
         FROM `BoxColors` bc
         JOIN `BoxPrices` bp ON bc.boxColor  = bp.box_color
         JOIN `BoxShipping` bs ON bc.boxColor  = bs.box_color
-        JOIN `BoxDiscounts` bd ON bc.boxColor  = bd.box_color
+        LEFT JOIN `BoxDiscounts` bd ON bc.boxColor  = bd.box_color
         WHERE bp.country_ = '$countryName' AND bp.iso_currency = '$isocurrency' 
         AND bs.country_ = '$countryName' AND bs.iso_currency = '$isocurrency'
-        AND bd.country_ = '$countryName'";
-        $tab = self::select($query);
+        AND (bd.country_ = '$countryName' OR bd.country_ IS NULL)";
+        $tab = self::select($sql);
         foreach ($tab as $tabLine) {
             self::$boxMap[$tabLine["boxColor"]]["sizeMax"] = (int) $tabLine["sizeMax"];
             self::$boxMap[$tabLine["boxColor"]]["weight"] = (float) $tabLine["weight"];

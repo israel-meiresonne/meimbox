@@ -292,37 +292,6 @@ class ControllerHome extends ControllerSecure
         /**
          * @var User */
         $person = $this->person;
-        // $person->manageCookie(Cookie::COOKIE_CHKT_LNCHD, true);
-        // $currency = $person->getCurrency();
-        // $userID = $person->getUserID();
-        // $ordersMap = Order::getOrdersMap($userID);
-        // $orderID = "ord_o12fl0m0v2010042923010358";
-        // $order = new Order("ord_o12fl0m0v2010042923010358");
-        // var_dump($_COOKIE);
-        // var_dump($person->getOrders());
-        // var_dump(Box::getOrderedBoxesMap($orderID));
-        // $boxID = "w04p04022420q12m1omw31a0n";
-        // var_dump(Box::getOrderedBoxes($orderID, $currency));
-        // var_dump($ordersMap);
-        // var_dump($ordersMap);
-        // $response = new Response();
-        // $basketOrdered = new BasketOrdered();
-        // $basketOrdered->dropDiscountCodes($response, $userID);
-        // var_dump($response->getAttributs());
-        // $basket = $person->getBasket();
-        // var_dump("discount codes", $basket->getDiscountCodes());
-        // $country = $person->getCountry();
-        // $vat = $country->getVat();
-        // var_dump("vat: " . $vat);
-        // var_dump("sum prod: " . $basket->getSumProducts()->getPrice());
-        // var_dump("hvat: " . $basket->getHvat()->getPrice());
-        // var_dump("subtotal: " . $basket->getSubTotal()->getPrice());
-        // var_dump("vat: " . $basket->getVat()->getPrice());
-        // var_dump("total: " . $basket->getTotal()->getPrice());
-        // var_dump("shipping: " . $basket->getShipping()->getPrice());
-        // var_dump("time: " . $basket->getShipping()->getTime());
-        // var_dump("prod  discount: " . $basket->getDiscountSumProducts()->getPrice());
-        // var_dump("shipping discount: " . $basket->getDiscountShipping()->getPrice());
         $this->generateView([], $person);
     }
 

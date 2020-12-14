@@ -270,11 +270,11 @@ class Box extends ModelFunctionality
             JOIN `BoxColors` bc ON b.box_color = bc.boxColor
             JOIN `BoxPrices` bp ON bc.boxColor  = bp.box_color
             JOIN `BoxShipping` bs ON bc.boxColor  = bs.box_color
-            JOIN `BoxDiscounts` bd ON bc.boxColor  = bd.box_color
+            LEFT JOIN `BoxDiscounts` bd ON bc.boxColor  = bd.box_color
             WHERE (b.boxID = '$boxID' AND bb.userId = '$userID') 
             AND (bp.country_ = '$countryName' AND bp.iso_currency = '$isocurrency' 
             AND bs.country_ = '$countryName' AND bs.iso_currency = '$isocurrency'
-            AND bd.country_ = '$countryName')";
+            AND (bd.country_ = '$countryName' OR bd.country_ IS NULL))";
         $tab = $this->select($sql);
         if (count($tab)  != 1) {
             throw new Exception("Impossible to get box's data from db");
