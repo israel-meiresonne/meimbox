@@ -57,7 +57,7 @@ $price = $box->getPriceFormated();
 
         $datas = [
             "elementId" => $elementId,
-            "deleteFunc" => "removeBox('$boxID', '$elementIdx')",
+            "deleteFunc" => "removeBox(this,'$boxID','$elementIdx')",
             "properties" => $properties,
             "price" => $price,
             "pictureSrc" => $box->getPictureSource(),

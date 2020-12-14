@@ -11,10 +11,8 @@
     $popUpDatas["submitButtonId"] = "save_measure_button";
     $popUpDatas["submitButtonTxt"] = $translator->translateStation("US37");
     $popUpDatas["submitIsDesabled"] = true;
-    // $popUpDatas["submitClass"] = "standard-button-desabled";
     $popUpDatas["laodingId"] = "add_measurePopUp_loading";
     $popUpDatas["forFormId"] = "add_measure_form";
-    // $popUpDatas["submitButtonFunc"] = "addMsr('#measure_manager')";
     $popUpDatas["submitButtonFunc"] = "addMsr(setCbtnAdderMsr)";
 
     $supportedUnits = MeasureUnit::getSUPPORTED_UNIT();

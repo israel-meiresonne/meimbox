@@ -1316,7 +1316,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .directory-wrap {
     color: var(--color-label);
     font-family: var(--main-font-family);
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 }
 
 .directory-wrap p {
@@ -2432,9 +2432,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 
 /* .pop_up-wrap .pop_up-title-div::first-letter { */
 
-.pop_up-wrap .pop_up-title-div {
+/* .pop_up-wrap .pop_up-title-div {
     text-transform: capitalize;
-}
+} */
 
 .pop_up-window .hr-summary {
     margin: 10px 0 20px;

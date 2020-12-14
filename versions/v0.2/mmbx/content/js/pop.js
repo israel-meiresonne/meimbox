@@ -78,12 +78,18 @@
     enable = function (x, t = 0) {
         setTimeout(() => {
             $(x).removeClass(disableCls);
-            $(x).attr("disabled", false);
+            clickable(x);
         }, t * 1000);
     }
     disable = function (x) {
         $(x).addClass(disableCls);
+        unclickable(x);
+    }
+    unclickable = (x) => {
         $(x).attr("disabled", true);
+    }
+    clickable = (x) => {
+        $(x).attr("disabled", false);
     }
     pushFunc = (x, f) => {
         var xf = $(x).attr(onclickattr);
@@ -395,7 +401,8 @@
         var j = $(x).attr("data-measure");
         var o = json_decode(j);
         var p = mapToParam(o);
-        var l = $(x).find(".loading-img-wrap");
+        unclickable(x);
+        var l = $(x).find(".btn-loading");
         removeMsrDatas = {
             "alert": DELETE_MEASURE_ALERT,
             "nbToWrapper": 4,
@@ -636,17 +643,20 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    removeBox = (bxid, x) => {
+    removeBox = (x, bxid, ex) => {
         if (popAsk(ALERT_DELETE_BOX)) {
             var o = { [KEY_BOX_ID]: bxid };
             var p = mapToParam(o);
             evt('evt_cd_57', json_encode(o));
+            unclickable(x);
+            var l = $(x).find(".btn-loading");
             var d = {
                 "a": A_DELETE_BOX,
                 "d": p,
                 "r": removeBoxRSP,
-                "l": ".basket_pop_loading",
-                "x": x,
+                // "l": ".basket_pop_loading",
+                "l": l,
+                "x": ex,
                 "sc": () => { displayFlexOn(d.l) },
                 "rc": () => { displayFlexOff(d.l) }
             };

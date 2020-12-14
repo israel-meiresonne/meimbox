@@ -55,6 +55,9 @@ $brandsMeasures = $brandsMeasures;
  */
 $measureUnits = $measureUnits;
 
+/* Files */
+$safeInfos = $this->generateFile('view/elements/safeInfos.php', []);
+
 /*————————————————————————————— Config View DOWN ————————————————————————————*/
 $this->title = $product->getProdName();
 $this->description = $product->getProdName() . ": " . $product->getDescription();
@@ -131,51 +134,7 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
                         </div>
                     </div>
                     <div class="product-safe_info-block">
-                        <div class="safe_info-wrap">
-                            <ul class="safe_info-ul remove-ul-default-att">
-                                <li class="safe_info-li remove-li-default-att">
-                                    <div class="img_text_down-wrap">
-                                        <div class="img_text_down-img-div">
-                                            <div class="img_text_down-img-inner">
-                                                <img src="<?= self::$DIR_STATIC_FILES ?>icons8-card-security-150.png">
-                                            </div>
-                                        </div>
-                                        <div class="img_text_down-text-div">
-                                            <?php
-                                            $secureInfo = $translator->translateStation("US26");
-                                            $customerServInfo = $translator->translateStation("US27");
-                                            $deliveryInfo = $translator->translateStation("US28");
-                                            ?>
-                                            <span><?= $secureInfo ?></span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="safe_info-li remove-li-default-att">
-                                    <div class="img_text_down-wrap">
-                                        <div class="img_text_down-img-div">
-                                            <div class="img_text_down-img-inner">
-                                                <img src="<?= self::$DIR_STATIC_FILES ?>icons8-headset-96.png">
-                                            </div>
-                                        </div>
-                                        <div class="img_text_down-text-div">
-                                            <span><?= $customerServInfo ?></span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="safe_info-li remove-li-default-att">
-                                    <div class="img_text_down-wrap">
-                                        <div class="img_text_down-img-div">
-                                            <div class="img_text_down-img-inner">
-                                                <img src="<?= self::$DIR_STATIC_FILES ?>return-box.png">
-                                            </div>
-                                        </div>
-                                        <div class="img_text_down-text-div">
-                                            <span><?= $deliveryInfo ?></span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                        <?= $safeInfos ?>
                     </div>
                     <div class="product-description-block">
                         <div class="product-description-inner">

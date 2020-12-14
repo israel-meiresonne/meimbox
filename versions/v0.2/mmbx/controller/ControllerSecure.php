@@ -169,6 +169,22 @@ abstract class ControllerSecure extends Controller
     }
 
     /**
+     * To generate action path to use ass link
+     * @return string action path to use ass link
+     */
+    public static function generateActionPath(string $ctrClass, $action)
+    {
+        if(!class_exists($ctrClass)){
+            throw new Exception("There no controllerr with  this name '$ctrClass'");
+        }
+        if(!method_exists($ctrClass, $action)){
+            throw new Exception("This action '$action' don't exist in the controller '$ctrClass'");
+        }
+        return $ctr = self::extractController($ctrClass)."/".$action;
+    }
+
+
+    /**
      * Check the input value passed in param and push error accured in Response
      * @param Response $response to push in error accured
      * @param string $input the name of the input used as key to push error accured

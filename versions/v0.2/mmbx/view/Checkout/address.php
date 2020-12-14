@@ -1,12 +1,8 @@
 <?php
-$this->title = "shipping address";
-$this->description = "select shipping address";
-
 /**
  * @var Translator
  */
 $translator = $translator;
-
 /**
  * @var User|Client|Administrator
  */
@@ -17,14 +13,20 @@ $currency = $person->getCurrency();
 $measures = $person->getMeasures();
 $basket = $person->getBasket();
 $addressMap = $person->getAddresses();
+
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+$pageTitleTxt = $translator->translateStation("US93");
+$this->title = $pageTitleTxt;
+$this->description = $pageTitleTxt;
 $this->head = $this->generateFile('view/Checkout/files/head.php', []);
+/*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 
 <div class="checkout_page-container">
     <div class="checkout_page-inner">
         <div class="directory-container">
             <div class="directory-wrap">
-                <p>checkout</p>
+                <!-- <p>checkout</p> -->
             </div>
         </div>
         <div class="address_summary_cart-container">

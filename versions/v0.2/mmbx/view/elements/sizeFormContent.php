@@ -263,7 +263,7 @@ switch ($conf) {
                                 $inputMap = new Map();
                                 $cuts = Size::getSupportedCuts();
                                 foreach ($cuts as $cut) {
-                                    $label = $cut;
+                                    $label = $translator->translateString($cut);
                                     $isChecked = in_array($cut, $checkedCuts);
                                     $SizeInpAttribut = "onclick=\"$typeRadioEvent;\"";
                                     $inputMap->put($cutInputName, $label, Map::inputName);

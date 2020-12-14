@@ -77,7 +77,7 @@ class Size  extends ModelFunctionality
      * Holds access key for supported sizes from db's Constante tale
      * @var string
      */
-    public const DEFAULT_CUT =  "fit";
+    public const DEFAULT_CUT =  "normal";
 
     /**
      * Holds sequence separator
