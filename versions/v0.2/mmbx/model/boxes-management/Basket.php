@@ -309,7 +309,7 @@ class Basket extends ModelFunctionality
     public function getDiscountCodes()
     {
         (!isset($this->discountCodes)) ? $this->setDiscountCodes() : null;
-        $this->addFreeShippingCode();
+        // $this->addFreeShippingCode();
         return $this->discountCodes;
     }
 

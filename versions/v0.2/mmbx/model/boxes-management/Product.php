@@ -658,15 +658,16 @@ abstract class Product extends ModelFunctionality
             case self::PAGE_ITEM:
                 $prodID = $this->getProdID();
                 $url .= self::PAGE_ITEM . $prodID;
-                $prodName = $this->getProdName();
+                // $prodName = $this->getProdName();
                 $color = $this->getColorName();
                 $datas = [];
-                array_push($datas, $prodName, $color);
-                // array_push($datas, $color);
+                // array_push($datas, $prodName, $color);
+                array_push($datas, $color);
                 $collections = $this->getCollections();
-                $functions  = $this->getProdFunctions();
+                // $functions  = $this->getProdFunctions();
                 $categories = $this->getCategories();
-                $datas = array_merge($datas, $collections, $functions, $categories);
+                // $datas = array_merge($datas, $collections, $functions, $categories);
+                $datas = array_merge($datas, $collections, $categories);
                 $info = (count($datas) > 0) ? "/" . implode(self::GLUE, $datas) : "";
                 $path = str_replace(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "", $info);
                 $url .=str_replace(" ", self::GLUE, $path);

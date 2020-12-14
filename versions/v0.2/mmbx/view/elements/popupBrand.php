@@ -30,18 +30,17 @@ ob_start();
     <div id="<?= $dadId ?>" class="brand_reference-grid-container" data-sbtnx="<?= $sbtnx ?>">
         <?php
         foreach ($brandsMeasures as $brandName => $brandDatas) :
-            $dataBrand = [
-                SIze::KEY_BRAND_NAME => $brandName
-            ];
+            $keys = array_keys($brandDatas["brandPictures"]);
+            $dataBrand = [SIze::KEY_BRAND_NAME => $brandName];
             $dataBrand_json = htmlentities(json_encode($dataBrand));
             $launch = ModelFunctionality::generateDateCode(25);
             $launchx = "#" . $launch; ?>
             <div id="<?= $launch ?>" class="brand_reference-grid-img-block" data-evtcd="evt_cd_89" data-evtj="<?= $dataBrand_json ?>" onclick="selectPopUp('<?= $launchx ?>')" data-flagx="<?= $launchx ?>" data-dadx="<?= $dadx ?>" data-brotherx="<?= $brotherx ?>" data-submitdata="<?= $dataBrand_json ?>">
                 <div class="first-img-div">
-                    <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][1] ?>">
+                    <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][$keys[0]] ?>">
                 </div>
                 <div class="second-img-div">
-                    <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][2] ?>">
+                    <img src="<?= self::$PATH_BRAND . $brandDatas["brandPictures"][$keys[1]] ?>">
                 </div>
             </div>
         <?php endforeach; ?>
