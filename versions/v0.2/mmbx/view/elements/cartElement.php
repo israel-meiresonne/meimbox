@@ -26,6 +26,7 @@
  * @param string|int|float $submitdata data to sumbit (used only if $dadx is set)
  * @param array $eventDatas
  * @param string $detailAttr  attribut to place on tag that contain element's properties
+ * @param string $picUrlPath  link placed on element's picture
  */
 $showArrow = (isset($showArrow)) ? $showArrow : true; // show alway except if false
 $TagdeleteFunc = (!empty($deleteFunc)) ? 'onclick="' . $deleteFunc . '"' : "";
@@ -69,12 +70,24 @@ if (!empty($dadx)) {
                     <span class="plus_symbol-vertical"></span>
                     <span class="plus_symbol-horizontal"></span>
                 </div>
+                <div class="btn-loading loading-img-wrap">
+                    <img src="content/brain/permanent/mini-loading.gif">
+                </div>
             </button>
         </div>
         <div <?= $Taglaunch ?> class="cart-element-detail-block" <?= $detailAttr ?> <?= $TaglaunchxFunc ?> <?= $Tagdadx ?> <?= $Tagflagx ?>>
-            <div class="cart-element-img-div">
-                <img src="<?= $pictureSrc ?>">
-            </div>
+            <?php
+            if (!empty($picUrlPath)) : ?>
+                <a class="remove-a-default-att" href="<?= $picUrlPath ?>">
+                    <div class="cart-element-img-div">
+                        <img src="<?= $pictureSrc ?>">
+                    </div>
+                </a>
+            <?php else : ?>
+                <div class="cart-element-img-div">
+                    <img src="<?= $pictureSrc ?>">
+                </div>
+            <?php endif; ?>
             <div class="cart-element-property-set box-property-set">
                 <?= $properties ?>
             </div>

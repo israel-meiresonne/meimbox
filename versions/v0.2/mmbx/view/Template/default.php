@@ -27,7 +27,7 @@ require_once 'model/special/Response.php';
  * @var Visitor|Client|Administrator
  */
 $person = $this->person;
-$title = $this->title;
+$title = ucfirst($this->title);
 $description = $this->description;
 $head = $this->head;
 $header = $this->header;
@@ -70,6 +70,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         var jxq = [];
         var jxzzz = true;
         const jx = function(ds) {
+            console.log("send: ", ds.d);
             $.ajax({
                 type: 'POST',
                 url: ds.a,

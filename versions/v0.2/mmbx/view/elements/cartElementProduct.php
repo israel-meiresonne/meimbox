@@ -156,7 +156,8 @@ $size = $product->getSelectedSize();
         "dadx" => $dadx,
         "brotherx" => $brotherx,
         "submitdata" => $submitdata,
-        "eventDatas" => $eventDatas
+        "eventDatas" => $eventDatas,
+        "picUrlPath" => $product->getUrlPath(Product::PAGE_ITEM)
     ];
     echo $this->generateFile('view/elements/cartElement.php', $datas);
     ?>

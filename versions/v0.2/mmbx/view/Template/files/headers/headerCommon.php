@@ -4,7 +4,9 @@
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param Visitor|User $person the current user
  */
-
+/**
+ * @var Translator */
+$translator = $translator;
 /**
  * @var Visitor|User */
 $person = $person;
@@ -16,7 +18,6 @@ $brandName = strtoupper($company->get(Map::brand));
 $homeLink = "";
 $gridLink = ControllerSecure::extractController(ControllerGrid::class);
 
-// $TagAddBoxFunc = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);\"";
 $TagAddBoxFunc_sideMenu = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);evt('evt_cd_3');\"";
 $TagAddBoxFunc_header = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);evt('evt_cd_5');\"";
 
@@ -38,6 +39,11 @@ $homeImgDatas = [
 ];
 $homeImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $homeImgDatas);
 $homeTouch = new Touch($homeImg, 0, $positionMap);
+
+/** Translation */
+$addBoxTxt = ucfirst($translator->translateStation("US119"));
+$newDropTxt = ucfirst($translator->translateStation("US120"));
+$signUpTxt = ucfirst($translator->translateStation("US121"));
 ?>
 <header>
     <nav class="navbar-computer">
@@ -58,7 +64,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                                     <div class="img-text-img">
                                         <img src="<?= self::$DIR_STATIC_FILES ?>icons8-pill-yellow-red.png" alt="">
                                     </div>
-                                    <span class="img-text-span">new drop</span>
+                                    <span class="img-text-span"><?= $newDropTxt ?></span>
                                 </div>
                             </div>
                         </a>
@@ -69,7 +75,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                                 <div class="img-text-img">
                                     <img src="<?= self::$DIR_STATIC_FILES ?>icons8-plus-math-96.png">
                                 </div>
-                                <span class="img-text-span">add box</span>
+                                <span class="img-text-span"><?= $addBoxTxt ?></span>
                             </div>
                         </div>
                     </li>
@@ -195,7 +201,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                             <?php
                             $addBoxDatas = [
                                 "src" => self::$DIR_STATIC_FILES . 'icons8-plus-math-96.png',
-                                "text" => "add box"
+                                "text" => $addBoxTxt
                             ];
                             $addBoxImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $addBoxDatas);
                             $addBoxTouch = new Touch($addBoxImg, 0, $positionMap);
@@ -208,7 +214,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                             <?php
                             $newDropDatas = [
                                 "src" => self::$DIR_STATIC_FILES . 'icons8-pill-yellow-red.png',
-                                "text" => "new drop"
+                                "text" => $newDropTxt
                             ];
                             $newDropImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $newDropDatas);
                             $newDropTouch = new Touch($newDropImg, 0, $positionMap);
@@ -226,7 +232,7 @@ $homeTouch = new Touch($homeImg, 0, $positionMap);
                                 <?php
                                 $signInDatas = [
                                     "src" => self::$DIR_STATIC_FILES . 'icons8-contacts-96.png',
-                                    "text" => "sign up"
+                                    "text" => $signUpTxt
                                 ];
                                 $signInImg = $this->generateFile('view/view/BasicFiles/ImageTexte.php', $signInDatas);
                                 $signInTouch = new Touch($signInImg, 0, $positionMap);

@@ -192,7 +192,7 @@
     }
     /*—————————————————— MINI_POPUP BEHAVIOR UP —————————————————————————————*/
     /*—————————————————— POPUP BEHAVIOR DOWN ————————————————————————————————*/
-    openPopUp = function (x, before = () => { }, after = () => { }) {
+    openPopUp = (x, before = () => { }, after = () => { }) => {
         before(x);
         var xbtn = $(x).find("." + closebtnCls);
         var idx = getX(x);
@@ -358,24 +358,24 @@
         var param = mapToParam(brandDatas);
         var vx = $($(sbtnx).attr(datavase));
         evt('evt_cd_102', j);
-        var datasSND = {
+        var ds = {
             "a": A_SELECT_MEASURE,
             "d": param,
             "r": selectMeasureRSP,
             "l": "#measurePopUp_loading",
             "x": vx,
             "sc": () => {
-                $("#measurePopUp_loading").css("display", "flex");
+                displayFlexOn(ds.l);
                 $("#mange_measure_window .customize_measure-content").css("opacity", 0);
                 disable(sbtnx);
             },
-            "rc": cbkRSP = () => {
-                $("#measurePopUp_loading").css("display", "flex");
+            "rc": () => {
+                displayFlexOff(ds.l);
                 $("#mange_measure_window .customize_measure-content").css("opacity", 1);
                 enable(sbtnx);
             }
         };
-        SND(datasSND);
+        SND(ds);
     }
     var selectMeasureRSP = function (r, vx) {
         if (r.isSuccess) {
@@ -391,10 +391,11 @@
             disable("#measure_select_button");
         }
     }
-    removeMsr = function (x) {
+    removeMsr = (x) => {
         var j = $(x).attr("data-measure");
         var o = json_decode(j);
         var p = mapToParam(o);
+        var l = $(x).find(".loading-img-wrap");
         removeMsrDatas = {
             "alert": DELETE_MEASURE_ALERT,
             "nbToWrapper": 4,
@@ -402,9 +403,9 @@
             "a": A_DELETE_MEASURE,
             "r": removeMsrRSP,
             "x": { "x": x },
-            "l": null,
-            "sc": function () { },
-            "rc": function () { }
+            "l": l,
+            "sc": function () { displayFlexOn(removeMsrDatas.l); },
+            "rc": function () { displayFlexOff(removeMsrDatas.l); }
         };
         removeCartElement(x, removeMsrDatas);
     }
@@ -454,7 +455,9 @@
         $(measureInput).val("");
         $(measureInput).attr("value", null);
         updateInputAnimation(measureInput);
-        $("#save_measure_button").attr("onclick", 'addMsr()');
+        var btnx = $("#save_measure_button")
+        $(btnx).attr("onclick", 'addMsr()');
+        disable(btnx);
         vaseTransfer();
     }
     setUpdateMsr = () => {
@@ -481,10 +484,11 @@
             "l": "#add_measurePopUp_loading",
             "x": succFunc,
             "sc": () => {
-                $(d.lds).css("display", "flex");
+                displayFlexOn(d.l);
                 disable($("#save_measure_button"));
             },
             "rc": () => {
+                displayFlexOff(d.l);
                 enable($("#save_measure_button"), DT);
             }
         };
@@ -525,7 +529,7 @@
                 displayFadeIn(ds.l);
                 disable($("#save_measure_button"));
             },
-            "rc": () => { 
+            "rc": () => {
                 displayFadeOut(ds.l);
                 enable($("#save_measure_button"), DT);
             }
@@ -548,10 +552,10 @@
             "l": "#measurePopUp_loading",
             "x": popFunc,
             "sc": () => {
-                displayFadeIn(ds.l);
+                displayFlexOn(ds.l);
             },
             "rc": () => {
-                displayFadeOut(ds.l);
+                displayFlexOff(ds.l);
             }
         };
         SND(ds);
@@ -789,7 +793,7 @@
             "a": A_GET_BSKT_POP,
             "d": null,
             "r": getBasketPopRSP,
-            "l": ".basket_pop_loading, .loading-img-wrap",
+            "l": ".basket_pop_loading, #basket_pop .loading-img-wrap",
             // "x": cbtnx,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOff(d.l) }

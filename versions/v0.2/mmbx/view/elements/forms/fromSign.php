@@ -4,6 +4,11 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  */
+/**
+ * @var  Translator
+ */
+$translator = $translator;
+
 $upHeadId = ModelFunctionality::generateDateCode(25);
 $upHeadx = "#" . $upHeadId;
 $upBodyId = ModelFunctionality::generateDateCode(25);
@@ -37,13 +42,34 @@ $upInputEvent = "onblur=\"evtInp(this, 'evt_cd_43')\"";
 $inCheckboxEvent = "onclick=\"evtCheck(this, 'evt_cd_44')\"";
 $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
 
+/** Translation */
+$brand = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY)))->get(Map::brand);
+$replacementsMap = (new Map([Map::brand => strtoupper($brand)]));
+$newLetterCondTxt = ucfirst($translator->translateStation("US122", $replacementsMap));
+
+$newMemberTxt = $translator->translateStation("US123");
+$signInTxt = $translator->translateStation("US124");
+$ladyTxt = $translator->translateStation("US125");
+$sirTxt = $translator->translateStation("US126");
+$otherTxt = $translator->translateStation("US127");
+$firstnameTxt = $translator->translateStation("US128");
+$lastnameTxt = $translator->translateStation("US129");
+$emailTxt = $translator->translateStation("US130");
+$passwordTxt = $translator->translateStation("US131");
+$pswConfirmTxt = $translator->translateStation("US132");
+$condTermTxt = ucfirst($translator->translateStation("US133", $replacementsMap));
+$newLetterTxt = ucfirst($translator->translateStation("US134"));
+$signUpTxt = $translator->translateStation("US121");
+$rememberTxt = ucfirst($translator->translateStation("US135"));
+$forgotTxt = ucfirst($translator->translateStation("US136"));
+
 ?>
 <div class="sign-head">
     <div id="<?= $upHeadId ?>" class="sign-head-button-div sign-head-button-selected <?= $headsCls ?>">
-        <button class="sign-up-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $upHeadx ?>' , '<?= $upBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>');evt('evt_cd_40')">new member</button>
+        <button class="sign-up-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $upHeadx ?>' , '<?= $upBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>');evt('evt_cd_40')"><?= $newMemberTxt ?></button>
     </div>
     <div id="<?= $inHeadId ?>" class="sign-head-button-div <?= $headsCls ?>">
-        <button class="sign-in-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $inHeadx ?>' , '<?= $inBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>');evt('evt_cd_41')">sign in</button>
+        <button class="sign-in-head-button sign-head-button remove-button-default-att" onclick="toggleSign('<?= $inHeadx ?>' , '<?= $inBodyx ?>', '<?= $headsx ?>', '<?= $bodiesx ?>');evt('evt_cd_41')"><?= $signInTxt ?></button>
     </div>
 </div>
 <div class="sign-bodies">
@@ -58,19 +84,19 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                         ?>
                         <div class="signup-sexe-inner">
                             <div class="connection-input-container signup-input-container">
-                                <label class="checkbox-label">lady
+                                <label class="checkbox-label"><?= $ladyTxt ?>
                                     <input type="radio" <?= $upCheckboxRadioEvent ?> name="<?= Visitor::INPUT_SEX ?>" value="lady" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                 </label>
                             </div>
                             <div class="connection-input-container signup-input-container">
-                                <label class="checkbox-label">sir
+                                <label class="checkbox-label"><?= $sirTxt ?>
                                     <input type="radio" <?= $upCheckboxRadioEvent ?> name="<?= Visitor::INPUT_SEX ?>" value="sir" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                 </label>
                             </div>
                             <div class="connection-input-container signup-input-container">
-                                <label class="checkbox-label">other
+                                <label class="checkbox-label"><?= $otherTxt ?>
                                     <input type="radio" <?= $upCheckboxRadioEvent ?> name="<?= Visitor::INPUT_SEX ?>" value="other" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                 </label>
@@ -87,7 +113,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::text,
                                 "inpName" => Visitor::INPUT_FIRSTNAME,
-                                "inpTxt" => "first name",
+                                "inpTxt" => $firstnameTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => $upInputEvent
                             ];
@@ -100,7 +126,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::text,
                                 "inpName" => Visitor::INPUT_LASTNAME,
-                                "inpTxt" => "last name",
+                                "inpTxt" => $lastnameTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => $upInputEvent
                             ];
@@ -115,7 +141,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::email,
                                 "inpName" => Visitor::INPUT_EMAIL,
-                                "inpTxt" => "email",
+                                "inpTxt" => $emailTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => $upInputEvent
                             ];
@@ -130,7 +156,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::password,
                                 "inpName" => Visitor::INPUT_PASSWORD,
-                                "inpTxt" => "password",
+                                "inpTxt" => $passwordTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => null
                             ];
@@ -143,7 +169,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::password,
                                 "inpName" => Visitor::INPUT_CONFIRM_PASSWORD,
-                                "inpTxt" => "password confirmation",
+                                "inpTxt" => $pswConfirmTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => null
                             ];
@@ -158,9 +184,8 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 $errorid = ModelFunctionality::generateDateCode(25);
                                 $errorx = "#$errorid";
                                 ?>
-                                <label class="checkbox-label">I confirm that I have read and I agree to
-                                    I&Meim's terms and conditions including
-                                    its privacy notice.
+                                <label class="checkbox-label">
+                                    <?= $condTermTxt ?>
                                     <input <?= $upCheckboxEvent ?> type="checkbox" name="<?= Visitor::INPUT_CONDITION ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <p id="<?= $errorid ?>" class="comment"></p>
@@ -173,14 +198,11 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 $errorid = ModelFunctionality::generateDateCode(25);
                                 $errorx = "#$errorid";
                                 ?>
-                                <label class="checkbox-label">Sign up for newsletter
+                                <label class="checkbox-label"><?= $newLetterTxt ?>
                                     <input class="newletter-input" <?= $upCheckboxEvent ?> type="checkbox" name="<?= Visitor::INPUT_NEWSLETTER ?>" data-errorx="<?= $errorx ?>" data-errortype="<?= self::ER_TYPE_COMMENT ?>">
                                     <span class="checkbox-checkmark"></span>
                                     <div class="connection-checkbox-text-div">
-                                        by subscribing to I&Meim’s newsletter, I understand
-                                        and accept to receive emails from I&Meim’s with the
-                                        latest deals, sales, and updates by multiple form of
-                                        communication like email, phone and/or post.
+                                        <?= $newLetterCondTxt ?>
                                     </div>
                                     <p id="<?= $errorid ?>" class="comment"></p>
                                 </label>
@@ -189,7 +211,9 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
 
                     </div>
                     <div class="form-submit-button-div">
-                        <button id="<?= $upSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signUp('<?= $upFormx ?>','<?= $upSbtnx ?>')">sign up</button>
+                        <button id="<?= $upSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signUp('<?= $upFormx ?>','<?= $upSbtnx ?>')">
+                            <?= $signUpTxt ?>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -207,7 +231,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::email,
                                 "inpName" => Visitor::INPUT_EMAIL,
-                                "inpTxt" => "email",
+                                "inpTxt" => $emailTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => $inInputEvent
                             ];
@@ -220,7 +244,7 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                                 "inpId" => ModelFunctionality::generateDateCode(25),
                                 "inpType" => Map::password,
                                 "inpName" => Visitor::INPUT_PASSWORD,
-                                "inpTxt" => "password",
+                                "inpTxt" => $passwordTxt,
                                 "errortype" => self::ER_TYPE_COMMENT,
                                 "inpAttr" => null
                             ];
@@ -231,19 +255,26 @@ $inInputEvent = "onblur=\"evtInp(this, 'evt_cd_45')\"";
                     <div class="login-remember-forgot-div login-input-block">
                         <div class="connection-input-container login-remember-block">
                             <div class="connection-chcekbox-div">
-                                <label for="login_remember" class="checkbox-label">remember me
+                                <label for="login_remember" class="checkbox-label" style="text-transform: none;">
+                                    <?= $rememberTxt ?>
                                     <input id="login_remember" <?= $inCheckboxEvent ?> type="checkbox" name="remember">
                                     <span class="checkbox-checkmark"></span>
                                     <p class="comment"></p>
                                 </label>
                             </div>
                         </div>
-                        <div class="connection-input-container login-forgot-block">
-                            <a href="" target="_blank">forgot password</a>
+                        <div class="connection-input-container login-forgot-block" style="text-transform: none;">
+                        <?php
+                        /*
+                            <a href="" target="_blank"><?= $forgotTxt ?></a>
+                            */
+                            ?>
                         </div>
                     </div>
                     <div class="form-submit-button-div">
-                        <button id="<?= $inSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signIn('<?= $inFormx ?>','<?= $inSbtnx ?>')">sign in</button>
+                        <button id="<?= $inSbtnid ?>" class="blue-button standard-button remove-button-default-att" onclick="signIn('<?= $inFormx ?>','<?= $inSbtnx ?>')">
+                        <?= $signInTxt ?>
+                    </button>
                     </div>
                 </div>
             </div>
