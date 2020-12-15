@@ -25,6 +25,7 @@ class Language extends ModelFunctionality
      * @var string
      */
     public const ISO_EN = "en";
+    // public const ISO_FR = "fr";
 
     /**
      * Holds key to get lang in $_GET

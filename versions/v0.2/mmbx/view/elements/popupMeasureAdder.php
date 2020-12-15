@@ -2,8 +2,9 @@
     /**
      * ——————————————————————————————— NEED —————————————————————————————————————
      * To build measure adder
-     * @param Measure|null $measure Visitor's Measure
-     * @param string[] $measureUnits db's MeasureUnits table in map format
+     * @param Measure|null  $measure        Visitor's Measure
+     * @param string[]      $measureUnits   db's MeasureUnits table in map format
+     * @param Language      $language       Visitor's Language
      */
     $popUpDatas["windowId"] = "add_measure_window";
     $popUpDatas["title"] = $translator->translateStation("US36");
@@ -53,6 +54,12 @@
     $clickRadioEvent = "onclick=\"evtInp(this,'evt_cd_105')\"";
     $blurInputEvent = "onblur=\"evtInp(this,'evt_cd_106')\"";
 
+    /* Body measure image */
+    /**
+     * @var Language */
+    $language = $language;
+    $isoLang = strtolower($language->getIsoLang());
+    $bodyImgPath = self::$DIR_STATIC_FILES."body-measure-women-$isoLang.png";
     ob_start();
     ?>
     <div class="customize_measure-content">
@@ -62,7 +69,7 @@
             </div>
             <div class="customize_measure-input-block">
                 <div class="measure_body-img-container">
-                    <img src="<?= self::$DIR_STATIC_FILES ?>body-measure-women.png">
+                    <img src="<?= $bodyImgPath ?>">
                 </div>
                 <div class="measure_input-container">
                     <div class="measure_input-container-inner">

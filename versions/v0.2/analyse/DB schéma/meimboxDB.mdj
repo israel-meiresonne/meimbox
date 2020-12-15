@@ -3007,13 +3007,28 @@
 													"top": 1973,
 													"width": 717.2392578125,
 													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF2ZADr2sUT+j8=",
+													"_parent": {
+														"$ref": "AAAAAAFwSQPiWZ+ERhM="
+													},
+													"model": {
+														"$ref": "AAAAAAF2ZADrrcUQ7/E="
+													},
+													"font": "Arial;13;0",
+													"left": 4157,
+													"top": 1988,
+													"width": 717.2392578125,
+													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 4152,
 											"top": 1863,
 											"width": 727.2392578125,
-											"height": 128
+											"height": 143
 										}
 									],
 									"font": "Arial;13;0",
@@ -22174,6 +22189,16 @@
 									"name": "weight",
 									"documentation": "# Définition\n\nPoids du produit en kg",
 									"type": "DOUBLE"
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF2ZADrrcUQ7/E=",
+									"_parent": {
+										"$ref": "AAAAAAFwSQPiWJ+AyGk="
+									},
+									"name": "prodRate",
+									"documentation": "# Definition\n\nInterest Rate of the product",
+									"type": "FLOAT"
 								}
 							]
 						},

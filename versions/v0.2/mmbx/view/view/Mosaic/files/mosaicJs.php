@@ -7,17 +7,16 @@
  * @param string $sizerClass        class Mosaic's sizer tag
  */
 
+$var = "id".ModelFunctionality::generateDateCode(25);
 ?>
 
 <script>
-    // $('.grid').masonry({
-    $('.<?= $containerClass ?>').masonry({
-        // set itemSelector so.grid - sizer is not used in layout
-        // itemSelector: '.grid-item',
-        itemSelector: '.<?= $stoneClass ?>',
-        // use element for option
-        // columnWidth: '.grid-sizer',
-        columnWidth: '.<?= $sizerClass ?>',
-        percentPosition: true
-    })
+    var <?= $var ?> = $('.<?= $containerClass ?>').imagesLoaded(function() {
+        // init Masonry after all images have loaded
+        <?= $var ?>.masonry({
+            itemSelector: '.<?= $stoneClass ?>',
+            columnWidth: '.<?= $sizerClass ?>',
+            percentPosition: true
+        });
+    });
 </script>

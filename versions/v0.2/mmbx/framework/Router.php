@@ -241,6 +241,7 @@ class Router
         // $env = "prod.ini";
         $view = new View('Template/files/message');
         $translator = $view->getTranslator();
+        $btnLink = ControllerSecure::extractController(ControllerGrid::class);
         switch ($env) {
             case Configuration::ENV_DEV:
                 // throw $exception;
@@ -249,7 +250,7 @@ class Router
                     "content" => $exception->getMessage() . "<span style=\"display:none;\">" . $exception->__toString() . "</span>",
                     // "content" => $exception->__toString(),
                     "btnText" => "reload",
-                    "btnLink" => ".",
+                    "btnLink" => $btnLink,
                 ];
                 $view->generate($datas, View::TEMPLATE_ERROR);
                 break;
@@ -257,7 +258,7 @@ class Router
             case Configuration::ENV_PROD:
             default:
                 $brand = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY)))->get(Map::brand);
-                $btnLink = ControllerSecure::extractController(ControllerGrid::class) . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . time();
+                $btnLink = $btnLink . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . time();
                 $datas = [
                     "title" => $translator->translateStation("US106"),
                     "content" => $translator->translateStation("US107", new Map([Map::brand => strtoupper($brand)])),
