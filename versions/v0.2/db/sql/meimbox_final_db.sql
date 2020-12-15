@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le :  Dim 13 déc. 2020 à 01:35
+-- Généré le :  mar. 15 déc. 2020 à 21:17
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -60,7 +60,8 @@ CREATE TABLE `Basket-DiscountCodes` (
 
 INSERT INTO `Basket-DiscountCodes` (`userId`, `discount_code`, `setDate`) VALUES
 ('3330090', 'free_shipping_au', '2020-12-10 22:40:01'),
-('3330090', 'free_shipping_be', '2020-12-11 22:19:42');
+('3330090', 'free_shipping_be', '2020-12-11 22:19:42'),
+('usr_27k316g6032yd20ab1m103100', 'free_shipping_au', '2020-12-13 01:42:52');
 
 -- --------------------------------------------------------
 
@@ -72,6 +73,13 @@ CREATE TABLE `Baskets-Box` (
   `boxId` varchar(100) NOT NULL,
   `userId` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Baskets-Box`
+--
+
+INSERT INTO `Baskets-Box` (`boxId`, `userId`) VALUES
+('box_2d61t12g49w30l53019922g04', 'usr_27k316g6032yd20ab1m103100');
 
 -- --------------------------------------------------------
 
@@ -404,6 +412,7 @@ INSERT INTO `Boxes` (`boxID`, `box_color`, `setDate`) VALUES
 ('8z441320demj9320011641962', 'silver', '2020-09-14 12:46:18'),
 ('9283q00b42f10224e1e14520o', 'regular', '2020-09-21 20:24:34'),
 ('95p22611ccupsa0207511022n', 'regular', '2020-11-20 17:25:25'),
+('box_2d61t12g49w30l53019922g04', 'regular', '2020-12-13 01:43:59'),
 ('by2a810211482640i45010234', 'gold', '2020-10-13 14:40:42'),
 ('cq71515me0250v621210920qg', 'regular', '2020-10-21 09:56:25'),
 ('di9220591ht9210ji3s1805s0', 'silver', '2020-09-30 12:55:19'),
@@ -1804,6 +1813,89 @@ CREATE TABLE `EventsDatas` (
   `dataValue` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `EventsDatas`
+--
+
+INSERT INTO `EventsDatas` (`eventId`, `dataKey`, `dataValue`) VALUES
+('evt_id_03f102pw130xu34402c5n41a2', 'size_type', 'alphanum_size'),
+('evt_id_100op041s64zvc3232y8q5421', 'scroll_rate', '49.35'),
+('evt_id_110405h49olp4ll30y1282062', 'alphanum_size', 's'),
+('evt_id_110405h49olp4ll30y1282062', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_110405h49olp4ll30y1282062', 'brand_name', 'tommy hilfiger'),
+('evt_id_110405h49olp4ll30y1282062', 'cut_conf_size_add_prod', 'fit'),
+('evt_id_110405h49olp4ll30y1282062', 'measureID', NULL),
+('evt_id_110405h49olp4ll30y1282062', 'prodID', 'a1'),
+('evt_id_110405h49olp4ll30y1282062', 'size_type', 'alphanum_size'),
+('evt_id_1130t41343ltn0c20z021218u', 'scroll_rate', '58.93'),
+('evt_id_131n2120244mv120z4h0y43vc', 'scroll_rate', '41.63'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'alphanum_size', 'm'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'brand_name', 'tommy hilfiger'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'cut_conf_size_editor', 'fit'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'input_quantity', '1'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'prodID', 'a1'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'sequence', 's-tommy hilfiger-null-null'),
+('evt_id_1g1w44410m000yf642a2w2d31', 'size_type', 'alphanum_size'),
+('evt_id_21484br0302124b10srttgt50', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_21j406626024g410u326i1kaf', 'ask', 'voulez-vous vraiment supprimer cet article?'),
+('evt_id_21j406626024g410u326i1kaf', 'response', 'true'),
+('evt_id_244py010r4193ng2201200mm7', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_244py010r4193ng2201200mm7', 'prodid', 'a1'),
+('evt_id_244py010r4193ng2201200mm7', 'sequence', 's-tommy hilfiger-null-null'),
+('evt_id_24ob0i1433z117e21mk120jv0', 'scroll_rate', '99.81'),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'alphanum_size', 'm'),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'brand_name', 'tommy hilfiger'),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'measureID', NULL),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'prodID', 'a1'),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'sequence', 's-tommy hilfiger-null-null'),
+('evt_id_41fz0e10720zo4zz1v1y34r22', 'size_type', 'alphanum_size'),
+('evt_id_4205m630u01172ylp4p312n90', 'scroll_rate', '55.42'),
+('evt_id_421q00li43i021o11l112a411', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_421q00li43i021o11l112a411', 'prodid', 'a1'),
+('evt_id_421q00li43i021o11l112a411', 'sequence', 's-tommy hilfiger-null-null'),
+('evt_id_423w1035ci1h2a41ob1620094', 'scroll_rate', '45.09'),
+('evt_id_4d343144t2ew0280i11z20mc0', 'brand_name', 'tommy hilfiger'),
+('evt_id_51325p1hp04q3e0212412004g', 'alphanum_size', 's'),
+('evt_id_51325p1hp04q3e0212412004g', 'brand_name', 'tommy hilfiger'),
+('evt_id_51325p1hp04q3e0212412004g', 'cut_conf_size_add_prod', 'fit'),
+('evt_id_51325p1hp04q3e0212412004g', 'prodID', 'a1'),
+('evt_id_51325p1hp04q3e0212412004g', 'size_type', 'alphanum_size'),
+('evt_id_60hy1327144t420108f2u40y2', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_60hy1327144t420108f2u40y2', 'prodid', 'a1'),
+('evt_id_60hy1327144t420108f2u40y2', 'sequence', 'm-tommy hilfiger-null-null'),
+('evt_id_71ttp0d0242dg0434lf722311', 'brand_name', 'tommy hilfiger'),
+('evt_id_8d1u0463y031424q1223o30i2', 'alphanum_size', 's'),
+('evt_id_d082b1ez1a3242xtm41040403', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_f210402xl10jd31d25143d95r', 'boxcolor', 'regular'),
+('evt_id_f210402xl10jd31d25143d95r', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_h21h3o310m3k420l80425jxo1', 'scroll_rate', '57.80'),
+('evt_id_n14273g2084q21ke10x2l4e0w', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_n14273g2084q21ke10x2l4e0w', 'prodid', 'a1'),
+('evt_id_n14273g2084q21ke10x2l4e0w', 'sequence', 'm-tommy hilfiger-null-null'),
+('evt_id_n1in6w6x2043t0024217is134', 'brand_name', 'tommy hilfiger'),
+('evt_id_o141l20py3642i737042s04g1', 'scroll_rate', '51.39'),
+('evt_id_sg40coc1s423j5c122100yr44', 'scroll_rate', '0.00'),
+('evt_id_u1m020b4n3q40q6d5132882o1', 'boxcolor', 'regular'),
+('evt_id_u43111d1232070422q0gujk5p', 'alphanum_size', 's'),
+('evt_id_u43111d1232070422q0gujk5p', 'brand_name', 'tommy hilfiger'),
+('evt_id_u43111d1232070422q0gujk5p', 'cut_conf_size_add_prod', 'fit'),
+('evt_id_u43111d1232070422q0gujk5p', 'measureID', NULL),
+('evt_id_u43111d1232070422q0gujk5p', 'prodID', 'a1'),
+('evt_id_u43111d1232070422q0gujk5p', 'size_type', 'alphanum_size'),
+('evt_id_v25144h2q140qqb00131123h2', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_v25144h2q140qqb00131123h2', 'prodid', 'a1'),
+('evt_id_v25144h2q140qqb00131123h2', 'sequence', 's-tommy hilfiger-null-null'),
+('evt_id_vl44410u10l88r10421423j22', 'alphanum_size', 'm'),
+('evt_id_w42l40s1c3v2e41037104w2a0', 'alphanum_size', 's'),
+('evt_id_w42l40s1c3v2e41037104w2a0', 'boxid', 'box_2d61t12g49w30l53019922g04'),
+('evt_id_w42l40s1c3v2e41037104w2a0', 'brand_name', 'tommy hilfiger'),
+('evt_id_w42l40s1c3v2e41037104w2a0', 'cut_conf_size_add_prod', 'fit'),
+('evt_id_w42l40s1c3v2e41037104w2a0', 'prodID', 'a1'),
+('evt_id_w42l40s1c3v2e41037104w2a0', 'size_type', 'alphanum_size'),
+('evt_id_x044244020e1221h1ln0nu3fu', 'boxid', 'box_2d61t12g49w30l53019922g04');
+
 -- --------------------------------------------------------
 
 --
@@ -1950,7 +2042,61 @@ CREATE TABLE `Navigations` (
 --
 
 INSERT INTO `Navigations` (`navID`, `userId`, `xhrFrom`, `navDate`, `url`, `webroot`, `path`, `timeOn`) VALUES
-('nav_528262cp02r8010er31g31903', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:30:36', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', NULL);
+('nav_0022a3y0us015l1s9vxb3j112', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:39:50', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 111),
+('nav_003014122v1j1hj1y2b240sn1', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:41:41', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 71),
+('nav_00d1q482u3e223112uj12070y', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:02', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/grid', '/versions/v0.2/mmbx/', 'grid', 15),
+('nav_0c1120b352b551350kkm1k276', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:35:55', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 235),
+('nav_0d4102q11lb5l522357q30117', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:17', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 4),
+('nav_13rhl3k02p01o174c20223816', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:37', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 68),
+('nav_3ts091d224nc3021ve21106m0', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:26', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/10/basketproduct-red-autumn-women-accessories-clothes-jackets-scarfs-vests', '/versions/v0.2/mmbx/', 'item/10/basketproduct-red-autumn-women-accessories-clothes-jackets-scarfs-vests', 4),
+('nav_528262cp02r8010er31g31903', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:30:36', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 319),
+('nav_5322w1z27310m1x2030z04110', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:30', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/grid', '/versions/v0.2/mmbx/', 'grid', 2),
+('nav_b120222mguz256gu1003b41t1', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:42:52', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', '/versions/v0.2/mmbx/', 'item/a1/boxproduct-green-autumn-women-accessories-clothes-jackets-trousers-vests', 10),
+('nav_j319372rcw31043104w2nn120', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:34', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/grid', '/versions/v0.2/mmbx/', 'grid', 3),
+('nav_r022141p0j12z02s11310d73d', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:21', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/grid', '/versions/v0.2/mmbx/', 'grid', 5),
+('nav_t4032y0521a1u371201492038', 'usr_27k316g6032yd20ab1m103100', NULL, '2020-12-13 01:43:32', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/2/boxproduct-blue-autumn-women-accessories-clothes-jackets-scarfs-vests', '/versions/v0.2/mmbx/', 'item/2/boxproduct-blue-autumn-women-accessories-clothes-jackets-scarfs-vests', 2),
+('xhr_00182120k130s3204op488es2', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:08', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820248408', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_0092n5bw1x802513s2427n310', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:59', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/addBox?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820238046', '/versions/v0.2/mmbx/', 'item/qr/addBox', NULL),
+('xhr_01v122h0224hdey03b1t40406', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:06', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/getBasketPop?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820245802', '/versions/v0.2/mmbx/', 'item/qr/getBasketPop', NULL),
+('xhr_021a34711ci222uqgf4027620', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:26', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820266147', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_02o01402ttz32y73214140g9t', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:04', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820244479', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_041t8j12446172zy07302273o', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:47', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820226227', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_082y4bw3024k11b32w0l24c1l', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:48', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/selectBrand?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820226227', '/versions/v0.2/mmbx/', 'item/qr/selectBrand', NULL),
+('xhr_0n310htp21m302201l44qru2d', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:03', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820243418', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_0x10uyc253t1e1x2212s0944r', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:19', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820257233', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_0y1424233020kj1kptwnx421t', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:44', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820223113', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_0z21w1v0b24142y3701312td2', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:17', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/updateBoxProduct?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820255989', '/versions/v0.2/mmbx/', 'item/qr/updateBoxProduct', NULL),
+('xhr_1124ze312i00d2i2s42fd0or3', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:42', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820221517', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_1302s323x9081w245d642x013', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:53', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820231046', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_174s020102po0l0243e523l41', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:40', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820220656', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_1a0ngh141x210228t90c4v632', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:18', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/getBasketPop?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820257230', '/versions/v0.2/mmbx/', 'item/qr/getBasketPop', NULL),
+('xhr_1n204414z402351223r7xjg80', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:38', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820278261', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_20112d4l122gey00200132371', 'usr_27k316g6032yd20ab1m103100', 'nav_00d1q482u3e223112uj12070y', '2020-12-13 01:43:17', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_00d1q482u3e223112uj12070y&k_xhr_sdt=1607820196942', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_2012210nl2bkbr100404z232c', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:20', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820260649', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_212s472213vt11042k60xdhb0', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:16', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820255988', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_21v2210c2002419434301340e', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:09', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820249659', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_21wb3t05312yvg024n31h20w4', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:45', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820224085', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_2233e0f047vs10124e6f22b41', 'usr_27k316g6032yd20ab1m103100', 'nav_r022141p0j12z02s11310d73d', '2020-12-13 01:43:24', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_r022141p0j12z02s11310d73d&k_xhr_sdt=1607820204577', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_2na01e70yd224r4213x1l20zh', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:27', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820266148', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_2s1i2ej24v010iie0rr134121', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:11', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820251497', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_30747412xs00123kjg222p5f1', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:52', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/submitBoxProduct?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820230629', '/versions/v0.2/mmbx/', 'item/qr/submitBoxProduct', NULL),
+('xhr_32603wkd0231021t510233462', 'usr_27k316g6032yd20ab1m103100', 'nav_00d1q482u3e223112uj12070y', '2020-12-13 01:43:06', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_00d1q482u3e223112uj12070y&k_xhr_sdt=1607820186528', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_3i3k09i01014ls4j42120g22d', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:34', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820274104', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_3q24100z2m90m141qu2025ul3', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:54', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/getBoxManager?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820232071', '/versions/v0.2/mmbx/', 'item/qr/getBoxManager', NULL),
+('xhr_400f110l3222ggdg621244l01', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:14', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820254748', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_4181152p0300pdaq42224qt81', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:45', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820285161', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_5404a121a20p04h21339w6121', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:41', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820220993', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_81h0x4t421310e2221k6930w4', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:49', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820228663', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_84214203j18t0rac2s1hl02c2', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:28', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/deleteBoxProduct?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820266148', '/versions/v0.2/mmbx/', 'item/qr/deleteBoxProduct', NULL),
+('xhr_8yn1013t2604rw44ne21b0232', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:46', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820225241', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_e05e4yx11yj80b32123a02ra2', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:58', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820238045', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_e0y149202001421t3q2m0hq9k', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:00', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/getBoxManager?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820239333', '/versions/v0.2/mmbx/', 'item/qr/getBoxManager', NULL),
+('xhr_i50f80x83142te2e3121002j2', 'usr_27k316g6032yd20ab1m103100', 'nav_00d1q482u3e223112uj12070y', '2020-12-13 01:43:08', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_00d1q482u3e223112uj12070y&k_xhr_sdt=1607820188628', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_l2s1d20520a103b22g3592401', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:50', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820230628', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_p2j14001305u22py4a1p10x2u', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:05', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/addBoxProduct?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820244480', '/versions/v0.2/mmbx/', 'item/qr/addBoxProduct', NULL),
+('xhr_q02p40001o3hv2d23116r52i0', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:43:56', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820235914', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_r10c1m02d0a4tf131al42b202', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:01', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/home/qr/event?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820239335', '/versions/v0.2/mmbx/', 'home/qr/event', NULL),
+('xhr_t42u42fy7001016h12c210203', 'usr_27k316g6032yd20ab1m103100', 'nav_13rhl3k02p01o174c20223816', '2020-12-13 01:44:12', 'https://c99ae2db6bf6.eu.ngrok.io/versions/v0.2/mmbx/item/qr/getSizeEditor?xhr=nav_13rhl3k02p01o174c20223816&k_xhr_sdt=1607820251498', '/versions/v0.2/mmbx/', 'item/qr/getSizeEditor', NULL);
 
 -- --------------------------------------------------------
 
@@ -1965,6 +2111,54 @@ CREATE TABLE `Navigations-Events` (
   `eventDate` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `Navigations-Events`
+--
+
+INSERT INTO `Navigations-Events` (`xhrId`, `eventID`, `event_code`, `eventDate`) VALUES
+('xhr_00182120k130s3204op488es2', 'evt_id_21484br0302124b10srttgt50', 'evt_cd_59', 1607820248408),
+('xhr_0092n5bw1x802513s2427n310', 'evt_id_f210402xl10jd31d25143d95r', 'evt_cd_52', 1607820238046),
+('xhr_01v122h0224hdey03b1t40406', 'evt_id_1106y4f204y129340i40032zr', 'evt_cd_56', 1607820245802),
+('xhr_021a34711ci222uqgf4027620', 'evt_id_21j406626024g410u326i1kaf', 'evt_cd_9', 1607820266147),
+('xhr_02o01402ttz32y73214140g9t', 'evt_id_w42l40s1c3v2e41037104w2a0', 'evt_cd_84', 1607820244479),
+('xhr_041t8j12446172zy07302273o', 'evt_id_71ttp0d0242dg0434lf722311', 'evt_cd_90', 1607820226227),
+('xhr_082y4bw3024k11b32w0l24c1l', 'evt_id_4d343144t2ew0280i11z20mc0', 'evt_cd_91', 1607820226227),
+('xhr_0n310htp21m302201l44qru2d', 'evt_id_d082b1ez1a3242xtm41040403', 'evt_cd_71', 1607820243418),
+('xhr_0x10uyc253t1e1x2212s0944r', 'evt_id_2huh3044921z0s1089sc41241', 'evt_cd_112', 1607820257233),
+('xhr_0y1424233020kj1kptwnx421t', 'evt_id_o141l20py3642i737042s04g1', 'evt_cd_0', 1607820223113),
+('xhr_0z21w1v0b24142y3701312td2', 'evt_id_41fz0e10720zo4zz1v1y34r22', 'evt_cd_81', 1607820255989),
+('xhr_1124ze312i00d2i2s42fd0or3', 'evt_id_8d1u0463y031424q1223o30i2', 'evt_cd_75', 1607820221517),
+('xhr_1302s323x9081w245d642x013', 'evt_id_h21h3o310m3k420l80425jxo1', 'evt_cd_0', 1607820231046),
+('xhr_174s020102po0l0243e523l41', 'evt_id_03f102pw130xu34402c5n41a2', 'evt_cd_75', 1607820220656),
+('xhr_1a0ngh141x210228t90c4v632', 'evt_id_d4i112804q8g271d40123k04p', 'evt_cd_56', 1607820257230),
+('xhr_1n204414z402351223r7xjg80', 'evt_id_100op041s64zvc3232y8q5421', 'evt_cd_0', 1607820278261),
+('xhr_20112d4l122gey00200132371', 'evt_id_24ob0i1433z117e21mk120jv0', 'evt_cd_0', 1607820196942),
+('xhr_2012210nl2bkbr100404z232c', 'evt_id_x044244020e1221h1ln0nu3fu', 'evt_cd_59', 1607820260649),
+('xhr_212s472213vt11042k60xdhb0', 'evt_id_1g1w44410m000yf642a2w2d31', 'evt_cd_80', 1607820255988),
+('xhr_21v2210c2002419434301340e', 'evt_id_244py010r4193ng2201200mm7', 'evt_cd_63', 1607820249659),
+('xhr_21wb3t05312yvg024n31h20w4', 'evt_id_w342o11s050d2z4s2d2531404', 'evt_cd_87', 1607820224085),
+('xhr_2233e0f047vs10124e6f22b41', 'evt_id_131n2120244mv120z4h0y43vc', 'evt_cd_0', 1607820204577),
+('xhr_2na01e70yd224r4213x1l20zh', 'evt_id_n14273g2084q21ke10x2l4e0w', 'evt_cd_61', 1607820266148),
+('xhr_2s1i2ej24v010iie0rr134121', 'evt_id_421q00li43i021o11l112a411', 'evt_cd_68', 1607820251497),
+('xhr_30747412xs00123kjg222p5f1', 'evt_id_u43111d1232070422q0gujk5p', 'evt_cd_83', 1607820230629),
+('xhr_32603wkd0231021t510233462', 'evt_id_4205m630u01172ylp4p312n90', 'evt_cd_0', 1607820186528),
+('xhr_3i3k09i01014ls4j42120g22d', 'evt_id_td0230134t22ih14jl610445y', 'evt_cd_70', 1607820274104),
+('xhr_3q24100z2m90m141qu2025ul3', 'evt_id_31954znl11031441224y200n0', 'evt_cd_65', 1607820232071),
+('xhr_400f110l3222ggdg621244l01', 'evt_id_vl44410u10l88r10421423j22', 'evt_cd_73', 1607820254748),
+('xhr_4181152p0300pdaq42224qt81', 'evt_id_sg40coc1s423j5c122100yr44', 'evt_cd_0', 1607820285161),
+('xhr_5404a121a20p04h21339w6121', 'evt_id_423w1035ci1h2a41ob1620094', 'evt_cd_0', 1607820220993),
+('xhr_81h0x4t421310e2221k6930w4', 'evt_id_z1410wh02490za2802245i313', 'evt_cd_88', 1607820228663),
+('xhr_84214203j18t0rac2s1hl02c2', 'evt_id_60hy1327144t420108f2u40y2', 'evt_cd_62', 1607820266148),
+('xhr_8yn1013t2604rw44ne21b0232', 'evt_id_n1in6w6x2043t0024217is134', 'evt_cd_89', 1607820225241),
+('xhr_e05e4yx11yj80b32123a02ra2', 'evt_id_u1m020b4n3q40q6d5132882o1', 'evt_cd_51', 1607820238045),
+('xhr_e0y149202001421t3q2m0hq9k', 'evt_id_50101gz00wi2pmz2024434120', 'evt_cd_65', 1607820239333),
+('xhr_i50f80x83142te2e3121002j2', 'evt_id_1130t41343ltn0c20z021218u', 'evt_cd_0', 1607820188628),
+('xhr_l2s1d20520a103b22g3592401', 'evt_id_51325p1hp04q3e0212412004g', 'evt_cd_82', 1607820230628),
+('xhr_p2j14001305u22py4a1p10x2u', 'evt_id_110405h49olp4ll30y1282062', 'evt_cd_85', 1607820244480),
+('xhr_q02p40001o3hv2d23116r52i0', 'evt_id_209116804621025453x3lmr02', 'evt_cd_6', 1607820235914),
+('xhr_r10c1m02d0a4tf131al42b202', 'evt_id_202p32c03441yk2112104o100', 'evt_cd_53', 1607820239335),
+('xhr_t42u42fy7001016h12c210203', 'evt_id_v25144h2q140qqb00131123h2', 'evt_cd_69', 1607820251498);
+
 -- --------------------------------------------------------
 
 --
@@ -1976,6 +2170,96 @@ CREATE TABLE `NavigationsParameters` (
   `paramKey` varchar(100) NOT NULL,
   `paramValue` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `NavigationsParameters`
+--
+
+INSERT INTO `NavigationsParameters` (`navId`, `paramKey`, `paramValue`) VALUES
+('xhr_00182120k130s3204op488es2', 'k_xhr_sdt', '1607820248408'),
+('xhr_00182120k130s3204op488es2', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_0092n5bw1x802513s2427n310', 'k_xhr_sdt', '1607820238046'),
+('xhr_0092n5bw1x802513s2427n310', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_01v122h0224hdey03b1t40406', 'k_xhr_sdt', '1607820245802'),
+('xhr_01v122h0224hdey03b1t40406', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_021a34711ci222uqgf4027620', 'k_xhr_sdt', '1607820266147'),
+('xhr_021a34711ci222uqgf4027620', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_02o01402ttz32y73214140g9t', 'k_xhr_sdt', '1607820244479'),
+('xhr_02o01402ttz32y73214140g9t', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_041t8j12446172zy07302273o', 'k_xhr_sdt', '1607820226227'),
+('xhr_041t8j12446172zy07302273o', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_082y4bw3024k11b32w0l24c1l', 'k_xhr_sdt', '1607820226227'),
+('xhr_082y4bw3024k11b32w0l24c1l', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_0n310htp21m302201l44qru2d', 'k_xhr_sdt', '1607820243418'),
+('xhr_0n310htp21m302201l44qru2d', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_0x10uyc253t1e1x2212s0944r', 'k_xhr_sdt', '1607820257233'),
+('xhr_0x10uyc253t1e1x2212s0944r', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_0y1424233020kj1kptwnx421t', 'k_xhr_sdt', '1607820223113'),
+('xhr_0y1424233020kj1kptwnx421t', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_0z21w1v0b24142y3701312td2', 'k_xhr_sdt', '1607820255989'),
+('xhr_0z21w1v0b24142y3701312td2', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_1124ze312i00d2i2s42fd0or3', 'k_xhr_sdt', '1607820221517'),
+('xhr_1124ze312i00d2i2s42fd0or3', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_1302s323x9081w245d642x013', 'k_xhr_sdt', '1607820231046'),
+('xhr_1302s323x9081w245d642x013', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_174s020102po0l0243e523l41', 'k_xhr_sdt', '1607820220656'),
+('xhr_174s020102po0l0243e523l41', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_1a0ngh141x210228t90c4v632', 'k_xhr_sdt', '1607820257230'),
+('xhr_1a0ngh141x210228t90c4v632', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_1n204414z402351223r7xjg80', 'k_xhr_sdt', '1607820278261'),
+('xhr_1n204414z402351223r7xjg80', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_20112d4l122gey00200132371', 'k_xhr_sdt', '1607820196942'),
+('xhr_20112d4l122gey00200132371', 'xhr', 'nav_00d1q482u3e223112uj12070y'),
+('xhr_2012210nl2bkbr100404z232c', 'k_xhr_sdt', '1607820260649'),
+('xhr_2012210nl2bkbr100404z232c', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_212s472213vt11042k60xdhb0', 'k_xhr_sdt', '1607820255988'),
+('xhr_212s472213vt11042k60xdhb0', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_21v2210c2002419434301340e', 'k_xhr_sdt', '1607820249659'),
+('xhr_21v2210c2002419434301340e', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_21wb3t05312yvg024n31h20w4', 'k_xhr_sdt', '1607820224085'),
+('xhr_21wb3t05312yvg024n31h20w4', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_2233e0f047vs10124e6f22b41', 'k_xhr_sdt', '1607820204577'),
+('xhr_2233e0f047vs10124e6f22b41', 'xhr', 'nav_r022141p0j12z02s11310d73d'),
+('xhr_2na01e70yd224r4213x1l20zh', 'k_xhr_sdt', '1607820266148'),
+('xhr_2na01e70yd224r4213x1l20zh', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_2s1i2ej24v010iie0rr134121', 'k_xhr_sdt', '1607820251497'),
+('xhr_2s1i2ej24v010iie0rr134121', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_30747412xs00123kjg222p5f1', 'k_xhr_sdt', '1607820230629'),
+('xhr_30747412xs00123kjg222p5f1', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_32603wkd0231021t510233462', 'k_xhr_sdt', '1607820186528'),
+('xhr_32603wkd0231021t510233462', 'xhr', 'nav_00d1q482u3e223112uj12070y'),
+('xhr_3i3k09i01014ls4j42120g22d', 'k_xhr_sdt', '1607820274104'),
+('xhr_3i3k09i01014ls4j42120g22d', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_3q24100z2m90m141qu2025ul3', 'k_xhr_sdt', '1607820232071'),
+('xhr_3q24100z2m90m141qu2025ul3', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_400f110l3222ggdg621244l01', 'k_xhr_sdt', '1607820254748'),
+('xhr_400f110l3222ggdg621244l01', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_4181152p0300pdaq42224qt81', 'k_xhr_sdt', '1607820285161'),
+('xhr_4181152p0300pdaq42224qt81', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_5404a121a20p04h21339w6121', 'k_xhr_sdt', '1607820220993'),
+('xhr_5404a121a20p04h21339w6121', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_81h0x4t421310e2221k6930w4', 'k_xhr_sdt', '1607820228663'),
+('xhr_81h0x4t421310e2221k6930w4', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_84214203j18t0rac2s1hl02c2', 'k_xhr_sdt', '1607820266148'),
+('xhr_84214203j18t0rac2s1hl02c2', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_8yn1013t2604rw44ne21b0232', 'k_xhr_sdt', '1607820225241'),
+('xhr_8yn1013t2604rw44ne21b0232', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_e05e4yx11yj80b32123a02ra2', 'k_xhr_sdt', '1607820238045'),
+('xhr_e05e4yx11yj80b32123a02ra2', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_e0y149202001421t3q2m0hq9k', 'k_xhr_sdt', '1607820239333'),
+('xhr_e0y149202001421t3q2m0hq9k', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_i50f80x83142te2e3121002j2', 'k_xhr_sdt', '1607820188628'),
+('xhr_i50f80x83142te2e3121002j2', 'xhr', 'nav_00d1q482u3e223112uj12070y'),
+('xhr_l2s1d20520a103b22g3592401', 'k_xhr_sdt', '1607820230628'),
+('xhr_l2s1d20520a103b22g3592401', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_p2j14001305u22py4a1p10x2u', 'k_xhr_sdt', '1607820244480'),
+('xhr_p2j14001305u22py4a1p10x2u', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_q02p40001o3hv2d23116r52i0', 'k_xhr_sdt', '1607820235914'),
+('xhr_q02p40001o3hv2d23116r52i0', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_r10c1m02d0a4tf131al42b202', 'k_xhr_sdt', '1607820239335'),
+('xhr_r10c1m02d0a4tf131al42b202', 'xhr', 'nav_13rhl3k02p01o174c20223816'),
+('xhr_t42u42fy7001016h12c210203', 'k_xhr_sdt', '1607820251498'),
+('xhr_t42u42fy7001016h12c210203', 'xhr', 'nav_13rhl3k02p01o174c20223816');
 
 -- --------------------------------------------------------
 
@@ -3714,7 +3998,7 @@ INSERT INTO `Users-Cookies` (`userId`, `cookieId`, `cookieValue`, `domain`, `pat
 ('3330090', 'CLT', 'm9140j8q2rwds0x5332002110', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 00:14:27', 31536000),
 ('3330090', 'VIS', '100d1sq639120hby303243a50', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 00:14:27', 94608000),
 ('651853948', 'CLT', 'my client cookie', '', '', '2020-09-26 10:59:04', 94608000),
-('usr_27k316g6032yd20ab1m103100', 'VIS', 'zw0ylcj392v1231321d083003', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 01:30:38', 94608000);
+('usr_27k316g6032yd20ab1m103100', 'VIS', 'zw0ylcj392v1231321d083003', 'c99ae2db6bf6.eu.ngrok.io', '/versions/v0.2/mmbx/', '2020-12-13 01:44:45', 94608000);
 
 -- --------------------------------------------------------
 

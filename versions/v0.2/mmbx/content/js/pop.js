@@ -897,7 +897,8 @@
             "a": A_GET_EDT_POP,
             "d": params,
             "r": getSizeEditorRSP,
-            "l": ".basket_pop_loading, .loading-img-wrap",
+            // "l": ".basket_pop_loading, #shopping_bag .loading-img-wrap, ",
+            "l": ".basket_pop_loading",
             "x": popFunc,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOn(d.l) }
