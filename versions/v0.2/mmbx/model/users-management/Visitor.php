@@ -187,7 +187,9 @@ class Visitor extends ModelFunctionality
         AND uc.`cookieValue` = '$VIS_VAL'";
         $tab = $this->select($sql);
         if (empty($tab)) {
-            throw new Exception("There's not Visitor with this Visitor Cookie '$VIS_VAL'");
+            $this->destroyCookie(Cookie::COOKIE_VIS);
+            Controller::redirect(Query::getParam(Controller::KEY_CTR), Query::getParam(Controller::KEY_ACTION));
+            // throw new Exception("There's not Visitor with this Visitor Cookie '$VIS_VAL'");
         }
         if (count($tab) != 1) {
             throw new Exception("A visitor cookie('$VIS_VAL') can't be own by only one Visitor");
@@ -290,7 +292,7 @@ class Visitor extends ModelFunctionality
     public function destroyCookie($cookieID, $deleteDb = false)
     {
         $userID = $this->getUserID();
-        return Cookie::destroyCookie($userID, $cookieID, $deleteDb);
+        Cookie::destroyCookie($userID, $cookieID, $deleteDb);
     }
 
     /**

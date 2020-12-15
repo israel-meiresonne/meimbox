@@ -1665,12 +1665,14 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 .summary-detail-title-div {
-    width: 90%;
+    display: flex;
+    width: 100%;
 }
 
 .summary-detail-arrow-button-div {
     display: flex;
     width: 50px;
+    margin-left: auto;
 }
 
 .summary-detail-arrow-button-inner {

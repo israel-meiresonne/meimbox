@@ -89,7 +89,10 @@ abstract class User extends Visitor
                 AND uc.`cookieValue` = '$CLT_VAL'";
         $tab = $this->select($sql);
         if (count($tab) != 1) {
-            throw new Exception("User with Client cookie '$CLT_VAL' don't exist");
+            $this->destroyCookie(Cookie::COOKIE_CLT);
+            $this->destroyCookie(Cookie::COOKIE_VIS);
+            Controller::redirect(Query::getParam(Controller::KEY_CTR), Query::getParam(Controller::KEY_ACTION));
+            // throw new Exception("User with Client cookie '$CLT_VAL' don't exist");
         }
         $this->userLine = $tab[0];
         $this->userID = $this->userLine["userID"];

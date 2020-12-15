@@ -76,20 +76,17 @@ $freeShipCodeObj = $basket->getDiscountCode($freeShipCode);
             ?>
             <div class="summary-detail-title-div" <?= $TAGtoggleShutter ?> data-evtopen="evt_cd_17" data-evtclose="evt_cd_18">
                 <span class="summary-title"><?= $orderSummaryTxt ?></span>
-            </div>
-            <?php
-            if ($showArrow) :
-            ?>
-                <div class="summary-detail-arrow-button-div">
-                    <div class="arrow-element-container">
-                        <div <?= $Tagarraowid ?> class="arrow-element-wrap">
-                            <span class="arrow-span"></span>
+                <?php
+                if ($showArrow) :?>
+                    <div class="summary-detail-arrow-button-div">
+                        <div class="arrow-element-container">
+                            <div <?= $Tagarraowid ?> class="arrow-element-wrap">
+                                <span class="arrow-span"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php
-            endif;
-            ?>
+                <?php endif; ?>
+            </div>
         </div>
         <div <?= $Tagbodyid ?> class="summary-detail-inner">
             <hr class="hr-summary">

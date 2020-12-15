@@ -25,6 +25,9 @@ abstract class Controller
     /** Requête entrante */
     protected $request;
 
+    public const KEY_CTR = "controller";
+    public const KEY_ACTION = "action";
+
     /**
      * To set controller's action
      */
@@ -227,7 +230,7 @@ abstract class Controller
      * @param string $controller Contrôleur
      * @param type $action Action Action
      */
-    protected function redirect($controller, $action = null)
+    public static function redirect($controller, $action = null)
     {
         $webRoot = Configuration::get("webRoot", "/");
         // Redirection vers l'URL /racine_site/controller/action
