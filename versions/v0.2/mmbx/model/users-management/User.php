@@ -439,18 +439,13 @@ abstract class User extends Visitor
                 } else {
                     $userID = $this->getUserID();
                     $basket->lock($response, $userID);
-
-                    // $haveDelete = $basket->deleteEmptyBoxes($response);
-                    // (!empty($haveDelete)) ? $response->addResultStation(Response::RSP_NOTIFICATION, "US69") : null;
-
                     $cookieValue = $this->generateDateCode(25);
                     $this->generateCookie(Cookie::COOKIE_LCK, $cookieValue);
                     try {
                         $stripeAPI = $this->getStripeAPI();
-                        $stripeAPI->initializeNewCheckout($payMethod, $this);
+                        $stripeAPI->startNewCheckout($payMethod, $this);
                         $id = $stripeAPI->getCheckoutSessionId();
-                        // $session = $this->getSession();
-                        // $session->set(Session::KEY_CHECKOUT_LAUNCH, time());
+                        
                         $this->generateCookie(Cookie::COOKIE_CHKT_LNCHD, $this->generateDateCode(25));
                     } catch (\Throwable $th) {
                         $response->addErrorStation("ER1", MyError::FATAL_ERROR);

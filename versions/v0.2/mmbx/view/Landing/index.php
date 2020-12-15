@@ -1,7 +1,8 @@
 <?php
 require_once 'view/view/Mosaic/Mosaic.php';
-
-$this->title = "landing page";
+$ctaLink = ControllerSecure::extractController(ControllerGrid::class);
+/*————————————————————————————— Config View DOWN ————————————————————————————*/
+$this->title = "bienvenue";
 $this->description = "welcome";
 $this->header = self::HEADER_CONF_LANDING;
 /**
@@ -9,6 +10,7 @@ $this->header = self::HEADER_CONF_LANDING;
  */
 $translator = $translator;
 $this->head = $this->generateFile('view/Landing/files/head.php', []);
+/*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 <div class="main_content">
     <!-- VP -->
@@ -23,7 +25,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                     <p class="vp_content-vp-txt-line">le tout dans une boxe: la <span class="capitalize">meimboxe</span></p>
                 </div>
                 <div class="vp_content-vp-cta vp_content-vp-child">
-                    <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                    <a href="<?= $ctaLink ?>">
+                        <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                    </a>
                 </div>
             </div>
             <div class="vp_content-img">
@@ -191,7 +195,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             </div>
             <div class="size_content-cta">
                 <div class="cta">
-                    <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                    <a href="<?= $ctaLink ?>">
+                        <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -203,7 +209,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 <!-- LINE-QUALITY -->
                 <div class="quality_content-line">
                     <div class="quality_content-line-img">
-                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>sell-arg-1.png">
                     </div>
                     <div class="quality_content-line-txt">
                         <div class="quality_content-line-txt-inner">
@@ -227,7 +233,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 <!-- LINE-COLOR -->
                 <div class="quality_content-line flex_reverse">
                     <div class="quality_content-line-img">
-                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>sell-arg-2.png">
                     </div>
                     <div class="quality_content-line-txt">
                         <div class="quality_content-line-txt-inner">
@@ -249,7 +255,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 <!-- LINE-LIFE -->
                 <div class="quality_content-line">
                     <div class="quality_content-line-img">
-                        <img src="<?= self::$DIR_STATIC_FILES ?>icons8-squared-menu-100.png">
+                        <img src="<?= self::$DIR_STATIC_FILES ?>sell-arg-3.png">
                     </div>
                     <div class="quality_content-line-txt">
                         <div class="quality_content-line-txt-inner">
@@ -263,7 +269,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                     <span class="capitalize">pour</span> t'assure un vêtement qui tient
                                     longtemps, nous renforçons les coutures de chaque article sur les
                                     zones que nous avons identifiées comme pouvant se relâcher voir céder
-                                    dans le temps comme [zone 1, zone 2].
+                                    dans le temps.
                                 </p>
                             </div>
                         </div>
@@ -272,7 +278,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             </div>
             <div class="quality_content-cta">
                 <div class="cta">
-                    <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                    <a href="<?= $ctaLink ?>">
+                        <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -282,14 +290,11 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
         <div class="feature_content">
             <?php
             $files = [];
-            $i = 0;
-            while ($i < 50) {
-                $rand = rand(1, 3);
-                // $file = self::$PATH_PRODUCT . 'picture01.jpeg';
-                $file = self::$PATH_PRODUCT . "picture0$rand.jpeg";
+            foreach ($picturesTab as $picturesTabLine) {
+                $file = self::$PATH_PRODUCT . $picturesTabLine["picture"];
                 array_push($files, $file);
-                $i++;
             }
+            shuffle($files);
             $min = 10;
             $max = 30;
             $configMap = new Map();
@@ -459,7 +464,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                     </div>
                     <div class="feature_content-features-cta">
                         <div class="cta">
-                            <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                            <a href="<?= $ctaLink ?>">
+                                <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -468,7 +475,6 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                     <div class="feature_content-wave-mask"></div>
                 </div>
             </div>
-
         </div>
     </div>
     <script id="fbpxlevt" type="text/javascript">

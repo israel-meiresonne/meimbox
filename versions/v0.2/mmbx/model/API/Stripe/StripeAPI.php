@@ -65,7 +65,7 @@ class StripeAPI extends ModelFunctionality
      * @param string $payMethod payement method like [card, bancontact, ideal, etc...]
      * @param Client $client Client that holds the CheckoutSession
      */
-    public function initializeNewCheckout(string $payMethod, Client $client)
+    public function startNewCheckout(string $payMethod, Client $client)
     {
         $this->client = $client;
         $this->createCheckoutSession($payMethod);

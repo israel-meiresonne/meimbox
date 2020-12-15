@@ -281,7 +281,12 @@ class Box extends ModelFunctionality
         }
         $tabLine = $tab[0];
         $this->boxID = $tabLine["boxID"];
-        $this->color = $tabLine["box_color"];
+        $this->color = $tabLine["boxColor"];
+        // var_dump($sql);
+        // echo "<hr>";
+        // var_dump($tabLine);
+        // echo "<hr>";
+        // var_dump($this->color);
         $this->setDate = $tabLine["setDate"];
         $this->sizeMax = (int) $tabLine["sizeMax"];
         $this->weight = (float) $tabLine["weight"];

@@ -10,7 +10,7 @@
 
 $datas = [];
 // $datas["windowId"] = "";
-$datas["title"] = "add new box";
+$datas["title"] = $translator->translateStation("US141");
 $datas["closeButtonId"] = "box_pricing_close_button";
 $datas["laodingId"] = "box_pricing_loading";
 

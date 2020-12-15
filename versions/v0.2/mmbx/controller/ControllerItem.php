@@ -470,7 +470,8 @@ class ControllerItem extends ControllerSecure
             $measureUnits = $person->getUnits();
             $datasView = [
                 "measure" => $measure,
-                "measureUnits" => $measureUnits
+                "measureUnits" => $measureUnits,
+                "language" => $person->getLanguage()
             ];
             $response->addFiles(self::QR_GET_MEASURE_ADDER, 'view/elements/popupMeasureAdder.php');
 

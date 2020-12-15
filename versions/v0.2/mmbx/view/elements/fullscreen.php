@@ -36,7 +36,8 @@ $language = $person->getLanguage();
     <div id="measure_adder" class="customize_measure-block pop_up-container" data-evtclose="evt_cd_111">
         <?php
         $datas = [
-            "measureUnits" => $measureUnits
+            "measureUnits" => $measureUnits,
+            "language" => $person->getLanguage()
         ];
         echo $this->generateFile("view/elements/popupMeasureAdder.php", $datas);
         ?>

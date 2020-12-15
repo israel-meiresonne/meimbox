@@ -672,6 +672,8 @@ class Search extends ModelFunctionality
                     $sql .= " ORDER BY pp.price " . $this->order["orderSQL"];
                     break;
             }
+        } else {
+            $sql .= " ORDER BY p.prodRate DESC";
         }
         return $sql;
     }
@@ -698,6 +700,15 @@ class Search extends ModelFunctionality
             $query .= "(true)";
         }
         return $query;
+    }
+
+    /**
+     * To reteive datas from  database
+     * @return string[] table from database
+     */
+    public static function execute(string $sql)
+    {
+        return parent::select($sql);
     }
     /*———————————————————————————— PRODUCT DB ACCESS UP —————————————————————*/
 }

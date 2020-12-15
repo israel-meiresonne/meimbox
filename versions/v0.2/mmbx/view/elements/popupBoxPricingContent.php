@@ -25,11 +25,10 @@ $boxes = Box::getSamples($language, $country, $currency);
             foreach ($boxes as $box) :
                 $popx = "#box_pricing_window";
                 $sbtn = ModelFunctionality::generateDateCode(25);
-                $sbtnx = "#". $sbtn;
+                $sbtnx = "#" . $sbtn;
 
                 $boxColor = $box->getColor();
-                $boxEventJson = htmlentities(json_encode([Box::KEY_BOX_COLOR => $boxColor]));
-            ?>
+                $boxEventJson = htmlentities(json_encode([Box::KEY_BOX_COLOR => $boxColor])); ?>
                 <li class="box_price-box-set-li remove-li-default-att">
                     <div class="pricing-wrap">
                         <div class="pricing-wrap-inner">
@@ -55,8 +54,22 @@ $boxes = Box::getSamples($language, $country, $currency);
                                 </div>
                                 <div class="product_detail-block">
                                     <div class="product_detail-info">
-                                        <div class="product_detail-info-first-title">
+                                        <h3 class="product_detail-info-first-title">
                                             <p><?= $box->getPriceFormated() ?><span class="fraction-span">/<?= $translator->translateStation("US55") ?></span></p>
+                                        </h3>
+                                        <div class="checked-wrap">
+                                            <div class="symbol-container">
+                                                <div class="v_symbol-wrap">
+                                                    <span class="v_symbol-vertical"></span>
+                                                    <span class="v_symbol-horizontal"></span>
+                                                </div>
+                                            </div>
+                                            <h4 class="checked-wrap-content">
+                                                <p>
+                                                    <?= $box->getSizeMax() ?> <?= $translator->translateStation("US53") ?><span class="fraction-span">/box</span>
+                                                    <?php /* ≈<?= str_replace(' ', '', $box->getPricePerItem()) ?><span class="fraction-span">/<?= $translator->translateStation("US53") ?></span> */ ?>
+                                                </p>
+                                            </h4>
                                         </div>
                                         <div class="checked-wrap">
                                             <div class="symbol-container">
@@ -66,17 +79,24 @@ $boxes = Box::getSamples($language, $country, $currency);
                                                 </div>
                                             </div>
                                             <div class="checked-wrap-content">
-                                                <p><?= $box->getSizeMax() ?> <?= $translator->translateStation("US53") ?><span class="fraction-span">/box</span>
-                                                    ≈ <?= $box->getPricePerItem() ?><span class="fraction-span">/<?= $translator->translateStation("US53") ?></span>
-                                                </p>
+                                                <span>
+                                                    <?php
+                                                    $shipping = $box->getShipping();
+                                                    if ($shipping->getPrice() <= 0) :
+                                                        echo ucfirst($translator->translateStation("US142"));
+                                                    else : ?>
+                                                        <?= ucfirst($translator->translateStation("US66")) ?>: <b><?= str_replace(' ', '', $box->getShipping()->getFormated()) ?></b>
+                                                    <?php endif; ?>
+                                                </span>
                                             </div>
                                         </div>
                                         <ul class="remove-ul-default-att">
                                             <?php
-                                            $advantages = $box->getAdvantages();
-                                            $drawbacks = $box->getDrawbacks();
-                                            foreach ($advantages as $advantage) :
-                                            ?>
+                                            $maxShip = $shipping->getMaxTime();
+                                            $replacementsMap = new Map([Map::time => $maxShip]);
+                                            $advStations = $box->getAdvantages();
+                                            $drawStations = $box->getDrawbacks();
+                                            foreach ($advStations as $advStation) :?>
                                                 <li class="remove-li-default-att">
                                                     <div class="checked-wrap">
                                                         <div class="symbol-container">
@@ -86,13 +106,13 @@ $boxes = Box::getSamples($language, $country, $currency);
                                                             </div>
                                                         </div>
                                                         <div class="checked-wrap-content">
-                                                            <p><?= $translator->translateString($advantage) ?></p>
+                                                            <p><?= ucfirst($translator->translateStation($advStation, $replacementsMap)) ?></p>
                                                         </div>
                                                     </div>
                                                 </li>
                                             <?php
                                             endforeach;
-                                            foreach ($drawbacks as $drawback) :
+                                            foreach ($drawStations as $drawStation) :
                                             ?>
                                                 <li class="remove-li-default-att">
                                                     <div class="checked-wrap">
@@ -102,7 +122,7 @@ $boxes = Box::getSamples($language, $country, $currency);
                                                             </div>
                                                         </div>
                                                         <div class="checked-wrap-content">
-                                                            <p><?= $translator->translateString($drawback) ?></p>
+                                                            <p><?= ucfirst($translator->translateStation($drawStation, $replacementsMap)) ?></p>
                                                         </div>
                                                     </div>
                                                 </li>

@@ -73,11 +73,6 @@ class CheckoutSession extends ModelFunctionality
      */
     private static $STRIPE_MAX_PROD_IMG;
 
-    // /**
-    //  * Constructor
-    //  * @param \Stripe\Checkout\Session $checkoutSession
-    //  * @param string $userID id of the Client Attempting to pay
-    //  */
     /**
      * Constructor
      * @param \Stripe\StripeClient $stripe access to the stripe API
@@ -106,7 +101,6 @@ class CheckoutSession extends ModelFunctionality
     public function create(string $payMethod, Client $client)
     {
         $this->client = $client;
-        // $this->checkoutSession = $checkoutSession;
         $payementMap = $this->getPayementMap();
         $payIDs = $payementMap->getKeys();
         $payID = null;
@@ -119,7 +113,6 @@ class CheckoutSession extends ModelFunctionality
         if (empty($payID)) {
             throw new Exception("This payement method '$payMethod' with payID '$payID' is not supported");
         }
-        // $client = $this->getClient();
         $basket = $client->getBasket();
         if ($basket->getQuantity() <= 0) {
             throw new Exception("Basket can't be empty");
@@ -374,7 +367,6 @@ class CheckoutSession extends ModelFunctionality
     {
         $line_items = [];
         $shipping = $this->extractShipping($basket->getShipping(), $basket->getLanguage());
-        // var_dump($shipping);
         array_push($line_items, $shipping);
         $merged = $basket->getMerge();
         foreach ($merged as $element) {
@@ -385,7 +377,6 @@ class CheckoutSession extends ModelFunctionality
                     break;
                 case Box::class:
                     $line_items = $this->extractBox($element, $line_items);
-                    // array_push($line_items, $stripeProduct);
                     break;
                 default:
                     throw new Exception("Unknown type of element in basket, element: $element");

@@ -89,7 +89,7 @@ class Mosaic extends View
 
     /**
      * Holds mosaic's stone class
-     * @var strong
+     * @var string
      */
     private $stoneClass = "mosaic_stone";
 
