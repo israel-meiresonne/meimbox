@@ -42,7 +42,9 @@ $boxes = Box::getSamples($language, $country, $currency);
                                                 </div>
                                             </div>
                                             <div class="img_text_down-text-div">
-                                                <span><span class="box-color-name"><?= $translator->translateString($boxColor) ?></span> <?= $translator->translateStation("US55") ?></span>
+                                                <h4>
+                                                    <span class="box-color-name"><?= ucfirst($boxColor) ?></span>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +98,7 @@ $boxes = Box::getSamples($language, $country, $currency);
                                             $replacementsMap = new Map([Map::time => $maxShip]);
                                             $advStations = $box->getAdvantages();
                                             $drawStations = $box->getDrawbacks();
-                                            foreach ($advStations as $advStation) :?>
+                                            foreach ($advStations as $advStation) : ?>
                                                 <li class="remove-li-default-att">
                                                     <div class="checked-wrap">
                                                         <div class="symbol-container">
