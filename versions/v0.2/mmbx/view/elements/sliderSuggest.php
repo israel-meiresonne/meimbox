@@ -7,6 +7,7 @@
  * @param string[] $elements list element to display in slider
  * @param string $sliderClass CSS class for the slider
  */
+shuffle($elements);
  ?>
 
 <div class="suggest-silder-container">

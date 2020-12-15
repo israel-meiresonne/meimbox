@@ -1,7 +1,7 @@
 <?php
 require_once 'model/ModelFunctionality.php';
 
-class Price
+class Price  extends ModelFunctionality
 {
     /**
      * @var float

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var Translator
  */
@@ -57,6 +58,24 @@ $measureUnits = $measureUnits;
 
 /* Files */
 $safeInfos = $this->generateFile('view/elements/safeInfos.php', []);
+
+/** Translations */
+$boxes = Box::getSamples($language, $country, $currency);
+$keys = array_keys($boxes);
+$box = $boxes[$keys[0]];
+$boxShipping = $box->getShipping();
+$boxShipMinTime = $boxShipping->getMinTime();
+$boxShipMaxTime = $boxShipping->getMaxTime();
+$boxShipTimeMap =  new Map();
+$boxShipTimeMap->put($boxShipMinTime, Map::mintime);
+$boxShipTimeMap->put($boxShipMaxTime, Map::maxtime);
+$boxShipTimeMap->put(Shipping::getMaxReturnDays(), Map::maxreturntime);
+$shipTerms = [
+    $translator->translateStation("US147", $boxShipTimeMap),
+    $translator->translateStation("US148", $boxShipTimeMap),
+    $translator->translateStation("US149")
+];
+$shipTermNote = $translator->translateStation("US150");
 
 /*————————————————————————————— Config View DOWN ————————————————————————————*/
 $this->title = $product->getProdName();
@@ -147,7 +166,7 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
                                             $description = $product->getDescription();
                                             $eventJson = htmlentities(json_encode(["prodID" => $prodID]));
                                             $shippingTitle = $translator->translateStation("US30");
-                                            $shippingTxt = $translator->translateStation("US31");
+                                            // $shippingTxt = $translator->translateStation("US31");
                                             ?>
                                             <div class="collapse-title-div" data-evtopen="evt_cd_11" data-evtclose="evt_cd_12" data-evtj="<?= $eventJson ?>">
                                                 <div class="collapse-title"><?= $descriptionTitle ?></div>
@@ -182,7 +201,19 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
                                             </div>
                                             <div class="collapse-text-div collapse-text-hidded">
                                                 <div class="collapse-text-inner">
-                                                    <?= $shippingTxt ?>
+                                                    <?= "" //$shippingTxt 
+                                                    ?>
+                                                    <ul>
+                                                        <?php
+                                                        foreach ($shipTerms as $shipTerm) : ?>
+                                                            <li>
+                                                                <p><?= ucfirst($shipTerm) ?></p>
+                                                            </li>
+                                                        <?php endforeach; ?>
+                                                        <li class="remove-li-default-att">
+                                                            <p class="info-style">*<?= ucfirst($shipTermNote) ?></p>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>

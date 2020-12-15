@@ -654,7 +654,7 @@ class Box extends ModelFunctionality
      * @param Language $language Visitor's language
      * @param Country $country Visitor's current Country
      * @param Currency $currency Visitor's current Currency
-     * @return Boxe[] boxes supported ordered by price from lower to bigger
+     * @return Box[] boxes supported ordered by price from lower to bigger
      */
     public static function getSamples(Language $language, Country $country, Currency $currency)
     {

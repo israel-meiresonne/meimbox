@@ -14,6 +14,12 @@ class Shipping extends Price
      */
     protected $maxTime;
 
+    /**
+     * Holds the max time for Client to return order
+     * @var int
+     */
+    private static $MAX_RETURN_DAYS;
+
     public function __construct(float $price, Currency $currency, int $minTime, int $maxTime)
     {
         parent::__construct($price, $currency);
@@ -21,14 +27,16 @@ class Shipping extends Price
         $this->maxTime = $maxTime;
     }
 
-    // /**
-    //  * To get Shipping time in day
-    //  * @return int Shipping time in day
-    //  */
-    // public function getTime()
-    // {
-    //     return $this->time;
-    // }
+    /**
+     * Initialize Shipping's constants
+     */
+    private static function setConstants()
+    {
+        if (!isset(self::$MAX_RETURN_DAYS)) {
+            self::$MAX_RETURN_DAYS = "MAX_RETURN_DAYS";
+            self::$MAX_RETURN_DAYS = (int) parent::getConstantLine(self::$MAX_RETURN_DAYS)["stringValue"];
+        }
+    }
 
     /**
      * To get Shipping's min time in day
@@ -62,5 +70,15 @@ class Shipping extends Price
             $copy->{$attribut} = $this->{$attribut};
         }
         return $copy;
+    }
+
+    /**
+     * To get max days that the Client is allowed return his order
+     * @return int max days that the Client is allowed return his order
+     */
+    public static function getMaxReturnDays()
+    {
+        (!isset(self::$MAX_RETURN_DAYS))? self::setConstants() : null;
+        return self::$MAX_RETURN_DAYS;
     }
 }
