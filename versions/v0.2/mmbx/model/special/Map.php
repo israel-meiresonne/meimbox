@@ -24,6 +24,7 @@ class Map
     public const duration = "duration";
     public const support = "support";
 
+
     /**
      * Keys for Mosaic
      */
@@ -318,6 +319,14 @@ class Map
      */
     public const ad_config = "ad_config";
     public const scroll_up = "scroll_up";
+
+    /**
+     * Keys for Shipping
+     * @var string
+     */
+    public const mintime = "mintime";
+    public const maxtime = "maxtime";
+    public const maxreturntime = "maxreturntime";
 
 
 

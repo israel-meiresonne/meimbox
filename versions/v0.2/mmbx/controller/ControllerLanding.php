@@ -15,7 +15,7 @@ class ControllerLanding extends ControllerSecure
                 JOIN `ProductsPictures`pp ON p.`prodID`=pp.`prodId`
                 WHERE pp.`pictureID`=0
                 ORDER BY p.`prodRate`  DESC
-                LIMIT 50";
+                LIMIT 99";
         $picturesTab = Search::execute($sql);
         $datasView = [
             "maxScroll" => $maxScroll,

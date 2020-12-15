@@ -397,11 +397,11 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--color-blue-wave);
 }
 
-.feature_content-wave_top, .feature_content-wave_bottom {
+/* .feature_content-wave_top, .feature_content-wave_bottom {
     position: absolute;
     width: 100%;
     height: 11%;
-}
+} */
 
 .feature_content-wave-mask {
     --trans-origin: 0 100%;
@@ -443,6 +443,11 @@ h1, h2, h3, h4, h5, h6 {
     .feature_content-features-features .feature_line {
         margin-bottom: 5%;
     }
+    .feature_content-wave_top, .feature_content-wave_bottom {
+        position: absolute;
+        width: 100%;
+        height: 30%;
+    }
 }
 
 /*++++++++++++++++++++++++++++++++ MOBILE +++++++++++++++++++++++++++++++++++*/
@@ -450,6 +455,11 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 991px) {
     .feature_content-features-features .feature {
         margin-bottom: 25px;
+    }
+    .feature_content-wave_top, .feature_content-wave_bottom {
+        position: absolute;
+        width: 100%;
+        height: 11%;
     }
 }
 

@@ -18,15 +18,15 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
         <div class="vp_content">
             <div class="vp_content-vp">
                 <div class="vp_content-vp-txt vp_content-vp-child">
-                    <h1 class="vp_content-vp-txt-title title"><span class="capitalize">profite</span> de la second main sans ses inconvénients</h1>
+                    <h1 class="vp_content-vp-txt-title title"><span class="capitalize">profite</span> de la seconde main sans ses inconvénients</h1>
                     <p class="vp_content-vp-txt-line">un grand catalogue</p>
                     <p class="vp_content-vp-txt-line">un large choix de taille</p>
                     <p class="vp_content-vp-txt-line">un service de retouche totalement gratuit</p>
-                    <p class="vp_content-vp-txt-line">le tout dans une boxe: la <span class="capitalize">meimboxe</span></p>
+                    <p class="vp_content-vp-txt-line">le tout dans une boxe: la <span class="capitalize">meimbox</span></p>
                 </div>
                 <div class="vp_content-vp-cta vp_content-vp-child">
                     <a href="<?= $ctaLink ?>">
-                        <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                        <button class="cta-btn squared-standard-button">achete ta <span class="capitalize">meimbox</span></button>
                     </a>
                 </div>
             </div>
@@ -41,7 +41,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             <div class="tuto_content-title title_margin_bottom">
                 <h2 class="title">
                     <span class="capitalize">mais</span> la
-                    <span class="capitalize">meimboxe</span> comment ça marche?
+                    <span class="capitalize">meimbox</span> comment ça marche?
                 </h2>
             </div>
             <div class="tuto_content-features">
@@ -63,16 +63,16 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             <div class="feature-head-title">
                                 <h3 class="bold subtitle">
                                     <spa class="capitalize">choisis</spa> ta
-                                    <span class="capitalize">meimboxe</span>
+                                    <span class="capitalize">meimbox</span>
                                 </h3>
                             </div>
                         </div>
                         <div class="feature-body">
                             <p class="feature-body-child text">
                                 <span class="capitalize">choisis</span> parmi les
-                                <span class="capitalize">meimboxes</span> disponible celle qui te convient le mieux.
+                                <span class="capitalize">meimboxs</span> disponible celle qui te convient le mieux.
                                 <br>
-                                <span class="capitalize">chaque meimboxe</span> peut contenir jusqu'à un certain nombre d'article.
+                                <span class="capitalize">chaque meimbox</span> peut contenir jusqu'à un certain nombre d’articles.
                             </p>
                         </div>
                     </div>
@@ -90,19 +90,14 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             <div class="feature-head-title">
                                 <h3 class="bold subtitle">
                                     <spa class="capitalize">remplis</spa> ta
-                                    <span class="capitalize">meimboxe</span>
+                                    <span class="capitalize">meimbox</span>
                                 </h3>
                             </div>
                         </div>
                         <div class="feature-body">
                             <p class="feature-body-child text">
                                 <span class="capitalize">parcourt</span> notre catalogue, ajoute les articles qui te plaisent dans ta
-                                <span class="capitalize">meimboxe</span>
-                                <br>
-                                <span class="capitalize">ajoute</span> les articles qui te plaisent dans ta
-                                <span class="capitalize">meimboxe.</span>
-                                <br>
-                                <span class="capitalize">et</span> passe ta commande!
+                                <span class="capitalize">meimbox</span> et passe ta commande!
                             </p>
                         </div>
                     </div>
@@ -120,20 +115,18 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             <div class="feature-head-title">
                                 <h3 class="bold subtitle">
                                     <spa class="capitalize">reçois</spa> ta
-                                    <span class="capitalize">meimboxe</span>
+                                    <span class="capitalize">meimbox</span>
                                 </h3>
                             </div>
                         </div>
                         <div class="feature-body">
                             <p class="feature-body-child text">
-                                <span class="capitalize">Une</span> fois ta commande passée, notre équipe
-                                s'occupe du reste pour une livraison en
-                                moins de 7 jours.
+                                <span class="capitalize">une</span> fois ta commande passée,
+                                notre équipe s'occupe du reste pour une livraison en moins de 7 jours.
                                 <br>
                             </p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -161,10 +154,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                         </div>
                     </div>
                     <div class="feature-body">
-                        <p class="feature-body-child text">
+                        <p class="feature-body-child text align_center">
                             <span class="capitalize">découvre</span> sur chaque article le plus large
-                            choix de taille encore jamais vue sur un catalogue
-                            de seconde main.
+                            choix de taille encore jamais vue sur un catalogue de seconde main.
                         </p>
                     </div>
                 </div>
@@ -182,11 +174,11 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                         </div>
                     </div>
                     <div class="feature-body">
-                        <p class="feature-body-child text">
-                            <span class="capitalize">tu</span> ne trouve pas ta taille?
-                            <span class="capitalize">tu</span> désire un vêtement sur mesure?
+                        <p class="feature-body-child text align_center">
+                            <span class="capitalize">tu</span> ne trouves pas ta taille?
+                            <span class="capitalize">tu</span> désires un vêtement sur mesure?
                             <br>
-                            <span class="capitalize">alors</span> enregistre ta taille avec ton article et nous nous occupons du reste.
+                            <span class="capitalize">alors</span> enregistre tes mesures avec ton article et nous nous occupons du reste.
                             <br>
                             <span class="capitalize">c'est</span> totalement gratuit!
                         </p>
@@ -196,7 +188,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             <div class="size_content-cta">
                 <div class="cta">
                     <a href="<?= $ctaLink ?>">
-                        <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                        <button class="cta-btn squared-standard-button">achete ta <span class="capitalize">meimbox</span></button>
                     </a>
                 </div>
             </div>
@@ -220,11 +212,11 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             </div>
                             <div class="quality_content-line-txt-txt">
                                 <p class="text">
-                                    <span class="capitalize">nous</span> mettons à ta disposition que les articles dont nous jugeons la qualité irréprochable* pour toujours te
-                                    garantir le meilleur confort et ça sur toute notre gamme.
+                                    <span class="capitalize">nous</span> mettons à ta disposition que les articles dont nous jugeons la qualité
+                                    irréprochable* pour toujours te garantir le meilleur confort et ça sur toute notre gamme.
                                     <br>
                                     <br>
-                                    <span class="capitalize">*ceux</span> dont la qualité est jugé insuffisante sont détruits pour en faire des nouveaux produits.
+                                    <span class="capitalize">*ceux</span> dont la qualité est jugée insuffisante sont détruits pour en faire des nouveaux produits.
                                 </p>
                             </div>
                         </div>
@@ -244,9 +236,8 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             </div>
                             <div class="quality_content-line-txt-txt">
                                 <p class="text">
-                                    <span class="capitalize">finis</span> les couleurs fades et délavées,
-                                    grâce à notre programme de repigmentation des tissus, nous te proposons
-                                    des vêtements avec des couleurs plus éclatantes les unes que les autres.
+                                    <span class="capitalize">finis</span> les couleurs fades et délavées, grâce à notre programme de repigmentation 
+                                    des tissus, nous te proposons des vêtements avec des couleurs plus éclatantes les unes que les autres.
                                 </p>
                             </div>
                         </div>
@@ -266,10 +257,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                             </div>
                             <div class="quality_content-line-txt-txt">
                                 <p class="text">
-                                    <span class="capitalize">pour</span> t'assure un vêtement qui tient
-                                    longtemps, nous renforçons les coutures de chaque article sur les
-                                    zones que nous avons identifiées comme pouvant se relâcher voir céder
-                                    dans le temps.
+                                    <span class="capitalize">pour</span> t'assure un vêtement qui tient longtemps, nous renforçons 
+                                    les coutures de chaque article sur les zones que nous avons identifiées comme pouvant se 
+                                    relâcher voir céder dans le temps.
                                 </p>
                             </div>
                         </div>
@@ -279,7 +269,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
             <div class="quality_content-cta">
                 <div class="cta">
                     <a href="<?= $ctaLink ?>">
-                        <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                        <button class="cta-btn squared-standard-button">achete ta <span class="capitalize">meimbox</span></button>
                     </a>
                 </div>
             </div>
@@ -295,6 +285,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 array_push($files, $file);
             }
             shuffle($files);
+
             $min = 10;
             $max = 30;
             $configMap = new Map();
@@ -349,7 +340,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                 <div class="feature_content-features-inner">
                     <div class="feature_content-features-title title_margin_bottom title_background">
                         <h2 class="title text_center">
-                            <span class="capitalize">mais</span> la <span class="capitalize">meimbox</span> c'est aussi...
+                            <span class="capitalize">mais</span> la <span class="capitalize">meimbox</span> c'est aussi…
                         </h2>
                     </div>
                     <div class="feature_content-features-features">
@@ -369,9 +360,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 </div>
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
-                                        <span class="capitalize">la meimboxe</span> c'est une boxe en carton solide avec fermeture magnétique.
+                                        <span class="capitalize">la meimbox</span> c'est une boxe en carton solide avec fermeture magnétique.
                                         <br>
-                                        <span class="capitalize">ce</span> détails te permet de la réutiliser comme rangement et éviter de remplir les poubelles.
+                                        <span class="capitalize">ce</span> détail te permet de la réutiliser comme rangement et éviter de remplir les poubelles.
                                     </p>
                                 </div>
                             </div>
@@ -390,9 +381,9 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 </div>
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
-                                        <span class="capitalize">grace</span> à l'usage massif de matériaux alternatif
-                                        nous sommes parvenue à vous proposer aujourd'hui une
-                                        <span class="capitalize">meimboxe</span> affichant zéro gramme de plastic...
+                                        <span class="capitalize">grâce</span> à l'usage massif de matériaux alternatifs 
+                                        nous sommes parvenues à vous proposer aujourd'hui une
+                                        <span class="capitalize">meimbox</span> affichant zéro gramme de plastic...
                                         <span class="capitalize">comme</span> quoi c'est possible!
                                     </p>
                                 </div>
@@ -415,7 +406,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
                                         <span class="capitalize">toutes</span> nos infrastructures, nos locaux et notre personnel sont localisés en
-                                        <span class="capitalize">europe</span> à fin d'être au plus prêt de vous et ainsi vous assurer un service parfait et dans les temps.
+                                        <span class="capitalize">europe</span> à fin d'être au plus près de vous et ainsi vous assurer un service parfait et dans les temps.
                                     </p>
                                 </div>
                             </div>
@@ -434,7 +425,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 </div>
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
-                                        <span class="capitalize">nous</span> restons à votre écoute pour vous répondre à toutes vos questions.
+                                        <span class="capitalize">nous</span> restons à votre écoute pour répondre à toutes vos questions.
                                     </p>
                                 </div>
                             </div>
@@ -455,8 +446,8 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                                 </div>
                                 <div class="feature-body">
                                     <p class="feature-body-child text">
-                                        <span class="capitalize">suis</span> l'état de ta commande à tout moment grâce
-                                        à notre système de suivis de colis directement disponible sur notre plateforme.
+                                        <span class="capitalize">suis</span> l'évolution de ta commande à tout moment 
+                                        grâce à notre système de suivis directement disponible sur notre plateforme.
                                     </p>
                                 </div>
                             </div>
@@ -465,7 +456,7 @@ $this->head = $this->generateFile('view/Landing/files/head.php', []);
                     <div class="feature_content-features-cta">
                         <div class="cta">
                             <a href="<?= $ctaLink ?>">
-                                <button class="cta-btn squared-standard-button">acheter ta <span class="capitalize">meimboxe</span></button>
+                                <button class="cta-btn squared-standard-button">achete ta <span class="capitalize">meimbox</span></button>
                             </a>
                         </div>
                     </div>

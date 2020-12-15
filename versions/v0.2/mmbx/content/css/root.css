@@ -141,13 +141,6 @@
     letter-spacing: 1.5px;
 }
 
-.info-style {
-    color: var(--color-text-05) !important;
-    text-transform: initial !important;
-    font-family: var(--italic-font-family);
-    font-style: italic;
-}
-
 .title-first_letter {
     font-family: var(--main-font-family);
     color: var(--color-text);
@@ -182,6 +175,22 @@
 
 .checkbox_error-div .comment::first-letter {
     text-transform: capitalize;
+}
+
+
+.info-style {
+    color: var(--color-text-05) !important;
+    text-transform: initial !important;
+    font-family: var(--italic-font-family);
+    font-style: italic;
+}
+
+.bold_style {
+    font-weight: bold;
+}
+
+.align_center{
+    text-align: center;
 }
 
 .fraction-span {
