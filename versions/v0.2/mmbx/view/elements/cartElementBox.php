@@ -42,7 +42,7 @@ $price = $box->getPriceFormated();
         /*———————————————————————— GET PROPERTIES DOWN ——————————————————————*/
         $datas = [
             // "class" => get_class($box),
-            "title" => $translator->translateString($box->getColor()),
+            "title" => $box->getColor(),
             "color" => null,
             "colorRGB" => null,
             "nbItem" => $box->getQuantity(),
