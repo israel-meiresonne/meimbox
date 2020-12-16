@@ -242,12 +242,13 @@ class Router
         $view = new View('Template/files/message');
         $translator = $view->getTranslator();
         $btnLink = ControllerSecure::extractController(ControllerGrid::class);
+        $hiddenMsg = "<span style=\"display:none;\">" . $exception->__toString() . "</span>";
         switch ($env) {
             case Configuration::ENV_DEV:
                 // throw $exception;
                 $datas = [
                     "title" => "dev error occured",
-                    "content" => $exception->getMessage() . "<span style=\"display:none;\">" . $exception->__toString() . "</span>",
+                    "content" => $exception->getMessage() . $hiddenMsg,
                     // "content" => $exception->__toString(),
                     "btnText" => "reload",
                     "btnLink" => $btnLink,
@@ -261,7 +262,7 @@ class Router
                 $btnLink = $btnLink . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . time();
                 $datas = [
                     "title" => $translator->translateStation("US106"),
-                    "content" => $translator->translateStation("US107", new Map([Map::brand => strtoupper($brand)])),
+                    "content" => $translator->translateStation("US107", new Map([Map::brand => strtoupper($brand)])) . $hiddenMsg,
                     "btnText" => $translator->translateStation("US105"),
                     "btnLink" => $btnLink,
                 ];
