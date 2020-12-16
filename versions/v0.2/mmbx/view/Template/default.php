@@ -59,13 +59,14 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
     <?= self::META_DEVICE ?>
     <?= self::STYLE_W3SCHOOL ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <link rel="icon" type="image/png" href="<?= self::$DIR_STATIC_FILES ?>favicon-meimbox.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <?= self::FONT_FAM_SPARTAN ?>
     <?= self::FONT_FAM_PT ?>
-
     <?= $head ?>
-
+    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>root.css">
+    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>header.css">
+    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
     <script>
         var jxq = [];
         var jxzzz = true;
@@ -124,13 +125,12 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         jxp = () => {
             if (jxq.length > 0) {
                 ds = jxq.shift();
-                    jx(ds);
+                jx(ds);
             } else {
                 jxzzz = true;
             }
         }
     </script>
-
     <script>
         const WR = "<?= $webRoot ?>";
         const A_SIGN_UP = "<?= ControllerHome::A_SIGN_UP ?>";
@@ -288,10 +288,6 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
             return jQuery.param(map);
         }
     </script>
-
-    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>root.css">
-    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>header.css">
-    <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
     <script src="<?= self::$PATH_JS ?>evt.js"></script>
     <script src="<?= self::$PATH_JS ?>elements.js"></script>
     <script src="<?= self::$PATH_JS ?>pop.js"></script>

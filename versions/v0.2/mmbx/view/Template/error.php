@@ -13,7 +13,6 @@ $head = $this->head;
 ?>
 <!DOCTYPE html>
 <html lang="<?= $isoLang ?>">
-
 <head>
     <meta charset="UTF-8">
     <base href="<?= $webRoot ?>">
@@ -22,6 +21,7 @@ $head = $this->head;
     <?= self::META_DEVICE ?>
     <?= self::STYLE_W3SCHOOL ?>
     <?= self::FONT_FAM_SPARTAN ?>
+    <link rel="icon" type="image/png" href="<?= self::$DIR_STATIC_FILES ?>favicon-meimbox.png">
     <?= $head ?>
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>root.css">
     <link rel="stylesheet" href="<?= self::$PATH_CSS ?>elements.css">
