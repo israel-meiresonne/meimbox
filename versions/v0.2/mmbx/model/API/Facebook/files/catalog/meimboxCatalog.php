@@ -7,9 +7,8 @@
  * @param BasketProduct[]|BoxProduct[]  $products           products of the catalog
  * @param Map                           $company            datas about company
  */
-
+echo '<?xml version="1.0" encoding="utf-8"?>';
 ?>
-<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>FB-CAT</title>
