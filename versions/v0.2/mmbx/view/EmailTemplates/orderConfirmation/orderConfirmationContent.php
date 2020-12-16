@@ -62,6 +62,9 @@ $total = $basketOrdered->getTotal()->getFormated();
 
 $dayConv = 3600 * 24;
 $date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time() + $maxTime * $dayConv);
+
+/** Link */
+$trackUrl = self::$URL_DOMAIN_WEBROOT . ControllerSecure::generateActionPath(ControllerDashboard::class, ControllerDashboard::ACTION_ORDERS);
 ?>
 <html>
 
@@ -122,7 +125,7 @@ $date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time
                                             <br>
                                             <span><?= ucfirst($translator->translateStation("US74")) ?>. </span>
                                             <br>
-                                            <span><?= ucfirst($translator->translateStation("US75")) ?> <a href="" target="_blank"><?= $translator->translateStation("US76") ?></a>.</span>
+                                            <span><?= ucfirst($translator->translateStation("US75")) ?> <a href="<?= $trackUrl ?>" target="_blank"><?= $translator->translateStation("US76") ?></a>.</span>
                                         </h3>
                                     </td>
                                 </tr>
@@ -348,7 +351,7 @@ $date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time
                                             <td class="nada_33"></td>
                                             <td>
                                                 <div>
-                                                    <a href="" target="_blank">
+                                                    <a href="<?= $trackUrl ?>" target="_blank">
                                                         <button class="green-button-reverse standard-button"><?= $translator->translateStation("US83") ?></button>
                                                     </a>
                                                 </div>
@@ -424,7 +427,7 @@ $date = View::getDateDisplayable($translator, time() + $minTime * $dayConv, time
                                                                                 <span><?= ucfirst($translator->translateStation("US87")) ?>:</span>
                                                                         </td>
                                                                         <td>
-                                                                            <a href="" target="_blank"><?= $translator->translateStation("US88") ?></a>
+                                                                            <a href="<?= self::$URL_DOMAIN_WEBROOT ?>" target="_blank"><?= $translator->translateStation("US88") ?></a>
                                                                         </td>
                                                                     </tr>
                                                                 </table>

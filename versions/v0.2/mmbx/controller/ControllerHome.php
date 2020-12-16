@@ -296,38 +296,16 @@ class ControllerHome extends ControllerSecure
 
     public function test()
     {
-        header('content-type: application/json');
+        // header('content-type: application/json');
         /**
          * @var User */
         $person = $this->person;
-        $sql = "SELECT picture
-        FROM `Products`p
-        JOIN `ProductsPictures`pp ON p.`prodID`=pp.`prodId`
-        WHERE pp.`pictureID`=0
-        ORDER BY p.`prodRate`  DESC
-        LIMIT 99";
-        $picturesTab = Search::execute($sql);
-        $files = [];
-        foreach ($picturesTab as $picturesTabLine) {
-            $file = "my/product/path/" . $picturesTabLine["picture"];
-            array_push($files, $file);
-        }
-        shuffle($files);
-        $length = (int) (count($files)/3);
-        $subFiles = array_chunk($files, $length);
-        $files0 = $subFiles[0];
-        $files1 = $subFiles[1];
-        $files2 = $subFiles[0];
-        var_dump($subFiles);
-        echo "<hr>";
-        // var_dump($files);
-        echo "<hr>";
-        var_dump($files0);
-        echo "<hr>";
-        var_dump($files1);
-        echo "<hr>";
-        var_dump($files2);
-        // $this->generateView([], $person);
+        $trackLink = ControllerSecure::generateActionPath(ControllerDashboard::class, ControllerDashboard::ACTION_ORDERS);
+        // echo "<a href='$trackLink' target='_blank'>link</a>";
+        $datasView = [
+            "trackLink" => $trackLink
+        ];
+        $this->generateView($datasView, $person);
     }
 
     // public function test_DiscountCode()
