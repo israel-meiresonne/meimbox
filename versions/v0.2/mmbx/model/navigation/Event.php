@@ -79,8 +79,9 @@ class Event extends ModelFunctionality
      * @param string    $eventCode  code that refer to a Event
      * @param Map       $datasMap   holds datas submeted with the event
      *                              + Note: must be list of key value, so deep must be of 1
+     * @param mixed     $setDate    unix time of when the evnt occurred
      */
-    public function __construct($eventCode, int $setDate, Map $datasMap = null)
+    public function __construct($eventCode, float $setDate, Map $datasMap = null)
     {
         if ((!empty($datasMap)) && (!empty($datasMap->getMap()))) {
             $keys = $datasMap->getKeys();
@@ -98,8 +99,6 @@ class Event extends ModelFunctionality
         $this->eventID = self::PREFIX_ID . $this->generateDateCode(25);
         $this->eventCode = $eventCode;
         $this->datasMap = (!empty($datasMap)) ? $datasMap : null;
-        // $this->setDate = $this->getDateTime();
-        // $this->setDate = date(ModelFunctionality::DATE_FORMAT, $setDate);
         $this->setDate = $setDate;
     }
 

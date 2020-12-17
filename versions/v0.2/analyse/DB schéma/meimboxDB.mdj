@@ -26639,9 +26639,9 @@
 										"$ref": "AAAAAAFwh4nfLvu3Ac8="
 									},
 									"name": "eventDate",
-									"documentation": "# Definition\n\nHolds the date when the Event happen in unix milliseconds ",
-									"type": "BIGINT",
-									"length": "20"
+									"documentation": "# Definition\n\nHolds the date when the Event happen in unix milliseconds\n\nNote: this column is of type varchar cause unix time is too big \nfor mysql's bigint type",
+									"type": "VARCHAR",
+									"length": "50"
 								}
 							]
 						},

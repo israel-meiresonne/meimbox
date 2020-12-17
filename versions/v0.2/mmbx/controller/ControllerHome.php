@@ -294,19 +294,20 @@ class ControllerHome extends ControllerSecure
 
     /*———————————————————————————— TESTS DOWN ———————————————————————————————*/
 
-    public function test()
-    {
-        // header('content-type: application/json');
-        /**
-         * @var User */
-        $person = $this->person;
-        $trackLink = ControllerSecure::generateActionPath(ControllerDashboard::class, ControllerDashboard::ACTION_ORDERS);
-        // echo "<a href='$trackLink' target='_blank'>link</a>";
-        $datasView = [
-            "trackLink" => $trackLink
-        ];
-        $this->generateView($datasView, $person);
-    }
+    // public function test()
+    // {
+    //     header('content-type: application/json');
+    //     // /**
+    //     //  * @var User */
+    //     $person = $this->person;
+    //     // $trackLink = ControllerSecure::generateActionPath(ControllerDashboard::class, ControllerDashboard::ACTION_ORDERS);
+    //     // // echo "<a href='$trackLink' target='_blank'>link</a>";
+    //     // $datasView = [
+    //     //     "trackLink" => $trackLink
+    //     // ];
+    //     // $this->generateView($datasView, $person);
+    //     // var_dump($person->getNavigation()->getUrlPage()->handleEvent());
+    // }
 
     // public function test_DiscountCode()
     // {
