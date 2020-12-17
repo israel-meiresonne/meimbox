@@ -242,10 +242,10 @@ class Router
         $view = new View('Template/files/message');
         $translator = $view->getTranslator();
         $btnLink = ControllerSecure::extractController(ControllerGrid::class);
-        $hiddenMsg = "<span style=\"display:none;\">" . $exception->__toString() . "</span>";
         switch ($env) {
             case Configuration::ENV_DEV:
                 // throw $exception;
+                $hiddenMsg = "<span style=\"display:none;\">" . $exception->__toString() . "</span>";
                 $datas = [
                     "title" => "dev error occured",
                     "content" => $exception->getMessage() . $hiddenMsg,
@@ -258,6 +258,7 @@ class Router
 
             case Configuration::ENV_PROD:
             default:
+                $hiddenMsg = "<span style=\"display:none;\">" . $exception->getMessage() . "</span>";
                 $brand = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY)))->get(Map::brand);
                 $btnLink = $btnLink . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . time();
                 $datas = [

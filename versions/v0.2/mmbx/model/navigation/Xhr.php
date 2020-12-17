@@ -99,7 +99,7 @@ class Xhr extends Page
             $eventID = $holdsEvent->getEventID();
             throw new Exception("This xhr request already holds a Event '$eventID'");
         }
-        $setDate = (int) $this->getParam(self::KEY_SET_DATE);
+        $setDate = (float) $this->getParam(self::KEY_SET_DATE);
         if (empty($setDate)) {
             throw new Exception("The set date of a Xhr Event can't be empty '$setDate'");
         }
