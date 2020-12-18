@@ -75,9 +75,14 @@ abstract class Product extends ModelFunctionality
     protected $weight;
 
     /**
+     * Holds the gender of the product
+     * @var string[]
+     */
+    protected $gender;
+
+    /**
      * Holds product's foreign System like Google's or Facebook's
      * @var string
-    //  * + $foreignCategory[SystemCategory{string}] => category{string}
      */
     protected $foreignCategory;
 
@@ -605,6 +610,16 @@ abstract class Product extends ModelFunctionality
     protected function getWeight()
     {
         return $this->weight;
+    }
+
+    /**
+     * Getter product's gender
+     * @return string product's gender
+     */
+    public function getGender()
+    {
+        $gender = ["female"];
+        return $gender;
     }
 
     /**
