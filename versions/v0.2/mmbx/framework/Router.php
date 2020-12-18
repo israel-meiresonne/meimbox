@@ -94,6 +94,7 @@ class Router
             // rnvs : c'est dans Controller::executeAction que ça se passe
             //        pour le moment, on a instancié le contrôleur effectif
             //        et produit une string qui contient son action
+            // throw new Exception("Error Processing Request", 1);
             $controller->executeAction($action);
 
             // rnvs : ici on retourne à index.php qui termine
@@ -258,9 +259,10 @@ class Router
 
             case Configuration::ENV_PROD:
             default:
+                $url = Page::extractUrl();
                 $hiddenMsg = "<span style=\"display:none;\">" . $exception->getMessage() . "</span>";
                 $brand = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY)))->get(Map::brand);
-                $btnLink = $btnLink . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . time();
+                $btnLink = $btnLink . "?" . Page::KEY_FROM_ERROR_PAGE . "=" . $url;
                 $datas = [
                     "title" => $translator->translateStation("US106"),
                     "content" => $translator->translateStation("US107", new Map([Map::brand => strtoupper($brand)])) . $hiddenMsg,
