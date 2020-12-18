@@ -56,6 +56,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
     <base href="<?= $webRoot ?>">
     <title><?= $title ?></title>
     <meta name="description" content="<?= $description ?>">
+    <meta name="google-site-verification" content="aIjZLmnjdEIh9dRdLUSzmDentOZboTY8VYr5r6FWnv0" />
     <?= self::META_DEVICE ?>
     <?= self::STYLE_W3SCHOOL ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
