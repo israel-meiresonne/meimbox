@@ -65,7 +65,10 @@ class Facebook extends ModelFunctionality
             "url_DomainWebroot" => $url_DomainWebroot,
             "url_file" => $url_file,
             "products" => $products,
-            "company" => $company
+            "company" => $company,
+            "language" => $language,
+            "country" => $country,
+            "currency" => $currency
         ];
         $xml = self::generateFile("model/API/Facebook/files/catalog/$file", $datas);
         return self::cleanXML($xml);

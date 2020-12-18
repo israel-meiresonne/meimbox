@@ -5,19 +5,32 @@
  * @param string                    $url_DomainWebroot  url like https://domain.dom/web/root/
  * @param BasketProduct|BoxProduct  $product            products of the catalog
  * @param Map                       $company            datas about company
+ * @param Language                  $language           language for the product
+ * @param Country                   $country            country where to sell the product
+ * @param Currency                  $currency           currency of the product
  */
 
 /**
  * @var Product */
 $product = $product;
+
+switch (get_class($product)) {
+    case BoxProduct::class:
+        $priceObj = Box::getAvgPricePerItem($language, $country, $currency);
+        break;
+    case BasketProduct::class:
+        $priceObj = $product->getPrice();
+        break;
+}
+
 /**
  * @var Map */
 $company = $company;
 $prodID = $product->getProdID();
 $prodName = $product->getProdName();
-$priceObj = $product->getPrice();
+// $priceObj = $product->getPrice();
 $description = $product->getDescription();
-$price = $priceObj->getPrice() . " " . $priceObj->getCurrency()->getIsoCurrency();
+$price = $priceObj->getPriceRounded() . " " . $priceObj->getCurrency()->getIsoCurrency();
 $link = $url_DomainWebroot . $product->getUrlPath(Product::PAGE_ITEM);
 $picPaths = $product->getPictureSources();
 $picPathsReverse = array_reverse($picPaths);
@@ -42,6 +55,7 @@ $item_group_id = $product->getGroupID();
 $category = (!empty($product->getCategories())) ? $product->getCategories()[0] : null;
 $product_type = (!empty($category)) ? "<g:product_type>$category</g:product_type>" : null;
 $size = implode(", ", $product->getSizes());
+$gender = $product->getGender()[0];
 // $richDescription = $product->getRichDescription();
 // $rich_text_description = (!empty($richDescription)) ? "<g:rich_text_description>$richDescription</g:rich_text_description>" : null;
 
@@ -72,6 +86,7 @@ $size = implode(", ", $product->getSizes());
     <g:item_group_id><?= $item_group_id ?></g:item_group_id>
     <g:size><?= $size ?></g:size>
     <?= $product_type ?>
+    <g:gender><?= $gender ?></g:gender>
     <?php
     //$rich_text_description
     // <!-- <g:gender>female, male, unisex  </g:gender> -->

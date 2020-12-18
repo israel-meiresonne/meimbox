@@ -91,6 +91,12 @@ class Box extends ModelFunctionality
      */
     private $price;
 
+    /** 
+     * Holds the average price of a product for all boxes
+     * @var Price
+     */
+    private static $avgPrice;
+
     /**
      * Shipping cost for a given country and currency
      * @var Shipping
@@ -102,6 +108,12 @@ class Box extends ModelFunctionality
      * @var Discount
      */
     private $discount;
+
+    /**
+     * Holds a sample of all boxes available for sell
+     * @var Box[]
+     */
+    private static $boxSamples;
 
     /**
      * Holds Map of database's table of odered Boxes
@@ -223,7 +235,7 @@ class Box extends ModelFunctionality
         $this->country = $country;
         $this->currency = $currency;
 
-        $this->boxID = self::PREFIX_ID.$this->generateDateCode(self::ID_LENGTH);
+        $this->boxID = self::PREFIX_ID . $this->generateDateCode(self::ID_LENGTH);
         $this->color = $boxColor;
         $this->setDate = $this->getDateTime();
 
@@ -359,6 +371,23 @@ class Box extends ModelFunctionality
         $arguments = $this->getBoxArguments($boxColor, $country, $currency);
         $this->advantages = $arguments["advantage"];
         $this->drawbacks = $arguments["drawback"];
+    }
+
+    /**
+     * To set samples
+     */
+    private static function setSamples(Language $language, Country $country, Currency $currency)
+    {
+        $boxMap = parent::getBoxMap($country, $currency);
+        // $boxes = [];
+        $boxesMap = new Map();
+        foreach ($boxMap as $boxColor => $datas) {
+            $box = new Box($boxColor, $language, $country, $currency);
+            $key = $box->getPrice()->getPriceKey();
+            $boxesMap->put($box, $key);
+        }
+        $boxesMap->sortKeyAsc();
+        self::$boxSamples = $boxesMap->getMap();
     }
 
 
@@ -649,27 +678,6 @@ class Box extends ModelFunctionality
     }
 
     /**
-     * To get one box in each color supported ordered by price 
-     * from lower to highest
-     * @param Language $language Visitor's language
-     * @param Country $country Visitor's current Country
-     * @param Currency $currency Visitor's current Currency
-     * @return Box[] boxes supported ordered by price from lower to bigger
-     */
-    public static function getSamples(Language $language, Country $country, Currency $currency)
-    {
-        $boxMap = parent::getBoxMap($country, $currency);
-        $boxes = [];
-        foreach ($boxMap as $boxColor => $datas) {
-            $box = new Box($boxColor, $language, $country, $currency);
-            $key = $box->getPrice()->getPriceKey();
-            $boxes[$key] = $box;
-        }
-        ksort($boxes);
-        return $boxes;
-    }
-
-    /**
      * To add new product in box
      * + also add product in db
      * @param Response $response where to strore results
@@ -738,6 +746,54 @@ class Box extends ModelFunctionality
     }
 
     /**
+     * To set average price
+     * @param Language $language Visitor's language
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     */
+    private static function setAvgPrice(Language $language, Country $country, Currency $currency)
+    {
+        $boxSamples= Box::getSamples($language, $country, $currency);
+        $sum = 0;
+        $nb = count($boxSamples);
+        foreach($boxSamples as $box){
+            $price = $box->getPrice()->getPrice();
+            $capacity = $box->getSizeMax();
+            $sum += ($price/$capacity);
+        }
+        $price = $sum/$nb;
+        self::$avgPrice = new Price($price, $currency);
+    }
+
+    /**
+     * To get the average price of a product for all box
+     * + SUM(BoxPrice)/SUM(BoxCapacity)
+     * @param Language $language Visitor's language
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return Price the average price of a product for all box
+     */
+    public static function getAvgPricePerItem(Language $language, Country $country, Currency $currency)
+    {
+        (!isset(self::$avgPrice)) ? self::setAvgPrice($language, $country, $currency) : null;
+        return self::$avgPrice;
+    }
+
+    /**
+     * To get one box in each color supported ordered by price 
+     * from lower to highest
+     * @param Language $language Visitor's language
+     * @param Country $country Visitor's current Country
+     * @param Currency $currency Visitor's current Currency
+     * @return Box[] boxes supported ordered by price from lower to bigger
+     */
+    public static function getSamples(Language $language, Country $country, Currency $currency)
+    {
+        (!isset(self::$boxSamples)) ? self::setSamples($language, $country, $currency) : null;
+        return self::$boxSamples;
+    }
+
+    /**
      * To get boxes ordered
      * @param string|null $orderID id of the order
      * @return Map boxes ordered
@@ -752,15 +808,15 @@ class Box extends ModelFunctionality
      */
     private static function getOrderedBoxesMap($orderID)
     {
-        if(!isset(self::$orderedBoxesMap)){
-            if(!isset($orderID)){
+        if (!isset(self::$orderedBoxesMap)) {
+            if (!isset($orderID)) {
                 throw new Exception("The order id must be setted");
             }
             self::$orderedBoxesMap = new Map();
             $sql = "SELECT * FROM `Orders-Boxes`WHERE`orderId`='$orderID'";
             $tab = parent::select($sql);
-            if(!empty($tab)){
-                foreach($tab as $tabLine){
+            if (!empty($tab)) {
+                foreach ($tab as $tabLine) {
                     $boxID = $tabLine["boxId"];
                     self::$orderedBoxesMap->put($tabLine["box_color"], $boxID, Map::box_color);
                     self::$orderedBoxesMap->put((int)$tabLine["sizeMax"], $boxID, Map::sizeMax);
@@ -787,8 +843,8 @@ class Box extends ModelFunctionality
         $boxes = [];
         $orderedBoxesMap = self::getOrderedBoxesMap($orderID);
         $boxIDs = $orderedBoxesMap->getKeys();
-        if(!empty($boxIDs)){
-            foreach($boxIDs as $boxID){
+        if (!empty($boxIDs)) {
+            foreach ($boxIDs as $boxID) {
                 $box = new Box();
                 $box->boxID = $boxID;
                 $box->color = $orderedBoxesMap->get($boxID, Map::box_color);
