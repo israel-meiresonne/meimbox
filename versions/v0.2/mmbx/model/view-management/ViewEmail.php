@@ -24,7 +24,8 @@ class ViewEmail extends View
     public function __construct(Language $language)
     {
         parent::__construct();
-        $this->translator = isset($language) ? new Translator($language) : new Translator();
+        // $this->translator = isset($language) ? new Translator($language) : new Translator();
+        self::$translator = isset($language) ? new Translator($language) : new Translator();
     }
 
     /**
@@ -122,7 +123,9 @@ class ViewEmail extends View
             $htmlContent = $this->generateFile($templateFile, $emailDatasMap->getMap());
             $emailDatasMap->put($htmlContent, Map::template);
         }
-        $mailerAPI = new $mailerClass($this->translator);
+        $translator = $this->getTranslator();
+        // $mailerAPI = new $mailerClass($this->translator);
+        $mailerAPI = new $mailerClass($translator);
         if (!method_exists($mailerAPI, $mailerFunc)) {
             throw new Exception("This function '$mailerFunc' don't exist in class '$mailerClass'");
         }
