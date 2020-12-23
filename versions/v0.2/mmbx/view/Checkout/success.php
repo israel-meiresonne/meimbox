@@ -5,7 +5,8 @@
  */
 /**
  * @var Translator */
-$translator = $this->translator;
+// $translator = $this->translator;
+$translator = $this->getTranslator();
 /**
  * @var User
  */

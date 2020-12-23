@@ -5,7 +5,8 @@
  */
 /**
  * @var Translator */
-$translator = $this->translator;
+// $translator = $this->translator;
+$translator = $this->getTranslator();
 $title = $translator->translateStation("US113");
 $content = 
 ucfirst($translator->translateStation("US112"))
