@@ -328,6 +328,13 @@ class Map
     public const maxtime = "maxtime";
     public const maxreturntime = "maxreturntime";
 
+    /**
+     * Keys for Tutorial
+     * @var string
+     */
+    public const direction = "direction";
+    public const content = "content";
+
 
 
     /**

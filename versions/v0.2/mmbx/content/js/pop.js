@@ -125,6 +125,11 @@
     displayFadeOut = (x, t = TS) => {
         $(x).fadeOut(t);
     }
+    displayFadeInOut = (ox, ix, t = TS) => {
+        $(ox).fadeOut(t, () => {
+            $(ix).fadeIn(t);
+        });
+    }
     handleErr = (r, frmx = null) => {
         var k = Object.keys(r.errors);
         k.forEach(n => {
@@ -197,6 +202,11 @@
         }
     }
     /*—————————————————— MINI_POPUP BEHAVIOR UP —————————————————————————————*/
+    /*—————————————————— TUTORIAL BEHAVIOR DOWN —————————————————————————————*/
+    switchTuto = (fx, tx, t = TS) => {
+        displayFadeInOut(fx, tx, t);
+    }
+    /*—————————————————— TUTORIAL BEHAVIOR UP ———————————————————————————————*/
     /*—————————————————— POPUP BEHAVIOR DOWN ————————————————————————————————*/
     openPopUp = (x, before = () => { }, after = () => { }) => {
         before(x);

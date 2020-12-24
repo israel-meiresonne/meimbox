@@ -11,6 +11,7 @@ require_once 'model/API/Google/Google.php';
 // View Elements
 require_once 'view/view/Touch/Touch.php';
 require_once 'view/view/MiniPopUp/MiniPopUp.php';
+require_once 'view/view/Tutorial/Tutorial.php';
 require_once 'view/view/DropDown/DropDown.php';
 
 /**
@@ -72,7 +73,7 @@ class View
      * + NOTE: it's the only instance of this class in the whole system.
      * @var Translator
      */
-    protected $translator;
+    protected static $translator;
 
     /**
      *  the current user
@@ -247,7 +248,8 @@ class View
         $this->fbPixelsMap = new Map();
         $this->person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
-        $this->translator = isset($language) ? new Translator($language) : new Translator();
+        // $this->translator = isset($language) ? new Translator($language) : new Translator();
+        self::$translator = isset($language) ? new Translator($language) : new Translator();
 
         $file = "view/";
         if ($controller != "") {
@@ -305,22 +307,17 @@ class View
                     $response->addResult($key, $result);
                 }
             }
-            $response->translateResult($this->translator);
+            // $response->translateResult($this->translator);
+            $response->translateResult(self::$translator);
         } else {
-            $response->translateError($this->translator);
+            // $response->translateError($this->translator);
+            $response->translateError(self::$translator);
         }
         echo json_encode($response->getAttributs());
     }
 
     /**
-     * Génère un fichier vue et renvoie le résultat produit
-     * 
-     * rnvs : retourne une string dont le contenu est le fichier dont
-     *        le chemin d'accès est contenu dans $file, fichier dont
-     *        le contenu est garni avec les données du tableau associatif
-     *        $datas, tableau éclaté en autant de variables qu'il possède
-     *        d'éléments
-     * 
+     * Generate a view with a file
      * @param string $file Chemin du fichier vue à générer
      * @param array $datas Données nécessaires à la génération de la vue
      * @return string Résultat de la génération de la vue
@@ -329,62 +326,14 @@ class View
     protected function generateFile($file, $datas)
     {
         if (file_exists($file)) {
-            // $dir_prod_files = Configuration::get(Configuration::DIR_PROD_FILES);
-            $translator = $this->translator;
-
-            // Rend les éléments du tableau $datas accessibles dans la vue
-            // rnvs : https://www.php.net/manual/en/function.extract.php
-            // rnvs : Import variables from an array into the current symbol 
-            //        table.
-            //        c.-à-d. pour chaque élément key => value ('abc' => 22,
-            //        p.ex.) de $datas, crée une variable de nom $key 
-            //        ($abc p. ex.) et de valeur value (22, p. ex.)
+            // $translator = $this->translator;
+            $translator = self::$translator;
             extract($datas);
-
-            // rnvs : ici on a 1 variable par élément de $datas
-
-            // Démarrage de la temporisation de sortie
-            // rnvs : https://www.php.net/manual/en/function.ob-start.php
-            // rnvs : This function will turn output buffering on. While 
-            //        output buffering is active no output is sent from the 
-            //        script (other than headers), instead the output is 
-            //        stored in an internal buffer.
-            // rnvs : donc à partir d'ici les sorties ne sont pas écrites dans
-            //        le script mais mises en tampon
             ob_start();
-
-            // Inclut le fichier vue
-            // Son résultat est placé dans le tampon de sortie
-            // rnvs : le contenu du fichier de chemin $file n'est pas inclus
-            //        dans le script ic-même mais copié dans le tampon
-            //        créé / géré par ob_start()
-            // rnvs : les variables extraites de $datas sont accessibles
-            //        dans le fichier de chemin $file 
-            // rnvs : lors du 1er appel de View::generateFile() dans 
-            //        View::generate(), le paramètre $file est une string
-            //        dont le contenu est le chemin vers le fichier d'action 
-            //        de la vue effective. cela sert à produire le corps de
-            //        la page web à retourner au client.
-            //        c'est lors de l'inclusion de ce fichier que l'attribut
-            //        $title de la View est setté.
-            // rnvs : lors du 2e appel de View::generateFile() dans 
-            //        View::generate(), le paramètre $file est une string
-            //        dont le contenu est le chemin vers le fichier modèle
-            //        générique (template.php) utilisé par toutes les pages 
-            //        du site
             require $file;
-
-            // Arrêt de la temporisation et renvoi du tampon de sortie
-            // rnvs : https://www.php.net/manual/en/function.ob-get-clean.php
-            // rnvs : Gets the current buffer contents and delete current 
-            //        output buffer.
-            // rnvs : le buffer créé / géré par ob_start() est retourné sous 
-            //        la forme d'une string
             return ob_get_clean();
         } else {
-            // rnvs : ici le fichier de l'action de la vue effective n'existe pas
             throw new Exception("Fichier '$file' introuvable");
-            // rnvs : l'exception remonte jusque Router::routerRequest()
         }
     }
 
@@ -413,7 +362,8 @@ class View
      */
     public function getTranslator(): Translator
     {
-        return $this->translator;
+        // return $this->translator;
+        return self::$translator;
     }
 
     /**

@@ -19,6 +19,8 @@ $product = $product;
  */
 $translator = $translator;
 
+/** Element */
+// —— Error MiniPopUp
 $prodID = $product->getProdID();
 $TagComment = "<p class='comment'></p>";
 
@@ -34,9 +36,17 @@ $measureMinipopID = $measureMinipop->getId();
 $submitBtnID = ModelFunctionality::generateDateCode(25);
 $dataError = " data-errorx='#$submitBtnID' data-errortype='" . self::ER_TYPE_COMMENT . "'";
 
-// $typeRadioEvent = "onclick=\"evtInp(this, 'evt_cd_73')\"";
-// $typeCheckBoxEvent = "onclick=\"evtCheck(this, 'evt_cd_73')\"";
-// $typeInputEvent = "onblur=\"evtInp(this, 'evt_cd_43')\"";
+// —— Size Tutorial
+$text = str_repeat("hello, this my tutorial", 5);
+$stepsMap = new Map();
+$stepsMap->put("stepName", 0, Map::name);
+$stepsMap->put(self::DIRECTION_TOP, 0, Map::direction);
+$stepsMap->put($text, 0, Map::content);
+
+$stepsMap->put("stepName", 1, Map::name);
+$stepsMap->put(self::DIRECTION_TOP, 1, Map::direction);
+$stepsMap->put($text, 1, Map::content);
+$sizeTutorial = new Tutorial($stepsMap);
 
 switch ($conf) {
     case Size::CONF_SIZE_ADD_PROD:
@@ -102,6 +112,8 @@ switch ($conf) {
                 <div class="product-size-dropdown-container">
                     <?php
                     /* ——————————————————————————————— SIZE CHAR & BRAND —————————————————————————————————————*/
+                        echo $sizeTutorial->getStep(0);
+                        echo $alphaNumMinipop;
                     switch ($conf) {
                         case Size::CONF_SIZE_ADD_PROD:
                             $checkedSizes = [];
@@ -110,7 +122,6 @@ switch ($conf) {
                             $checkedSizes = ($sizeType == Size::SIZE_TYPE_ALPHANUM) ? [$selectedSize->getsize()] : [];
                             break;
                     }
-                    echo $alphaNumMinipop;
                     ob_start();
                     ?>
                     <div class="size-set-container">
@@ -186,6 +197,7 @@ switch ($conf) {
                     ?>
                 </div>
                 <div class="product-size-customize-container">
+                    <?= $sizeTutorial->getStep(1); ?>
                     <div class="product-size-customize-block">
                         <?php
                         /* ——————————————————————————————— MEASUREMENT —————————————————————————————————————*/
