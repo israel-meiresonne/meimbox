@@ -849,7 +849,7 @@
     content: '';
     display: block;
     position: absolute;
-    top: 9px;
+    top: 8px;
     right: -1px;
     width: 8px;
     height: 8px;
@@ -2875,7 +2875,7 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
     border: var(--border-float);
 }
 
-.pricing-wrap .product_detail-info-first-title{
+.pricing-wrap .product_detail-info-first-title {
     text-align: center;
 }
 
@@ -3068,6 +3068,44 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 }
 
 /*—————————————————————————————— MINI_POP_UP UP —————————————————————————————*/
+
+/*—————————————————————————————— TUTORIAL DOWN ——————————————————————————————*/
+
+.tutorial-wrap {
+    padding: 10px;
+}
+
+.tutorial-dad {
+    /* display: block !important; */
+    display: block;
+}
+
+.tutorial_content {
+    margin-bottom: 10px;
+}
+
+.tutorial_butttons {
+    display: flex;
+}
+
+.tutorial_butttons-right {
+    margin-left: auto;
+}
+
+.tutorial_butttons-skip {
+    color: var(--color-blue);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.tutorial_butttons-close {
+    color: var(--color-red);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/*—————————————————————————————— TUTORIAL UP ————————————————————————————————*/
 
 /*—————————————————————————————— SIZE FORM DOWN —————————————————————————————*/
 
@@ -3279,7 +3317,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 /*+++++++++++++++++  SIZE_FORM DOWN +++++++++++++++++++++*/
 
 /*+++++++++++++++++  MEASURE_FORM DOWN ++++++++++++++++++*/
-
+.product-size-customize-container{
+    position: relative;
+}
 .product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-block {
     margin-bottom: 30px;
 }

@@ -166,7 +166,6 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
                                             $description = $product->getDescription();
                                             $eventJson = htmlentities(json_encode(["prodID" => $prodID]));
                                             $shippingTitle = $translator->translateStation("US30");
-                                            // $shippingTxt = $translator->translateStation("US31");
                                             ?>
                                             <div class="collapse-title-div" data-evtopen="evt_cd_11" data-evtclose="evt_cd_12" data-evtj="<?= $eventJson ?>">
                                                 <div class="collapse-title"><?= $descriptionTitle ?></div>
@@ -201,8 +200,6 @@ $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMa
                                             </div>
                                             <div class="collapse-text-div collapse-text-hidded">
                                                 <div class="collapse-text-inner">
-                                                    <?= "" //$shippingTxt 
-                                                    ?>
                                                     <ul>
                                                         <?php
                                                         foreach ($shipTerms as $shipTerm) : ?>

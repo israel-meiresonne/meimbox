@@ -3,6 +3,7 @@
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param string|null $id mini pop's id
+ * @param string|null $classes mini pop's additional classes
  * @param [up|down|left|right] $direction direction where to dipay the pop up following its relative elements
  * + up: will place popup in top of its parant
  * + down: will place popup under its parant
@@ -23,7 +24,7 @@ switch ($direction) {
         break;
 }
 ?>
-<div id="<?= $id ?>" class="minipop-wrap <?= $class ?>">
+<div id="<?= $id ?>" class="minipop-wrap <?= $classes ?> <?= $class ?>">
     <div class="minipop-content">
         <?= $content ?>
     </div>
