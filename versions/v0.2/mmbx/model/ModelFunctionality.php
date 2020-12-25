@@ -156,6 +156,20 @@ abstract class ModelFunctionality extends Model
     protected static $INFOS_COMPANY;
 
     /**
+     * Holds datas from Tutorials table
+     * @var Map
+     * Map[tutoID{string}][stepID{int}][Map::id]            =>  {string}    Tutorial's id
+     * Map[tutoID{string}][stepID{int}][Map::index]         =>  {int}       step's id
+     * Map[tutoID{string}][stepID{int}][Map::code]          =>  {string}    event code
+     * Map[tutoID{string}][stepID{int}][Map::name]          =>  {string}    name of the step
+     * Map[tutoID{string}][stepID{int}][Map::direction]     =>  {string}    must match Vieuw's directions
+     * Map[tutoID{string}][stepID{int}][Map::content]       =>  {string}
+     * Map[tutoID{string}][stepID{int}][Map::cookieID]      =>  {string}    id of the cookie to drop when
+     *                                                                      Turial is completed
+     */
+    protected static $tutorialsMap;
+
+    /**
      * PDOStatement success code
      * @var string
      */
@@ -876,10 +890,55 @@ abstract class ModelFunctionality extends Model
      */
     private static function setCompanyMap()
     {
-            self::$INFOS_COMPANY = "INFOS_COMPANY";
-            $json = self::getConstantLine(self::$INFOS_COMPANY)["jsonValue"];
-            $companyMap = json_decode($json, true);
-            self::$INFOS_COMPANY = new Map($companyMap);
+        self::$INFOS_COMPANY = "INFOS_COMPANY";
+        $json = self::getConstantLine(self::$INFOS_COMPANY)["jsonValue"];
+        $companyMap = json_decode($json, true);
+        self::$INFOS_COMPANY = new Map($companyMap);
+    }
+
+    /**
+     * To get turial map with the given id
+     * @param string $tutoID    id of the Tutorial datas to get
+     * @return Map  turial map
+     */
+    protected static function getTutorialMap(string $tutoID)
+    {
+        if (!isset(self::$tutorialsMap)) {
+            self::addTutorial($tutoID);
+            $steps = self::$tutorialsMap->get($tutoID);
+        } else {
+            $steps = self::$tutorialsMap->get($tutoID);
+            (empty($steps)) ? self::addTutorial($tutoID) : null;
+            $steps = (empty($steps)) ? self::$tutorialsMap->get($tutoID) : $steps;
+        }
+        if(empty($steps)){
+            throw new Exception("There's no Tutorial with this id '$tutoID'");
+        }
+        return new Map($steps);
+    }
+
+    /**
+     * To add a new tutorial in TutorialsMap
+     */
+    private static function addTutorial(string $tutoID)
+    {
+        (!isset(self::$tutorialsMap)) ? self::$tutorialsMap = new Map() : null;
+        $sql = "SELECT * FROM `Tutorials` WHERE `tutoID`='$tutoID'  
+                ORDER BY `Tutorials`.`stepID` ASC";
+        $tab = self::select($sql);
+        if(!empty($tab)){
+            foreach($tab as $tabLine){
+                $id = $tabLine["tutoID"];
+                $stepID = (int) $tabLine["stepID"];
+                self::$tutorialsMap->put($id,                    $id, $stepID, Map::id);
+                self::$tutorialsMap->put($stepID,                $id, $stepID, Map::index);
+                self::$tutorialsMap->put($tabLine["event_code"], $id, $stepID, Map::code);
+                self::$tutorialsMap->put($tabLine["stepName"],   $id, $stepID, Map::name);
+                self::$tutorialsMap->put($tabLine["direction"],  $id, $stepID, Map::direction);
+                self::$tutorialsMap->put($tabLine["content"],    $id, $stepID, Map::content);
+                self::$tutorialsMap->put($tabLine["cookieId"],    $id, $stepID, Map::cookieID);
+            }
+        }
     }
 
     /*———————————————————————————— STATIC TABLES ACCESS UP ——————————————————*/
@@ -1206,7 +1265,8 @@ abstract class ModelFunctionality extends Model
      * + int keys of the first element is 0, the second is 1, and go on
      * @return array with int keys
      */
-    protected static function keysToAscInt(array $map){
+    protected static function keysToAscInt(array $map)
+    {
         $keys = array_keys($map);
         $intKeys = array_keys($keys);
         $intKeysMap = array_combine($intKeys, $map);
