@@ -567,13 +567,23 @@ class Visitor extends ModelFunctionality
 
     /**
      * Check if Visitor has a cookie on his driver
-     * @param string $cookieID cookie to check
+     * @param string    $cookieID   cookie to check
+     * @param bool      $inDb       set true to look for cookie in database 
+     *                              else false to look for on Visitor's browser
      * @return boolean true if has privilege else false
      */
-    public function hasCookie($cookieID)
+    public function hasCookie($cookieID, bool $inDb = false)
     {
-        $cookie = $this->getCookie($cookieID);
-        $hasCookie = isset($cookie);
+        $hasCookie = null;
+        if(!$inDb){
+            $cookie = $this->getCookie($cookieID);
+            $hasCookie = isset($cookie);
+        } else {
+            $userID = $this->getUserID();
+            $usersCookiesMap = $this->getUsersCookiesMap($userID);
+            $cookieIDs = $usersCookiesMap->getKeys();
+            $hasCookie = in_array($cookieID, $cookieIDs);
+        }
         return $hasCookie;
     }
 
@@ -743,6 +753,16 @@ class Visitor extends ModelFunctionality
     public function getUnits()
     {
         return $this->getUnitsTable();
+    }
+
+    /**
+     * To get turial map with the given id
+     * @param string $tutoID    id of the Tutorial datas to get
+     * @return Map  turial map
+     */
+    public function getStepsMap(string $tutoID)
+    {
+        return $this->getTutorialMap($tutoID);
     }
 
     /*———————————————————————————— GET DB TABLE UP ——————————————————————————*/
