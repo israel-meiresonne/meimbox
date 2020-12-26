@@ -334,10 +334,9 @@ class Map
      * Keys for Tutorial
      * @var string
      */
+    public const tutoID = "tutoID";
     public const direction = "direction";
     public const content = "content";
-
-
 
     /**
      * Constructor

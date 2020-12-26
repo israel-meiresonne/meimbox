@@ -278,8 +278,9 @@ class Visitor extends ModelFunctionality
      * @param string $cookieID id of the cookie
      * @param mixed $value value of the cookie
      */
-    protected function generateCookie($cookieID, $value)
+    protected function generateCookie($cookieID, $value = null)
     {
+        $value = (!isset($value)) ? ModelFunctionality::generateDateCode(25) : $value;
         $userID = $this->getUserID();
         return Cookie::generateCookie($userID, $cookieID, $value);
     }
@@ -575,7 +576,7 @@ class Visitor extends ModelFunctionality
     public function hasCookie($cookieID, bool $inDb = false)
     {
         $hasCookie = null;
-        if(!$inDb){
+        if (!$inDb) {
             $cookie = $this->getCookie($cookieID);
             $hasCookie = isset($cookie);
         } else {
@@ -810,6 +811,23 @@ class Visitor extends ModelFunctionality
             }
         }
         // var_dump($eventRsp->getAttributs());
+    }
+
+    /**
+     * To handle Tutorial event occured
+     * @param Response  $response   to push in result or accured error
+     * @param string    $tutoID     id of a Tutorial
+     */
+    public function handleTutorialEvent($response, $tutoID)
+    {
+        try {
+            $stepsMap = $this->getStepsMap($tutoID);
+            $is = $stepsMap->getKeys();
+            $cookieID = $stepsMap->get($is[0], Map::cookieID);
+            $this->generateCookie($cookieID);
+        } catch (\Throwable $th) {
+            $response->addError($th->__toString(), MyError::ADMIN_ERROR);
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ class ControllerHome extends ControllerSecure
     public const QR_LOG_OUT = "home/logOut";
     public const QR_UPDATE_COUNTRY = "home/updateCountry";
     public const QR_EVENT = "home/event";
+    public const QR_EVENT_TT = "home/eventTuto";
     public const QR_GET_FB_PIXEL = "home/fbpxl";
 
     /**
@@ -236,7 +237,6 @@ class ControllerHome extends ControllerSecure
                         $errorMsg = "The json submited is invalid '$json'";
                         $response->addError($errorMsg, MyError::ADMIN_ERROR);
                     } else {
-                        $userID = $person->getUserID();
                         $eventDattasMap = (!empty($datas)) ? new  Map($datas) : null;
                         if (!empty($eventDattasMap)) {
                             $keys = $eventDattasMap->getKeys();
@@ -253,6 +253,38 @@ class ControllerHome extends ControllerSecure
             }
         }
         $this->generateJsonView([], $response, $person);
+    }
+
+    /**
+     * To handle Tutorial Events
+     */
+    public function eventTuto()
+    {
+        $response = new Response();
+        $person = $this->getPerson();
+        $tutoID = Query::getParam(Tutorial::TUTO_ID_K);
+        $tutoType = Query::getParam(Tutorial::TUTO_TYPE_K);
+        if ((!isset($tutoID)) || (!isset($tutoType))) {
+            $errorMsg = "Tutorial id '$tutoID' or its event type  '$tutoType' is not setted";
+            $response->addError($errorMsg, MyError::ADMIN_ERROR);
+        } else {
+            switch ($tutoType) {
+                case Tutorial::TYPE_NEXT:
+                    $this->event();
+                    break;
+                case Tutorial::TYPE_SKIP:
+                case Tutorial::TYPE_CLOSE:
+                    $person->handleTutorialEvent($response, $tutoID);
+                    if (!$response->containError()) {
+                        $this->event();
+                    }
+                    break;
+                default:
+                    $errorMsg = "This type of Tutorial event '$tutoType' is not supported";
+                    $response->addError($errorMsg, MyError::ADMIN_ERROR);
+                    break;
+            }
+        }
     }
 
     /**

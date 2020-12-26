@@ -45,15 +45,23 @@ $dataError = " data-errorx='#$submitBtnID' data-errortype='" . self::ER_TYPE_COM
 $sizeTutorial = null;
 if (!$person->hasCookie(Cookie::TT_SZTP, true)) {
     $stepsMap = new Map();
-    $sizeStepsMap = $person->getStepsMap("tut_1");
-    
+    $sizeStepsMap = $person->getStepsMap("tut_0");
+
     $is = $sizeStepsMap->getKeys();
     $sizeTutoEventCode = $sizeStepsMap->get($is[0], Map::code);
+    $replacements = [
+        "size_type_alphanum" => "<b>" . ucfirst($translator->translateStation("US9")) . "</b>",
+        "size_type_measure" => "<b>" . ucfirst($translator->translateStation("US17")) . "</b>",
+        "lign_return" => '<br><br>'
+    ];
     foreach ($is as $i) {
+        $tutoID = $sizeStepsMap->get($i,   Map::id);
         $stepName = $sizeStepsMap->get($i,   Map::name);
         $direction =  $sizeStepsMap->get($i, Map::direction);
         $station =  $sizeStepsMap->get($i,   Map::content);
-        $contentText = $translator->translateStation($station);
+        $contentText = $translator->translateStation($station, new Map($replacements));
+
+        $stepsMap->put($tutoID, $i, Map::tutoID);
         $stepsMap->put($stepName, $i, Map::name);
         $stepsMap->put(constant('self::' . $direction), $i, Map::direction);
         $stepsMap->put($contentText, $i, Map::content);
