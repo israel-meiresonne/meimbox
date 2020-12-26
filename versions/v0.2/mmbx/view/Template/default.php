@@ -72,7 +72,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         var jxq = [];
         var jxzzz = true;
         const jx = function(ds) {
-            (ADM) ? console.log("send: ", ds.d) : null;
+            (ADM) ? console.log("send: ", ds.d): null;
             $.ajax({
                 type: 'POST',
                 url: ds.a,
@@ -81,7 +81,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
                 success: (j) => {
                     ds.rc();
                     ds.r(j, ds.x);
-                    (ADM) ? console.log("response: ", j) : null;
+                    (ADM) ? console.log("response: ", j): null;
                     myTimeOut(jxp, XHR_T);
                 },
                 error: () => {
@@ -115,7 +115,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
             SND(datasSND);
         }
         const SND = (ds) => {
-            ds.a = rburl(ds.a) + QR_XHR + "&<?= Xhr::KEY_SET_DATE ?>=" + Date.now();
+            ds.a = rburl(ds.a) + "?" + QR_XHR + "&<?= Xhr::KEY_SET_DATE ?>=" + Date.now() + "&" + LANG;
             ds.sc();
             jxq.push(ds);
             if (jxzzz) {
@@ -230,8 +230,8 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const XHR_T = <?= self::XHR_TIME_OUT ?>;
         const BNR = 1000000;
         const XHR = "<?= Page::PATH_XHR ?>";
-        // const LANG = "lang=" + $("html").attr("lang");
-        const QR_XHR = "?<?= Page::KEY_XHR ?>=<?= $pageID ?>";
+        const LANG = "lang=" + $("html").attr("lang");
+        const QR_XHR = "<?= Page::KEY_XHR ?>=<?= $pageID ?>";
         const FCID = "#full_screen_div";
         const ER_TYPE_MINIPOP = "<?= self::ER_TYPE_MINIPOP ?>";
         const ER_TYPE_COMMENT = "<?= self::ER_TYPE_COMMENT ?>";

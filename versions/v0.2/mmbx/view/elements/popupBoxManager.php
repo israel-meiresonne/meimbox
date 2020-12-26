@@ -9,9 +9,13 @@
  * + addBoxproduct
  * + moveBoxProduct
  */
+/**
+ * @var Translator
+ */
+$translator = $translator;
 $datas = [];
 // $datas["windowId"] = "";
-$datas["title"] = "box manager";
+$datas["title"] = $translator->translateStation("US159");
 $datas["closeButtonId"] = "box_manager_close_button";
 $datas["laodingId"] = "box_manager_loading";
 $datas["submitButtonId"] = "sumbit_box_manager";
