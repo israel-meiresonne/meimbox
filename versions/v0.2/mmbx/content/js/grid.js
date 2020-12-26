@@ -19,6 +19,7 @@
         $("#filter_hide_button").click(function () {
             var filterId = "filter_block";
             $("#" + filterId).slideUp(TS);
+            evt("evt_cd_114");
         });
         //———————————————————————————————————————————
     });
