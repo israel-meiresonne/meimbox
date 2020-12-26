@@ -376,7 +376,25 @@ class View
     {
         return $this->person;
     }
-    
+
+    /**
+     * To check if a Visitor is a Administractor
+     * @return bool true if Visitor is a Administractor else false
+     */
+    private function isADM()
+    {
+        return $this->getPerson()->hasCookie(Cookie::COOKIE_ADM, true);
+    }
+
+    /**
+     * To get code for Administractor account
+     * @return string code for Administractor account
+     */
+    private function getADMCodes()
+    {
+        $datas = ["isAdm" => $this->isADM()];
+        return $this->generateFile('view/view/BasicFiles/admCodes.php', $datas);
+    }
 
     /**
      * To convet unix time into displayable date
@@ -413,13 +431,45 @@ class View
     }
 
     /**
+     * To get base code of API tracker
+     * @return string base code of API tracker
+     */
+    private  function getAPIBaseCodes(...$classes)
+    {
+        $baseCodes = $this->getADMCodes();
+        if ((!$this->isADM()) && (!empty($classes))) {
+            foreach ($classes as $class) {
+                switch ($class) {
+                    case Facebook::class:
+                        $baseCodes .= $this->getFbPixelBaseCode() . "\n";
+                        break;
+                    case Google::class:
+                        $baseCodes .= $this->getGoogleBaseCode() . "\n";;
+                        break;
+                }
+            }
+        }
+        return $baseCodes;
+    }
+
+    /**
      * To get Facebook's base code for pixel
+     * @param string[] $classes class name of API tracker
      * @return string Facebook's base code for pixel
      */
     private function getFbPixelBaseCode()
     {
         // $fbPixelsMap = $this->getFbPixelsMap();
         return Facebook::getBaseCode();
+    }
+
+    /**
+     * To get Google's base code
+     * @return string Google's base code
+     */
+    private function getGoogleBaseCode()
+    {
+        return Google::getBaseCode();
     }
 
     /**
@@ -448,6 +498,28 @@ class View
     }
 
     /**
+     * To get events of API tracker
+     * @param string[] $classes class name of API tracker
+     * @return string events of API tracker
+     */
+    private function generateAPIEvents(...$classes)
+    {
+        $scripts = "";
+        if ((!$this->isADM()) && (!empty($classes))) {
+            foreach ($classes as $class) {
+                switch ($class) {
+                    case Facebook::class:
+                        $scripts .= $this->generateFbPixel() . "\n";
+                        break;
+                    case Google::class:
+                        break;
+                }
+            }
+        }
+        return $scripts;
+    }
+
+    /**
      * To generate facebook's pixel stored in fbPixelsMap in script tag
      * @return string|null pixel script
      */
@@ -469,14 +541,5 @@ class View
             $script .= "</script>";
         }
         return $script;
-    }
-
-    /**
-     * To get Google's base code
-     * @return string Google's base code
-     */
-    private function getGoogleBaseCode()
-    {
-        return Google::getBaseCode();
     }
 }
