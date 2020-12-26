@@ -139,6 +139,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const QR_LOG_OUT = "<?= ControllerHome::QR_LOG_OUT ?>";
         const QR_UPDATE_COUNTRY = "<?= ControllerHome::QR_UPDATE_COUNTRY ?>";
         const QR_EVENT = "<?= ControllerHome::QR_EVENT ?>";
+        const QR_EVENT_TT = "<?= ControllerHome::QR_EVENT_TT ?>";
         const QR_FBPXL = "<?= ControllerHome::QR_GET_FB_PIXEL ?>";
 
         const EVT_K = "<?= Event::KEY_EVENT ?>";
@@ -193,7 +194,6 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         const KEY_FREE_SHIPPING = "<?= Basket::KEY_FREE_SHIPPING ?>";
         const KEY_BSKT_QUANTITY = "<?= Basket::KEY_BSKT_QUANTITY ?>";
 
-
         const KEY_BOX_ID = "<?= Box::KEY_BOX_ID ?>";
         const KEY_NEW_BOX_ID = "<?= Box::KEY_NEW_BOX_ID ?>";
         const KEY_BOX_COLOR = "<?= Box::KEY_BOX_COLOR ?>";
@@ -216,6 +216,9 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
 
         const KEY_FB_PXL = "<?= Pixel::KEY_FB_PXL ?>";
         const KEY_FB_PXL_DT = "<?= Pixel::KEY_FB_PXL_DT ?>";
+
+        const TUTO_ID_K = "<?= Tutorial::TUTO_ID_K ?>";
+        const TUTO_TYPE_K = "<?= Tutorial::TUTO_TYPE_K ?>";
 
         const DELETE_MEASURE_ALERT = "<?= $translator->translateStation("US50") ?>";
         const ALERT_DELETE_BOX = "<?= $translator->translateStation("US58") ?>";

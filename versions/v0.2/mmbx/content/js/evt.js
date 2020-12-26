@@ -48,6 +48,19 @@
         var j = $(x).attr(dataevtj);
         (!empty(evtcd)) ? evt(evtcd, j) : null;
     }
+    evtTuto = (i, t, e, j) => {
+        var map = { [TUTO_ID_K]: i, [TUTO_TYPE_K]: t, [EVT_K]: e, [EVT_D]: j };
+        var p = mapToParam(map);
+        var d = {
+            "a": QR_EVENT_TT,
+            "d": p,
+            "r": () => { },
+            "l": "",
+            "sc": () => { },
+            "rc": () => { }
+        };
+        SND(d);
+    }
     /*————————————————————————— FB PXL DOWN —————————————————————————————————*/
     fbpxl = (e, j = null) => {
         var map = (empty(j)) ? { [KEY_FB_PXL]: e } : { [KEY_FB_PXL]: e, [KEY_FB_PXL_DT]: j };
@@ -65,6 +78,7 @@
     fbpxlRSP = (r) => {
         if (r.isSuccess) { handleFbPxl(r) }
     }
+    /*————————————————————————— FB PXL UP ———————————————————————————————————*/
     scrollRate = () => {
         var pH = (parseInt($("body").height()) + $("body").offset().top);
         var ofs = window.pageYOffset;
@@ -77,7 +91,6 @@
         var r = (s / pH * 100).toFixed(2);
         return r;
     }
-    /*————————————————————————— FB PXL UP ———————————————————————————————————*/
     $(document).ready(function () {
         var isS;
         window.addEventListener('scroll', (event) => {
@@ -89,7 +102,7 @@
                 evt("evt_cd_0", j);
                 console.log(d);
             }, 1000);
-            ((typeof lp!="undefined") && (!empty(lp))) ? lp() : null;
+            ((typeof lp != "undefined") && (!empty(lp))) ? lp() : null;
         }, false);
 
     });
