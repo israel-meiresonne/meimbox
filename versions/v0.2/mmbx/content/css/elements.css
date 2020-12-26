@@ -3323,6 +3323,9 @@ by indicating the width of the class .slider-nb_acticle-width_indicator
 .product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-block {
     margin-bottom: 30px;
 }
+.product-size-customize-container .dropdown_checkbox-checkbox-list .customize_choice-block .customize-choice-cut {
+    position: relative;
+}
 
 .customize_choice-block .dropdown-checkbox-block>p::first-letter {
     text-transform: capitalize;

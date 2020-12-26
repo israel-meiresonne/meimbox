@@ -264,4 +264,32 @@ class Tutorial extends MiniPopUp
         }
         return $buttonsMap;
     }
+
+    /**
+     * To generate Turorial
+     * @param Translator    $translator     to translate string
+     * @param string        $dbStepsMap     map containing all datas about Tutorial's steps from database
+     * @param array|null    $replacements   value to replace in translation
+     * @return Tutorial a new Tutorial
+     */
+    public static function generateTutorial(Translator $translator, Map $dbStepsMap, array $replacements = [])
+    {
+        $stepsMap = new Map();
+        $is = $dbStepsMap->getKeys();
+        $eventCode = $dbStepsMap->get($is[0], Map::code);
+        foreach ($is as $i) {
+            $tutoID = $dbStepsMap->get($i,   Map::id);
+            $stepName = $dbStepsMap->get($i,   Map::name);
+            $direction =  $dbStepsMap->get($i, Map::direction);
+            $station =  $dbStepsMap->get($i,   Map::content);
+            $contentText = $translator->translateStation($station, new Map($replacements));
+    
+            $stepsMap->put($tutoID, $i, Map::tutoID);
+            $stepsMap->put($stepName, $i, Map::name);
+            $stepsMap->put(constant('self::' . $direction), $i, Map::direction);
+            $stepsMap->put($contentText, $i, Map::content);
+        }
+        $tutorial = new Tutorial($stepsMap, $eventCode);
+        return $tutorial;
+    }
 }

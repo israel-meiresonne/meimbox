@@ -46,46 +46,26 @@ $sizeTutorial = null;
 if (!$person->hasCookie(Cookie::TT_SZTP, true)) {
     $stepsMap = new Map();
     $sizeStepsMap = $person->getStepsMap("tut_0");
-
-    $is = $sizeStepsMap->getKeys();
-    $sizeTutoEventCode = $sizeStepsMap->get($is[0], Map::code);
     $replacements = [
         "size_type_alphanum" => "<b>" . ucfirst($translator->translateStation("US9")) . "</b>",
         "size_type_measure" => "<b>" . ucfirst($translator->translateStation("US17")) . "</b>",
         "lign_return" => '<br><br>'
     ];
-    foreach ($is as $i) {
-        $tutoID = $sizeStepsMap->get($i,   Map::id);
-        $stepName = $sizeStepsMap->get($i,   Map::name);
-        $direction =  $sizeStepsMap->get($i, Map::direction);
-        $station =  $sizeStepsMap->get($i,   Map::content);
-        $contentText = $translator->translateStation($station, new Map($replacements));
-
-        $stepsMap->put($tutoID, $i, Map::tutoID);
-        $stepsMap->put($stepName, $i, Map::name);
-        $stepsMap->put(constant('self::' . $direction), $i, Map::direction);
-        $stepsMap->put($contentText, $i, Map::content);
-    }
-    $sizeTutorial = new Tutorial($stepsMap, $sizeTutoEventCode);
+    $sizeTutorial = Tutorial::generateTutorial($translator, $sizeStepsMap, $replacements);
 }
 
-$brandTuto = null;
+$brandTutorial = null;
 if (!$person->hasCookie(Cookie::TT_RFBRND, true)) {
     $stepsMap = new Map();
     $brandStepsMap = $person->getStepsMap("tut_1");
-    $is = $brandStepsMap->getKeys();
-    $brandTutoEvt = $brandStepsMap->get($is[0], Map::code);
-    $tutoID = $brandStepsMap->get($is[0],       Map::id);
-    $stepName = $brandStepsMap->get($is[0],     Map::name);
-    $direction =  $brandStepsMap->get($is[0],   Map::direction);
-    $station =  $brandStepsMap->get($is[0],     Map::content);
-    $contentText = $translator->translateStation($station, new Map(["lign_return" => '<br><br>']));
+    $replacements = ["lign_return" => '<br><br>'];
+    $brandTutorial = Tutorial::generateTutorial($translator, $brandStepsMap, $replacements);
+}
 
-    $stepsMap->put($tutoID,                         $is[0], Map::tutoID);
-    $stepsMap->put($stepName,                       $is[0], Map::name);
-    $stepsMap->put(constant('self::' . $direction), $is[0], Map::direction);
-    $stepsMap->put($contentText,                    $is[0], Map::content);
-    $brandTuto = new Tutorial($stepsMap, $brandTutoEvt);
+$msrTutorial = null;
+if (!$person->hasCookie(Cookie::TT_MSRMNT_CT, true)) {
+    $msrStepsMap = $person->getStepsMap("tut_2");
+    $msrTutorial = Tutorial::generateTutorial($translator, $msrStepsMap);
 }
 
 
@@ -192,7 +172,7 @@ switch ($conf) {
                     <div id="<?= $brandCtnId ?>" class="brand-custom-container" <?= $TagdisplayBrand ?>>
                         <hr class="hr-summary">
                         <div id="choose_brand" class="customize_choice-button-container">
-                            <?= (!empty($brandTuto)) ? $brandTuto->getStep(0) : null; ?>
+                            <?= (!empty($brandTutorial)) ? $brandTutorial->getStep(0) : null; ?>
                             <p><?= $translator->translateStation("US18") ?></p>
                             <div class="custom_selected-container">
                                 <?php
@@ -254,6 +234,7 @@ switch ($conf) {
                             <hr class="hr-summary">
                             <div class="customize_choice-button-block">
                                 <div id="measurement_button_div" class="customize_choice-button-container">
+                                    <?= (!empty($msrTutorial)) ? $msrTutorial->getStep(0) : null; ?>
                                     <?php
                                     echo $measureMinipop;
                                     $TagInput = "data-errorx='#$measureMinipopID' data-errortype='" . self::ER_TYPE_MINIPOP . "'";
@@ -298,6 +279,7 @@ switch ($conf) {
                         </div>
                         <div class="customize_choice-block">
                             <div class="customize-choice-cut">
+                                <?= (!empty($msrTutorial)) ? $msrTutorial->getStep(1) : null; ?>
                                 <?php
                                 $cutDpdEventMap = new Map();
                                 switch ($conf) {
