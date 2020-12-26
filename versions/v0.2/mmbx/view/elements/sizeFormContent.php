@@ -341,7 +341,7 @@ switch ($conf) {
         if ($conf == Size::CONF_SIZE_ADD_PROD) :
             switch ($product->getType()):
                 case BoxProduct::BOX_TYPE:
-                    $buttonTxt = $translator->translateStation("US24"); ?>
+                    $buttonTxt = $translator->translateStation("US158"); ?>
                     <div class="add-button-container product-data-line">
                         <button id="select_size_for_box" class="green-button standard-button remove-button-default-att" onclick="checkBoxProductStock('#form_check_prod_stock')"><?= $buttonTxt ?></button>
                         <div id="add_prod_loading" class="btn-loading loading-img-wrap">
@@ -351,7 +351,8 @@ switch ($conf) {
                     </div>
                 <?php break;
                 case BasketProduct::BASKET_TYPE:
-                    $buttonTxt = $translator->translateStation("US24"); ?>
+                    $remplacements = ["basket_translate" => $translator->translateStation("US25")];
+                    $buttonTxt = $translator->translateStation("US24", $remplacements); ?>
                     <div class="add-button-container product-data-line">
                         <button id="select_size_for_cart" class="green-button standard-button remove-button-default-att"><?= $buttonTxt ?></button>
                         <div id="add_prod_loading" class="btn-loading loading-img-wrap">

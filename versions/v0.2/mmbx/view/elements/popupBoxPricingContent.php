@@ -12,6 +12,10 @@
  */
 $translator = $translator;
 
+/** Translations */
+$remplacements = ["basket_translate" => $translator->translateStation("US25")];
+$adderBtnTxt = $translator->translateStation("US24", new Map($remplacements));
+
 /**
  * List of boxes supported ordered by price from lower to bigger
  * @var Box[]
@@ -51,7 +55,7 @@ $boxes = Box::getSamples($language, $country, $currency);
                                 </div>
                                 <div class="product_add-button-block">
                                     <button id="<?= $sbtn ?>" class="submit_btn_cls green-button standard-button remove-button-default-att" onclick="evt('evt_cd_51','<?= $boxEventJson ?>');addBox('<?= $box->getColorCode() ?>','<?= $popx ?>','<?= $sbtnx ?>')">
-                                        <?= $translator->translateStation("US24") ?>
+                                        <?= $adderBtnTxt ?>
                                     </button>
                                 </div>
                                 <div class="product_detail-block">
