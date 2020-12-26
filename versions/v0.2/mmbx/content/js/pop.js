@@ -152,7 +152,9 @@
         }
     }
     handleFbPxl = (r) => {
-        eval(r.results[KEY_FB_PXL]);
+        if (!ADM) {
+            eval(r.results[KEY_FB_PXL]);
+        }
     }
     replaceFade = function (x, y, t = TS) {
         $(y).css("display", "none");

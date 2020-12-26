@@ -296,14 +296,13 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
     <script src="<?= self::$PATH_JS ?>elements.js"></script>
     <script src="<?= self::$PATH_JS ?>pop.js"></script>
     <script src="<?= self::$PATH_JS ?>qr.js"></script>
-    <?= $this->getFbPixelBaseCode() ?>
-    <?= $this->getGoogleBaseCode() ?>
+    <?= $this->getAPIBaseCodes(Facebook::class, Google::class) ?>
 </head>
 
 <body>
     <?= $headerContent ?>
     <div class="template-content">
-        <?= $this->generateFbPixel() ?>
+        <?= $this->generateAPIEvents(Facebook::class) ?>
         <?= $content ?>
         <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
         <script id="evt" type="text/javascript">
