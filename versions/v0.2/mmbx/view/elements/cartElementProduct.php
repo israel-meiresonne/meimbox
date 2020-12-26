@@ -71,7 +71,7 @@ switch ($product->getType()) {
         $sequence = $product->getSelectedSize()->getSequence();
         $boxElementIdx = "#" . $boxElementId;
         /*———————————————————————— CONFIG DELETE BUTTON DOWN ————————————————*/
-        $deleteFunc = "removeBoxProduct('$boxID', '$prodID', '$sequence', '$boxElementIdx', '$elementIdx')";
+        $deleteFunc = "removeBoxProduct(this,'$boxID', '$prodID', '$sequence', '$boxElementIdx', '$elementIdx')";
         /*———————————————————————— CONFIG DELETE BUTTON UP ——————————————————*/
         /*———————————————————————— CONFIG EDIT BUTTON DWON ——————————————————*/
         $spanid = ModelFunctionality::generateDateCode(25);
