@@ -88,6 +88,7 @@ class Cookie extends ModelFunctionality
     public const COOKIE_LCK = "LCK";
     public const COOKIE_CHKT_LNCHD = "CHKT_LNCHD";
     public const TT_SZTP = "TT_SZTP";
+    public const TT_RFBRND = "TT_RFBRND";
 
     /**
      * Holds cookies state

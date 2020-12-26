@@ -69,6 +69,26 @@ if (!$person->hasCookie(Cookie::TT_SZTP, true)) {
     $sizeTutorial = new Tutorial($stepsMap, $sizeTutoEventCode);
 }
 
+$brandTuto = null;
+if (!$person->hasCookie(Cookie::TT_RFBRND, true)) {
+    $stepsMap = new Map();
+    $brandStepsMap = $person->getStepsMap("tut_1");
+    $is = $brandStepsMap->getKeys();
+    $brandTutoEvt = $brandStepsMap->get($is[0], Map::code);
+    $tutoID = $brandStepsMap->get($is[0],       Map::id);
+    $stepName = $brandStepsMap->get($is[0],     Map::name);
+    $direction =  $brandStepsMap->get($is[0],   Map::direction);
+    $station =  $brandStepsMap->get($is[0],     Map::content);
+    $contentText = $translator->translateStation($station, new Map(["lign_return" => '<br><br>']));
+
+    $stepsMap->put($tutoID,                         $is[0], Map::tutoID);
+    $stepsMap->put($stepName,                       $is[0], Map::name);
+    $stepsMap->put(constant('self::' . $direction), $is[0], Map::direction);
+    $stepsMap->put($contentText,                    $is[0], Map::content);
+    $brandTuto = new Tutorial($stepsMap, $brandTutoEvt);
+}
+
+
 /** Configurations */
 switch ($conf) {
     case Size::CONF_SIZE_ADD_PROD:
@@ -172,6 +192,7 @@ switch ($conf) {
                     <div id="<?= $brandCtnId ?>" class="brand-custom-container" <?= $TagdisplayBrand ?>>
                         <hr class="hr-summary">
                         <div id="choose_brand" class="customize_choice-button-container">
+                            <?= (!empty($brandTuto)) ? $brandTuto->getStep(0) : null; ?>
                             <p><?= $translator->translateStation("US18") ?></p>
                             <div class="custom_selected-container">
                                 <?php
