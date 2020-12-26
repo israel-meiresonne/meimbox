@@ -79,6 +79,7 @@ class Cookie extends ModelFunctionality
 
     /**
      * Cookies supported
+     * @var string
      */
     public const COOKIE_VIS = "VIS";
     public const COOKIE_CLT = "CLT";
@@ -86,6 +87,7 @@ class Cookie extends ModelFunctionality
     public const COOKIE_ADRS = "ADRS";
     public const COOKIE_LCK = "LCK";
     public const COOKIE_CHKT_LNCHD = "CHKT_LNCHD";
+    public const TT_SZTP = "TT_SZTP";
 
     /**
      * Holds cookies state
