@@ -23,6 +23,8 @@ class Map
     public const close = "close";
     public const duration = "duration";
     public const support = "support";
+    public const obj = "obj";
+    public const index = "index";
 
 
     /**

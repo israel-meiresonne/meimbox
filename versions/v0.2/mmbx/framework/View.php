@@ -80,6 +80,7 @@ class View
      * @var Visitor
      */
     private $person;
+    // private static $person;
 
     /** Nom du fichier associé à la vue */
     // rnvs : string qui contient le chemin vers le fichier php qui correspond
@@ -247,6 +248,7 @@ class View
     {
         $this->fbPixelsMap = new Map();
         $this->person = $person;
+        // self::$person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
         // $this->translator = isset($language) ? new Translator($language) : new Translator();
         self::$translator = isset($language) ? new Translator($language) : new Translator();
@@ -367,6 +369,16 @@ class View
     }
 
     /**
+     * To get View's user  account
+     * @return Visitor|User View's user  account
+     */
+    protected function getPerson()
+    {
+        return $this->person;
+    }
+    
+
+    /**
      * To convet unix time into displayable date
      * @return string displayable date
      */
@@ -390,7 +402,6 @@ class View
         $date = "$day $month";
         return $date;
     }
-
 
     /**
      * To get fbPixelsMap

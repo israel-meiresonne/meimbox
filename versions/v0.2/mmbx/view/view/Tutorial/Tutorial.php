@@ -10,8 +10,15 @@ class Tutorial extends MiniPopUp
      * + Map[index{int}][Map::name]         => {string}    name of the step
      * + Map[index{int}][Map::direction]    => {string}    View's direction constant
      * + Map[index{int}][Map::content]      => {string}    content to place in the Tutorial
+     * + Map[index{int}][Map::obj]          => {MiniPopUp} MiniPopUp generated with a step
      */
     private $stepsMap;
+
+    /**
+     * Holds the event code to use in all steps with different params
+     * @var string
+     */
+    private $eventCode;
 
     /**
      * Holds type of Tutorial's button
@@ -29,12 +36,13 @@ class Tutorial extends MiniPopUp
 
     /**
      * Constructor
-     * @param Map $stepsMap the steps of the Tutorial
-     *                      + Map[index{int}][Map::name]        => {string}    name of the step
-     *                      + Map[index{int}][Map::direction]   => {string}    View's direction constant
-     *                      + Map[index{int}][Map::content]     => {string}    content to place in the Tutorial
+     * @param Map       $stepsMap   the steps of the Tutorial
+     *                              + Map[index{int}][Map::name]        => {string}    name of the step
+     *                              + Map[index{int}][Map::direction]   => {string}    View's direction constant
+     *                              + Map[index{int}][Map::content]     => {string}    content to place in the Tutorial
+     * @param string    $eventCode  the steps of the Tutorial
      */
-    public function __construct(Map $stepsMap)
+    public function __construct(Map $stepsMap, string $eventCode)
     {
         if (!isset($stepsMap)) {
             throw new Exception("stepsMap must be setted");
@@ -47,8 +55,8 @@ class Tutorial extends MiniPopUp
             $id = ModelFunctionality::generateDateCode(25);
             $stepsMap->put($id, $index, Map::id);
         }
-
         $this->stepsMap = $stepsMap;
+        $this->eventCode = $eventCode;
     }
 
     /**
@@ -60,6 +68,16 @@ class Tutorial extends MiniPopUp
     {
         return $this->getStepDatas($index, Map::id);
         // return $this->id;
+    }
+
+    /**
+     * To get Tutorial's name
+     * @param int $index index of a step in stepsMap
+     * @return string Tutorial's name
+     */
+    private function getStepName(int $index)
+    {
+        return $this->getStepDatas($index, Map::name);
     }
 
     /**
@@ -118,11 +136,14 @@ class Tutorial extends MiniPopUp
         if (!in_array($index, $indexes)) {
             throw new Exception("There no step with this index '$index' in stepsMap");
         }
-        $content = $this->generateStep($index);
-        $direction = $this->getDirection($index, Map::direction);
-        $id = $this->getStepId($index);
-        $miniPopUp = new MiniPopUp($direction, $content, $id);
-        ($index == 0) ? $miniPopUp->setClasses(self::CLASS_MINIPOPUP) : null;
+        $miniPopUp = $stepsMap->get(Map::obj);
+        if(empty($miniPopUp)){
+            $content = $this->generateStep($index);
+            $direction = $this->getDirection($index, Map::direction);
+            $id = $this->getStepId($index);
+            $miniPopUp = new MiniPopUp($direction, $content, $id);
+            ($index == 0) ? $miniPopUp->setClasses(self::CLASS_MINIPOPUP) : null;
+        }
         return $miniPopUp;
     }
 

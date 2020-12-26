@@ -2,12 +2,17 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $formId id of the forrmular
- * @param Box|null $box box that contain the boxproduct
- * @param BoxProduct|BasketProduct $product Visitor's basket
- * @param int $nbMeasure the number of measure holds by Visitor
- * @param string $conf configuation to determinate the layout
+ * @param string                    $formId id of the forrmular
+ * @param Box|null                  $box box that contain the boxproduct
+ * @param BoxProduct|BasketProduct  $product Visitor's basket
+ * @param int                       $nbMeasure the number of measure holds by Visitor
+ * @param string                    $conf configuation to determinate the layout
  */
+
+/**
+ * @var Visitor
+ */
+$person = $this->getPerson();
 
 /**
  * @var BoxProduct|BasketProduct
@@ -37,17 +42,26 @@ $submitBtnID = ModelFunctionality::generateDateCode(25);
 $dataError = " data-errorx='#$submitBtnID' data-errortype='" . self::ER_TYPE_COMMENT . "'";
 
 // —— Size Tutorial
-$text = str_repeat("hello, this my tutorial", 5);
-$stepsMap = new Map();
-$stepsMap->put("stepName", 0, Map::name);
-$stepsMap->put(self::DIRECTION_TOP, 0, Map::direction);
-$stepsMap->put($text, 0, Map::content);
+$sizeTutorial = null;
+if (!$person->hasCookie(Cookie::TT_SZTP, true)) {
+    $stepsMap = new Map();
+    $sizeStepsMap = $person->getStepsMap("tut_1");
+    
+    $is = $sizeStepsMap->getKeys();
+    $sizeTutoEventCode = $sizeStepsMap->get($is[0], Map::code);
+    foreach ($is as $i) {
+        $stepName = $sizeStepsMap->get($i,   Map::name);
+        $direction =  $sizeStepsMap->get($i, Map::direction);
+        $station =  $sizeStepsMap->get($i,   Map::content);
+        $contentText = $translator->translateStation($station);
+        $stepsMap->put($stepName, $i, Map::name);
+        $stepsMap->put(constant('self::' . $direction), $i, Map::direction);
+        $stepsMap->put($contentText, $i, Map::content);
+    }
+    $sizeTutorial = new Tutorial($stepsMap, $sizeTutoEventCode);
+}
 
-$stepsMap->put("stepName", 1, Map::name);
-$stepsMap->put(self::DIRECTION_TOP, 1, Map::direction);
-$stepsMap->put($text, 1, Map::content);
-$sizeTutorial = new Tutorial($stepsMap);
-
+/** Configurations */
 switch ($conf) {
     case Size::CONF_SIZE_ADD_PROD:
         /** Event */
@@ -112,8 +126,8 @@ switch ($conf) {
                 <div class="product-size-dropdown-container">
                     <?php
                     /* ——————————————————————————————— SIZE CHAR & BRAND —————————————————————————————————————*/
-                        echo $sizeTutorial->getStep(0);
-                        echo $alphaNumMinipop;
+                    echo (!empty($sizeTutorial)) ? $sizeTutorial->getStep(0) : null;
+                    echo $alphaNumMinipop;
                     switch ($conf) {
                         case Size::CONF_SIZE_ADD_PROD:
                             $checkedSizes = [];
@@ -197,7 +211,7 @@ switch ($conf) {
                     ?>
                 </div>
                 <div class="product-size-customize-container">
-                    <?= $sizeTutorial->getStep(1); ?>
+                    <?= (!empty($sizeTutorial)) ? $sizeTutorial->getStep(1) : null;; ?>
                     <div class="product-size-customize-block">
                         <?php
                         /* ——————————————————————————————— MEASUREMENT —————————————————————————————————————*/
