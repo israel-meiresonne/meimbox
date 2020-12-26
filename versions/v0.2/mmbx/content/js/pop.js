@@ -648,7 +648,6 @@
     }
     var addBoxRSP = (r, d) => {
         if (r.isSuccess) {
-            // $("#box_manager_window .pop_up-content-block-inner").html(r.results[A_ADD_BOX]);
             getBoxMngr(CONF_ADD_BXPROD, d.bxid);
             $(d.cbtnx).click();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
@@ -666,7 +665,6 @@
                 "a": A_DELETE_BOX,
                 "d": p,
                 "r": removeBoxRSP,
-                // "l": ".basket_pop_loading",
                 "l": l,
                 "x": ex,
                 "sc": () => { displayFlexOn(d.l) },
@@ -679,7 +677,6 @@
         if (r.isSuccess) {
             removeAnim(x);
             basketUpdateDatas(r);
-            // getBasketPop();
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[ALERT_DELETE_BOX] != null && r.errors[ALERT_DELETE_BOX] != "") {
@@ -700,17 +697,14 @@
                 return "&" + param;
             },
             "a": A_ADD_BXPROD,
-            // "d": param,
             "r": addBoxProductRSP,
             "l": "#box_manager_loading",
             "x": cbtnx,
             "sc": () => {
                 displayFlexOn(d.l, TS / 10);
-                // $(d.l).css("display", "flex");
                 disable(sbtnx);
             },
             "rc": () => {
-                // $(d.l).fadeOut(TS);
                 displayFlexOff(d.l, TS);
                 enable(sbtnx);
             }
@@ -816,7 +810,6 @@
             "d": null,
             "r": getBasketPopRSP,
             "l": ".basket_pop_loading, #basket_pop .loading-img-wrap",
-            // "x": cbtnx,
             "sc": () => { displayFlexOn(d.l) },
             "rc": () => { displayFlexOff(d.l) }
         };
@@ -847,7 +840,6 @@
             "d": params,
             "r": moveBoxProductRSP,
             "l": "#box_manager_loading",
-            // "x": cbtnx,
             "sc": () => { displayFadeIn(d.l) },
             "rc": () => { displayFadeOut(d.l) }
         };
@@ -865,7 +857,7 @@
             popAlert(r.errors[A_MV_BXPROD].message);
         }
     }
-    removeBoxProduct = (bxid, pid, seq, bxelx, elx) => {
+    removeBoxProduct = (x, bxid, pid, seq, bxelx, elx) => {
         if (popAsk(ALERT_DLT_BXPROD)) {
             var o = {
                 [KEY_BOX_ID]: bxid,
@@ -874,14 +866,16 @@
             }
             var params = mapToParam(o);
             evt('evt_cd_61', json_encode(o));
+            unclickable(x);
+            var l = $(x).find(".btn-loading");
             var d = {
                 "a": A_DLT_BXPROD,
                 "d": params,
                 "r": removeBoxProductRSP,
-                // "l": "#box_manager_loading",
+                "l": l,
                 "x": { "bxelx": bxelx, "elx": elx },
-                "sc": () => { },
-                "rc": () => { }
+                "sc": () => { displayFlexOn(d.l) },
+                "rc": () => { displayFlexOff(d.l) }
             };
             SND(d);
         }
