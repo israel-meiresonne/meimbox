@@ -100,7 +100,7 @@
                 var d = { [EVT_SCROLL]: r };
                 var j = json_encode(d);
                 evt("evt_cd_0", j);
-                console.log(d);
+                (ADM) ? console.log(d) : null;
             }, 1000);
             ((typeof lp != "undefined") && (!empty(lp))) ? lp() : null;
         }, false);

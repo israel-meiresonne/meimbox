@@ -72,7 +72,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
         var jxq = [];
         var jxzzz = true;
         const jx = function(ds) {
-            console.log("send: ", ds.d);
+            (ADM) ? console.log("send: ", ds.d) : null;
             $.ajax({
                 type: 'POST',
                 url: ds.a,
@@ -81,7 +81,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
                 success: (j) => {
                     ds.rc();
                     ds.r(j, ds.x);
-                    console.log("response: ", j);
+                    (ADM) ? console.log("response: ", j) : null;
                     myTimeOut(jxp, XHR_T);
                 },
                 error: () => {
