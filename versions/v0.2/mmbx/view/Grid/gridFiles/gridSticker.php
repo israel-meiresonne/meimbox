@@ -18,11 +18,7 @@ if (isset($executeObj)) {
     }
 }
 
-
-foreach ($stickers as $sticker => $value) :
-    // $valueAtt = 'value="' . $value . '"';
-    // $stickerFunc = 'onclick="removeSticker(' . "'" . $value . "'" . ')"';
-?>
+foreach ($stickers as $sticker => $value) : ?>
     <div class="sticker-container">
         <div class="sticker-wrap">
             <div value="<?= $value ?>" class="sticker-content-div">
