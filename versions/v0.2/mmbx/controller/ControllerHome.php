@@ -326,21 +326,21 @@ class ControllerHome extends ControllerSecure
 
     /*———————————————————————————— TESTS DOWN ———————————————————————————————*/
 
-    public function test()
-    {
-        header('content-type: application/json');
-        // /**
-        //  * @var User */
-        $person = $this->person;
-        $sizes = [
-            "40",
-            "42",
-            "44",
-            "xl",
-            "3xl"
-        ];
-        var_dump(Size::multiplySizes($sizes));
-    }
+    // public function test()
+    // {
+    //     header('content-type: application/json');
+    //     // /**
+    //     //  * @var User */
+    //     $person = $this->person;
+    //     $sizes = [
+    //         "40",
+    //         "42",
+    //         "44",
+    //         "xl",
+    //         "3xl"
+    //     ];
+    //     var_dump(Size::multiplySizes($sizes));
+    // }
 
     // public function test_DiscountCode()
     // {

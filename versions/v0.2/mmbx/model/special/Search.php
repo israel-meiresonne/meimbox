@@ -211,27 +211,27 @@ class Search extends ModelFunctionality
         //     $prodIdList = explode(",", Query::getParam("prodID"));
         //     $this->prodIdList = $this->filterValidValues("productIDList", $prodIdList);
         // } else {
-            $collections = Query::existParam("collections") ? explode(",", Query::getParam("collections")) : null;
-            $product_types = Query::existParam("product_types") ? explode(",", Query::getParam("product_types")) : null;
-            $functions = Query::existParam("functions") ? explode(",", Query::getParam("functions")) : null;
-            $categories = Query::existParam("categories") ? explode(",", Query::getParam("categories")) : null;
-            $colors = Query::existParam("colors") ? explode(",", Query::getParam("colors")) : null;
-            $sizes = Query::existParam("sizes") ? explode(",", Query::getParam("sizes")) : null;
+        $collections = Query::existParam("collections") ? explode(",", Query::getParam("collections")) : null;
+        $product_types = Query::existParam("product_types") ? explode(",", Query::getParam("product_types")) : null;
+        $functions = Query::existParam("functions") ? explode(",", Query::getParam("functions")) : null;
+        $categories = Query::existParam("categories") ? explode(",", Query::getParam("categories")) : null;
+        $colors = Query::existParam("colors") ? explode(",", Query::getParam("colors")) : null;
+        $sizes = Query::existParam("sizes") ? explode(",", Query::getParam("sizes")) : null;
 
-            $this->collections = $this->filterValidValues("collections", $collections);
-            $this->product_types = $this->filterValidValues("product_types", $product_types);
-            $this->functions = $this->filterValidValues("functions", $functions);
-            $this->categories = $this->filterValidValues("categories", $categories);
-            $this->colors = $this->filterValidValues("colors", $colors);
-            $this->sizes = $this->filterValidValues("sizes", $sizes);
+        $this->collections = $this->filterValidValues("collections", $collections);
+        $this->product_types = $this->filterValidValues("product_types", $product_types);
+        $this->functions = $this->filterValidValues("functions", $functions);
+        $this->categories = $this->filterValidValues("categories", $categories);
+        $this->colors = $this->filterValidValues("colors", $colors);
+        $this->sizes = $this->filterValidValues("sizes", $sizes);
 
-            $order = Query::existParam("order") ? Query::getParam("order") : null;
-            $order = $this->filterOrders($order);
-            $this->order =  $order;
-            $prices = Query::existParam("prices") ? explode(",", Query::getParam("prices")) : null;
-            $pricesObj = $this->filterPrices($prices, $currency);
-            $this->prices["minPrice"] = key_exists(0, $pricesObj) ? $pricesObj[0] : null;
-            $this->prices["maxPrice"] = key_exists(1, $pricesObj) ? $pricesObj[1] : null;
+        $order = Query::existParam("order") ? Query::getParam("order") : null;
+        $order = $this->filterOrders($order);
+        $this->order =  $order;
+        $prices = Query::existParam("prices") ? explode(",", Query::getParam("prices")) : null;
+        $pricesObj = $this->filterPrices($prices, $currency);
+        $this->prices["minPrice"] = key_exists(0, $pricesObj) ? $pricesObj[0] : null;
+        $this->prices["maxPrice"] = key_exists(1, $pricesObj) ? $pricesObj[1] : null;
         // }
     }
 
@@ -307,7 +307,8 @@ class Search extends ModelFunctionality
      * @param Currency $currency the Visitor's current Currency
      * @param int[]  $prodIdList list of product id
      */
-    private function prodIdSearch($prodIdList){
+    private function prodIdSearch($prodIdList)
+    {
         $this->prodIdList = $this->filterValidValues("productIDList", $prodIdList);
     }
 
@@ -493,8 +494,8 @@ class Search extends ModelFunctionality
         $colors = $this->arrayToMap($this->colors);
         $stickers = array_merge($stickers, $colors);
 
-        $sizes = $this->arrayToMap($this->sizes);
-        $stickers = array_merge($stickers, $sizes);
+        $sizes = array_combine($this->sizes, $this->sizes);
+        $stickers = ($stickers + $sizes);
         return $stickers;
     }
 
