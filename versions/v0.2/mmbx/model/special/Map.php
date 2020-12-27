@@ -238,17 +238,13 @@ class Map
     public const message = "message";
 
     /**
-     * Keys for company datas
+     * Keys for datas.json
      * @var string
      */
     public const media = "media";
     public const logo = "logo";
-
-    /**
-     * Keys for mailing from datas.json
-     * @var string
-     */
     public const order_confirmation = "order_confirmation";
+    public const size_converter = "size_converter";
 
     /**
      * Keys for Sendinblue event

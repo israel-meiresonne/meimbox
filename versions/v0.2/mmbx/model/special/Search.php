@@ -495,7 +495,6 @@ class Search extends ModelFunctionality
 
         $sizes = $this->arrayToMap($this->sizes);
         $stickers = array_merge($stickers, $sizes);
-
         return $stickers;
     }
 
@@ -648,7 +647,8 @@ class Search extends ModelFunctionality
         $sql .= " AND ";
         $sql = $this->concatORGroup($sql, "p.colorName", $this->colors);
         $sql .= " AND ";
-        $sql = $this->concatORGroup($sql, "ps.size_name", $this->sizes);
+        // $sql = $this->concatORGroup($sql, "ps.size_name", $this->sizes);
+        $sql = $this->concatORGroup($sql, "ps.size_name", Size::multiplySizes($this->sizes));
         $sql .= " AND ";
         $sql .= !empty($this->prices["minPrice"]) ? "pp.price >= " . $this->prices["minPrice"]->getPrice() : "(true)";
         $sql .= " AND ";
