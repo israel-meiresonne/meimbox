@@ -18,13 +18,15 @@ if (isset($executeObj)) {
     }
 }
 
-foreach ($stickers as $sticker => $value) : ?>
+foreach ($stickers as $sticker => $value) : 
+    $json = htmlentities(json_encode(["sticker_value" => $value]));
+?>
     <div class="sticker-container">
         <div class="sticker-wrap">
             <div value="<?= $value ?>" class="sticker-content-div">
                 <?= $translator->translateString($sticker) ?>
             </div>
-            <button onclick="removeSticker('<?= $value ?>')" class="sticker-button remove-button-default-att">
+            <button onclick="evt('evt_cd_130','<?= $json ?>');removeSticker('<?= $value ?>')" class="sticker-button remove-button-default-att">
                 <span class="sticker-x-left"></span>
                 <span class="sticker-x-right"></span>
             </button>
