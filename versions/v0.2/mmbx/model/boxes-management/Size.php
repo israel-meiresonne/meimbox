@@ -561,4 +561,36 @@ class Size  extends ModelFunctionality
         return $cuts;
     }
 
+    /**
+     * To get the size converter map
+     * @return string[] the size converter map
+     */
+    private static function getSizesConverter()
+    {
+        $sizesConverter = (new Map(Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS)))->get(Map::size_converter);
+        return $sizesConverter;
+    }
+
+    /**
+     * To multiply the sizes in array given by adding corresponding alpha or 
+     * numeric size in given array
+     * @param string|int|float[]    list of sizes to multiply
+     * @return string[] the given array multiplied
+     */
+    public static function multiplySizes(array $sizes)
+    {
+        $multiplied = $sizes;
+        $sizesConv = self::getSizesConverter();
+        if(!empty($sizes)){
+            foreach($sizesConv as $numeric => $alpha){
+                if(in_array($numeric, $sizes) && (!in_array($alpha, $multiplied))){
+                    array_push($multiplied, $alpha);
+                }
+                if(in_array($alpha, $sizes) && (!in_array($numeric, $multiplied))){
+                    array_push($multiplied, $numeric);
+                }
+            }
+        }
+        return $multiplied;
+    }
 }
