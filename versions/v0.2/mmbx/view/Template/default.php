@@ -216,6 +216,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
 
         const KEY_FB_PXL = "<?= Pixel::KEY_FB_PXL ?>";
         const KEY_FB_PXL_DT = "<?= Pixel::KEY_FB_PXL_DT ?>";
+        const KEY_GG_EVT = "<?= Analytic::KEY_GG_EVT ?>";
 
         const TUTO_ID_K = "<?= Tutorial::TUTO_ID_K ?>";
         const TUTO_TYPE_K = "<?= Tutorial::TUTO_TYPE_K ?>";

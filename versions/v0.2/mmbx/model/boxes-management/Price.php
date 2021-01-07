@@ -53,8 +53,7 @@ class Price  extends ModelFunctionality
     public function getPriceRounded()
     {
         $price = $this->getPrice();
-        // return (float) ;
-        return number_format($price, 2, ".", "");
+        return ModelFunctionality::toFloat(number_format($price, 2, ".", ""));
     }
 
     /**

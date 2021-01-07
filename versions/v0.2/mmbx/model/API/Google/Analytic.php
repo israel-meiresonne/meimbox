@@ -38,6 +38,11 @@ class Analytic extends ModelFunctionality
     public const EVENT_GOOGLE_FRIPPERY_FOLLOWERS = "google_frippery_followers";
 
     /**
+     * Holds access key
+     */
+    public const KEY_GG_EVT = "key_gg_evt";
+
+    /**
      * To set eventsMap
      */
     private static function setEventsMap()
@@ -146,17 +151,56 @@ class Analytic extends ModelFunctionality
             throw new Exception("The product can't be empty");
         }
         $paramsMap = new Map();
+        $currency = $product->getCurrency();
+        $isoCurrency = $currency->getIsoCurrency();
+        $paramsMap->put($isoCurrency,                           Map::currency);
+        $paramsMap->put($product->getPrice()->getPriceRounded(),Map::value);
+
+        $itemsMap = self::extractProduct($product);
+        $paramsMap->put($itemsMap->getMap(), Map::items);
+        return $paramsMap;
+    }
+
+    /**
+     * To generate Event's datas for product added in basket
+     * @param Map $datasMap holds the product added in basket
+     *                      + $datasMap[Map::product] => {Product}
+     * @return Map Pixel's datas for product added in basket
+     */
+    private static function add_to_cart(Map $datasMap)
+    {
+        /**
+         * @var Product */
+        $product = $datasMap->get(Map::product);
+        if (empty($product)) {
+            throw new Exception("The product can't be empty");
+        }
+        $paramsMap = new Map();
+        $currency = $product->getCurrency();
+        $isoCurrency = $currency->getIsoCurrency();
+        $paramsMap->put($isoCurrency,                           Map::currency);
+        $paramsMap->put($product->getPrice()->getPriceRounded(),Map::value);
+
+        $itemsMap = self::extractProduct($product);
+        $paramsMap->put($itemsMap->getMap(), Map::items);
+        return $paramsMap;
+    }
+
+    /**
+     * To convert Product into Google item
+     * @param Product $product product to convert
+     * @return Map Product converted into Google item
+     */
+    private static function extractProduct(Product $product)
+    {
         $itemsMap = new Map();
         $nb = 0;
         $language = $product->getLanguage();
         $country = $product->getCountry();
         $currency = $product->getCurrency();
         $isoCurrency = $currency->getIsoCurrency();
-        $price = Box::getAvgPricePerItem($language, $country, $currency);
-        $paramsMap->put($isoCurrency,                       Map::currency);
-        $paramsMap->put($product->getPrice()->getPriceRounded(),   Map::value);
-        // $paramsMap->put($price->getPriceRounded(),   Map::value);
 
+        $price = Box::getAvgPricePerItem($language, $country, $currency);
         $itemsMap->put($product->getProdID(),               $nb, Map::item_id);
         $itemsMap->put($product->getProdName(),             $nb, Map::item_name);
         $itemsMap->put(1,                                   $nb, Map::quantity);
@@ -165,7 +209,6 @@ class Analytic extends ModelFunctionality
         $itemsMap->put($price->getPriceRounded(),           $nb, Map::price);
         $itemsMap->put($isoCurrency,                        $nb, Map::currency);
 
-        $paramsMap->put($itemsMap->getMap(), Map::items);
-        return $paramsMap;
+        return $itemsMap;
     }
 }

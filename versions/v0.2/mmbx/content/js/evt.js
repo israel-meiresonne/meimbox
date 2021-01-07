@@ -76,7 +76,7 @@
         SND(d);
     }
     fbpxlRSP = (r) => {
-        if (r.isSuccess) { handleFbPxl(r) }
+        if (r.isSuccess) { handleAPIEvents(r) }
     }
     /*————————————————————————— FB PXL UP ———————————————————————————————————*/
     scrollRate = () => {

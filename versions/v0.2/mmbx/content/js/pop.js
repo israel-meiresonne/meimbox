@@ -151,9 +151,10 @@
             popAlert(r.errors[FAT_ERR].message);
         }
     }
-    handleFbPxl = (r) => {
+    handleAPIEvents = (r) => {
         if (!ADM) {
             eval(r.results[KEY_FB_PXL]);
+            eval(r.results[KEY_GG_EVT]);
         }
     }
     replaceFade = function (x, y, t = TS) {
@@ -714,7 +715,7 @@
     var addBoxProductRSP = (r, cbtnx) => {
         if (r.isSuccess) {
             switchCloseNext($("#box_manager_window"), $("#basket_pop"), getBasketPop);
-            handleFbPxl(r);
+            handleAPIEvents(r);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         } else if (r.errors[A_ADD_BXPROD] != null && r.errors[A_ADD_BXPROD] != "") {
