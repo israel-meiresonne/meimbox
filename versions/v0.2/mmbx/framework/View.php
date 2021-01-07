@@ -115,7 +115,17 @@ class View
      * + $fbPixelsMap[index{int}][Map::event]      {string}    pixel's event name
      * + $fbPixelsMap[index{int}][Map::datasMap]   {Map|null}  pixel's datas
      */
-    private $fbPixelsMap;
+    // private $fbPixelsMap;
+
+    /**
+     * Holds API maps
+     * @var Map
+     * + $APIEventsMap[class][index{int}][Map::type]       {string}    event's type ['track' | 'trackCustom']
+     *                                                                 + for Facebook 
+     * + $APIEventsMap[class][index{int}][Map::event]      {string}    event's name
+     * + $APIEventsMap[class][index{int}][Map::datasMap]   {Map|null}  event's datas
+     */
+    private $APIEventsMap;
 
     /**
      * Holds the configuration used to determinate wicth header to use in template
@@ -246,7 +256,8 @@ class View
      */
     private function __construct1_3($action, $controller = "", Visitor $person = null)
     {
-        $this->fbPixelsMap = new Map();
+        // $this->fbPixelsMap = new Map();
+        // $this->APIEventsMap = new Map();
         $this->person = $person;
         // self::$person = $person;
         $language = (!empty($person)) ? $person->getLanguage() : null;
@@ -421,13 +432,34 @@ class View
         return $date;
     }
 
+    // /**
+    //  * To get fbPixelsMap
+    //  * @return Map fbPixelsMap
+    //  */
+    // private function getFbPixelsMap()
+    // {
+    //     return $this->fbPixelsMap;
+    // }
+
     /**
-     * To get fbPixelsMap
-     * @return Map fbPixelsMap
+     * To set APIEventsMap
      */
-    private function getFbPixelsMap()
+    private function setAPIEventsMap()
     {
-        return $this->fbPixelsMap;
+        $this->APIEventsMap = new Map([
+            Facebook::class => new Map(),
+            Google::class => new Map()
+        ]);
+    }
+
+    /**
+     * To get a API's event map
+     * @return Map|null a API's event map
+     */
+    private function getAPIEventsMap($class)
+    {
+        (!isset($this->APIEventsMap)) ? $this->setAPIEventsMap() : null;
+        return $this->APIEventsMap->get($class);
     }
 
     /**
@@ -441,10 +473,12 @@ class View
             foreach ($classes as $class) {
                 switch ($class) {
                     case Facebook::class:
-                        $baseCodes .= $this->getFbPixelBaseCode() . "\n";
+                        // $baseCodes .= $this->getFbPixelBaseCode() . "\n";
+                        $baseCodes .= Facebook::getBaseCode() . "\n";
                         break;
                     case Google::class:
-                        $baseCodes .= $this->getGoogleBaseCode() . "\n";;
+                        // $baseCodes .= $this->getGoogleBaseCode() . "\n";
+                        $baseCodes .= Google::getBaseCode() . "\n";
                         break;
                 }
             }
@@ -452,25 +486,25 @@ class View
         return $baseCodes;
     }
 
-    /**
-     * To get Facebook's base code for pixel
-     * @param string[] $classes class name of API tracker
-     * @return string Facebook's base code for pixel
-     */
-    private function getFbPixelBaseCode()
-    {
-        // $fbPixelsMap = $this->getFbPixelsMap();
-        return Facebook::getBaseCode();
-    }
+    // /**
+    //  * To get Facebook's base code for pixel
+    //  * @param string[] $classes class name of API tracker
+    //  * @return string Facebook's base code for pixel
+    //  */
+    // private function getFbPixelBaseCode()
+    // {
+    //     // $fbPixelsMap = $this->getFbPixelsMap();
+    //     return Facebook::getBaseCode();
+    // }
 
-    /**
-     * To get Google's base code
-     * @return string Google's base code
-     */
-    private function getGoogleBaseCode()
-    {
-        return Google::getBaseCode();
-    }
+    // /**
+    //  * To get Google's base code
+    //  * @return string Google's base code
+    //  */
+    // private function getGoogleBaseCode()
+    // {
+    //     return Google::getBaseCode();
+    // }
 
     /**
      * To add a Facebook pixel
@@ -480,7 +514,8 @@ class View
      */
     private function addFbPixel(string $type, string $event, Map $datasMap = null)
     {
-        $fbPixelsMap = $this->getFbPixelsMap();
+        // $fbPixelsMap = $this->getFbPixelsMap();
+        $fbPixelsMap = $this->getAPIEventsMap(Facebook::class);
         $indexes = $fbPixelsMap->getKeys();
         $nb = count($indexes);
         if ($nb > 0) {
@@ -525,7 +560,8 @@ class View
      */
     private function generateFbPixel()
     {
-        $fbPixelsMap = $this->getFbPixelsMap();
+        // $fbPixelsMap = $this->getFbPixelsMap();
+        $fbPixelsMap = $this->getAPIEventsMap(Facebook::class);
         $indexes = $fbPixelsMap->getKeys();
         $script = null;
         $nb = count($indexes);
