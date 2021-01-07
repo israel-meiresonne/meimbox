@@ -6,11 +6,79 @@ require_once 'model/ModelFunctionality.php';
  */
 class Analytic extends ModelFunctionality
 {
-    // /**
-    //  * Holds Google's measure ID
-    //  * @var string
-    //  */
-    // private const TAG_ID = "G-9NZD679DX8";
+    /**
+     * Holds config for all events
+     * @var Map
+     * + eventsMap[event][Map::func]    {string|null}   function to execute to generate event's datas in json
+     * + eventsMap[event][Map::params][Map::event_category] {string|null}   event's category to group them
+     * + eventsMap[event][Map::params][Map::event_label]    {string|null}   event's label
+     * + eventsMap[event][Map::params][Map::value]          {int}           event's value that can be used as
+     *                                                                      number of value of the event
+     */
+    private static $eventsMap;
+
+    /**
+     * Holds Analytic's default events
+     * @var string
+     */
+    public const EVENT_VIEW_CONTENT = "view_item";
+    public const EVENT_ADD_TO_CART = "add_to_cart";
+    public const EVENT_ADD_SHIPPING = "add_shipping_info";
+    public const EVENT_INIT_CHECKOUT = "begin_checkout";
+    public const EVENT_PURCHASE = "purchase";
+    public const EVENT_SUBSCRIBE = "generate_lead";
+    public const EVENT_LOADING_TIME = "timing_complete";
+
+    /**
+     * Holds custom events
+     * @var string
+     */
+    public const EVENT_SCROLL_OVER = "scroll_over";
+    public const EVENT_NEW_BOX = "add_new_box";
+    public const EVENT_GOOGLE_FRIPPERY_FOLLOWERS = "google_frippery_followers";
+
+    /**
+     * To set eventsMap
+     */
+    private static function setEventsMap()
+    {
+        self::$eventsMap = new Map();
+
+        /** view_item */
+        self::$eventsMap->put(self::EVENT_VIEW_CONTENT,     self::EVENT_VIEW_CONTENT, Map::func);
+        /** add_to_cart */
+        self::$eventsMap->put(self::EVENT_ADD_TO_CART,      self::EVENT_ADD_TO_CART, Map::func);
+        /** add_shipping_info */
+        self::$eventsMap->put(self::EVENT_ADD_SHIPPING,     self::EVENT_ADD_SHIPPING, Map::func);
+        /** begin_checkout */
+        self::$eventsMap->put(self::EVENT_INIT_CHECKOUT,    self::EVENT_INIT_CHECKOUT, Map::func);
+        /** purchase */
+        self::$eventsMap->put(self::EVENT_PURCHASE,         self::EVENT_PURCHASE, Map::func);
+        /** generate_lead */
+        self::$eventsMap->put(self::EVENT_SUBSCRIBE,        self::EVENT_SUBSCRIBE, Map::func);
+        /** timing_complete */
+        self::$eventsMap->put(self::EVENT_LOADING_TIME,     self::EVENT_LOADING_TIME, Map::func);
+        /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
+        /** scroll_over */
+        self::$eventsMap->put(self::EVENT_SCROLL_OVER,                  self::EVENT_SCROLL_OVER, Map::params, Map::action);
+        /** add_new_box */
+        self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::params, Map::action);
+        /** google_frippery_followers */
+        self::$eventsMap->put(self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS,    self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS, Map::params, Map::action);
+    }
+
+    /**
+     * To generate event code
+     * @param string    $event      an event's name
+     * @param array     $params     event's datas
+     * @return string event code of the given event
+     */
+    private static function generateEvent(string $event, array $params = null)
+    {
+        $json = (!empty($params)) ? json_encode($params) : null;
+        $eventCode = (!empty($json)) ? "gtag('event', '$event', $json);" : "gtag('event', '$event');";
+        return $eventCode;
+    }
 
     /**
      * To get Google Analytic's base code
@@ -18,9 +86,43 @@ class Analytic extends ModelFunctionality
      */
     public static function getBaseCode()
     {
-        // $env = Configuration::getEnvironement();
-        // $tagID = ($env == Configuration::ENV_PROD) ? self::TAG_ID : Configuration::get(Configuration::GOOGLE_MEASURE_ID);
         $tagID = Configuration::get(Configuration::GOOGLE_MEASURE_ID);
         return self::generateFile('model/API/Google/files/analyticBaseCode.php', ["tagID" => $tagID]);
+    }
+
+    /**
+     * To get Analytic's event code corresponding to the given event
+     * @param string    $event      an event's name
+     * @param Map    $datasMap   event's datas
+     * @return string event code of the given event
+     */
+    public static function getEvent(string $event, Map $datasMap = null)
+    {
+        $calling = self::getCallingClass();
+        $correct = Google::class;
+        if ($calling != $correct) {
+            throw new Exception("method getEvent is called from '$calling' instead of '$correct'");
+        }
+        $datasMap = (!empty($datasMap)) ? $datasMap : new Map();
+        $eventsMap = self::getEventsMap();
+        if (!in_array($event, $eventsMap->getKeys())) {
+            throw new Exception("This event '$event' is not supported");
+        }
+        $func = $eventsMap->get($event, Map::func);
+        /**
+         * @var Map */
+        $paramsMap = (!empty($func)) ? self::{$func}($datasMap) : $datasMap;
+        $params = (!empty($paramsMap->getMap())) ? $paramsMap->getMap() : null;
+        return self::generateEvent($event, $params);
+    }
+
+    /**
+     * To get config map of Analytic's events
+     * @return Map config map of Analytic's events
+     */
+    private static function getEventsMap()
+    {
+        (!isset(self::$eventsMap)) ? self::setEventsMap() : null;
+        return self::$eventsMap;
     }
 }
