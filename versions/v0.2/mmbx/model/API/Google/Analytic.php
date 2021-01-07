@@ -76,7 +76,7 @@ class Analytic extends ModelFunctionality
     private static function generateEvent(string $event, array $params = null)
     {
         $json = (!empty($params)) ? json_encode($params) : null;
-        $eventCode = (!empty($json)) ? "gtag('event', '$event', $json);" : "gtag('event', '$event');";
+        $eventCode = (!empty($json)) ? "gtag('event','$event',$json);" : "gtag('event','$event');";
         return $eventCode;
     }
 
