@@ -680,12 +680,10 @@ class ControllerItem extends ControllerSecure
                 $eventDatasMap->put($cut, Size::INPUT_CUT_ADDER);
                 $person->handleEvent($eventCode, $eventDatasMap);
 
-                // var_dump($cut);
-                // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
-                // $selectedSize = new Size($sequence);
                 $product = $person->getBasket()->getBox($boxID)->getProduct($prodID, $selectedSize);
-                $pixelDatasMap = new Map([Map::product => $product]);
-                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_ADD_TO_CART, $pixelDatasMap) . ";console.log('evalued')");
+                $APIEventDatasMap = new Map([Map::product => $product]);
+                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_ADD_TO_CART, $APIEventDatasMap) . ";console.log('evalued');");
+                $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_ADD_TO_CART, $APIEventDatasMap));
             }
         }
         $this->generateJsonView($datasView, $response, $person);
