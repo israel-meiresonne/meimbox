@@ -335,6 +335,14 @@ class Map
     public const content = "content";
 
     /**
+     * Keys for Analytic
+     * @var string
+     */
+    public const action = "action";
+    public const event_category = "event_category";
+    public const event_label = "event_label";
+
+    /**
      * Constructor
      * @param array $map if set this array will be used as initial map
      */

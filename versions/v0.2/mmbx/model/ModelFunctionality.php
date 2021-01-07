@@ -1272,6 +1272,24 @@ abstract class ModelFunctionality extends Model
         $intKeysMap = array_combine($intKeys, $map);
         return $intKeysMap;
     }
+
+    /**
+     * To get the class calling the function that call this one
+     * @return string the class calling the function that call this one
+     */
+    protected static function getCallingClass()
+    {
+        $trace = debug_backtrace(null, 5);
+        $keyClass = 'class';
+        if(!key_exists(2, $trace)){
+            throw new Exception("There is not calling class");
+        }
+        if(!key_exists($keyClass, $trace[2])){
+            throw new Exception("The calling file is not a class");
+        }
+        $class = $trace[2][$keyClass];
+        return $class;
+    }
     /*———————————————————————————— SHORTCUT UP ——————————————————————————————*/
     /*———————————————————————————— COMMON DOWN ——————————————————————————————*/
 
