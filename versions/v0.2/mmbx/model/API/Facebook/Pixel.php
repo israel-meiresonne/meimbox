@@ -34,6 +34,7 @@ class Pixel extends Facebook
     public const EVENT_FRIPPERY_STORES = "frippery_stores";
     public const EVENT_USED_FRIPPERY = "used_frippery";
     public const EVENT_SCROLL_OVER = "scroll_over";
+    public const EVENT_NEW_BOX = "add_new_box";
 
     /**
      * Holds acces key to get Pixel
@@ -73,8 +74,12 @@ class Pixel extends Facebook
         /** used_frippery */
         self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_USED_FRIPPERY, Map::type);
 
-        /** lp_time_up */
+        /** scroll_over */
         self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_SCROLL_OVER, Map::type);
+
+        /** add_new_box */
+        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_NEW_BOX, Map::type);
+        self::$pixelsMap->put(self::EVENT_NEW_BOX, self::EVENT_NEW_BOX, Map::func);
     }
 
     /**
@@ -304,6 +309,29 @@ class Pixel extends Facebook
         /*  price {int|float} */
         $paramsMap->put($value, Map::value);
 
+        return $paramsMap;
+    }
+
+    /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
+
+    /**
+     * To genrate event's datas for new box added in basket
+     * @param Map $datasMap holds the box added in basket
+     *                      + $datasMap[Map::box] => {Box}
+     */
+    private static function add_new_box(Map $datasMap)
+    {
+        /**
+         * @var Box */
+        $box = $datasMap->get(Map::box);
+        if (empty($box)) {
+            throw new Exception("The box can't be empty");
+        }
+        $paramsMap = new Map();
+        $price = $box->getPrice();
+        $paramsMap->put($box->getColor(), Box::KEY_BOX_COLOR);
+        $paramsMap->put($price->getCurrency()->getIsoCurrency(), Map::currency);
+        $paramsMap->put($price->getPrice(), Map::value);
         return $paramsMap;
     }
 }

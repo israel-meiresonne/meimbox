@@ -172,7 +172,7 @@ class ControllerItem extends ControllerSecure
         $datasView = [];
         $brandsMeasures = $person->getBrandMeasures();
         if ((!Query::existParam(Size::KEY_BRAND_NAME))
-        || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
+            || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
@@ -611,6 +611,7 @@ class ControllerItem extends ControllerSecure
                 $person->handleEvent($eventCode, $eventDatasMap);
 
                 $APIEventDatasMap = new Map([Map::box => $lastBox]);
+                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_NEW_BOX, $APIEventDatasMap));
                 $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_NEW_BOX, $APIEventDatasMap));
             }
         }
