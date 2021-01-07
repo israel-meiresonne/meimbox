@@ -87,7 +87,12 @@ class Analytic extends ModelFunctionality
     public static function getBaseCode()
     {
         $tagID = Configuration::get(Configuration::GOOGLE_MEASURE_ID);
-        return self::generateFile('model/API/Google/files/analyticBaseCode.php', ["tagID" => $tagID]);
+        $datas = [
+            "tagID" => $tagID,
+            "debug" => (Configuration::getEnvironement() == Configuration::ENV_DEV)
+            // "debug" => (Configuration::ENV_PROD == Configuration::ENV_DEV)
+        ];
+        return self::generateFile('model/API/Google/files/analyticBaseCode.php', $datas);
     }
 
     /**
@@ -124,5 +129,43 @@ class Analytic extends ModelFunctionality
     {
         (!isset(self::$eventsMap)) ? self::setEventsMap() : null;
         return self::$eventsMap;
+    }
+
+    /**
+     * To generate event's datas for product seen
+     * @param Map $datasMap Product's datas
+     *                      + $datasMap[Map::product] => {Product}   product seen
+     * @return Map event's datas product seen
+     */
+    private static function view_item(Map $datasMap)
+    {
+        /**
+         * @var Product */
+        $product = $datasMap->get(Map::product);
+        if (empty($product)) {
+            throw new Exception("The product can't be empty");
+        }
+        $paramsMap = new Map();
+        $itemsMap = new Map();
+        $nb = 0;
+        $language = $product->getLanguage();
+        $country = $product->getCountry();
+        $currency = $product->getCurrency();
+        $isoCurrency = $currency->getIsoCurrency();
+        $price = Box::getAvgPricePerItem($language, $country, $currency);
+        $paramsMap->put($isoCurrency,                       Map::currency);
+        $paramsMap->put($product->getPrice()->getPriceRounded(),   Map::value);
+        // $paramsMap->put($price->getPriceRounded(),   Map::value);
+
+        $itemsMap->put($product->getProdID(),               $nb, Map::item_id);
+        $itemsMap->put($product->getProdName(),             $nb, Map::item_name);
+        $itemsMap->put(1,                                   $nb, Map::quantity);
+        $itemsMap->put($product->getCategories()[0],        $nb, Map::item_category);
+        $itemsMap->put($product->getColorName(),            $nb, Map::item_variant);
+        $itemsMap->put($price->getPriceRounded(),           $nb, Map::price);
+        $itemsMap->put($isoCurrency,                        $nb, Map::currency);
+
+        $paramsMap->put($itemsMap->getMap(), Map::items);
+        return $paramsMap;
     }
 }

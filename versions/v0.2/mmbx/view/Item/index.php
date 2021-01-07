@@ -82,6 +82,7 @@ $this->title = $product->getProdName();
 $this->description = $product->getProdName() . ": " . $product->getDescription();
 $pixelDatasMap = new Map([Map::product => $product]);
 $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_VIEW_CONTENT, $pixelDatasMap);
+$this->addAPIEvents(Google::class, Analytic::EVENT_VIEW_CONTENT, $pixelDatasMap);
 /*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
 

@@ -341,6 +341,11 @@ class Map
     public const action = "action";
     public const event_category = "event_category";
     public const event_label = "event_label";
+    public const item_id = "item_id";
+    public const item_name = "item_name";
+    public const item_category = "item_category";
+    public const item_variant = "item_variant";
+    public const items = "items";
 
     /**
      * Constructor
