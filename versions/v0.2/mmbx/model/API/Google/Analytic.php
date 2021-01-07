@@ -10,9 +10,9 @@ class Analytic extends ModelFunctionality
      * Holds config for all events
      * @var Map
      * + eventsMap[event][Map::func]    {string|null}   function to execute to generate event's datas in json
-     * + eventsMap[event][Map::params][Map::event_category] {string|null}   event's category to group them
-     * + eventsMap[event][Map::params][Map::event_label]    {string|null}   event's label
-     * + eventsMap[event][Map::params][Map::value]          {int}           event's value that can be used as
+     * + eventsMap[event][Map::event_category] {string|null}   event's category to group them
+     * + eventsMap[event][Map::event_label]    {string|null}   event's label
+     * + eventsMap[event][Map::value]          {int}           event's value that can be used as
      *                                                                      number of value of the event
      */
     private static $eventsMap;
@@ -65,11 +65,12 @@ class Analytic extends ModelFunctionality
         self::$eventsMap->put(self::EVENT_LOADING_TIME,     self::EVENT_LOADING_TIME, Map::func);
         /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
         /** scroll_over */
-        self::$eventsMap->put(self::EVENT_SCROLL_OVER,                  self::EVENT_SCROLL_OVER, Map::params, Map::action);
+        self::$eventsMap->put(self::EVENT_SCROLL_OVER,                  self::EVENT_SCROLL_OVER, Map::action);
         /** add_new_box */
-        self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::params, Map::action);
+        self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::func);
+        self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::action);
         /** google_frippery_followers */
-        self::$eventsMap->put(self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS,    self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS, Map::params, Map::action);
+        self::$eventsMap->put(self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS,    self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS, Map::action);
     }
 
     /**
@@ -210,5 +211,26 @@ class Analytic extends ModelFunctionality
         $itemsMap->put($isoCurrency,                        $nb, Map::currency);
 
         return $itemsMap;
+    }
+
+    /*———————————————————————————— CUSTOM DOWN ——————————————————————————————*/
+
+    /**
+     * To genrate event's datas for new box added in basket
+     * @param Map $datasMap holds the box added in basket
+     *                      + $datasMap[Map::box] => {Box}
+     */
+    private static function add_new_box(Map $datasMap)
+    {
+        /**
+         * @var Box */
+        $box = $datasMap->get(Map::box);
+        if (empty($box)) {
+            throw new Exception("The box can't be empty");
+        }
+        $paramsMap = new Map();
+        $paramsMap->put($box->getColor(), Map::event_label);
+        $paramsMap->put($box->getPrice()->getPriceRounded(), Map::value);
+        return $paramsMap;
     }
 }
