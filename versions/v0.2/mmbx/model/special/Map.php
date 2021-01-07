@@ -348,6 +348,12 @@ class Map
     public const items = "items";
 
     /**
+     * Keys for Box
+     * @var string
+     */
+    public const box = "box";
+
+    /**
      * Constructor
      * @param array $map if set this array will be used as initial map
      */

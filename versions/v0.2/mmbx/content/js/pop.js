@@ -155,6 +155,7 @@
         if (!ADM) {
             eval(r.results[KEY_FB_PXL]);
             eval(r.results[KEY_GG_EVT]);
+            console.log("handleAPIEvents");
         }
     }
     replaceFade = function (x, y, t = TS) {
@@ -651,6 +652,7 @@
         if (r.isSuccess) {
             getBoxMngr(CONF_ADD_BXPROD, d.bxid);
             $(d.cbtnx).click();
+            handleAPIEvents(r);
         } else if (r.errors[FAT_ERR] != null && r.errors[FAT_ERR] != "") {
             popAlert(r.errors[FAT_ERR].message);
         }

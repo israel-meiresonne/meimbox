@@ -608,9 +608,10 @@ class ControllerItem extends ControllerSecure
                 $lastBox = $boxes[$keys[0]];
                 $eventDatasMap->put($lastBox->getColor(), Box::KEY_BOX_COLOR);
                 $eventDatasMap->put($lastBox->getBoxID(), Box::KEY_BOX_ID);
-                // $eventRsp = new Response();
-                // $person->getNavigation()->handleEvent(($eventRsp), $person->getUserID(), $eventCode, $eventDatasMap);
                 $person->handleEvent($eventCode, $eventDatasMap);
+
+                $APIEventDatasMap = new Map([Map::box => $lastBox]);
+                $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_NEW_BOX, $APIEventDatasMap));
             }
         }
         $this->generateJsonView($datasView, $response, $person);
