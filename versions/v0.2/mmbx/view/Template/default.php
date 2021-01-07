@@ -302,7 +302,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
 <body>
     <?= $headerContent ?>
     <div class="template-content">
-        <?= $this->generateAPIEvents(Facebook::class) ?>
+        <?= $this->generateAPIEvents(Facebook::class, Google::class) ?>
         <?= $content ?>
         <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
         <script id="evt" type="text/javascript">
