@@ -25,6 +25,7 @@ class Map
     public const support = "support";
     public const obj = "obj";
     public const index = "index";
+    public const scroll_rate = "scroll_rate";
 
 
     /**
@@ -294,6 +295,7 @@ class Map
      * @var string
      */
     public const query = "query";
+    public const page = "page";
 
     /**
      * Keys for DiscountCode

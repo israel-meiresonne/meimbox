@@ -306,13 +306,13 @@ class ControllerHome extends ControllerSecure
                     $datasMap = new Map($datas);
                     $pxl = Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_SCROLL_OVER, $datasMap);
                     $response->addResult(Pixel::KEY_FB_PXL, $pxl);
+                    $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_SCROLL_OVER, $datasMap));
 
+                    $eventCode = "evt_cd_126";
                     $constantsMap = new Map(Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS));
                     $maxScroll = $constantsMap->get(Map::ad_config, Map::scroll_up);
                     $eventDattasMap = new Map($datasMap->getMap());
                     $eventDattasMap->put($maxScroll, Event::EVT_SCROLL);
-
-                    $eventCode = "evt_cd_126";
                     $person->handleEvent($eventCode, $eventDattasMap);
                     break;
                 default:

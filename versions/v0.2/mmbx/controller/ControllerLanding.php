@@ -8,7 +8,10 @@ class ControllerLanding extends ControllerSecure
         $person = $this->getPerson();
         $constantsMap = new Map(Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS));
         $maxScroll = $constantsMap->get(Map::ad_config, Map::scroll_up);
-        $pxlDatas = [strtolower(Page::class) => $this->extractController(ControllerLanding::class)];
+        $pxlDatas = [
+            Map::page => $this->extractController(ControllerLanding::class),
+            Map::scroll_rate => $maxScroll
+        ];
         $pxlJson = json_encode($pxlDatas);
         $sql = "SELECT picture
                 FROM `Products`p
