@@ -106,6 +106,12 @@ class Pixel extends Facebook
      */
     public static function getBaseCode()
     {
+        $calling = self::getCallingClass();
+        $correct = Facebook::class;
+        if ($calling != $correct) {
+            $f = __FUNCTION__;
+            throw new Exception("function '$f' is called from '$calling' instead of '$correct'");
+        }
         $pixelID = Configuration::get(Configuration::FB_PIXEL_ID);
         $datas = [
             "pixelID" => $pixelID
@@ -122,6 +128,12 @@ class Pixel extends Facebook
      */
     public static function getPixel(string $type, string $event, Map $datasMap = null)
     {
+        $calling = self::getCallingClass();
+        $correct = Facebook::class;
+        if ($calling != $correct) {
+            $f = __FUNCTION__;
+            throw new Exception("function '$f' is called from '$calling' instead of '$correct'");
+        }
         $datasMap = (!empty($datasMap)) ? $datasMap : new Map();
         $pixelsMap = self::getPixelMap();
         $func = $pixelsMap->get($event, Map::func);
