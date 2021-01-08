@@ -47,6 +47,13 @@ $headerDatas = [
     "companyMap" => $companyMap
 ];
 $headerContent = $this->generateFile($headerFile, $headerDatas);
+/** API Events */
+if ($urlPage->getParam(Page::KEY_AD_AUDIENCE) == Analytic::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS) {
+    $APIEventDatasMap = new Map([
+        Map::url => $urlPage->getUrl()
+    ]);
+    $this->addAPIEvents(Google::class, Analytic::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, $APIEventDatasMap);
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $isoLang ?>">

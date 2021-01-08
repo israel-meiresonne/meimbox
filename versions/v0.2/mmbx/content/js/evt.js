@@ -102,7 +102,7 @@
                 evt("evt_cd_0", j);
                 (ADM) ? console.log(d) : null;
             }, 1000);
-            ((typeof lp != "undefined") && (!empty(lp))) ? lp() : null;
+            ((!ADM) && (typeof lp != "undefined") && (!empty(lp))) ? lp() : null;
         }, false);
 
     });

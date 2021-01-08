@@ -35,7 +35,7 @@ class Analytic extends ModelFunctionality
      */
     public const EVENT_SCROLL_OVER = "scroll_over";
     public const EVENT_NEW_BOX = "add_new_box";
-    public const EVENT_GOOGLE_FRIPPERY_FOLLOWERS = "google_frippery_followers";
+    public const EVENT_YOUTUBE_FRIPPERY_FOLLOWERS = "youtube_frippery_followers";
 
     /**
      * Holds access key
@@ -70,8 +70,9 @@ class Analytic extends ModelFunctionality
         /** add_new_box */
         self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::func);
         self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::action);
-        /** google_frippery_followers */
-        self::$eventsMap->put(self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS,    self::EVENT_GOOGLE_FRIPPERY_FOLLOWERS, Map::action);
+        /** youtube_frippery_followers */
+        self::$eventsMap->put(self::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS,    self::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, Map::action);
+        self::$eventsMap->put(self::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS,    self::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, Map::func);
     }
 
     /**
@@ -286,6 +287,7 @@ class Analytic extends ModelFunctionality
      * To genrate event's datas for new box added in basket
      * @param Map $datasMap holds the box added in basket
      *                      + $datasMap[Map::box] => {Box}
+     * @return Map event's datas for new box added in basket
      */
     private static function add_new_box(Map $datasMap)
     {
@@ -306,6 +308,7 @@ class Analytic extends ModelFunctionality
      * @param Map $datasMap holds the box added in basket
      *                      + $datasMap[Map::page]          => {string}
      *                      + $datasMap[Map::scroll_rate]   => {int|float}
+     * @return Map event's datas for scroll over a rate on a web page
      */
     private static function scroll_over(Map $datasMap)
     {
@@ -319,6 +322,24 @@ class Analytic extends ModelFunctionality
             Map::value => $rate
         ]);
         return $paramsMap;
+    }
 
+    /**
+     * To generate event's datas for audience youtube_frippery_followers
+     * @param Map $datasMap holds the box added in basket
+     *                      + $datasMap[Map::url] => {string}
+     * @return Map event's datas for audience youtube_frippery_followers
+     */
+    private static function youtube_frippery_followers(Map $datasMap)
+    {
+        $url = $datasMap->get(Map::url);
+        if (empty($url)) {
+            throw new Exception("The url '$url' can't be empty");
+        }
+        $paramsMap = new Map([
+            Map::event_label => $url,
+            Map::value => 1
+        ]);
+        return $paramsMap;
     }
 }
