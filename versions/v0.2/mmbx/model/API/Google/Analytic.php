@@ -65,6 +65,7 @@ class Analytic extends ModelFunctionality
         self::$eventsMap->put(self::EVENT_LOADING_TIME,     self::EVENT_LOADING_TIME, Map::func);
         /*———————————————————————— CUSTOM DOWN ——————————————————————————————*/
         /** scroll_over */
+        self::$eventsMap->put(self::EVENT_SCROLL_OVER,                  self::EVENT_SCROLL_OVER, Map::func);
         self::$eventsMap->put(self::EVENT_SCROLL_OVER,                  self::EVENT_SCROLL_OVER, Map::action);
         /** add_new_box */
         self::$eventsMap->put(self::EVENT_NEW_BOX,                      self::EVENT_NEW_BOX, Map::func);
@@ -298,5 +299,26 @@ class Analytic extends ModelFunctionality
         $paramsMap->put($box->getColor(), Map::event_label);
         $paramsMap->put($box->getPrice()->getPriceRounded(), Map::value);
         return $paramsMap;
+    }
+
+    /**
+     * To genrate event's datas for scroll over a rate on a web page
+     * @param Map $datasMap holds the box added in basket
+     *                      + $datasMap[Map::page]          => {string}
+     *                      + $datasMap[Map::scroll_rate]   => {int|float}
+     */
+    private static function scroll_over(Map $datasMap)
+    {
+        $page = $datasMap->get(Map::page);
+        $rate = (int) $datasMap->get(Map::scroll_rate);
+        if (empty($page) || empty($rate)) {
+            throw new Exception("The page '$page' and the scroll rate '$rate' can't be empty");
+        }
+        $paramsMap = new Map([
+            Map::event_label => $page,
+            Map::value => $rate
+        ]);
+        return $paramsMap;
+
     }
 }
