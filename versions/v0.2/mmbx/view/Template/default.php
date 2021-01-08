@@ -52,6 +52,7 @@ if ($urlPage->getParam(Page::KEY_AD_AUDIENCE) == Analytic::EVENT_YOUTUBE_FRIPPER
     $APIEventDatasMap = new Map([
         Map::url => $urlPage->getUrl()
     ]);
+    $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, $APIEventDatasMap);
     $this->addAPIEvents(Google::class, Analytic::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, $APIEventDatasMap);
 }
 ?>
@@ -314,9 +315,7 @@ if ($urlPage->getParam(Page::KEY_AD_AUDIENCE) == Analytic::EVENT_YOUTUBE_FRIPPER
         <?= $content ?>
         <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
         <script id="evt" type="text/javascript">
-            <?php
-            echo ($pageType == Page::TYPE_NEWCOMER) ? Event::getEventFile(Event::FILE_DEVICE_SIZE) : null;
-            ?>
+            <?= ($pageType == Page::TYPE_NEWCOMER) ? Event::getEventFile(Event::FILE_DEVICE_SIZE) : null; ?>
         </script>
     </div>
 </body>
