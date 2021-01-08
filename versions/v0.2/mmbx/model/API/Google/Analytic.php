@@ -94,6 +94,12 @@ class Analytic extends ModelFunctionality
      */
     public static function getBaseCode()
     {
+        $calling = self::getCallingClass();
+        $correct = Google::class;
+        if ($calling != $correct) {
+            $f = __FUNCTION__;
+            throw new Exception("function '$f' is called from '$calling' instead of '$correct'");
+        }
         $tagID = Configuration::get(Configuration::GOOGLE_MEASURE_ID);
         $datas = [
             "tagID" => $tagID,
@@ -114,7 +120,8 @@ class Analytic extends ModelFunctionality
         $calling = self::getCallingClass();
         $correct = Google::class;
         if ($calling != $correct) {
-            throw new Exception("method getEvent is called from '$calling' instead of '$correct'");
+            $f = __FUNCTION__;
+            throw new Exception("function '$f' is called from '$calling' instead of '$correct'");
         }
         $datasMap = (!empty($datasMap)) ? $datasMap : new Map();
         $eventsMap = self::getEventsMap();
