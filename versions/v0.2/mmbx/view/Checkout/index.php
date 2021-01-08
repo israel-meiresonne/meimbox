@@ -36,6 +36,7 @@ $this->head = $this->generateFile('view/Checkout/files/head.php', $headDatas);
 if ($basket->getQuantity() > 0) {
     $pixelDatasMap = new Map([Map::basket => $basket]);
     $this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_INIT_CHECKOUT, $pixelDatasMap);
+    $this->addAPIEvents(Google::class, Analytic::EVENT_INIT_CHECKOUT, $pixelDatasMap);
 }
 /*————————————————————————————— Config View UP ——————————————————————————————*/
 ?>
