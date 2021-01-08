@@ -97,6 +97,7 @@ class Page extends ModelFunctionality
      * @var string
      */
     public const KEY_FROM_ERROR_PAGE = "from_erpg";
+    public const KEY_AD_AUDIENCE = "ad_audiene";
 
     /**
      * Holds Page's type
@@ -186,7 +187,6 @@ class Page extends ModelFunctionality
      * @param mixed key of the param to get
      * @return string|null param at the given key
      */
-    // public function getParamsMap()
     public function getParam($key)
     {
         $paramsMap = $this->getParamsMap();
@@ -197,8 +197,7 @@ class Page extends ModelFunctionality
      * To get Page's path
      * @return string Page's path
      */
-    // public function getPath()
-    protected function getPath()
+    public function getPath()
     {
         (!isset($this->path)) ? $this->parseUrl() : null;
         return $this->path;
@@ -292,27 +291,6 @@ class Page extends ModelFunctionality
         $xhrMap->put($xhr, $unix);
         $xhrMap->sortKeyDesc();
     }
-
-    // /**
-    //  * To add a new Event occured on the Page
-    //  * + Note: also insert the Event in the database
-    //  * @param Response  $response   where to strore results
-    //  * @param string $eventCode code that refer to a Event
-    //  * @param Map       $datasMap   holds datas submeted with the event
-    //  *                              + Note: must be list of key value, so deep must be of 1
-    //  */
-    // public function addEvent(Response $response, $eventCode, Map $datasMap = null)
-    // {
-    //     // $event = (!empty($datasMap)) ? new Event($eventCode, $datasMap) : new Event($eventCode);
-    //     // $unix = $event->getDateInSec();
-    //     // $eventsMap = $this->getEvents();
-    //     // $eventsMap->put($event, $unix);
-    //     // $eventsMap->sortKeyDesc();
-    //     // $pageID = $this->getPageID();
-    //     // $event->insertEvent($response, $pageID);
-    //     $xhr = $this->getCurrentXhr();
-    //     (!empty($datasMap)) ? $xhr->addEvent($response, $eventCode, $datasMap) : $xhr->addEvent( $response, $eventCode);
-    // }
 
     /**
      * Check if Page is a XHR request

@@ -1329,7 +1329,7 @@ abstract class ModelFunctionality extends Model
      * @param string $str string to encrypt
      * @return string string encrypted
      */
-    protected function encryptString(string $str)
+    public static function encryptString(string $str)
     {
         $strs = str_split(strtolower($str));
         $code = "";

@@ -526,7 +526,8 @@ class View
         $script = null;
         $nb = count($evts);
         if ($nb > 0) {
-            $script = "<script id=\"$class\" type=\"text/javascript\">\n";
+            $id = ModelFunctionality::encryptString($class);
+            $script = "<script id=\"$id\" type=\"text/javascript\">\n";
             foreach ($evts as $evt) {
                 $event = $APIEventsMap->get($evt, Map::event);
                 $datasMap = $APIEventsMap->get($evt, Map::datasMap);

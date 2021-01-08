@@ -12,8 +12,9 @@
 
 // echo Google::getEvent(Analytic::EVENT_SCROLL_OVER, new Map([Map::event_category => "hello"]));
 // echo Analytic::getEvent(Analytic::EVENT_SCROLL_OVER);
-self::addAPIEvents(Google::class, Analytic::EVENT_SCROLL_OVER);
-self::addAPIEvents(Google::class, Analytic::EVENT_NEW_BOX);
+
+// self::addAPIEvents(Google::class, Analytic::EVENT_SCROLL_OVER);
+// self::addAPIEvents(Google::class, Analytic::EVENT_NEW_BOX);
 
 /* 
 <a href="<?= self::$URL_DOMAIN_WEBROOT.$trackLink ?>" target="_blank">link</a>
