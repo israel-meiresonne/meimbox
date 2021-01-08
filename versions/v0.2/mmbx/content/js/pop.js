@@ -155,7 +155,6 @@
         if (!ADM) {
             eval(r.results[KEY_FB_PXL]);
             eval(r.results[KEY_GG_EVT]);
-            console.log("handleAPIEvents");
         }
     }
     replaceFade = function (x, y, t = TS) {

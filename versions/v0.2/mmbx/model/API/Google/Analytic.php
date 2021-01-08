@@ -155,10 +155,10 @@ class Analytic extends ModelFunctionality
         $currency = $product->getCurrency();
         $isoCurrency = $currency->getIsoCurrency();
         $paramsMap->put($isoCurrency,                           Map::currency);
-        $paramsMap->put($product->getPrice()->getPriceRounded(),Map::value);
+        $paramsMap->put($product->getPrice()->getPriceRounded(), Map::value);
 
-        $itemsMap = self::extractProduct($product);
-        $paramsMap->put($itemsMap->getMap(), Map::items);
+        $item = self::extractProduct($product);
+        $paramsMap->put([$item], Map::items);
         return $paramsMap;
     }
 
@@ -180,37 +180,103 @@ class Analytic extends ModelFunctionality
         $currency = $product->getCurrency();
         $isoCurrency = $currency->getIsoCurrency();
         $paramsMap->put($isoCurrency,                           Map::currency);
-        $paramsMap->put($product->getPrice()->getPriceRounded(),Map::value);
+        $paramsMap->put($product->getPrice()->getPriceRounded(), Map::value);
 
-        $itemsMap = self::extractProduct($product);
-        $paramsMap->put($itemsMap->getMap(), Map::items);
+        $item = self::extractProduct($product);
+        $paramsMap->put([$item], Map::items);
+        return $paramsMap;
+    }
+
+    /**
+     * To generate Pixel's datas for checkout initiated
+     * @param Map $datasMap Basket's datas
+     *                      + $datasMap[Map::basket] => {Basket}   Visitor's Basket
+     * @return Map Pixel's datas for checkout initiated
+     */
+    private static function begin_checkout(Map $datasMap)
+    {
+        /**
+         * @var Basket */
+        $basket = $datasMap->get(Map::basket);
+        $boxes = $basket->getBoxes();
+        if (empty($boxes)) {
+            throw new Exception("Boxes can't be empty");
+        }
+        $paramsMap = new Map();
+        $currency = $basket->getCurrency();
+        $isoCurrency = $currency->getIsoCurrency();
+        $paramsMap->put($isoCurrency,                           Map::currency);
+        $paramsMap->put($basket->getTotal()->getPriceRounded(), Map::value);
+        return $paramsMap;
+    }
+
+    /**
+     * To generate Pixel's datas for purchase done
+     * @param Map $datasMap Order's datas
+     *                      + $datasMap[Map::order] {Order}  Visitor's Order purchased
+     * @return Map Pixel's datas for purchase done
+     */
+    private static function Purchase(Map $datasMap)
+    {
+        /**
+         * @var Order */
+        $order = $datasMap->get(Map::order);
+        $basketOrdered = $order->getBasketOrdered();
+        $boxes = $basketOrdered->getBoxes();
+        if (empty($boxes)) {
+            throw new Exception("boxes can't be empty");
+        }
+        $paramsMap = new Map();
+        $currency = $basketOrdered->getCurrency();
+        $isoCurrency = $currency->getIsoCurrency();
+
+        $paramsMap->put($isoCurrency, Map::currency);
+        $paramsMap->put($order->getOrderID(), Map::transaction_id);
+        $paramsMap->put($basketOrdered->getShipping()->getPriceRounded(), Map::shipping);
+        $paramsMap->put($basketOrdered->getVat()->getPriceRounded(), Map::tax);
+        $paramsMap->put($basketOrdered->getTotal()->getPriceRounded(), Map::value);
+        return $paramsMap;
+    }
+
+    /**
+     * To generate datas to send loading time event
+     * @return Map datas to send loading time event
+     */
+    private static function timing_complete() // no used
+    {
+        $paramsMap = new Map([
+            'name' => 'load',
+            // 'value'=> "Math.round(performance.now())",
+            'value' => '%{TO_REPLACE}%',
+            'event_category' => 'JS Dependencies'
+        ]);
         return $paramsMap;
     }
 
     /**
      * To convert Product into Google item
      * @param Product $product product to convert
-     * @return Map Product converted into Google item
+     * @return array Product converted into Google item
      */
     private static function extractProduct(Product $product)
     {
         $itemsMap = new Map();
-        $nb = 0;
+        // $nb = 0;
         $language = $product->getLanguage();
         $country = $product->getCountry();
         $currency = $product->getCurrency();
         $isoCurrency = $currency->getIsoCurrency();
 
         $price = Box::getAvgPricePerItem($language, $country, $currency);
-        $itemsMap->put($product->getProdID(),               $nb, Map::item_id);
-        $itemsMap->put($product->getProdName(),             $nb, Map::item_name);
-        $itemsMap->put(1,                                   $nb, Map::quantity);
-        $itemsMap->put($product->getCategories()[0],        $nb, Map::item_category);
-        $itemsMap->put($product->getColorName(),            $nb, Map::item_variant);
-        $itemsMap->put($price->getPriceRounded(),           $nb, Map::price);
-        $itemsMap->put($isoCurrency,                        $nb, Map::currency);
+        $itemsMap->put($product->getProdID(),           Map::item_id);
+        $itemsMap->put($product->getProdName(),         Map::item_name);
+        $itemsMap->put(1,                               Map::quantity);
+        $itemsMap->put($product->getCategories()[0],    Map::item_category);
+        $itemsMap->put($product->getColorName(),        Map::item_variant);
+        $itemsMap->put($price->getPriceRounded(),       Map::price);
+        $itemsMap->put($isoCurrency,                    Map::currency);
 
-        return $itemsMap;
+        return $itemsMap->getMap();
     }
 
     /*———————————————————————————— CUSTOM DOWN ——————————————————————————————*/

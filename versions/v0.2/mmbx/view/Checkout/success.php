@@ -29,6 +29,7 @@ $headDatas = [
 $this->head = $this->generatefile('view/Checkout/files/head.php', $headDatas);
 $this->title = "Success";
 
-$pixelDatasMap = new Map([Map::order => $person->getLastOrder()]);
-$this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_PURCHASE, $pixelDatasMap);
-/*————————————————————————————— Config View UP ——————————————————————————————*/
+$APIEventDatasMap = new Map([Map::order => $person->getLastOrder()]);
+$this->addFbPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_PURCHASE, $APIEventDatasMap);
+$this->addAPIEvents(Google::class, Analytic::EVENT_PURCHASE, $APIEventDatasMap);
+    /*————————————————————————————— Config View UP ——————————————————————————————*/

@@ -346,6 +346,8 @@ class Map
     public const item_category = "item_category";
     public const item_variant = "item_variant";
     public const items = "items";
+    public const transaction_id = "transaction_id";
+    public const tax = "tax";
 
     /**
      * Keys for Box
