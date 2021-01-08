@@ -35,6 +35,7 @@ class Pixel extends Facebook
     public const EVENT_USED_FRIPPERY = "used_frippery";
     public const EVENT_SCROLL_OVER = "scroll_over";
     public const EVENT_NEW_BOX = "add_new_box";
+    public const EVENT_YOUTUBE_FRIPPERY_FOLLOWERS = "youtube_frippery_followers";
 
     /**
      * Holds acces key to get Pixel
@@ -80,6 +81,9 @@ class Pixel extends Facebook
         /** add_new_box */
         self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_NEW_BOX, Map::type);
         self::$pixelsMap->put(self::EVENT_NEW_BOX, self::EVENT_NEW_BOX, Map::func);
+
+        /** youtube_frippery_followers */
+        self::$pixelsMap->put(self::TYPE_CUSTOM, self::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, Map::type);
     }
 
     /**
