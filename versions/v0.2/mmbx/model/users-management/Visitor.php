@@ -545,7 +545,8 @@ class Visitor extends ModelFunctionality
     /**
      * To get Visitor's Cookies present in db and on his driver and sharing 
      * the same value
-     * @return Map
+     * @return Map Visitor's Cookies
+     * + CookiesMap[cookieID] => {Cookies}
      */
     public function getCookies()
     {
@@ -733,6 +734,22 @@ class Visitor extends ModelFunctionality
                 $this->getBasket()->unlock($response, $userID);
             }
         }
+    }
+
+    /**
+     * To reset Visitor's browser
+     */
+    public function reset()
+    {
+        $userID = $this->getUserID();
+        $session = $this->getSession();
+        $cookiesMap = $this->getCookies();
+        $cookieIDs = $cookiesMap->getKeys();
+        foreach ($cookieIDs as $cookieID) {
+            var_dump($cookieID);
+            Cookie::destroyCookie($userID, $cookieID);
+        }
+        $session->destroy();
     }
 
     /*———————————————————————————— MANAGE CLASS UP ——————————————————————————*/
