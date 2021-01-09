@@ -4,6 +4,11 @@ require_once 'ControllerSecure.php';
 
 class ControllerHome extends ControllerSecure
 {
+    /**
+     * Holds actions function
+     */
+    public const ACTION_INIT = "init";
+    
     public const A_SIGN_UP = "home/signUp";
     public const A_SIGN_IN = "home/signIn";
     public const QR_LOG_OUT = "home/logOut";
@@ -20,6 +25,31 @@ class ControllerHome extends ControllerSecure
         // $language = $this->person->getLanguage();
         $this->generateView([], $this->person);
     }
+
+    /**
+     * To provide button to geneate new Visitor
+     */
+    public function generator()
+    {
+        $person = $this->getPerson();
+        $datas = [
+            "btnLink" => self::generateActionPath(get_class($this), self::ACTION_INIT),
+        ];
+        $this->generateView($datas, $person);
+    }
+
+    /**
+     * Initialize Visitor's browser
+     */
+    public function init()
+    {
+        $person = $this->getPerson();
+        $person->reset();
+        $this->redirect("");
+    }
+
+    /*———————————————————————————— LAYOUT UP ——————————————————————————————————*/
+    /*———————————————————————————— REQUEST DOWN ———————————————————————————————*/
 
     /**
      * To sign up a new User
