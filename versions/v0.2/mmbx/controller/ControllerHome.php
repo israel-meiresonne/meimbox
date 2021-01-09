@@ -8,7 +8,7 @@ class ControllerHome extends ControllerSecure
      * Holds actions function
      */
     public const ACTION_INIT = "init";
-    
+
     public const A_SIGN_UP = "home/signUp";
     public const A_SIGN_IN = "home/signIn";
     public const QR_LOG_OUT = "home/logOut";
@@ -45,7 +45,9 @@ class ControllerHome extends ControllerSecure
     {
         $person = $this->getPerson();
         $person->reset();
-        $this->redirect("");
+        $id = ModelFunctionality::generateDateCode(20);
+        $time = date(ModelFunctionality::DATE_FORMAT);
+        $this->redirect("?survey_id=$id&survey_time=$time");
     }
 
     /*———————————————————————————— LAYOUT UP ——————————————————————————————————*/
