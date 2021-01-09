@@ -4,10 +4,12 @@
  * @param string $title             the title of the message
  *                                  + also used as title of the web page in the head tag
  * @param string $content           the message to display
- * @param string $btnText            the text to display on the button link
+ * @param string $btnText           the text to display on the button link
  * @param string $btnLink           link to place in the button link
+ * @param string $linkAttr          attributs to place on link's tag
  */
 $this->title = $title;
+$linkAttr = (isset($linkAttr)) ? $linkAttr : null;
 ?>
 
 <div class="main_content">
@@ -21,7 +23,7 @@ $this->title = $title;
             </div>
         </div>
         <div class="main_content-inner-btn_content">
-            <a class="remove-a-default-att" href="<?= $btnLink ?>">
+            <a class="remove-a-default-att" <?= $linkAttr ?> href="<?= $btnLink ?>">
                 <button class="btn_content-btn cta-btn squared-standard-button"><?= $btnText ?></button>
             </a>
         </div>

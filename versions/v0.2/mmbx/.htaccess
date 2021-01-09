@@ -32,6 +32,8 @@ RewriteRule ^webhook/qr/+([A-z]+)/*$	            index.php?controller=webhook&ac
 # Home
 # RewriteRule ^qr/+([A-z]+)/*$	                    index.php?controller=home&action=$1 [QSA,NC,L]
 RewriteRule ^home/qr/+([A-z]+)/*$	                index.php?controller=home&action=$1 [QSA,NC,L]
+RewriteRule ^home/generator/*$	                    index.php?controller=home&action=generator [QSA,NC,L]
+RewriteRule ^home/init/*$	                        index.php?controller=home&action=init [QSA,NC,L]
 RewriteRule ^home/*$	                            index.php?controller=home&action=index [QSA,NC,L]
 # RewriteRule /*$	                                    index.php?controller=home&action=index [QSA,NC,L]
 
