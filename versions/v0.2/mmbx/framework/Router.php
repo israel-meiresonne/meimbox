@@ -8,9 +8,8 @@ require_once 'Controller.php';
 require_once 'Request.php';
 require_once 'View.php';
 
-// rnvs : start
 require_once 'Configuration.php';
-// rnvs : end
+require_once 'controller/ControllerSecure.php';
 
 /**
  * Classe de routage des requêtes entrantes.

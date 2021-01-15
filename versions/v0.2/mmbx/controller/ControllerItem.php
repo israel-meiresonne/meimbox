@@ -172,7 +172,7 @@ class ControllerItem extends ControllerSecure
         $datasView = [];
         $brandsMeasures = $person->getBrandMeasures();
         if ((!Query::existParam(Size::KEY_BRAND_NAME))
-        || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
+            || (!array_key_exists(Query::getParam(Size::KEY_BRAND_NAME), $brandsMeasures))
         ) {
             $response->addErrorStation("ER1", MyError::FATAL_ERROR);
         } else {
@@ -608,9 +608,11 @@ class ControllerItem extends ControllerSecure
                 $lastBox = $boxes[$keys[0]];
                 $eventDatasMap->put($lastBox->getColor(), Box::KEY_BOX_COLOR);
                 $eventDatasMap->put($lastBox->getBoxID(), Box::KEY_BOX_ID);
-                // $eventRsp = new Response();
-                // $person->getNavigation()->handleEvent(($eventRsp), $person->getUserID(), $eventCode, $eventDatasMap);
                 $person->handleEvent($eventCode, $eventDatasMap);
+
+                $APIEventDatasMap = new Map([Map::box => $lastBox]);
+                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_NEW_BOX, $APIEventDatasMap));
+                $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_NEW_BOX, $APIEventDatasMap));
             }
         }
         $this->generateJsonView($datasView, $response, $person);
@@ -680,12 +682,10 @@ class ControllerItem extends ControllerSecure
                 $eventDatasMap->put($cut, Size::INPUT_CUT_ADDER);
                 $person->handleEvent($eventCode, $eventDatasMap);
 
-                // var_dump($cut);
-                // $sequence = Size::buildSequence($size, $brand, $measureID, $cut);
-                // $selectedSize = new Size($sequence);
                 $product = $person->getBasket()->getBox($boxID)->getProduct($prodID, $selectedSize);
-                $pixelDatasMap = new Map([Map::product => $product]);
-                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_ADD_TO_CART, $pixelDatasMap) . ";console.log('evalued')");
+                $APIEventDatasMap = new Map([Map::product => $product]);
+                $response->addResult(Pixel::KEY_FB_PXL, Facebook::getPixel(Pixel::TYPE_STANDARD, Pixel::EVENT_ADD_TO_CART, $APIEventDatasMap) . ";console.log('evalued');");
+                $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_ADD_TO_CART, $APIEventDatasMap));
             }
         }
         $this->generateJsonView($datasView, $response, $person);

@@ -4,6 +4,11 @@ require_once 'ControllerSecure.php';
 
 class ControllerHome extends ControllerSecure
 {
+    /**
+     * Holds actions function
+     */
+    public const ACTION_INIT = "init";
+
     public const A_SIGN_UP = "home/signUp";
     public const A_SIGN_IN = "home/signIn";
     public const QR_LOG_OUT = "home/logOut";
@@ -20,6 +25,33 @@ class ControllerHome extends ControllerSecure
         // $language = $this->person->getLanguage();
         $this->generateView([], $this->person);
     }
+
+    /**
+     * To provide button to geneate new Visitor
+     */
+    public function generator()
+    {
+        $person = $this->getPerson();
+        $datas = [
+            "btnLink" => self::generateActionPath(get_class($this), self::ACTION_INIT),
+        ];
+        $this->generateView($datas, $person);
+    }
+
+    /**
+     * Initialize Visitor's browser
+     */
+    public function init()
+    {
+        $person = $this->getPerson();
+        $person->reset();
+        $id = ModelFunctionality::generateDateCode(20);
+        $time = date(ModelFunctionality::DATE_FORMAT);
+        $this->redirect("?survey_id=$id&survey_time=$time");
+    }
+
+    /*———————————————————————————— LAYOUT UP ——————————————————————————————————*/
+    /*———————————————————————————— REQUEST DOWN ———————————————————————————————*/
 
     /**
      * To sign up a new User
@@ -306,13 +338,13 @@ class ControllerHome extends ControllerSecure
                     $datasMap = new Map($datas);
                     $pxl = Facebook::getPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_SCROLL_OVER, $datasMap);
                     $response->addResult(Pixel::KEY_FB_PXL, $pxl);
+                    $response->addResult(Analytic::KEY_GG_EVT, Google::getEvent(Analytic::EVENT_SCROLL_OVER, $datasMap));
 
+                    $eventCode = "evt_cd_126";
                     $constantsMap = new Map(Configuration::getFromJson(Configuration::JSON_KEY_CONSTANTS));
                     $maxScroll = $constantsMap->get(Map::ad_config, Map::scroll_up);
                     $eventDattasMap = new Map($datasMap->getMap());
                     $eventDattasMap->put($maxScroll, Event::EVT_SCROLL);
-
-                    $eventCode = "evt_cd_126";
                     $person->handleEvent($eventCode, $eventDattasMap);
                     break;
                 default:
@@ -332,14 +364,18 @@ class ControllerHome extends ControllerSecure
     //     // /**
     //     //  * @var User */
     //     $person = $this->person;
-    //     $sizes = [
-    //         "40",
-    //         "42",
-    //         "44",
-    //         "xl",
-    //         "3xl"
-    //     ];
-    //     var_dump(Size::multiplySizes($sizes));
+    //     $person->generateCookie(Cookie::COOKIE_CHKT_LNCHD);
+    //     // $sizes = [
+    //     //     "40",
+    //     //     "42",
+    //     //     "44",
+    //     //     "xl",
+    //     //     "3xl"
+    //     // ];
+    //     // var_dump(Size::multiplySizes($sizes));
+    //     // $datas = [];
+    //     // $this->generateView($datas, $person);
+    //     var_dump($_COOKIE);
     // }
 
     // public function test_DiscountCode()

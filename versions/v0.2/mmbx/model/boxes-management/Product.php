@@ -408,7 +408,7 @@ abstract class Product extends ModelFunctionality
      * Getter for language
      * @return Language Visistor's language
      */
-    protected function getLanguage()
+    public function getLanguage()
     {
         return $this->language;
     }
@@ -417,7 +417,7 @@ abstract class Product extends ModelFunctionality
      * Getter for country
      * @return Country Visistor's country
      */
-    protected function getCountry()
+    public function getCountry()
     {
         return $this->country;
     }
@@ -426,7 +426,7 @@ abstract class Product extends ModelFunctionality
      * Getter for currency
      * @return Currency Visistor's currency
      */
-    protected function getCurrency()
+    public function getCurrency()
     {
         return $this->currency;
     }

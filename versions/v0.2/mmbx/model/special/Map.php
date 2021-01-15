@@ -25,6 +25,7 @@ class Map
     public const support = "support";
     public const obj = "obj";
     public const index = "index";
+    public const scroll_rate = "scroll_rate";
 
 
     /**
@@ -294,6 +295,7 @@ class Map
      * @var string
      */
     public const query = "query";
+    public const page = "page";
 
     /**
      * Keys for DiscountCode
@@ -333,6 +335,27 @@ class Map
     public const tutoID = "tutoID";
     public const direction = "direction";
     public const content = "content";
+
+    /**
+     * Keys for Analytic
+     * @var string
+     */
+    public const action = "action";
+    public const event_category = "event_category";
+    public const event_label = "event_label";
+    public const item_id = "item_id";
+    public const item_name = "item_name";
+    public const item_category = "item_category";
+    public const item_variant = "item_variant";
+    public const items = "items";
+    public const transaction_id = "transaction_id";
+    public const tax = "tax";
+
+    /**
+     * Keys for Box
+     * @var string
+     */
+    public const box = "box";
 
     /**
      * Constructor

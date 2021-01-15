@@ -47,6 +47,14 @@ $headerDatas = [
     "companyMap" => $companyMap
 ];
 $headerContent = $this->generateFile($headerFile, $headerDatas);
+/** API Events */
+if ($urlPage->getParam(Page::KEY_AD_AUDIENCE) == Analytic::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS) {
+    $APIEventDatasMap = new Map([
+        Map::url => $urlPage->getUrl()
+    ]);
+    $this->addFbPixel(Pixel::TYPE_CUSTOM, Pixel::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, $APIEventDatasMap);
+    $this->addAPIEvents(Google::class, Analytic::EVENT_YOUTUBE_FRIPPERY_FOLLOWERS, $APIEventDatasMap);
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $isoLang ?>">
@@ -216,6 +224,7 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
 
         const KEY_FB_PXL = "<?= Pixel::KEY_FB_PXL ?>";
         const KEY_FB_PXL_DT = "<?= Pixel::KEY_FB_PXL_DT ?>";
+        const KEY_GG_EVT = "<?= Analytic::KEY_GG_EVT ?>";
 
         const TUTO_ID_K = "<?= Tutorial::TUTO_ID_K ?>";
         const TUTO_TYPE_K = "<?= Tutorial::TUTO_TYPE_K ?>";
@@ -302,13 +311,11 @@ $headerContent = $this->generateFile($headerFile, $headerDatas);
 <body>
     <?= $headerContent ?>
     <div class="template-content">
-        <?= $this->generateAPIEvents(Facebook::class) ?>
+        <?= $this->generateAPIEvents(Facebook::class, Google::class) ?>
         <?= $content ?>
         <?php echo $this->generateFile('view/elements/fullscreen.php', ["person" => $person]); ?>
         <script id="evt" type="text/javascript">
-            <?php
-            echo ($pageType == Page::TYPE_NEWCOMER) ? Event::getEventFile(Event::FILE_DEVICE_SIZE) : null;
-            ?>
+            <?= ($pageType == Page::TYPE_NEWCOMER) ? Event::getEventFile(Event::FILE_DEVICE_SIZE) : null; ?>
         </script>
     </div>
 </body>

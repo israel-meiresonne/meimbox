@@ -15,7 +15,7 @@ $isLogged = $person->hasCookie(Cookie::COOKIE_CLT);
 $company = new Map(Configuration::getFromJson(Configuration::JSON_KEY_COMPANY));
 $brandName = strtoupper($company->get(Map::brand));
 // $homeLink = ControllerSecure::extractController(ControllerHome::class);
-$homeLink = "";
+$homeLink = ".";
 $gridLink = ControllerSecure::extractController(ControllerGrid::class);
 
 $TagAddBoxFunc_sideMenu = "onclick=\"openPopUp('#box_pricing_window', setAddBoxAfter);evt('evt_cd_3');\"";
