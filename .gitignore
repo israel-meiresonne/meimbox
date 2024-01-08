@@ -1,4 +1,3 @@
-versions/v0.2/mmbx/content/brain/prod/
-versions/v0.2/mmbx/content/brain/brand/
-._*
+app/content/brain/brand
+app/content/brain/prod
 .DS_Store

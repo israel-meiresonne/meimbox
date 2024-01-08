@@ -1,4 +1,0 @@
-"boxColor","sizeMax","weight","boxColorRGB","priceRGB","textualRGB","boxPicture","stock"
-"gold","10","0.125","rgba(255, 211, 0, 0.7)","rgba(255, 211, 0)","#ffffff","box-gold-128.png","374"
-"regular","4","0.05","#ffffff","rgba(14, 36, 57, 0.8)","rgba(14, 36, 57, 0.5)","box-regular-128.png","32"
-"silver","6","0.075","rgba(229, 229, 231, 0.5)","#C6C6C7","rgba(14, 36, 57, 0.5)","box-silver-128.png","54"
