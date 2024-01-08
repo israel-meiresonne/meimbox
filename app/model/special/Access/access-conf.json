@@ -1,0 +1,14 @@
+{
+    "cookies": {
+        "access": {
+            "name":     "ivtn",
+            "value":    "wHeB1zah30ARmjl2",
+            "period":   31536000,
+            "path":     "/",
+            "domain":   "<domain>",
+            "secure":   1,
+            "httponly": 1,
+            "redirect": "autorisation.com"
+        }
+    }
+}
