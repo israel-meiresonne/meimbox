@@ -19,7 +19,7 @@ This application feature an interface that allow users to tailor made they cloth
 * Support payments through Stripe's API
 * Responsible design
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jN8yElFXpwU?si=pxodQwFxxYHmvYFz" title="Meimbox Features" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+See features in action on Youtube with *TimeCodes*: <https://youtu.be/jN8yElFXpwU?si=IZJf_XmNvHxxangz>
 
 ## Technologies
 
