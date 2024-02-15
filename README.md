@@ -34,7 +34,8 @@ See features in action on Youtube with *TimeCodes*: <https://youtu.be/jN8yElFXpw
 
 ## Database schema
 
-* Note: Tables in <b style="color:#ff3300">red</b> are deprecated
+* Note: Tables in ${\color{red}red}$ are deprecated
+
 [<img src="side-data/doc/db-schema/meimboxDB.jpg" width="500">](side-data/doc/db-schema/meimboxDB.jpg)
 
 ## Screenshots
