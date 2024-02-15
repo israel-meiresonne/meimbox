@@ -1,21 +1,21 @@
 # E-shop
 
-This e-shop application propose an interface that allow users to group product inside boxes and purchase the latter.
-This application feature an interface that allow users to tailor made they clothe product.
+This e-shop application proposes an interface that allows users to group products inside boxes and purchase the latter.
+It features an interface that allows users to tailor-make their clothing products.
 
 ## Features
 
-* User sign in and sign up
+* Users sign in and sign up
 * Product filter
-* For clothe products:
-  * Form to enter personal measurement
-  * Form to tight standard size to cut from a user's favorite brand
-  * Tutorial about how to use tailor made feature
+* For clothing products:
+  * Enter personal measurement
+  * Select a size and a brand so the clothing will be resized following the brand's measurement for the selected size
+  * Tutorial about how to use tailor-made features
 * CRUD boxes
 * CRUD product inside boxes
 * Sends order confirmation email
-* Support change of country and currency
-* Support multiple language
+* Support the change of country and currency
+* Support multiple languages
 * Support payments through Stripe's API
 * Responsible design
 
@@ -34,7 +34,7 @@ See features in action on Youtube with *TimeCodes*: <https://youtu.be/jN8yElFXpw
 
 ## Database schema
 
-* Note: Tables in ${\color{red}red}$ are deprecated
+* Note: Tables in ${\color{red}red}$ are deprecated.
 
 [<img src="side-data/doc/db-schema/meimboxDB.jpg" width="500">](side-data/doc/db-schema/meimboxDB.jpg)
 
