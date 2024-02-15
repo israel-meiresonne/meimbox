@@ -17,7 +17,7 @@ It features an interface that allows users to tailor-make their clothing product
 * Support the change of country and currency
 * Support multiple languages
 * Support payments through Stripe's API
-* Responsible design
+* Responsive design
 
 See features in action on Youtube with *TimeCodes*: <https://youtu.be/jN8yElFXpwU?si=IZJf_XmNvHxxangz>
 
