@@ -1,4 +1,10 @@
 # E-shop
+<!-- ❌ Don't Delete This Comment ❌
+Project short description:
+  Full-stack e-shop web application
+Project Topics (tags):
+  mysql css html jquery php javascipt
+-->
 
 This e-shop application proposes an interface that allows users to group products inside boxes and purchase the latter.
 It features an interface that allows users to tailor-make their clothing products.
